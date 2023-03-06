@@ -2,6 +2,7 @@
   $title = 'Parts';
   require_once('head.html');
   include 'config/credentials.php'; 
+  include 'inline-processing.php';
   include 'lib/SQL.php';
   include 'lib/forms.php';
   $table_name = "parts";
