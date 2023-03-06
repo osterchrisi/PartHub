@@ -10,20 +10,20 @@
           <a class="nav-link active" href="inventory.php">Parts</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">BOMS</a>
+          <a class="nav-link dropdown-toggle" href="bom-search.php" role="button" data-bs-toggle="dropdown">BOMS</a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="bom-create.php">Create BOM</a></li>
             <li><a class="dropdown-item" href="bom-build.php">Build BOM</a></li>
             <li><a class="dropdown-item" href="bom-search.php">Show BOM</a></li>
           </ul>
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Backorders</a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="backorders-entry.php">Enter Backorder</a></li>
             <li><a class="dropdown-item" href="backorders-search.php">Search Backorders</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
