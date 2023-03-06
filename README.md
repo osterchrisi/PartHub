@@ -6,7 +6,7 @@ If you want to manage small and medium parts inventory and BOMs, **PartHub** is 
 
 # Features
  - Keep an up-to-date inventory of your parts easily
- - Multiple storage locations per part possible
+ - Multiple storage locations per part
  - Move stock between locations
  - Send mail upon reaching minimum stock in given location
  - Easily create BOMs by simply adding parts
