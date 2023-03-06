@@ -54,8 +54,6 @@ try {
 
     $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names);
 
-    echo "<br>Displaying $total_rows search results<br><br>";
-
     buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn);
     displayPaginationLinks($total_pages, $current_page);
   }
