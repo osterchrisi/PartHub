@@ -1,5 +1,5 @@
 <?php
-// require_once('navbar.php');
+require_once('head.html');
 include 'config/credentials.php';
 include 'lib/SQL.php';
 include 'lib/forms.php';

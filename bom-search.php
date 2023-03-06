@@ -1,4 +1,5 @@
 <?php
+  require_once('head.html');
   include 'config/credentials.php';
   include 'lib/SQL.php';
   include 'lib/forms.php';
@@ -74,7 +75,6 @@ catch (Exception $e) {
 $conn = null;
 ?>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
   $('tr').click(function() {

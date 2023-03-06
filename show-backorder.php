@@ -1,3 +1,4 @@
+<?php require_once('head.html');?>
 <div class="container-fluid">
 <?php require_once('navbar.php');?>
 <br>

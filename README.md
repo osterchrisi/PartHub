@@ -1,4 +1,4 @@
-# PartHub - Parts Inventory and BOM Tool
+# ![Favicon](./etc/favicon/favicon-32x32.png?raw=true "Favicon") PartHub - Parts Inventory and BOM Tool
 
 If you want to manage small-scale parts inventory and BOMs, **PartHub** is here for you. 
 
@@ -6,6 +6,7 @@ If you want to manage small-scale parts inventory and BOMs, **PartHub** is here 
  - Keep an up-to-date inventory of your parts
  - Multiple storage locations per part
  - Move stock between locations
+ - Send mail upon reaching minimum stock in given location
  - Easily create BOMs by simply adding parts
  - Execute BOMs when building projects, stock gets automatically deducted
  - Works in any browser

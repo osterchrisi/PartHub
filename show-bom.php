@@ -1,4 +1,5 @@
 <?php
+  require_once('head.html');
   include 'config/credentials.php';
   include 'config/show-bom-columns.php';
   include 'lib/SQL.php';
