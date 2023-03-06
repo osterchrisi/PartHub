@@ -24,6 +24,12 @@
             <li><a class="dropdown-item" href="backorders-search.php">Search Backorders</a></li>
           </ul>
         </li> -->
+        <li class="nav-item">
+          <a class="nav-link active" href="locations.php">Storage Locations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="categories.php">Categories</a>
+        </li>
       </ul>
     </div>
   </div>

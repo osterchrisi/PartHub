@@ -14,8 +14,8 @@ If you want to manage small-scale parts inventory and BOMs, **PartHub** is here 
 
 # Screenshots
 ![Parts](./etc/screenshots/Parts.png?raw=true "Parts Inventory")
-![Create BOM](/etc/screenshots/Create-BOM-1.png?raw=true "Create BOM")
-![Create BOM](/./etc/screenshots/Create-BOM-1.pnge?raw=true "Create BOM")
+![Stock Levels](./etc/screenshots/Show-Stock.png?raw=true "Stock Levels")
+![Create new BOM](./etc/screenshots/Create-BOM.png?raw=true "Create new BOM")
 ![Show BOM](etc/screenshots/Show-BOM.png?raw=true "Show BOM Details")
 ![Build BOM](etc/screenshots/Build-BOM.png?raw=true "Build BOM")
 
