@@ -25,7 +25,6 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
   if ($search_column == 'everywhere') {
     // Search all columns
     $sql .= "CONCAT_WS(' ',";
-   //  $column_names = getColumnNames($table_name, $conn);
     $num_columns = count($column_names);
     for ($i = 0; $i < $num_columns; $i++) {
       $column_name = $column_names[$i];
@@ -39,8 +38,6 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
     // Search only the specified column
     $sql .= "$search_column LIKE :search_term ";
   }
-//   echo "sql = $sql";
-//   $sql = "SELECT COUNT(*) as total FROM $table_name WHERE $search_column LIKE :search_term";
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->execute();
@@ -51,12 +48,11 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 
 function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names){
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
-  $sql = "SELECT * FROM $table_name WHERE ";
+  $sql = "SELECT * FROM $table_name JOIN part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
 
   if ($search_column == 'everywhere') {
     // Search all columns
     $sql .= "CONCAT_WS(' ',";
-   //  $column_names = getColumnNames($table_name, $conn);
     $num_columns = count($column_names);
     for ($i = 0; $i < $num_columns; $i++) {
       $column_name = $column_names[$i];
@@ -73,7 +69,6 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
 
   $sql .= "LIMIT :offset, :results_per_page";
   
-//   $sql = "SELECT * FROM $table_name WHERE $search_column LIKE :search_term LIMIT :offset, :results_per_page";
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);

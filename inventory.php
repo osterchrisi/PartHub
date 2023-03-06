@@ -1,4 +1,5 @@
 <?php
+  $title = 'Parts';
   require_once('head.html');
   include 'config/credentials.php'; 
   include 'lib/SQL.php';
@@ -53,9 +54,7 @@ try {
 
     $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names);
 
-    echo "<br>Displaying $total_rows search results<br><br>";
-
-    buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, '50%');
+    buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn);
     displayPaginationLinks($total_pages, $current_page);
   }
   else {
@@ -69,4 +68,5 @@ catch (Exception $e) {
 // Close the connection
 $conn = null;
 ?>
+
 </div>

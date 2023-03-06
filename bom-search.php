@@ -1,4 +1,5 @@
 <?php
+  $title = 'Show BOM';
   require_once('head.html');
   include 'config/credentials.php';
   include 'lib/SQL.php';
@@ -52,7 +53,7 @@ try {
 
     $result = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
 
-    echo "<br>Displaying $total_rows search results with $results_per_page results per page:<br><br>";
+    echo "<br>Displaying $total_rows search results<br><br>";
 
     echo "<div class='row'>";
       echo "<div class='col-6'>"; // Display BOMs
