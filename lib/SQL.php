@@ -49,7 +49,7 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names){
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
   // $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
-  $sql = "SELECT part_name AS part.part_name FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
+  $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
 
   if ($search_column == 'everywhere') {
     // Search all columns
@@ -271,4 +271,27 @@ function insertBackorderProducts($conn, $new_id, $product_id, $amount){
   $stmt->bindParam(':product_id', $product_id);
   $stmt->bindParam(':amount', $amount);
   $stmt->execute();
+}
+
+function updateRow($conn, $part_id, $column, $table_name, $new_value){
+
+  echo $part_id."<br>";
+  echo $column."<br>";
+  echo "table name = ".$table_name."<br>";
+  echo gettype($table_name);
+  echo $new_value."<br>";
+
+  $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE part_id = :part_id");
+  echo 1;
+  // $stmt->bindParam(':table_name', $table_name);
+  echo 2;
+  // $stmt->bindParam(':column', $column);
+  echo 3;
+  $stmt->bindParam(':new_value', $new_value);
+  echo 4;
+  $stmt->bindParam(':part_id', $part_id);
+
+  echo 5;
+  $stmt->execute();
+  echo 6;
 }

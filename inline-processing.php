@@ -1,13 +1,13 @@
 <script>
-// Find row x column position of clicked cell in table
-$(document).ready(function() {
-  $('td').click(function(event) {
-    var clickedCell = $(event.target).closest('td'); // get the closest <td> element to the clicked element
-    var columnNumber = clickedCell.index() + 1; // get the 1-based index of the column
-    var rowNumber = clickedCell.closest('tr').index() + 1; // get the 1-based index of the row
-    console.log('Clicked cell at row ' + rowNumber + ', column ' + columnNumber);
-  });
-});
+// Find row x column position of clicked cell in table -->
+// $(document).ready(function() {
+//   $('td').click(function(event) {
+//     var clickedCell = $(event.target).closest('td'); // get the closest <td> element to the clicked element
+//     var columnNumber = clickedCell.index() + 1; // get the 1-based index of the column
+//     var rowNumber = clickedCell.closest('tr').index() + 1; // get the 1-based index of the row
+//     console.log('Clicked cell at row ' + rowNumber + ', column ' + columnNumber);
+//   });
+// });
 
 $(document).ready(function() {
   $('tbody td.editable').click(function() {
@@ -15,7 +15,6 @@ $(document).ready(function() {
     // Get current value
     var cell = $(this);
     var currentValue = cell.text();
-    console.log(currentValue);
 
     // Create input field
     var input = $('<input type="text" class="form-control">').val(currentValue);
@@ -38,15 +37,26 @@ $(document).ready(function() {
 
 
     input.blur(function() {
-      var newValue = input.val();
-      cell.text(newValue);
-      var id = cell.closest('tr').data('id');
+      // Get newly entered value
+      var new_value = input.val();
+
+      // This updates the table with the new value. Better would be an SQL query to not fool anyone
+      cell.text(new_value);
+      
+      // Get cell part_id, column name and database table
+      var part_id = cell.closest('td').data('id');
+      var column = cell.closest('td').data('column');
+      var table_name = cell.closest('td').data('table_name')
+      console.log(part_id, column, table_name, new_value);
+
       $.ajax({
-        type: 'POST',
-        url: 'update.php',
+        type: 'GET',
+        url: 'update-cell.php',
         data: {
-          id: id,
-          number: newValue
+          part_id: part_id,
+          column: column,
+          table_name: table_name,
+          new_value: new_value
         },
         success: function(data) {
           console.log('Data updated successfully');

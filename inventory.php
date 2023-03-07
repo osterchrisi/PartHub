@@ -59,7 +59,7 @@ try {
     var_dump($result);
     echo "</pre>";
 
-    buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn);
+    buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
     displayPaginationLinks($total_pages, $current_page);
   }
   else {
