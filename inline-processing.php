@@ -1,7 +1,7 @@
 <script>
 
 $(document).ready(function() {
-  $('tbody td.editable').click(function() {
+  $('tbody td.editable').dblclick(function() {
     var cell = $(this);
 
     // Check if the cell is being edited
