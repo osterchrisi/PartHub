@@ -274,24 +274,9 @@ function insertBackorderProducts($conn, $new_id, $product_id, $amount){
 }
 
 function updateRow($conn, $part_id, $column, $table_name, $new_value){
-
-  echo $part_id."<br>";
-  echo $column."<br>";
-  echo "table name = ".$table_name."<br>";
-  echo gettype($table_name);
-  echo $new_value."<br>";
-
+  // bindParam is only for values, not for identifiers like table or column names
   $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE part_id = :part_id");
-  echo 1;
-  // $stmt->bindParam(':table_name', $table_name);
-  echo 2;
-  // $stmt->bindParam(':column', $column);
-  echo 3;
   $stmt->bindParam(':new_value', $new_value);
-  echo 4;
   $stmt->bindParam(':part_id', $part_id);
-
-  echo 5;
   $stmt->execute();
-  echo 6;
 }

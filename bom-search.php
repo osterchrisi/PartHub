@@ -53,7 +53,7 @@ try {
 
     $result = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
 
-    echo "<br>Displaying $total_rows search results<br><br>";
+    echo "<br>Displaying $total_rows search results";
 
     echo "<div class='row'>";
       echo "<div class='col-6'>"; // Display BOMs
