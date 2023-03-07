@@ -1,4 +1,14 @@
 <script>
+// Find row x column position of clicked cell in table
+$(document).ready(function() {
+  $('td').click(function(event) {
+    var clickedCell = $(event.target).closest('td'); // get the closest <td> element to the clicked element
+    var columnNumber = clickedCell.index() + 1; // get the 1-based index of the column
+    var rowNumber = clickedCell.closest('tr').index() + 1; // get the 1-based index of the row
+    console.log('Clicked cell at row ' + rowNumber + ', column ' + columnNumber);
+  });
+});
+
 $(document).ready(function() {
   $('tbody td.editable').click(function() {
     console.log();
@@ -8,7 +18,7 @@ $(document).ready(function() {
     console.log(currentValue);
 
     // Create input field
-    var input = $('<input type="text" style="width:100%">').val(currentValue);
+    var input = $('<input type="text" class="form-control">').val(currentValue);
     cell.empty().append(input);
     input.focus();
 
@@ -18,6 +28,13 @@ $(document).ready(function() {
             input.blur();
         }
     }); 
+
+    // Close input on "Escape" key press
+    input.on('keydown', function(event) {
+      if (event.key === "Escape") {
+        input.blur();
+      }
+    });
 
 
     input.blur(function() {
@@ -38,13 +55,6 @@ $(document).ready(function() {
           console.error('Error updating data');
         }
       });
-    });
-
-    // Close input on "Escape" key press
-    input.on('keydown', function(event) {
-      if (event.key === "Escape") {
-        input.blur();
-      }
     });
 
   });

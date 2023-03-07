@@ -107,14 +107,13 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     foreach ($result as $row) {
         echo "<tr>";
         foreach ($db_columns as $column_data) {
-            if ($column_data == "part_name") { // Make links for the Name but refer via part_id
+            if ($column_data == 'total_stock'){ 
                 $part_id = $row['part_id'];
-                echo "<td class='editable'><a href='show-stock.php?part_id=$part_id'>".$row[$column_data]."</a></td>";
-            } elseif ($column_data == 'total_stock'){  // Get total stock hee
-                $part_id = $row['part_id'];
+                // Get total stock
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
-                echo "<td class='editable'><a href='show-stock.php?part_id=$part_id'>".$total_stock."</a></td>";
+                // Display total stock number as link to showing stock levels
+                echo "<td><a href='show-stock.php?part_id=$part_id'>".$total_stock."</a></td>";
             }
             else { // Any other table data available
             echo "<td class='editable'>".$row[$column_data]."</td>";
