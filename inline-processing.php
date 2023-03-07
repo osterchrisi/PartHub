@@ -2,8 +2,17 @@
 
 $(document).ready(function() {
   $('tbody td.editable').click(function() {
-    // Get current value
     var cell = $(this);
+
+    // Check if the cell is being edited
+    if (cell.hasClass('editing')) {
+      return;
+    }
+    
+    // Add editing class to the cell
+    cell.addClass('editing');
+    
+    // Get current value
     var currentValue = cell.text();
 
     // Create input field
@@ -13,6 +22,8 @@ $(document).ready(function() {
 
     var label = $('<small id="passwordHelpInline" class="text-muted">Enter: Confirm</small>');
     cell.append(label);
+
+    
 
     // Enter upon pressing Enter key
     input.keypress(function(event) {
@@ -26,6 +37,7 @@ $(document).ready(function() {
       if (event.key === "Escape") {
         input.remove();
         cell.text(currentValue);
+        cell.removeClass('editing');
         return;
       }
     });
@@ -35,6 +47,7 @@ $(document).ready(function() {
       if (!$(event.target).closest(cell).length) {
         input.remove();
         cell.text(currentValue);
+        cell.removeClass('editing');
         event.stopPropagation();
         return;
       }
@@ -69,6 +82,7 @@ $(document).ready(function() {
           console.error('Error updating data');
         }
       });
+      cell.removeClass('editing');
     });
   });
 });
