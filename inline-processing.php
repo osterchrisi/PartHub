@@ -2,15 +2,17 @@
 
 $(document).ready(function() {
   $('tbody td.editable').click(function() {
-    console.log();
     // Get current value
     var cell = $(this);
     var currentValue = cell.text();
 
     // Create input field
-    var input = $('<input type="text" class="form-control">').val(currentValue);
+    var input = $('<textarea class="form-control">').val(currentValue);
     cell.empty().append(input);
     input.focus();
+
+    var label = $('<small id="passwordHelpInline" class="text-muted">Enter: Confirm</small>');
+    cell.append(label);
 
     // Enter upon pressing Enter key
     input.keypress(function(event) {
@@ -33,7 +35,7 @@ $(document).ready(function() {
       // Get newly entered value
       var new_value = input.val();
 
-      // This updates the table with the new value. Better would be an SQL query to not fool anyone
+      // This updates the table with the new value. Better would be an SQL query to not fool anyone.
       cell.text(new_value);
       
       // Get cell part_id, column name and database table
@@ -59,7 +61,6 @@ $(document).ready(function() {
         }
       });
     });
-
   });
 });
 </script>
