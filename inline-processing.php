@@ -20,7 +20,7 @@ $(document).ready(function() {
     cell.empty().append(input);
     input.focus();
 
-    var label = $('<small id="passwordHelpInline" class="text-muted">Enter: Confirm</small>');
+    var label = $('<small class="text-muted">Enter: Confirm</small>');
     cell.append(label);
 
     
