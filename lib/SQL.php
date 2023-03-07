@@ -48,7 +48,8 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 
 function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names){
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
-  $sql = "SELECT * FROM $table_name JOIN part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
+  // $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
+  $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
 
   if ($search_column == 'everywhere') {
     // Search all columns
@@ -269,5 +270,13 @@ function insertBackorderProducts($conn, $new_id, $product_id, $amount){
   $stmt->bindParam(':backorder_id', $new_id);
   $stmt->bindParam(':product_id', $product_id);
   $stmt->bindParam(':amount', $amount);
+  $stmt->execute();
+}
+
+function updateRow($conn, $part_id, $column, $table_name, $new_value){
+  // bindParam is only for values, not for identifiers like table or column names
+  $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE part_id = :part_id");
+  $stmt->bindParam(':new_value', $new_value);
+  $stmt->bindParam(':part_id', $part_id);
   $stmt->execute();
 }

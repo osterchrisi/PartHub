@@ -2,6 +2,7 @@
   $title = 'Parts';
   require_once('head.html');
   include 'config/credentials.php'; 
+  include 'inline-processing.php';
   include 'lib/SQL.php';
   include 'lib/forms.php';
   $table_name = "parts";
@@ -54,7 +55,11 @@ try {
 
     $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names);
 
-    buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn);
+    // echo "<pre>";
+    // var_dump($result);
+    // echo "</pre>";
+
+    buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
     displayPaginationLinks($total_pages, $current_page);
   }
   else {
