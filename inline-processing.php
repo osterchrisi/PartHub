@@ -30,6 +30,15 @@ $(document).ready(function() {
       }
     });
 
+    // Close input on click outside the cell
+    $(document).on('mousedown', function(event) {
+      if (!$(event.target).closest(cell).length) {
+        input.remove();
+        cell.text(currentValue);
+        event.stopPropagation();
+        return;
+      }
+    });
 
     input.blur(function() {
       // Get newly entered value
