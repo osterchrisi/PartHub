@@ -7,3 +7,9 @@ if (password_verify($input_password, $stored_hash)) {
 } else {
     echo 'Invalid password.';
 }
+
+
+// also check out:
+session_start();
+// and
+$_SESSION['user_id'] = $user_id;

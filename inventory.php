@@ -59,7 +59,13 @@ try {
     // var_dump($result);
     // echo "</pre>";
 
+    echo "<div class='row'>";
+    echo "<div class='col-9'>"; // Display BOMs
     buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
+    echo "</div>";
+    echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
+    echo "</div>";
+    echo "</div>";
     displayPaginationLinks($total_pages, $current_page);
   }
   else {

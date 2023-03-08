@@ -13,7 +13,7 @@
 <br>
 <h4>Search BOMs</h4>
 
-
+<!-- Search Form -->
 <div class="row">
   <div class="col-3">
     <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -77,6 +77,7 @@ $conn = null;
 ?>
 
 <script>
+// Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
 $(document).ready(function() {
   $('tr').click(function() {
     $('tbody tr').removeClass('selected');
