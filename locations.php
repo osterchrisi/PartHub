@@ -1,5 +1,5 @@
 <?php
-$title = 'Parts';
+$title = 'Locations';
 require_once('head.html');
 include 'config/credentials.php';
 include 'inline-processing.php';

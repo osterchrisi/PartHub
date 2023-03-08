@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
 {
     public static $prefixLengthsPsr4 = array (
+        'O' => 
+        array (
+            'OnlineSid\\DataTabulator\\' => 24,
+        ),
         'M' => 
         array (
             'Medoo\\' => 6,
@@ -14,10 +18,18 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
     );
 
     public static $prefixDirsPsr4 = array (
+        'OnlineSid\\DataTabulator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onlinesid/php-data-tabulator/src/OnlineSid/DataTabulator',
+        ),
         'Medoo\\' => 
         array (
             0 => __DIR__ . '/..' . '/catfan/medoo/src',
         ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -25,6 +37,7 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitab70f2a818c7fed1731e82378bba04d4::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitab70f2a818c7fed1731e82378bba04d4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitab70f2a818c7fed1731e82378bba04d4::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -12,6 +12,30 @@ $search_column = isset($_GET['search_column']) ? $_GET['search_column'] : '';
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 ?>
+
+<script>
+  //create Tabulator on DOM element with id "example-table"
+  function buildTable(result){
+  var table = new Tabulator("#example-table", {
+    // height: 100%, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+    data: result, //assign data to table
+    layout: "fitColumns", //fit columns to width of table (optional)
+    columns: [ //Define Table Columns
+      { title: "Name", field: "part_name"},
+      { title: "Description", field: "part_description"},
+      { title: "Comment", field: "part_comment"},
+      { title: "Category", field: "category_name"},
+    ],
+  });
+
+  table.classList.add("table table-striped table-hover table-bordered table-resizable")
+
+  //trigger an alert message when the row is clicked
+  table.on("rowClick", function (e, row) {
+    alert("Row " + row.getData().id + " Clicked!!!!");
+  });}
+</script>
+
 <div class="container-fluid">
   <?php require_once('navbar.php'); ?>
   <br>
@@ -28,7 +52,7 @@ $column_names = getColumnNames($conn, $table_name);
       <?php generateDropdown($column_names, $search_column); ?>
     </div>
     <div class="col-3">
-      <button type="submit" class="btn btn-primary" name="submit">Show Results</button>
+      <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>
     </div>
     </form>
   </div>
@@ -63,7 +87,10 @@ $column_names = getColumnNames($conn, $table_name);
       echo "<div class='row'>";
       echo "<div class='col-9'>";
       // Display parts across a 9-column
-      buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
+      // buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
+      echo "<div id='example-table' class='table table-sm table-striped table-hover table-bordered table-resizable'></div>";
+      $result = json_encode($result);
+      echo "<script>buildTable($result);</script>";
       echo "</div>";
 
       echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>";

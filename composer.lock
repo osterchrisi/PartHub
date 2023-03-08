@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e85e78c386e6f4414e173151b0be3bb2",
+    "content-hash": "58c9d1e2bc52d17070a7ea66a42818f2",
     "packages": [
         {
             "name": "catfan/medoo",
@@ -79,6 +79,49 @@
             "time": "2023-01-20T09:30:24+00:00"
         },
         {
+            "name": "onlinesid/php-data-tabulator",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/onlinesid/php-data-tabulator.git",
+                "reference": "1a625a9ff08d861eed7855f24af2aec0d1517ed0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/onlinesid/php-data-tabulator/zipball/1a625a9ff08d861eed7855f24af2aec0d1517ed0",
+                "reference": "1a625a9ff08d861eed7855f24af2aec0d1517ed0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OnlineSid\\DataTabulator\\": "src/OnlineSid/DataTabulator/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sid Bachtiar",
+                    "email": "sid.bachtiar@gmail.com"
+                }
+            ],
+            "description": "A PHP library to transform rows into an aggregated table",
+            "support": {
+                "issues": "https://github.com/onlinesid/php-data-tabulator/issues",
+                "source": "https://github.com/onlinesid/php-data-tabulator/tree/master"
+            },
+            "time": "2018-04-26T04:06:13+00:00"
+        },
+        {
             "name": "twbs/bootstrap",
             "version": "v5.3.0-alpha1",
             "source": {
@@ -123,6 +166,45 @@
                 "web"
             ],
             "time": "2022-12-24T16:37:22+00:00"
+        },
+        {
+            "name": "twbs/bootstrap-icons",
+            "version": "v1.10.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/icons.git",
+                "reference": "817d780a476dbb24b269a89ba56ff1d0d4125132"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/icons/zipball/817d780a476dbb24b269a89ba56ff1d0d4125132",
+                "reference": "817d780a476dbb24b269a89ba56ff1d0d4125132",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Otto",
+                    "email": "markdotto@gmail.com"
+                }
+            ],
+            "description": "Official open source SVG icon library for Bootstrap",
+            "homepage": "https://icons.getbootstrap.com/",
+            "keywords": [
+                "bootstrap",
+                "icon font",
+                "icons",
+                "svg"
+            ],
+            "support": {
+                "issues": "https://github.com/twbs/icons/issues",
+                "source": "https://github.com/twbs/icons/tree/v1.10.3"
+            },
+            "time": "2022-12-27T05:46:02+00:00"
         }
     ],
     "packages-dev": [],
@@ -135,5 +217,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.3.0"
 }
