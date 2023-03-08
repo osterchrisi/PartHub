@@ -5,12 +5,14 @@ include 'config/credentials.php';
 include 'inline-processing.php';
 include 'lib/SQL.php';
 include 'lib/forms.php';
+include 'lib/get.php';
 $table_name = "parts";
 
 $search_term = isset($_GET['search']) ? $_GET['search'] : '';
 $search_column = isset($_GET['search_column']) ? $_GET['search_column'] : '';
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
+$results_per_page = getResultsPerPage();
 ?>
 
 <script>
@@ -19,7 +21,7 @@ $column_names = getColumnNames($conn, $table_name);
   var table = new Tabulator("#example-table", {
     // height: 100%, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
     data: result, //assign data to table
-    layout: "fitColumns", //fit columns to width of table (optional)
+    layout: "fitDataTable", //fit columns to width of table (optional)
     columns: [ //Define Table Columns
       { title: "Name", field: "part_name"},
       { title: "Description", field: "part_description"},
@@ -51,19 +53,24 @@ $column_names = getColumnNames($conn, $table_name);
     <div class="col-3">
       <?php generateDropdown($column_names, $search_column); ?>
     </div>
-    <div class="col-3">
+    <div class="col-1">
       <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>
+    </div>
+    <div class="col-1">
+      <?php echo "Results per page:"; ?>
+    </div>
+    <div class="col-1">
+      <?php generateResultsDropdown($results_per_page); ?>
     </div>
     </form>
   </div>
 
   <?php
   include 'lib/helpers.php';
-  include 'lib/get.php';
   include 'lib/tables.php';
   include 'lib/pagination.php';
   include 'config/inventory-columns.php';
-  $results_per_page = 10;
+  $results_per_page = getResultsPerPage();
 
   try {
     $search_column = getSearchColumn();

@@ -4,7 +4,9 @@ require_once('head.html');
 include 'config/credentials.php';
 include 'lib/SQL.php';
 include 'lib/forms.php';
+include 'lib/get.php';
 $table_name = "bom_names";
+$results_per_page = getResultsPerPage();
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
@@ -26,18 +28,16 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <?php echo "Results per page:"; ?>
     </div>
     <div class="col-5">
-      <?php generateResultsDropdown(); ?>
+      <?php generateResultsDropdown($results_per_page); ?>
     </div>
     </form>
   </div>
 
   <?php
   include 'lib/helpers.php';
-  include 'lib/get.php';
   include 'lib/tables.php';
   include 'lib/pagination.php';
   include 'config/search-bom-columns.php';
-  $results_per_page = getResultsPerPage();
 
   try {
     $search_term = getSearchTerm();
