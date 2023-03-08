@@ -53,7 +53,7 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
 {
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
   // $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
-  $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
+  $sql = "SELECT *, part_id as 'id' FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
 
   if ($search_column == 'everywhere') {
     // Search all columns

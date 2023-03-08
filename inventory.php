@@ -16,26 +16,38 @@ $results_per_page = getResultsPerPage();
 ?>
 
 <script>
-  //create Tabulator on DOM element with id "example-table"
-  function buildTable(result){
-  var table = new Tabulator("#example-table", {
-    // height: 100%, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-    data: result, //assign data to table
-    layout: "fitDataTable", //fit columns to width of table (optional)
-    columns: [ //Define Table Columns
-      { title: "Name", field: "part_name"},
-      { title: "Description", field: "part_description"},
-      { title: "Comment", field: "part_comment"},
-      { title: "Category", field: "category_name"},
-    ],
-  });
+  function buildTable(result) {
+    console.log(result);
+    var table = new Tabulator("#parts-table", {
+      // height: 100%, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+      data: result,
+      layout: "fitDataTable",
+      index: "part_id", // This doesn't seem to work although it's the documented way. Instead I changed my SQL query to return "part_id" (also) as "id"
+      columns: [
+        {
+          title: "Name", field: "part_name", editor: "textarea", editorParams: {
+            elementAttributes: {
+              maxlength: "255", //set the maximum character length of the textarea element
+            },
+            // mask: "AAA-999",
+            selectContents: false,
+            verticalNavigation: "editor", //navigate cursor around text area without leaving the cell
+            shiftEnterSubmit: true, //submit cell value on shift enter
+          }
+        },
+        { title: "Description", field: "part_description" },
+        { title: "Comment", field: "part_comment" },
+        { title: "Category", field: "part_category_fk" },
+        { title: "Total Stock", field: "total_stock" },
+        { title: "Footprint", field: "part_footprint_fk" },
+        { title: "Unit", field: "part_unit_fk" }]
+    });
 
-  table.classList.add("table table-striped table-hover table-bordered table-resizable")
-
-  //trigger an alert message when the row is clicked
-  table.on("rowClick", function (e, row) {
-    alert("Row " + row.getData().id + " Clicked!!!!");
-  });}
+    //trigger an alert message when the row is clicked
+    table.on("cellClick", function (e, cell) {
+      alert("part_id " + cell.getRow().getData().id + " unter column " + cell.getColumn().getField() + " clicked");
+    });
+  }
 </script>
 
 <div class="container-fluid">
@@ -87,15 +99,17 @@ $results_per_page = getResultsPerPage();
 
       $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names);
 
-      // echo "<pre>";
-      // var_dump($result);
-      // echo "</pre>";
-  
+      echo "<pre>";
+      var_dump($result);
+      echo "</pre>";
+
       echo "<div class='row'>";
       echo "<div class='col-9'>";
       // Display parts across a 9-column
-      // buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
-      echo "<div id='example-table' class='table table-sm table-striped table-hover table-bordered table-resizable'></div>";
+      buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
+      // echo "<script>var table = new Tabulator('#parts_table', {});</script>";
+  
+      echo "<div id='parts-table' class='table table-sm table-striped table-hover table-bordered table-resizable'></div>";
       $result = json_encode($result);
       echo "<script>buildTable($result);</script>";
       echo "</div>";
