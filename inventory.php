@@ -15,39 +15,7 @@ $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getResultsPerPage();
 ?>
 
-<script>
 
-params = {
-  elementAttributes: {maxlength: "255"},
-  selectContents: false,
-  verticalNavigation: "editor", //navigate cursor around text area without leaving the cell
-  shiftEnterSubmit: true
-};
-
-  function buildTable(result) {
-    console.log(result);
-    var table = new Tabulator("#parts-table", {
-      // height: 100%, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-      data: result,
-      layout: "fitDataTable",
-      index: "part_id", // This doesn't seem to work although it's the documented way. Instead I changed my SQL query to return "part_id" (also) as "id"
-      columns: [
-        {
-          title: "Name", field: "part_name", editor: "textarea", editorParams: params},
-        { title: "Description", field: "part_description" },
-        { title: "Comment", field: "part_comment" },
-        { title: "Category", field: "category_name" },
-        { title: "Total Stock", field: "total_stock" },
-        { title: "Footprint", field: "footprint_name" },
-        { title: "Unit", field: "part_unit" }]
-    });
-
-    // Cell gets double clicked
-    // table.on("cellDblClick", function (e, cell) {
-    //   alert("part_id " + cell.getRow().getData().id + " unter " + cell.getColumn().getField() + " clicked");
-    // });
-  }
-</script>
 
 <div class="container-fluid">
   <?php require_once('navbar.php'); ?>
@@ -107,12 +75,6 @@ params = {
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       // echo "<script>var table = new Tabulator('#parts_table', {});</script>";
-  
-      echo "<div id='parts-table' class='table table-sm table-striped table-hover table-bordered table-resizable'></div>";
-      $result = json_encode($result);
-      echo "<script>buildTable($result);</script>";
-      echo "</div>";
-
       echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>";
       // Display additional info on part in 3-column
       echo "</div>";
