@@ -5,7 +5,7 @@ include 'config/credentials.php';
 include 'lib/SQL.php';
 include 'lib/forms.php';
 
-// Connect to database and get available customers and products
+// Connect to database and get available parts
 try {
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
     $parts = getAllParts($conn);
