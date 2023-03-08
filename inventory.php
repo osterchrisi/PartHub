@@ -16,6 +16,14 @@ $results_per_page = getResultsPerPage();
 ?>
 
 <script>
+
+params = {
+  elementAttributes: {maxlength: "255"},
+  selectContents: false,
+  verticalNavigation: "editor", //navigate cursor around text area without leaving the cell
+  shiftEnterSubmit: true
+};
+
   function buildTable(result) {
     console.log(result);
     var table = new Tabulator("#parts-table", {
@@ -25,28 +33,19 @@ $results_per_page = getResultsPerPage();
       index: "part_id", // This doesn't seem to work although it's the documented way. Instead I changed my SQL query to return "part_id" (also) as "id"
       columns: [
         {
-          title: "Name", field: "part_name", editor: "textarea", editorParams: {
-            elementAttributes: {
-              maxlength: "255", //set the maximum character length of the textarea element
-            },
-            // mask: "AAA-999",
-            selectContents: false,
-            verticalNavigation: "editor", //navigate cursor around text area without leaving the cell
-            shiftEnterSubmit: true, //submit cell value on shift enter
-          }
-        },
+          title: "Name", field: "part_name", editor: "textarea", editorParams: params},
         { title: "Description", field: "part_description" },
         { title: "Comment", field: "part_comment" },
-        { title: "Category", field: "part_category_fk" },
+        { title: "Category", field: "category_name" },
         { title: "Total Stock", field: "total_stock" },
-        { title: "Footprint", field: "part_footprint_fk" },
-        { title: "Unit", field: "part_unit_fk" }]
+        { title: "Footprint", field: "footprint_name" },
+        { title: "Unit", field: "part_unit" }]
     });
 
-    //trigger an alert message when the row is clicked
-    table.on("cellClick", function (e, cell) {
-      alert("part_id " + cell.getRow().getData().id + " unter column " + cell.getColumn().getField() + " clicked");
-    });
+    // Cell gets double clicked
+    // table.on("cellDblClick", function (e, cell) {
+    //   alert("part_id " + cell.getRow().getData().id + " unter " + cell.getColumn().getField() + " clicked");
+    // });
   }
 </script>
 
