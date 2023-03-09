@@ -11,7 +11,7 @@ function getSearchColumn()
 function getResultsPerPage()
 {
   // Get the column to search from the URL parameter "column"
-  $results_per_page = isset($_GET['resultspp']) ? trim($_GET['resultspp']) : '10';
+  $results_per_page = isset($_GET['resultspp']) ? trim($_GET['resultspp']) : '50';
   return $results_per_page;
 }
 
