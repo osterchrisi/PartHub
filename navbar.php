@@ -30,6 +30,11 @@
         <li class="nav-item">
           <a class="nav-link active" href="categories.php">Categories</a>
         </li>
+        <div class="d-flex flex-row-reverse">
+          <li class="nav-item">
+            <a class="nav-link active" href="categories.php">Categories</a>
+          </li>
+        </div>
       </ul>
     </div>
   </div>

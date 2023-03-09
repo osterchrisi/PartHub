@@ -2,7 +2,7 @@
 
 If you want to manage small and medium parts inventory and BOMs, **PartHub** is here for you. No matter if you are a niche manufacturer looking for a way to keep track of your parts or you own a mid-sized electronics company in need of professional ERP management.
 
-**PartHub** is written in PHP and Javascript and makes heavy use of Bootstrap for the front-end. The flashy user interface might not stay for the long run. Data is stored in an SQL database for highly efficient data manipulation and a response time quicker than a bat out of hell.
+**PartHub** is written in PHP 8.1 and Javascript and makes heavy use of Bootstrap for the front-end. The flashy user interface might not stay for the long run. Data is stored in an SQL database for highly efficient data manipulation and a response time quicker than a bat out of hell.
 
 # Features
  - Keep an up-to-date inventory of your parts easily

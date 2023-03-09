@@ -1,0 +1,4 @@
+/vendor/*
+/bin/*
+/.idea
+/composer.phar

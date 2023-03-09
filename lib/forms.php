@@ -36,15 +36,29 @@ function generateBackordersStatusDropdown(){
   echo '</select>';
 }
 
-function generateResultsDropdown(){
+function generateResultsDropdown($results_per_page){
   // Generate dropdown for different results per page options
+  $options = [
+    "10" => "10",
+    "25" => "25",
+    "50" => "50",
+    "100" => "100"
+  ];
 
-  echo '<select name="resultspp" class="form-select" style="width:auto">';
-  echo '<option value="10">10</option>';
-  echo "<option value='25'>25</option>";
-  echo "<option value='50'>50</option>";
-  echo "<option value='100'>100</option>";
-  echo '</select>';
+  ?>
+
+  <select name="resultspp" class="form-select" style="width:auto">
+      <?php foreach ($options as $value => $name) { ?>
+          <option value="<?= $value; ?>"<?= ($value == $results_per_page) ? ' selected' : ''; ?>><?= $name; ?></option>
+      <?php } ?>
+  </select>
+  <?php 
+  // echo '<select name="resultspp" class="form-select" style="width:auto">';
+  // echo '<option value="10">10</option>';
+  // echo "<option value='25'>25</option>";
+  // echo "<option value='50'>50</option>";
+  // echo "<option value='100'>100</option>";
+  // echo '</select>';
 }
 
 function generateBackordersCustomersDropdown($conn){
