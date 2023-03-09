@@ -1,20 +1,22 @@
 <script>
 
-  $(document).ready(function () {
-    $('tbody td.editable').dblclick(function () {
-      console.log();
-      var cell = $(this);
+$('#parts_table').on('dbl-click-cell.bs.table', function (e, field, value, row, $element) {
+      // console.log("field: ", field);
+      // console.log("value: ", value);
+      // console.log("row :", row);
+      // console.log("element: ", $element);
+      var cell = $element;
 
       // Check if the cell is being edited
       if (cell.hasClass('editing')) {
         return;
       }
 
-      // Add editing class to the cell
+      // // Add editing class to the cell
       cell.addClass('editing');
 
       // Get current value
-      var currentValue = cell.text();
+      var currentValue = $element.text();
 
       // Create input field
       var input = $('<textarea class="form-control">').val(currentValue);
@@ -65,7 +67,7 @@
         var part_id = cell.closest('td').data('id');
         var column = cell.closest('td').data('column');
         var table_name = cell.closest('td').data('table_name')
-        //   console.log(part_id, column, table_name, new_value);
+        console.log(part_id, column, table_name, new_value);
 
         $.ajax({
           type: 'GET',
@@ -86,5 +88,5 @@
         cell.removeClass('editing');
       });
     });
-  });
+  // });
 </script>

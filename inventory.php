@@ -2,7 +2,6 @@
 $title = 'Parts';
 require_once('head.html');
 include 'config/credentials.php';
-include 'inline-processing.php';
 include 'lib/SQL.php';
 include 'lib/forms.php';
 include 'lib/get.php';
@@ -101,3 +100,7 @@ $results_per_page = getResultsPerPage();
     $('#parts_table').bootstrapTable()
   })
 </script>
+
+<?php
+include 'inline-processing.php';
+?>
