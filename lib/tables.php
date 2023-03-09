@@ -106,7 +106,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     echo "</tr>";
     echo "</thead>";
 
-    echo "<tbod>";
+    echo "<tbody>";
     // Table rows
     foreach ($result as $row) {
         echo "<tr>";
