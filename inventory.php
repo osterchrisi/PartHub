@@ -1,5 +1,5 @@
 <?php
-$title = 'Parts';
+$title = 'Parts Inventory';
 require_once('head.html');
 include 'config/credentials.php';
 include 'lib/SQL.php';
@@ -19,20 +19,20 @@ $results_per_page = getResultsPerPage();
 <div class="container-fluid">
   <?php require_once('navbar.php'); ?>
   <br>
-  <h4>Search Parts</h4>
+  <h4>Parts Inventory</h4>
 
   <!-- Search form -->
   <div class="row">
     <div class="col-3">
-      <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="text" class="form-control" id="search" name="search" placeholder="Search..."
+      <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <input type="text" class="form-control" id="search" name="search" placeholder="Filter results..."
           value="<?php echo htmlspecialchars($search_term); ?>">
     </div>
     <div class="col-3">
-      <?php generateDropdown($column_names, $search_column); ?>
+      <!-- <?php generateDropdown($column_names, $search_column); ?> -->
     </div>
     <div class="col-1">
-      <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>
+      <!-- <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br> -->
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -117,6 +117,16 @@ $results_per_page = getResultsPerPage();
 
     return aa - bb;
   }
+</script>
+
+<script>
+  // Send form upon changing the results per page dropdown
+  var dropdown = document.getElementById("resultspp");
+
+  dropdown.addEventListener("change", function () {
+    var form = document.getElementById("search_form");
+    form.submit();
+  });
 </script>
 
 <?php

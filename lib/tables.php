@@ -95,7 +95,7 @@ function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
 function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $width = "100%")
 {
     echo '<div style="overflow-x:auto;">';
-    echo '<table id="parts_table" data-resizable="true" data-search="true">';
+    echo '<table id="parts_table" data-resizable="true" data-search="true" data-search-selector="#search">';
 
     // Table headers
     echo "<thead>";
