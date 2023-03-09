@@ -69,7 +69,7 @@ $results_per_page = getResultsPerPage();
       // echo "<pre>";
       // var_dump($result);
       // echo "</pre>";
-
+  
       echo "<div class='row'>";
       echo "<div class='col-9'>";
       // Display parts across a 9-column
@@ -96,19 +96,26 @@ $results_per_page = getResultsPerPage();
 </div>
 
 <script>
-  $(function() {
+  $(function () {
     $('#parts_table').bootstrapTable({
     })
   })
 </script>
 
 <script>
-  function priceSorter(a, b) {
-    // var aa = a.replace('$', '')
-    // var bb = b.replace('$', '')
-    console.log("a: ", a);
-    console.log("b: ", b);
-    return a - b
+  function NumberURLSorter(a, b) {
+    // This regex takes the '>' and any amount of numbers that come afterwards
+    const regex = />\d+/gm;
+
+    // Regex both cell contents as strings
+    const m = String((new RegExp(regex)).exec(b));
+    const n = String((new RegExp(regex)).exec(a));
+
+    // Remove the '>'
+    const aa = m.replace('>', '');
+    const bb = n.replace('>', '');
+
+    return aa - bb;
   }
 </script>
 

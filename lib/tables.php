@@ -102,7 +102,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Total Stock'){
-            echo "<th data-sortable='true' data-sorter='priceSorter'>$column_header</th>";
+            echo "<th data-sortable='true' data-sorter='NumberURLSorter'>$column_header</th>";
         } else {
         echo "<th>$column_header</th>";
         }
