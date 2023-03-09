@@ -39,6 +39,7 @@ $results_per_page = getResultsPerPage();
     </div>
     <div class="col-1">
       <?php generateResultsDropdown($results_per_page); ?>
+      <br>
     </div>
     </form>
   </div>

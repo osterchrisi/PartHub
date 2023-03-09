@@ -95,10 +95,10 @@ function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
 function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $width = "100%")
 {
     echo '<div style="overflow-x:auto;">';
-    echo '<table id="parts_table" data-resizable="true" data-search="true" data-search-selector="#search">';
+    echo '<table class="table table-sm"  id="parts_table" data-resizable="true" data-search="true" data-search-selector="#search">';
 
     // Table headers
-    echo "<thead>";
+    echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Total Stock'){
@@ -121,8 +121,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo "<td><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
-                // echo "<td>$total_stock</td>";
+                echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
             } else { // Any other table data available
                 echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
             }
