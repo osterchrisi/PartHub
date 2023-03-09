@@ -44,6 +44,7 @@ $results_per_page = getResultsPerPage();
     </form>
   </div>
 
+
   <?php
   include 'lib/helpers.php';
   include 'lib/tables.php';
@@ -66,9 +67,9 @@ $results_per_page = getResultsPerPage();
 
       $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names);
 
-      echo "<pre>";
-      var_dump($result);
-      echo "</pre>";
+      // echo "<pre>";
+      // var_dump($result);
+      // echo "</pre>";
 
       echo "<div class='row'>";
       echo "<div class='col-9'>";
@@ -94,3 +95,9 @@ $results_per_page = getResultsPerPage();
   ?>
 
 </div>
+
+<script>
+  $(function() {
+    $('#parts_table').bootstrapTable()
+  })
+</script>

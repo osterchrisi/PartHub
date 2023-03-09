@@ -2,6 +2,7 @@
 
   $(document).ready(function () {
     $('tbody td.editable').dblclick(function () {
+      console.log();
       var cell = $(this);
 
       // Check if the cell is being edited
