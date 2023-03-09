@@ -97,8 +97,19 @@ $results_per_page = getResultsPerPage();
 
 <script>
   $(function() {
-    $('#parts_table').bootstrapTable()
+    $('#parts_table').bootstrapTable({
+    })
   })
+</script>
+
+<script>
+  function priceSorter(a, b) {
+    // var aa = a.replace('$', '')
+    // var bb = b.replace('$', '')
+    console.log("a: ", a);
+    console.log("b: ", b);
+    return a - b
+  }
 </script>
 
 <?php
