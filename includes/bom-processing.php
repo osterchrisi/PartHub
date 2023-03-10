@@ -1,7 +1,7 @@
 <?php
 require_once('navbar.php');
-include 'config/credentials.php';
-include 'lib/SQL.php';
+include '../config/credentials.php';
+include 'SQL.php';
 
 // Get all the variables from the entry script
 $bom_name = $_POST['bom_name'];
@@ -43,7 +43,7 @@ if ($bom_name) {
     }
 
     // Redirect to showing the newly created backorder
-    header("Location: show-bom.php?id=" . urlencode($new_id));
+    header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
     exit;
 }
 else {echo "You didn't enter a BOM name";}

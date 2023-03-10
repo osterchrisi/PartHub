@@ -1,11 +1,11 @@
 <?php
-  require_once('head.html');
-  include 'config/credentials.php';
-  include 'config/show-stock-columns.php';
-  include 'lib/SQL.php';
-  include 'lib/forms.php';
-  include 'lib/get.php';
-  include 'lib/tables.php';
+  require_once('../includes/head.html');
+  include '../config/credentials.php';
+  include '../config/show-stock-columns.php';
+  include '../includes/SQL.php';
+  include '../includes/forms.php';
+  include '../includes/get.php';
+  include '../includes/tables.php';
 
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   $part_id = getPartID();
@@ -21,7 +21,7 @@
 ?>
 
 <div class="container-fluid">
-<?php require_once('navbar.php');?>
+<?php require_once('../includes/navbar.php');?>
 <br>
 
 <h4><?php echo $part_name;?></h4>

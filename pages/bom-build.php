@@ -1,8 +1,9 @@
 <?php
-require_once('head.html');
+$title = 'Build BOM';
+require_once('../includes/head.html');
 include 'config/credentials.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
 
 // Connect to database and get available customers and products
 try {
@@ -15,7 +16,7 @@ catch (Exception $e) {
 ?>
 
 <div class = "container-fluid">
-<?php require_once('navbar.php');?>
+<?php require_once('../includes/navbar.php');?>
 <br>
 <h4>Build BOM</h4>
 <form action="bom-build-processing.php" method="post">

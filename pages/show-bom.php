@@ -1,11 +1,11 @@
 <?php
-  require_once('head.html');
-  include 'config/credentials.php';
-  include 'config/show-bom-columns.php';
-  include 'lib/SQL.php';
-  include 'lib/forms.php';
-  include 'lib/get.php';
-  include 'lib/tables.php';
+  require_once('../includes/head.html');
+  include '../config/credentials.php';
+  include '../config/show-bom-columns.php';
+  include '../includes/SQL.php';
+  include '../includes/forms.php';
+  include '../includes/get.php';
+  include '../includes/tables.php';
 
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   $bom_id = getBomID();
@@ -24,7 +24,7 @@
 if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
   // Don't include the navbar
 } else {
-  require_once('navbar.php');
+  require_once('../includes/navbar.php');
 }?>
 <br>
 

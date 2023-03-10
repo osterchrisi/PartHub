@@ -1,10 +1,10 @@
 <?php
-$title = 'Parts';
-require_once('head.html');
-include 'config/credentials.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
-include 'lib/get.php';
+$title = 'Parts Inventory';
+require_once('../includes/head.html');
+include '../config/credentials.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
+include '../includes/get.php';
 $table_name = "parts";
 
 $search_term = isset($_GET['search']) ? $_GET['search'] : '';
@@ -17,38 +17,41 @@ $results_per_page = getResultsPerPage();
 
 
 <div class="container-fluid">
-  <?php require_once('navbar.php'); ?>
+  <?php require_once('../includes/navbar.php'); ?>
   <br>
-  <h4>Search Parts</h4>
+  <h4>Parts Inventory</h4>
 
   <!-- Search form -->
   <div class="row">
     <div class="col-3">
-      <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="text" class="form-control" id="search" name="search" placeholder="Search..."
+      <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <input type="text" class="form-control" id="search" name="search" placeholder="Filter results..."
           value="<?php echo htmlspecialchars($search_term); ?>">
     </div>
     <div class="col-3">
-      <?php generateDropdown($column_names, $search_column); ?>
+      <!-- <?php generateDropdown($column_names, $search_column); ?> -->
     </div>
     <div class="col-1">
-      <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>
+      <!-- <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br> -->
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
     </div>
     <div class="col-1">
-      <?php generateResultsDropdown($results_per_page); ?>
+      <div class="row me-1 justify-content-end">
+        <?php generateResultsDropdown($results_per_page); ?>
+      </div>
+      <br>
     </div>
     </form>
   </div>
 
 
   <?php
-  include 'lib/helpers.php';
-  include 'lib/tables.php';
-  include 'lib/pagination.php';
-  include 'config/inventory-columns.php';
+  include '../includes/helpers.php';
+  include '../includes/tables.php';
+  include '../includes/pagination.php';
+  include '../config/inventory-columns.php';
   $results_per_page = getResultsPerPage();
 
   try {
@@ -74,10 +77,10 @@ $results_per_page = getResultsPerPage();
       echo "<div class='col-9'>";
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
-      // echo "<script>var table = new Tabulator('#parts_table', {});</script>";
-      echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>";
-      // Display additional info on part in 3-column
       echo "</div>";
+      echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1); height:75vh'>";
+      // Display additional info on part in 3-column
+      echo "Info";
       echo "</div>";
 
       // Pagnination links
@@ -104,21 +107,20 @@ $results_per_page = getResultsPerPage();
 
 <script>
   function NumberURLSorter(a, b) {
-    // This regex takes the '>' and any amount of numbers that come afterwards
-    const regex = />\d+/gm;
-
-    // Regex both cell contents as strings
-    const m = String((new RegExp(regex)).exec(b));
-    const n = String((new RegExp(regex)).exec(a));
-
-    // Remove the '>'
-    const aa = m.replace('>', '');
-    const bb = n.replace('>', '');
-
-    return aa - bb;
+    return $(a).text() - $(b).text()
   }
 </script>
 
+<script>
+  // Send form upon changing the results per page dropdown
+  var dropdown = document.getElementById("resultspp");
+
+  dropdown.addEventListener("change", function () {
+    var form = document.getElementById("search_form");
+    form.submit();
+  });
+</script>
+
 <?php
-include 'inline-processing.php';
+include '../includes/inline-processing.php';
 ?>

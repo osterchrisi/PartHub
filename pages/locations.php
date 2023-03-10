@@ -1,10 +1,10 @@
 <?php
 $title = 'Locations';
-require_once('head.html');
-include 'config/credentials.php';
-include 'inline-processing.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
+require_once('../includes/head.html');
+include '../config/credentials.php';
+include '../includes/inline-processing.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
 $table_name = "location_names";
 
 ?>
@@ -16,6 +16,6 @@ $table_name = "location_names";
     }
 </style>
 <div class="container-fluid">
-    <?php require_once('navbar.php'); ?>
+    <?php require_once('../includes/navbar.php'); ?>
     <br>
     <h4>Storage Locations</h4>

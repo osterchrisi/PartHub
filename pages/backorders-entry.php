@@ -1,8 +1,9 @@
 <?php
-require_once('head.html');
-include 'config/credentials.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
+$title = 'Enter Backorder';
+require_once('../includes/head.html');
+include '../config/credentials.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
 
 // Connect to database and get available customers and products
 try {
@@ -16,11 +17,11 @@ catch (Exception $e) {
 ?>
 
 <div class = "container-fluid">
-<?php require_once('navbar.php');?>
+<?php require_once('../includes/navbar.php');?>
 <br>
 
 <h4>Enter new backorder</h4>
-    <form action="backorders-processing.php" method="post" onsubmit="return checkCustomerPO()">
+    <form action="../includes/backorders-processing.php" method="post" onsubmit="return checkCustomerPO()">
     <div class="row">
         <div class="col-3">
             <?php

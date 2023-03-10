@@ -47,7 +47,7 @@ function generateResultsDropdown($results_per_page){
 
   ?>
 
-  <select name="resultspp" class="form-select" style="width:auto">
+  <select name="resultspp" id="resultspp" class="form-select" style="width:auto">
       <?php foreach ($options as $value => $name) { ?>
           <option value="<?= $value; ?>"<?= ($value == $results_per_page) ? ' selected' : ''; ?>><?= $name; ?></option>
       <?php } ?>
