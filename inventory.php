@@ -38,7 +38,7 @@ $results_per_page = getResultsPerPage();
       <?php echo "Results per page:"; ?>
     </div>
     <div class="col-1">
-      <div class="row justify-content-end">
+      <div class="row me-1 justify-content-end">
         <?php generateResultsDropdown($results_per_page); ?>
       </div>
       <br>
@@ -74,7 +74,7 @@ $results_per_page = getResultsPerPage();
       // echo "</pre>";
   
       echo "<div class='row'>";
-      echo "<div class='col-9 g-0'>";
+      echo "<div class='col-9'>";
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       echo "</div>";
