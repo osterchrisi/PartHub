@@ -1,15 +1,17 @@
-<?php require_once('head.html');?>
+<?php 
+$title = 'Show Backorders';
+require_once('../includes/head.html');?>
 <div class="container-fluid">
-<?php require_once('navbar.php');?>
+<?php require_once('../includes/navbar.php');?>
 <br>
 
 <?php
-  include 'config/credentials.php';
-  include 'config/show-backorder-columns.php';
-  include 'lib/SQL.php';
-  include 'lib/forms.php';
-  include 'lib/get.php';
-  include 'lib/tables.php';
+  include '../config/credentials.php';
+  include '../config/show-backorder-columns.php';
+  include '../includes/SQL.php';
+  include '../includes/forms.php';
+  include '../includes/get.php';
+  include '../includes/tables.php';
   
   $table_name = 'backorders';
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);

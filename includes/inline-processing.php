@@ -71,7 +71,7 @@ $('#parts_table').on('dbl-click-cell.bs.table', function (e, field, value, row, 
 
         $.ajax({
           type: 'GET',
-          url: 'update-cell.php',
+          url: '../includes/update-cell.php',
           data: {
             part_id: part_id,
             column: column,

@@ -1,9 +1,9 @@
 <?php
 $title = 'Create BOM';
-require_once('head.html');
-include 'config/credentials.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
+require_once('../includes/head.html');
+include '../config/credentials.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
 
 // Connect to database and get available parts
 try {
@@ -15,10 +15,10 @@ try {
 ?>
 
 <div class="container-fluid">
-    <?php require_once('navbar.php'); ?>
+    <?php require_once('../includes/navbar.php'); ?>
     <br>
     <h4>Create new BOM</h4>
-    <form action="bom-processing.php" method="post" onsubmit="return checkBomName()">
+    <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
         <div class="row">
             <div class="col-3">
                 <input type="text" class="form-control" id="bom_name" name="bom_name" placeholder="Enter BOM title">

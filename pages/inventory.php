@@ -1,10 +1,10 @@
 <?php
 $title = 'Parts Inventory';
-require_once('head.html');
-include 'config/credentials.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
-include 'lib/get.php';
+require_once('../includes/head.html');
+include '../config/credentials.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
+include '../includes/get.php';
 $table_name = "parts";
 
 $search_term = isset($_GET['search']) ? $_GET['search'] : '';
@@ -17,7 +17,7 @@ $results_per_page = getResultsPerPage();
 
 
 <div class="container-fluid">
-  <?php require_once('navbar.php'); ?>
+  <?php require_once('../includes/navbar.php'); ?>
   <br>
   <h4>Parts Inventory</h4>
 
@@ -48,10 +48,10 @@ $results_per_page = getResultsPerPage();
 
 
   <?php
-  include 'lib/helpers.php';
-  include 'lib/tables.php';
-  include 'lib/pagination.php';
-  include 'config/inventory-columns.php';
+  include '../includes/helpers.php';
+  include '../includes/tables.php';
+  include '../includes/pagination.php';
+  include '../config/inventory-columns.php';
   $results_per_page = getResultsPerPage();
 
   try {
@@ -122,5 +122,5 @@ $results_per_page = getResultsPerPage();
 </script>
 
 <?php
-include 'inline-processing.php';
+include '../includes/inline-processing.php';
 ?>

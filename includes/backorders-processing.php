@@ -1,7 +1,7 @@
 <?php
-require_once('navbar.php');
+require_once('includes/navbar.php');
 include 'config/credentials.php';
-include 'lib/SQL.php';
+include 'includes/SQL.php';
 
 // Get all the variables from the entry script
 $customer_id = $_POST['customer_id'];
@@ -45,7 +45,7 @@ if ($customer_po) {
     }
 
     // Redirect to showing the newly created backorder
-    header("Location: show-backorder.php?po=" . urlencode($customer_po));
+    header("Location: pages/show-backorder.php?po=" . urlencode($customer_po));
     exit;
 }
 else {echo "You didn't enter a PO number";}

@@ -1,6 +1,6 @@
 <?php
-include 'config/credentials.php';
-include 'lib/SQL.php';
+include '../config/credentials.php';
+include 'SQL.php';
 
 
 $part_id = isset($_GET['part_id']) ? $_GET['part_id'] : '';

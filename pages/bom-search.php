@@ -1,17 +1,17 @@
 <?php
 $title = 'Show BOM';
-require_once('head.html');
-include 'config/credentials.php';
-include 'lib/SQL.php';
-include 'lib/forms.php';
-include 'lib/get.php';
+require_once('../includes/head.html');
+include '../config/credentials.php';
+include '../includes/SQL.php';
+include '../includes/forms.php';
+include '../includes/get.php';
 $table_name = "bom_names";
 $results_per_page = getResultsPerPage();
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
 <div class="container-fluid">
-  <?php require_once('navbar.php'); ?>
+  <?php require_once('../includes/navbar.php'); ?>
   <br>
   <h4>Search BOMs</h4>
 
@@ -34,10 +34,10 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   </div>
 
   <?php
-  include 'lib/helpers.php';
-  include 'lib/tables.php';
-  include 'lib/pagination.php';
-  include 'config/search-bom-columns.php';
+  include '../includes/helpers.php';
+  include '../includes/tables.php';
+  include '../includes/pagination.php';
+  include '../config/search-bom-columns.php';
 
   try {
     $search_term = getSearchTerm();

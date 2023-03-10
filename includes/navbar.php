@@ -10,11 +10,11 @@
           <a class="nav-link active" href="inventory.php">Parts</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="bom-search.php" role="button" data-bs-toggle="dropdown">BOMS</a>
+          <a class="nav-link dropdown-toggle" href="../pages/bom-search.php" role="button" data-bs-toggle="dropdown">BOMS</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="bom-create.php">Create BOM</a></li>
-            <li><a class="dropdown-item" href="bom-build.php">Build BOM</a></li>
-            <li><a class="dropdown-item" href="bom-search.php">Show BOM</a></li>
+            <li><a class="dropdown-item" href="../pages/bom-create.php">Create BOM</a></li>
+            <li><a class="dropdown-item" href="../pages/bom-build.php">Build BOM</a></li>
+            <li><a class="dropdown-item" href="../pages/bom-search.php">Show BOM</a></li>
           </ul>
         </li>
         <!-- <li class="nav-item dropdown">
@@ -25,19 +25,19 @@
           </ul>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link active" href="locations.php">Storage Locations</a>
+          <a class="nav-link active" href="../pages/locations.php">Storage Locations</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="categories.php">Categories</a>
+          <a class="nav-link active" href="../pages/categories.php">Categories</a>
         </li>
         <div class="d-flex flex-row-reverse">
           <li class="nav-item">
-            <a class="nav-link active" href="suppliers.php">Suppliers</a>
+            <a class="nav-link active" href="../pages/suppliers.php">Suppliers</a>
           </li>
         </div>
         <div class="d-flex flex-row-reverse">
           <li class="nav-item">
-            <a class="nav-link active" href="footprints.php">Footprints</a>
+            <a class="nav-link active" href="../pages/footprints.php">Footprints</a>
           </li>
         </div>
       </ul>

@@ -1,14 +1,15 @@
 <?php
-  require_once('head.html');
+  $title = 'Search Backorders';
+  require_once('../includes/head.html');
   include 'config/credentials.php';
-  include 'lib/SQL.php';
-  include 'lib/forms.php';
+  include '../includes/SQL.php';
+  include '../includes/forms.php';
   $table_name = "backorders";
   
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
 <div class="container-fluid">
-<?php require_once('navbar.php');?>
+<?php require_once('../includes/navbar.php');?>
 <br>
 <h4>Search backorders</h4>
 
@@ -30,11 +31,11 @@
 </div>
 
 <?php
-include 'lib/helpers.php';
-include 'lib/get.php';
-include 'lib/tables.php';
-include 'lib/pagination.php';
-include 'config/search-backorder-columns.php';
+include '../includes/helpers.php';
+include '../includes/get.php';
+include '../includes/tables.php';
+include '../includes/pagination.php';
+include '../config/search-backorder-columns.php';
 $results_per_page = getResultsPerPage();
 $search_status = getSearchStatus();
 
