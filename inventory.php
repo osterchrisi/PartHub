@@ -38,7 +38,9 @@ $results_per_page = getResultsPerPage();
       <?php echo "Results per page:"; ?>
     </div>
     <div class="col-1">
-      <?php generateResultsDropdown($results_per_page); ?>
+      <div class="row justify-content-end">
+        <?php generateResultsDropdown($results_per_page); ?>
+      </div>
       <br>
     </div>
     </form>
@@ -72,13 +74,13 @@ $results_per_page = getResultsPerPage();
       // echo "</pre>";
   
       echo "<div class='row'>";
-      echo "<div class='col-9'>";
+      echo "<div class='col-9 g-0'>";
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
-      // echo "<script>var table = new Tabulator('#parts_table', {});</script>";
-      echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>";
-      // Display additional info on part in 3-column
       echo "</div>";
+      echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1); height:75vh'>";
+      // Display additional info on part in 3-column
+      echo "Info";
       echo "</div>";
 
       // Pagnination links
@@ -105,18 +107,7 @@ $results_per_page = getResultsPerPage();
 
 <script>
   function NumberURLSorter(a, b) {
-    // This regex takes the '>' and any amount of numbers that come afterwards
-    const regex = />\d+/gm;
-
-    // Regex both cell contents as strings
-    const m = String((new RegExp(regex)).exec(b));
-    const n = String((new RegExp(regex)).exec(a));
-
-    // Remove the '>'
-    const aa = m.replace('>', '');
-    const bb = n.replace('>', '');
-
-    return aa - bb;
+    return $(a).text() - $(b).text()
   }
 </script>
 

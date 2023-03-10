@@ -60,7 +60,7 @@ function buildBackordersTable($result, $db_columns, $nice_columns, $width = "100
 
 function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
 {
-    echo '<div style="overflow-x:auto;">';
+    echo '<div class="table-responsive" style="overflow-x:auto;">';
     echo '<table class="table table-striped table-hover" style="width: ' . $width . '">';
 
     // Table headers
@@ -94,8 +94,8 @@ function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
 
 function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $width = "100%")
 {
-    echo '<div style="overflow-x:auto;">';
-    echo '<table class="table table-sm"  id="parts_table" data-resizable="true" data-search="true" data-search-selector="#search">';
+    echo '<div class="table-responsive" style="overflow-x:auto;">';
+    echo '<table class="table table-sm" id="parts_table" data-resizable="true" data-search="true" data-search-selector="#search">';
 
     // Table headers
     echo "<thead class='table table-sm table-dark'>";
