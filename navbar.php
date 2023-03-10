@@ -32,7 +32,12 @@
         </li>
         <div class="d-flex flex-row-reverse">
           <li class="nav-item">
-            <a class="nav-link active" href="categories.php">Categories</a>
+            <a class="nav-link active" href="suppliers.php">Suppliers</a>
+          </li>
+        </div>
+        <div class="d-flex flex-row-reverse">
+          <li class="nav-item">
+            <a class="nav-link active" href="footprints.php">Footprints</a>
           </li>
         </div>
       </ul>
