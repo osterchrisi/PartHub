@@ -8,7 +8,7 @@
   include '../includes/tables.php';
 
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-  $bom_id = getBomID();
+  $bom_id = getSuperGlobal('id');
 
   // Get BOM name
   $result = getBomName($conn, $bom_id);

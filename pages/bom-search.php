@@ -6,7 +6,7 @@ include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
 $table_name = "bom_names";
-$results_per_page = getResultsPerPage();
+$results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
@@ -40,7 +40,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   include '../config/search-bom-columns.php';
 
   try {
-    $search_term = getSearchTerm();
+    $search_term = getSuperGlobal('search');
     $total_rows = getTotalNumberOfBomRows($conn, $table_name, $search_term);
 
     if ($total_rows) {

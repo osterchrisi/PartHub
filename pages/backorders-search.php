@@ -36,12 +36,12 @@ include '../includes/get.php';
 include '../includes/tables.php';
 include '../includes/pagination.php';
 include '../config/search-backorder-columns.php';
-$results_per_page = getResultsPerPage();
-$search_status = getSearchStatus();
+$results_per_page = getSuperGlobal('resultspp', '50');
+$search_status = getSuperGlobal('search_status', 'all');
 
 try {
-  $search_column = getSearchColumn();
-  $search_term = getSearchTerm();
+  $search_column = getSuperGlobal('search_column', 'everywhere');
+  $search_term = getSuperGlobal('search');
   // echo "columsn = $column_names";
   $total_rows = getTotalNumberOfBackorderRows($conn, $table_name, $search_column, $search_term, $search_status);
   

@@ -8,7 +8,7 @@
   include '../includes/tables.php';
 
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-  $part_id = getPartID();
+  $part_id = getSuperGlobal('part_id');
 
   // Get part name
   $result = getPartName($conn, $part_id);
