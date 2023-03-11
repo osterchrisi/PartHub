@@ -23,6 +23,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   <br>
   <h4>Parts Inventory</h4>
 
+
   <!-- Search form -->
   <div class="row">
     <div class="col-3">

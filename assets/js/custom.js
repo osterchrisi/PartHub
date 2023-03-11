@@ -109,3 +109,45 @@ $(function sendFormOnDropdownChange() {
         form.submit();
     });
 });
+
+$(function() {
+    var $table = $('#parts_table');
+    var $header = $table.find('thead tr');
+    var $columnsDropdown = $('<ul>').addClass('dropdown-menu');
+  
+    // Create dropdown list with checkboxes for each column
+    $header.find('th').each(function(index, column) {
+      var $checkbox = $('<input>').attr({
+        type: 'checkbox',
+        id: 'column-' + index,
+        checked: !$table.bootstrapTable('getColumnVisible', $(column).data('field'))
+      });
+  
+      var $label = $('<label>').attr('for', 'column-' + index).text($(column).text());
+  
+      var $item = $('<li>').addClass('dropdown-item').append($checkbox).append($label);
+      $columnsDropdown.append($item);
+  
+      // Add click event listener to toggle column visibility
+      $checkbox.on('click', function() {
+        var fieldName = $(column).data('field');
+        var visible = !$table.bootstrapTable('getColumnVisible', fieldName);
+        $table.bootstrapTable('toggleColumn', fieldName, visible);
+      });
+    });
+  
+    // Add right-click event listener to header row
+    $header.on('contextmenu', function(event) {
+      event.preventDefault();
+      $columnsDropdown.appendTo($('body')).show();
+      $columnsDropdown.css({
+        position: 'absolute',
+        left: event.pageX + 'px',
+        top: event.pageY + 'px'
+      });
+      $(document).one('click', function() {
+        $columnsDropdown.hide();
+      });
+    });
+  });
+  
