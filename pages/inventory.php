@@ -1,7 +1,7 @@
 <?php
 $title = 'Parts Inventory';
-
 require_once('../includes/head.html');
+
 include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
@@ -17,8 +17,6 @@ $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 ?>
-
-
 
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
@@ -101,28 +99,3 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   ?>
 
 </div>
-
-<script>
-  $(function () {
-    $('#parts_table').bootstrapTable({
-    })
-  })
-</script>
-
-<script>
-
-</script>
-
-<script>
-  // Send form upon changing the results per page dropdown
-  var dropdown = document.getElementById("resultspp");
-
-  dropdown.addEventListener("change", function () {
-    var form = document.getElementById("search_form");
-    form.submit();
-  });
-</script>
-
-<?php
-include '../includes/inline-processing.php';
-?>
