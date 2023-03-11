@@ -68,7 +68,8 @@ $(document).ready(function inlineProcessing() {
             // Get newly entered value
             var new_value = input.val();
 
-            // This updates the HTML cell with the new value. Better would be an SQL query to not fool anyone.
+            // TODO This updates the HTML cell with the new value.
+            // TODO Better would be an SQL query to not fool anyone.
             cell.text(new_value);
 
             // Get cell part_id, column name and database table
@@ -110,6 +111,8 @@ $(function sendFormOnDropdownChange() {
     });
 });
 
+// ! Get right-click column-visibility menu
+// ! Does NOT work yet, implemented with bootstrap-table for now
 $(function() {
     var $table = $('#parts_table');
     var $header = $table.find('thead tr');
