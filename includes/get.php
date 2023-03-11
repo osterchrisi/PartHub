@@ -1,6 +1,7 @@
 <?php
 
 function getSuperGlobal($sg, $fb = ""){
+  // Get a $_GET variable $sg or set it to $fb
   return isset($_GET[$sg]) ? $_GET[$sg] : $fb;
 }
 

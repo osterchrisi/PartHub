@@ -110,9 +110,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 </script>
 
 <script>
-  function NumberURLSorter(a, b) {
-    return $(a).text() - $(b).text()
-  }
+
 </script>
 
 <script>
