@@ -31,7 +31,7 @@ $table_name = "part_categories";
     
         $treeList = '<ul id="category-tree">';
         foreach($childNodes[1] as $node) {
-            $treeList .= '<li>' . $node['category_name'];
+            $treeList .= '<li><a href="'.$node['category_name'].'">'.$node['category_name'].'</a>';
             if(!empty($childNodes[$node['category_id']])) {
                 $treeList .= generateChildTree($childNodes, $node['category_id']);
             }
@@ -79,7 +79,7 @@ $table_name = "part_categories";
   content: "-";
 }
 
-ul > li {
+#category-tree li {
   list-style-type: none;
 }
 </style>
