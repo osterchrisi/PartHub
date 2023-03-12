@@ -24,80 +24,117 @@ $(document).ready(function inlineProcessing() {
         // Add editing class to the cell
         cell.addClass('editing');
 
-        // Get current value
-        var currentValue = $element.text();
-
-        // Create input field
-        var input = $('<textarea class="form-control">').val(currentValue);
-        cell.empty().append(input);
-        input.focus();
-
-        var label = $('<small class="text-muted">Enter: Confirm</small>');
-        cell.append(label);
-
-        // Confirm upon pressing Enter key
-        input.keypress(function (event) {
-            if (event.keyCode === 13) {
-                input.blur();
-            }
-        });
-
-        // Close input on "Escape" key press
-        input.on('keydown', function (event) {
-            if (event.key === "Escape") {
-                input.remove();
-                cell.text(currentValue);
-                cell.removeClass('editing');
-                return;
-            }
-        });
-
-        // Close input on click outside the cell
-        $(document).on('mousedown', function (event) {
-            if (!$(event.target).closest(cell).length) {
-                input.remove();
-                cell.text(currentValue);
-                cell.removeClass('editing');
-                event.stopPropagation();
-                return;
-            }
-        });
-
-        // Enter new value
-        input.blur(function () {
-            // Get newly entered value
-            var new_value = input.val();
-
-            // TODO This updates the HTML cell with the new value.
-            // TODO Better would be an SQL query to not fool anyone.
-            cell.text(new_value);
-
-            // Get cell part_id, column name and database table
-            // These are encoded in the table data cells
-            var part_id = cell.closest('td').data('id');
-            var column = cell.closest('td').data('column');
-            var table_name = cell.closest('td').data('table_name')
-            console.log(part_id, column, table_name, new_value);
-
-            // Call the updating function
-            $.ajax({
+        // * It's a category cell
+        if (cell.hasClass('category')) {
+            // Get list of available categories
+            categories = $.ajax({
                 type: 'GET',
-                url: '../includes/update-cell.php',
-                data: {
-                    part_id: part_id,
-                    column: column,
-                    table_name: table_name,
-                    new_value: new_value
-                },
-                success: function (data) {
-                    console.log('Data updated successfully');
+                url: '../includes/getCategories.php',
+                dataType: 'JSON',
+                success: function (response) {
+                    console.log("response: ", response);
+                    // console.log("response.category_name = ", response.category_name);
+                    // return response;
+                    categories = response;
+                    console.log("categories[0]['category_name'] = ", categories[0]['category_name']);
+                    // Create select element
+                    var select = $('<select class="form-control">');
+                    for (var i = 0; i < categories.length; i++) {
+                        var option = $('<option>').text(categories[i]['category_name']);
+                        if (categories[i] === currentValue) {
+                            option.attr('selected', true);
+                        }
+                        select.append(option);
+                    }
+                    cell.empty().append(select);
+                    select.focus();
+
+
+
+
                 },
                 error: function (xhr, status, error) {
-                    console.error('Error updating data');
+                    console.error(error);
                 }
             });
-            cell.removeClass('editing');
-        });
+
+            // console.log("this is categories: ", categories);
+
+        } else { // * It's a text cell
+            // Get current value
+            var currentValue = $element.text();
+
+            // Create input field
+            var input = $('<textarea class="form-control">').val(currentValue);
+            cell.empty().append(input);
+            input.focus();
+
+            var label = $('<small class="text-muted">Enter: Confirm</small>');
+            cell.append(label);
+
+            // Confirm upon pressing Enter key
+            input.keypress(function (event) {
+                if (event.keyCode === 13) {
+                    input.blur();
+                }
+            });
+
+            // Close input on "Escape" key press
+            input.on('keydown', function (event) {
+                if (event.key === "Escape") {
+                    input.remove();
+                    cell.text(currentValue);
+                    cell.removeClass('editing');
+                    return;
+                }
+            });
+
+            // Close input on click outside the cell
+            $(document).on('mousedown', function (event) {
+                if (!$(event.target).closest(cell).length) {
+                    input.remove();
+                    cell.text(currentValue);
+                    cell.removeClass('editing');
+                    event.stopPropagation();
+                    return;
+                }
+            });
+
+            // Enter new value
+            input.blur(function () {
+                // Get newly entered value
+                var new_value = input.val();
+
+                // Update cell with new value
+                cell.text(new_value);
+
+                // Get cell part_id, column name and database table
+                // These are encoded in the table data cells
+                var part_id = cell.closest('td').data('id');
+                var column = cell.closest('td').data('column');
+                var table_name = cell.closest('td').data('table_name')
+                console.log(part_id, column, table_name, new_value);
+
+                // Call the updating function
+                $.ajax({
+                    type: 'GET',
+                    url: '../includes/update-cell.php',
+                    data: {
+                        part_id: part_id,
+                        column: column,
+                        table_name: table_name,
+                        new_value: new_value
+                    },
+                    success: function (data) {
+                        console.log('Data updated successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error updating data');
+                    }
+                });
+                cell.removeClass('editing');
+            });
+        }
     });
 });
 
@@ -113,44 +150,43 @@ $(function sendFormOnDropdownChange() {
 
 // ! Get right-click column-visibility menu for parts_table
 // ! Does NOT work yet, implemented with bootstrap-table for now
-$(function() {
+$(function () {
     var $table = $('#parts_table');
     var $header = $table.find('thead tr');
     var $columnsDropdown = $('<ul>').addClass('dropdown-menu');
-  
+
     // Create dropdown list with checkboxes for each column
-    $header.find('th').each(function(index, column) {
-      var $checkbox = $('<input>').attr({
-        type: 'checkbox',
-        id: 'column-' + index,
-        checked: !$table.bootstrapTable('getColumnVisible', $(column).data('field'))
-      });
-  
-      var $label = $('<label>').attr('for', 'column-' + index).text($(column).text());
-  
-      var $item = $('<li>').addClass('dropdown-item').append($checkbox).append($label);
-      $columnsDropdown.append($item);
-  
-      // Add click event listener to toggle column visibility
-      $checkbox.on('click', function() {
-        var fieldName = $(column).data('field');
-        var visible = !$table.bootstrapTable('getColumnVisible', fieldName);
-        $table.bootstrapTable('toggleColumn', fieldName, visible);
-      });
+    $header.find('th').each(function (index, column) {
+        var $checkbox = $('<input>').attr({
+            type: 'checkbox',
+            id: 'column-' + index,
+            checked: !$table.bootstrapTable('getColumnVisible', $(column).data('field'))
+        });
+
+        var $label = $('<label>').attr('for', 'column-' + index).text($(column).text());
+
+        var $item = $('<li>').addClass('dropdown-item').append($checkbox).append($label);
+        $columnsDropdown.append($item);
+
+        // Add click event listener to toggle column visibility
+        $checkbox.on('click', function () {
+            var fieldName = $(column).data('field');
+            var visible = !$table.bootstrapTable('getColumnVisible', fieldName);
+            $table.bootstrapTable('toggleColumn', fieldName, visible);
+        });
     });
-  
+
     // Add right-click event listener to header row
-    $header.on('contextmenu', function(event) {
-      event.preventDefault();
-      $columnsDropdown.appendTo($('body')).show();
-      $columnsDropdown.css({
-        position: 'absolute',
-        left: event.pageX + 'px',
-        top: event.pageY + 'px'
-      });
-      $(document).one('click', function() {
-        $columnsDropdown.hide();
-      });
+    $header.on('contextmenu', function (event) {
+        event.preventDefault();
+        $columnsDropdown.appendTo($('body')).show();
+        $columnsDropdown.css({
+            position: 'absolute',
+            left: event.pageX + 'px',
+            top: event.pageY + 'px'
+        });
+        $(document).one('click', function () {
+            $columnsDropdown.hide();
+        });
     });
-  });
-  
+});
