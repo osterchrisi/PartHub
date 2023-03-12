@@ -11,6 +11,18 @@ $(function bootstrapTable() {
     });
 });
 
+function createCategorySelect(categories, currentValue) {
+    var select = $('<select class="form-control">');
+    for (var i = 0; i < categories.length; i++) {
+        var option = $('<option>').text(categories[i]['category_name']).attr('value', categories[i]['category_id']);
+        if (categories[i]['category_name'] === currentValue) {
+            option.attr('selected', true);
+        }
+        select.append(option);
+    }
+    return select;
+}
+
 // Inline table cell manipulation of parts_table
 $(document).ready(function inlineProcessing() {
     $('#parts_table').on('dbl-click-cell.bs.table', function (e, field, value, row, $element) {
@@ -24,6 +36,9 @@ $(document).ready(function inlineProcessing() {
         // Add editing class to the cell
         cell.addClass('editing');
 
+        // Get current value
+        var currentValue = $element.text();
+
         // * It's a category cell
         if (cell.hasClass('category')) {
             // Get list of available categories
@@ -32,26 +47,22 @@ $(document).ready(function inlineProcessing() {
                 url: '../includes/getCategories.php',
                 dataType: 'JSON',
                 success: function (response) {
-                    console.log("response: ", response);
-                    // console.log("response.category_name = ", response.category_name);
-                    // return response;
+                    // console.log("response: ", response);
                     categories = response;
-                    console.log("categories[0]['category_name'] = ", categories[0]['category_name']);
+
                     // Create select element
-                    var select = $('<select class="form-control">');
-                    for (var i = 0; i < categories.length; i++) {
-                        var option = $('<option>').text(categories[i]['category_name']);
-                        if (categories[i] === currentValue) {
-                            option.attr('selected', true);
-                        }
-                        select.append(option);
-                    }
+                    var select = createCategorySelect(categories, currentValue);
                     cell.empty().append(select);
                     select.focus();
-
-
-
-
+                    
+                    // Show dropdown on mousedown event
+                    cell.on('mousedown', function (e) {
+                        if (e.detail > 1) {
+                            select.click();
+                        }
+                    });
+                    select.trigger('click');
+                    //* option.val() is my selected value for further processing
                 },
                 error: function (xhr, status, error) {
                     console.error(error);
@@ -61,8 +72,7 @@ $(document).ready(function inlineProcessing() {
             // console.log("this is categories: ", categories);
 
         } else { // * It's a text cell
-            // Get current value
-            var currentValue = $element.text();
+
 
             // Create input field
             var input = $('<textarea class="form-control">').val(currentValue);
