@@ -170,8 +170,10 @@ $(function () {
         var $checkbox = $('<input>').attr({
             type: 'checkbox',
             id: 'column-' + index,
-            checked: !$table.bootstrapTable('getColumnVisible', $(column).data('field'))
+            checked: !$table.bootstrapTable('getVisibleColumns', $(column).data('field'))
         });
+
+        // console.log("Visible columns: ", $table.bootstrapTable('getVisibleColumns'));
 
         var $label = $('<label>').attr('for', 'column-' + index).text($(column).text());
 
@@ -181,7 +183,8 @@ $(function () {
         // Add click event listener to toggle column visibility
         $checkbox.on('click', function () {
             var fieldName = $(column).data('field');
-            var visible = !$table.bootstrapTable('getColumnVisible', fieldName);
+            console.log("field = ", fieldName);
+            var visible = !$table.bootstrapTable('getVisibleColumns', fieldName);
             $table.bootstrapTable('toggleColumn', fieldName, visible);
         });
     });

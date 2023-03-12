@@ -1,7 +1,7 @@
 <?php
 $title = 'Build BOM';
 require_once('../includes/head.html');
-include 'config/credentials.php';
+include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 

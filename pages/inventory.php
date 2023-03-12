@@ -23,7 +23,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   <br>
   <h4>Parts Inventory</h4>
 
-
   <!-- Search form -->
   <div class="row">
     <div class="col-3">
@@ -83,10 +82,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       echo "</div>";
       echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1); height:75vh'>";
       // Display additional info on part in 3-column
-      // echo "Info";
-      include('../includes/getCategories.php');
-        $x = getCategoriesForEditing();
-        echo $x;
+      echo "Info";
       echo "</div>";
 
       // Pagnination links

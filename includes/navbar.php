@@ -7,10 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="inventory.php">Parts</a>
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/inventory.php') ? 'active' : ''; ?>" href="inventory.php">Parts</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="../pages/bom-search.php" role="button" data-bs-toggle="dropdown">BOMS</a>
+          <a class="nav-link dropdown-toggle <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/bom-create.php' OR $_SERVER['PHP_SELF'] == '/PartHub/pages/bom-build.php' OR $_SERVER['PHP_SELF'] == '/PartHub/pages/bom-search.php') ? 'active' : ''; ?>" href="../pages/bom-search.php" role="button" data-bs-toggle="dropdown">BOMS</a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="../pages/bom-create.php">Create BOM</a></li>
             <li><a class="dropdown-item" href="../pages/bom-build.php">Build BOM</a></li>
@@ -25,19 +25,19 @@
           </ul>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link active" href="../pages/locations.php">Storage Locations</a>
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/locations.php') ? 'active' : ''; ?>" href="../pages/locations.php">Storage Locations</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../pages/categories.php">Categories</a>
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/categories.php') ? 'active' : ''; ?>" href="../pages/categories.php">Categories</a>
         </li>
         <div class="d-flex flex-row-reverse">
           <li class="nav-item">
-            <a class="nav-link active" href="../pages/suppliers.php">Suppliers</a>
+            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/suppliers.php') ? 'active' : ''; ?>" href="../pages/suppliers.php">Suppliers</a>
           </li>
         </div>
         <div class="d-flex flex-row-reverse">
           <li class="nav-item">
-            <a class="nav-link active" href="../pages/footprints.php">Footprints</a>
+            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/footprints.php') ? 'active' : ''; ?>" href="../pages/footprints.php">Footprints</a>
           </li>
         </div>
       </ul>
