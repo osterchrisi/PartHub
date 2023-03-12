@@ -13,39 +13,90 @@ $table_name = "part_categories";
     <br>
     <h4>Categories</h4>
 
-<?php 
-$conn = connectToSQLDB($hostname, $username, $password, $database_name);
+    <?php
+    $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
-// SQL query to retrieve category data
-$categories = getCategories($conn);
+    // SQL query to retrieve category data
+    // $categories = array();
+    $categories = getCategories($conn);
 
-echo "<pre>";
-var_dump($categories);
-echo "</pre>";
+    // echo "<pre>";
+    // print_r($categories);
+    // echo "end ";
+    function generateTreeList($arr) {
+        $childNodes = array();
+        foreach($arr as $node) {
+            $childNodes[$node['parent_category']][] = $node;
+        }
+    
+        $treeList = '<ul id="category-tree">';
+        foreach($childNodes[1] as $node) {
+            $treeList .= '<li>' . $node['category_name'];
+            if(!empty($childNodes[$node['category_id']])) {
+                $treeList .= generateChildTree($childNodes, $node['category_id']);
+            }
+            $treeList .= '</li>';
+        }
+        $treeList .= '</ul>';
+        return $treeList;
+    }
+    
+    function generateChildTree($childNodes, $parentId) {
+        $childTree = '<ul>';
+        foreach($childNodes[$parentId] as $node) {
+            $childTree .= '<li>' . $node['category_name'];
+            if(!empty($childNodes[$node['category_id']])) {
+                $childTree .= generateChildTree($childNodes, $node['category_id']);
+            }
+            $childTree .= '</li>';
+        }
+        $childTree .= '</ul>';
+        return $childTree;
+    }
+    
+    echo generateTreeList($categories);
 
-// PHP code to generate category tree
-// function buildCategoryTree($categories, $parentId = 0) {
-// $tree = array();
-// foreach ($categories as $category) {
-// if ($category['parent_id'] == $parentId) {
-// $children = buildCategoryTree($categories, $category['id']);
-// if ($children) {
-// $category['children'] = $children;
-// }
-// $tree[] = $category;
-// }
-// }
-// return $tree;
-// }
+    ?>
 
-// Generate category tree
-$categoryTree = buildCategoryTree($categories);
+    <style>
+        /* Hide all child nodes by default */
+#category-tree ul {
+  display: none;
+}
 
-// Convert PHP array to JSON format
-$categoryTreeJson = json_encode($categoryTree);
-?>
+/* Show child nodes when the parent node is expanded */
+#category-tree > li.expanded > ul {
+  display: block;
+}
+
+/* Add expand/collapse icon to parent nodes */
+#category-tree > li:before {
+  content: "+";
+  margin-right: 5px;
+}
+
+#category-tree > li.expanded:before {
+  content: "-";
+}
+
+ul > li {
+  list-style-type: none;
+}
+</style>
 
 <script>
-var categoryTree = JSON.parse(
-<?php echo $categoryTreeJson; ?>);
+    // Add click event listeners to all parent nodes
+var parents = document.querySelectorAll("#category-tree li > ul");
+for (var i = 0; i < parents.length; i++) {
+  parents[i].parentNode.classList.add("parent");
+  parents[i].parentNode.addEventListener("click", toggleNode);
+}
+
+// Toggle the expanded state of a node
+function toggleNode(event) {
+  var target = event.target || event.srcElement;
+  if (target.classList.contains("parent")) {
+    target.classList.toggle("expanded");
+  }
+}
 </script>
