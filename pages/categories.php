@@ -44,7 +44,7 @@ $table_name = "part_categories";
     function generateChildTree($childNodes, $parentId) {
         $childTree = '<ul>';
         foreach($childNodes[$parentId] as $node) {
-            $childTree .= '<li>' . $node['category_name'];
+            $childTree .= '<li><a href="'.$node['category_name'].'">'.$node['category_name'].'</a>';
             if(!empty($childNodes[$node['category_id']])) {
                 $childTree .= generateChildTree($childNodes, $node['category_id']);
             }
