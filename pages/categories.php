@@ -17,13 +17,14 @@ $table_name = "part_categories";
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
     // SQL query to retrieve category data
-    // $categories = array();
     $categories = getCategories($conn);
 
     // echo "<pre>";
     // print_r($categories);
     // echo "end ";
+    // TODO: Add correct URL to show only parts in that category
     function generateTreeList($arr) {
+        $url = 
         $childNodes = array();
         foreach($arr as $node) {
             $childNodes[$node['parent_category']][] = $node;

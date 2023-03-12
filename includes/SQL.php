@@ -306,7 +306,8 @@ function updateRow($conn, $part_id, $column, $table_name, $new_value)
   $stmt->execute();
 }
 
-function getCategories($conn){
+function getCategories($conn)
+{
   $sql = "SELECT * FROM part_categories";
   $stmt = $conn->prepare($sql);
   $stmt->execute();

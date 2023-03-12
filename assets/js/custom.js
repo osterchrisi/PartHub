@@ -111,7 +111,7 @@ $(function sendFormOnDropdownChange() {
     });
 });
 
-// ! Get right-click column-visibility menu
+// ! Get right-click column-visibility menu for parts_table
 // ! Does NOT work yet, implemented with bootstrap-table for now
 $(function() {
     var $table = $('#parts_table');
