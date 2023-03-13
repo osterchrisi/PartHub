@@ -52,7 +52,6 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names)
 {
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
-  // $sql = "SELECT * FROM $table_name JOIN part_categories as part_categories ON parts.part_category_fk = part_categories.category_id WHERE ";
   $sql = "SELECT *, part_id as 'id' FROM $table_name 
           JOIN part_categories ON parts.part_category_fk = part_categories.category_id
           JOIN part_units ON parts.part_unit_fk = part_units.unit_id
@@ -82,6 +81,7 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
   $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
   $stmt->execute();
+
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $result;
 }
@@ -304,4 +304,27 @@ function updateRow($conn, $part_id, $column, $table_name, $new_value)
   $stmt->bindParam(':new_value', $new_value);
   $stmt->bindParam(':part_id', $part_id);
   $stmt->execute();
+}
+
+function getCategories($conn)
+{
+  $sql = "SELECT * FROM part_categories";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+  $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $categories;
+}
+
+function getCategoriesForEditing(){
+  include '../config/credentials.php';
+  $conn = connectToSQLDB($hostname, $username, $password, $database_name);
+  $categories = getCategories($conn);
+
+  $json = json_encode(array(
+    "name" => "John",
+    "age" => 30,
+    "city" => "New York"
+  ));
+  // return json_encode($json);
+  return json_encode('hello');
 }

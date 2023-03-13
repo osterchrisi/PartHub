@@ -15,7 +15,7 @@ require_once('../includes/head.html');?>
   
   $table_name = 'backorders';
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-  $po_number = getPONumber();
+  $po_number = getSuperGlobal('po');
   $search_column = 'customer_po';
   $search_term = $po_number;
   $offset = 0;

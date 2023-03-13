@@ -95,16 +95,28 @@ function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
 function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto;">';
-    echo '<table class="table table-sm" id="parts_table" data-resizable="true" data-search="true" data-search-selector="#search">';
+    echo '<table
+            class="table table-sm"
+            id="parts_table"
+            data-resizable="true"
+            data-search="true"
+            data-search-selector="#search"
+            data-search-align="left"
+            data-show-columns="true"
+            data-search-accent-neutralise="true"
+            data-reorderable-columns="true"
+            data-cookie="true"
+            data-cookie-id-table="rememberTableState"
+            >';
 
     // Table headers
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-        if ($column_header == 'Total Stock'){
-            echo "<th data-sortable='true' data-sorter='NumberURLSorter'>$column_header</th>";
+        if ($column_header == 'Total Stock') {
+            echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
         } else {
-        echo "<th>$column_header</th>";
+            echo "<th data-field='$column_header'>$column_header</th>";
         }
     }
     echo "</tr>";
@@ -122,7 +134,11 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
                 echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
-            } else { // Any other table data available
+            }
+            elseif ($column_data == 'category_name'){
+                echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
+            }
+            else { // Any other table data available
                 echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
             }
         }

@@ -1,20 +1,22 @@
 <?php
 $title = 'Parts Inventory';
 require_once('../includes/head.html');
+
 include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
+
 $table_name = "parts";
 
-$search_term = isset($_GET['search']) ? $_GET['search'] : '';
-$search_column = isset($_GET['search_column']) ? $_GET['search_column'] : '';
+$search_term = getSuperGlobal('search');
+$search_column = getSuperGlobal('search_column', 'everywhere');
+
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
-$results_per_page = getResultsPerPage();
+$results_per_page = getSuperGlobal('resultspp', '50');
+
 ?>
-
-
 
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
@@ -52,11 +54,11 @@ $results_per_page = getResultsPerPage();
   include '../includes/tables.php';
   include '../includes/pagination.php';
   include '../config/inventory-columns.php';
-  $results_per_page = getResultsPerPage();
+  $results_per_page = getSuperGlobal('resultspp', '50');
 
   try {
-    $search_column = getSearchColumn();
-    $search_term = getSearchTerm();
+    $search_column = getSuperGlobal('search_column', 'everywhere');
+    $search_term = getSuperGlobal('search');
     $total_rows = getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names);
 
     if ($total_rows) {
@@ -97,30 +99,3 @@ $results_per_page = getResultsPerPage();
   ?>
 
 </div>
-
-<script>
-  $(function () {
-    $('#parts_table').bootstrapTable({
-    })
-  })
-</script>
-
-<script>
-  function NumberURLSorter(a, b) {
-    return $(a).text() - $(b).text()
-  }
-</script>
-
-<script>
-  // Send form upon changing the results per page dropdown
-  var dropdown = document.getElementById("resultspp");
-
-  dropdown.addEventListener("change", function () {
-    var form = document.getElementById("search_form");
-    form.submit();
-  });
-</script>
-
-<?php
-include '../includes/inline-processing.php';
-?>
