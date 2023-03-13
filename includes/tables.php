@@ -104,6 +104,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             data-search-align="left"
             data-show-columns="true"
             data-search-accent-neutralise="true"
+            data-reorderable-columns="true"
             >';
 
     // Table headers
