@@ -35,4 +35,8 @@
 <br><br>
 
 <h5>Part of:</h5>
+<h5>Datasheet:</h5>
+<h5>Image:</h5>
+
+
 </div>
