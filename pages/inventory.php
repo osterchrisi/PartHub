@@ -118,6 +118,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
+            console.log(data);
             console.log("success");
           },
           error: function () {
