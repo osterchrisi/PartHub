@@ -107,12 +107,12 @@ $results_per_page = getSuperGlobal('resultspp', '50');
         $('tbody tr').removeClass('selected');
         $(this).toggleClass('selected');
         var id = $(this).data('id'); // get the ID from the first cell of the selected row
-        var part_name = $(this).find('td:nth-child(2)').text(); //! Don't use it currently actually and not tested
-        console.log("part_name: ", part_name);
+        // var part_name = $(this).find('td:nth-child(2)').text(); // Currently not in use...
+        // console.log("part_name: ", part_name);
 
         // Load the PHP page and pass the id variable as a parameter
         $.ajax({
-          url: 'show-stock.php',
+          url: 'parts-info.php',
           type: 'GET',
           data: { part_id: id, hideNavbar: true },
           success: function (data) {
@@ -121,7 +121,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           },
           error: function () {
             // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional data.');
+            $('#info-window').html('Failed to load additional part data.');
           }
         });
       });

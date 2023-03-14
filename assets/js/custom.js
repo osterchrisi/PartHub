@@ -96,15 +96,16 @@ $(document).ready(function inlineProcessing() {
             });
 
             // Close input on click outside the cell
-            $(document).on('mousedown', function (event) {
-                if (!$(event.target).closest(cell).length) {
-                    input.remove();
-                    cell.text(currentValue);
-                    cell.removeClass('editing');
-                    event.stopPropagation();
-                    return;
-                }
-            });
+            //! Took it out for now as it makes a bug
+            // $(document).on('mousedown', function (event) {
+            //     if (!$(event.target).closest(cell).length) {
+            //         input.remove();
+            //         cell.text(currentValue);
+            //         cell.removeClass('editing');
+            //         event.stopPropagation();
+            //         return;
+            //     }
+            // });
 
             // Enter new value
             input.blur(function () {

@@ -2,7 +2,7 @@
 function buildTable($column_names, $nice_columns, $result, $width = "100%")
 {
     echo '<div style="overflow-x:auto;">';
-    echo '<table class="table table-striped table-hover" style="width: ' . $width . '">';
+    echo '<table class="table table-striped table-hover table-sm" style="width: ' . $width . '; font-size:12px">';
 
     // Table headers
     echo "<thead>";
@@ -96,7 +96,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
-            class="table table-sm"
+            class="table table-hover table-striped table-sm"
             id="parts_table"
             data-resizable="true"
             data-search="true"
