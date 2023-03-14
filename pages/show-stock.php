@@ -21,11 +21,17 @@
 ?>
 
 <div class="container-fluid">
-<?php require_once('../includes/navbar.php');?>
+<?php
+// Check if called within the info window
+if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
+  // Don't include the navbar
+} else {
+  require_once('../includes/navbar.php');
+}?>
 <br>
 
 <h4><?php echo $part_name;?></h4>
 <h5>Total stock: <?php echo $total_stock;?></h5>
 
-<?php buildTable($db_columns, $nice_columns, $result, '33%');?>
+<?php buildTable($db_columns, $nice_columns, $result);?>
 </div>

@@ -125,8 +125,9 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     echo "<tbody>";
     // Table rows
     foreach ($result as $row) {
-        echo "<tr>";
+        // echo "<tr>";
         $part_id = $row['part_id'];
+        echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
             if ($column_data == 'total_stock') {
                 // Get total stock
