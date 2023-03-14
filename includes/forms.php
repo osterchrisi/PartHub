@@ -1,7 +1,7 @@
 <?php
-function generateDropdown($column_names, $sc){
+function generateCategoriesDropdown($column_names, $sc){
     // Generate dropdown menu for the column names
-    echo '<select name="search_column" id="seach_column" class="form-select">';
+    echo '<select multiple size="3" class="form-select" name="search_column" id="seach_column">';
 
     // The ternary operator checks if the search column $sc is set and selects it, if it is the same as the option
     echo '<option value="everywhere" ' . (($sc && $sc == "everywhere") ? "selected" : "") . '>everywhere</option>';
