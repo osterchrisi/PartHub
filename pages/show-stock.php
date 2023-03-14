@@ -1,5 +1,7 @@
 <?php
-  require_once('../includes/head.html');
+  //! Need to disable this, otherwise after loading the stock page into info-window,
+  //! my original parts-table kinda just crashes
+  // require_once('../includes/head.html');
   include '../config/credentials.php';
   include '../config/show-stock-columns.php';
   include '../includes/SQL.php';

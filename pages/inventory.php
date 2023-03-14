@@ -107,8 +107,8 @@ $results_per_page = getSuperGlobal('resultspp', '50');
         $('tbody tr').removeClass('selected');
         $(this).toggleClass('selected');
         var id = $(this).data('id'); // get the ID from the first cell of the selected row
-        console.log("Selected ", id);
-        // var part_name = $(this).find('td:nth-child(2)').text(); //! Don't use it currently actually and not tested
+        var part_name = $(this).find('td:nth-child(2)').text(); //! Don't use it currently actually and not tested
+        console.log("part_name: ", part_name);
 
         // Load the PHP page and pass the id variable as a parameter
         $.ajax({
@@ -118,8 +118,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
-            console.log(data);
-            console.log("success");
           },
           error: function () {
             // Display an error message if the PHP page failed to load
