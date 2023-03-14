@@ -1,7 +1,4 @@
 <?php
-  //! Need to disable this, otherwise after loading the stock page into info-window,
-  //! my original parts-table kinda just crashes
-  // require_once('../includes/head.html');
   include '../config/credentials.php';
   include '../config/show-stock-columns.php';
   include '../includes/SQL.php';
@@ -23,17 +20,23 @@
 ?>
 
 <div class="container-fluid">
-<?php
-// Check if called within the info window
-if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
-  // Don't include the navbar
-} else {
-  require_once('../includes/navbar.php');
-}?>
 <br>
 
 <h4><?php echo $part_name;?></h4>
 <h5>Total stock: <?php echo $total_stock;?></h5>
 
 <?php buildTable($db_columns, $nice_columns, $result);?>
+
+<div class="btn-group btn-group-sm" role="group">
+  <button type="button" class="btn btn-outline-primary">Add</button>
+  <button type="button" class="btn btn-outline-primary">Move</button>
+  <button type="button" class="btn btn-outline-primary">Reduce</button>
+</div>
+<br><br>
+
+<h5>Part of:</h5>
+<h5>Datasheet:</h5>
+<h5>Image:</h5>
+
+
 </div>

@@ -99,3 +99,37 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   ?>
 
 </div>
+
+<script>
+    // Get part_id from the clicked row and pass it to show-stock.php for showing details in the info-window
+    $(document).ready(function () {
+      $('tr').click(function () {
+        $('tbody tr').removeClass('selected');
+        $(this).toggleClass('selected');
+        var id = $(this).data('id'); // get the ID from the first cell of the selected row
+        // var part_name = $(this).find('td:nth-child(2)').text(); // Currently not in use...
+        // console.log("part_name: ", part_name);
+
+        // Load the PHP page and pass the id variable as a parameter
+        $.ajax({
+          url: 'parts-info.php',
+          type: 'GET',
+          data: { part_id: id, hideNavbar: true },
+          success: function (data) {
+            // Replace the content of the info window with the loaded PHP page
+            $('#info-window').html(data);
+          },
+          error: function () {
+            // Display an error message if the PHP page failed to load
+            $('#info-window').html('Failed to load additional part data.');
+          }
+        });
+      });
+    });
+  </script>
+
+  <style>
+    tr.selected {
+      background-color: rgba(0, 255, 255, 0.1);
+    }
+  </style>

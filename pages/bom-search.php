@@ -81,7 +81,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
         $('tbody tr').removeClass('selected');
         $(this).toggleClass('selected');
         var id = $(this).data('id'); // get the ID from the first cell of the selected row
-        var bom_name = $(this).find('td:nth-child(2)').text(); // Don't use it currently actually
+        var bom_name = $(this).find('td:nth-child(2)').text(); //! Don't use it currently and seems a bit silly (think reordering columns)
 
         // Load the PHP page and pass the id variable as a parameter
         $.ajax({
