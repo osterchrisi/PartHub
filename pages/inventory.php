@@ -10,7 +10,7 @@ include '../includes/get.php';
 $table_name = "parts";
 
 $search_term = getSuperGlobal('search');
-$search_column = getSuperGlobal('search_column', 'everywhere');
+$search_category = getSuperGlobal('cat', 'everywhere');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
@@ -31,10 +31,14 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           value="<?php echo htmlspecialchars($search_term); ?>">
     </div>
     <div class="col-3">
-      <div class="input-group">
-        <input class="form-control">
-        <?php generateCategoriesDropdown($column_names, $search_column); ?>
-      </div>
+      <input class="form-control" placeholder="Filter categories">
+      <?php
+      $categories = getCategories($conn);
+
+      // echo "<pre>";
+      // print_r($categories);
+      // echo "end ";
+      generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>

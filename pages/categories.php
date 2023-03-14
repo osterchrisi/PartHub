@@ -22,7 +22,6 @@ $table_name = "part_categories";
     // echo "<pre>";
     // print_r($categories);
     // echo "end ";
-    // TODO: Add correct URL to show only parts in that category
     function generateTreeList($arr) {
         $url = 
         $childNodes = array();

@@ -1,14 +1,14 @@
 <?php
-function generateCategoriesDropdown($column_names, $sc){
+function generateCategoriesDropdown($categories, $sc){
     // Generate dropdown menu for the column names
-    echo '<select multiple size="3" class="form-select" name="search_column" id="seach_column">';
+    echo '<select multiple size="5" class="form-select" name="cat" id="cat-select">';
 
-    // The ternary operator checks if the search column $sc is set and selects it, if it is the same as the option
-    echo '<option value="everywhere" ' . (($sc && $sc == "everywhere") ? "selected" : "") . '>everywhere</option>';
+    // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
+    echo '<option value="all" ' . (($sc && $sc == "all") ? "selected" : "") . '>All Categories</option>';
     
     // Iterate over all available search columns
-    foreach ($column_names as $column_name) {
-      echo "<option value='$column_name'". (($sc && $sc == $column_name) ? "selected" : "") . " >$column_name</option>";
+    foreach ($categories as $category) {
+      echo "<option value=" . $category['category_id'] . ">" . $category['category_name'] . "</option>";
     }
     echo '</select>';
 }
