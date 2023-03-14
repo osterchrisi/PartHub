@@ -11,8 +11,9 @@ $(function bootstrapTable() {
     });
 });
 
+// Select element for the category dropdown in parts table
 function createCategorySelect(categories, currentValue) {
-    var select = $('<select class="form-control">');
+    var select = $('<select class="form-select-sm">');
     for (var i = 0; i < categories.length; i++) {
         var option = $('<option>').text(categories[i]['category_name']).attr('value', categories[i]['category_id']);
         if (categories[i]['category_name'] === currentValue) {
@@ -27,7 +28,6 @@ function createCategorySelect(categories, currentValue) {
 $(document).ready(function inlineProcessing() {
     $('#parts_table').on('dbl-click-cell.bs.table', function (e, field, value, row, $element) {
         var cell = $element;
-
         // Check if the cell is already being edited
         if (cell.hasClass('editing')) {
             return;
@@ -41,6 +41,7 @@ $(document).ready(function inlineProcessing() {
 
         // * It's a category cell
         if (cell.hasClass('category')) {
+
             // Get list of available categories
             categories = $.ajax({
                 type: 'GET',
@@ -72,8 +73,6 @@ $(document).ready(function inlineProcessing() {
             // console.log("this is categories: ", categories);
 
         } else { // * It's a text cell
-
-
             // Create input field
             var input = $('<textarea class="form-control">').val(currentValue);
             cell.empty().append(input);

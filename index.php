@@ -17,20 +17,20 @@ include 'includes/navbar.php'; ?>
 <div class="container-fluid vh-100 d-flex flex-column">
   <div class="row d-flex flex-grow-1">
     <div class="col-md-6 flex-grow-1 mx-auto my-auto">
-      <table class="table table-bordered text-center mx-auto w-auto">
+      <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
           <td colspan="3">Welcome to PartHub Live Demo!<br><br>
-          You can use any aspect of this demo but the database will reset every full hour, so all your changes will be lost</td>
+          You can use any aspect of this demo but the database will reset every full hour, so all your changes will be lost<br><br></td>
         </tr>
         <tr>
-          <td><a href="#"><i class="fa fa-home"></i><br>Parts</a></td>
-          <td><a href="#"><i class="fa fa-home"></i><br>BOMs</a></td>
-          <td><a href="#"><i class="fa fa-home"></i><br>Storage Locations</a></td>
+          <td><a href="/PartHub/pages/inventory.php"><h1><i class="bi bi-list-columns"></i></h1>Parts<br></a></td>
+          <td><a href="/PartHub/pages/bom-search.php"><h1><i class="bi bi-bezier2"></i></h1>BOMs<br></a></td>
+          <td><a href="/PartHub/pages/locations.php"><h1><i class="bi bi-buildings"></i></h1>Locations<br></a></td>
         </tr>
         <tr>
-          <td><a href="#"><i class="fa fa-home"></i><br>Categories</a></td>
-          <td><a href="#"><i class="fa fa-home"></i><br>Suppliers</a></td>
-          <td><a href="#"><i class="fa fa-home"></i><br>Footprints</a></td>
+          <td><a href="/PartHub/pages/categories.php"><h1><i class="bi bi-boxes"></i></h1>Categories</a></td>
+          <td><a href="/PartHub/pages/suppliers.php"><h1><i class="bi bi-cart"></i></h1>Suppliers</a></td>
+          <td><a href="/PartHub/pages/footprints.php"><h1><i class="bi bi-postage"></i></h1>Footprints</a></td>
         </tr>
       </table>
     </div>

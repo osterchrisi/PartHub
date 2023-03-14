@@ -94,7 +94,7 @@ function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
 
 function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $width = "100%")
 {
-    echo '<div class="table-responsive" style="overflow-x:auto;">';
+    echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
             class="table table-sm"
             id="parts_table"
