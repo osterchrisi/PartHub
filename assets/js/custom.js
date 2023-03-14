@@ -69,9 +69,6 @@ $(document).ready(function inlineProcessing() {
                     console.error(error);
                 }
             });
-
-            // console.log("this is categories: ", categories);
-
         } else { // * It's a text cell
             // Create input field
             var input = $('<textarea class="form-control">').val(currentValue);

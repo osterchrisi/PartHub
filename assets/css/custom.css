@@ -1,0 +1,3 @@
+.table-hover thead tr:hover {
+    cursor: move;
+}
