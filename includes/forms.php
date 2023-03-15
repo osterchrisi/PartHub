@@ -1,17 +1,15 @@
 <?php
 function generateCategoriesDropdown($categories, $sc){
-  // TODO - Zweiter und dritter Codeblock  -> Automatisch wieder alle selektieren, falls gesucht wurde
   // TODO - Suchbox filtert noch nicht alle Kategorien
-
     // Generate dropdown menu for the column names
-    echo '<select multiple size="5" class="form-select" name="cat" id="cat-select">';
+    echo '<select multiple size="5" class="form-select" name="cat[]" id="cat-select">';
 
     // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
-    echo '<option value="all" ' . (($sc && $sc == "all") ? "selected" : "") . '>All Categories</option>';
+    echo '<option value="all" ' . ((!$sc OR $sc == "all") ? "selected" : "") . '>All Categories</option>';
     
     // Iterate over all available search columns
     foreach ($categories as $category) {
-      echo "<option value=" . $category['category_id'] . ">" . $category['category_name'] . "</option>";
+      echo "<option value='" . $category['category_id'] . "' " . (($sc && $sc == $category['category_id']) ? 'selected' : '') . ">" . $category['category_name'] . "</option>";
     }
     echo '</select>';
 }
