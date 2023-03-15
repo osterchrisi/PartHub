@@ -10,7 +10,7 @@ include '../includes/get.php';
 $table_name = "parts";
 
 $search_term = getSuperGlobal('search');
-$search_column = getSuperGlobal('search_column', 'everywhere');
+$search_category = getSuperGlobal('cat', 'everywhere');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
@@ -31,10 +31,17 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           value="<?php echo htmlspecialchars($search_term); ?>">
     </div>
     <div class="col-3">
-      <!-- <?php generateDropdown($column_names, $search_column); ?> -->
+      <input class="form-control" placeholder="Filter categories">
+      <?php
+      $categories = getCategories($conn);
+
+      // echo "<pre>";
+      // print_r($categories);
+      // echo "end ";
+      generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
-      <!-- <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br> -->
+      <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -101,35 +108,35 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 </div>
 
 <script>
-    // Get part_id from the clicked row and pass it to show-stock.php for showing details in the info-window
-    $(document).ready(function () {
-      $('tr').click(function () {
-        $('tbody tr').removeClass('selected');
-        $(this).toggleClass('selected');
-        var id = $(this).data('id'); // get the ID from the first cell of the selected row
-        // var part_name = $(this).find('td:nth-child(2)').text(); // Currently not in use...
-        // console.log("part_name: ", part_name);
+  // Get part_id from the clicked row and pass it to show-stock.php for showing details in the info-window
+  $(document).ready(function () {
+    $('tr').click(function () {
+      $('tbody tr').removeClass('selected');
+      $(this).toggleClass('selected');
+      var id = $(this).data('id'); // get the ID from the first cell of the selected row
+      // var part_name = $(this).find('td:nth-child(2)').text(); // Currently not in use...
+      // console.log("part_name: ", part_name);
 
-        // Load the PHP page and pass the id variable as a parameter
-        $.ajax({
-          url: 'parts-info.php',
-          type: 'GET',
-          data: { part_id: id, hideNavbar: true },
-          success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-          },
-          error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional part data.');
-          }
-        });
+      // Load the PHP page and pass the id variable as a parameter
+      $.ajax({
+        url: 'parts-info.php',
+        type: 'GET',
+        data: { part_id: id, hideNavbar: true },
+        success: function (data) {
+          // Replace the content of the info window with the loaded PHP page
+          $('#info-window').html(data);
+        },
+        error: function () {
+          // Display an error message if the PHP page failed to load
+          $('#info-window').html('Failed to load additional part data.');
+        }
       });
     });
-  </script>
+  });
+</script>
 
-  <style>
-    tr.selected {
-      background-color: rgba(0, 255, 255, 0.1);
-    }
-  </style>
+<style>
+  tr.selected {
+    background-color: rgba(0, 255, 255, 0.1);
+  }
+</style>
