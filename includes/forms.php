@@ -1,20 +1,25 @@
 <?php
-function generateCategoriesDropdown($categories, $sc){
-  // TODO - Suchbox filtert noch nicht alle Kategorien
-    // Generate dropdown menu for the column names
-    echo '<select multiple size="5" class="form-select" name="cat[]" id="cat-select">';
+function generateCategoriesDropdown($categories, $sc)
+{
+  // Generate dropdown menu for the column names
+  echo '<select multiple size="5" class="form-select" name="cat[]" id="cat-select">';
 
-    // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
-    echo '<option value="all" ' . ((!$sc OR $sc == "all") ? "selected" : "") . '>All Categories</option>';
-    
-    // Iterate over all available search columns
-    foreach ($categories as $category) {
-      echo "<option value='" . $category['category_id'] . "' " . (($sc && $sc == $category['category_id']) ? 'selected' : '') . ">" . $category['category_name'] . "</option>";
+  // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
+  echo '<option value="all" ' . ((!$sc or $sc == "all" OR in_array("all", $sc)) ? "selected" : "") . '>All Categories</option>';
+
+  // Iterate over all available search columns
+  foreach ($categories as $category) {
+    $selected = '';
+    if ($sc && is_array($sc) && in_array($category['category_id'], $sc)) {
+      $selected = 'selected';
     }
-    echo '</select>';
+    echo "<option value='" . $category['category_id'] . "' " . $selected . ">" . $category['category_name'] . "</option>";
+  }
+  echo '</select>';
 }
 
-function generateBackordersDropdown(){
+function generateBackordersDropdown()
+{
   // Generate the dropdown menu for the column names. Could be automated with the array that I use for SQL queries
 
   echo '<select name="search_column" class="form-select">';
@@ -26,7 +31,8 @@ function generateBackordersDropdown(){
   echo '</select>';
 }
 
-function generateBackordersStatusDropdown(){
+function generateBackordersStatusDropdown()
+{
   // Generate the dropdown for filtering for different backorder statuses
 
   echo '<select name="search_status" class="form-select">';
@@ -37,7 +43,8 @@ function generateBackordersStatusDropdown(){
   echo '</select>';
 }
 
-function generateResultsDropdown($results_per_page){
+function generateResultsDropdown($results_per_page)
+{
   // Generate dropdown for different results per page options
   $options = [
     "10" => "10",
@@ -49,11 +56,11 @@ function generateResultsDropdown($results_per_page){
   ?>
 
   <select name="resultspp" id="resultspp" class="form-select" style="width:auto">
-      <?php foreach ($options as $value => $name) { ?>
-          <option value="<?= $value; ?>"<?= ($value == $results_per_page) ? ' selected' : ''; ?>><?= $name; ?></option>
-      <?php } ?>
+    <?php foreach ($options as $value => $name) { ?>
+      <option value="<?= $value; ?>" <?= ($value == $results_per_page) ? ' selected' : ''; ?>><?= $name; ?></option>
+    <?php } ?>
   </select>
-  <?php 
+<?php
   // echo '<select name="resultspp" class="form-select" style="width:auto">';
   // echo '<option value="10">10</option>';
   // echo "<option value='25'>25</option>";
@@ -62,34 +69,36 @@ function generateResultsDropdown($results_per_page){
   // echo '</select>';
 }
 
-function generateBackordersCustomersDropdown($conn){
+function generateBackordersCustomersDropdown($conn)
+{
   // Generate the dropdown menu for the products in the backorders entry
   $stmt = $conn->prepare('SELECT id, customer_name FROM customers');
   $stmt->execute();
-  
+
   // Fetch all rows into an array
   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  
+
   // Generate the dropdown, the value is the id but the name is shown to the user
   echo '<select name="customer_id" class="form-select" label="In:">';
   foreach ($rows as $row) {
-      echo "<option value='{$row['id']}'>{$row['customer_name']}</option>";
+    echo "<option value='{$row['id']}'>{$row['customer_name']}</option>";
   }
   echo '</select>';
 }
 
-function generateBomNamesDropdown($conn){
+function generateBomNamesDropdown($conn)
+{
   // Generate the dropdown menu for the products in the backorders entry
   $stmt = $conn->prepare('SELECT bom_id, bom_name FROM bom_names');
   $stmt->execute();
-  
+
   // Fetch all rows into an array
   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  
+
   // Generate the dropdown, the value is the id but the name is shown to the user
   echo '<select name="customer_id" class="form-select">';
   foreach ($rows as $row) {
-      echo "<option value='{$row['id']}'>{$row['bom_name']}</option>";
+    echo "<option value='{$row['id']}'>{$row['bom_name']}</option>";
   }
   echo '</select>';
 }

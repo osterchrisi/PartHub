@@ -314,17 +314,3 @@ function getCategories($conn)
   $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $categories;
 }
-
-function getCategoriesForEditing(){
-  include '../config/credentials.php';
-  $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-  $categories = getCategories($conn);
-
-  $json = json_encode(array(
-    "name" => "John",
-    "age" => 30,
-    "city" => "New York"
-  ));
-  // return json_encode($json);
-  return json_encode('hello');
-}

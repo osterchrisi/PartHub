@@ -12,9 +12,6 @@ $table_name = "parts";
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', 'all');
 
-echo $search_category;
-
-
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
