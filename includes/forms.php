@@ -1,5 +1,8 @@
 <?php
 function generateCategoriesDropdown($categories, $sc){
+  // TODO - Zweiter und dritter Codeblock  -> Automatisch wieder alle selektieren, falls gesucht wurde
+  // TODO - Suchbox filtert noch nicht alle Kategorien
+
     // Generate dropdown menu for the column names
     echo '<select multiple size="5" class="form-select" name="cat" id="cat-select">';
 
