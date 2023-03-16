@@ -10,7 +10,7 @@ include '../includes/get.php';
 $table_name = "parts";
 
 $search_term = getSuperGlobal('search');
-$search_category = getSuperGlobal('cat', 'everywhere');
+$search_category = getSuperGlobal('cat', 'all');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
@@ -31,7 +31,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           value="<?php echo htmlspecialchars($search_term); ?>">
     </div>
     <div class="col-3">
-      <input class="form-control" placeholder="Filter categories">
+      <input class="form-control" placeholder="Search categories" id="categories-filter">
       <?php
       $categories = getCategories($conn);
 
@@ -41,7 +41,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
-      <button type="submit" class="btn btn-primary" name="submit">Show Results</button><br><br>
+      <button type="submit" class="btn btn-primary" name="submit">Apply Filters</button><br><br>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -83,13 +83,14 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       // echo "</pre>";
   
       echo "<div class='row'>";
-      echo "<div class='col-9'>";
+      echo "<div class='col-9' id='table-window' style='max-width: 90%;'>"; //9
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       echo "</div>";
-      echo "<div class='col-3' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1); height:75vh'>";
+      echo "<div class='col' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);'>"; // height:75vh'>";
       // Display additional info on part in 3-column
       echo "Info";
+      echo "</div>";
       echo "</div>";
 
       // Pagnination links
@@ -140,3 +141,36 @@ $results_per_page = getSuperGlobal('resultspp', '50');
     background-color: rgba(0, 255, 255, 0.1);
   }
 </style>
+
+
+<!-- Resizable Divs -->
+<script>
+  $(function () {
+    $('#table-window').resizable({
+      handles: 'e',
+      resize: function() {
+        var parentWidth = $('#table-window').parent().width();
+        var tableWidth = $('#table-window').width();
+        var infoWidth = parentWidth - tableWidth;
+        $('#info-window').width(infoWidth);
+      }
+    });
+  });
+</script>
+
+<!-- Filter categories -->
+<script>
+$(document).ready(function() {
+  $('#categories-filter').on('input', function() {
+    var filterText = $(this).val().toLowerCase();
+    $('#cat-select option').each(function() {
+      var optionText = $(this).text().toLowerCase();
+      if (optionText.indexOf(filterText) !== -1) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  });
+});
+</script>
