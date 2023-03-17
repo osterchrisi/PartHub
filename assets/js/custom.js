@@ -42,34 +42,76 @@ $(document).ready(function inlineProcessing() {
         // * It's a category cell
         if (cell.hasClass('category')) {
 
-            // Get list of available categories
+            // Get list of available categories and populate dropdown
             categories = $.ajax({
                 type: 'GET',
                 url: '../includes/getCategories.php',
                 dataType: 'JSON',
                 success: function (response) {
-                    // console.log("response: ", response);
                     categories = response;
+                    console.log("categories1: ", categories);
 
                     // Create select element
                     var select = createCategorySelect(categories, currentValue);
                     cell.empty().append(select);
                     select.focus();
-                    
+
                     // Show dropdown on mousedown event
-                    cell.on('mousedown', function (e) {
-                        if (e.detail > 1) {
-                            select.click();
-                        }
+                    // cell.on('mousedown', function (e) {
+                    //     if (e.detail > 1) {
+                    //         select.click();
+                    //     }
+                    // });
+
+                    // old_value = select.val() //is my selected value for further processing
+                    // console.log("original value = ", old_value);
+
+                    select.on('change', function () {
+                        var new_value = $(this).val(); // Get new selected value
+                        // console.log("new value = ", new_value);
+
+                        // Get cell part_id, column name and database table
+                        // These are encoded in the table data cells
+                        var part_id = cell.closest('td').data('id');
+                        var column = 'part_category_fk';
+                        var table_name = cell.closest('td').data('table_name');
+                        // console.log(part_id, column, table_name, new_value);
+
+                        // Call the updating function
+                        $.ajax({
+                            type: 'GET',
+                            url: '../includes/update-cell.php',
+                            data: {
+                                part_id: part_id,
+                                column: column,
+                                table_name: table_name,
+                                new_value: new_value
+                            },
+                            success: function (data) {
+                                console.log('Data updated successfully');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error updating data');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                        // Update cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
+                        new_value = categories[new_value-1]['category_name']
+                        cell.text(new_value);
+                        select.remove();
+                        cell.removeClass('editing');
                     });
-                    select.trigger('click');
-                    //* option.val() is my selected value for further processing
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
                 }
+
             });
-        } else { // * It's a text cell
+
+
+            // select.trigger('click');  //! This should trigger the dropdown to open automatically but it doesn't actually work yet
+            //* Code copied from below, most likely needs adjustement:
+        }
+        else { // * It's a text cell
             // Create input field
             var input = $('<textarea class="form-control">').val(currentValue);
             cell.empty().append(input);

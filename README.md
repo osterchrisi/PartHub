@@ -14,11 +14,11 @@ If you want to manage small and medium parts inventory and BOMs, **PartHub** is 
  - Track stock history
  - Works in any browser
  - Multi-user
- - Import data via CSV files
+ - Import data
+ - KiCad Support
 
 # Screenshots
 ![Parts](assets/screenshots/Parts.png?raw=true "Parts Inventory")
-![Stock Levels](assets/screenshots/Show-Stock.png?raw=true "Stock Levels")
 ![Create new BOM](assets/screenshots/Create-BOM.png?raw=true "Create new BOM")
 ![Show BOM](assets/screenshots/Show-BOM.png?raw=true "Show BOM Details")
 ![Build BOM](assets/screenshots/Build-BOM.png?raw=true "Build BOM")
