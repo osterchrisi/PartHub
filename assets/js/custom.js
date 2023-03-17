@@ -32,7 +32,6 @@ $(document).ready(function inlineProcessing() {
         if (cell.hasClass('editing')) {
             return;
         }
-
         // Add editing class to the cell
         cell.addClass('editing');
 
@@ -41,7 +40,6 @@ $(document).ready(function inlineProcessing() {
 
         // * It's a category cell
         if (cell.hasClass('category')) {
-
             // Get list of available categories and populate dropdown
             categories = $.ajax({
                 type: 'GET',
@@ -55,16 +53,6 @@ $(document).ready(function inlineProcessing() {
                     var select = createCategorySelect(categories, currentValue);
                     cell.empty().append(select);
                     select.focus();
-
-                    // Show dropdown on mousedown event
-                    // cell.on('mousedown', function (e) {
-                    //     if (e.detail > 1) {
-                    //         select.click();
-                    //     }
-                    // });
-
-                    // old_value = select.val() //is my selected value for further processing
-                    // console.log("original value = ", old_value);
 
                     select.on('change', function () {
                         var new_value = $(this).val(); // Get new selected value
@@ -104,12 +92,7 @@ $(document).ready(function inlineProcessing() {
                         cell.removeClass('editing');
                     });
                 }
-
             });
-
-
-            // select.trigger('click');  //! This should trigger the dropdown to open automatically but it doesn't actually work yet
-            //* Code copied from below, most likely needs adjustement:
         }
         else { // * It's a text cell
             // Create input field
@@ -136,19 +119,6 @@ $(document).ready(function inlineProcessing() {
                     return;
                 }
             });
-
-            // Close input on click outside the cell
-            //! Took it out for now as it makes a bug
-            // $(document).on('mousedown', function (event) {
-            //     if (!$(event.target).closest(cell).length) {
-            //         input.remove();
-            //         cell.text(currentValue);
-            //         cell.removeClass('editing');
-            //         event.stopPropagation();
-            //         return;
-            //     }
-            // });
-
             // Enter new value
             input.blur(function () {
                 // Get newly entered value
