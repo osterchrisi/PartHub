@@ -197,17 +197,19 @@ $(document).ready(function() {
 }
 
 .ui-resizable-e:before {
-  height: 6px;
-  width: 2px;
-  margin-top: -3px;
-  margin-left: -1px;
+  height: 20px;
+  width: 1px;
+  /* margin-top: -3px; */
+  margin-left: -2px;
+  background-color: #F8F8FF;
 }
 
 .ui-resizable-e:after {
-  height: 8px;
-  width: 2px;
-  margin-top: -4px;
-  margin-left: -1px;
+  height: 20px;
+  width: 1px;
+  /* margin-top: -4px; */
+  /* margin-left: -1px; */
+  background-color: #F8F8FF;
 }
 
 </style>
