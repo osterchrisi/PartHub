@@ -87,7 +87,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       echo "</div>";
-      echo "<div class='col' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);'>"; // height:75vh'>";
+      echo "<div class='col resizable' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);resize: both; overflow: auto;'>"; // height:75vh'>";
       // Display additional info on part in 3-column
       echo "Info";
       echo "</div>";
@@ -174,3 +174,40 @@ $(document).ready(function() {
   });
 });
 </script>
+
+<style>
+.ui-resizable-e {
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: col-resize;
+  z-index: 9999;
+}
+
+.ui-resizable-e:before,
+.ui-resizable-e:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #000;
+}
+
+.ui-resizable-e:before {
+  height: 6px;
+  width: 2px;
+  margin-top: -3px;
+  margin-left: -1px;
+}
+
+.ui-resizable-e:after {
+  height: 8px;
+  width: 2px;
+  margin-top: -4px;
+  margin-left: -1px;
+}
+
+</style>

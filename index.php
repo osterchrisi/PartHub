@@ -1,5 +1,5 @@
 <?php
-$title = 'Open-source part inventory and BOM tool';
+$title = 'Open-source inventory and BOM management';
 include 'includes/head.html';
 include 'includes/navbar.php'; ?>
 
@@ -18,7 +18,7 @@ h1.display-1::after {
     <div class="col-md-6 flex-grow-1 mx-auto my-auto">
       <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
-          <td colspan="3"><h1 class="display-1">PartHub<h1><br>Inventory and BOM management</h1><br>
+          <td colspan="3"><h1 class="display-1">PartHub</h1><br><h1>Inventory and BOM management</h1><br>
           Start looking at some parts, create a BOM and then execute it. Go ahead and explore!
           <br>The database will reset every full hour, then all your changes will be lost :(<br><br></td>
         </tr>
