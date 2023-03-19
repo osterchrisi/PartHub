@@ -1,5 +1,5 @@
 <?php
-$title = 'Start';
+$title = 'Open-source part inventory and BOM tool';
 include 'includes/head.html';
 include 'includes/navbar.php'; ?>
 
@@ -19,8 +19,9 @@ include 'includes/navbar.php'; ?>
     <div class="col-md-6 flex-grow-1 mx-auto my-auto">
       <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
-          <td colspan="3">Welcome to PartHub Live Demo!<br><br>
-          You can use any aspect of this demo but the database will reset every full hour, so all your changes will be lost<br><br></td>
+          <td colspan="3"><h1 class="display-1">PartHub<br><h1>Inventory and BOM management</h1><br><br>
+          Start looking at some parts, create a BOM and then execute it. Go ahead and explore!
+          <br>The database will reset every full hour, so all your changes will be lost :(<br><br></td>
         </tr>
         <tr>
           <td><a href="/PartHub/pages/inventory.php"><h1><i class="bi bi-list-columns"></i></h1>Parts<br></a></td>
