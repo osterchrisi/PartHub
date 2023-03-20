@@ -5,7 +5,7 @@ include 'includes/navbar.php'; ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-<!-- <style>
+<style>
   h1.display-1::after {
     content: 'BETA';
     font-size: 12px;
@@ -13,15 +13,16 @@ include 'includes/navbar.php'; ?>
   }
 
   .greeting {
-    border: 1px solid white;
+    /* border: 1px solid white; */
+    min-height: 90vh;
   }
 
   .full-height {
-    border: 1px solid red;
+    /* border: 1px solid red; */
   }
-</style> -->
+</style>
 <div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
-  <div class="greeting">
+  <div class="greeting d-flex align-items-center">
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
       <tr>
         <td colspan="3">
@@ -33,7 +34,7 @@ include 'includes/navbar.php'; ?>
       </tr>
       <tr>
         <td><a href="/PartHub/pages/inventory.php">
-            <h1><i class="bi bi-list-columns"></i></h1>Parts<br>
+            <h1><i class="bi bi-list-columns"></i></h1>Parts<br><br>
           </a></td>
         <td><a href="/PartHub/pages/bom-search.php">
             <h1><i class="bi bi-bezier2"></i></h1>BOMs<br>

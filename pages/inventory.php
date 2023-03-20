@@ -41,7 +41,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
-      <button type="submit" class="btn btn-primary" name="submit">Apply Filters</button><br><br>
+      <button type="submit" class="btn btn-primary" name="apply">Apply Filters</button><br><br>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -87,7 +87,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       echo "</div>";
-      echo "<div class='col resizable' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);resize: both; overflow: auto;'>"; // height:75vh'>";
+      echo "<div class='col resizable' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);overflow: auto;'>"; // height:75vh'>";
       // Display additional info on part in 3-column
       echo "Info";
       echo "</div>";
