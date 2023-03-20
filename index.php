@@ -11,11 +11,18 @@ h1.display-1::after {
    font-size: 12px;
    vertical-align: top;
 }
+.greeting {
+  /* max-width: 800px; */
+  /* min-height: 800px; */
+  border: 1px solid white;
+}
+.full-height {
+  border: 1px solid red;
+}
 </style>
-
-<div class="container-fluid vh-100 d-flex flex-column">
-  <div class="row d-flex flex-grow-1">
-    <div class="col-md-6 flex-grow-1 mx-auto my-auto">
+<div class="flex-grow-1 full-height">
+  <!-- <div class="row greeting d-flex flex-grow-1 justify-content-center align-items-center"> -->
+    <div class="greeting">
       <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
           <td colspan="3"><h1 class="display-1">PartHub</h1><br><h1>Inventory and BOM management</h1><br>
@@ -34,7 +41,7 @@ h1.display-1::after {
         </tr>
       </table>
     </div>
-  </div>
+  <!-- </div> -->
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
   integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
