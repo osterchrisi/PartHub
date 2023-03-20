@@ -87,9 +87,9 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       echo "</div>";
-      echo "<div class='col resizable' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);overflow: auto;'>"; // height:75vh'>";
+      echo "<div class='col d-flex resizable justify-content-center' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);overflow: auto;'>"; // height:75vh'>";
       // Display additional info on part in 3-column
-      echo "Info";
+      echo "<h6><br>Click on a part in the table</h6>";
       echo "</div>";
       echo "</div>";
 
