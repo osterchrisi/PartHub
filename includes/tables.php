@@ -100,7 +100,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             id="parts_table"
             data-resizable="true"
             data-search="true"
-            data-search-selector="#search"
+            data-search-selector="#filter"
             data-search-align="left"
             data-show-columns="true"
             data-search-accent-neutralise="true"

@@ -27,8 +27,9 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   <div class="row">
     <div class="col-3">
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="text" class="form-control" id="search" name="search" placeholder="Filter results..."
-          value="<?php echo htmlspecialchars($search_term); ?>">
+        <input type="text" class="form-control" id="search" name="search" placeholder="Search database..."
+          value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
+          <input type="text" class="form-control" id="filter" name="filter" placeholder="Filter current page...">
     </div>
     <div class="col-3">
       <input class="form-control" placeholder="Search categories" id="categories-filter">
@@ -41,7 +42,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
-      <button type="submit" class="btn btn-primary" name="apply">Apply Filters</button><br><br>
+      <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
