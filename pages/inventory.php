@@ -6,6 +6,8 @@ include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
+include '.../includes/stockModals.php';
+
 
 $table_name = "parts";
 
@@ -27,9 +29,9 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   <div class="row">
     <div class="col-3">
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="text" class="form-control" id="search" name="search" placeholder="Search database..."
+        <input type="text" class="form-control" id="search" name="search" placeholder="Search parts..."
           value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
-          <input type="text" class="form-control" id="filter" name="filter" placeholder="Filter current page...">
+          <input type="text" class="form-control" id="filter" name="filter" placeholder="Filter results...">
     </div>
     <div class="col-3">
       <input class="form-control" placeholder="Search categories" id="categories-filter">

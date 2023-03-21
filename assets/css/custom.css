@@ -1,3 +1,7 @@
 .table-hover thead tr:hover {
     cursor: move;
 }
+
+.stockModalNumber {
+    width: 33%;
+}
