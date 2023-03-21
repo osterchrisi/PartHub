@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Locations';
 require_once('../includes/head.html');
 include '../config/credentials.php';

@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Open-source inventory and BOM management';
 include 'includes/head.html';
 include 'includes/navbar.php'; ?>
@@ -53,6 +54,16 @@ include 'includes/navbar.php'; ?>
         <td><a href="/PartHub/pages/footprints.php">
             <h1><i class="bi bi-postage"></i></h1>Footprints
           </a></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <table class="table table-borderless">
+            <tr>
+              <td><button type="button" class="btn btn-primary">Continue as demo user</button></td>
+              <td><button type="button" class="btn btn-primary">Log into your account</button></td>
+            </tr>
+          </table>
+        </td>
       </tr>
     </table>
   </div>

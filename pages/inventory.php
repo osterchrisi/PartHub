@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Parts Inventory';
 require_once('../includes/head.html');
 
@@ -7,8 +8,6 @@ include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
 include '.../includes/stockModals.php';
-
-
 
 $table_name = "parts";
 

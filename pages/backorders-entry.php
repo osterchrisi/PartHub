@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Enter Backorder';
 require_once('../includes/head.html');
 include '../config/credentials.php';

@@ -1,4 +1,5 @@
-<?php include '/PartHub/includes/session.php';?>
+<!-- Must call this before any whitespaces or headers -->
+<?php include 'session.php'; ?>
 
 <!doctype html>
 <html lang="en">
@@ -6,7 +7,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="keywords" content="inventory management, BOMs (bills of materials), BOM, production tracking, stock keeping, supply chain management, warehouse management, parts tracking, component tracking, parts inventory, component inventory, self-hosted inventory management, cloud-based inventory management, inventory software, open-source, electronic part inventory, BOM creation, BOM execution">
+  <meta name="keywords"
+    content="inventory management, BOMs (bills of materials), BOM, production tracking, stock keeping, supply chain management, warehouse management, parts tracking, component tracking, parts inventory, component inventory, self-hosted inventory management, cloud-based inventory management, inventory software, open-source, electronic part inventory, BOM creation, BOM execution">
   <title>PartHub -
     <?php echo $title;?>
   </title>
@@ -42,12 +44,14 @@
   <!-- Bootstrap Table Resizable -->
   <link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet">
   <script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+  <script
+    src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
   <!-- Bootstrap Table Reorder Columns -->
   <link rel="stylesheet" href="/PartHub/assets/dragtable/dragtable.css">
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
   <script src="/PartHub/assets/dragtable/jquery.dragtable.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.js"></script>
+  <script
+    src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.js"></script>
   <!-- Bootstrap Table Cookie to remember table state -->
   <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
@@ -67,7 +71,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-06SX4YZKH2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag() { dataLayer.push(arguments); }
   gtag('js', new Date());
 
   gtag('config', 'G-06SX4YZKH2');

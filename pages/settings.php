@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Categories';
 require_once('../includes/head.html');
 include '../config/credentials.php';
@@ -14,5 +15,5 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <?php require_once('../includes/navbar.php'); ?>
   <br>
   <h4>User Settings</h4>
-  <?php include "../includes/user-settings.php"?>
+  <?php include "../includes/user-settings.php" ?>
 </div>

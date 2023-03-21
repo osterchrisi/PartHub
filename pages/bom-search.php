@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Show BOM';
 require_once('../includes/head.html');
 include '../config/credentials.php';
@@ -63,7 +64,8 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       echo "</div>";
       echo "</div>";
       displayPaginationLinks($total_pages, $current_page);
-    } else {
+    }
+    else {
       noResults();
     }
   } catch (Exception $e) {

@@ -1,2 +1,4 @@
 <?php
-echo "Chose template:";
+echo "Choose template:"; 
+echo "<br>";
+echo $user_id;

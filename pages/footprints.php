@@ -1,4 +1,5 @@
 <?php
+$basename = basename(__FILE__);
 $title = 'Footprints';
 require_once('../includes/head.html');
 include '../config/credentials.php';
