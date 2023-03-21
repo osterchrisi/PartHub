@@ -212,3 +212,8 @@ $(function () {
         });
     });
 });
+
+//Modal on index.php
+function showModal() {
+    $("#myModal").modal('show');
+};

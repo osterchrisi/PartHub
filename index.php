@@ -55,16 +55,20 @@ include 'includes/navbar.php'; ?>
             <h1><i class="bi bi-postage"></i></h1>Footprints
           </a></td>
       </tr>
-      <tr>
-        <td colspan="3">
-          <table class="table table-borderless">
-            <tr>
-              <td><button type="button" class="btn btn-primary">Continue as demo user</button></td>
-              <td><button type="button" class="btn btn-primary">Log into your account</button></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+      <?php
+      if ($show_modal == 1){
+      echo '<tr>';
+        echo '<td colspan="3">';
+          echo '<table class="table table-borderless">';
+            echo '<tr>';
+              echo '<td><button type="button" class="btn btn-primary">Continue as demo user</button></td>';
+              echo '<td><button type="button" class="btn btn-primary">Log into your account</button></td>';
+            echo '</tr>';
+          echo '</table>';
+        echo '</td>';
+      echo '</tr>';
+      }
+      ?>
     </table>
   </div>
 </div>
@@ -75,7 +79,11 @@ include 'includes/navbar.php'; ?>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
   integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
-
 </body>
 
 </html>
+
+<?php
+if ($show_modal == 1){
+  echo '<script>showModal();</script>';
+}
