@@ -1,0 +1,2 @@
+<?php
+echo "Chose template:";

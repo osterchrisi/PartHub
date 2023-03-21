@@ -9,6 +9,7 @@ include '../includes/get.php';
 include '.../includes/stockModals.php';
 
 
+
 $table_name = "parts";
 
 $search_term = getSuperGlobal('search');
