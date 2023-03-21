@@ -45,9 +45,15 @@
       </ul>
       <div class="d-flex">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/settings.php') ? 'active' : ''; ?>"
-            href="/PartHub/pages/settings.php">Settings</a>
-        </li>
+          <li>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
+                class="fas fa-user"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end text-end w-auto" style="min-width: 0;">
+              <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>' : '');?>
+              <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/includes/logout.php">Log Out</a></li>' : '');?>
+              <?php echo (!$_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/pages/login.php">Log In</a></li>' : '');?>
+            </ul>
+          </li>
         </ul>
       </div>
       </form>

@@ -217,6 +217,7 @@ $(document).ready(function() {
     $('#continueDemo').click(function() {
       $.post('/PartHub/includes/demo.php', {myVariable: 'myValue'}, function(response) {
         console.log(response);
+        window.location.href = "/PartHub/index.php?login";
       });
     });
   });

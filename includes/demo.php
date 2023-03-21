@@ -5,5 +5,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $demo_user_id = '1'; //chrisi!
 $_SESSION['user_id'] = '1';
-echo json_encode($_SESSION);
+header('Location: /PartHub/index.php');
+exit();
 ?>
