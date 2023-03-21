@@ -4,8 +4,6 @@ $title = 'Open-source inventory and BOM management';
 include 'includes/head.html';
 include 'includes/navbar.php'; ?>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 <style>
   h1.display-1::after {
     content: 'BETA';
@@ -61,8 +59,8 @@ include 'includes/navbar.php'; ?>
         echo '<td colspan="3">';
           echo '<table class="table table-borderless">';
             echo '<tr>';
-              echo '<td><button type="button" class="btn btn-primary">Continue as demo user</button></td>';
-              echo '<td><button type="button" class="btn btn-primary">Log into your account</button></td>';
+              echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
+              echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
             echo '</tr>';
           echo '</table>';
         echo '</td>';
@@ -73,11 +71,26 @@ include 'includes/navbar.php'; ?>
   </div>
 </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-  integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<!-- The user stuff modal -->
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">User stuff</h4>
+            </div>
+            <div class="modal-body">
+                <p>You are currently not logged in.</p>
+                <br>
+                <p>Please continue as demo user or log in!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 
@@ -85,5 +98,6 @@ include 'includes/navbar.php'; ?>
 
 <?php
 if ($show_modal == 1){
-  echo '<script>showModal();</script>';
+  echo "<script>var myModal = new bootstrap.Modal(document.getElementById('myModal'));</script>";
+  echo '<script>myModal.show();</script>';
 }
