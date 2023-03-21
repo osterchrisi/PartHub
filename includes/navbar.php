@@ -49,8 +49,10 @@
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
                 class="fas fa-user"></i></a>
             <ul class="dropdown-menu dropdown-menu-end text-end w-auto" style="min-width: 0;">
+              <!-- Logged in -->
               <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>' : '');?>
               <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/includes/logout.php">Log Out</a></li>' : '');?>
+              <!-- Not logged in -->
               <?php echo (!$_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/pages/login.php">Log In</a></li>' : '');?>
             </ul>
           </li>

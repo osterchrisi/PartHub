@@ -1,9 +1,13 @@
 <?php
 // Start session if not started yet
 if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params(0, '/', '', true, true);
     session_start();
 }
 
+if ($basename == 'login.php' || $basename == 'demo.php'){
+    return;
+}
 // This is not index.php
 
 if ($basename != 'index.php') {
