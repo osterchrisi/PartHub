@@ -169,46 +169,54 @@ $(function sendFormOnDropdownChange() {
 
 // ! Get right-click column-visibility menu for parts_table
 // ! Does NOT work yet, implemented with bootstrap-table for now
-$(function () {
-    var $table = $('#parts_table');
-    var $header = $table.find('thead tr');
-    var $columnsDropdown = $('<ul>').addClass('dropdown-menu');
+// $(function () {
+//     var $table = $('#parts_table');
+//     var $header = $table.find('thead tr');
+//     var $columnsDropdown = $('<ul>').addClass('dropdown-menu');
 
-    // Create dropdown list with checkboxes for each column
-    $header.find('th').each(function (index, column) {
-        var $checkbox = $('<input>').attr({
-            type: 'checkbox',
-            id: 'column-' + index,
-            checked: !$table.bootstrapTable('getVisibleColumns', $(column).data('field'))
-        });
+//     // Create dropdown list with checkboxes for each column
+//     $header.find('th').each(function (index, column) {
+//         var $checkbox = $('<input>').attr({
+//             type: 'checkbox',
+//             id: 'column-' + index,
+//             checked: !$table.bootstrapTable('getVisibleColumns', $(column).data('field'))
+//         });
 
-        // console.log("Visible columns: ", $table.bootstrapTable('getVisibleColumns'));
+//         // console.log("Visible columns: ", $table.bootstrapTable('getVisibleColumns'));
 
-        var $label = $('<label>').attr('for', 'column-' + index).text($(column).text());
+//         var $label = $('<label>').attr('for', 'column-' + index).text($(column).text());
 
-        var $item = $('<li>').addClass('dropdown-item').append($checkbox).append($label);
-        $columnsDropdown.append($item);
+//         var $item = $('<li>').addClass('dropdown-item').append($checkbox).append($label);
+//         $columnsDropdown.append($item);
 
-        // Add click event listener to toggle column visibility
-        $checkbox.on('click', function () {
-            var fieldName = $(column).data('field');
-            console.log("field = ", fieldName);
-            var visible = !$table.bootstrapTable('getVisibleColumns', fieldName);
-            $table.bootstrapTable('toggleColumn', fieldName, visible);
-        });
+//         // Add click event listener to toggle column visibility
+//         $checkbox.on('click', function () {
+//             var fieldName = $(column).data('field');
+//             console.log("field = ", fieldName);
+//             var visible = !$table.bootstrapTable('getVisibleColumns', fieldName);
+//             $table.bootstrapTable('toggleColumn', fieldName, visible);
+//         });
+//     });
+
+//     // Add right-click event listener to header row
+//     $header.on('contextmenu', function (event) {
+//         event.preventDefault();
+//         $columnsDropdown.appendTo($('body')).show();
+//         $columnsDropdown.css({
+//             position: 'absolute',
+//             left: event.pageX + 'px',
+//             top: event.pageY + 'px'
+//         });
+//         $(document).one('click', function () {
+//             $columnsDropdown.hide();
+//         });
+//     });
+// });
+
+$(document).ready(function() {
+    $('#continueDemo').click(function() {
+      $.post('/PartHub/includes/demo.php', {myVariable: 'myValue'}, function(response) {
+        console.log(response);
+      });
     });
-
-    // Add right-click event listener to header row
-    $header.on('contextmenu', function (event) {
-        event.preventDefault();
-        $columnsDropdown.appendTo($('body')).show();
-        $columnsDropdown.css({
-            position: 'absolute',
-            left: event.pageX + 'px',
-            top: event.pageY + 'px'
-        });
-        $(document).one('click', function () {
-            $columnsDropdown.hide();
-        });
-    });
-});
+  });

@@ -54,7 +54,7 @@ include 'includes/navbar.php'; ?>
           </a></td>
       </tr>
       <?php
-      if ($show_modal == 1){
+      if (!isset($_SESSION['user_id'])){
       echo '<tr>';
         echo '<td colspan="3">';
           echo '<table class="table table-borderless">';
@@ -91,6 +91,14 @@ include 'includes/navbar.php'; ?>
     </div>
 </div>
 
+<?php
+var_dump($_SESSION);
+$user_id = $_SESSION['user_id'];
+echo "User ID: $user_id";
+echo "<br>";
+echo "Session ID: " . session_id();
+
+?>
 
 </body>
 
