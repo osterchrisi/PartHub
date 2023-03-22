@@ -52,7 +52,6 @@ $total_stock = getTotalStock($result);
   </div>
   <br><br>
   <?php
-  var_dump($_SESSION);
   ?>
 
   <h5>Part of:</h5>
