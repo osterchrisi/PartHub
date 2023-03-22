@@ -17,6 +17,7 @@ $search_category = getSuperGlobal('cat', 'all');
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
+// var_dump($column_names);
 
 ?>
 
@@ -31,16 +32,14 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="text" class="form-control" id="search" name="search" placeholder="Search parts..."
           value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
-        <input type="text" class="form-control" id="filter" name="filter" placeholder="Filter results...">
+        <input type="text" class="form-control" id="filter" placeholder="Filter results...">
     </div>
     <div class="col-3">
       <input class="form-control" placeholder="Search categories" id="categories-filter">
       <?php
       $categories = getCategories($conn);
 
-      // echo "<pre>";
-      // print_r($categories);
-      // echo "end ";
+      // Neds the search category to pre-select the searched ones
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
@@ -67,9 +66,12 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   $results_per_page = getSuperGlobal('resultspp', '50');
 
   try {
+    //* Essentially setting search column to everywhere because currently not in use in the search form
     $search_column = getSuperGlobal('search_column', 'everywhere');
+    // The term from the search field
     $search_term = getSuperGlobal('search');
-    $total_rows = getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names);
+    //Get the number of results for pagination
+    $total_rows = getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category);
 
     if ($total_rows) {
       // Calculate the total number of pages for pagination
@@ -79,7 +81,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       // Calculate the offset for the current page
       $offset = ($current_page - 1) * $results_per_page;
 
-      $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names);
+      $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category);
 
       // echo "<pre>";
       // var_dump($result);

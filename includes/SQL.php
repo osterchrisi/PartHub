@@ -20,11 +20,13 @@ function getColumnNames($conn, $table_name)
   $column_names = $stmt->fetchAll(PDO::FETCH_COLUMN);
   return $column_names;
 }
-function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names)
+function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category)
 {
   // Get the total number of rows in the table, filtered by the search term
   $sql = "SELECT COUNT(*) as total FROM $table_name WHERE ";
 
+
+  // Seach Column(s)
   if ($search_column == 'everywhere') {
     // Search all columns
     $sql .= "CONCAT_WS(' ',";
@@ -37,10 +39,23 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
       }
     }
     $sql .= ") LIKE :search_term ";
-  } else {
+  }
+  else {
     // Search only the specified column
     $sql .= "$search_column LIKE :search_term ";
   }
+
+  // Seach Category(s)
+  if (in_array('all', $search_category)) {
+    $sql .= "AND part_category_fk > 0";
+  } else {
+    $string = '(';
+    $string .= implode(", ", $search_category);
+    $string .= ")";
+
+    $sql .= "AND part_category_fk IN " . $string;
+  }
+
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->execute();
@@ -49,9 +64,9 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
   return $total_rows;
 }
 
-function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names)
+function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category)
 {
-  // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
+  // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term and search column
   $sql = "SELECT *, part_id as 'id' FROM $table_name 
           JOIN part_categories ON parts.part_category_fk = part_categories.category_id
           JOIN part_units ON parts.part_unit_fk = part_units.unit_id
@@ -69,9 +84,21 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
       }
     }
     $sql .= ") LIKE :search_term ";
-  } else {
+  }
+  else {
     // Search only the specified column
     $sql .= "$search_column LIKE :search_term ";
+  }
+
+  // Seach Category(s)
+  if (in_array('all', $search_category)) {
+    $sql .= "AND part_category_fk > 0 ";
+  } else {
+    $string = '(';
+    $string .= implode(", ", $search_category);
+    $string .= ") ";
+
+    $sql .= "AND part_category_fk IN " . $string;
   }
 
   $sql .= "LIMIT :offset, :results_per_page";
@@ -95,7 +122,8 @@ function backorder_query($table_name, $search_column, $search_term, $offset, $re
   if ($search_column == 'everywhere') {
     // Search all columns
     $sql .= "CONCAT(customer_name, customer_po, created_at, product_name, status_name) LIKE :search_term ";
-  } else {
+  }
+  else {
     // Search only the specified column
     $sql .= "$search_column LIKE :search_term ";
   }
@@ -103,11 +131,14 @@ function backorder_query($table_name, $search_column, $search_term, $offset, $re
   $sql .= "AND backorder_status LIKE ";
   if ($search_status == 1) {
     $sql .= "1 ";
-  } elseif ($search_status == 2) {
+  }
+  elseif ($search_status == 2) {
     $sql .= "2 ";
-  } elseif ($search_status == 3) {
+  }
+  elseif ($search_status == 3) {
     $sql .= "3 ";
-  } elseif ($search_status == 'all') {
+  }
+  elseif ($search_status == 'all') {
     $sql .= "'%' ";
   }
 
@@ -143,7 +174,8 @@ function getTotalNumberOfBackorderRows($conn, $table_name, $search_column, $sear
   if ($search_column == 'everywhere') {
     // Search all columns
     $sql .= "CONCAT(customer_name, customer_po, created_at, product_name, backorder_status) LIKE :search_term ";
-  } else {
+  }
+  else {
     // Search only the specified column
     $sql .= "$search_column LIKE :search_term ";
   }
@@ -151,11 +183,14 @@ function getTotalNumberOfBackorderRows($conn, $table_name, $search_column, $sear
   $sql .= "AND backorder_status LIKE ";
   if ($search_status == 1) {
     $sql .= "1 ";
-  } elseif ($search_status == 2) {
+  }
+  elseif ($search_status == 2) {
     $sql .= "2 ";
-  } elseif ($search_status == 3) {
+  }
+  elseif ($search_status == 3) {
     $sql .= "3 ";
-  } elseif ($search_status == 'all') {
+  }
+  elseif ($search_status == 'all') {
     $sql .= "'%' ";
   }
 

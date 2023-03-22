@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // $basename = basename(__FILE__);
 // include '/PartHub/includes/session.php';
 
-$demo_user_id = '0'; //demo-user
+$demo_user_id = '-1'; //demo-user
 $_SESSION['user_id'] = $demo_user_id;
 echo json_encode(array($_SESSION, $basename));
 ?>
