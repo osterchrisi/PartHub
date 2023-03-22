@@ -12,12 +12,11 @@ include '.../includes/stockModals.php';
 $table_name = "parts";
 
 $search_term = getSuperGlobal('search');
-$search_category = getSuperGlobal('cat', 'all');
+$search_category = getSuperGlobal('cat', ['all']);
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
-// var_dump($column_names);
 
 ?>
 

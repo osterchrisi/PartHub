@@ -93,18 +93,12 @@ include 'includes/navbar.php'; ?>
     </div>
 </div>
 
-<?php
-echo "User ID: " . $_SESSION['user_id'];
-echo "<br>";
-echo "Session ID: " . session_id();
-
-?>
-
 </body>
 
 </html>
 
 <?php
+// Show the login modal if user is not logged in yet
 if ($show_modal == 1){
   echo "<script>var myModal = new bootstrap.Modal(document.getElementById('myModal'));</script>";
   echo '<script>myModal.show();</script>';
