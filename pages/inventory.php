@@ -81,17 +81,13 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       $offset = ($current_page - 1) * $results_per_page;
 
       $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category);
-
-      // echo "<pre>";
-      // var_dump($result);
-      // echo "</pre>";
   
       echo "<div class='row'>";
       echo "<div class='col-9' id='table-window' style='max-width: 90%;'>"; //9
       // Display parts across a 9-column
       buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
       echo "</div>";
-      echo "<div class='col d-flex resizable justify-content-center' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1);overflow: auto;'>"; // height:75vh'>";
+      echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1); overflow:auto;'>"; // height:75vh'>";
       // Display additional info on part in 3-column
       echo "<h6><br>Click on a part in the table</h6>";
       echo "</div>";

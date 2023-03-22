@@ -21,7 +21,7 @@ $total_stock = getTotalStock($result);
 ?>
 <!--#include virtual="../includes/stockModals.html" -->
 
-<div class="container-fluid">
+<div class="container-fluid position-sticky">
   <br>
 
   <h4>

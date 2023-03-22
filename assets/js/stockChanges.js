@@ -11,7 +11,8 @@ $(document).ready(function () {
         $.post('/PartHub/includes/stockChanges.php',
             { quantity: q, comment: c, user_id: uid, part_id: pid },
             function (response) {
-                console.log(response);
+                console.log("Succesfully created new stock history entry with number: ", response);
+                $("#mAddStock").hide();
             });
     });
 });
