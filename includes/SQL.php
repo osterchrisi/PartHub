@@ -349,3 +349,14 @@ function getCategories($conn)
   $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $categories;
 }
+
+function getUserName($conn){
+  $sql = "SELECT user_name FROM users WHERE user_id = :user_id";
+  $stmt = $conn->prepare($sql);
+  $stmt->bindParam(':user_id', $_SESSION['user_id']);
+  $stmt->execute();
+  $name = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  // Need to extract the user name because $name is an array
+  $name = $name[0]['user_name'];
+  return $name;
+}

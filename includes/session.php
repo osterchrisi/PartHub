@@ -16,7 +16,6 @@ if ($basename != 'index.php') {
     //? Think this if statement is useless but feels good
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
-        $user_name = getUserName();
     }
     // User not logged in and not index.php, so redirect him there
     else {
