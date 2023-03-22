@@ -14,3 +14,6 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <br>
   <h4>Log in to your PartHub account</h4>
 </div>
+
+//TODO: Check if user already logged in
+//TODO: Let user log in

@@ -31,7 +31,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="text" class="form-control" id="search" name="search" placeholder="Search parts..."
           value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
-          <input type="text" class="form-control" id="filter" name="filter" placeholder="Filter results...">
+        <input type="text" class="form-control" id="filter" name="filter" placeholder="Filter results...">
     </div>
     <div class="col-3">
       <input class="form-control" placeholder="Search categories" id="categories-filter">
@@ -98,7 +98,8 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
       // Pagnination links
       displayPaginationLinks($total_pages, $current_page);
-    } else {
+    }
+    else {
       noResults();
     }
   } catch (Exception $e) {
@@ -151,7 +152,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   $(function () {
     $('#table-window').resizable({
       handles: 'e',
-      resize: function() {
+      resize: function () {
         var parentWidth = $('#table-window').parent().width();
         var tableWidth = $('#table-window').width();
         var infoWidth = parentWidth - tableWidth;
@@ -163,56 +164,55 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
 <!-- Filter categories -->
 <script>
-$(document).ready(function() {
-  $('#categories-filter').on('input', function() {
-    var filterText = $(this).val().toLowerCase();
-    $('#cat-select option').each(function() {
-      var optionText = $(this).text().toLowerCase();
-      if (optionText.indexOf(filterText) !== -1) {
-        $(this).show();
-      } else {
-        $(this).hide();
-      }
+  $(document).ready(function () {
+    $('#categories-filter').on('input', function () {
+      var filterText = $(this).val().toLowerCase();
+      $('#cat-select option').each(function () {
+        var optionText = $(this).text().toLowerCase();
+        if (optionText.indexOf(filterText) !== -1) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
     });
   });
-});
 </script>
 
 <style>
-.ui-resizable-e {
-  width: 10px;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: col-resize;
-  z-index: 9999;
-}
+  .ui-resizable-e {
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: col-resize;
+    z-index: 9999;
+  }
 
-.ui-resizable-e:before,
-.ui-resizable-e:after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background-color: #000;
-}
+  .ui-resizable-e:before,
+  .ui-resizable-e:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #000;
+  }
 
-.ui-resizable-e:before {
-  height: 20px;
-  width: 1px;
-  /* margin-top: -3px; */
-  margin-left: -2px;
-  background-color: #F8F8FF;
-}
+  .ui-resizable-e:before {
+    height: 20px;
+    width: 1px;
+    /* margin-top: -3px; */
+    margin-left: -2px;
+    background-color: #F8F8FF;
+  }
 
-.ui-resizable-e:after {
-  height: 20px;
-  width: 1px;
-  /* margin-top: -4px; */
-  /* margin-left: -1px; */
-  background-color: #F8F8FF;
-}
-
+  .ui-resizable-e:after {
+    height: 20px;
+    width: 1px;
+    /* margin-top: -4px; */
+    /* margin-left: -1px; */
+    background-color: #F8F8FF;
+  }
 </style>
