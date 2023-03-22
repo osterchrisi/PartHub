@@ -1,3 +1,9 @@
+<?php
+//! Get user name - navbar is not a cool place for this
+$conn = connectToSQLDB($hostname, $username, $password, $database_name);
+$user_name = getUserName($conn);
+?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/PartHub/index.php">PartHub</a>
@@ -50,7 +56,7 @@
                 class="fas fa-user"></i></a>
             <ul class="dropdown-menu dropdown-menu-end text-end w-auto" style="min-width: 0;">
               <!-- Logged in -->
-              <?php echo ($_SESSION['user_id'] ? '<li>"user-name"</li><li><hr class="dropdown-divider"></li>' : '');?>
+              <?php echo ($_SESSION['user_id'] ? '<li>'.$user_name.'</li><li><hr class="dropdown-divider"></li>' : '');?>
               <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>' : '');?>
               <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/includes/logout.php">Log Out</a></li>' : '');?>
               <!-- Not logged in -->
