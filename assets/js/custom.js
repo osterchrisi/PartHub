@@ -222,16 +222,3 @@ $(document).ready(function() {
       });
     });
   });
-
-// ClickListener for "Save Changes" button in Add Stock Modal
-$(document).ready(function() {
-    $('#AddStock').click(function() {
-        console.log("Someone clicked Save Changes");
-        var quant = document.getElementById("addStockQuantity").text();
-        console.log(quant);
-      $.post('/PartHub/includes/stockChanges.php', {quant: quant}, function(response) {
-        console.log(response);
-      });
-    });
-  });
-

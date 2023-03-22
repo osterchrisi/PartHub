@@ -360,3 +360,7 @@ function getUserName($conn){
   $name = $name[0]['user_name'];
   return $name;
 }
+
+function stockChange($conn, $part_id, $from_ocation, $to_location, $quantity, $comment, $datetime, $user_id){
+  
+}

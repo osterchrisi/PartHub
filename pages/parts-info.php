@@ -62,6 +62,7 @@ $total_stock = getTotalStock($result);
 
 </div>
 
+<!-- Need to include again because this page has no header and is not initially loaded -->
 <script>
 <?php include '../assets/js/stockChanges.js';?>
 </script>
