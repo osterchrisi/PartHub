@@ -8,7 +8,7 @@ $(document).ready(function() {
         //* Okay, this looks strange but works?!
         uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
-        console.log(id);
+        console.log(uid, pid);
       $.post('/PartHub/includes/stockChanges.php', {quant: q, desc: d, user_id: uid, part_id: pid}, function(response) {
         console.log(response);
       });

@@ -361,6 +361,18 @@ function getUserName($conn){
   return $name;
 }
 
-function stockChange($conn, $part_id, $from_ocation, $to_location, $quantity, $comment, $datetime, $user_id){
-  
+function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id){
+  $stmt = $conn->prepare("INSERT INTO stock_level_change_history
+                        (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_datetime, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
+                        (NULL, :part_id, :from_location, :to_location, :quantity, CURRENT_TIMESTAMP, :comment, :user_id)");
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':from_location', $from_location);
+  $stmt->bindParam(':to_location', $to_location);
+  $stmt->bindParam(':quantity', $quantity);
+  $stmt->bindParam(':comment', $comment);
+  $stmt->bindParam(':user_id', $user_id);
+  $stmt->execute();
+
+  $new_id = $conn->lastInsertId();
+  return $new_id;
 }
