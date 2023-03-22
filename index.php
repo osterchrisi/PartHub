@@ -58,10 +58,12 @@ include 'includes/navbar.php'; ?>
       echo '<tr>';
         echo '<td colspan="3">';
           echo '<table class="table table-borderless">';
-            echo '<tr>';
-              echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
-              echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
-            echo '</tr>';
+            echo '<tbody class="alert alert-danger">';
+              echo '<tr>';
+                echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
+                echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
+               echo '</tr>';
+              echo '</tbody>';
           echo '</table>';
         echo '</td>';
       echo '</tr>';
@@ -92,9 +94,7 @@ include 'includes/navbar.php'; ?>
 </div>
 
 <?php
-var_dump($_SESSION);
-$user_id = $_SESSION['user_id'];
-echo "User ID: $user_id";
+echo "User ID: " . $_SESSION['user_id'];
 echo "<br>";
 echo "Session ID: " . session_id();
 
