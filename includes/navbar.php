@@ -2,6 +2,7 @@
 //! Get user name - navbar is not a cool place for this
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $user_name = getUserName($conn);
+$_SESSION['user_name'] = $user_name;
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

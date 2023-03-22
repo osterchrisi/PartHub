@@ -32,6 +32,7 @@ $total_stock = getTotalStock($result);
   </h5>
 
   <?php buildTable($db_columns, $nice_columns, $result);
+  include '../includes/session.php';
   include '../includes/stockModals.php';
   ?>
 
@@ -50,6 +51,9 @@ $total_stock = getTotalStock($result);
     <!-- </div> -->
   </div>
   <br><br>
+  <?php
+  var_dump($_SESSION);
+  ?>
 
   <h5>Part of:</h5>
   <h5>Datasheet:</h5>
@@ -57,3 +61,7 @@ $total_stock = getTotalStock($result);
 
 
 </div>
+
+<script>
+<?php include '../assets/js/stockChanges.js';?>
+</script>
