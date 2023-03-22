@@ -1,16 +1,17 @@
 // ClickListener for "Save Changes" button in Add Stock Modal
-$(document).ready(function() {
-    $('#AddStock').click(function() {
+$(document).ready(function () {
+    $('#AddStock').click(function () {
         q = $("#addStockQuantity").val();
-        console.log(q);
-        d = $("#addStockDescription").val();
-        console.log(d);
-        //* Okay, this looks strange but works?!
+        c = $("#addStockDescription").val();
+
+        //? Okay, this looks weird, maybe there is a cleaner way?
         uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
-        console.log(uid, pid);
-      $.post('/PartHub/includes/stockChanges.php', {quant: q, desc: d, user_id: uid, part_id: pid}, function(response) {
-        console.log(response);
-      });
+
+        $.post('/PartHub/includes/stockChanges.php',
+            { quantity: q, comment: c, user_id: uid, part_id: pid },
+            function (response) {
+                console.log(response);
+            });
     });
-  });
+});
