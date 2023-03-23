@@ -20,7 +20,6 @@ $result = getStockLevels($conn, $part_id);
 $total_stock = getTotalStock($result);
 
 ?>
-<!--#include virtual="../includes/stockModals.html" -->
 
 <div class="container-fluid">
   <br>
