@@ -1,13 +1,14 @@
 <?php
 $basename = basename(__FILE__);
+include '../includes/session.php';
 include '../config/credentials.php';
 include '../config/show-stock-columns.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
 include '../includes/tables.php';
-include '../includes/session.php';
 
+// Connect to database
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $part_id = getSuperGlobal('part_id');
 
@@ -31,11 +32,11 @@ $total_stock = getTotalStock($result);
     <?php echo $total_stock; ?>
   </h5>
 
+  <!-- Location / Quantity Table -->
   <?php buildTable($db_columns, $nice_columns, $result); ?>
 
   <div class="input-group">
     <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
-    <!-- <div class="btn-group btn-group-sm" role="group" id="stock-buttons"> -->
 
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#mAddStock"
       data-part-name="<?php echo $part_name; ?>">Add</button>
@@ -45,11 +46,9 @@ $total_stock = getTotalStock($result);
 
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
       data-bs-target="#mReduceStock">Reduce</button>
-    <!-- </div> -->
+
   </div>
   <br><br>
-  <?php
-  ?>
 
   <h5>Part of:</h5>
   <h5>Datasheet:</h5>
@@ -58,7 +57,7 @@ $total_stock = getTotalStock($result);
 
 </div>
 
-<!-- Need to include again because this page has no header and is not initially loaded -->
+<!-- Click listeners for buttons on stock changing modals -->
 <script>
-<?php include '../assets/js/stockChanges.js';?>
+  <?php include '../assets/js/stockChanges.js'; ?>
 </script>

@@ -7,7 +7,6 @@ include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
-// include '../includes/stockModals.php';
 
 $table_name = "parts";
 
@@ -20,7 +19,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
 ?>
 
-<!-- Stock Modal -->
+<!-- Stock Modal - gets dynamically updated with JS -->
 <div class="modal fade" id="mAddStock" tabindex="-1">
 </div>
 
@@ -85,7 +84,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       $offset = ($current_page - 1) * $results_per_page;
 
       $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category);
-  
+
       echo "<div class='row'>";
       echo "<div class='col-9' id='table-window' style='max-width: 90%;'>"; //9
       // Display parts across a 9-column
@@ -121,26 +120,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       $(this).toggleClass('selected');
       var id = $(this).data('id'); // get the ID from the first cell of the selected row
 
-            // Load the stockModals page and pass the id variable as a parameter
-      $.ajax({
-        url: '../includes/stockModals.php',
-        type: 'GET',
-        data: { part_id: id },
-        success: function (data) {
-          // Replace the content of the stock modal with the loaded PHP page
-          $('#mAddStock').html(data);
-        },
-        error: function () {
-          // Display an error message if the PHP page failed to load
-          $('#mAddStock').html('Failed to load modal.');
-        }
-      });
-
-      //TODO: Do the same for the stock movement modal as it can't be called
-      //TODO: from within the parts-info window due to their position attributes
-      //TODO: So stockModal needs to go on inventory.php as well and then be updated
-      //TODO: from here with the correct variables. That should work
-
       // Load the parts-info page and pass the id variable as a parameter
       $.ajax({
         url: 'parts-info.php',
@@ -153,6 +132,21 @@ $results_per_page = getSuperGlobal('resultspp', '50');
         error: function () {
           // Display an error message if the PHP page failed to load
           $('#info-window').html('Failed to load additional part data.');
+        }
+      });
+
+      // Load the stockModals page and pass the id variable as a parameter
+      $.ajax({
+        url: '../includes/stockModals.php',
+        type: 'GET',
+        data: { part_id: id },
+        success: function (data) {
+          // Replace the content of the stock modal with the loaded PHP page
+          $('#mAddStock').html(data);
+        },
+        error: function () {
+          // Display an error message if the PHP page failed to load
+          $('#mAddStock').html('Failed to load modal.');
         }
       });
 
