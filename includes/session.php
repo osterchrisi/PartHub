@@ -1,12 +1,19 @@
 <?php
 // Start session if not started yet
 if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params(0, '/', '', true, true);
     session_start();
 }
 
-// This is not index.php
+// Do nothing for login and demo login
+if ($basename == 'login.php' || $basename == 'demo.php') {
+    return;
+}
 
+// This is not index.php
 if ($basename != 'index.php') {
+    // User already logged in
+    //? Think this if statement is useless but feels good
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
     }
@@ -20,7 +27,7 @@ else {
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
     }
-    // Make him click one of the buttons
+    // Make him click one of the buttons by showing the modal
     else {
         if ($_GET['redirect']) {
             $show_modal = 1;

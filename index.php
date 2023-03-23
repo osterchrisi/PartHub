@@ -2,6 +2,10 @@
 $basename = basename(__FILE__);
 $title = 'Open-source inventory and BOM management';
 include 'includes/head.html';
+//! Currently including this for getting the user name in the navbar - not ideal
+include 'config/credentials.php';
+include 'includes/SQL.php';
+
 include 'includes/navbar.php'; ?>
 
 <style>
@@ -58,10 +62,12 @@ include 'includes/navbar.php'; ?>
       echo '<tr>';
         echo '<td colspan="3">';
           echo '<table class="table table-borderless">';
-            echo '<tr>';
-              echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
-              echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
-            echo '</tr>';
+            echo '<tbody class="alert alert-danger">';
+              echo '<tr>';
+                echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
+                echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
+               echo '</tr>';
+              echo '</tbody>';
           echo '</table>';
         echo '</td>';
       echo '</tr>';
@@ -91,20 +97,12 @@ include 'includes/navbar.php'; ?>
     </div>
 </div>
 
-<?php
-var_dump($_SESSION);
-$user_id = $_SESSION['user_id'];
-echo "User ID: $user_id";
-echo "<br>";
-echo "Session ID: " . session_id();
-
-?>
-
 </body>
 
 </html>
 
 <?php
+// Show the login modal if user is not logged in yet
 if ($show_modal == 1){
   echo "<script>var myModal = new bootstrap.Modal(document.getElementById('myModal'));</script>";
   echo '<script>myModal.show();</script>';
