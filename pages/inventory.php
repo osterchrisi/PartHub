@@ -116,8 +116,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       $('tbody tr').removeClass('selected');
       $(this).toggleClass('selected');
       var id = $(this).data('id'); // get the ID from the first cell of the selected row
-      // var part_name = $(this).find('td:nth-child(2)').text(); // Currently not in use...
-      // console.log("part_name: ", part_name);
 
       // Load the PHP page and pass the id variable as a parameter
       $.ajax({
