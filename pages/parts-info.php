@@ -35,6 +35,7 @@ $total_stock = getTotalStock($result);
   <!-- Location / Quantity Table -->
   <?php buildTable($db_columns, $nice_columns, $result); ?>
 
+  <!-- Stock movement buttons -->
   <div class="input-group">
     <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
 

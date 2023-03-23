@@ -61,12 +61,6 @@ function generateResultsDropdown($results_per_page)
     <?php } ?>
   </select>
 <?php
-  // echo '<select name="resultspp" class="form-select" style="width:auto">';
-  // echo '<option value="10">10</option>';
-  // echo "<option value='25'>25</option>";
-  // echo "<option value='50'>50</option>";
-  // echo "<option value='100'>100</option>";
-  // echo '</select>';
 }
 
 function generateBackordersCustomersDropdown($conn)

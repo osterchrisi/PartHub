@@ -8,16 +8,15 @@ include 'get.php';
 include 'tables.php';
 include 'session.php';
 
-
-
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $part_id = getSuperGlobal('part_id');
 
-// // Get part name
+// Get part name
 $result = getPartName($conn, $part_id);
 $part_name = $result[0]['part_name'];
 ?>
 
+<!-- HTML for modal -->
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
@@ -26,9 +25,9 @@ $part_name = $result[0]['part_name'];
     </div>
 
     <div class="modal-body mx-1">
-      Add Stock for <?php echo $part_name;?>
+      Add Stock for <?php echo $part_name; ?><br><br>
       <form>
-        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
+        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><select><br>
         <input class="form-control" placeholder="Description / PO" id="addStockDescription">
       </form>
     </div>
