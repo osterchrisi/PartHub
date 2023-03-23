@@ -48,7 +48,8 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
   // Seach Category(s)
   if (in_array('all', $search_category)) {
     $sql .= "AND part_category_fk > 0";
-  } else {
+  }
+  else {
     $string = '(';
     $string .= implode(", ", $search_category);
     $string .= ")";
@@ -93,7 +94,8 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
   // Seach Category(s)
   if (in_array('all', $search_category)) {
     $sql .= "AND part_category_fk > 0 ";
-  } else {
+  }
+  else {
     $string = '(';
     $string .= implode(", ", $search_category);
     $string .= ") ";
@@ -350,7 +352,8 @@ function getCategories($conn)
   return $categories;
 }
 
-function getUserName($conn){
+function getUserName($conn)
+{
   $sql = "SELECT user_name FROM users WHERE user_id = :user_id";
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(':user_id', $_SESSION['user_id']);
@@ -361,7 +364,8 @@ function getUserName($conn){
   return $name;
 }
 
-function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id){
+function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id)
+{
   $stmt = $conn->prepare("INSERT INTO stock_level_change_history
                         (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_datetime, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
                         (NULL, :part_id, :from_location, :to_location, :quantity, CURRENT_TIMESTAMP, :comment, :user_id)");
@@ -375,4 +379,13 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
 
   $new_id = $conn->lastInsertId();
   return $new_id;
+}
+
+function getLocations($conn)
+{
+  $sql = "SELECT location_id, location_name FROM location_names";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+  $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $loc;
 }

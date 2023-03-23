@@ -14,6 +14,9 @@ $part_id = getSuperGlobal('part_id');
 // Get part name
 $result = getPartName($conn, $part_id);
 $part_name = $result[0]['part_name'];
+
+// Get locations
+$locations = getLocations($conn);
 ?>
 
 <!-- HTML for modal -->
@@ -25,9 +28,18 @@ $part_name = $result[0]['part_name'];
     </div>
 
     <div class="modal-body mx-1">
-      Add Stock for <?php echo $part_name; ?><br><br>
+      Add Stock for
+      <?php echo $part_name; ?><br><br>
       <form>
-        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><select><br>
+        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
+        <select name="locations" class="form-select">
+        <?php
+          foreach ($locations as  $location) {
+            echo "<option value='{$location['id']}'>{$location['location_name']}</option>";
+          }
+          ?>
+        </select>
+        <br>
         <input class="form-control" placeholder="Description / PO" id="addStockDescription">
       </form>
     </div>

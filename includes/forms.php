@@ -52,7 +52,6 @@ function generateResultsDropdown($results_per_page)
     "50" => "50",
     "100" => "100"
   ];
-
   ?>
 
   <select name="resultspp" id="resultspp" class="form-select" style="width:auto">
