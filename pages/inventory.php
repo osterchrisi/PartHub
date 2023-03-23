@@ -41,7 +41,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       <?php
       $categories = getCategories($conn);
 
-      // Neds the search category to pre-select the searched ones
+      // Needs the search category to pre-select the searched ones
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
