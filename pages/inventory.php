@@ -7,7 +7,7 @@ include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
-include '.../includes/stockModals.php';
+include '../includes/stockModals.php';
 
 $table_name = "parts";
 

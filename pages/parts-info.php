@@ -6,6 +6,7 @@ include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
 include '../includes/tables.php';
+include '../includes/session.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $part_id = getSuperGlobal('part_id');
@@ -31,10 +32,7 @@ $total_stock = getTotalStock($result);
     <?php echo $total_stock; ?>
   </h5>
 
-  <?php buildTable($db_columns, $nice_columns, $result);
-  include '../includes/session.php';
-  include '../includes/stockModals.php';
-  ?>
+  <?php buildTable($db_columns, $nice_columns, $result); ?>
 
   <div class="input-group">
     <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
