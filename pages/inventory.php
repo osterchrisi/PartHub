@@ -117,7 +117,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       $(this).toggleClass('selected');
       var id = $(this).data('id'); // get the ID from the first cell of the selected row
 
-      // Load the PHP page and pass the id variable as a parameter
+      // Load the parts-info page and pass the id variable as a parameter
       $.ajax({
         url: 'parts-info.php',
         type: 'GET',
@@ -131,6 +131,12 @@ $results_per_page = getSuperGlobal('resultspp', '50');
           $('#info-window').html('Failed to load additional part data.');
         }
       });
+
+      //TODO: Do the same for the stock movement modal as it can't be called
+      //TODO: from within the parts-info window due to their position attributes
+      //TODO: So stockModal needs to go on inventory.php as well and then be updated
+      //TODO: from here with the correct variables. That should work
+
     });
   });
 </script>
