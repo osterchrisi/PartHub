@@ -6,10 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Do not redirect for these pages
-$doNothingArray = ['login.php', 'demo.php', 'parts-info.php', 'stockMOdals.php'];
+$doNothingArray = ['login.php', 'demo.php', 'parts-info.php', 'stockModals.php'];
 
-// Do nothing for login, demo login and parts-info window
-if ($basename in_array($doNothingArray)) {
+// Do nothing
+if (in_array($basename, $doNothingArray)) {
     return;
 }
 
