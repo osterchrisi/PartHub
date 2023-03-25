@@ -2,6 +2,7 @@
 $basename = basename(__FILE__);
 $title = 'Parts Inventory';
 require_once('../includes/head.html');
+// echo "<script src='/PartHub/assets/js/tables.js'></script>";
 
 include '../config/credentials.php';
 include '../includes/SQL.php';
@@ -111,6 +112,10 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   ?>
 
 </div>
+
+<script>
+ bootstrapPartsTable();
+</script>
 
 <script>
   // Get part_id from the clicked row and pass it to show-stock.php for showing details in the info-window

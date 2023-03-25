@@ -1,15 +1,15 @@
+// Bootstrap-Table
+function bootstrapPartsTable() {
+    $('#parts_table').bootstrapTable({
+    });
+};
+
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {
     // Remove the href tag and return only the string values
     // Otherwise cells get sorted by the URL which contains part_id
     return $(a).text() - $(b).text();
 };
-
-// Bootstrap-Table
-$(function bootstrapTable() {
-    $('#parts_table').bootstrapTable({
-    });
-});
 
 // Select element for the category dropdown in parts table
 function createCategorySelect(categories, currentValue) {
