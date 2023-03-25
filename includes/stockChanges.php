@@ -8,6 +8,7 @@ $test = getUserName($conn);
 
 // Gather variables
 $quantity = $_POST['quantity'];
+$to_location = $_POST['location'];
 $comment = $_POST['comment'];
 // $id1 = $_POST['id']; // currently use user_id from $_SESSION array
 $user_id = $_SESSION['user_id'];

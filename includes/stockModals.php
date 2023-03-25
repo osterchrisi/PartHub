@@ -32,7 +32,7 @@ $locations = getLocations($conn);
       <?php echo $part_name; ?><br><br>
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
-        <select name="locations" class="form-select">
+        <select name="locations" id ="addStockLocation" class="form-select">
         <?php
           foreach ($locations as  $location) {
             echo "<option value='{$location['id']}'>{$location['location_name']}</option>";

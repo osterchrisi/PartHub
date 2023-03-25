@@ -389,3 +389,12 @@ function getLocations($conn)
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $loc;
 }
+
+function changeQuantity($conn, $part_id, $quantity)
+{
+  $sql = "SELECT location_id, location_name FROM location_names";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+  $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $loc;
+}
