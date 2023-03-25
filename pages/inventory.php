@@ -114,10 +114,8 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 </div>
 
 <script>
- bootstrapPartsTable();
-</script>
+  bootstrapPartsTable();
 
-<script>
   // Get part_id from the clicked row and pass it to show-stock.php for showing details in the info-window
   $(document).ready(function () {
     $('tr').click(function () {
@@ -125,36 +123,8 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       $(this).toggleClass('selected');
       var id = $(this).data('id'); // get the ID from the first cell of the selected row
 
-      // Load the parts-info page and pass the id variable as a parameter
-      $.ajax({
-        url: 'parts-info.php',
-        type: 'GET',
-        data: { part_id: id, hideNavbar: true },
-        success: function (data) {
-          // Replace the content of the info window with the loaded PHP page
-          $('#info-window').html(data);
-        },
-        error: function () {
-          // Display an error message if the PHP page failed to load
-          $('#info-window').html('Failed to load additional part data.');
-        }
-      });
-
-      // Load the stockModals page and pass the id variable as a parameter
-      $.ajax({
-        url: '../includes/stockModals.php',
-        type: 'GET',
-        data: { part_id: id },
-        success: function (data) {
-          // Replace the content of the stock modal with the loaded PHP page
-          $('#mAddStock').html(data);
-        },
-        error: function () {
-          // Display an error message if the PHP page failed to load
-          $('#mAddStock').html('Failed to load modal.');
-        }
-      });
-
+      updatePartsInfo(id);
+      updateStockModal(id);
     });
   });
 </script>
@@ -163,42 +133,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
   tr.selected {
     background-color: rgba(0, 255, 255, 0.1);
   }
-</style>
 
-
-<!-- Resizable Divs -->
-<script>
-  $(function () {
-    $('#table-window').resizable({
-      handles: 'e',
-      resize: function () {
-        var parentWidth = $('#table-window').parent().width();
-        var tableWidth = $('#table-window').width();
-        var infoWidth = parentWidth - tableWidth;
-        $('#info-window').width(infoWidth);
-      }
-    });
-  });
-</script>
-
-<!-- Filter categories -->
-<script>
-  $(document).ready(function () {
-    $('#categories-filter').on('input', function () {
-      var filterText = $(this).val().toLowerCase();
-      $('#cat-select option').each(function () {
-        var optionText = $(this).text().toLowerCase();
-        if (optionText.indexOf(filterText) !== -1) {
-          $(this).show();
-        } else {
-          $(this).hide();
-        }
-      });
-    });
-  });
-</script>
-
-<style>
   .ui-resizable-e {
     width: 10px;
     height: 100%;

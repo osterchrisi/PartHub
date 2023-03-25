@@ -15,8 +15,7 @@ $(document).ready(function () {
                 console.log("Succesfully created new stock history entry with number: ", response);
                 $("#mAddStock").hide();
             });
-        
-        //TODO: Reload parts-info to show updated stock
 
+        updatePartsInfo(pid);
     });
 });
