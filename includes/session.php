@@ -5,8 +5,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Do nothing for login and demo login
-if ($basename == 'login.php' || $basename == 'demo.php') {
+// Do not redirect for these pages
+$doNothingArray = ['login.php', 'demo.php', 'parts-info.php', 'stockMOdals.php'];
+
+// Do nothing for login, demo login and parts-info window
+if ($basename in_array($doNothingArray)) {
     return;
 }
 
