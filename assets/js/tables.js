@@ -1,4 +1,4 @@
-// Bootstrap-Table
+// BootstrapTable a table
 function bootstrapPartsTable() {
     $('#parts_table').bootstrapTable({
     });
@@ -11,7 +11,7 @@ function NumberURLSorter(a, b) {
     return $(a).text() - $(b).text();
 };
 
-// Select element for the category dropdown in parts table
+// Select element for the category dropdown in parts table 
 function createCategorySelect(categories, currentValue) {
     var select = $('<select class="form-select-sm">');
     for (var i = 0; i < categories.length; i++) {
@@ -25,6 +25,8 @@ function createCategorySelect(categories, currentValue) {
 }
 
 // Inline table cell manipulation of parts_table
+//TODO: Extract functions
+//TODO: Remove dropdown upon clicking out of the box or selecting same option again
 $(document).ready(function inlineProcessing() {
     $('#parts_table').on('dbl-click-cell.bs.table', function (e, field, value, row, $element) {
         var cell = $element;

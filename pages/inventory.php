@@ -116,13 +116,12 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 <script>
   bootstrapPartsTable();
 
-  // Get part_id from the clicked row and pass it to show-stock.php for showing details in the info-window
+  // Get part_id from the clicked row and update parts-info and stock modals
   $(document).ready(function () {
     $('tr').click(function () {
       $('tbody tr').removeClass('selected');
       $(this).toggleClass('selected');
-      var id = $(this).data('id'); // get the ID from the first cell of the selected row
-
+      var id = $(this).data('id'); // get the ID from the selected row
       updatePartsInfo(id);
       updateStockModal(id);
     });
