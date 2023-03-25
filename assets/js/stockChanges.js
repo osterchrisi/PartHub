@@ -10,7 +10,7 @@ $(document).ready(function () {
         pid = <?php echo json_encode($part_id); ?>;
 
         $.post('/PartHub/includes/stockChanges.php',
-            { quantity: q, to_location: l, comment: c, user_id: uid, part_id: pid },
+            { quantity: q, to_location: l, comment: c, user_id: uid, part_id: pid , change: 1},
             function (response) {
                 console.log("Succesfully created new stock history entry with number: ", response);
                 updatePartsInfo(pid);
