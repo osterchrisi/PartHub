@@ -13,9 +13,8 @@ $(document).ready(function () {
             { quantity: q, to_location: l, comment: c, user_id: uid, part_id: pid },
             function (response) {
                 console.log("Succesfully created new stock history entry with number: ", response);
-                $("#mAddStock").hide();
+                updatePartsInfo(pid);
+                $("#mAddStock").hide(); // Hide stockChange modal
             });
-
-        updatePartsInfo(pid);
     });
 });

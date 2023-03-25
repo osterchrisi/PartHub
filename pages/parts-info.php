@@ -20,6 +20,7 @@ $part_name = $result[0]['part_name'];
 $stock_levels = getStockLevels($conn, $part_id);
 $total_stock = getTotalStock($stock_levels);
 
+$_SESSION['stock_levels'] = $stock_levels;
 ?>
 
 <div class="container-fluid">

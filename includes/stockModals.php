@@ -17,7 +17,6 @@ $part_name = $result[0]['part_name'];
 
 // Get locations
 $locations = getLocations($conn);
-// var_dump($locations);
 ?>
 
 <!-- HTML for modal -->

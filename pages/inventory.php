@@ -20,10 +20,11 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
 ?>
 
-<!-- Stock Modal - gets dynamically updated with JS -->
+<!-- Stock Modal - gets dynamically updated via JS -->
 <div class="modal fade" id="mAddStock" tabindex="-1">
 </div>
 
+<!-- Page Contents -->
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
   <br>
@@ -35,14 +36,14 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="text" class="form-control" id="search" name="search" placeholder="Search parts..."
           value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
-        <input type="text" class="form-control" id="filter" placeholder="Filter results...">
+        <input type="text" class="form-control" id="filter" placeholder="Filter results on this page...">
     </div>
     <div class="col-3">
       <input class="form-control" placeholder="Search categories" id="categories-filter">
       <?php
       $categories = getCategories($conn);
 
-      // Needs the search category to pre-select the searched ones
+      //TODO: Button to reset filters
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
@@ -60,7 +61,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
     </form>
   </div>
 
-
+  <!-- Parts Table and Pagination -->
   <?php
   include '../includes/helpers.php';
   include '../includes/tables.php';
@@ -93,7 +94,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       echo "</div>";
       echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1); overflow:auto;'>"; // height:75vh'>";
       // Display additional info on part in 3-column
-      echo "<h6><br>Click on a part in the table</h6>";
+      echo "<h6><br>Click on a row in the table</h6>";
       echo "</div>";
       echo "</div>";
 
@@ -121,51 +122,9 @@ $results_per_page = getSuperGlobal('resultspp', '50');
     $('tr').click(function () {
       $('tbody tr').removeClass('selected');
       $(this).toggleClass('selected');
-      var id = $(this).data('id'); // get the ID from the selected row
+      var id = $(this).data('id'); // get ID from the selected row
       updatePartsInfo(id);
       updateStockModal(id);
     });
   });
 </script>
-
-<style>
-  tr.selected {
-    background-color: rgba(0, 255, 255, 0.1);
-  }
-
-  .ui-resizable-e {
-    width: 10px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: col-resize;
-    z-index: 9999;
-  }
-
-  .ui-resizable-e:before,
-  .ui-resizable-e:after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background-color: #000;
-  }
-
-  .ui-resizable-e:before {
-    height: 20px;
-    width: 1px;
-    /* margin-top: -3px; */
-    margin-left: -2px;
-    background-color: #F8F8FF;
-  }
-
-  .ui-resizable-e:after {
-    height: 20px;
-    width: 1px;
-    /* margin-top: -4px; */
-    /* margin-left: -1px; */
-    background-color: #F8F8FF;
-  }
-</style>
