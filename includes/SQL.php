@@ -390,11 +390,13 @@ function getLocations($conn)
   return $loc;
 }
 
-function changeQuantity($conn, $part_id, $quantity)
+function changeQuantity($conn, $part_id, $quantity, $to_location)
 {
-  $sql = "SELECT location_id, location_name FROM location_names";
-  $stmt = $conn->prepare($sql);
+  $stmt = $conn->prepare("UPDATE stock_levels SET stock_level_quantity = :quantity WHERE part_id_fk = :part_id AND location_id_fk = :to_location");
+  $stmt->bindParam(':quantity', $quantity);
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':to_location', $to_location);
   $stmt->execute();
-  $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return $loc;
+  $new_id = $conn->lastInsertId();
+  return $new_id;
 }

@@ -17,6 +17,7 @@ $part_name = $result[0]['part_name'];
 
 // Get locations
 $locations = getLocations($conn);
+// var_dump($locations);
 ?>
 
 <!-- HTML for modal -->
@@ -28,19 +29,19 @@ $locations = getLocations($conn);
     </div>
 
     <div class="modal-body mx-1">
-      Add Stock for
+      Add Stock to
       <?php echo $part_name; ?><br><br>
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
         <select name="locations" id ="addStockLocation" class="form-select">
         <?php
           foreach ($locations as  $location) {
-            echo "<option value='{$location['id']}'>{$location['location_name']}</option>";
+            echo "<option value='{$location['location_id']}'>{$location['location_name']}</option>";
           }
           ?>
         </select>
         <br>
-        <input class="form-control" placeholder="Description / PO" id="addStockDescription">
+        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>
     </div>
 

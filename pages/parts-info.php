@@ -17,8 +17,8 @@ $result = getPartName($conn, $part_id);
 $part_name = $result[0]['part_name'];
 
 // Get stock levels
-$result = getStockLevels($conn, $part_id);
-$total_stock = getTotalStock($result);
+$stock_levels = getStockLevels($conn, $part_id);
+$total_stock = getTotalStock($stock_levels);
 
 ?>
 
@@ -33,7 +33,7 @@ $total_stock = getTotalStock($result);
   </h5>
 
   <!-- Location / Quantity Table -->
-  <?php buildTable($db_columns, $nice_columns, $result); ?>
+  <?php buildTable($db_columns, $nice_columns, $stock_levels); ?>
 
   <!-- Stock movement buttons -->
   <div class="input-group">
