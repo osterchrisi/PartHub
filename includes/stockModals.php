@@ -17,6 +17,7 @@ $part_name = $result[0]['part_name'];
 
 // Get locations
 $locations = getLocations($conn);
+$_SESSION['locations'] = $locations;
 ?>
 
 <!-- HTML for modal -->
@@ -35,13 +36,9 @@ $locations = getLocations($conn);
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
         <select name="locations" id="addStockLocation" class="form-select">
-          <?php
-          foreach ($locations as $location) {
-            echo "<option value='{$location['location_id']}'>{$location['location_name']}</option>";
-          }
-          ?>
+          <?php locationsDropdown($locations);?>
         </select>
-        <span id="moveStockLocation"></span>
+        <div id="moveStockLocationDiv"></div>
         <br>
         <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>

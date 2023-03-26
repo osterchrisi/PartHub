@@ -21,6 +21,11 @@ $stock_levels = getStockLevels($conn, $part_id);
 $total_stock = getTotalStock($stock_levels);
 
 $_SESSION['stock_levels'] = $stock_levels;
+
+// Get locations
+$locations = getLocations($conn);
+// $_SESSION['locations'] = $locations;
+// print_r($locations);
 ?>
 
 <div class="container-fluid">
@@ -47,7 +52,7 @@ $_SESSION['stock_levels'] = $stock_levels;
 
     <button type="button" class="btn btn-outline-primary" onclick="callStockModal('1');">Add</button>
 
-    <button type="button" class="btn btn-outline-primary" onclick="callStockModal('0');">Move</button>
+    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("0", <?php echo json_encode($locations); ?>);''>Move</button>
 
     <button type="button" class="btn btn-outline-primary" onclick="callStockModal('-1');">Reduce</button>
 

@@ -95,3 +95,13 @@ function generateBomNamesDropdown($conn)
   }
   echo '</select>';
 }
+
+function locationsDropdown($locations = NULL) {
+  if (!$locations){
+    echo 1;
+    include 'session.php';
+    $locations = $_SESSION['locations'];} //* This feels silly
+  foreach ($locations as $location) {
+    echo "<option value='{$location['location_id']}'>{$location['location_name']}</option>";
+  }
+}
