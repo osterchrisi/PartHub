@@ -24,8 +24,7 @@ $_SESSION['stock_levels'] = $stock_levels;
 
 // Get locations
 $locations = getLocations($conn);
-// $_SESSION['locations'] = $locations;
-// print_r($locations);
+
 ?>
 
 <div class="container-fluid">

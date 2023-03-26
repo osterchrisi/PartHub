@@ -29,9 +29,7 @@ $datetime = 'NULL'; //* Table record gets current timestamp in SQL query -> migh
 
 // Get all dem stock levels
 $stock_levels = $_SESSION['stock_levels'];
-// Get current stock level for to_location
 $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
-// Get current stock level for from_location
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
 if ($change == 1) { // Add Stock
@@ -54,6 +52,5 @@ elseif ($change == 0) { // Move Stock
 
 // Make record in stock_level_change_history table
 $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id);
-// $hist_id = [$conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id];
 
 echo json_encode([$hist_id]);

@@ -4,11 +4,11 @@ var to_location_exists = false;
 // Creat the "To Location" dropdown
 function toStockLocationDropdown(locations) {
     var div = document.getElementById("ToStockLocationDiv");
-    var selectHTML = "<select class='form-select' id='addStockLocation'>";
+    var selectHTML = "<select class='form-select' id='toStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
     }
-    selectHTML += "</select><label for='addStockLocation'>to</label>";
+    selectHTML += "</select><label for='toStockLocation'>to</label>";
     div.innerHTML = selectHTML;
     to_location_exists = true;
 }
@@ -60,7 +60,7 @@ function saveChanges(change) {
         
 
         if (change == '1') {
-            tl = $("#addStockLocation").val(); // To Location
+            tl = $("#toStockLocation").val(); // To Location
             fl = 'NULL'; // From Location
         }
         if (change == '-1') {
@@ -68,7 +68,7 @@ function saveChanges(change) {
             fl = $("#fromStockLocation").val(); // From Location
         }
         if (change == '0') {
-            tl = $("#addStockLocation").val(); // To Location
+            tl = $("#toStockLocation").val(); // To Location
             fl = $("#fromStockLocation").val(); // From Location
         }
 

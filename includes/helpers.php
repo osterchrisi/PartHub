@@ -1,16 +1,4 @@
 <?php
-function validateSearchColumn($search_column, $column_names)
-{
-    // If the search column is not valid, default to the first column
-    if (!in_array($search_column, $column_names)) {
-        $search_column = $column_names[0];
-        return $search_column;
-    }
-    else {
-        return $search_column;
-    }
-}
-
 function validateCurrentPage($current_page, $total_pages)
 {
     // Validate the current page number
