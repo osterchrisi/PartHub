@@ -25,10 +25,10 @@ function fromStockLocationDropdown(locations){
     from_location_exists = true;
 }
 
-//TODO: Give argument to removeClickListener for which element to remove the listener
 // Modify the "Save Changes" click listener when the modal is toggled
 function callStockModal(change, locations) {
-    //TODO: Make the form look good
+    //TODO: Make the form look bissi besser
+    //TODO: Make all locations available, not only the currently used one
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
@@ -48,7 +48,7 @@ function callStockModal(change, locations) {
     }
 
     $('#mAddStock').modal('show'); // Show modal
-    removeClickListeners(); // Remove previously added click listener
+    removeClickListeners('#AddStock'); // Remove previously added click listener
     saveChanges(change);
 }
 
@@ -76,8 +76,6 @@ function saveChanges(change) {
         uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
 
-        console.log(q, c, tl, fl, uid, pid);
-
         // Call the stock changing script
         $.post('/PartHub/includes/stockChanges.php',
             { quantity: q, to_location: tl, from_location: fl, comment: c, user_id: uid, part_id: pid, change: change },
@@ -85,30 +83,29 @@ function saveChanges(change) {
                 console.log("Succesfully created new stock history entry with number: ", response);
                 updatePartsInfo(pid);
                 $("#mAddStock").hide(); // Hide stockChange modal
-                removeFromLocationDropdown();
             });
     });
 }
 
 // Remove the previous click listener
-function removeClickListeners() {
-    $('#AddStock').off('click');
+function removeClickListeners(id) {
+    $(id).off('click');
 }
 
 // Remove the "from locations" dropdown
 $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {
-    removeFromLocationDropdown("FromStockLocationDiv");
+    removeLocationDropdown("FromStockLocationDiv");
     from_location_exists = false;
     }
 
     if (to_location_exists) {
-    removeFromLocationDropdown("ToStockLocationDiv");
+    removeLocationDropdown("ToStockLocationDiv");
     to_location_exists = false;
     }
 });
 
-function removeFromLocationDropdown(location) {
+function removeLocationDropdown(location) {
     var div = document.getElementById(location);
     div.innerHTML = '';
 }
