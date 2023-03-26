@@ -25,12 +25,16 @@ function callStockModal(change) {
 
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
+        document.getElementById('stockChangeText').textContent = 'Add stock to ';
     }
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
+        document.getElementById('stockChangeText').textContent = 'Reduce stock of';
     }
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
+        document.getElementById('stockChangeText').textContent = 'Move stock of';
+        //TODO: Prepare stock moving form
     }
 
     $('#mAddStock').modal('show'); // Show modal

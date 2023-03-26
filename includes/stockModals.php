@@ -28,8 +28,7 @@ $locations = getLocations($conn);
     </div>
 
     <div class="modal-body mx-1">
-      Add Stock to
-      <?php echo $part_name; ?><br><br>
+      <p id="stockChangeText"></p><?php echo $part_name; ?><br><br>
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
         <select name="locations" id ="addStockLocation" class="form-select">
