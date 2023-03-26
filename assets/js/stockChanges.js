@@ -1,3 +1,5 @@
+var from_location_exists = false;
+
 //TODO: Give argument to removeClickListener for which element to remove the listener
 // Modify the "Save Changes" click listener when the modal is toggled
 function callStockModal(change, locations) {
@@ -13,15 +15,15 @@ function callStockModal(change, locations) {
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
-        // document.getElementById('moveStockLocation').textContent = 'Another select element coming to your neighborhood soon!';
-        //TODO: This text ^ must be removed again
-        var myDiv = document.getElementById("moveStockLocationDiv");
+        // "From location" dropdown
+        var div = document.getElementById("moveStockLocationDiv");
         var selectHTML = "<br><select class='form-select' id='moveStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
             selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
         }
         selectHTML += "</select>";
-        myDiv.innerHTML = selectHTML;
+        div.innerHTML = selectHTML;
+        from_location_exists = true;
     }
 
     $('#mAddStock').modal('show'); // Show modal
@@ -36,26 +38,24 @@ function saveChanges(change) {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
         tl = $("#addStockLocation").val(); // To Location
-        console.log(typeof(change));
+        fl = -1;
         if (change == '0') {
             fl = $("#moveStockLocation").val(); // From Location
-
         }
-
 
         //? Okay, this looks weird, maybe there is a cleaner way?
         uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
 
-        console.log("fl = ", fl);
-
-
+        // Call the stock changing script
         $.post('/PartHub/includes/stockChanges.php',
             { quantity: q, to_location: tl, from_location: fl, comment: c, user_id: uid, part_id: pid, change: change },
             function (response) {
                 console.log("Succesfully created new stock history entry with number: ", response);
+                console.log("from_location_exists: ", from_location_exists);
                 updatePartsInfo(pid);
                 $("#mAddStock").hide(); // Hide stockChange modal
+                removeFromLocationDropdown();
             });
     });
 }
@@ -63,4 +63,18 @@ function saveChanges(change) {
 // Remove the previous click listener
 function removeClickListeners() {
     $('#AddStock').off('click');
+}
+
+// Remove the "from locations" dropdown
+$('#mAddStock').on('hidden.bs.modal', function () {
+    if (from_location_exists) {
+    removeFromLocationDropdown();
+    }
+});
+
+function removeFromLocationDropdown() {
+    console.log("Removing dropdown");
+    var div = document.getElementById("moveStockLocationDiv");
+    div.innerHTML = '';
+    from_location_exists = false;
 }
