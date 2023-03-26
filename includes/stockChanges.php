@@ -26,7 +26,7 @@ if ($change == 1) {
     $quantity += $current_stock_level;
 }
 elseif ($change == -1) {
-    $quantity -= $current_stock_level;
+    $quantity = $current_stock_level - $quantity;
 }
 
 // Update stock in to_location

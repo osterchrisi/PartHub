@@ -36,18 +36,23 @@ $_SESSION['stock_levels'] = $stock_levels;
   <!-- Location / Quantity Table -->
   <?php buildTable($db_columns, $nice_columns, $stock_levels); ?>
 
+  <!-- Click listeners for buttons on stock changing modals -->
+<script>
+  <?php include '../assets/js/stockChanges.js'; ?>
+</script>
+
   <!-- Stock movement buttons -->
   <div class="input-group">
     <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
 
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#mAddStock"
-      data-part-name="<?php echo $part_name; ?>">Add</button>
+    <button type="button" class="btn btn-outline-primary" data-bs-target="#mAddStock"
+      data-change="1" onclick="dup('1');">Add</button>
 
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
       data-bs-target="#mMoveStock">Move</button>
 
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-      data-bs-target="#mReduceStock">Reduce</button>
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#mAddStock"
+    data-change="-1">Reduce</button>
 
   </div>
   <br><br>
@@ -59,7 +64,3 @@ $_SESSION['stock_levels'] = $stock_levels;
 
 </div>
 
-<!-- Click listeners for buttons on stock changing modals -->
-<script>
-  <?php include '../assets/js/stockChanges.js'; ?>
-</script>
