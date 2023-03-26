@@ -19,25 +19,15 @@ function saveChanges(change) {
     });
 }
 
-var modalEventListenerAdded = false;
-
 // Modify the "Save Changes" click listener when the modal is toggled
-function dup(change) {
-    console.log("change = ", change);
+function callStockModal(change) {
     $('#mAddStock').modal('show');
-
-    if (!modalEventListenerAdded) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        // var change = button.data('change');
-        console.log("change = ", change);
-        removeClickListeners();
-        saveChanges(change);
-        modalEventListenerAdded = true;
-    }
+    console.log("change = ", change);
+    removeClickListeners(); //Remove previous click listener
+    saveChanges(change);
 }
 
 // Remove the previous click listener
 function removeClickListeners() {
     $('#AddStock').off('click');
-    modalEventListenerAdded = false;
 }

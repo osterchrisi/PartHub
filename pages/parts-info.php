@@ -45,14 +45,11 @@ $_SESSION['stock_levels'] = $stock_levels;
   <div class="input-group">
     <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
 
-    <button type="button" class="btn btn-outline-primary" data-bs-target="#mAddStock"
-      data-change="1" onclick="dup('1');">Add</button>
+    <button type="button" class="btn btn-outline-primary" onclick="callStockModal('1');">Add</button>
 
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-      data-bs-target="#mMoveStock">Move</button>
+    <button type="button" class="btn btn-outline-primary" onclick="callStockModal('0');">Move</button>
 
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#mAddStock"
-    data-change="-1">Reduce</button>
+    <button type="button" class="btn btn-outline-primary" onclick="callStockModal('-1');">Reduce</button>
 
   </div>
   <br><br>
