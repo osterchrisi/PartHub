@@ -29,7 +29,6 @@ $locations = getLocations($conn);
 
 <div class="container-fluid">
   <br>
-
   <h4>
     <?php echo $part_name; ?>
   </h4>
