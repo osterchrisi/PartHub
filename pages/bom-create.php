@@ -2,6 +2,7 @@
 $basename = basename(__FILE__);
 $title = 'Create BOM';
 require_once('../includes/head.html');
+
 include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';

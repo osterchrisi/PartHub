@@ -2,7 +2,6 @@
 $basename = basename(__FILE__);
 $title = 'Parts Inventory';
 require_once('../includes/head.html');
-// echo "<script src='/PartHub/assets/js/tables.js'></script>";
 
 include '../config/credentials.php';
 include '../includes/SQL.php';

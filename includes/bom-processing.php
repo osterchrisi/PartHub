@@ -1,12 +1,13 @@
 <?php
-require_once('navbar.php');
+$basename = basename(__FILE__);
+// require_once('../includes/head.html');
 include '../config/credentials.php';
 include 'SQL.php';
+// require_once('navbar.php');
 
 // Get all the variables from the entry script
 $bom_name = $_POST['bom_name'];
 $dynamicFields = $_POST['dynamic_field'];
-var_dump($dynamicFields);
 
 
 if ($bom_name) {
@@ -20,8 +21,6 @@ if ($bom_name) {
     catch (Exception $e) {
         echo "<br>Error: " . $e->getMessage();
     }
-
-    echo "BOM Name: $bom_name";
 
     // Extract the 'amount x part' pairs from the array / JSON into $value1, $value2, ...
     // Where all odd values are part_ids and all even values are the amounts
@@ -41,8 +40,7 @@ if ($bom_name) {
         }
         $i++;
     }
-
-    // Redirect to showing the newly created backorder
+    // Redirect to showing the newly created BOM
     header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
     exit;
 }
