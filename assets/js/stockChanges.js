@@ -19,11 +19,23 @@ function saveChanges(change) {
     });
 }
 
+//TODO: Give argument to removeClickListener for which element to remove the listener
 // Modify the "Save Changes" click listener when the modal is toggled
 function callStockModal(change) {
-    $('#mAddStock').modal('show');
+
+    if (change == 1) {
+        document.getElementById('stockModalTitle').textContent = 'Add Stock';
+    }
+    else if (change == -1) {
+        document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
+    }
+    else {
+        document.getElementById('stockModalTitle').textContent = 'Move Stock';
+    }
+
+    $('#mAddStock').modal('show'); // Show modal
     console.log("change = ", change);
-    removeClickListeners(); //Remove previous click listener
+    removeClickListeners(); // Remove previously added click listener
     saveChanges(change);
 }
 
