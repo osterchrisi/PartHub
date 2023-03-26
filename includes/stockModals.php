@@ -34,11 +34,11 @@ $_SESSION['locations'] = $locations;
       <span id="stockChangeText"></span>
       <?php echo $part_name; ?><br><br>
       <form>
-        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
+        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>to
         <select name="locations" id="addStockLocation" class="form-select">
           <?php locationsDropdown($locations);?>
         </select>
-        <div id="moveStockLocationDiv"></div>
+        <div id="moveStockLocationDiv">from</div>
         <br>
         <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>

@@ -38,7 +38,7 @@ function saveChanges(change) {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
         tl = $("#addStockLocation").val(); // To Location
-        fl = -1;
+        fl = 5;
         if (change == '0') {
             fl = $("#moveStockLocation").val(); // From Location
         }
