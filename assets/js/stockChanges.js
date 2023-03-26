@@ -11,6 +11,15 @@ function callStockModal(change, locations) {
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
+        // "From location" dropdown
+        var div = document.getElementById("moveStockLocationDiv");
+        var selectHTML = "<br><select class='form-select' id='moveStockLocation'>";
+        for (var i = 0; i < locations.length; i++) {
+            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+        }
+        selectHTML += "</select>";
+        div.innerHTML = selectHTML;
+        from_location_exists = true;
     }
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
@@ -38,7 +47,14 @@ function saveChanges(change) {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
         tl = $("#addStockLocation").val(); // To Location
-        fl = 5;
+
+        if (change == '1') {
+            fl = 'NULL'; // From Location
+        }
+        if (change == '-1') {
+            fl = $("#moveStockLocation").val(); // From Location
+            tl = 'NULL'; // To Location
+        }
         if (change == '0') {
             fl = $("#moveStockLocation").val(); // From Location
         }
@@ -47,12 +63,13 @@ function saveChanges(change) {
         uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
 
+        console.log(q, c, tl, fl, uid, pid);
+
         // Call the stock changing script
         $.post('/PartHub/includes/stockChanges.php',
             { quantity: q, to_location: tl, from_location: fl, comment: c, user_id: uid, part_id: pid, change: change },
             function (response) {
                 console.log("Succesfully created new stock history entry with number: ", response);
-                console.log("from_location_exists: ", from_location_exists);
                 updatePartsInfo(pid);
                 $("#mAddStock").hide(); // Hide stockChange modal
                 removeFromLocationDropdown();

@@ -52,9 +52,9 @@ $locations = getLocations($conn);
 
     <button type="button" class="btn btn-outline-primary" onclick="callStockModal('1');">Add</button>
 
-    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("0", <?php echo json_encode($locations); ?>);''>Move</button>
+    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("0", <?php echo json_encode($locations); ?>);'>Move</button>
 
-    <button type="button" class="btn btn-outline-primary" onclick="callStockModal('-1');">Reduce</button>
+    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("-1", <?php echo json_encode($locations); ?>);'>Reduce</button>
 
   </div>
   <br><br>

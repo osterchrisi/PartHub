@@ -16,11 +16,12 @@ $change = $_POST['change'];
 // Gather variables
 $quantity = $_POST['quantity'];
 $to_location = $_POST['to_location'];
+if ($to_location == 'NULL'){ $to_location = NULL;}
+$from_location = $_POST['from_location'];
+if ($from_location == 'NULL'){ $from_location = NULL;}
 $comment = $_POST['comment'];
-// $id1 = $_POST['id']; // currently use user_id from $_SESSION array
 $user_id = $_SESSION['user_id'];
 $part_id = $_POST['part_id'];
-$from_location = $_POST['from_location'];
 $datetime = 'NULL'; //* Table record gets current timestamp in SQL query -> might not be ideal for users not in same timezone as DB
 
 // Get all dem stock levels
@@ -35,8 +36,8 @@ if ($change == 1) { // Add Stock
     changeQuantity($conn, $part_id, $quantity, $to_location);
 }
 elseif ($change == -1) { // Reduce Stock
-    $quantity = $current_stock_level_to - $quantity;
-    changeQuantity($conn, $part_id, $quantity, $to_location);
+    $quantity = $current_stock_level_from - $quantity;
+    changeQuantity($conn, $part_id, $quantity, $from_location);
 }
 elseif ($change == 0) { // Move Stock
     // Add stock for the to_location
@@ -50,6 +51,7 @@ elseif ($change == 0) { // Move Stock
 }
 
 // Make record in stock_level_change_history table
-$hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id);
+// $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id);
+$hist_id = [$conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id];
 
 echo json_encode([$hist_id]);
