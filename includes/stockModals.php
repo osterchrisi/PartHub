@@ -22,27 +22,32 @@ $locations = getLocations($conn);
 <!-- HTML for modal -->
 <div class="modal-dialog">
   <div class="modal-content">
+    <!-- Modal Header -->
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="stockModalTitle">Add Stock</h1>
       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
 
+    <!-- Modal Body -->
     <div class="modal-body mx-1">
-      <p id="stockChangeText"></p><?php echo $part_name; ?><br><br>
+      <span id="stockChangeText"></span>
+      <?php echo $part_name; ?><br><br>
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
-        <select name="locations" id ="addStockLocation" class="form-select">
-        <?php
-          foreach ($locations as  $location) {
+        <select name="locations" id="addStockLocation" class="form-select">
+          <?php
+          foreach ($locations as $location) {
             echo "<option value='{$location['location_id']}'>{$location['location_name']}</option>";
           }
           ?>
         </select>
+        <span id="moveStockLocation"></span>
         <br>
         <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>
     </div>
 
+    <!-- Modal Footer -->
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="AddStock">Save changes</button>
