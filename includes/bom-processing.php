@@ -1,14 +1,11 @@
 <?php
 $basename = basename(__FILE__);
-// require_once('../includes/head.html');
 include '../config/credentials.php';
 include 'SQL.php';
-// require_once('navbar.php');
 
-// Get all the variables from the entry script
+// Get variables from the entry script
 $bom_name = $_POST['bom_name'];
 $dynamicFields = $_POST['dynamic_field'];
-
 
 if ($bom_name) {
     try {
@@ -41,6 +38,7 @@ if ($bom_name) {
         $i++;
     }
     // Redirect to showing the newly created BOM
+    //! Can't have ANY output before this, not even whitespaces
     header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
     exit;
 }
