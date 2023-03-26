@@ -1,19 +1,30 @@
 var from_location_exists = false;
+var to_location_exists = false;
 
 //TODO: Give argument to removeClickListener for which element to remove the listener
 // Modify the "Save Changes" click listener when the modal is toggled
 function callStockModal(change, locations) {
-
+    //TODO: Make the form behave correctly and look good
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
+
+        var div = document.getElementById("ToStockLocationDiv");
+        var selectHTML = "<br>to<select class='form-select' id='addStockLocation'>";
+        for (var i = 0; i < locations.length; i++) {
+            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+        }
+        selectHTML += "</select>";
+        div.innerHTML = selectHTML;
+        to_location_exists = true;
     }
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
+
         // "From location" dropdown
         var div = document.getElementById("moveStockLocationDiv");
-        var selectHTML = "<br><select class='form-select' id='moveStockLocation'>";
+        var selectHTML = "<br>from<select class='form-select' id='moveStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
             selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
         }
@@ -24,15 +35,26 @@ function callStockModal(change, locations) {
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
+
+        var div = document.getElementById("ToStockLocationDiv");
+        var selectHTML = "<br>to<select class='form-select' id='addStockLocation'>";
+        for (var i = 0; i < locations.length; i++) {
+            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+        }
+        selectHTML += "</select>";
+        div.innerHTML = selectHTML;
+        to_location_exists = true;
+
         // "From location" dropdown
         var div = document.getElementById("moveStockLocationDiv");
-        var selectHTML = "<br><select class='form-select' id='moveStockLocation'>";
+        var selectHTML = "<br>from<select class='form-select' id='moveStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
             selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
         }
         selectHTML += "</select>";
         div.innerHTML = selectHTML;
         from_location_exists = true;
+        to_location_exists = true;
     }
 
     $('#mAddStock').modal('show'); // Show modal
@@ -87,11 +109,21 @@ $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {
     removeFromLocationDropdown();
     }
+
+    if (to_location_exists) {
+        removeFromLocationDropdown();
+        }
 });
 
 function removeFromLocationDropdown() {
     console.log("Removing dropdown");
+    
     var div = document.getElementById("moveStockLocationDiv");
     div.innerHTML = '';
+
+    var div = document.getElementById("ToStockLocationDiv");
+    div.innerHTML = '';
+
     from_location_exists = false;
+    to_location_exists = false;
 }

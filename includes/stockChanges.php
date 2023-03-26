@@ -15,10 +15,13 @@ $change = $_POST['change'];
 
 // Gather variables
 $quantity = $_POST['quantity'];
+
 $to_location = $_POST['to_location'];
 if ($to_location == 'NULL'){ $to_location = NULL;}
+
 $from_location = $_POST['from_location'];
 if ($from_location == 'NULL'){ $from_location = NULL;}
+
 $comment = $_POST['comment'];
 $user_id = $_SESSION['user_id'];
 $part_id = $_POST['part_id'];
@@ -41,17 +44,16 @@ elseif ($change == -1) { // Reduce Stock
 }
 elseif ($change == 0) { // Move Stock
     // Add stock for the to_location
-    $quantity += $current_stock_level_to;
-    changeQuantity($conn, $part_id, $quantity, $to_location);
-    $quantity -= $current_stock_level_to; //* Kinda silly 
+    $to_quantity = $current_stock_level_to + $quantity;
+    changeQuantity($conn, $part_id, $to_quantity, $to_location);
 
     // Remove stock from the from_location
-    $quantity = $current_stock_level_from - $quantity;
-    changeQuantity($conn, $part_id, $quantity, $from_location);
+    $from_quantity = $current_stock_level_from - $quantity;
+    changeQuantity($conn, $part_id, $from_quantity, $from_location);
 }
 
 // Make record in stock_level_change_history table
-// $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id);
-$hist_id = [$conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id];
+$hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id);
+// $hist_id = [$conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id];
 
 echo json_encode([$hist_id]);
