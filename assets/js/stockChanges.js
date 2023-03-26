@@ -1,66 +1,53 @@
 var from_location_exists = false;
 var to_location_exists = false;
 
+// Creat the "To Location" dropdown
+function toStockLocationDropdown(locations) {
+    var div = document.getElementById("ToStockLocationDiv");
+    var selectHTML = "<select class='form-select' id='addStockLocation'>";
+    for (var i = 0; i < locations.length; i++) {
+        selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+    }
+    selectHTML += "</select><label for='addStockLocation'>to</label>";
+    div.innerHTML = selectHTML;
+    to_location_exists = true;
+}
+
+// Creat the "From Location" dropdown
+function fromStockLocationDropdown(locations){
+    var div = document.getElementById("FromStockLocationDiv");
+    var selectHTML = "<select class='form-select' id='fromStockLocation'>";
+    for (var i = 0; i < locations.length; i++) {
+        selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+    }
+    selectHTML += "</select><label for='fromStockLocation'>from</label>";
+    div.innerHTML = selectHTML;
+    from_location_exists = true;
+}
+
 //TODO: Give argument to removeClickListener for which element to remove the listener
 // Modify the "Save Changes" click listener when the modal is toggled
 function callStockModal(change, locations) {
-    //TODO: Make the form behave correctly and look good
+    //TODO: Make the form look good
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
+        toStockLocationDropdown(locations);
 
-        // "To location" dropdown
-        var div = document.getElementById("ToStockLocationDiv");
-        var selectHTML = "<br>to<select class='form-select' id='addStockLocation'>";
-        for (var i = 0; i < locations.length; i++) {
-            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
-        to_location_exists = true;
     }
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
-
-        // "From location" dropdown
-        var div = document.getElementById("FromStockLocationDiv");
-        var selectHTML = "<br>from<select class='form-select' id='fromStockLocation'>";
-        for (var i = 0; i < locations.length; i++) {
-            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
-        from_location_exists = true;
+        fromStockLocationDropdown(locations);
     }
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
-
-        // "To location" dropdown
-        var div = document.getElementById("ToStockLocationDiv");
-        var selectHTML = "<br>to<select class='form-select' id='addStockLocation'>";
-        for (var i = 0; i < locations.length; i++) {
-            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
-        to_location_exists = true;
-
-        // "From location" dropdown
-        var div = document.getElementById("FromStockLocationDiv");
-        var selectHTML = "<br>from<select class='form-select' id='fromStockLocation'>";
-        for (var i = 0; i < locations.length; i++) {
-            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
-        from_location_exists = true;
-        to_location_exists = true;
+        toStockLocationDropdown(locations);
+        fromStockLocationDropdown(locations);
     }
 
     $('#mAddStock').modal('show'); // Show modal
-    console.log("change = ", change);
     removeClickListeners(); // Remove previously added click listener
     saveChanges(change);
 }
@@ -111,23 +98,17 @@ function removeClickListeners() {
 // Remove the "from locations" dropdown
 $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {
-    removeFromLocationDropdown();
+    removeFromLocationDropdown("FromStockLocationDiv");
+    from_location_exists = false;
     }
 
     if (to_location_exists) {
-        removeFromLocationDropdown();
-        }
+    removeFromLocationDropdown("ToStockLocationDiv");
+    to_location_exists = false;
+    }
 });
 
-function removeFromLocationDropdown() {
-    console.log("Removing dropdown");
-    
-    var div = document.getElementById("FromStockLocationDiv");
+function removeFromLocationDropdown(location) {
+    var div = document.getElementById(location);
     div.innerHTML = '';
-
-    var div = document.getElementById("ToStockLocationDiv");
-    div.innerHTML = '';
-
-    from_location_exists = false;
-    to_location_exists = false;
 }

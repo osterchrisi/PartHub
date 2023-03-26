@@ -35,8 +35,8 @@ $_SESSION['locations'] = $locations;
       <?php echo $part_name; ?><br><br>
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
-        <div id="ToStockLocationDiv"></div>
-        <div id="FromStockLocationDiv"></div>
+        <div class="form-floating" id="FromStockLocationDiv"></div>
+        <div class="form-floating" id="ToStockLocationDiv"></div>
         <br>
         <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>
