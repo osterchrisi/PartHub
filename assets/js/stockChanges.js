@@ -9,6 +9,7 @@ function callStockModal(change, locations) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
 
+        // "To location" dropdown
         var div = document.getElementById("ToStockLocationDiv");
         var selectHTML = "<br>to<select class='form-select' id='addStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
@@ -23,8 +24,8 @@ function callStockModal(change, locations) {
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
 
         // "From location" dropdown
-        var div = document.getElementById("moveStockLocationDiv");
-        var selectHTML = "<br>from<select class='form-select' id='moveStockLocation'>";
+        var div = document.getElementById("FromStockLocationDiv");
+        var selectHTML = "<br>from<select class='form-select' id='fromStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
             selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
         }
@@ -36,6 +37,7 @@ function callStockModal(change, locations) {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
 
+        // "To location" dropdown
         var div = document.getElementById("ToStockLocationDiv");
         var selectHTML = "<br>to<select class='form-select' id='addStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
@@ -46,8 +48,8 @@ function callStockModal(change, locations) {
         to_location_exists = true;
 
         // "From location" dropdown
-        var div = document.getElementById("moveStockLocationDiv");
-        var selectHTML = "<br>from<select class='form-select' id='moveStockLocation'>";
+        var div = document.getElementById("FromStockLocationDiv");
+        var selectHTML = "<br>from<select class='form-select' id='fromStockLocation'>";
         for (var i = 0; i < locations.length; i++) {
             selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
         }
@@ -68,17 +70,19 @@ function saveChanges(change) {
     $('#AddStock').click(function () {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
-        tl = $("#addStockLocation").val(); // To Location
+        
 
         if (change == '1') {
+            tl = $("#addStockLocation").val(); // To Location
             fl = 'NULL'; // From Location
         }
         if (change == '-1') {
-            fl = $("#moveStockLocation").val(); // From Location
             tl = 'NULL'; // To Location
+            fl = $("#fromStockLocation").val(); // From Location
         }
         if (change == '0') {
-            fl = $("#moveStockLocation").val(); // From Location
+            tl = $("#addStockLocation").val(); // To Location
+            fl = $("#fromStockLocation").val(); // From Location
         }
 
         //? Okay, this looks weird, maybe there is a cleaner way?
@@ -118,7 +122,7 @@ $('#mAddStock').on('hidden.bs.modal', function () {
 function removeFromLocationDropdown() {
     console.log("Removing dropdown");
     
-    var div = document.getElementById("moveStockLocationDiv");
+    var div = document.getElementById("FromStockLocationDiv");
     div.innerHTML = '';
 
     var div = document.getElementById("ToStockLocationDiv");
