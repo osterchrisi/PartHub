@@ -69,6 +69,7 @@ $locations = getLocations($conn);
       <h5>Part of:</h5>
       <?php
       include '../config/part-in-boms-columns.php';
+      $bom_list = getPartInBoms($conn, $part_id);
       buildPartInBomsTable($db_columns, $nice_columns, $bom_list);?>
       <h5>Datasheet:</h5>
       <h5>Image:</h5>
