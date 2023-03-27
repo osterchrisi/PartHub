@@ -313,14 +313,21 @@ function insertBomElements($conn, $new_id, $part_id, $amount)
 
 function getStockLevels($conn, $part_id)
 {
-  $stmt = $conn->query("SELECT location_id, location_name, stock_level_quantity FROM stock_levels JOIN location_names ON stock_levels.location_id_fk = location_names.location_id WHERE part_id_fk = $part_id AND stock_level_quantity > 0");
+  $stmt = $conn->query("SELECT location_id, location_name, stock_level_quantity
+                        FROM stock_levels
+                        JOIN location_names ON stock_levels.location_id_fk = location_names.location_id 
+                        WHERE part_id_fk = $part_id 
+                        AND stock_level_quantity > 0");
   $stock = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $stock;
 }
 
 function getBomElements($conn, $bom_id)
 {
-  $stmt = $conn->query("SELECT part_name, element_quantity FROM bom_elements JOIN parts ON part_id_fk = parts.part_id WHERE bom_id_fk = $bom_id");
+  $stmt = $conn->query("SELECT part_name, element_quantity
+                        FROM bom_elements
+                        JOIN parts ON part_id_fk = parts.part_id
+                        WHERE bom_id_fk = $bom_id");
   $elements = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $elements;
 }
@@ -399,4 +406,20 @@ function changeQuantity($conn, $part_id, $quantity, $to_location)
   $stmt->execute();
   $new_id = $conn->lastInsertId();
   return $new_id;
+}
+
+function getPartStockHistory($conn, $part_id)
+{
+  $stmt = $conn->prepare("SELECT *,
+                                  from_loc.location_name AS from_location_name,
+                                  to_loc.location_name AS to_location_name 
+                          FROM stock_level_change_history
+                          LEFT JOIN location_names from_loc ON from_location_fk = from_loc.location_id
+                          LEFT JOIN location_names to_loc ON to_location_fk = to_loc.location_id
+                          JOIN users ON stock_lvl_chng_user_fk = user_id
+                          WHERE part_id_fk = :part_id");
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->execute();
+  $hist = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $hist;
 }

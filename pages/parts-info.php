@@ -24,7 +24,6 @@ $_SESSION['stock_levels'] = $stock_levels;
 
 // Get locations
 $locations = getLocations($conn);
-
 ?>
 
 <div class="container-fluid">
@@ -39,7 +38,7 @@ $locations = getLocations($conn);
   <!-- Parts Tabs -->
   <ul class="nav nav-tabs" id="partsTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="partStockInfoTab" data-bs-toggle="tab" data-bs-target="#partStockInfo"
+      <button class="nav-link active" id="partInfoTab" data-bs-toggle="tab" data-bs-target="#partStockInfo"
         type="button" role="tab">Info</button>
     </li>
     <li class="nav-item" role="presentation">
@@ -78,7 +77,7 @@ $locations = getLocations($conn);
 
     </div>
     <div class="tab-pane fade" id="partStockHistory" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-      Part Stock History will be here
+      <?php include 'stock-history.php'; ?>
     </div>
   </div>
 </div>
