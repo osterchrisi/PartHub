@@ -38,7 +38,7 @@ $locations = getLocations($conn);
   <!-- Parts Tabs -->
   <ul class="nav nav-tabs" id="partsTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="partStockInfoTab" data-bs-toggle="tab" data-bs-target="#partStockInfo"
+      <button class="nav-link active" id="partInfoTab" data-bs-toggle="tab" data-bs-target="#partStockInfo"
         type="button" role="tab">Info</button>
     </li>
     <li class="nav-item" role="presentation">
