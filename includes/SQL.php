@@ -423,3 +423,15 @@ function getPartStockHistory($conn, $part_id)
   $hist = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $hist;
 }
+
+function getPartInBoms($conn, $part_id)
+{
+  $stmt = $conn->prepare("SELECT * 
+                          FROM bom_elements
+                          JOIN bom_names ON bom_id_fk = bom_id
+                          WHERE part_id_fk = :part_id");
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->execute();
+  $bom_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $bom_list;
+}

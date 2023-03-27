@@ -17,6 +17,11 @@ tr.selected {
     background-color: rgba(0, 255, 255, 0.1);
 }
 
+.info-window {
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.1);
+    overflow: auto;
+}
+
 /* These are for the resizable divs in the inventory page */
 .ui-resizable-e {
     width: 10px;

@@ -54,11 +54,6 @@ $locations = getLocations($conn);
       <!-- Location / Quantity Table -->
       <?php buildTable($db_columns, $nice_columns, $stock_levels); ?>
 
-      <!-- Click listeners for buttons on stock changing modals -->
-      <script>
-        <?php include '../assets/js/stockChanges.js'; ?>
-      </script>
-
       <!-- Stock movement buttons -->
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
@@ -72,6 +67,10 @@ $locations = getLocations($conn);
       <br><br>
 
       <h5>Part of:</h5>
+      <?php
+      include '../config/part-in-boms-columns.php';
+      $bom_list = getPartInBoms($conn, $part_id);
+      buildPartInBomsTable($db_columns, $nice_columns, $bom_list);?>
       <h5>Datasheet:</h5>
       <h5>Image:</h5>
 
@@ -81,3 +80,8 @@ $locations = getLocations($conn);
     </div>
   </div>
 </div>
+
+<!-- Click listeners for buttons on stock changing modals -->
+<script>
+  <?php include '../assets/js/stockChanges.js'; ?>
+</script>
