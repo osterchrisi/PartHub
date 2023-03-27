@@ -36,27 +36,49 @@ $locations = getLocations($conn);
     <?php echo $total_stock; ?>
   </h5>
 
-  <!-- Location / Quantity Table -->
-  <?php buildTable($db_columns, $nice_columns, $stock_levels); ?>
+  <!-- Parts Tabs -->
+  <ul class="nav nav-tabs" id="partsTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="partStockInfoTab" data-bs-toggle="tab" data-bs-target="#partStockInfo"
+        type="button" role="tab">Info</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="partStockHistoryTab" data-bs-toggle="tab" data-bs-target="#partStockHistory"
+        type="button" role="tab">Stock History</button>
+    </li>
+  </ul>
 
-  <!-- Click listeners for buttons on stock changing modals -->
-<script>
-  <?php include '../assets/js/stockChanges.js'; ?>
-</script>
+  <!-- Tabs Content -->
+  <div class="tab-content" id="partsTabsContent">
+    <div class="tab-pane fade show active" id="partStockInfo" role="tabpanel" tabindex="0">
+      <br>
+      <!-- Location / Quantity Table -->
+      <?php buildTable($db_columns, $nice_columns, $stock_levels); ?>
 
-  <!-- Stock movement buttons -->
-  <div class="input-group">
-    <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
-    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("1", <?php echo json_encode($locations); ?>);'>Add</button>
-    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("0", <?php echo json_encode($locations); ?>);'>Move</button>
-    <button type="button" class="btn btn-outline-primary" onclick='callStockModal("-1", <?php echo json_encode($locations); ?>);'>Reduce</button>
+      <!-- Click listeners for buttons on stock changing modals -->
+      <script>
+        <?php include '../assets/js/stockChanges.js'; ?>
+      </script>
+
+      <!-- Stock movement buttons -->
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
+        <button type="button" class="btn btn-outline-primary"
+          onclick='callStockModal("1", <?php echo json_encode($locations); ?>);'>Add</button>
+        <button type="button" class="btn btn-outline-primary"
+          onclick='callStockModal("0", <?php echo json_encode($locations); ?>);'>Move</button>
+        <button type="button" class="btn btn-outline-primary"
+          onclick='callStockModal("-1", <?php echo json_encode($locations); ?>);'>Reduce</button>
+      </div>
+      <br><br>
+
+      <h5>Part of:</h5>
+      <h5>Datasheet:</h5>
+      <h5>Image:</h5>
+
+    </div>
+    <div class="tab-pane fade" id="partStockHistory" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+      Part Stock History will be here
+    </div>
   </div>
-  <br><br>
-
-  <h5>Part of:</h5>
-  <h5>Datasheet:</h5>
-  <h5>Image:</h5>
-
-
 </div>
-
