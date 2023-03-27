@@ -24,7 +24,6 @@ $_SESSION['stock_levels'] = $stock_levels;
 
 // Get locations
 $locations = getLocations($conn);
-
 ?>
 
 <div class="container-fluid">
@@ -78,7 +77,7 @@ $locations = getLocations($conn);
 
     </div>
     <div class="tab-pane fade" id="partStockHistory" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-      Part Stock History will be here
+      <?php include 'stock-history.php'; ?>
     </div>
   </div>
 </div>
