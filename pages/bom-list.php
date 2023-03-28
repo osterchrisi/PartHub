@@ -84,7 +84,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
     // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
     $(document).ready(function () {
-      $('tr').click(function () {
+      $('#BomListTable tbody').on('click', 'tr', function () {
         $('tbody tr').removeClass('selected');
         $(this).toggleClass('selected');
         var id = $(this).data('id'); // get the ID from the first cell of the selected row
