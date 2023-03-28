@@ -106,9 +106,3 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       });
     });
   </script>
-
-  <style>
-    tr.selected {
-      background-color: rgba(0, 255, 255, 0.1);
-    }
-  </style>

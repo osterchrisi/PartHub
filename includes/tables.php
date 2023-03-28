@@ -25,40 +25,6 @@ function buildTable($column_names, $nice_columns, $result, $width = "100%")
     echo "</div>";
 }
 
-function buildBackordersTable($result, $db_columns, $nice_columns, $width = "100%")
-{
-    echo '<div style="overflow-x:auto;">';
-    echo '<table class="table table-striped table-hover" style="width: ' . $width . '">';
-
-    // Table headers
-    echo "<thead>";
-    echo "<tr>";
-    foreach ($nice_columns as $column_header) {
-        echo "<th>$column_header</th>";
-    }
-    echo "</tr>";
-    echo "</thead>";
-
-
-    // Table rows
-    foreach ($result as $row) {
-        echo "<tr>";
-        foreach ($db_columns as $column_data) {
-            if ($column_data == "customer_po") { // Make links for PO Numbers
-                $po_number = $row[$column_data];
-                echo "<td><a href='show-backorder.php?po=$po_number'>" . $row[$column_data] . "</a></td>";
-            }
-            else {
-                echo "<td>" . $row[$column_data] . "</td>";
-            }
-        }
-        echo "</tr>";
-    }
-
-    echo "</table>";
-    echo "</div>";
-}
-
 function buildBomTable($bom_list, $db_columns, $nice_columns, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
