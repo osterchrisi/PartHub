@@ -1,4 +1,5 @@
 <?php
+// Parts Inventory Page
 $basename = basename(__FILE__);
 $title = 'Parts Inventory';
 require_once('../includes/head.html');

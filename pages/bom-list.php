@@ -1,4 +1,5 @@
 <?php
+// BOM List Page
 $basename = basename(__FILE__);
 $title = 'Show BOM';
 require_once('../includes/head.html');

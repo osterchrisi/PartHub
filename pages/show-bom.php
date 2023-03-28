@@ -1,6 +1,6 @@
 <?php
+// Shows details of selected BOM in info-window
 $basename = basename(__FILE__);
-require_once('../includes/head.html');
 include '../config/credentials.php';
 include '../config/show-bom-columns.php';
 include '../includes/SQL.php';
@@ -37,7 +37,7 @@ $bom_elements = getBomElements($conn, $bom_id);
   <?php
   // print_r(($bom_elements));
   include '../config/bom-details-columns.php';
-  buildBomDetailsTable($db_columns, $nice_columns, $bom_elements); ?>
+  buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn); ?>
 </div>
 
 <script>

@@ -1,4 +1,5 @@
 <?php
+// Show details of selected part in info-window
 $basename = basename(__FILE__);
 include '../includes/session.php';
 include '../config/credentials.php';

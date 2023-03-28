@@ -44,7 +44,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-            echo "<th data-field='$column_header'>$column_header</th>";
+        echo "<th data-field='$column_header'>$column_header</th>";
     }
     echo "</tr>";
     echo "</thead>";
@@ -56,7 +56,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
         $bom_id = $row['bom_id'];
         echo "<tr data-id=" . $row['bom_id'] . ">";
         foreach ($db_columns as $column_data) {
-                echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
         }
         echo "</tr>";
     }
@@ -66,7 +66,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
     echo "</div>";
 }
 
-function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $width = "100%")
+function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
@@ -85,7 +85,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $width 
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-            echo "<th data-field='$column_header'>$column_header</th>";
+        echo "<th data-field='$column_header'>$column_header</th>";
     }
     echo "</tr>";
     echo "</thead>";
@@ -97,7 +97,19 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $width 
         $part_id = $row['part_id'];
         echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
-                echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            if ($column_data == 'stock_available') {
+                // Get total stock
+                $stock = getStockLevels($conn, $part_id);
+                $total_stock = getTotalStock($stock);
+                // Display total stock number as link to showing stock levels
+                echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+            }
+            elseif ($column_data == 'element_quantity') {
+                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            }
+            else {
+                echo "<td data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            }
         }
         echo "</tr>";
     }
