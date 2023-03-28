@@ -25,7 +25,7 @@ function buildTable($column_names, $nice_columns, $result, $width = "100%")
     echo "</div>";
 }
 
-function buildBomTable($bom_list, $db_columns, $nice_columns, $width = "100%")
+function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
@@ -57,6 +57,47 @@ function buildBomTable($bom_list, $db_columns, $nice_columns, $width = "100%")
         echo "<tr data-id=" . $row['bom_id'] . ">";
         foreach ($db_columns as $column_data) {
                 echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+        }
+        echo "</tr>";
+    }
+
+    echo "</tbody>";
+    echo "</table>";
+    echo "</div>";
+}
+
+function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $width = "100%")
+{
+    echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
+    echo '<table
+            class="table table-hover table-striped table-sm"
+            id="BomDetailsTable"
+            data-resizable="true"
+            data-search="true"
+            data-search-align="left"
+            data-show-columns="true"
+            data-reorderable-columns="true"
+            data-cookie="true"
+            data-cookie-id-table="rememberTableState"
+            >';
+
+    // Table headers
+    echo "<thead class='table table-sm table-dark'>";
+    echo "<tr>";
+    foreach ($nice_columns as $column_header) {
+            echo "<th data-field='$column_header'>$column_header</th>";
+    }
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody>";
+    // Table rows
+    foreach ($bom_elements as $row) {
+        // echo "<tr>";
+        $part_id = $row['part_id'];
+        echo "<tr data-id=" . $row['part_id'] . ">";
+        foreach ($db_columns as $column_data) {
+                echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
         }
         echo "</tr>";
     }

@@ -1,4 +1,5 @@
 <?php
+// This script takes an array of 'amound x part' and creates the BOM in the SQL table
 $basename = basename(__FILE__);
 include '../config/credentials.php';
 include 'SQL.php';

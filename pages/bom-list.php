@@ -60,7 +60,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
       echo "<div class='row'>";
       echo "<div class='col-6'>"; // Display BOMs
-      buildBomTable($bom_list, $db_columns, $nice_columns);
+      buildBomListTable($bom_list, $db_columns, $nice_columns);
       echo "</div>";
       echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
       echo "</div>";
@@ -100,7 +100,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
           },
           error: function () {
             // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional data.');
+            $('#info-window').html('Failed to load additional BOM data.');
           }
         });
       });

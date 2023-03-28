@@ -9,14 +9,13 @@ include '../includes/get.php';
 include '../includes/tables.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-$bom_id = getSuperGlobal('id');
+$bom_id = getSuperGlobal('id'); // It's the BOM ID
 
-// Get BOM name
-$result = getBomName($conn, $bom_id);
-$bom_name = $result[0]['bom_name'];
+// Get BOM name 
+$bom_name = getBomName($conn, $bom_id)[0]['bom_name'];
 
 // Get BOM elements
-$result = getBomElements($conn, $bom_id);
+$bom_elements = getBomElements($conn, $bom_id);
 ?>
 
 <div class="container-fluid">
@@ -34,5 +33,13 @@ $result = getBomElements($conn, $bom_id);
     <?php echo $bom_name; ?>
   </h4>
 
-  <?php buildTable($db_columns, $nice_columns, $result); ?>
+  <!-- BOM Elements Table -->
+  <?php
+  // print_r(($bom_elements));
+  include '../config/bom-details-columns.php';
+  buildBomDetailsTable($db_columns, $nice_columns, $bom_elements); ?>
 </div>
+
+<script>
+  bootstrapBomDetailsTable();
+</script>
