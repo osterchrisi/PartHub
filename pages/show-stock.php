@@ -1,4 +1,5 @@
 <?php
+// Creates a simple page with a 'Location', 'Quantity' table
 $basename = basename(__FILE__);
 require_once('../includes/head.html');
 include '../config/credentials.php';
