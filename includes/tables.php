@@ -28,8 +28,8 @@ function buildTable($column_names, $nice_columns, $result, $width = "100%")
 // This is silly but I want inline stock view so hard, I'll leave it like this for now
 function buildHTMLTable($column_names, $nice_columns, $result, $width = "100%")
 {
-    $html = "<div>";
-    $html .= "<table>";
+    $html = "<div style='overflow-x:auto;'>";
+    $html .= "<table class='table table-striped table-hover table-sm' style='width: " . $width . "; font-size:12px'>";
 
     // Table headers
     $html .= "<thead>";
@@ -146,7 +146,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo '<td style="text-align:right"><a href="show-stock.php?part_id=$part_id">' . $total_stock . '</a> <a tabindex="0" role="button" data-bs-toggle="popover" data-bs-title="Stock for '.  $part_name . '" data-bs-html="true" data-bs-content="' . $inline_table_content . '" data-bs-sanitize="false">clic</a></td>';
+                echo '<td style="text-align:right"><a href="show-stock.php?part_id=$part_id">' . $total_stock . '</a> <a tabindex="0" role="button" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-title="Stock for '.  $part_name . '" data-bs-html="true" data-bs-content="' . $inline_table_content . '" data-bs-sanitize="false">clic</a></td>';
                 // echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a> <a tabindex='0' role='button' data-bs-toggle='popover' data-bs-title='Stock for $part_name' data-bs-content='$inline_table_content' data-bs-html='true'>clic</a></td>";
             }
             elseif ($column_data == 'element_quantity') {
