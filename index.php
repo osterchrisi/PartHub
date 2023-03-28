@@ -39,7 +39,7 @@ include 'includes/navbar.php'; ?>
         <td><a href="/PartHub/pages/inventory.php">
             <h1><i class="bi bi-list-columns"></i></h1>Parts<br><br>
           </a></td>
-        <td><a href="/PartHub/pages/bom-search.php">
+        <td><a href="/PartHub/pages/bom-list.php">
             <h1><i class="bi bi-bezier2"></i></h1>BOMs<br>
           </a></td>
         <td><a href="/PartHub/pages/locations.php">

@@ -10,6 +10,13 @@ function bootstrapHistTable() {
     });
 };
 
+function bootstrapPartInBomsTable() {
+    $('#partInBomsTable').bootstrapTable({
+    });
+};
+
+
+
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {
     // Remove the href tag and return only the string values

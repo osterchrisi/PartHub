@@ -212,7 +212,7 @@ function buildPartInBomsTable($db_columns, $nice_columns, $bom_list, $width = "1
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
             class="table table-hover table-striped table-sm"
-            id="partStockHistoryTable"
+            id="partInBomsTable"
             data-resizable="true"
             data-search="true"
             data-search-align="left"

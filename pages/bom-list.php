@@ -2,10 +2,12 @@
 $basename = basename(__FILE__);
 $title = 'Show BOM';
 require_once('../includes/head.html');
+
 include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
+
 $table_name = "bom_names";
 $results_per_page = getSuperGlobal('resultspp', '50');
 
@@ -14,13 +16,13 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
   <br>
-  <h4>Search BOMs</h4>
+  <h4>BOM List</h4>
 
   <!-- Search Form -->
   <div class="row">
     <div class="col-3">
       <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input class="form-control" type="text" id="search" name="search" placeholder="Filter BOMs...">
+        <input class="form-control" type="text" id="search" name="search" placeholder="Search BOMs...">
     </div>
     <div class="col-1">
       <button type="submit" name="submit" class="btn btn-primary">Show Results</button>
