@@ -85,7 +85,12 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-        echo "<th data-field='$column_header'>$column_header</th>";
+        if ($column_header == 'Quantity needed' || $column_header == 'Total stock available') {
+            echo "<th data-halign='right' data-field='$column_header'>$column_header</th>";
+        }
+        else {
+            echo "<th data-field='$column_header'>$column_header</th>";
+        }
     }
     echo "</tr>";
     echo "</thead>";
