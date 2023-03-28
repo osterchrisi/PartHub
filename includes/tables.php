@@ -65,7 +65,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
             data-show-columns="true"
             data-reorderable-columns="true"
             data-cookie="true"
-            data-cookie-id-table="rememberTableState"
+            data-cookie-id-table="BomListTableState"
             >';
 
     // Table headers
@@ -106,14 +106,14 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
             data-show-columns="true"
             data-reorderable-columns="true"
             data-cookie="true"
-            data-cookie-id-table="rememberTableState"
+            data-cookie-id-table="BomDetailsTableState"
             >';
 
     // Table headers
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-        if ($column_header == 'Quantity needed' || $column_header == 'Total stock available') {
+        if ($column_header == 'Quantity needed' || $column_header == 'Total stock available' || $column_header == 'Can build') {
             // Align quantity headers right
             echo "<th data-halign='right' data-field='$column_header'>$column_header</th>";
         }
@@ -128,30 +128,34 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     // Table rows
     foreach ($bom_elements as $row) {
         // echo "<tr>";
-        
+
         $part_id = $row['part_id'];
+        $part_name = $row['part_name'];
+
+        // This is the popover mini stock table
         $db_columns_inline = array('location_name', 'stock_level_quantity');
         $nice_columns_inline = array('Location', 'Quantity');
         $result = getStockLevels($conn, $part_id);
         $inline_table_content = buildHTMLTable($db_columns_inline, $nice_columns_inline, $result);
-        // $inline_stock = "<div>$inline_table_content</div>";
 
-
-        
-        $part_name = $row['part_name'];
+        // The "actual" BOM details table
         echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
             if ($column_data == 'stock_available') {
                 // Get total stock
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
-                // Display total stock number as link to showing stock levels
-                echo '<td style="text-align:right"><a href="show-stock.php?part_id=$part_id">' . $total_stock . '</a> <a tabindex="0" role="button" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-title="Stock for '.  $part_name . '" data-bs-html="true" data-bs-content="' . $inline_table_content . '" data-bs-sanitize="false">clic</a></td>';
-                // echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a> <a tabindex='0' role='button' data-bs-toggle='popover' data-bs-title='Stock for $part_name' data-bs-content='$inline_table_content' data-bs-html='true'>clic</a></td>";
+                // Display total stock number as link to showing stock levels in popover table
+                echo '<td style="text-align:right"><a tabindex="0" role="button" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-title="Stock for ' . $part_name . '" data-bs-html="true" data-bs-content="' . $inline_table_content . '" data-bs-sanitize="false" href="#">' . $total_stock . '</a></td>';
             }
             elseif ($column_data == 'element_quantity') {
                 // Align quantity cells right
                 echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            }
+            elseif ($column_data == 'can_build') {
+                // Align quantity cells right
+                $can_build = floor($total_stock / $row['element_quantity']);
+                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . ">$can_build</td>";
             }
             else {
                 echo "<td data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
@@ -178,7 +182,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             data-show-columns="true"
             data-reorderable-columns="true"
             data-cookie="true"
-            data-cookie-id-table="rememberTableState"
+            data-cookie-id-table="PartsTableState"
             >';
 
     // Table headers
@@ -237,7 +241,7 @@ function buildPartStockHistoryTable($db_columns, $nice_columns, $stock_history, 
             data-show-columns="true"
             data-reorderable-columns="true"
             data-cookie="true"
-            data-cookie-id-table="rememberTableState"
+            data-cookie-id-table="PartsStockHistoryTableState"
             >';
 
     // Table headers
@@ -290,7 +294,7 @@ function buildPartInBomsTable($db_columns, $nice_columns, $bom_list, $width = "1
             data-show-columns="true"
             data-reorderable-columns="true"
             data-cookie="true"
-            data-cookie-id-table="rememberTableState"
+            data-cookie-id-table="PartInBomsTableState"
             >';
 
     // Table headers
