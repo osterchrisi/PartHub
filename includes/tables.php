@@ -25,6 +25,34 @@ function buildTable($column_names, $nice_columns, $result, $width = "100%")
     echo "</div>";
 }
 
+// This is silly but I want inline stock view so hard, I'll leave it like this for now
+function buildHTMLTable($column_names, $nice_columns, $result, $width = "100%")
+{
+    $html = "<div>";
+    $html .= "<table>";
+
+    // Table headers
+    $html .= "<thead>";
+    $html .= "<tr>";
+    foreach ($nice_columns as $column_header) {
+        $html .= "<th>$column_header</th>";
+    }
+    $html .= "</tr>";
+    $html .= "</thead>";
+
+    // Table rows
+    foreach ($result as $row) {
+        $html .= "<tr>";
+        foreach ($column_names as $column_data) {
+            $html .= "<td>" . $row[$column_data] . "</td>";
+        }
+        $html .= "</tr>";
+    }
+    $html .= "</table>";
+    $html .= "</div>";
+    return $html;
+}
+
 function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
@@ -100,7 +128,16 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     // Table rows
     foreach ($bom_elements as $row) {
         // echo "<tr>";
+        
         $part_id = $row['part_id'];
+        $db_columns_inline = array('location_name', 'stock_level_quantity');
+        $nice_columns_inline = array('Location', 'Quantity');
+        $result = getStockLevels($conn, $part_id);
+        $inline_table_content = buildHTMLTable($db_columns_inline, $nice_columns_inline, $result);
+        // $inline_stock = "<div>$inline_table_content</div>";
+
+
+        
         $part_name = $row['part_name'];
         echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
@@ -109,7 +146,8 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a><a tabindex='0' role='button' data-bs-toggle='popover' data-bs-trigger='focus' data-bs-title='Stock for $part_name' data-bs-content='Show stock here'>clic</a></td>";
+                echo '<td style="text-align:right"><a href="show-stock.php?part_id=$part_id">' . $total_stock . '</a> <a tabindex="0" role="button" data-bs-toggle="popover" data-bs-title="Stock for '.  $part_name . '" data-bs-html="true" data-bs-content="' . $inline_table_content . '" data-bs-sanitize="false">clic</a></td>';
+                // echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a> <a tabindex='0' role='button' data-bs-toggle='popover' data-bs-title='Stock for $part_name' data-bs-content='$inline_table_content' data-bs-html='true'>clic</a></td>";
             }
             elseif ($column_data == 'element_quantity') {
                 // Align quantity cells right

@@ -35,7 +35,7 @@ $bom_elements = getBomElements($conn, $bom_id);
 
   <!-- BOM Elements Table -->
   <?php
-  print_r(($bom_elements));
+  // print_r(($bom_elements));
   include '../config/bom-details-columns.php';
   buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn); ?>
 </div>
@@ -44,11 +44,25 @@ $bom_elements = getBomElements($conn, $bom_id);
 
 <script>
   bootstrapBomDetailsTable();
+
+  var myDefaultAllowList = bootstrap.Tooltip.Default.allowList
+
+  // To allow table elements
+  myDefaultAllowList.table = []
+  myDefaultAllowList.thead = []
+  myDefaultAllowList.tr = []
+  myDefaultAllowList.td = []
+  myDefaultAllowList.tbody = []
+
+  // To allow td elements and data-bs-option attributes on td elements
+  myDefaultAllowList.td = ['data-bs-option']
+
   const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
   const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
   // Supposedly need the below code for being dismissale but it seems dismissable anyway (at least in my Chrome)
-  const popover = new bootstrap.Popover('.popover-dismiss', {
-    container: 'inline-stock'
-    //trigger: 'focus'
-  })
+  // popover = new bootstrap.Popover('.popover-dismiss', {
+  //   container: 'inline-stock'
+  //   //trigger: 'focus'
+  // })
 </script>
