@@ -54,13 +54,13 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       // Calculate the offset for the current page
       $offset = ($current_page - 1) * $results_per_page;
 
-      $result = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
+      $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
 
       echo "<br>Displaying $total_rows search results";
 
       echo "<div class='row'>";
       echo "<div class='col-6'>"; // Display BOMs
-      buildBomTable($result, $db_columns, $nice_columns);
+      buildBomTable($bom_list, $db_columns, $nice_columns);
       echo "</div>";
       echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
       echo "</div>";

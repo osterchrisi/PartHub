@@ -15,6 +15,12 @@ function bootstrapPartInBomsTable() {
     });
 };
 
+function bootstrapBomListTable() {
+    $('#BomListTable').bootstrapTable({
+    });
+};
+
+
 
 
 // Custom Sorter for my stock URLs

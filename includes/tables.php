@@ -59,32 +59,38 @@ function buildBackordersTable($result, $db_columns, $nice_columns, $width = "100
     echo "</div>";
 }
 
-function buildBomTable($result, $db_columns, $nice_columns, $width = "100%")
+function buildBomTable($bom_list, $db_columns, $nice_columns, $width = "100%")
 {
-    echo '<div class="table-responsive" style="overflow-x:auto;">';
-    echo '<table class="table table-striped table-hover" style="width: ' . $width . '">';
+    echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
+    echo '<table
+            class="table table-hover table-striped table-sm"
+            id="BomListTable"
+            data-resizable="true"
+            data-search="true"
+            data-search-align="left"
+            data-show-columns="true"
+            data-reorderable-columns="true"
+            data-cookie="true"
+            data-cookie-id-table="rememberTableState"
+            >';
 
     // Table headers
-    echo "<thead>";
+    echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-        echo "<th>$column_header</th>";
+            echo "<th data-field='$column_header'>$column_header</th>";
     }
     echo "</tr>";
     echo "</thead>";
 
     echo "<tbody>";
     // Table rows
-    foreach ($result as $row) {
-        echo "<tr data-id=" . $row['bom_id'] . ">";
+    foreach ($bom_list as $row) {
+        // echo "<tr>";
+        $bom_id = $row['bom_id'];
+        echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
-            if ($column_data == "bom_name") { // Make links for BOM names, use ID for referral
-                $bom_id = $row['bom_id'];
-                echo "<td><a href='show-bom.php?id=$bom_id'>" . $row[$column_data] . "</a></td>";
-            }
-            else {
-                echo "<td>" . $row[$column_data] . "</td>";
-            }
+                echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
         }
         echo "</tr>";
     }
