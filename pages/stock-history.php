@@ -6,9 +6,7 @@ $stock_history = getPartStockHistory($conn, $part_id);
 
 <div class="container-fluid">
     <!-- Stock History Table -->
-
     <?php buildPartStockHistoryTable($db_columns, $nice_columns, $stock_history); ?>
-
 </div>
 
 <script>

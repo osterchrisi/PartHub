@@ -1,11 +1,14 @@
 <?php
+// BOM List Page
 $basename = basename(__FILE__);
 $title = 'Show BOM';
 require_once('../includes/head.html');
+
 include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
+
 $table_name = "bom_names";
 $results_per_page = getSuperGlobal('resultspp', '50');
 
@@ -14,13 +17,13 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
   <br>
-  <h4>Search BOMs</h4>
+  <h4>BOM List</h4>
 
   <!-- Search Form -->
   <div class="row">
     <div class="col-3">
       <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input class="form-control" type="text" id="search" name="search" placeholder="Filter BOMs...">
+        <input class="form-control" type="text" id="search" name="search" placeholder="Search BOMs...">
     </div>
     <div class="col-1">
       <button type="submit" name="submit" class="btn btn-primary">Show Results</button>
@@ -52,13 +55,13 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       // Calculate the offset for the current page
       $offset = ($current_page - 1) * $results_per_page;
 
-      $result = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
+      $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
 
       echo "<br>Displaying $total_rows search results";
 
       echo "<div class='row'>";
       echo "<div class='col-6'>"; // Display BOMs
-      buildBomTable($result, $db_columns, $nice_columns);
+      buildBomListTable($bom_list, $db_columns, $nice_columns);
       echo "</div>";
       echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
       echo "</div>";
@@ -77,9 +80,11 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   ?>
 
   <script>
+    bootstrapBomListTable();
+
     // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
     $(document).ready(function () {
-      $('tr').click(function () {
+      $('#BomListTable tbody').on('click', 'tr', function () {
         $('tbody tr').removeClass('selected');
         $(this).toggleClass('selected');
         var id = $(this).data('id'); // get the ID from the first cell of the selected row
@@ -96,15 +101,9 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
           },
           error: function () {
             // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional data.');
+            $('#info-window').html('Failed to load additional BOM data.');
           }
         });
       });
     });
   </script>
-
-  <style>
-    tr.selected {
-      background-color: rgba(0, 255, 255, 0.1);
-    }
-  </style>

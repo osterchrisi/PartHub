@@ -324,7 +324,7 @@ function getStockLevels($conn, $part_id)
 
 function getBomElements($conn, $bom_id)
 {
-  $stmt = $conn->query("SELECT part_name, element_quantity
+  $stmt = $conn->query("SELECT part_name, element_quantity, part_id
                         FROM bom_elements
                         JOIN parts ON part_id_fk = parts.part_id
                         WHERE bom_id_fk = $bom_id");

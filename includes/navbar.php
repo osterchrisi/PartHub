@@ -17,22 +17,10 @@ $_SESSION['user_name'] = $user_name;
           <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/inventory.php') ? 'active' : ''; ?>"
             href="/PartHub/pages/inventory.php">Parts</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/bom-create.php' or $_SERVER['PHP_SELF'] == '/PartHub/pages/bom-build.php' or $_SERVER['PHP_SELF'] == '/PartHub/pages/bom-search.php') ? 'active' : ''; ?>"
-            href="/PartHub/pages//bom-search.php" role="button" data-bs-toggle="dropdown">BOMS</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/PartHub/pages/bom-create.php">Create BOM</a></li>
-            <li><a class="dropdown-item" href="/PartHub/pages/bom-build.php">Build BOM</a></li>
-            <li><a class="dropdown-item" href="/PartHub/pages/bom-search.php">Show BOM</a></li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/bom-list.php') ? 'active' : ''; ?>"
+            href="/PartHub/pages/bom-list.php">BOMs</a>
         </li>
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Backorders</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="backorders-entry.php">Enter Backorder</a></li>
-            <li><a class="dropdown-item" href="backorders-search.php">Search Backorders</a></li>
-          </ul>
-        </li> -->
         <li class="nav-item">
           <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/locations.php') ? 'active' : ''; ?>"
             href="/PartHub/pages/locations.php">Storage Locations</a>

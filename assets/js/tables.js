@@ -1,5 +1,5 @@
 // BootstrapTable a table
-//* I THINK I should convert this back into a document-ready function because sometimes after manipulating the table, it's not responsive anymore
+//* I THINK I should convert these back into a document-ready function because sometimes after manipulating the table, it's not responsive anymore
 function bootstrapPartsTable() {
     $('#parts_table').bootstrapTable({
     });
@@ -9,6 +9,25 @@ function bootstrapHistTable() {
     $('#partStockHistoryTable').bootstrapTable({
     });
 };
+
+function bootstrapPartInBomsTable() {
+    $('#partInBomsTable').bootstrapTable({
+    });
+};
+
+function bootstrapBomListTable() {
+    $('#BomListTable').bootstrapTable({
+    });
+};
+
+function bootstrapBomDetailsTable() {
+    $('#BomDetailsTable').bootstrapTable({
+    });
+};
+
+
+
+
 
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {

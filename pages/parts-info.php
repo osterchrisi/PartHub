@@ -1,4 +1,5 @@
 <?php
+// Show details of selected part in info-window
 $basename = basename(__FILE__);
 include '../includes/session.php';
 include '../config/credentials.php';
@@ -71,7 +72,9 @@ $locations = getLocations($conn);
       include '../config/part-in-boms-columns.php';
       $bom_list = getPartInBoms($conn, $part_id);
       buildPartInBomsTable($db_columns, $nice_columns, $bom_list);?>
+      <br>
       <h5>Datasheet:</h5>
+      <br>
       <h5>Image:</h5>
 
     </div>
@@ -84,4 +87,5 @@ $locations = getLocations($conn);
 <!-- Click listeners for buttons on stock changing modals -->
 <script>
   <?php include '../assets/js/stockChanges.js'; ?>
+  bootstrapPartInBomsTable();
 </script>
