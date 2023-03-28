@@ -113,11 +113,16 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-        if ($column_header == 'Quantity needed' || $column_header == 'Total stock available' || $column_header == 'Can build') {
+        if ($column_header == 'Quantity needed' || $column_header == 'Total stock available') {
             // Align quantity headers right
             echo "<th data-halign='right' data-field='$column_header'>$column_header</th>";
         }
+        elseif ($column_header == 'Can build') {
+            // Align the "Can build" column header right and make this column sortable
+            echo "<th data-halign='right' data-field='$column_header' data-sortable='true'>$column_header</th>";
+        }
         else {
+            // Any other column header
             echo "<th data-field='$column_header'>$column_header</th>";
         }
     }
