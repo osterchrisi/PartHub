@@ -79,6 +79,8 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   ?>
 
   <script>
+    bootstrapBomListTable();
+
     // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
     $(document).ready(function () {
       $('tr').click(function () {

@@ -88,7 +88,7 @@ function buildBomTable($bom_list, $db_columns, $nice_columns, $width = "100%")
     foreach ($bom_list as $row) {
         // echo "<tr>";
         $bom_id = $row['bom_id'];
-        echo "<tr data-id=" . $row['part_id'] . ">";
+        echo "<tr data-id=" . $row['bom_id'] . ">";
         foreach ($db_columns as $column_data) {
                 echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
         }
