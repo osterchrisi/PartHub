@@ -57,7 +57,15 @@ $bom_elements = getBomElements($conn, $bom_id);
   myDefaultAllowList.td = ['data-bs-option']
 
   // Initialize all popovers
-  popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-  popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+  popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+  popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 
+  // Re-initialize the popovers after toggling a column
+  //* This should be possible via the 'column-switch.bs.table' but it never fires...
+  $(function () {
+    $('#BomDetailsTable').on('post-body.bs.table', function () {
+      popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+      popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    });
+  });
 </script>
