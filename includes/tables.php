@@ -86,6 +86,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Quantity needed' || $column_header == 'Total stock available') {
+            // Align quantity headers right
             echo "<th data-halign='right' data-field='$column_header'>$column_header</th>";
         }
         else {
@@ -100,6 +101,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     foreach ($bom_elements as $row) {
         // echo "<tr>";
         $part_id = $row['part_id'];
+        $part_name = $row['part_name'];
         echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
             if ($column_data == 'stock_available') {
@@ -107,9 +109,10 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+                echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a><a tabindex='0' role='button' data-bs-toggle='popover' data-bs-trigger='focus' data-bs-title='Stock for $part_name' data-bs-content='Show stock here'>clic</a></td>";
             }
             elseif ($column_data == 'element_quantity') {
+                // Align quantity cells right
                 echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
             }
             else {
