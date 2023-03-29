@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ReCaptcha\\' => array($vendorDir . '/google/recaptcha/src/ReCaptcha'),
     'OnlineSid\\DataTabulator\\' => array($vendorDir . '/onlinesid/php-data-tabulator/src/OnlineSid/DataTabulator'),
     'Medoo\\' => array($vendorDir . '/catfan/medoo/src'),
 );
