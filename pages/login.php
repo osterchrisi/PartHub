@@ -48,7 +48,6 @@ require_once('../includes/navbar.php'); ?>
 
 <?php
 
-
+//! Properly sanitize and verify credentials
 //TODO: Check if user already logged in
-//TODO: Let user log in
 ?>
