@@ -438,7 +438,7 @@ function getPartInBoms($conn, $part_id)
 
 function getPasswordHash($conn, $email)
 {
-  $stmt = $conn->prepare("SELECT user_passwd 
+  $stmt = $conn->prepare("SELECT user_id, user_passwd, user_name
                           FROM users
                           WHERE user_email = :email");
   $stmt->bindParam(':email', $email);
