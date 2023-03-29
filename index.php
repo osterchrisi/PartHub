@@ -57,7 +57,7 @@ include 'includes/navbar.php'; ?>
         echo '<tbody class="alert alert-danger">';
         echo '<tr>';
         echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
-        echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
+        echo '<td><button type="button" class="btn btn-primary" id="logIn" onclick="window.location.href=\'pages/login.php\'">Log into your account</button></td>';
         echo '</tr>';
         echo '</tbody>';
         echo '</table>';

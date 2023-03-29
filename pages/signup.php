@@ -8,9 +8,10 @@ include '../includes/SQL.php';
 $table_name = "users";
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
-require_once('../includes/navbar.php'); ?>
+require_once('../includes/navbar.php'); 
 
 //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt)
+?>
 
 <div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
   <div class="greeting d-flex align-items-center">
