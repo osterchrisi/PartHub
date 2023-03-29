@@ -390,7 +390,7 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
 
 function getLocations($conn)
 {
-  $sql = "SELECT location_id, location_name FROM location_names";
+  $sql = "SELECT * FROM location_names";
   $stmt = $conn->prepare($sql);
   $stmt->execute();
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
