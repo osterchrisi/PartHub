@@ -1,6 +1,6 @@
 <?php
 $basename = basename(__FILE__);
-$title = 'Open-source inventory and BOM management';
+$title = 'Open Source Inventory and BOM Management';
 include 'includes/head.html';
 //! Currently including this for getting the user name in the navbar - not ideal
 include 'config/credentials.php';
