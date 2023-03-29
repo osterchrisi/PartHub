@@ -12,6 +12,7 @@ require_once('../includes/navbar.php'); ?>
 
 <div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
   <div class="greeting d-flex align-items-center">
+  <form method="post" action="../includes/captcha.php">
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
       <thead>
         <tr>
@@ -23,27 +24,30 @@ require_once('../includes/navbar.php'); ?>
       <tbody>
         <tr>
           <td style='text-align:left'>
-            <form method="post" action="../includes/captcha.php">
+            
               <label for="inputEmail3" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail3">
+              <input type="email" class="form-control" id="inputEmail3" name="email">
               <label for="inputPassword3" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword3">
+              <input type="password" class="form-control" id="inputPassword3" name="passwd">
           </td>
         </tr>
         <tr>
           <td>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
             <button type="submit" class="btn btn-primary">Sign up</button>
-            </form>
           </td>
         </tr>
         <tr>
           <td style="text-align:center">
-            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-            <div class="g-recaptcha" data-sitekey="6Lca_UAlAAAAAHLO5OHYaIvpzTPZAhf51cvz3LZE"></div>
+          <div class="g-recaptcha" data-sitekey="6Lca_UAlAAAAAHLO5OHYaIvpzTPZAhf51cvz3LZE">
+            </div>
           </td>
         </tr>
+
       <tbody>
     </table>
+    </form>
   </div>
 </div>
 
@@ -52,10 +56,3 @@ require_once('../includes/navbar.php'); ?>
     display: inline-block;
   }
 </style>
-
-<?php
-
-
-//TODO: Check if user already logged in
-//TODO: Let user log in
-?>

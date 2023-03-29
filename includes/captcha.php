@@ -1,19 +1,18 @@
 <?php
-//! turn this into an OS variable?
-$recaptcha_secret = "6Lca_UAlAAAAANcRgODTZlV5Slu0w4OTC-TrmMui";
-$recaptcha_response = $_POST['recaptcha_response'];
-$recaptcha_url = "https://www.google.com/recaptcha/api/siteverify";
-$recaptcha_data = array('secret' => $recaptcha_secret, 'response' => $recaptcha_response);
-$recaptcha_options = array('http' => array('method' => 'POST', 'content' => http_build_query($recaptcha_data)));
-$recaptcha_context = stream_context_create($recaptcha_options);
-$recaptcha_result = file_get_contents($recaptcha_url, false, $recaptcha_context);
-$recaptcha_result = json_decode($recaptcha_result, true);
+require_once __DIR__ . '/../vendor/autoload.php';
 
-var_dump($recaptcha_response);
+$secret = "6Lca_UAlAAAAANcRgODTZlV5Slu0w4OTC-TrmMui";
+$gRecaptchaResponse = $_POST['g-recaptcha-response'];
+$remoteIp = $_SERVER['REMOTE_ADDR'];
 
-if ($recaptcha_result['success'] == true) {
-    echo "verified";
-} else {
-    echo "not verified";
+$recaptcha = new \ReCaptcha\ReCaptcha($secret);
+$resp = $recaptcha->verify($gRecaptchaResponse, $remoteIp);
+
+if ($resp->isSuccess()) {
+    echo "reCAPTCHA verified!";
 }
-?>
+else {
+    echo "reCAPTCHA NOT verified!";
+    $errors = $resp->getErrorCodes();
+    // add your code here
+}
