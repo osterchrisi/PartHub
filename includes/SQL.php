@@ -435,3 +435,14 @@ function getPartInBoms($conn, $part_id)
   $bom_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $bom_list;
 }
+
+function getPasswordHash($conn, $email)
+{
+  $stmt = $conn->prepare("SELECT user_passwd 
+                          FROM users
+                          WHERE user_email = :email");
+  $stmt->bindParam(':email', $email);
+  $stmt->execute();
+  $pw_hash = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $pw_hash;
+}
