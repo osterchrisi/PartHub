@@ -10,9 +10,10 @@ $resp = $recaptcha->verify($gRecaptchaResponse, $remoteIp);
 
 if ($resp->isSuccess()) {
     echo "reCAPTCHA verified!";
+    // Sign up user
 }
 else {
     echo "reCAPTCHA NOT verified!";
     $errors = $resp->getErrorCodes();
-    // add your code here
+    // I don't know... send him back??
 }
