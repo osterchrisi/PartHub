@@ -40,6 +40,14 @@ $_SESSION['user_name'] = $user_name;
       </ul>
       <div class="d-flex">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li>
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/signup.php') ? 'active' : ''; ?>"
+            href="/PartHub/pages/pricing.php">Pricing</a>
+            </li>
+          <li>
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/signup.php') ? 'active' : ''; ?>"
+            href="/PartHub/pages/signup.php">Sign up</a>
+            </li>
           <li>
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
                 class="fas fa-user"></i></a>

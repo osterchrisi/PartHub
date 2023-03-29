@@ -390,7 +390,7 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
 
 function getLocations($conn)
 {
-  $sql = "SELECT location_id, location_name FROM location_names";
+  $sql = "SELECT * FROM location_names";
   $stmt = $conn->prepare($sql);
   $stmt->execute();
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -434,4 +434,15 @@ function getPartInBoms($conn, $part_id)
   $stmt->execute();
   $bom_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $bom_list;
+}
+
+function getPasswordHash($conn, $email)
+{
+  $stmt = $conn->prepare("SELECT user_id, user_passwd, user_name
+                          FROM users
+                          WHERE user_email = :email");
+  $stmt->bindParam(':email', $email);
+  $stmt->execute();
+  $pw_hash = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $pw_hash;
 }

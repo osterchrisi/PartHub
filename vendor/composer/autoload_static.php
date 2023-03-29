@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
 {
     public static $prefixLengthsPsr4 = array (
+        'R' => 
+        array (
+            'ReCaptcha\\' => 10,
+        ),
         'O' => 
         array (
             'OnlineSid\\DataTabulator\\' => 24,
@@ -18,6 +22,10 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
     );
 
     public static $prefixDirsPsr4 = array (
+        'ReCaptcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/recaptcha/src/ReCaptcha',
+        ),
         'OnlineSid\\DataTabulator\\' => 
         array (
             0 => __DIR__ . '/..' . '/onlinesid/php-data-tabulator/src/OnlineSid/DataTabulator',

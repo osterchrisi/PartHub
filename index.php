@@ -1,6 +1,6 @@
 <?php
 $basename = basename(__FILE__);
-$title = 'Open-source inventory and BOM management';
+$title = 'Open Source Inventory and BOM Management';
 include 'includes/head.html';
 //! Currently including this for getting the user name in the navbar - not ideal
 include 'config/credentials.php';
@@ -14,16 +14,8 @@ include 'includes/navbar.php'; ?>
     font-size: 12px;
     vertical-align: top;
   }
-
-  .greeting {
-    /* border: 1px solid white; */
-    min-height: 90vh;
-  }
-
-  .full-height {
-    /* border: 1px solid red; */
-  }
 </style>
+
 <div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
   <div class="greeting d-flex align-items-center">
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
@@ -58,19 +50,19 @@ include 'includes/navbar.php'; ?>
           </a></td>
       </tr>
       <?php
-      if (!isset($_SESSION['user_id'])){
-      echo '<tr>';
+      if (!isset($_SESSION['user_id'])) {
+        echo '<tr>';
         echo '<td colspan="3">';
-          echo '<table class="table table-borderless">';
-            echo '<tbody class="alert alert-danger">';
-              echo '<tr>';
-                echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
-                echo '<td><button type="button" class="btn btn-primary" id="logIn">Log into your account</button></td>';
-               echo '</tr>';
-              echo '</tbody>';
-          echo '</table>';
+        echo '<table class="table table-borderless">';
+        echo '<tbody class="alert alert-danger">';
+        echo '<tr>';
+        echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
+        echo '<td><button type="button" class="btn btn-primary" id="logIn" onclick="window.location.href=\'pages/login.php\'">Log into your account</button></td>';
+        echo '</tr>';
+        echo '</tbody>';
+        echo '</table>';
         echo '</td>';
-      echo '</tr>';
+        echo '</tr>';
       }
       ?>
     </table>
@@ -80,21 +72,21 @@ include 'includes/navbar.php'; ?>
 
 <!-- The user stuff modal -->
 <div id="myModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">User stuff</h4>
-            </div>
-            <div class="modal-body">
-                <p>You are currently not logged in.</p>
-                <br>
-                <p>Please continue as demo user or log in!</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">User stuff</h4>
+      </div>
+      <div class="modal-body">
+        <p>You are currently not logged in.</p>
+        <br>
+        <p>Please continue as demo user or log in!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
 </div>
 
 </body>
@@ -103,7 +95,7 @@ include 'includes/navbar.php'; ?>
 
 <?php
 // Show the login modal if user is not logged in yet
-if ($show_modal == 1){
+if ($show_modal == 1) {
   echo "<script>var myModal = new bootstrap.Modal(document.getElementById('myModal'));</script>";
   echo '<script>myModal.show();</script>';
 }
