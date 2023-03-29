@@ -56,6 +56,7 @@ require_once('../includes/navbar.php'); ?>
 </style>
 
 <script>
+//TODO: Would maybe be nice to add a listener to the button, telling the user to complete the challenge first
   function enableSignupBtn() {
     document.getElementById('signupBtn').disabled = false;
   }
