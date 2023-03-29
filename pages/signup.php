@@ -23,7 +23,7 @@ require_once('../includes/navbar.php'); ?>
       <tbody>
         <tr>
           <td style='text-align:left'>
-            <form>
+            <form method="post" action="../includes/captcha.php">
               <label for="inputEmail3" class="form-label">Email</label>
               <input type="email" class="form-control" id="inputEmail3">
               <label for="inputPassword3" class="form-label">Password</label>
