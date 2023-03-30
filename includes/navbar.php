@@ -1,5 +1,5 @@
 <?php
-//! Get user name - navbar is not a cool place for this
+//! Get user name - navbar is not a cool place for this I find
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $user_name = getUserName($conn);
 $_SESSION['user_name'] = $user_name;
@@ -41,7 +41,7 @@ $_SESSION['user_name'] = $user_name;
       <div class="d-flex">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li>
-          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/signup.php') ? 'active' : ''; ?>"
+          <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/pricing.php') ? 'active' : ''; ?>"
             href="/PartHub/pages/pricing.php">Pricing</a>
             </li>
           <li>

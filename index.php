@@ -6,7 +6,8 @@ include 'includes/head.html';
 include 'config/credentials.php';
 include 'includes/SQL.php';
 
-include 'includes/navbar.php'; ?>
+include 'includes/navbar.php'; 
+?>
 
 <style>
   h1.display-1::after {
@@ -23,6 +24,9 @@ include 'includes/navbar.php'; ?>
         <td colspan="3">
           <h1 class="display-1">PartHub</h1><br>
           <h1>Inventory and BOM management</h1><br>
+          <?php if ((isset($_GET['login'])) && $_SESSION['user_id'] != '-1'){
+  echo '<div class="alert alert-info" role="alert">Nice to have you back, ' . $user_name . '!</div>';
+}?>
           Start looking at some parts, create a BOM and then execute it. Go ahead and explore!
           <br>The database will reset every full hour, then all your changes will be lost :(<br><br>
         </td>

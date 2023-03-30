@@ -12,7 +12,7 @@ if (password_verify($_POST['passwd'], $hash[0]['user_passwd'])) {
     session_start();
 
     $_SESSION['user_id'] = $hash[0]['user_id'];
-    header("Location: /PartHub/index.php");
+    header("Location: /PartHub/index.php?login");
 }
 else {
     echo "password incorrect";
