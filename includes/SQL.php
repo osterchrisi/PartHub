@@ -456,3 +456,16 @@ function checkIfUserExists($conn, $email)
   $stmt->execute();
   return $stmt->rowCount();
 }
+
+function createUser($conn, $email, $passwd, $name)
+{
+  $stmt = $conn->prepare("INSERT INTO users
+                        (user_name, user_email, user_passwd, register_date, last_login) VALUES
+                        (:user_name, :user_email, :user_passwd, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+  $stmt->bindParam(':user_name', $name);
+  $stmt->bindParam(':user_email', $email);
+  $stmt->bindParam(':user_passwd', $passwd);
+  $stmt->execute();
+  $new_id = $conn->lastInsertId();
+  return $new_id;
+}

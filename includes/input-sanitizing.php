@@ -14,6 +14,8 @@ function processForm($email, $passwd)
 {
 echo "email: $email<br>";
 echo "passwd: $passwd<br>";
+$hash = password_hash($passwd, PASSWORD_ARGON2I);
+echo "hash: $hash";
 
 $e1 = sanitizeString($email);
 $e2 = sanitizeInput($e1);

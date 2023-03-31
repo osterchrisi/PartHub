@@ -32,14 +32,16 @@ function getCurrentStock($stock_levels, $location)
 }
 
 // Sanitize user input string by removing leading/trailing white spaces and HTML special characters
-function sanitizeString($input) {
+function sanitizeString($input)
+{
     $input = trim($input);
     $input = htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     return $input;
 }
 
 // Sanitize user input string by stripping out potentially dangerous characters
-function sanitizeInput($input) {
+function sanitizeInput($input)
+{
     $input = trim($input);
     $input = stripslashes($input);
     $input = filter_var($input, FILTER_SANITIZE_STRING);
@@ -47,7 +49,8 @@ function sanitizeInput($input) {
 }
 
 // Check if a string is within a certain length range
-function checkStringLength($input, $min, $max) {
+function checkStringLength($input, $min, $max)
+{
     $length = strlen($input);
     if ($length < $min || $length > $max) {
         return false;
@@ -56,7 +59,8 @@ function checkStringLength($input, $min, $max) {
 }
 
 // Validate an e-mail
-function validateEmail($email) {
+function validateEmail($email)
+{
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return 'false';
     }
