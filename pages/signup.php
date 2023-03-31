@@ -28,9 +28,9 @@ require_once('../includes/navbar.php');
           <tr>
             <td style='text-align:left'>
               <label for="inputEmail3" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail3" name="email">
+              <input type="email" class="form-control" id="inputEmail3" name="email" required>
               <label for="inputPassword3" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword3" name="passwd">
+              <input type="password" class="form-control" id="inputPassword3" name="passwd" required>
             </td>
           </tr>
           <tr>

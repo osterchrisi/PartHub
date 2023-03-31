@@ -446,3 +446,13 @@ function getPasswordHash($conn, $email)
   $pw_hash = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $pw_hash;
 }
+
+function checkIfUserExists($conn, $email)
+{
+  $stmt = $conn->prepare("SELECT user_email
+                          FROM users
+                          WHERE user_email = :email");
+  $stmt->bindParam(':email', $email);
+  $stmt->execute();
+  return $stmt->rowCount();
+}
