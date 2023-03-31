@@ -11,6 +11,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 require_once('../includes/navbar.php'); 
 
 //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt)
+//! Passwort darf keine Leerzeichen enthalten
 ?>
 
 <div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
