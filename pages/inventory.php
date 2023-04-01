@@ -48,6 +48,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
+      <button class="btn btn-primary" name="AddNew" id="AddNew">New Entry</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
