@@ -4,11 +4,16 @@
 
 include '../config/credentials.php';
 include 'SQL.php';
+
+$length = 10;    
+$rand_id = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1,$length);
+$temp_name = 'Temp Part ' . $rand_id;
+
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $stmt = $conn->prepare("INSERT INTO parts
                         (part_id, part_name, part_description, part_comment, created_at, part_category_fk, part_footprint_fk, part_unit_fk, part_owner_u_fk, part_owner_g_fk) VALUES
-                        (NULL,'New TEMP Part',NULL,NULL,DEFAULT,DEFAULT,DEFAULT,DEFAULT,1,NULL)");
-// $stmt->bindParam(':user_id', $_SESSION['user_id']);
+                        (NULL,:temp_name,NULL,NULL,DEFAULT,DEFAULT,DEFAULT,DEFAULT,1,NULL)");
+$stmt->bindParam(':temp_name', $temp_name);
 $stmt->execute();
 $new_id = $conn->lastInsertId();
 // $name = $name[0]['user_name'];

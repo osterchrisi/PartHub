@@ -205,7 +205,7 @@ $(document).ready(function () {
 // Prepend new row to parts table
 function createNewRow(part_id) {
     var $table = $('#parts_table');
-    var newRowHtml = '<tr class="new-row">' +
+    var newRowHtml = '<tr data-id="'+part_id+'">' +
         '<td><input type="text" class="form-control" name="name" value="" required></td>' +
         '<td><input type="text" class="form-control" name="email" value=""></td>' +
         '<td><input type="text" class="form-control" name="phone" value=""></td>' +
@@ -213,7 +213,7 @@ function createNewRow(part_id) {
         '<td><input type="text" class="form-control" name="phone" value=""></td>' +
         '<td><input type="text" class="form-control" name="phone" value=""></td>' +
         '<td><input type="text" class="form-control" name="phone" value=""></td>' +
-        '<td><button class="btn btn-success save-new-row">Save</button><button class="btn btn-danger cancel-new-row">Cancel</button></td>' +
+        '<td><button class="btn btn-sm btn-success save-new-row">OK</button><button class="btn btn-sm btn-danger cancel-new-row">Cncl</button></td>' +
         '</tr>';
     $table.prepend(newRowHtml);
 }
