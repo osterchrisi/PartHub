@@ -6,7 +6,7 @@ $user_name = getUserName($conn);
 $_SESSION['user_name'] = $user_name;
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/PartHub/index.php">PartHub</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">

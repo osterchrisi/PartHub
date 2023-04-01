@@ -10,7 +10,7 @@ include '../includes/forms.php';
 include '../includes/get.php';
 
 $table_name = "parts";
-
+print_r($_GET);
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
 
@@ -18,6 +18,8 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
 
+$categories = getCategories($conn);
+// print_r($categories);
 ?>
 
 <!-- Stock Modal - gets dynamically updated via JS -->
@@ -41,8 +43,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
     <div class="col-3">
       <input class="form-control" placeholder="Search categories" id="categories-filter">
       <?php
-      $categories = getCategories($conn);
-
       //TODO: Button to reset filters
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
@@ -117,6 +117,21 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
 <script>
   bootstrapPartsTable();
+  // $('#cat-select').selectize();
+
+  $(function() {
+  var $select = $('#cat-select').selectize();
+
+  $('form').on('submit', function() {
+    // Get the selected options from the Selectize instance
+    var selectedValues = $select[0].selectize.getValue();
+
+    // Update the value of the original <select> element
+    $('#cat-select').val(selectedValues);
+
+    return true; // Allow the form to be submitted
+  });
+});
 
   // Get part_id from the clicked row and update parts-info and stock modals
   $(document).ready(function () {
@@ -131,6 +146,7 @@ $results_per_page = getSuperGlobal('resultspp', '50');
       updateStockModal(id);
     });
 
+    // Focus the Quantity field in the stock changes modal after showing
     $('#mAddStock').on('shown.bs.modal', function () {
       console.log("Modal now ready");
       $('#addStockQuantity').focus();

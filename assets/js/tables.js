@@ -78,7 +78,9 @@ $(document).ready(function inlineProcessing() {
 
                     // Create select element
                     var select = createCategorySelect(categories, currentValue);
+                    
                     cell.empty().append(select);
+                    select.selectize();
                     select.focus();
 
                     select.on('change', function () {
@@ -184,6 +186,7 @@ $(document).ready(function inlineProcessing() {
     });
 });
 
+//* Not using the code below here, it's for appending a part row
 // Click listener for the New Entry button
 $(document).ready(function () {
     $('#AddNew').click(function () {

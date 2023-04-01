@@ -66,19 +66,19 @@ $(function () {
 });
 
 // Filter categories
-$(document).ready(function () {
-    $('#categories-filter').on('input', function () {
-        var filterText = $(this).val().toLowerCase();
-        $('#cat-select option').each(function () {
-            var optionText = $(this).text().toLowerCase();
-            if (optionText.indexOf(filterText) !== -1) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    });
-});
+// $(document).ready(function () {
+//     $('#categories-filter').on('input', function () {
+//         var filterText = $(this).val().toLowerCase();
+//         $('#cat-select option').each(function () {
+//             var optionText = $(this).text().toLowerCase();
+//             if (optionText.indexOf(filterText) !== -1) {
+//                 $(this).show();
+//             } else {
+//                 $(this).hide();
+//             }
+//         });
+//     });
+// });
 
 // ! Get right-click column-visibility menu for parts_table
 // ! Does NOT work yet, implemented with bootstrap-table for now
