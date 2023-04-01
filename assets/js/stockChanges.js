@@ -33,26 +33,27 @@ function callStockModal(change, locations) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
         toStockLocationDropdown(locations);
+        $("#toStockLocation").selectize();
 
     }
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
         fromStockLocationDropdown(locations);
+        $("#fromStockLocation").selectize();
     }
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
         toStockLocationDropdown(locations);
         fromStockLocationDropdown(locations);
+        $("#toStockLocation").selectize();
+        $("#fromStockLocation").selectize();
     }
 
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
     saveChanges(change);
-    $("#fromStockLocation").selectize({
-        theme: 'bootstrap'
-    });
 }
 
 // ClickListener for "Save Changes" button in Add Stock Modal
