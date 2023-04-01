@@ -4,23 +4,23 @@ var to_location_exists = false;
 // Creat the "To Location" dropdown
 function toStockLocationDropdown(locations) {
     var div = document.getElementById("ToStockLocationDiv");
-    var selectHTML = "<select class='form-select' id='toStockLocation'>";
+    var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
     }
-    selectHTML += "</select><label for='toStockLocation'>to</label>";
+    selectHTML += "</select>";
     div.innerHTML = selectHTML;
     to_location_exists = true;
 }
 
-// Creat the "From Location" dropdown
+// Create the "From Location" dropdown
 function fromStockLocationDropdown(locations){
     var div = document.getElementById("FromStockLocationDiv");
-    var selectHTML = "<select class='form-select' id='fromStockLocation'>";
+    var selectHTML = "<label class='input-group-text' for='fromStockLocation'>From</label><select class='form-select' id='fromStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
     }
-    selectHTML += "</select><label for='fromStockLocation'>from</label>";
+    selectHTML += "</select>";
     div.innerHTML = selectHTML;
     from_location_exists = true;
 }
@@ -50,6 +50,9 @@ function callStockModal(change, locations) {
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
     saveChanges(change);
+    $("#fromStockLocation").selectize({
+        theme: 'bootstrap'
+    });
 }
 
 // ClickListener for "Save Changes" button in Add Stock Modal

@@ -5,7 +5,7 @@
 include '../config/credentials.php';
 include 'SQL.php';
 
-$length = 10;    
+$length = 5;    
 $rand_id = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1,$length);
 $temp_name = 'Temp Part ' . $rand_id;
 
