@@ -101,7 +101,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
       // Pagnination links
       displayPaginationLinks($total_pages, $current_page);
-      createPart();
     }
     else {
       noResults();
