@@ -374,7 +374,7 @@ function getUserName($conn)
 function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id)
 {
   $stmt = $conn->prepare("INSERT INTO stock_level_change_history
-                        (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_datetime, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
+                        (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_timestamp, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
                         (NULL, :part_id, :from_location, :to_location, :quantity, CURRENT_TIMESTAMP, :comment, :user_id)");
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':from_location', $from_location);
@@ -445,4 +445,27 @@ function getPasswordHash($conn, $email)
   $stmt->execute();
   $pw_hash = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $pw_hash;
+}
+
+function checkIfUserExists($conn, $email)
+{
+  $stmt = $conn->prepare("SELECT user_email
+                          FROM users
+                          WHERE user_email = :email");
+  $stmt->bindParam(':email', $email);
+  $stmt->execute();
+  return $stmt->rowCount();
+}
+
+function createUser($conn, $email, $passwd, $name)
+{
+  $stmt = $conn->prepare("INSERT INTO users
+                        (user_name, user_email, user_passwd, register_date, last_login) VALUES
+                        (:user_name, :user_email, :user_passwd, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+  $stmt->bindParam(':user_name', $name);
+  $stmt->bindParam(':user_email', $email);
+  $stmt->bindParam(':user_passwd', $passwd);
+  $stmt->execute();
+  $new_id = $conn->lastInsertId();
+  return $new_id;
 }

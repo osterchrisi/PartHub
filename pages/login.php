@@ -25,9 +25,9 @@ require_once('../includes/navbar.php'); ?>
           <td style='text-align:left'>
             <form method="post" action="../includes/verify-login.php">
               <label for="inputEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail" name="email">
+              <input type="email" class="form-control" id="inputEmail" name="email" required>
               <label for="inputPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword" name="passwd">
+              <input type="password" class="form-control" id="inputPassword" name="passwd" required>
           </td>
         </tr>
         <tr>
