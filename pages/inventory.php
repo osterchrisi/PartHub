@@ -120,16 +120,21 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
   // Get part_id from the clicked row and update parts-info and stock modals
   $(document).ready(function () {
-  $('#parts_table tbody').on('click', 'tr', function () {
-    console.log("Row clicked");
-    if ($('tbody tr.selected').length > 0) {
-      $('tbody tr.selected').removeClass('selected');
-    }
-    $(this).toggleClass('selected');
-    var id = $(this).data('id'); // get ID from the selected row
-    updatePartsInfo(id);
-    updateStockModal(id);
+    $('#parts_table tbody').on('click', 'tr', function () {
+      console.log("Row clicked");
+      if ($('tbody tr.selected').length > 0) {
+        $('tbody tr.selected').removeClass('selected');
+      }
+      $(this).toggleClass('selected');
+      var id = $(this).data('id'); // get ID from the selected row
+      updatePartsInfo(id);
+      updateStockModal(id);
+    });
+
+    $('#mAddStock').on('shown.bs.modal', function () {
+      console.log("Modal now ready");
+      $('#addStockQuantity').focus();
+    });
   });
-});
 
 </script>
