@@ -36,6 +36,10 @@ if ($resp->isSuccess()) {
         $passwd = $_POST['passwd'];
         $passwd = password_hash($passwd, PASSWORD_ARGON2I);
         $user_id = createUser($conn, $email, $passwd, $user_name);
+        $subject = 'Welcome to PartHub!';
+        $body = 'Thank you for chosing PartHub, it\'s great!';
+        $altbody = 'Thank you for chosing PartHub, it\'s great!';
+        include 'sendmail.php';
     }
 }
 else {
