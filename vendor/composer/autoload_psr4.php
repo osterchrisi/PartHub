@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ReCaptcha\\' => array($vendorDir . '/google/recaptcha/src/ReCaptcha'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'OnlineSid\\DataTabulator\\' => array($vendorDir . '/onlinesid/php-data-tabulator/src/OnlineSid/DataTabulator'),
     'Medoo\\' => array($vendorDir . '/catfan/medoo/src'),
 );

@@ -11,6 +11,10 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
         array (
             'ReCaptcha\\' => 10,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'O' => 
         array (
             'OnlineSid\\DataTabulator\\' => 24,
@@ -25,6 +29,10 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
         'ReCaptcha\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/recaptcha/src/ReCaptcha',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'OnlineSid\\DataTabulator\\' => 
         array (
