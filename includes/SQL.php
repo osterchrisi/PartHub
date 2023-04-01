@@ -399,7 +399,10 @@ function getLocations($conn)
 
 function changeQuantity($conn, $part_id, $quantity, $to_location)
 {
-  $stmt = $conn->prepare("UPDATE stock_levels SET stock_level_quantity = :quantity WHERE part_id_fk = :part_id AND location_id_fk = :to_location");
+  $stmt = $conn->prepare("UPDATE stock_levels
+                          SET stock_level_quantity = :quantity 
+                          WHERE part_id_fk = :part_id 
+                          AND location_id_fk = :to_location");
   $stmt->bindParam(':quantity', $quantity);
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':to_location', $to_location);

@@ -96,7 +96,7 @@ function removeClickListeners(id) {
     $(id).off('click');
 }
 
-// Remove the "from locations" dropdown
+// Remove the locations dropdowns to keep them from stacking up
 $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {
     removeLocationDropdown("FromStockLocationDiv");
@@ -109,6 +109,7 @@ $('#mAddStock').on('hidden.bs.modal', function () {
     }
 });
 
+// Remove a dropdown by ID
 function removeLocationDropdown(location) {
     var div = document.getElementById(location);
     div.innerHTML = '';
