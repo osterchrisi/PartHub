@@ -221,6 +221,7 @@ tr.selected {
     position: relative
 }
 
+/* This is the text coolor */
 .selectize-dropdown,
 .selectize-input,
 .selectize-input input {
