@@ -1,4 +1,5 @@
 <?php
+// The navbar in the top
 //! Get user name - navbar is not a cool place for this I find
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $user_name = getUserName($conn);

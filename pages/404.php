@@ -1,4 +1,5 @@
 <?php
+// 404 - not found!
 $basename = basename(__FILE__);
 $title = 'Page not found :(';
 require_once'../includes/head.html';

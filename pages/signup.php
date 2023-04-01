@@ -1,4 +1,5 @@
 <?php
+// User sign up page
 $basename = basename(__FILE__);
 $title = 'Sign up';
 require_once('../includes/head.html');

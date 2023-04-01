@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<ruleset name="phpDocumentor">
+    <description>The coding standard for phpDocumentor.</description>
+
+    <file>src</file>
+    <file>tests/unit</file>
+    <arg value="p"/>
+    <arg name="extensions" value="php"/>
+    <arg name="basepath" value="."/>
+    <arg name="parallel" value="12"/>
+
+    <!-- Set the minimum PHP version for PHPCompatibility.
+         This should be kept in sync with the requirements in the composer.json file. -->
+    <config name="testVersion" value="7.2-"/>
+
+    <!-- Prevent false positives for PHP features polyfilled via dependencies. -->
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP73"/>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
+
+    <rule ref="phpDocumentor">
+        <!-- Should be removed/fixed again once we pass the round of checks -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint" />
+        <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion" />
+        <exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
+
+        <!-- Property type declarations are a PHP 7.4 feature. -->
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
+
+        <!-- Using ::class on variables is only supported in PHP 8.0 and higher. -->
+        <exclude name="SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall"/>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
+        <properties>
+            <property name="forbiddenAnnotations" type="array">
+                <element value="@author"/>
+                <element value="@category"/>
+                <element value="@copyright"/>
+                <element value="@created"/>
+                <element value="@license"/>
+                <element value="@since"/>
+                <element value="@subpackage"/>
+                <element value="@version"/>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
+        <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest\.php$</exclude-pattern>
+        <exclude-pattern>*/tests/unit/phpDocumentor/Compiler/Pass/TableOfContentsBuilderTest\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">
+        <exclude-pattern>*/src/*/ResolveInlineLinkAndSeeTags\.php$</exclude-pattern>
+        <exclude-pattern>*/src/*/*Assembler*\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming">
+        <exclude-pattern>*/src/*/*Interface\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix">
+        <exclude-pattern>*/src/*/Abstract*\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousSuffix">
+        <exclude-pattern>*/src/*/*Abstract\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix">
+        <exclude-pattern>src/phpDocumentor/Transformer/Writer/*Trait\.php$</exclude-pattern>
+        <exclude-pattern>tests/unit/Prophecy/*Trait\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod.Found">
+        <exclude-pattern>src/phpDocumentor/Kernel\.php$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment">
+         <exclude-pattern>src/phpDocumentor/Descriptor/Collection\.php$</exclude-pattern>
+    </rule>
+
+    <!-- Should be removed/fixed again once we pass the round of checks -->
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+</ruleset>

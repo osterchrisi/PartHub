@@ -1,4 +1,5 @@
 <?php
+// Testing page that sends mails to myself, so I can check how they look
 require_once __DIR__ . '/../vendor/autoload.php';
 include '../config/credentials.php';
 include 'SQL.php';

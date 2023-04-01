@@ -1,4 +1,5 @@
 <?php
+// Tables get built here
 function buildTable($column_names, $nice_columns, $result, $width = "100%")
 {
     echo '<div style="overflow-x:auto;">';

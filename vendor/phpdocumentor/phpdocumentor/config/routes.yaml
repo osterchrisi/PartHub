@@ -1,0 +1,16 @@
+document:
+    path: /{name}.html
+    requirements:
+        name: ".+"
+
+file:
+    path: /files/{name}.html
+
+package:
+    path: /packages/{name}.html
+
+namespace:
+    path: /namespaces/{name}.html
+
+class:
+    path: /classes/{name}.html

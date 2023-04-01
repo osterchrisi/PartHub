@@ -1,4 +1,5 @@
 <?php
+// PHPMailer function. Expects a few variables and will send an e-mail
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
 use PHPMailer\PHPMailer\PHPMailer;

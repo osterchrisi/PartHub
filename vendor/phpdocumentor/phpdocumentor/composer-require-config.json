@@ -1,0 +1,20 @@
+{
+  "symbol-whitelist" : [
+    "null", "true", "false",
+    "static", "self", "parent",
+    "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
+    "array_key_last",
+    "Composer\\Autoload\\ClassLoader",
+    "League\\Uri\\Exceptions\\SyntaxError",
+    "PackageVersions\\Versions"
+  ],
+  "php-core-extensions" : [
+    "Core",
+    "date",
+    "pcre",
+    "Phar",
+    "Reflection",
+    "SPL",
+    "standard"
+  ]
+}

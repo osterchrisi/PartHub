@@ -1,4 +1,5 @@
 <?php
+// The stock changing modal from the parts inventory
 $basename = basename(__FILE__);
 include '../config/credentials.php';
 include '../config/show-stock-columns.php';

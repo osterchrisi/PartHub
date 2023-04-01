@@ -1,0 +1,25 @@
+{
+  "name": "jawira/plantuml",
+  "type": "library",
+  "description": "Provides PlantUML executable and plantuml.jar",
+  "keywords": [
+    "plantuml",
+    "plantuml.jar",
+    "uml",
+    "diagram",
+    "jar"
+  ],
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Jawira Portugal"
+    }
+  ],
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "bin": [
+    "bin/plantuml"
+  ]
+}

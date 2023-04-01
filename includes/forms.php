@@ -1,4 +1,5 @@
 <?php
+// A bunch of form generating functions
 function generateCategoriesDropdown($categories, $sc)
 {
   // Generate dropdown menu for the column names

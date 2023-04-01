@@ -1,4 +1,5 @@
 <?php
+// Categories page
 $basename = basename(__FILE__);
 $title = 'Categories';
 require_once('../includes/head.html');

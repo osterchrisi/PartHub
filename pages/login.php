@@ -1,4 +1,5 @@
 <?php
+// Login page
 $basename = basename(__FILE__);
 $title = 'Log In';
 require_once('../includes/head.html');

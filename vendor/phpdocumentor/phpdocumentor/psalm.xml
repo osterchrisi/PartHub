@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<psalm
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorLevel="5"
+    findUnusedVariablesAndParams="true"
+>
+    <projectFiles>
+        <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <!-- User Defined -->
+        <UndefinedMagicMethod>
+            <errorLevel type="suppress">
+                <!-- Magic Methods on GraphViz -->
+                <referencedMethod name="phpDocumentor\GraphViz\Graph::setlabel"/>
+                <referencedMethod name="phpDocumentor\GraphViz\Node::setshape"/>
+                <referencedMethod name="phpDocumentor\GraphViz\Node::setfontcolor"/>
+                <!-- not sure what's going on here -->
+                <referencedMethod name="League\Flysystem\Filesystem::find"/>
+            </errorLevel>
+        </UndefinedMagicMethod>
+
+        <UnusedVariable>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Transformer/Writer/Twig/Extension.php" />
+            </errorLevel>
+        </UnusedVariable>
+
+        <UndefinedInterfaceMethod>
+            <errorLevel type="suppress">
+                <!-- not sure what's going on here -->
+                <referencedMethod name="League\Flysystem\FilesystemInterface::find"/>
+            </errorLevel>
+        </UndefinedInterfaceMethod>
+
+        <InvalidArgument>
+            <errorLevel type="suppress">
+                <!-- To be valid, we'd have to make Collection @template-covariant and make it immutable. Lot of work for small gain-->
+                <referencedFunction name="phpDocumentor\Descriptor\Collection::merge"/>
+                <referencedFunction name="phpDocumentor\Descriptor\Collection::add"/>
+                <referencedFunction name="phpDocumentor\Descriptor\Collection::set"/>
+                <!-- Either current() works on something else than an array and Psalm is wrong or this methods *can* return an object,
+                but just happen not to in this specific call -->
+                <referencedFunction name="current"/>
+                <!-- psalm bug -->
+                <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::register" />
+                <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::registerFallback" />
+                <!-- requires config design improvements -->
+                <referencedFunction name="phpDocumentor\Transformer\Template\Factory::getTemplates" />
+            </errorLevel>
+        </InvalidArgument>
+
+        <!-- Unnecessary @var annotations are mainly for PHPStorm when it can't read Generics.
+        This could be removed when https://youtrack.jetbrains.com/issue/WI-47158 will be resolved
+        or if we decide PHPStorm autocompletion is not needed -->
+        <UnnecessaryVarAnnotation errorLevel="suppress" />
+
+        <InvalidThrow>
+            <errorLevel type="suppress">
+                <!-- An interface of exception that does not implements Throwable -->
+                <referencedClass name="Psr\Cache\InvalidArgumentException"/>
+            </errorLevel>
+        </InvalidThrow>
+
+        <TooManyTemplateParams>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Compiler/Compiler.php"/>
+            </errorLevel>
+        </TooManyTemplateParams>
+
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+                <!-- MountManager will be removed in Flysystem V2 -->
+                <referencedClass name="League\Flysystem\MountManager"/>
+                <referencedClass name="PackageVersions\Versions"/>
+                <referencedClass name="Symfony\Component\Routing\RouteCollectionBuilder"/>
+            </errorLevel>
+        </DeprecatedClass>
+
+        <InvalidReturnStatement>
+            <errorLevel type="suppress">
+                <!-- Discussed here #2271-->
+                <file name="src/phpDocumentor/Descriptor/ClassDescriptor.php"/>
+                <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
+                <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
+                <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
+                <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
+            </errorLevel>
+        </InvalidReturnStatement>
+
+        <InvalidReturnType>
+            <errorLevel type="suppress">
+                <!-- Discussed here #2271-->
+                <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
+                <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
+                <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
+                <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
+            </errorLevel>
+        </InvalidReturnType>
+        
+        <UnusedMethodCall>
+            <errorLevel type="suppress">
+                <!-- Psalm think the call is unused. Don't know why -->
+                <referencedMethod name="Webmozart\Assert\Mixin::nullOrIsInstanceOf"/>
+            </errorLevel>
+        </UnusedMethodCall>
+
+        <MoreSpecificImplementedParamType>
+            <errorLevel type="suppress">
+                <!-- Missing documentation in phpDocumentor\Reflection library. Fixed in phpDocumentor/Reflection/pull/181. This can be removed starting from ^4.0.2 -->
+                <directory name="src/phpDocumentor/Parser/Middleware/"/>
+                <directory name="src/phpDocumentor/Descriptor/Builder/Reflector/"/>
+                <file name="src/phpDocumentor/Configuration/Definition/Version2.php"/>
+                <file name="src/phpDocumentor/Configuration/Definition/Version3.php"/>
+            </errorLevel>
+        </MoreSpecificImplementedParamType>
+
+        <InvalidCast>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Descriptor/Builder/Reflector/Tags/InvalidTagAssembler.php" />
+            </errorLevel>
+        </InvalidCast>
+    </issueHandlers>
+</psalm>

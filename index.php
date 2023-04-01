@@ -1,4 +1,5 @@
 <?php
+// Landing page
 $basename = basename(__FILE__);
 $title = 'Open Source Inventory and BOM Management';
 include 'includes/head.html';

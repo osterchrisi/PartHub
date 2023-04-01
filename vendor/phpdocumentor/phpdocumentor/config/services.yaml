@@ -1,0 +1,307 @@
+imports:
+  - { resource: 'pipelines.yaml' }
+  - { resource: 'reflection.yaml' }
+  - { resource: 'stages.yaml' }
+
+parameters:
+    linker.substitutions:
+      'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
+      'phpDocumentor\Descriptor\FileDescriptor':
+          - 'tags'
+          - 'classes'
+          - 'interfaces'
+          - 'traits'
+          - 'functions'
+          - 'constants'
+      'phpDocumentor\Descriptor\ClassDescriptor':
+          - 'tags'
+          - 'parent'
+          - 'interfaces'
+          - 'constants'
+          - 'properties'
+          - 'methods'
+          - 'usedTraits'
+      'phpDocumentor\Descriptor\InterfaceDescriptor':
+          - 'tags'
+          - 'parent'
+          - 'constants'
+          - 'methods'
+      'phpDocumentor\Descriptor\TraitDescriptor':
+          - 'tags'
+          - 'properties'
+          - 'methods'
+          - 'usedTraits'
+      'phpDocumentor\Descriptor\FunctionDescriptor':
+          - 'tags'
+          - 'arguments'
+      'phpDocumentor\Descriptor\MethodDescriptor':
+          - 'tags'
+          - 'arguments'
+      'phpDocumentor\Descriptor\ArgumentDescriptor':
+          - 'type'
+      'phpDocumentor\Descriptor\PropertyDescriptor':
+          - 'tags'
+          - 'type'
+      'phpDocumentor\Descriptor\ConstantDescriptor':
+          - 'tags'
+          - 'type'
+      'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['type']
+      'phpDocumentor\Descriptor\Tag\VarDescriptor': ['type']
+      'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']
+      'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
+      'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+          $defaultTemplateName: 'default'
+          $globalTemplatesPath: "@=service('phpDocumentor\\\\Application').templateDirectory()"
+          $servicesWithCustomSettings: !tagged_iterator app.with_custom_settings
+    _instanceof:
+      # Tag any service that implements WithCustomSettings so that we can auto-register them
+      # with the ProjectDescriptor
+      phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings:
+        tags: ['app.with_custom_settings']
+
+      phpDocumentor\Descriptor\Filter\FilterInterface:
+        tags: ['phpdoc.descriptor.filter']
+
+      phpDocumentor\Guides\RestructuredText\Formats\Format:
+        tags: ['phpdoc.guides.format']
+
+    ###################################################################################
+    ## Autoloading definitions for whole namespaces ###################################
+    ###################################################################################
+
+    phpDocumentor\:
+        resource: '../src/phpDocumentor/*'
+        exclude:
+          - '../src/phpDocumentor/**/Messages'
+          - '../src/phpDocumentor/Pipeline/Stage'
+          - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
+
+    phpDocumentor\Console\:
+        resource: '../src/phpDocumentor/Console'
+
+    phpDocumentor\Descriptor\:
+        resource: '../src/phpDocumentor/Descriptor'
+
+    phpDocumentor\Parser\:
+        resource: '../src/phpDocumentor/Parser'
+        exclude: '../src/phpDocumentor/Parser/Middleware'
+
+    phpDocumentor\Parser\Middleware\:
+        resource: '../src/phpDocumentor/Parser/Middleware'
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 1000 } ]
+
+    phpDocumentor\Transformer\:
+        resource: '../src/phpDocumentor/Transformer'
+        exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
+
+    phpDocumentor\Compiler\:
+        resource: '../src/phpDocumentor/Compiler'
+
+    ###################################################################################
+    ## Autoloading definitions for individual classes #################################
+    ###################################################################################
+
+    Twig\Loader\FilesystemLoader: ~
+    Twig\Environment:
+      arguments:
+        $loader: '@Twig\Loader\FilesystemLoader'
+
+    phpDocumentor\Application: ~
+
+    phpDocumentor\Console\Command\Project\RunCommand:
+        arguments:
+          - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
+          - '@phpdoc.complete.pipeline'
+
+    phpDocumentor\Console\Command\Project\ListSettingsCommand: ~
+
+    phpDocumentor\Descriptor\Builder\AssemblerFactory:
+        class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
+        factory: ['phpDocumentor\Descriptor\Builder\AssemblerFactory', 'createDefault']
+
+    phpDocumentor\Descriptor\Filter\Filter:
+        arguments:
+          - !tagged_iterator 'phpdoc.descriptor.filter'
+
+    phpDocumentor\Configuration\Configuration:
+        factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
+
+    phpDocumentor\Configuration\ConfigurationFactory:
+        arguments:
+          $defaultFiles:
+            - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.xml.dist'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.dist.xml'"
+          $symfonyConfigFactory: '@phpDocumentor\Configuration\SymfonyConfigFactory'
+
+    phpDocumentor\Configuration\SymfonyConfigFactory:
+      arguments:
+          $definitions:
+            '2': '@phpDocumentor\Configuration\Definition\Version2'
+            '3': '@phpDocumentor\Configuration\Definition\Version3'
+
+    phpDocumentor\Compiler\Linker\Linker:
+        arguments: ['%linker.substitutions%']
+
+    phpDocumentor\Compiler\Compiler:
+        calls:
+            - [insert, ['@phpDocumentor\Compiler\Pass\TableOfContentsBuilder', 2000]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', !php/const \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\PackageTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\PackageTreeBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineMarkers', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\RemoveSourcecode',!php/const \phpDocumentor\Compiler\Pass\RemoveSourcecode::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
+
+    phpDocumentor\Parser\Parser: ~
+
+    phpDocumentor\Reflection\DocBlock\ExampleFinder: ~
+
+    phpDocumentor\Parser\Middleware\StopwatchMiddleware:
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 5000 } ]
+
+    # Increments the progress bar; by placing it in front of the cache you see the progress bar
+    # increment, even while we only consume the cache
+    phpDocumentor\Parser\Middleware\EmittingMiddleware:
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 4500 } ]
+
+    phpDocumentor\Parser\Middleware\CacheMiddleware:
+        arguments:
+          $files: '@files'
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 4000 } ]
+
+    phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware:
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 3000 } ]
+
+    phpDocumentor\Parser\Middleware\ReEncodingMiddleware:
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 2000 } ]
+
+    ###################################################################################
+    ## Autoloading definitions for external services ##################################
+    ###################################################################################
+
+    phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper:
+        arguments:
+          $descriptors: '@descriptors'
+
+    League\Flysystem\MountManager: ~
+
+    League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension:
+      tags: ['commonmark.extension']
+
+    League\CommonMark\MarkdownConverterInterface: '@League\CommonMark\CommonMarkConverter'
+    League\CommonMark\CommonMarkConverter:
+      factory: ['@phpDocumentor\Transformer\Writer\Twig\CommonMarkFactory', 'createConverter']
+      arguments:
+        - !tagged 'commonmark.extension'
+
+
+    ###################################################################################
+    ## Writers ########################################################################
+    ###################################################################################
+
+    phpDocumentor\Transformer\Writer\FileIo: ~
+    phpDocumentor\Transformer\Writer\Sourcecode: ~
+    phpDocumentor\Transformer\Writer\Graph: ~
+    phpDocumentor\Transformer\Writer\Twig: ~
+    phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
+
+    phpDocumentor\Transformer\Writer\Collection:
+        calls:
+            - { method: offsetSet, arguments: ['FileIo', '@phpDocumentor\Transformer\Writer\FileIo']}
+            - { method: offsetSet, arguments: ['sourcecode', '@phpDocumentor\Transformer\Writer\Sourcecode']}
+            - { method: offsetSet, arguments: ['Graph', '@phpDocumentor\Transformer\Writer\Graph']}
+            - { method: offsetSet, arguments: ['twig', '@phpDocumentor\Transformer\Writer\Twig']}
+            - { method: offsetSet, arguments: ['RenderGuide', '@phpDocumentor\Transformer\Writer\RenderGuide']}
+
+    phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
+      arguments:
+        $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
+
+    ###################################################################################
+    ## Guides - EXPERIMENTAL ##########################################################
+    ###################################################################################
+    Doctrine\Common\EventManager: ~
+
+    phpDocumentor\Transformer\Writer\RenderGuide:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
+
+    phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
+
+    phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
+        - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
+
+    phpDocumentor\Pipeline\Stage\Cache\StoreGuidesToCache:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
+
+    phpDocumentor\Guides\:
+      resource: '../src/Guides/*'
+
+    phpDocumentor\Guides\Handlers\:
+      resource: '../src/Guides/Handlers/*Handler.php'
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\RestructuredText\Handlers\:
+      resource: '../src/Guides/RestructuredText/Handlers/*Handler.php'
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\RestructuredText\Handlers\ParseFileHandler:
+      arguments:
+        $directives: !tagged_iterator phpdoc.guides.directive
+        $references: !tagged_iterator phpdoc.guides.reference
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\Handlers\RenderHandler:
+      arguments:
+        $references: !tagged_iterator phpdoc.guides.reference
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\RestructuredText\Directives\:
+      resource: '../src/Guides/RestructuredText/Directives/*'
+      tags: [ { name: 'phpdoc.guides.directive' } ]
+
+    phpDocumentor\Guides\RestructuredText\HTML\Directives\:
+      resource: '../src/Guides/RestructuredText/HTML/Directives/*'
+      exclude:
+        - '../src/Guides/RestructuredText/HTML/Directives/{AbstractAdmonitionDirective}.php'
+      tags: [ { name: 'phpdoc.guides.html_directive' } ]
+
+    phpDocumentor\Guides\RestructuredText\LaTeX\Directives\:
+      resource: '../src/Guides/RestructuredText/LaTeX/Directives/*'
+      tags: [ { name: 'phpdoc.guides.latex_directive' } ]
+
+    phpDocumentor\Guides\References\:
+      resource: '../src/Guides/References/*'
+      exclude:
+        - '../src/Guides/References/{Resolver,ResolvedReference}.php'
+      tags: [ { name: 'phpdoc.guides.reference' } ]
+
+    phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat:
+      arguments:
+        $fileExtension: 'html'
+        $directives: !tagged_iterator phpdoc.guides.html_directive
+
+    phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat:
+      arguments:
+        $fileExtension: 'tex'
+        $directives: !tagged_iterator phpdoc.guides.latex_directive

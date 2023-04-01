@@ -1,4 +1,5 @@
 <?php
+// A few helper functions
 function validateCurrentPage($current_page, $total_pages)
 {
     // Validate the current page number

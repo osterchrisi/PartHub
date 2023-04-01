@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         colors="true"
+         verbose="true">
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+        <report>
+            <html outputDirectory="build/coverage" />
+            <text outputFile="build/coverage.txt" />
+            <clover outputFile="build/logs/clover.xml"/>
+        </report>
+    </coverage>
+
+    <testsuites>
+        <testsuite name="League Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <junit outputFile="build/report.junit.xml"/>
+    </logging>
+
+</phpunit>

@@ -1,4 +1,5 @@
 <?php
+// Processes POST array from the signup page
 require_once __DIR__ . '/../vendor/autoload.php';
 include '../config/credentials.php';
 include 'SQL.php';

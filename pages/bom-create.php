@@ -1,4 +1,5 @@
 <?php
+// BOM creation page
 $basename = basename(__FILE__);
 $title = 'Create BOM';
 require_once('../includes/head.html');

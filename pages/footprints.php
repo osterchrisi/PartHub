@@ -1,4 +1,5 @@
 <?php
+// Footprint page
 $basename = basename(__FILE__);
 $title = 'Footprints';
 require_once('../includes/head.html');
