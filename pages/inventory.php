@@ -29,7 +29,7 @@ $categories = getCategories($conn);
 
 <!-- Part Entry Modal -->
 <div class="modal fade" id="mPartEntry" tabindex="-1">
-  <?php include '../includes/partEntryModal.php';?>
+  <?php include '../includes/partEntryModal.php'; ?>
 </div>
 
 <!-- Page Contents -->
@@ -55,8 +55,7 @@ $categories = getCategories($conn);
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
-      <button type="button" class="btn btn-outline-primary"
-          onclick='callPartEntryModal();'>Enter New</button>
+      <button type="button" class="btn btn-outline-primary" onclick='callPartEntryModal();'>Enter New</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -127,7 +126,8 @@ $categories = getCategories($conn);
 
   // 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
-    var $select = $('#cat-select').selectize({plugins: ["remove_button", "clear_button"]});
+    var $select = $('#cat-select').selectize({
+      plugins: ["remove_button", "clear_button"]});
 
     $('form').on('submit', function () {
       // Get the selected options from the Selectize instance
@@ -147,7 +147,6 @@ $categories = getCategories($conn);
   // Get part_id from the clicked row and update parts-info and stock modals
   $(document).ready(function () {
     $('#parts_table tbody').on('click', 'tr', function () {
-      console.log("Row clicked");
       if ($('tbody tr.selected').length > 0) {
         $('tbody tr.selected').removeClass('selected');
       }
