@@ -13,6 +13,7 @@ $table_name = "parts";
 $cat = $_GET['cat'][0]; // Get the JSON-encoded string from the form data
 
 $cat = json_decode($cat); // Convert the string to a PHP array
+
 // $cat is now an array of nested arrays, so we need to extract the category IDs
 $cat_ids = array();
 foreach ($cat as $cat_array) {
@@ -20,14 +21,20 @@ foreach ($cat as $cat_array) {
 }
 
 // $search_category = $cat_ids;
+if (empty($cat_ids)){
+  $cat_ids[0] = 'all';
+}
 $_GET['cat'] = $cat_ids;
 echo "<pre>";
 var_dump($_GET);
-echo "</pre>";
+echo "<br>";
+
 
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
-echo $search_category;
+var_dump($search_category);
+echo "</pre>";
+
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
