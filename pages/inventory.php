@@ -10,9 +10,24 @@ include '../includes/forms.php';
 include '../includes/get.php';
 
 $table_name = "parts";
-print_r($_GET);
+$cat = $_GET['cat'][0]; // Get the JSON-encoded string from the form data
+
+$cat = json_decode($cat); // Convert the string to a PHP array
+// $cat is now an array of nested arrays, so we need to extract the category IDs
+$cat_ids = array();
+foreach ($cat as $cat_array) {
+  $cat_ids[] = $cat_array[0];
+}
+
+// $search_category = $cat_ids;
+$_GET['cat'] = $cat_ids;
+echo "<pre>";
+var_dump($_GET);
+echo "</pre>";
+
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
+echo $search_category;
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
@@ -41,7 +56,9 @@ $categories = getCategories($conn);
         <input type="text" class="form-control" id="filter" placeholder="Filter results on this page...">
     </div>
     <div class="col-3">
-      <input class="form-control" placeholder="Search categories" id="categories-filter">
+      <!-- <input class="form-control" placeholder="Search categories" id="categories-filter"> -->
+      <input type="hidden" name="cat[]" id="selected-categories" value="">
+
       <?php
       //TODO: Button to reset filters
       generateCategoriesDropdown($categories, $search_category); ?>
@@ -117,21 +134,53 @@ $categories = getCategories($conn);
 
 <script>
   bootstrapPartsTable();
-  // $('#cat-select').selectize();
 
-  $(function() {
-  var $select = $('#cat-select').selectize();
+//   $(function () {
+//   var $select = $('#cat-select').selectize();
 
-  $('form').on('submit', function() {
-    // Get the selected options from the Selectize instance
-    var selectedValues = $select[0].selectize.getValue();
+//   $('form').on('submit', function () {
+//     // Get the selected options from the Selectize instance
+//     var selectedValues = $select[0].selectize.getValue();
 
-    // Update the value of the original <select> element
-    $('#cat-select').val(selectedValues);
+//     // Convert the array of selected values to an array of strings
+//     var selectedIDs = [];
+//     for (var i = 0; i < selectedValues.length; i++) {
+//       selectedIDs.push(selectedValues[i]);
+//     }
 
-    return true; // Allow the form to be submitted
+//     // Convert the array of selected IDs to a comma-separated string
+//     var selectedIDsString = selectedIDs.join(',');
+
+//     // Update the value of the hidden input with the selected IDs string
+//     $('#selected-categories').val(selectedIDsString);
+
+//     return true; // Allow the form to be submitted
+//   });
+// });
+
+  $(function () {
+    var $select = $('#cat-select').selectize();
+
+    $('form').on('submit', function () {
+      // Get the selected options from the Selectize instance
+      var selectedValues = $select[0].selectize.getValue();
+      console.log(selectedValues);
+      console.log(selectedValues[2]);
+      a = selectedValues;
+      for (var i = 0; i < a.length; i++) {
+        a[i] = [a[i]];
+      }
+      console.log(a);
+      b = JSON.stringify(a);
+      console.log(b);
+      // selectedValues = JSON.stringify(selectedValues);
+
+      // Update the value of the original <select> element
+      $('#selected-categories').val(b);
+
+      return true; // Allow the form to be submitted
+    });
   });
-});
 
   // Get part_id from the clicked row and update parts-info and stock modals
   $(document).ready(function () {

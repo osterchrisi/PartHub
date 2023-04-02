@@ -3,7 +3,7 @@
 function generateCategoriesDropdown($categories, $sc)
 {
   // Generate dropdown menu for the column names
-  echo '<select multiple size="5" class="form-select" name="cat[]" id="cat-select">';
+  echo '<select multiple size="10" class="form-select" id="cat-select">';
 
   // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
   echo '<option value="all" ' . ((!$sc or $sc == "all" OR in_array("all", $sc)) ? "selected" : "") . '>All Categories</option>';
