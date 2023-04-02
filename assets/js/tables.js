@@ -25,10 +25,6 @@ function bootstrapBomDetailsTable() {
     });
 };
 
-
-
-
-
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {
     // Remove the href tag and return only the string values
@@ -78,7 +74,9 @@ $(document).ready(function inlineProcessing() {
 
                     // Create select element
                     var select = createCategorySelect(categories, currentValue);
+                    
                     cell.empty().append(select);
+                    select.selectize();
                     select.focus();
 
                     select.on('change', function () {
@@ -113,7 +111,7 @@ $(document).ready(function inlineProcessing() {
                             }
                         });
                         // Update cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
-                        new_value = categories[new_value-1]['category_name']
+                        new_value = categories[new_value - 1]['category_name']
                         cell.text(new_value);
                         select.remove();
                         cell.removeClass('editing');
@@ -180,6 +178,67 @@ $(document).ready(function inlineProcessing() {
                 });
                 cell.removeClass('editing');
             });
+        }
+    });
+});
+
+//* Not using any of the code below this point, it's for appending a part row. Maybe useful later...
+//* You need this button for it: 
+//* <button class="btn btn-primary" name="AddNew" id="AddNew" type="button">New Entry</button>
+// Click listener for the New Entry button
+$(document).ready(function () {
+    $('#AddNew').click(function () {
+        console.log("New Entry button has been buttoned");
+        $.ajax({
+            type: "POST",
+            url: "../includes/create-part.php",
+            dataType: "json",
+            success: function (response) {
+                console.log("Succes");
+                var newId = response.id;
+                console.log("new parts id: ", newId);
+                createNewRow(newId);
+            }
+        });
+    });
+});
+
+// Prepend new row to parts table
+function createNewRow(part_id) {
+    var $table = $('#parts_table');
+    var newRowHtml = '<tr data-id="'+part_id+'">' +
+        '<td><input type="text" class="form-control" name="name" value="" required></td>' +
+        '<td><input type="text" class="form-control" name="email" value=""></td>' +
+        '<td><input type="text" class="form-control" name="phone" value=""></td>' +
+        '<td><input type="text" class="form-control" name="phone" value=""></td>' +
+        '<td><input type="text" class="form-control" name="phone" value=""></td>' +
+        '<td><input type="text" class="form-control" name="phone" value=""></td>' +
+        '<td><input type="text" class="form-control" name="phone" value=""></td>' +
+        '<td><button class="btn btn-sm btn-success save-new-row">OK</button><button class="btn btn-sm btn-danger cancel-new-row">Cncl</button></td>' +
+        '</tr>';
+    $table.prepend(newRowHtml);
+}
+
+// Placeholder function for inserting new row into DB
+$('.save-new-row').click(function () {
+    var name = $(this).closest('tr').find('input[name="name"]').val();
+    var email = $(this).closest('tr').find('input[name="email"]').val();
+    var phone = $(this).closest('tr').find('input[name="phone"]').val();
+    var data = {
+        'name': name,
+        'email': email,
+        'phone': phone
+    };
+    $.ajax({
+        url: 'insert.php',
+        type: 'POST',
+        data: data,
+        success: function (response) {
+            // Refresh the table
+            $('#parts_table').bootstrapTable('refresh');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
         }
     });
 });

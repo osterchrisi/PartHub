@@ -1,4 +1,5 @@
 <?php
+// A few helper functions
 function validateCurrentPage($current_page, $total_pages)
 {
     // Validate the current page number
@@ -65,4 +66,26 @@ function validateEmail($email)
         return 'false';
     }
     return 'true';
+}
+
+// I need this function to deal with the JSON encoded array that the selectized multiselect function sends in the form
+function dealWithCats()
+{
+    $cat = $_GET['cat'][0]; // Get the JSON-encoded string from the $_GET arry
+
+    $cat = json_decode($cat); // Convert the string to a PHP array
+
+    // $cat is now an array of nested arrays, so we need to extract the category IDs
+    $cat_ids = array();
+    foreach ($cat as $cat_array) {
+        $cat_ids[] = $cat_array[0];
+    }
+
+    // This is for the case when the array is empty (i.e. landing on the inventory page the first time)
+    if (empty($cat_ids)) {
+        $cat_ids[0] = 'all';
+    }
+
+    // And finally put it back where it came from!
+    $_GET['cat'] = $cat_ids;
 }

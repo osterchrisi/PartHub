@@ -18,7 +18,7 @@ $(document).ready(function () {
     });
 });
 
-// Load the parts-info page and pass the id variable as a parameter
+// Load the parts-info page and pass the id variable as a parameter - upon clicking a row in the parts table
 function updatePartsInfo(id) {
     $.ajax({
         url: 'parts-info.php',
@@ -35,7 +35,7 @@ function updatePartsInfo(id) {
     });
 }
 
-// Load the stockModals page and pass the id variable as a parameter
+// Load the contents of stockModals page, pass the id and replace HTML in modal - upon clicking a row in the parts table
 function updateStockModal(id) {
     $.ajax({
         url: '../includes/stockModals.php',
@@ -66,19 +66,19 @@ $(function () {
 });
 
 // Filter categories
-$(document).ready(function () {
-    $('#categories-filter').on('input', function () {
-        var filterText = $(this).val().toLowerCase();
-        $('#cat-select option').each(function () {
-            var optionText = $(this).text().toLowerCase();
-            if (optionText.indexOf(filterText) !== -1) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    });
-});
+// $(document).ready(function () {
+//     $('#categories-filter').on('input', function () {
+//         var filterText = $(this).val().toLowerCase();
+//         $('#cat-select option').each(function () {
+//             var optionText = $(this).text().toLowerCase();
+//             if (optionText.indexOf(filterText) !== -1) {
+//                 $(this).show();
+//             } else {
+//                 $(this).hide();
+//             }
+//         });
+//     });
+// });
 
 // ! Get right-click column-visibility menu for parts_table
 // ! Does NOT work yet, implemented with bootstrap-table for now

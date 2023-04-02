@@ -1,4 +1,5 @@
 <?php
+// Update an editable table cell in the parts table
 include '../config/credentials.php';
 include 'SQL.php';
 

@@ -8,20 +8,28 @@ include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
+include '../includes/helpers.php';
 
 $table_name = "parts";
+dealWithCats();
 
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
+
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
 
+$categories = getCategories($conn);
 ?>
 
-<!-- Stock Modal - gets dynamically updated via JS -->
-<div class="modal fade" id="mAddStock" tabindex="-1">
+<!-- Stock Modal -->
+<div class="modal fade" id="mAddStock" tabindex="-1"></div>
+
+<!-- Part Entry Modal -->
+<div class="modal fade" id="mPartEntry" tabindex="-1">
+  <?php include '../includes/partEntryModal.php'; ?>
 </div>
 
 <!-- Page Contents -->
@@ -39,15 +47,15 @@ $results_per_page = getSuperGlobal('resultspp', '50');
         <input type="text" class="form-control" id="filter" placeholder="Filter results on this page...">
     </div>
     <div class="col-3">
-      <input class="form-control" placeholder="Search categories" id="categories-filter">
-      <?php
-      $categories = getCategories($conn);
+      <input type="hidden" name="cat[]" id="selected-categories" value="">
 
-      //TODO: Button to reset filters
+      <?php
+      //TODO: Button to reset filters maybe?
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
+      <button type="button" class="btn btn-outline-primary" onclick='callPartEntryModal();'>Enter New</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -63,7 +71,6 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
   <!-- Parts Table and Pagination -->
   <?php
-  include '../includes/helpers.php';
   include '../includes/tables.php';
   include '../includes/pagination.php';
   include '../config/inventory-columns.php';
@@ -117,18 +124,45 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 <script>
   bootstrapPartsTable();
 
+  // 'Selectize' the category multi select, prepare values and append to the hidden input field
+  $(function () {
+    var $select = $('#cat-select').selectize({
+      plugins: ["remove_button", "clear_button"]});
+
+    $('form').on('submit', function () {
+      // Get the selected options from the Selectize instance
+      var selectedValues = $select[0].selectize.getValue();
+
+      // Prepare values to look like an array
+      for (var i = 0; i < selectedValues.length; i++) {
+        selectedValues[i] = [selectedValues[i]];
+      }
+      selectedValues = JSON.stringify(selectedValues);
+
+      // Update the value of the hidden input element
+      $('#selected-categories').val(selectedValues);
+    });
+  });
+
   // Get part_id from the clicked row and update parts-info and stock modals
   $(document).ready(function () {
-  $('#parts_table tbody').on('click', 'tr', function () {
-    console.log("Row clicked");
-    if ($('tbody tr.selected').length > 0) {
-      $('tbody tr.selected').removeClass('selected');
-    }
-    $(this).toggleClass('selected');
-    var id = $(this).data('id'); // get ID from the selected row
-    updatePartsInfo(id);
-    updateStockModal(id);
-  });
-});
+    $('#parts_table tbody').on('click', 'tr', function () {
+      if ($('tbody tr.selected').length > 0) {
+        $('tbody tr.selected').removeClass('selected');
+      }
+      $(this).toggleClass('selected');
+      var id = $(this).data('id'); // get ID from the selected row
+      updatePartsInfo(id);
+      updateStockModal(id);
+    });
 
+    // Focus the Quantity field in the stock changes modal after showing
+    $('#mAddStock').on('shown.bs.modal', function () {
+      console.log("Modal now ready");
+      $('#addStockQuantity').focus();
+    });
+  });
+
+  // Part Entry Modal JS
+  <?php include '../assets/js/partEntry.js'; ?>
 </script>

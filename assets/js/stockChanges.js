@@ -4,23 +4,23 @@ var to_location_exists = false;
 // Creat the "To Location" dropdown
 function toStockLocationDropdown(locations) {
     var div = document.getElementById("ToStockLocationDiv");
-    var selectHTML = "<select class='form-select' id='toStockLocation'>";
+    var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
     }
-    selectHTML += "</select><label for='toStockLocation'>to</label>";
+    selectHTML += "</select>";
     div.innerHTML = selectHTML;
     to_location_exists = true;
 }
 
-// Creat the "From Location" dropdown
+// Create the "From Location" dropdown
 function fromStockLocationDropdown(locations){
     var div = document.getElementById("FromStockLocationDiv");
-    var selectHTML = "<select class='form-select' id='fromStockLocation'>";
+    var selectHTML = "<label class='input-group-text' for='fromStockLocation'>From</label><select class='form-select' id='fromStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
     }
-    selectHTML += "</select><label for='fromStockLocation'>from</label>";
+    selectHTML += "</select>";
     div.innerHTML = selectHTML;
     from_location_exists = true;
 }
@@ -33,18 +33,22 @@ function callStockModal(change, locations) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
         toStockLocationDropdown(locations);
+        $("#toStockLocation").selectize();
 
     }
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
         fromStockLocationDropdown(locations);
+        $("#fromStockLocation").selectize();
     }
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
         toStockLocationDropdown(locations);
         fromStockLocationDropdown(locations);
+        $("#toStockLocation").selectize();
+        $("#fromStockLocation").selectize();
     }
 
     $('#mAddStock').modal('show'); // Show modal
@@ -92,7 +96,7 @@ function removeClickListeners(id) {
     $(id).off('click');
 }
 
-// Remove the "from locations" dropdown
+// Remove the locations dropdowns to keep them from stacking up
 $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {
     removeLocationDropdown("FromStockLocationDiv");
@@ -105,6 +109,7 @@ $('#mAddStock').on('hidden.bs.modal', function () {
     }
 });
 
+// Remove a dropdown by ID
 function removeLocationDropdown(location) {
     var div = document.getElementById(location);
     div.innerHTML = '';

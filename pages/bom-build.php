@@ -1,4 +1,5 @@
 <?php
+// BOM execution page
 $basename = basename(__FILE__);
 $title = 'Build BOM';
 require_once('../includes/head.html');

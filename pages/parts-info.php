@@ -84,7 +84,7 @@ $locations = getLocations($conn);
   </div>
 </div>
 
-<!-- Click listeners for buttons on stock changing modals -->
+<!-- Include custom JS -->
 <script>
   <?php include '../assets/js/stockChanges.js'; ?>
   bootstrapPartInBomsTable();

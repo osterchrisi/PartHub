@@ -1,4 +1,6 @@
 <?php
+// Initiate session or not initiate sesstion - that is the question!
+
 // Start session if not started yet
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params(0, '/', '', true, true);

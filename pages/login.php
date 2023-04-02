@@ -1,4 +1,5 @@
 <?php
+// Login page
 $basename = basename(__FILE__);
 $title = 'Log In';
 require_once('../includes/head.html');
@@ -10,7 +11,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
 require_once('../includes/navbar.php'); ?>
 
-<div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
+<div class="d-flex flex-grow-1 justify-content-center align-items-center">
   <div class="greeting d-flex align-items-center">
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
       <thead>

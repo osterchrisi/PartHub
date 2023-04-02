@@ -1,4 +1,5 @@
 <?php
+// Verify login credentials and log user in or send him back with an error message
 include '../config/credentials.php';
 include 'SQL.php';
 include 'helpers.php';

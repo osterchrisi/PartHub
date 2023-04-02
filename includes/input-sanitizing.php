@@ -1,4 +1,5 @@
 <?php
+// Just a testing file for testing various input sanitizing and validating functions
 require_once __DIR__ . '/../vendor/autoload.php';
 include '../config/credentials.php';
 include 'SQL.php';

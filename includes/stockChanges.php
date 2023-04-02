@@ -1,4 +1,5 @@
 <?php
+// Add, reduce or move stock
 include "session.php";
 include "../config/credentials.php";
 include "SQL.php";

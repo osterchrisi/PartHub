@@ -1,4 +1,5 @@
 <?php
+// The stock changing modal from the parts inventory
 $basename = basename(__FILE__);
 include '../config/credentials.php';
 include '../config/show-stock-columns.php';
@@ -35,8 +36,8 @@ $_SESSION['locations'] = $locations;
       <?php echo $part_name; ?><br><br>
       <form>
         <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
-        <div class="form-floating" id="FromStockLocationDiv"></div>
-        <div class="form-floating" id="ToStockLocationDiv"></div>
+        <div class="input-group" id="FromStockLocationDiv"></div><br>
+        <div class="input-group" id="ToStockLocationDiv"></div>
         <br>
         <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>

@@ -66,6 +66,10 @@
                 "sql",
                 "sqlite"
             ],
+            "support": {
+                "issues": "https://github.com/catfan/Medoo/issues",
+                "source": "https://github.com/catfan/Medoo"
+            },
             "funding": [
                 {
                     "url": "https://paypal.me/AngelaonLai",
@@ -297,6 +301,10 @@
                 "sass",
                 "web"
             ],
+            "support": {
+                "issues": "https://github.com/twbs/bootstrap/issues",
+                "source": "https://github.com/twbs/bootstrap/tree/v5.3.0-alpha1"
+            },
             "time": "2022-12-24T16:37:22+00:00"
         },
         {

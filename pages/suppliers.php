@@ -1,4 +1,5 @@
 <?php
+// Suppliers page
 $basename = basename(__FILE__);
 $title = 'Suppliers';
 require_once('../includes/head.html');

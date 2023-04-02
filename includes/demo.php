@@ -1,4 +1,5 @@
 <?php
+// Log in with the demo user account (after clicking the button on the landing page)
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params(0, '/', '', true, true);
     session_start();

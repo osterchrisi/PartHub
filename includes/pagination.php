@@ -1,4 +1,5 @@
 <?php
+// Custom pagination function for tables - could potentially be swapped for the Bootstrap Table pagination function
 function displayPaginationLinks($total_pages, $current_page){
   // Display the pagination links
 

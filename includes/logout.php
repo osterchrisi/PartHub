@@ -1,4 +1,5 @@
 <?php
+// Log out the user and take him back to the landing page
 $basename = basename(__FILE__);
 include 'session.php';
 
