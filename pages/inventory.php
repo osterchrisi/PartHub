@@ -8,24 +8,10 @@ include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 include '../includes/get.php';
+include '../includes/helpers.php';
 
 $table_name = "parts";
-$cat = $_GET['cat'][0]; // Get the JSON-encoded string from the form data
-
-$cat = json_decode($cat); // Convert the string to a PHP array
-
-// $cat is now an array of nested arrays, so we need to extract the category IDs
-$cat_ids = array();
-foreach ($cat as $cat_array) {
-  $cat_ids[] = $cat_array[0];
-}
-
-// $search_category = $cat_ids;
-if (empty($cat_ids)){
-  $cat_ids[0] = 'all';
-}
-$_GET['cat'] = $cat_ids;
-
+dealWithCats();
 
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
@@ -36,7 +22,6 @@ $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $categories = getCategories($conn);
-// print_r($categories);
 ?>
 
 <!-- Stock Modal - gets dynamically updated via JS -->
@@ -58,11 +43,10 @@ $categories = getCategories($conn);
         <input type="text" class="form-control" id="filter" placeholder="Filter results on this page...">
     </div>
     <div class="col-3">
-      <!-- <input class="form-control" placeholder="Search categories" id="categories-filter"> -->
       <input type="hidden" name="cat[]" id="selected-categories" value="">
 
       <?php
-      //TODO: Button to reset filters
+      //TODO: Button to reset filters maybe?
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
@@ -83,7 +67,7 @@ $categories = getCategories($conn);
 
   <!-- Parts Table and Pagination -->
   <?php
-  include '../includes/helpers.php';
+  // include '../includes/helpers.php';
   include '../includes/tables.php';
   include '../includes/pagination.php';
   include '../config/inventory-columns.php';
