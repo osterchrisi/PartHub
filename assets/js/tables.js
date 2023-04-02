@@ -25,10 +25,6 @@ function bootstrapBomDetailsTable() {
     });
 };
 
-
-
-
-
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {
     // Remove the href tag and return only the string values
@@ -186,7 +182,9 @@ $(document).ready(function inlineProcessing() {
     });
 });
 
-//* Not using the code below here, it's for appending a part row
+//* Not using any of the code below this point, it's for appending a part row. Maybe useful later...
+//* You need this button for it: 
+//* <button class="btn btn-primary" name="AddNew" id="AddNew" type="button">New Entry</button>
 // Click listener for the New Entry button
 $(document).ready(function () {
     $('#AddNew').click(function () {
@@ -221,6 +219,7 @@ function createNewRow(part_id) {
     $table.prepend(newRowHtml);
 }
 
+// Placeholder function for inserting new row into DB
 $('.save-new-row').click(function () {
     var name = $(this).closest('tr').find('input[name="name"]').val();
     var email = $(this).closest('tr').find('input[name="email"]').val();

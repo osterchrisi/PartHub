@@ -18,7 +18,7 @@ $(document).ready(function () {
     });
 });
 
-// Load the parts-info page and pass the id variable as a parameter
+// Load the parts-info page and pass the id variable as a parameter - upon clicking a row in the parts table
 function updatePartsInfo(id) {
     $.ajax({
         url: 'parts-info.php',
@@ -35,7 +35,7 @@ function updatePartsInfo(id) {
     });
 }
 
-// Load the stockModals page and pass the id variable as a parameter
+// Load the contents of stockModals page, pass the id and replace HTML in modal - upon clicking a row in the parts table
 function updateStockModal(id) {
     $.ajax({
         url: '../includes/stockModals.php',

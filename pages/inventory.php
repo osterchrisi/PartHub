@@ -24,8 +24,12 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 $categories = getCategories($conn);
 ?>
 
-<!-- Stock Modal - gets dynamically updated via JS -->
-<div class="modal fade" id="mAddStock" tabindex="-1">
+<!-- Stock Modal -->
+<div class="modal fade" id="mAddStock" tabindex="-1"></div>
+
+<!-- Part Entry Modal -->
+<div class="modal fade" id="mPartEntry" tabindex="-1">
+  <?php include '../includes/partEntryModal.php';?>
 </div>
 
 <!-- Page Contents -->
@@ -51,7 +55,8 @@ $categories = getCategories($conn);
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
-      <button class="btn btn-primary" name="AddNew" id="AddNew" type="button">New Entry</button>
+      <button type="button" class="btn btn-outline-primary"
+          onclick='callPartEntryModal();'>Enter New</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -159,4 +164,6 @@ $categories = getCategories($conn);
     });
   });
 
+  // Part Entry Modal JS
+  <?php include '../assets/js/partEntry.js'; ?>
 </script>
