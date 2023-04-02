@@ -121,50 +121,22 @@ $categories = getCategories($conn);
 <script>
   bootstrapPartsTable();
 
-//   $(function () {
-//   var $select = $('#cat-select').selectize();
-
-//   $('form').on('submit', function () {
-//     // Get the selected options from the Selectize instance
-//     var selectedValues = $select[0].selectize.getValue();
-
-//     // Convert the array of selected values to an array of strings
-//     var selectedIDs = [];
-//     for (var i = 0; i < selectedValues.length; i++) {
-//       selectedIDs.push(selectedValues[i]);
-//     }
-
-//     // Convert the array of selected IDs to a comma-separated string
-//     var selectedIDsString = selectedIDs.join(',');
-
-//     // Update the value of the hidden input with the selected IDs string
-//     $('#selected-categories').val(selectedIDsString);
-
-//     return true; // Allow the form to be submitted
-//   });
-// });
-
+  // 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
     var $select = $('#cat-select').selectize();
 
     $('form').on('submit', function () {
       // Get the selected options from the Selectize instance
       var selectedValues = $select[0].selectize.getValue();
-      console.log(selectedValues);
-      console.log(selectedValues[2]);
-      a = selectedValues;
-      for (var i = 0; i < a.length; i++) {
-        a[i] = [a[i]];
+
+      // Prepare values to look like an array
+      for (var i = 0; i < selectedValues.length; i++) {
+        selectedValues[i] = [selectedValues[i]];
       }
-      console.log(a);
-      b = JSON.stringify(a);
-      console.log(b);
-      // selectedValues = JSON.stringify(selectedValues);
+      selectedValues = JSON.stringify(selectedValues);
 
-      // Update the value of the original <select> element
-      $('#selected-categories').val(b);
-
-      return true; // Allow the form to be submitted
+      // Update the value of the hidden input element
+      $('#selected-categories').val(selectedValues);
     });
   });
 
