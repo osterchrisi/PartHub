@@ -67,7 +67,6 @@ $categories = getCategories($conn);
 
   <!-- Parts Table and Pagination -->
   <?php
-  // include '../includes/helpers.php';
   include '../includes/tables.php';
   include '../includes/pagination.php';
   include '../config/inventory-columns.php';
