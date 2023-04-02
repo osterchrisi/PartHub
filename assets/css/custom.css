@@ -4,10 +4,6 @@
     min-height: 90vh;
 }
 
-.full-height {
-    /* border: 1px solid red; */
-}
-
 .table-hover thead tr:hover {
     cursor: move;
 }

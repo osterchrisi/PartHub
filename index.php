@@ -18,7 +18,7 @@ include 'includes/navbar.php';
   }
 </style>
 
-<div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
+<div class="d-flex flex-grow-1 justify-content-center align-items-center">
   <div class="greeting d-flex align-items-center">
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
       <tr>

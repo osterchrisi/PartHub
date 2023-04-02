@@ -127,7 +127,7 @@ $categories = getCategories($conn);
 
   // 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
-    var $select = $('#cat-select').selectize();
+    var $select = $('#cat-select').selectize({plugins: ["remove_button", "clear_button"]});
 
     $('form').on('submit', function () {
       // Get the selected options from the Selectize instance

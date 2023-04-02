@@ -11,11 +11,11 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
 require_once('../includes/navbar.php');
 
-//! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt)
+//! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
 //! Passwort darf keine Leerzeichen enthalten
 ?>
 
-<div class="d-flex full-height flex-grow-1 justify-content-center align-items-center">
+<div class="d-flex flex-grow-1 justify-content-center align-items-center">
   <div class="greeting d-flex align-items-center">
     <form method="post" action="../includes/signup-processing.php">
       <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">

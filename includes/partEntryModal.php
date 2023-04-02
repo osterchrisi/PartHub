@@ -43,11 +43,21 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
           </div>
         </div>
         <br>
-        <button class="btn btn-sm" id="showAdvanced" type="button" data-bs-toggle="collapse" data-bs-target="#advancedOptions">Show Advanced</button>
+        <button class="btn btn-sm" id="showAdvanced" type="button" data-bs-toggle="collapse"
+          data-bs-target="#advancedOptions">Show Advanced</button>
         <div class="collapse" id="advancedOptions">
-          <input class="form-control not-required" placeholder="Description"><br>
-          <input class="form-control not-required" placeholder="Comment"><br>
-          <input class="form-select not-required" placeholder="Footprint">
+          <div class="row">
+            <div class="col">
+              <input class="form-select not-required" placeholder="Category">
+            </div>
+            <div class="col">
+              <input class="form-select not-required" placeholder="Footprint">
+            </div>
+          </div>
+          <br>
+          <input class="form-control not-required" placeholder="Description">
+          <br>
+          <input class="form-control not-required" placeholder="Comment">
         </div>
         <div class="input-group"></div>
       </form>
