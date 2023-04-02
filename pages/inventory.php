@@ -25,15 +25,10 @@ if (empty($cat_ids)){
   $cat_ids[0] = 'all';
 }
 $_GET['cat'] = $cat_ids;
-echo "<pre>";
-var_dump($_GET);
-echo "<br>";
 
 
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
-var_dump($search_category);
-echo "</pre>";
 
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
