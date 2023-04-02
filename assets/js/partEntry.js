@@ -4,6 +4,33 @@ function callPartEntryModal() {
     // saveChanges(change);
 }
 
+
+const form = document.getElementById('partEntryForm');
+const submitBtn = document.getElementById('addPart');
+const modal = submitBtn.closest('.modal')
+
+submitBtn.addEventListener('click', function(event) {
+  event.preventDefault();
+  if (form.checkValidity()) {
+    // Form is valid
+    form.submit();
+    modal.hide();
+  } else {
+    // Form is invalid (required fields not filled)
+    form.querySelectorAll('[required]').forEach(function(field) {
+      if (field.checkValidity()) {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+      } else {
+        field.classList.remove('is-valid');
+        field.classList.add('is-invalid');
+      }
+    });
+  }
+});
+
+
+
 // ClickListener for "Save Changes" button in Part Entry Modal
 //! Just copied from stock changing, not yet working
 // function saveChanges(change) {

@@ -8,7 +8,7 @@ include '../config/credentials.php';
 // include 'tables.php';
 // include 'session.php';
 
-// $conn = connectToSQLDB($hostname, $username, $password, $database_name);
+$conn = connectToSQLDB($hostname, $username, $password, $database_name);
 // $part_id = getSuperGlobal('part_id');
 
 // // Get part name
@@ -31,18 +31,29 @@ include '../config/credentials.php';
 
     <!-- Modal Body -->
     <div class="modal-body mx-1">
-      <span id="partEntryText"></span>
+      <span id="partEntryText">Add new part to database</span>
       <?php echo $part_name; ?><br><br>
-      <form>
-        <input class="form-control partEntryModalNumber" placeholder="Quantity"><br>
-        <div class="input-group" ></div><br>
+      <form id="partEntryForm">
+        <input class="form-control" placeholder="Part Name" required>
+        <br>
+        <input class="form-control" placeholder="Description"><br>
+        <input class="form-control" placeholder="Comment"><br>
+        <div class="row">
+          <div class="col">
+            <input class="form-select" placeholder="Storage Location" required>
+          </div>
+          <div class="col">
+            <input class="form-select" placeholder="Footprint">
+          </div>
+        </div>
+        <div class="input-group"></div><br>
       </form>
     </div>
 
     <!-- Modal Footer -->
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="enterPart">Save changes</button>
+      <button type="submit" class="btn btn-primary" id="addPart">Add Part</button>
     </div>
   </div>
 </div>
