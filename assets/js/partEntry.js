@@ -7,17 +7,15 @@ function callPartEntryModal() {
 
 // Validate required fields in part adding modal
 function validateForm(formId, button){
-
 const form = document.getElementById(formId);
 const submitBtn = document.getElementById(button);
-const modal = submitBtn.closest('.modal')
 
 submitBtn.addEventListener('click', function(event) {
   event.preventDefault();
   if (form.checkValidity()) {
     // Form is valid
     form.submit();
-    modal.hide();
+    $("#mPartEntry").hide();
   } else {
     // Form is invalid (required fields not filled)
     form.querySelectorAll('[required]').forEach(function(field) {
