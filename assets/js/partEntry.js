@@ -1,12 +1,14 @@
 // Modify the "Save Changes" click listener when the modal is toggled
 function callPartEntryModal() {
     $('#mPartEntry').modal('show'); // Show modal
+    validateForm('partEntryForm', 'addPart');
     // saveChanges(change);
 }
 
+function validateForm(formId, button){
 
-const form = document.getElementById('partEntryForm');
-const submitBtn = document.getElementById('addPart');
+const form = document.getElementById(formId);
+const submitBtn = document.getElementById(button);
 const modal = submitBtn.closest('.modal')
 
 submitBtn.addEventListener('click', function(event) {
@@ -28,7 +30,7 @@ submitBtn.addEventListener('click', function(event) {
     });
   }
 });
-
+}
 
 
 // ClickListener for "Save Changes" button in Part Entry Modal
