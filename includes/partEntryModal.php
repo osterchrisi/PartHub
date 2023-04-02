@@ -34,19 +34,22 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <span id="partEntryText">Add new part to database</span>
       <?php echo $part_name; ?><br><br>
       <form id="partEntryForm">
-        <input class="form-control" placeholder="Part Name" required>
-        <br>
-        <input class="form-control" placeholder="Description"><br>
-        <input class="form-control" placeholder="Comment"><br>
+        <input class="form-control" placeholder="Part Name" required><br>
         <div class="row">
           <div class="col">
-            <input class="form-select" placeholder="Storage Location" required>
+            <input class="form-control" placeholder="Quantity" required>
           </div>
-          <div class="col">
-            <input class="form-select" placeholder="Footprint">
+          <div class="col"><input class="form-select" placeholder="Storage Location" required>
           </div>
         </div>
-        <div class="input-group"></div><br>
+        <br>
+        <button class="btn btn-sm" id="showAdvanced" type="button" data-bs-toggle="collapse" data-bs-target="#advancedOptions">Show Advanced</button>
+        <div class="collapse" id="advancedOptions">
+          <input class="form-control not-required" placeholder="Description"><br>
+          <input class="form-control not-required" placeholder="Comment"><br>
+          <input class="form-select not-required" placeholder="Footprint">
+        </div>
+        <div class="input-group"></div>
       </form>
     </div>
 

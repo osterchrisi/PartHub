@@ -5,6 +5,7 @@ function callPartEntryModal() {
     // saveChanges(change);
 }
 
+// Validate required fields in part adding modal
 function validateForm(formId, button){
 
 const form = document.getElementById(formId);
@@ -31,7 +32,6 @@ submitBtn.addEventListener('click', function(event) {
   }
 });
 }
-
 
 // ClickListener for "Save Changes" button in Part Entry Modal
 //! Just copied from stock changing, not yet working
