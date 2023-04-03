@@ -15,8 +15,20 @@ submitBtn.addEventListener('click', function(event) {
   event.preventDefault();
   if (form.checkValidity()) {
     // Form is valid
-    form.submit();
-    $("#mPartEntry").hide();
+    // form.submit();
+    pn = $("#addPartName").val(); // Part Name
+    q = $("#addPartQuantity").val(); // Quantity
+    l = $("#addPartLocId").val(); // Quantity
+
+    // Call the stock changing script
+    $.post('/PartHub/includes/create-part.php',
+    { part_name: pn, quantity: q, to_location: l},
+    function (response) {
+        console.log("Succesfully created new part with ID: ", response);
+        // updatePartsInfo(pid);
+        $("#mPartEntry").hide(); // Hide modal
+    });
+    
   } else {
     // Form is invalid (required fields not filled)
     form.querySelectorAll('[required]').forEach(function(field) {

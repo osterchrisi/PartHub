@@ -60,7 +60,7 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
-  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   $total_rows = $row['total'];
@@ -113,7 +113,7 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
   $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
-  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
   $stmt->execute();
 
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -252,12 +252,9 @@ function getBackordersProducts($conn)
   return $products;
 }
 
-function getAllParts($conn, $user_id)
+function getAllParts($conn)
 {
-  $stmt = $conn->query("SELECT part_id, part_name
-                        FROM parts
-                        WHERE part_owner_u_fk = :user_id");
-  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+  $stmt = $conn->query("SELECT part_id, part_name FROM parts");
   $all_parts = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $all_parts;
 }
@@ -302,8 +299,8 @@ function createBackorder($conn, $customer_id, $customer_po)
 function createBom($conn, $bom_name, $bom_description = NULL)
 {
   $stmt = $conn->prepare("INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`) VALUES (NULL, :bom_name, :bom_description)");
-  $stmt->bindParam(':bom_name', $bom_name, PDO::PARAM_STR);
-  $stmt->bindParam(':bom_description', $bom_description, PDO::PARAM_STR);
+  $stmt->bindParam(':bom_name', $bom_name);
+  $stmt->bindParam(':bom_description', $bom_description);
   $stmt->execute();
 
   $new_id = $conn->lastInsertId();
@@ -313,9 +310,9 @@ function createBom($conn, $bom_name, $bom_description = NULL)
 function insertBomElements($conn, $new_id, $part_id, $amount)
 {
   $stmt = $conn->prepare("INSERT INTO `bom_elements` (`bom_elements_id`, `bom_id_fk`, `part_id_fk`, `element_quantity`) VALUES (NULL, :bom_id, :part_id, :amount)");
-  $stmt->bindParam(':bom_id', $new_id, PDO::PARAM_INT);
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
-  $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+  $stmt->bindParam(':bom_id', $new_id);
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':amount', $amount);
   $stmt->execute();
 }
 
@@ -343,9 +340,9 @@ function getBomElements($conn, $bom_id)
 function insertBackorderProducts($conn, $new_id, $product_id, $amount)
 {
   $stmt = $conn->prepare("INSERT INTO `backorders_product_lookup` (`id`, `backorder_id`, `product_id`, `amount`) VALUES (NULL, :backorder_id, :product_id, :amount)");
-  $stmt->bindParam(':backorder_id', $new_id, PDO::PARAM_INT);
-  $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
-  $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+  $stmt->bindParam(':backorder_id', $new_id);
+  $stmt->bindParam(':product_id', $product_id);
+  $stmt->bindParam(':amount', $amount);
   $stmt->execute();
 }
 
@@ -354,7 +351,7 @@ function updateRow($conn, $part_id, $column, $table_name, $new_value)
   // bindParam is only for values, not for identifiers like table or column names
   $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE part_id = :part_id");
   $stmt->bindParam(':new_value', $new_value);
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt->bindParam(':part_id', $part_id);
   $stmt->execute();
 }
 
@@ -371,7 +368,7 @@ function getUserName($conn)
 {
   $sql = "SELECT user_name FROM users WHERE user_id = :user_id";
   $stmt = $conn->prepare($sql);
-  $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+  $stmt->bindParam(':user_id', $_SESSION['user_id']);
   $stmt->execute();
   $name = $stmt->fetchAll(PDO::FETCH_ASSOC);
   // Need to extract the user name because $name is an array
@@ -379,17 +376,17 @@ function getUserName($conn)
   return $name;
 }
 
-function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id)
+function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id)
 {
   $stmt = $conn->prepare("INSERT INTO stock_level_change_history
                         (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_timestamp, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
                         (NULL, :part_id, :from_location, :to_location, :quantity, CURRENT_TIMESTAMP, :comment, :user_id)");
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
-  $stmt->bindParam(':from_location', $from_location, PDO::PARAM_STR);
-  $stmt->bindParam(':to_location', $to_location, PDO::PARAM_STR);
-  $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-  $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
-  $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':from_location', $from_location);
+  $stmt->bindParam(':to_location', $to_location);
+  $stmt->bindParam(':quantity', $quantity);
+  $stmt->bindParam(':comment', $comment);
+  $stmt->bindParam(':user_id', $user_id);
   $stmt->execute();
 
   $new_id = $conn->lastInsertId();
@@ -411,9 +408,9 @@ function changeQuantity($conn, $part_id, $quantity, $to_location)
                           SET stock_level_quantity = :quantity 
                           WHERE part_id_fk = :part_id 
                           AND location_id_fk = :to_location");
-  $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
-  $stmt->bindParam(':to_location', $to_location, PDO::PARAM_STR);
+  $stmt->bindParam(':quantity', $quantity);
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':to_location', $to_location);
   $stmt->execute();
   $new_id = $conn->lastInsertId();
   return $new_id;
@@ -429,7 +426,7 @@ function getPartStockHistory($conn, $part_id)
                           LEFT JOIN location_names to_loc ON to_location_fk = to_loc.location_id
                           JOIN users ON stock_lvl_chng_user_fk = user_id
                           WHERE part_id_fk = :part_id");
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt->bindParam(':part_id', $part_id);
   $stmt->execute();
   $hist = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $hist;
@@ -452,7 +449,7 @@ function getPasswordHash($conn, $email)
   $stmt = $conn->prepare("SELECT user_id, user_passwd, user_name
                           FROM users
                           WHERE user_email = :email");
-  $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+  $stmt->bindParam(':email', $email);
   $stmt->execute();
   $pw_hash = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $pw_hash;
@@ -463,7 +460,7 @@ function checkIfUserExists($conn, $email)
   $stmt = $conn->prepare("SELECT user_email
                           FROM users
                           WHERE user_email = :email");
-  $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+  $stmt->bindParam(':email', $email);
   $stmt->execute();
   return $stmt->rowCount();
 }
@@ -473,9 +470,9 @@ function createUser($conn, $email, $passwd, $name)
   $stmt = $conn->prepare("INSERT INTO users
                         (user_name, user_email, user_passwd, register_date, last_login) VALUES
                         (:user_name, :user_email, :user_passwd, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
-  $stmt->bindParam(':user_name', $name, PDO::PARAM_STR);
-  $stmt->bindParam(':user_email', $email, PDO::PARAM_STR);
-  $stmt->bindParam(':user_passwd', $passwd), PDO::PARAM_STR;
+  $stmt->bindParam(':user_name', $name);
+  $stmt->bindParam(':user_email', $email);
+  $stmt->bindParam(':user_passwd', $passwd);
   $stmt->execute();
   $new_id = $conn->lastInsertId();
   return $new_id;
