@@ -67,6 +67,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
             data-reorderable-columns="true"
             data-cookie="true"
             data-cookie-id-table="BomListTableState"
+            data-max-moving-rows="100"
             >';
 
     // Table headers
@@ -108,6 +109,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
             data-reorderable-columns="true"
             data-cookie="true"
             data-cookie-id-table="BomDetailsTableState"
+            data-max-moving-rows="100"
             >';
 
     // Table headers
@@ -190,6 +192,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             data-reorderable-columns="true"
             data-cookie="true"
             data-cookie-id-table="PartsTableState"
+            data-max-moving-rows="100"
             >';
 
     // Table headers
@@ -302,6 +305,7 @@ function buildPartInBomsTable($db_columns, $nice_columns, $bom_list, $width = "1
             data-reorderable-columns="true"
             data-cookie="true"
             data-cookie-id-table="PartInBomsTableState"
+            data-max-moving-rows="100"
             >';
 
     // Table headers

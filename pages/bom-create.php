@@ -11,7 +11,7 @@ include '../includes/forms.php';
 // Connect to database and get available parts
 try {
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-    $parts = getAllParts($conn);
+    $parts = getAllParts($conn, $user_id);
 } catch (Exception $e) {
     echo "<br>Error: " . $e->getMessage();
 }

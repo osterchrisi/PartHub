@@ -34,12 +34,12 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <span id="partEntryText">Add new part to database</span>
       <?php echo $part_name; ?><br><br>
       <form id="partEntryForm">
-        <input class="form-control" placeholder="Part Name" required><br>
+        <input class="form-control" placeholder="Part Name" id="addPartName" required><br>
         <div class="row">
-          <div class="col">
-            <input class="form-control" placeholder="Quantity" required>
+          <div class="col-3">
+            <input class="form-control" placeholder="Quantity" id="addPartQuantity" required>
           </div>
-          <div class="col"><input class="form-select" placeholder="Storage Location" required>
+          <div class="col"><input class="form-select" placeholder="Storage Location" id="addPartLocId" required>
           </div>
         </div>
         <br>

@@ -1,0 +1,400 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>File includes/get.php |  API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-none.html">none</a>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Functions</h3>
+			<ul>
+					<li>
+						<a href="function-displayPaginationLinks.html">
+							displayPaginationLinks
+						</a>
+					</li>
+					<li class="active">
+						<a href="function-getSuperGlobal.html">
+							getSuperGlobal
+						</a>
+					</li>
+					<li>
+						<a href="function-getCurrentPageNumber.html">
+							getCurrentPageNumber
+						</a>
+					</li>
+					<li>
+						<a href="function-getTotalStock.html">
+							getTotalStock
+						</a>
+					</li>
+					<li>
+						<a href="function-buildTable.html">
+							buildTable
+						</a>
+					</li>
+					<li>
+						<a href="function-buildHTMLTable.html">
+							buildHTMLTable
+						</a>
+					</li>
+					<li>
+						<a href="function-buildBomListTable.html">
+							buildBomListTable
+						</a>
+					</li>
+					<li>
+						<a href="function-buildBomDetailsTable.html">
+							buildBomDetailsTable
+						</a>
+					</li>
+					<li>
+						<a href="function-buildPartsTable.html">
+							buildPartsTable
+						</a>
+					</li>
+					<li>
+						<a href="function-buildPartStockHistoryTable.html">
+							buildPartStockHistoryTable
+						</a>
+					</li>
+					<li>
+						<a href="function-buildPartInBomsTable.html">
+							buildPartInBomsTable
+						</a>
+					</li>
+					<li>
+						<a href="function-processForm.html">
+							processForm
+						</a>
+					</li>
+					<li>
+						<a href="function-validateCurrentPage.html">
+							validateCurrentPage
+						</a>
+					</li>
+					<li>
+						<a href="function-noResults.html">
+							noResults
+						</a>
+					</li>
+					<li>
+						<a href="function-getCurrentStock.html">
+							getCurrentStock
+						</a>
+					</li>
+					<li>
+						<a href="function-sanitizeString.html">
+							sanitizeString
+						</a>
+					</li>
+					<li>
+						<a href="function-sanitizeInput.html">
+							sanitizeInput
+						</a>
+					</li>
+					<li>
+						<a href="function-checkStringLength.html">
+							checkStringLength
+						</a>
+					</li>
+					<li>
+						<a href="function-validateEmail.html">
+							validateEmail
+						</a>
+					</li>
+					<li>
+						<a href="function-dealWithCats.html">
+							dealWithCats
+						</a>
+					</li>
+					<li>
+						<a href="function-createTempItemName.html">
+							createTempItemName
+						</a>
+					</li>
+					<li>
+						<a href="function-connectToSQLDB.html">
+							connectToSQLDB
+						</a>
+					</li>
+					<li>
+						<a href="function-getColumnNames.html">
+							getColumnNames
+						</a>
+					</li>
+					<li>
+						<a href="function-getTotalNumberOfRows.html">
+							getTotalNumberOfRows
+						</a>
+					</li>
+					<li>
+						<a href="function-queryDB.html">
+							queryDB
+						</a>
+					</li>
+					<li>
+						<a href="function-backorder_query.html">
+							backorder_query
+						</a>
+					</li>
+					<li>
+						<a href="function-show_backorder_query.html">
+							show_backorder_query
+						</a>
+					</li>
+					<li>
+						<a href="function-getTotalNumberOfBackorderRows.html">
+							getTotalNumberOfBackorderRows
+						</a>
+					</li>
+					<li>
+						<a href="function-getTotalNumberOfBomRows.html">
+							getTotalNumberOfBomRows
+						</a>
+					</li>
+					<li>
+						<a href="function-bom_query.html">
+							bom_query
+						</a>
+					</li>
+					<li>
+						<a href="function-getBackordersCustomers.html">
+							getBackordersCustomers
+						</a>
+					</li>
+					<li>
+						<a href="function-getBackordersProducts.html">
+							getBackordersProducts
+						</a>
+					</li>
+					<li>
+						<a href="function-getAllParts.html">
+							getAllParts
+						</a>
+					</li>
+					<li>
+						<a href="function-getAllBoms.html">
+							getAllBoms
+						</a>
+					</li>
+					<li>
+						<a href="function-getPartName.html">
+							getPartName
+						</a>
+					</li>
+					<li>
+						<a href="function-getBomName.html">
+							getBomName
+						</a>
+					</li>
+					<li>
+						<a href="function-createBackorder.html">
+							createBackorder
+						</a>
+					</li>
+					<li>
+						<a href="function-createBom.html">
+							createBom
+						</a>
+					</li>
+					<li>
+						<a href="function-insertBomElements.html">
+							insertBomElements
+						</a>
+					</li>
+					<li>
+						<a href="function-getStockLevels.html">
+							getStockLevels
+						</a>
+					</li>
+					<li>
+						<a href="function-getBomElements.html">
+							getBomElements
+						</a>
+					</li>
+					<li>
+						<a href="function-insertBackorderProducts.html">
+							insertBackorderProducts
+						</a>
+					</li>
+					<li>
+						<a href="function-updateRow.html">
+							updateRow
+						</a>
+					</li>
+					<li>
+						<a href="function-getCategories.html">
+							getCategories
+						</a>
+					</li>
+					<li>
+						<a href="function-getUserName.html">
+							getUserName
+						</a>
+					</li>
+					<li>
+						<a href="function-stockChange.html">
+							stockChange
+						</a>
+					</li>
+					<li>
+						<a href="function-getLocations.html">
+							getLocations
+						</a>
+					</li>
+					<li>
+						<a href="function-changeQuantity.html">
+							changeQuantity
+						</a>
+					</li>
+					<li>
+						<a href="function-getPartStockHistory.html">
+							getPartStockHistory
+						</a>
+					</li>
+					<li>
+						<a href="function-getPartInBoms.html">
+							getPartInBoms
+						</a>
+					</li>
+					<li>
+						<a href="function-getPasswordHash.html">
+							getPasswordHash
+						</a>
+					</li>
+					<li>
+						<a href="function-checkIfUserExists.html">
+							checkIfUserExists
+						</a>
+					</li>
+					<li>
+						<a href="function-createUser.html">
+							createUser
+						</a>
+					</li>
+					<li>
+						<a href="function-stockEntry.html">
+							stockEntry
+						</a>
+					</li>
+					<li>
+						<a href="function-generateCategoriesDropdown.html">
+							generateCategoriesDropdown
+						</a>
+					</li>
+					<li>
+						<a href="function-generateBackordersDropdown.html">
+							generateBackordersDropdown
+						</a>
+					</li>
+					<li>
+						<a href="function-generateBackordersStatusDropdown.html">
+							generateBackordersStatusDropdown
+						</a>
+					</li>
+					<li>
+						<a href="function-generateResultsDropdown.html">
+							generateResultsDropdown
+						</a>
+					</li>
+					<li>
+						<a href="function-generateBackordersCustomersDropdown.html">
+							generateBackordersCustomersDropdown
+						</a>
+					</li>
+					<li>
+						<a href="function-generateBomNamesDropdown.html">
+							generateBomNamesDropdown
+						</a>
+					</li>
+					<li>
+						<a href="function-generateTreeList.html">
+							generateTreeList
+						</a>
+					</li>
+					<li>
+						<a href="function-generateChildTree.html">
+							generateChildTree
+						</a>
+					</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-none.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="function-getSuperGlobal.html">Function</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+	<table class="source"><tr id="1" class="source-line"><td><a class="source-lineNum" href="#1"> 1: </a></td><td><span class="php-tag">&lt;?php</span></td></tr><tr id="2" class="source-line"><td><a class="source-lineNum" href="#2"> 2: </a></td><td><span class="php-tag"></span><span class="php-comment">// A few functions that get variables</span></td></tr><tr id="3" class="source-line"><td><a class="source-lineNum" href="#3"> 3: </a></td><td><span class="php-kw">function</span> getSuperGlobal(<span class="php-var">$sg</span>, <span class="php-var">$fb</span> = <span class="php-str">&quot;&quot;</span>){</td></tr><tr id="4" class="source-line"><td><a class="source-lineNum" href="#4"> 4: </a></td><td>  <span class="php-comment">// Get a $_GET variable $sg or set it to $fb</span></td></tr><tr id="5" class="source-line"><td><a class="source-lineNum" href="#5"> 5: </a></td><td>  <span class="php-kw">return</span> <span class="php-kw">isset</span>(<span class="php-var">$_GET</span>[<span class="php-var">$sg</span>]) ? <span class="php-var">$_GET</span>[<span class="php-var">$sg</span>] : <span class="php-var">$fb</span>;</td></tr><tr id="6" class="source-line"><td><a class="source-lineNum" href="#6"> 6: </a></td><td>}</td></tr><tr id="7" class="source-line"><td><a class="source-lineNum" href="#7"> 7: </a></td><td></td></tr><tr id="8" class="source-line"><td><a class="source-lineNum" href="#8"> 8: </a></td><td></td></tr><tr id="9" class="source-line"><td><a class="source-lineNum" href="#9"> 9: </a></td><td><span class="php-kw">function</span> getCurrentPageNumber(<span class="php-var">$total_pages</span>)</td></tr><tr id="10" class="source-line"><td><a class="source-lineNum" href="#10">10: </a></td><td>{</td></tr><tr id="11" class="source-line"><td><a class="source-lineNum" href="#11">11: </a></td><td>  <span class="php-comment">// Get the current page number from the URL parameter &quot;page&quot;</span></td></tr><tr id="12" class="source-line"><td><a class="source-lineNum" href="#12">12: </a></td><td>  <span class="php-var">$current_page</span> = <span class="php-kw">isset</span>(<span class="php-var">$_GET</span>[<span class="php-str">&#039;page&#039;</span>]) ? (int) <span class="php-var">$_GET</span>[<span class="php-str">&#039;page&#039;</span>] : <span class="php-num">1</span>;</td></tr><tr id="13" class="source-line"><td><a class="source-lineNum" href="#13">13: </a></td><td>  <span class="php-var">$current_page</span> = validateCurrentPage(<span class="php-var">$current_page</span>, <span class="php-var">$total_pages</span>);</td></tr><tr id="14" class="source-line"><td><a class="source-lineNum" href="#14">14: </a></td><td>  <span class="php-kw">return</span> <span class="php-var">$current_page</span>;</td></tr><tr id="15" class="source-line"><td><a class="source-lineNum" href="#15">15: </a></td><td>}</td></tr><tr id="16" class="source-line"><td><a class="source-lineNum" href="#16">16: </a></td><td></td></tr><tr id="17" class="source-line"><td><a class="source-lineNum" href="#17">17: </a></td><td><span class="php-kw">function</span> getTotalStock(<span class="php-var">$result</span>)</td></tr><tr id="18" class="source-line"><td><a class="source-lineNum" href="#18">18: </a></td><td>{</td></tr><tr id="19" class="source-line"><td><a class="source-lineNum" href="#19">19: </a></td><td>  <span class="php-var">$total_stock</span> = <span class="php-num">0</span>;</td></tr><tr id="20" class="source-line"><td><a class="source-lineNum" href="#20">20: </a></td><td>  <span class="php-kw">foreach</span> (<span class="php-var">$result</span> <span class="php-kw">as</span> <span class="php-var">$row</span>) {</td></tr><tr id="21" class="source-line"><td><a class="source-lineNum" href="#21">21: </a></td><td>    <span class="php-var">$s</span> = <span class="php-var">$row</span>[<span class="php-str">&#039;stock_level_quantity&#039;</span>];</td></tr><tr id="22" class="source-line"><td><a class="source-lineNum" href="#22">22: </a></td><td>    <span class="php-var">$total_stock</span> += <span class="php-var">$s</span>;</td></tr><tr id="23" class="source-line"><td><a class="source-lineNum" href="#23">23: </a></td><td>  }</td></tr><tr id="24" class="source-line"><td><a class="source-lineNum" href="#24">24: </a></td><td>  <span class="php-kw">return</span> <span class="php-var">$total_stock</span>;</td></tr><tr id="25" class="source-line"><td><a class="source-lineNum" href="#25">25: </a></td><td>}</td></tr></table>
+		</div>
+
+		<div class="layout-footer">
+			 API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha.5</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>

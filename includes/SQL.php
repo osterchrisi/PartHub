@@ -20,7 +20,7 @@ function getColumnNames($conn, $table_name)
   $column_names = $stmt->fetchAll(PDO::FETCH_COLUMN);
   return $column_names;
 }
-function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category)
+function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category, $user_id)
 {
   // Get the total number of rows in the table, filtered by the search term
   $sql = "SELECT COUNT(*) as total FROM $table_name WHERE ";
@@ -56,16 +56,18 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 
     $sql .= "AND part_category_fk IN " . $string;
   }
+  $sql .= " AND part_owner_u_fk = :user_id";
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   $total_rows = $row['total'];
   return $total_rows;
 }
 
-function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category)
+function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category, $user_id)
 {
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term and search column
   $sql = "SELECT *, part_id as 'id' FROM $table_name 
@@ -103,12 +105,15 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
     $sql .= "AND part_category_fk IN " . $string;
   }
 
-  $sql .= "LIMIT :offset, :results_per_page";
+  $sql .= " AND part_owner_u_fk = :user_id";
+
+  $sql .= " LIMIT :offset, :results_per_page";
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
   $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
   $stmt->execute();
 
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -371,7 +376,7 @@ function getUserName($conn)
   return $name;
 }
 
-function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id)
+function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id)
 {
   $stmt = $conn->prepare("INSERT INTO stock_level_change_history
                         (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_timestamp, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
@@ -390,19 +395,27 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
 
 function getLocations($conn)
 {
-  $sql = "SELECT * FROM location_names";
-  $stmt = $conn->prepare($sql);
+  $stmt = $conn->prepare("SELECT *
+                          FROM location_names");
   $stmt->execute();
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $loc;
 }
 
+/**
+ * Inserts or updates a row into the stock_levels table
+ *
+ * @param PDO $conn The PDO object for connecting to the database
+ * @param int $part_id ID for which to insert or update row
+ * @param int $quantity The quantity of the part
+ * @param string $to_location The location in which the part resides
+ * @return int The ID of the inserted or updated row
+ */
 function changeQuantity($conn, $part_id, $quantity, $to_location)
 {
-  $stmt = $conn->prepare("UPDATE stock_levels
-                          SET stock_level_quantity = :quantity 
-                          WHERE part_id_fk = :part_id 
-                          AND location_id_fk = :to_location");
+  $stmt = $conn->prepare("INSERT INTO stock_levels (part_id_fk, location_id_fk, stock_level_quantity)
+                          VALUES (:part_id, :to_location, :quantity)
+                          ON DUPLICATE KEY UPDATE stock_level_quantity = :quantity");
   $stmt->bindParam(':quantity', $quantity);
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':to_location', $to_location);
@@ -469,6 +482,20 @@ function createUser($conn, $email, $passwd, $name)
   $stmt->bindParam(':user_email', $email);
   $stmt->bindParam(':user_passwd', $passwd);
   $stmt->execute();
+  $new_id = $conn->lastInsertId();
+  return $new_id;
+}
+
+function stockEntry($conn, $part_id, $to_location, $quantity)
+{
+  $stmt = $conn->prepare("INSERT INTO stock_levels
+                        (stock_level_id, part_id_fk, location_id_fk, stock_level_quantity)
+                        VALUES (NULL, :part_id, :to_location, :quantity)");
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':to_location', $to_location);
+  $stmt->bindParam(':quantity', $quantity);
+  $stmt->execute();
+
   $new_id = $conn->lastInsertId();
   return $new_id;
 }

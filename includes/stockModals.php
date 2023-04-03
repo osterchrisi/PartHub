@@ -34,12 +34,16 @@ $_SESSION['locations'] = $locations;
     <div class="modal-body mx-1">
       <span id="stockChangeText"></span>
       <?php echo $part_name; ?><br><br>
-      <form>
-        <input class="form-control stockModalNumber" placeholder="Quantity" id="addStockQuantity"><br>
+      <form method="post" action="create-part.php">
+        <div class="row">
+          <div class="col-3">
+            <input class="form-control" placeholder="Quantity" id="addStockQuantity" required>
+          </div>
+        </div><br>
         <div class="input-group" id="FromStockLocationDiv"></div><br>
         <div class="input-group" id="ToStockLocationDiv"></div>
         <br>
-        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
+        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription" required>
       </form>
     </div>
 
