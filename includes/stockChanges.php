@@ -34,12 +34,12 @@ $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
 if ($change == 1) { // Add Stock
-    $quantity += $current_stock_level_to;
-    changeQuantity($conn, $part_id, $quantity, $to_location);
+    $new_quantity = $current_stock_level_to + $quantity;
+    changeQuantity($conn, $part_id, $new_quantity, $to_location);
 }
 elseif ($change == -1) { // Reduce Stock
-    $quantity = $current_stock_level_from - $quantity;
-    changeQuantity($conn, $part_id, $quantity, $from_location);
+    $new_quantity = $current_stock_level_from - $quantity;
+    changeQuantity($conn, $part_id, $new_quantity, $from_location);
 }
 elseif ($change == 0) { // Move Stock
     // Add stock for the to_location

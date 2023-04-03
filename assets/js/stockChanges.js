@@ -33,17 +33,7 @@ function callStockModal(change, locations) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
         toStockLocationDropdown(locations);
-        $("#toStockLocation").selectize({
-            create: true,
-            createFilter: function(input) {
-                return input.trim().length > 0;
-            },
-            render: {
-                option_create: function(data, escape) {
-                    return '<div class="create">Add <strong>' + escape(data.input) + '</strong>&hellip;</div>';
-                }
-            },
-        });
+        $("#toStockLocation").selectize();
 
     }
     else if (change == -1) {
