@@ -395,18 +395,27 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
 
 function getLocations($conn)
 {
-  $sql = "SELECT * FROM location_names";
-  $stmt = $conn->prepare($sql);
+  $stmt = $conn->prepare("SELECT *
+                          FROM location_names");
   $stmt->execute();
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $loc;
 }
 
+/**
+ * Inserts or updates a row into the stock_levels table
+ *
+ * @param PDO $conn The PDO object for connecting to the database
+ * @param int $part_id ID for which to insert or update row
+ * @param int $quantity The quantity of the part
+ * @param string $to_location The location in which the part resides
+ * @return int The ID of the inserted or updated row
+ */
 function changeQuantity($conn, $part_id, $quantity, $to_location)
 {
   $stmt = $conn->prepare("INSERT INTO stock_levels (part_id_fk, location_id_fk, stock_level_quantity)
-                        VALUES (:part_id, :to_location, :quantity)
-                        ON DUPLICATE KEY UPDATE stock_level_quantity = :quantity");
+                          VALUES (:part_id, :to_location, :quantity)
+                          ON DUPLICATE KEY UPDATE stock_level_quantity = :quantity");
   $stmt->bindParam(':quantity', $quantity);
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':to_location', $to_location);
