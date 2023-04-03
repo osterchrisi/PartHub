@@ -3,3 +3,6 @@
 .vscode/
 robots.txt
 site.webmanifest
+legacy/
+vendor/
+installer
