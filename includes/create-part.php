@@ -26,4 +26,4 @@ $new_stock_entry_id = stockEntry($conn, $new_part_id, $to_location, $quantity);
 // Create stock level change history entry
 $new_stock_level_id = stockChange($conn, $new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
 
-echo json_encode(array('id' => $new_part_id, 'sl_di' => $new_stock_entry_id, 'sl_chng_id' => $new_stock_level_id));
+echo json_encode(array('Part ID' => $new_part_id, 'Stock Entry ID' => $new_stock_entry_id, 'Stock Level History ID' => $new_stock_level_id));

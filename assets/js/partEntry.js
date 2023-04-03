@@ -24,8 +24,8 @@ submitBtn.addEventListener('click', function(event) {
     $.post('/PartHub/includes/create-part.php',
     { part_name: pn, quantity: q, to_location: l},
     function (response) {
-        console.log("Succesfully created new part with ID: ", response);
-        // updatePartsInfo(pid);
+        console.log("Succesfully created new part with these beautiful IDs: ", response);
+        updatePartsInfo('Part ID');
         $("#mPartEntry").hide(); // Hide modal
     });
     
