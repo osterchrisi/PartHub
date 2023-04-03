@@ -26,13 +26,13 @@ if ($from_location == 'NULL'){ $from_location = NULL;}
 $comment = $_POST['comment'];
 $user_id = $_SESSION['user_id'];
 $part_id = $_POST['part_id'];
-$datetime = 'NULL'; //* Table record gets current timestamp in SQL query -> might not be ideal for users not in same timezone as DB
 
 // Get all dem stock levels
 $stock_levels = $_SESSION['stock_levels'];
 $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
+// Change the stock level entries that exist for this part in that location
 if ($change == 1) { // Add Stock
     $new_quantity = $current_stock_level_to + $quantity;
     changeQuantity($conn, $part_id, $new_quantity, $to_location);
@@ -52,6 +52,6 @@ elseif ($change == 0) { // Move Stock
 }
 
 // Make record in stock_level_change_history table
-$hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $datetime, $user_id);
+$hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
 echo json_encode([$hist_id]);
