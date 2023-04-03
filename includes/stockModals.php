@@ -34,7 +34,7 @@ $_SESSION['locations'] = $locations;
     <div class="modal-body mx-1">
       <span id="stockChangeText"></span>
       <?php echo $part_name; ?><br><br>
-      <form>
+      <form method="post" action="create-part.php">
         <div class="row">
           <div class="col-3">
             <input class="form-control" placeholder="Quantity" id="addStockQuantity" required>

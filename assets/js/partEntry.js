@@ -10,6 +10,7 @@ function validateForm(formId, button){
 const form = document.getElementById(formId);
 const submitBtn = document.getElementById(button);
 
+// Form validation
 submitBtn.addEventListener('click', function(event) {
   event.preventDefault();
   if (form.checkValidity()) {

@@ -20,7 +20,7 @@ function getColumnNames($conn, $table_name)
   $column_names = $stmt->fetchAll(PDO::FETCH_COLUMN);
   return $column_names;
 }
-function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category)
+function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category, $user_id)
 {
   // Get the total number of rows in the table, filtered by the search term
   $sql = "SELECT COUNT(*) as total FROM $table_name WHERE ";
@@ -56,16 +56,18 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 
     $sql .= "AND part_category_fk IN " . $string;
   }
+  $sql .= " AND part_owner_u_fk = :user_id";
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   $total_rows = $row['total'];
   return $total_rows;
 }
 
-function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category)
+function queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category, $user_id)
 {
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term and search column
   $sql = "SELECT *, part_id as 'id' FROM $table_name 
@@ -103,12 +105,15 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
     $sql .= "AND part_category_fk IN " . $string;
   }
 
-  $sql .= "LIMIT :offset, :results_per_page";
+  $sql .= " AND part_owner_u_fk = :user_id";
+
+  $sql .= " LIMIT :offset, :results_per_page";
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
   $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
   $stmt->execute();
 
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

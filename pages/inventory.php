@@ -28,7 +28,7 @@ $categories = getCategories($conn);
 <div class="modal fade" id="mAddStock" tabindex="-1"></div>
 
 <!-- Part Entry Modal -->
-<div class="modal fade" id="mPartEntry" tabindex="-1">
+<div class="modal fade modal-draggable" id="mPartEntry" tabindex="-1">
   <?php include '../includes/partEntryModal.php'; ?>
 </div>
 
@@ -82,7 +82,7 @@ $categories = getCategories($conn);
     // The term from the search field
     $search_term = getSuperGlobal('search');
     //Get the number of results for pagination
-    $total_rows = getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category);
+    $total_rows = getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, $column_names, $search_category, $user_id);
 
     if ($total_rows) {
       // Calculate the total number of pages for pagination
@@ -92,7 +92,7 @@ $categories = getCategories($conn);
       // Calculate the offset for the current page
       $offset = ($current_page - 1) * $results_per_page;
 
-      $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category);
+      $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category, $user_id);
 
       echo "<div class='row'>";
       echo "<div class='col-9' id='table-window' style='max-width: 90%;'>"; //9
@@ -127,7 +127,8 @@ $categories = getCategories($conn);
   // 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
     var $select = $('#cat-select').selectize({
-      plugins: ["remove_button", "clear_button"]});
+      plugins: ["remove_button", "clear_button"]
+    });
 
     $('form').on('submit', function () {
       // Get the selected options from the Selectize instance
@@ -161,7 +162,14 @@ $categories = getCategories($conn);
       console.log("Modal now ready");
       $('#addStockQuantity').focus();
     });
+
+    // Focus the Part Name field in the part entry modal after showing
+    $('#mPartEntry').on('shown.bs.modal', function () {
+      console.log("Modal now ready");
+      $('#addPartName').focus();
+    });
   });
+
 
   // Part Entry Modal JS
   <?php include '../assets/js/partEntry.js'; ?>
