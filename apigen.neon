@@ -1,2 +1,0 @@
-parameters:
-  exclude: ['vendor/**', 'assets/**', 'config/credentials.php', 'docs/**']

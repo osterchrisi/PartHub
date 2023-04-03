@@ -6,3 +6,5 @@ site.webmanifest
 legacy/
 vendor/
 installer
+apigen.neon
+tools/
