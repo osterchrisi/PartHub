@@ -477,3 +477,17 @@ function createUser($conn, $email, $passwd, $name)
   $new_id = $conn->lastInsertId();
   return $new_id;
 }
+
+function stockEntry($conn, $part_id, $to_location, $quantity)
+{
+  $stmt = $conn->prepare("INSERT INTO stock_levels
+                        (stock_level_id, part_id_fk, location_id_fk, stock_level_quantity)
+                        VALUES (NULL, :part_id, :to_location, :quantity)");
+  $stmt->bindParam(':part_id', $part_id);
+  $stmt->bindParam(':to_location', $to_location);
+  $stmt->bindParam(':quantity', $quantity);
+  $stmt->execute();
+
+  $new_id = $conn->lastInsertId();
+  return $new_id;
+}

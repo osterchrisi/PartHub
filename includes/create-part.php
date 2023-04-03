@@ -7,6 +7,7 @@ include 'SQL.php';
 $part_name = $_POST['part_name'];
 $quantity = $_POST['quantity'];
 $to_location = $_POST['to_location'];
+$comment = $_POST['comment'];
 $user_id = $_SESSION['user_id'];
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
@@ -19,9 +20,10 @@ $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 $new_part_id = $conn->lastInsertId();
 
+// Make stock entry
+$new_stock_entry_id = stockEntry($conn, $new_part_id, $to_location, $quantity);
 
+// Create stock level change history entry
+$new_stock_level_id = stockChange($conn, $new_part_id, NULL, $to_location, $quantity, $comment, NULL, $user_id);
 
-
-
-
-echo json_encode(array('id' => $new_part_id, 'user_id' => $user_id));
+echo json_encode(array('id' => $new_part_id, 'sl_di' => $new_stock_entry_id, 'sl_chng_id' => $new_stock_level_id));
