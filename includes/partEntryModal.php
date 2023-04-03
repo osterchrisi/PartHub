@@ -36,7 +36,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <form id="partEntryForm">
         <input class="form-control" placeholder="Part Name" required><br>
         <div class="row">
-          <div class="col">
+          <div class="col-3">
             <input class="form-control" placeholder="Quantity" required>
           </div>
           <div class="col"><input class="form-select" placeholder="Storage Location" required>
