@@ -70,9 +70,10 @@ $categories = getCategories($conn);
   </div>
 
   <div id="myMenu" class="dropdown-menu">
-  <a class="dropdown-item" href="#">Action 1</a>
-  <a class="dropdown-item" href="#">Action 2</a>
-  <a class="dropdown-item" href="#">Action 3</a>
+  <a class="dropdown-item" href="#" data-action="delete">Delete Part(s)</a>
+  <a class="dropdown-item" href="#" data-action="assignC">Assign Category</a>
+  <a class="dropdown-item" href="#" data-action="assignF">Assign Footprint</a>
+  <a class="dropdown-item" href="#" data-action="changeStock">Change Stock</a>
 </div>
 
   <!-- Parts Table and Pagination -->
@@ -198,15 +199,18 @@ $categories = getCategories($conn);
     var $menu = $('#myMenu');
 
     // add an event listener for the right-click event on table cells
-    $table.on('contextmenu', 'td', function(event) {
+    $table.on('contextmenu', 'td', function (event) {
       // check if the right mouse button was clicked
       if (event.which === 3) {
         // prevent the default context menu from showing up
         event.preventDefault();
 
-        // get the selected table rows
+        // Get selected table rows
         var selectedRows = $table.bootstrapTable('getSelections');
-        console.log(selectedRows);
+        // Extract IDs
+        const ids = selectedRows.map(obj => obj._data.id);
+        // Extract Footprints
+        const cats = selectedRows.map(obj => obj.Footprint);
 
         // show the custom menu at the mouse position
         $menu.css({
@@ -223,7 +227,8 @@ $categories = getCategories($conn);
           // perform the selected action on the selected rows
           switch (action) {
             case 'delete':
-              deleteSelectedRows(selectedRows);
+              // console.log("Delete them rows", ids);
+              deleteSelectedRows(ids);
               break;
             case 'edit':
               editSelectedRows(selectedRows);
