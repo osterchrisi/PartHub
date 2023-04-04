@@ -8,3 +8,4 @@ vendor/
 installer
 apigen.neon
 tools/
+docs/

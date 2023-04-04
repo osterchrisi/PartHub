@@ -1,8 +1,4 @@
 <?php
-/*
- * SQL Library
- */
-
 function connectToSQLDB($hostname, $username, $password, $database_name)
 {
   // Connect to the database using PDO
@@ -24,7 +20,6 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 {
   // Get the total number of rows in the table, filtered by the search term
   $sql = "SELECT COUNT(*) as total FROM $table_name WHERE ";
-
 
   // Seach Column(s)
   if ($search_column == 'everywhere') {
@@ -287,7 +282,7 @@ function getBomName($conn, $bom_id)
 }
 function createBackorder($conn, $customer_id, $customer_po)
 {
-  $stmt = $conn->prepare("INSERT INTO `backorders` (`id`, `customer_id`, `customer_po`, `created_at`) VALUES (NULL, :customer_id, :customer_po, current_timestamp())");
+  $stmt = $conn->prepare("INSERT INTO backorders (id, customer_id, customer_po, created_at) VALUES (NULL, :customer_id, :customer_po, current_timestamp())");
   $stmt->bindParam(':customer_id', $customer_id);
   $stmt->bindParam(':customer_po', $customer_po);
   $stmt->execute();
@@ -298,7 +293,11 @@ function createBackorder($conn, $customer_id, $customer_po)
 
 function createBom($conn, $bom_name, $bom_description = NULL)
 {
-  $stmt = $conn->prepare("INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`) VALUES (NULL, :bom_name, :bom_description)");
+  $stmt = $conn->prepare("INSERT INTO bom_names (
+                            bom_id, bom_name, bom_description
+                        ) VALUES (
+                            NULL, :bom_name, :bom_description
+                        )");
   $stmt->bindParam(':bom_name', $bom_name);
   $stmt->bindParam(':bom_description', $bom_description);
   $stmt->execute();
@@ -309,7 +308,10 @@ function createBom($conn, $bom_name, $bom_description = NULL)
 
 function insertBomElements($conn, $new_id, $part_id, $amount)
 {
-  $stmt = $conn->prepare("INSERT INTO `bom_elements` (`bom_elements_id`, `bom_id_fk`, `part_id_fk`, `element_quantity`) VALUES (NULL, :bom_id, :part_id, :amount)");
+  $stmt = $conn->prepare("INSERT INTO bom_elements (
+                            bom_elements_id, bom_id_fk, part_id_fk, element_quantity
+                        ) VALUES (
+                            NULL, :bom_id, :part_id, :amount)");
   $stmt->bindParam(':bom_id', $new_id);
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':amount', $amount);
@@ -339,7 +341,7 @@ function getBomElements($conn, $bom_id)
 
 function insertBackorderProducts($conn, $new_id, $product_id, $amount)
 {
-  $stmt = $conn->prepare("INSERT INTO `backorders_product_lookup` (`id`, `backorder_id`, `product_id`, `amount`) VALUES (NULL, :backorder_id, :product_id, :amount)");
+  $stmt = $conn->prepare("INSERT INTO backorders_product_lookup (id, backorder_id, product_id, amount) VALUES (NULL, :backorder_id, :product_id, :amount)");
   $stmt->bindParam(':backorder_id', $new_id);
   $stmt->bindParam(':product_id', $product_id);
   $stmt->bindParam(':amount', $amount);
@@ -378,9 +380,25 @@ function getUserName($conn)
 
 function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id)
 {
-  $stmt = $conn->prepare("INSERT INTO stock_level_change_history
-                        (stock_lvl_chng_id, part_id_fk, from_location_fk, to_location_fk, stock_lvl_chng_quantity, stock_lvl_chng_timestamp, stock_lvl_chng_comment, stock_lvl_chng_user_fk) VALUES
-                        (NULL, :part_id, :from_location, :to_location, :quantity, CURRENT_TIMESTAMP, :comment, :user_id)");
+  $stmt = $conn->prepare("INSERT INTO stock_level_change_history (
+                            stock_lvl_chng_id, 
+                            part_id_fk, 
+                            from_location_fk, 
+                            to_location_fk, 
+                            stock_lvl_chng_quantity, 
+                            stock_lvl_chng_timestamp, 
+                            stock_lvl_chng_comment, 
+                            stock_lvl_chng_user_fk
+                        ) VALUES (
+                            NULL, 
+                            :part_id, 
+                            :from_location, 
+                            :to_location, 
+                            :quantity, 
+                            CURRENT_TIMESTAMP, 
+                            :comment, 
+                            :user_id
+)");
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':from_location', $from_location);
   $stmt->bindParam(':to_location', $to_location);
@@ -413,9 +431,12 @@ function getLocations($conn)
  */
 function changeQuantity($conn, $part_id, $quantity, $to_location)
 {
-  $stmt = $conn->prepare("INSERT INTO stock_levels (part_id_fk, location_id_fk, stock_level_quantity)
-                          VALUES (:part_id, :to_location, :quantity)
-                          ON DUPLICATE KEY UPDATE stock_level_quantity = :quantity");
+  $stmt = $conn->prepare("INSERT INTO stock_levels
+                            (part_id_fk, location_id_fk, stock_level_quantity)
+                          VALUES
+                            (:part_id, :to_location, :quantity)
+                          ON DUPLICATE KEY
+                            UPDATE stock_level_quantity = :quantity");
   $stmt->bindParam(':quantity', $quantity);
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':to_location', $to_location);
@@ -475,9 +496,19 @@ function checkIfUserExists($conn, $email)
 
 function createUser($conn, $email, $passwd, $name)
 {
-  $stmt = $conn->prepare("INSERT INTO users
-                        (user_name, user_email, user_passwd, register_date, last_login) VALUES
-                        (:user_name, :user_email, :user_passwd, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+  $stmt = $conn->prepare("INSERT INTO users (
+                            user_name,
+                            user_email,
+                            user_passwd,
+                            register_date,
+                            last_login
+                        ) VALUES (
+                            :user_name,
+                            :user_email,
+                            :user_passwd,
+                            CURRENT_TIMESTAMP,
+                            CURRENT_TIMESTAMP
+                        )");
   $stmt->bindParam(':user_name', $name);
   $stmt->bindParam(':user_email', $email);
   $stmt->bindParam(':user_passwd', $passwd);
@@ -488,9 +519,11 @@ function createUser($conn, $email, $passwd, $name)
 
 function stockEntry($conn, $part_id, $to_location, $quantity)
 {
-  $stmt = $conn->prepare("INSERT INTO stock_levels
-                        (stock_level_id, part_id_fk, location_id_fk, stock_level_quantity)
-                        VALUES (NULL, :part_id, :to_location, :quantity)");
+  $stmt = $conn->prepare("INSERT INTO stock_levels (
+                              stock_level_id, part_id_fk, location_id_fk, stock_level_quantity
+                          ) VALUES (
+                              NULL, :part_id, :to_location, :quantity
+                          )");
   $stmt->bindParam(':part_id', $part_id);
   $stmt->bindParam(':to_location', $to_location);
   $stmt->bindParam(':quantity', $quantity);

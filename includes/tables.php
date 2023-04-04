@@ -193,6 +193,8 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             data-cookie="true"
             data-cookie-id-table="PartsTableState"
             data-max-moving-rows="100"
+            data-multiple-select-row="true"
+            data-click-to-select="true"
             >';
 
     // Table headers
@@ -206,6 +208,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             echo "<th data-field='$column_header'>$column_header</th>";
         }
     }
+    echo '<th data-field="state" data-checkbox="true"></th>';
     echo "</tr>";
     echo "</thead>";
 
@@ -214,7 +217,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     foreach ($result as $row) {
         // echo "<tr>";
         $part_id = $row['part_id'];
-        echo "<tr data-id=" . $row['part_id'] . ">";
+        echo "<tr data-id=" . $row['part_id'] . " class='whatever'>";
         foreach ($db_columns as $column_data) {
             if ($column_data == 'total_stock') {
                 // Get total stock
