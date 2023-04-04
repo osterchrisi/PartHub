@@ -23,6 +23,22 @@ tr.selected {
     background-color: rgba(0, 255, 255, 0.1);
 }
 
+tr.selected-last {
+    background-color: rgba(0, 255, 255, 0.2);
+}
+
+tr.selected-last td {
+    border:rgba(0, 0, 0, 0.5) solid 1px;
+}
+
+
+
+
+/* Prohibit selecting text when pressing shift (selecting multiple rows in table) */
+.table-no-select tbody tr td {
+    user-select: none;
+  }
+
 /* Parts info window */
 .info-window {
     border: 1px solid rgba(var(--bs-primary-rgb), 0.1);

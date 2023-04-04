@@ -15,14 +15,6 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
         array (
             'PHPMailer\\PHPMailer\\' => 20,
         ),
-        'O' => 
-        array (
-            'OnlineSid\\DataTabulator\\' => 24,
-        ),
-        'M' => 
-        array (
-            'Medoo\\' => 6,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -33,14 +25,6 @@ class ComposerStaticInitab70f2a818c7fed1731e82378bba04d4
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
-        ),
-        'OnlineSid\\DataTabulator\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/onlinesid/php-data-tabulator/src/OnlineSid/DataTabulator',
-        ),
-        'Medoo\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/catfan/medoo/src',
         ),
     );
 

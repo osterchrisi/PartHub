@@ -69,6 +69,12 @@ $categories = getCategories($conn);
     </form>
   </div>
 
+  <div id="myMenu" class="dropdown-menu">
+  <a class="dropdown-item" href="#">Action 1</a>
+  <a class="dropdown-item" href="#">Action 2</a>
+  <a class="dropdown-item" href="#">Action 3</a>
+</div>
+
   <!-- Parts Table and Pagination -->
   <?php
   include '../includes/tables.php';
@@ -124,7 +130,7 @@ $categories = getCategories($conn);
 <script>
   bootstrapPartsTable();
 
-  // 'Selectize' the category multi select, prepare values and append to the hidden input field
+  //* 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
     var $select = $('#cat-select').selectize({
       plugins: ["remove_button", "clear_button"]
@@ -146,12 +152,13 @@ $categories = getCategories($conn);
   });
 
   // Get part_id from the clicked row and update parts-info and stock modals
+  //* Update: Removed the class toggling because BT does exactly the same and currently use its functionality
   $(document).ready(function () {
     $('#parts_table tbody').on('click', 'tr', function () {
-      if ($('tbody tr.selected').length > 0) {
-        $('tbody tr.selected').removeClass('selected');
+      if ($('tbody tr.selected-last').length > 0) {
+        $('tbody tr.selected-last').removeClass('selected-last');
       }
-      $(this).toggleClass('selected');
+      $(this).toggleClass('selected-last');
       var id = $(this).data('id'); // get ID from the selected row
       updatePartsInfo(id);
       updateStockModal(id);
@@ -168,6 +175,95 @@ $categories = getCategories($conn);
       console.log("Modal now ready");
       $('#addPartName').focus();
     });
+
+    // Prohibit text selection when pressing shift (for selecting multiple rows)
+    var table = document.getElementById("parts_table");
+
+    // Shift is pressed
+    document.addEventListener("keydown", function (event) {
+      if (event.shiftKey) {
+        table.classList.add("table-no-select");
+      }
+    });
+
+    // Shift is released
+    document.addEventListener("keyup", function (event) {
+      if (!event.shiftKey) {
+        table.classList.remove("table-no-select");
+      }
+    });
+
+    // get a reference to the table element and the custom menu
+    var $table = $('#parts_table');
+    var $menu = $('#myMenu');
+
+    // add an event listener for the right-click event on table cells
+    $table.on('contextmenu', 'td', function(event) {
+      // check if the right mouse button was clicked
+      if (event.which === 3) {
+        // prevent the default context menu from showing up
+        event.preventDefault();
+
+        // get the selected table rows
+        var selectedRows = $table.bootstrapTable('getSelections');
+        console.log(selectedRows);
+
+        // show the custom menu at the mouse position
+        $menu.css({
+          left: event.pageX + 'px',
+          top: event.pageY + 'px',
+          display: 'block'
+        });
+
+        // add event listeners for the menu items
+        $menu.find('.dropdown-item').off('click').on('click', function () {
+          // get the action to perform from the menu item's data attribute
+          var action = $(this).data('action');
+
+          // perform the selected action on the selected rows
+          switch (action) {
+            case 'delete':
+              deleteSelectedRows(selectedRows);
+              break;
+            case 'edit':
+              editSelectedRows(selectedRows);
+              break;
+            case 'copy':
+              copySelectedRows(selectedRows);
+              break;
+            default:
+            // do nothing
+          }
+
+          // hide the custom menu
+          $menu.hide();
+        });
+      }
+    });
+
+    // add an event listener for clicks outside the menu to hide it
+    $(document).on('click', function (event) {
+      if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
+        $menu.hide();
+      }
+    });
+
+    // function to delete selected rows
+    function deleteSelectedRows(rows) {
+      // implementation goes here
+    }
+
+    // function to edit selected rows
+    function editSelectedRows(rows) {
+      // implementation goes here
+    }
+
+    // function to copy selected rows
+    function copySelectedRows(rows) {
+      // implementation goes here
+    }
+
+
   });
 
 
