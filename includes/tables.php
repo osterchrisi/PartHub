@@ -27,6 +27,8 @@ function buildTable($column_names, $nice_columns, $result, $width = "100%")
 }
 
 // This is silly but I want inline stock view so hard, I'll leave it like this for now
+// This is essentially a copy of the buildTable function but returns a string that I can pass
+// into the Popover div
 function buildHTMLTable($column_names, $nice_columns, $result, $width = "100%")
 {
     $html = "<div style='overflow-x:auto;'>";
@@ -208,6 +210,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             echo "<th data-field='$column_header'>$column_header</th>";
         }
     }
+    // This column is for Bootstrap Table Click-To-Select to work
     echo '<th data-field="state" data-checkbox="true"></th>';
     echo "</tr>";
     echo "</thead>";
