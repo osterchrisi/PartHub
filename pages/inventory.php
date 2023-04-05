@@ -131,7 +131,7 @@ $categories = getCategories($conn);
 
 <script>
   bootstrapPartsTable();
-
+  
   //* 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
     var $select = $('#cat-select').selectize({
