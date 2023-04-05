@@ -131,7 +131,7 @@ $categories = getCategories($conn);
 
 <script>
   bootstrapPartsTable();
-  
+
   //* 'Selectize' the category multi select, prepare values and append to the hidden input field
   $(function () {
     var $select = $('#cat-select').selectize({
@@ -225,7 +225,6 @@ $categories = getCategories($conn);
 
           switch (action) {
             case 'delete':
-              console.log("Delete them rows", ids);
               deleteSelectedRows(ids);
               break;
             case 'edit':
@@ -252,8 +251,21 @@ $categories = getCategories($conn);
     });
 
     // Delete selected rows
-    function deleteSelectedRows(rows) {
+    function deleteSelectedRows(ids) {
       // Like, delete 'em
+      $.ajax({
+        type: 'POST',
+        url: '../includes/deletePart.php',
+        data: {
+          part_id: 123
+        },
+        success: function (response) {
+          console.log(response);
+        }
+      });
+
+      // deletePart($conn, $part_id)
+      console.log("Delete them rows", ids);
     }
 
   });

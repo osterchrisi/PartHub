@@ -58,7 +58,7 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
   $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  
+
   $total_rows = $row['total'];
   return $total_rows;
 }
@@ -533,4 +533,11 @@ function stockEntry($conn, $part_id, $to_location, $quantity)
 
   $new_id = $conn->lastInsertId();
   return $new_id;
+}
+
+function deletePart($conn, $part_id)
+{
+  $stmt = $conn->prepare("DELETE FROM parts WHERE part_id = :part_id");
+  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt->execute();
 }
