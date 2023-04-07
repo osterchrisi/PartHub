@@ -222,10 +222,14 @@ $categories = getCategories($conn);
         $menu.find('.dropdown-item').off('click').on('click', function () {
           // Get action data attribute
           var action = $(this).data('action');
+          var number = ids.length;
+          console.log(number);
 
           switch (action) {
             case 'delete':
-              deleteSelectedRows(ids);
+              if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?')) {
+                deleteSelectedRows(ids);
+              }
               break;
             case 'edit':
               editSelectedRows(selectedRows);
