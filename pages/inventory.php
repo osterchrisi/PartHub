@@ -223,7 +223,6 @@ $categories = getCategories($conn);
           // Get action data attribute
           var action = $(this).data('action');
           var number = ids.length;
-          console.log(number);
 
           switch (action) {
             case 'delete':
@@ -257,8 +256,6 @@ $categories = getCategories($conn);
     // Delete selected rows
     function deleteSelectedRows(ids) {
       // Like, delete 'em
-      console.log("Delete them rows", ids);
-
       $.ajax({
         type: 'POST',
         url: '../includes/deletePart.php',
