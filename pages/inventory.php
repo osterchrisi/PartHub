@@ -269,6 +269,7 @@ $categories = getCategories($conn);
           console.log(response);
         }
       });
+
     }
 
   });
