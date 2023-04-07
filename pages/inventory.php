@@ -227,7 +227,7 @@ $categories = getCategories($conn);
 
           switch (action) {
             case 'delete':
-              if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?')) {
+              if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
                 deleteSelectedRows(ids);
               }
               break;
@@ -257,19 +257,18 @@ $categories = getCategories($conn);
     // Delete selected rows
     function deleteSelectedRows(ids) {
       // Like, delete 'em
+      console.log("Delete them rows", ids);
+
       $.ajax({
         type: 'POST',
         url: '../includes/deletePart.php',
         data: {
-          part_id: 123
+          part_ids: ids
         },
         success: function (response) {
           console.log(response);
         }
       });
-
-      // deletePart($conn, $part_id)
-      console.log("Delete them rows", ids);
     }
 
   });
