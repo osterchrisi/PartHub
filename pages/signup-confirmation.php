@@ -14,20 +14,20 @@ require_once('../includes/navbar.php'); ?>
       <thead>
         <tr>
           <th>
-            <h4>PartHub Pricing</h4>
+            <h4>Welcome to Parthub!</h4>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td style='text-align:left'>
-            Currently PartHub is free to use but be aware that it is still in beta.
+           You have been successfully signed up!
           </td>
         </tr>
         <tr>
           <td>
-            <button type="button" class="btn btn-primary" onclick="window.location.href='signup.php'">Sign
-              Up</button>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='login.php'">Sign
+              In</button>
           </td>
         </tr>
       <tbody>

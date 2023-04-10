@@ -14,7 +14,8 @@ $doNothingArray = ['login.php',
                     'stockModals.php',
                     'show-bom.php',
                     'stock-history.php',
-                    'signup.php'];
+                    'signup.php',
+                    'signup-confirmation.php'];
 
 // Do nothing
 if (in_array($basename, $doNothingArray)) {
