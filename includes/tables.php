@@ -27,6 +27,8 @@ function buildTable($column_names, $nice_columns, $result, $width = "100%")
 }
 
 // This is silly but I want inline stock view so hard, I'll leave it like this for now
+// This is essentially a copy of the buildTable function but returns a string that I can pass
+// into the Popover div
 function buildHTMLTable($column_names, $nice_columns, $result, $width = "100%")
 {
     $html = "<div style='overflow-x:auto;'>";
@@ -200,6 +202,8 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     // Table headers
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
+    // This column is for Bootstrap Table Click-To-Select to work
+    echo '<th data-field="state" data-checkbox="true"></th>';
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Total Stock') {
             echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
@@ -224,10 +228,13 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo "<td style='text-align:right'><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
             }
             elseif ($column_data == 'category_name') {
                 echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
+            }
+            elseif ($column_data == 'state'){
+                ;
             }
             else { // Any other table data available
                 echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";

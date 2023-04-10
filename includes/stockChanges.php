@@ -4,6 +4,7 @@ include "session.php";
 include "../config/credentials.php";
 include "SQL.php";
 include "helpers.php";
+include 'get.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $test = getUserName($conn);
@@ -18,10 +19,14 @@ $change = $_POST['change'];
 $quantity = $_POST['quantity'];
 
 $to_location = $_POST['to_location'];
-if ($to_location == 'NULL'){ $to_location = NULL;}
+if ($to_location == 'NULL') {
+    $to_location = NULL;
+}
 
 $from_location = $_POST['from_location'];
-if ($from_location == 'NULL'){ $from_location = NULL;}
+if ($from_location == 'NULL') {
+    $from_location = NULL;
+}
 
 $comment = $_POST['comment'];
 $user_id = $_SESSION['user_id'];
@@ -54,4 +59,8 @@ elseif ($change == 0) { // Move Stock
 // Make record in stock_level_change_history table
 $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
-echo json_encode([$hist_id, $stock_level_id]);
+$stock = getStockLevels($conn, $part_id);
+$total_stock = getTotalStock($stock);
+
+//TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
+echo json_encode([$hist_id, $stock_level_id, $total_stock]);

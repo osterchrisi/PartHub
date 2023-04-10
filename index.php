@@ -29,7 +29,7 @@ include 'includes/navbar.php';
   echo '<div class="alert alert-info" role="alert">Nice to have you back, ' . $user_name . '!</div>';
 }?>
           Hello internet stranger that has found their way to PartHub!<br>
-          PartHub is <strong>not yet functional</strong> but many parts do <i>almost</i> work.<br><br>
+          PartHub is <strong>not yet fully functional</strong> but many parts do work.<br><br>
           So, if you like, start looking at some parts, create a BOM, move some stock and just see what happens. Go ahead and explore!
           <br>The database will reset every full hour, then all your changes will be lost :(<br><br>
         </td>

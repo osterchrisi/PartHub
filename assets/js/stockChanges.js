@@ -14,7 +14,7 @@ function toStockLocationDropdown(locations) {
 }
 
 // Create the "From Location" dropdown
-function fromStockLocationDropdown(locations){
+function fromStockLocationDropdown(locations) {
     var div = document.getElementById("FromStockLocationDiv");
     var selectHTML = "<label class='input-group-text' for='fromStockLocation'>From</label><select class='form-select' id='fromStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
@@ -61,7 +61,7 @@ function saveChanges(change) {
     $('#AddStock').click(function () {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
-        
+
 
         if (change == '1') {
             tl = $("#toStockLocation").val(); // To Location
@@ -86,6 +86,12 @@ function saveChanges(change) {
             function (response) {
                 console.log("Succesfully created new stock history entry with number: ", response);
                 updatePartsInfo(pid);
+
+                //TODO: This is bit of a hicky hacky but at least updates the cell for now
+                var new_stock_level = JSON.parse(response)[2];
+                var $cell = $('tr.selected-last td[data-column="total_stock"]');
+                $cell.text(new_stock_level);
+
                 $("#mAddStock").hide(); // Hide stockChange modal
             });
     });
@@ -99,13 +105,13 @@ function removeClickListeners(id) {
 // Remove the locations dropdowns to keep them from stacking up
 $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {
-    removeLocationDropdown("FromStockLocationDiv");
-    from_location_exists = false;
+        removeLocationDropdown("FromStockLocationDiv");
+        from_location_exists = false;
     }
 
     if (to_location_exists) {
-    removeLocationDropdown("ToStockLocationDiv");
-    to_location_exists = false;
+        removeLocationDropdown("ToStockLocationDiv");
+        to_location_exists = false;
     }
 });
 

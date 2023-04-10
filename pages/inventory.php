@@ -69,11 +69,13 @@ $categories = getCategories($conn);
     </form>
   </div>
 
-  <div id="myMenu" class="dropdown-menu">
-  <a class="dropdown-item" href="#">Action 1</a>
-  <a class="dropdown-item" href="#">Action 2</a>
-  <a class="dropdown-item" href="#">Action 3</a>
-</div>
+  <!-- Parts Table Right-click Menu -->
+  <div id="parts_table_menu" class="dropdown-menu">
+    <a class="dropdown-item" href="#" data-action="delete">Delete Part(s)</a>
+    <a class="dropdown-item" href="#" data-action="assignC">Assign Category</a>
+    <a class="dropdown-item" href="#" data-action="assignF">Assign Footprint</a>
+    <a class="dropdown-item" href="#" data-action="changeStock">Change Stock</a>
+  </div>
 
   <!-- Parts Table and Pagination -->
   <?php
@@ -195,35 +197,38 @@ $categories = getCategories($conn);
 
     // get a reference to the table element and the custom menu
     var $table = $('#parts_table');
-    var $menu = $('#myMenu');
+    var $menu = $('#parts_table_menu');
 
-    // add an event listener for the right-click event on table cells
-    $table.on('contextmenu', 'td', function(event) {
-      // check if the right mouse button was clicked
+    // Event listener for the right-click event on table cells
+    $table.on('contextmenu', 'td', function (event) {
       if (event.which === 3) {
-        // prevent the default context menu from showing up
         event.preventDefault();
 
-        // get the selected table rows
+        // Get selected table rows
         var selectedRows = $table.bootstrapTable('getSelections');
-        console.log(selectedRows);
+        // Extract IDs
+        const ids = selectedRows.map(obj => obj._data.id);
+        // Extract Footprints
+        const cats = selectedRows.map(obj => obj.Footprint);
 
-        // show the custom menu at the mouse position
+        // Show menu
         $menu.css({
           left: event.pageX + 'px',
           top: event.pageY + 'px',
           display: 'block'
         });
 
-        // add event listeners for the menu items
+        // Event listeners for the menu items
         $menu.find('.dropdown-item').off('click').on('click', function () {
-          // get the action to perform from the menu item's data attribute
+          // Get action data attribute
           var action = $(this).data('action');
+          var number = ids.length;
 
-          // perform the selected action on the selected rows
           switch (action) {
             case 'delete':
-              deleteSelectedRows(selectedRows);
+              if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
+                deleteSelectedRows(ids);
+              }
               break;
             case 'edit':
               editSelectedRows(selectedRows);
@@ -235,34 +240,34 @@ $categories = getCategories($conn);
             // do nothing
           }
 
-          // hide the custom menu
+          // Hide menu
           $menu.hide();
         });
       }
     });
 
-    // add an event listener for clicks outside the menu to hide it
+    // Event listener for clicks outside the menu to hide it
     $(document).on('click', function (event) {
       if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
         $menu.hide();
       }
     });
 
-    // function to delete selected rows
-    function deleteSelectedRows(rows) {
-      // implementation goes here
-    }
+    // Delete selected rows
+    function deleteSelectedRows(ids) {
+      // Like, delete 'em
+      $.ajax({
+        type: 'POST',
+        url: '../includes/deletePart.php',
+        data: {
+          part_ids: ids
+        },
+        success: function (response) {
+          console.log(response);
+        }
+      });
 
-    // function to edit selected rows
-    function editSelectedRows(rows) {
-      // implementation goes here
     }
-
-    // function to copy selected rows
-    function copySelectedRows(rows) {
-      // implementation goes here
-    }
-
 
   });
 
