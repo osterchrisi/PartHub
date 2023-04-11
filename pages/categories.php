@@ -21,9 +21,9 @@ $table_name = "part_categories";
   // SQL query to retrieve category data
   $categories = getCategories($conn);
 
-  // echo "<pre>";
-  // print_r($categories);
-  // echo "end ";
+  echo "<pre>";
+  print_r($categories);
+  echo "</pre>";
   function generateTreeList($arr)
   {
     $url =
