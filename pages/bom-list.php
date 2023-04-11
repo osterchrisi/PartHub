@@ -1,7 +1,7 @@
 <?php
 // BOM List Page
 $basename = basename(__FILE__);
-$title = 'Show BOM';
+$title = 'BOM List';
 require_once('../includes/head.html');
 
 include '../config/credentials.php';

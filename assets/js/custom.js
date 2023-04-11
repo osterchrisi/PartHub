@@ -64,3 +64,48 @@ $(function () {
         }
     });
 });
+
+/**
+ * 'Selectize' the category multi select, prepare values and append to the hidden input field
+ *
+ * @return void
+ */
+function initializeMultiSelect(id) {
+    var $select = $('#' + id).selectize({
+        plugins: ["remove_button", "clear_button"]
+    });
+
+    $('form').on('submit', function () {
+        // Get the selected options from the selectize instance
+        var selectedValues = $select[0].selectize.getValue();
+
+        // Prepare values to look like an array
+        for (var i = 0; i < selectedValues.length; i++) {
+            selectedValues[i] = [selectedValues[i]];
+        }
+        selectedValues = JSON.stringify(selectedValues);
+
+        // Update the value of the hidden input element
+        $('#selected-categories').val(selectedValues);
+    });
+};
+
+/**
+ * Delete selected rows
+ * @param ids Array of IDs to delete
+ */
+function deleteSelectedRows(ids, table_name) {
+    // Like, delete 'em
+    $.ajax({
+        type: 'POST',
+        url: '../includes/deletePart.php',
+        data: {
+            part_ids: ids,
+            table: table_name
+        },
+        success: function (response) {
+            console.log(response);
+        }
+    });
+
+}

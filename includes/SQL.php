@@ -475,9 +475,9 @@ function stockEntry($conn, $part_id, $to_location, $quantity)
   return $new_id;
 }
 
-function deletePart($conn, $part_id)
+function deletePart($conn, $part_id, $table)
 {
-  $stmt = $conn->prepare("DELETE FROM parts WHERE part_id = :part_id");
+  $stmt = $conn->prepare("DELETE FROM " . $table . " WHERE part_id = :part_id");
   $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
   $stmt->execute();
 }

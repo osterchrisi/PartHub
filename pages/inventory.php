@@ -16,7 +16,6 @@ dealWithCats();
 $search_term = getSuperGlobal('search');
 $search_category = getSuperGlobal('cat', ['all']);
 
-
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
@@ -50,7 +49,6 @@ $categories = getCategories($conn);
       <input type="hidden" name="cat[]" id="selected-categories" value="">
 
       <?php
-      //TODO: Button to reset filters maybe?
       generateCategoriesDropdown($categories, $search_category); ?>
     </div>
     <div class="col-1">
@@ -131,27 +129,7 @@ $categories = getCategories($conn);
 
 <script>
   bootstrapPartsTable();
-
-  //* 'Selectize' the category multi select, prepare values and append to the hidden input field
-  $(function () {
-    var $select = $('#cat-select').selectize({
-      plugins: ["remove_button", "clear_button"]
-    });
-
-    $('form').on('submit', function () {
-      // Get the selected options from the Selectize instance
-      var selectedValues = $select[0].selectize.getValue();
-
-      // Prepare values to look like an array
-      for (var i = 0; i < selectedValues.length; i++) {
-        selectedValues[i] = [selectedValues[i]];
-      }
-      selectedValues = JSON.stringify(selectedValues);
-
-      // Update the value of the hidden input element
-      $('#selected-categories').val(selectedValues);
-    });
-  });
+  initializeMultiSelect('cat-select');
 
   // Get part_id from the clicked row and update parts-info and stock modals
   //* Update: Removed the class toggling because BT does exactly the same and currently use its functionality
@@ -227,7 +205,7 @@ $categories = getCategories($conn);
           switch (action) {
             case 'delete':
               if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-                deleteSelectedRows(ids);
+                deleteSelectedRows(ids, 'parts');
               }
               break;
             case 'edit':
@@ -246,28 +224,14 @@ $categories = getCategories($conn);
       }
     });
 
-    // Event listener for clicks outside the menu to hide it
+    /**
+     * Event listener for clicks outside the menu to hide it
+     */
     $(document).on('click', function (event) {
       if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
         $menu.hide();
       }
     });
-
-    // Delete selected rows
-    function deleteSelectedRows(ids) {
-      // Like, delete 'em
-      $.ajax({
-        type: 'POST',
-        url: '../includes/deletePart.php',
-        data: {
-          part_ids: ids
-        },
-        success: function (response) {
-          console.log(response);
-        }
-      });
-
-    }
 
   });
 
