@@ -27,7 +27,7 @@ $categories = getCategories($conn);
 <div class="modal fade" id="mAddStock" tabindex="-1"></div>
 
 <!-- Part Entry Modal -->
-<div class="modal fade modal-draggable" id="mPartEntry" tabindex="-1">
+<div class="modal fade" id="mPartEntry" tabindex="-1">
   <?php include '../includes/partEntryModal.php'; ?>
 </div>
 

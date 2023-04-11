@@ -20,13 +20,20 @@ submitBtn.addEventListener('click', function(event) {
     q = $("#addPartQuantity").val(); // Quantity
     l = $("#addPartLocId").val(); // Quantity
 
-    // Call the stock changing script
+    // Inset new part into table
     $.post('/PartHub/includes/create-part.php',
     { part_name: pn, quantity: q, to_location: l},
     function (response) {
         console.log("Succesfully created new part with these beautiful IDs: ", response);
-        updatePartsInfo('Part ID');
+        console.log(response);
+        var partId = JSON.parse(response)["Part ID"];
+        console.log(partId);
+        updatePartsInfo(partId);
         $("#mPartEntry").hide(); // Hide modal
+        $("#mPartEntry").removeClass('show');
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open'); // Reset body class
+        // $('.modal-body').css('overflow', 'auto'); // Reset modal body overflow
     });
     
   } else {
