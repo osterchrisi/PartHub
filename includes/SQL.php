@@ -458,7 +458,15 @@ function createUser($conn, $email, $passwd, $name)
   $new_id = $conn->lastInsertId();
   return $new_id;
 }
-
+/**
+ * Insert new row into stock_levels table
+ *
+ * @param PDO $conn The PDO object for connecting to the database
+ * @param int $part_id Part ID for which to create the stock level entry
+ * @param int $to_location ID of location for which to create stock level entry
+ * @param int $quantity Quantity of stock level entry
+ * @return int ID of newly created stock level entry
+ */
 function stockEntry($conn, $part_id, $to_location, $quantity)
 {
   $stmt = $conn->prepare("INSERT INTO stock_levels (
