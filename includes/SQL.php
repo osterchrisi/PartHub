@@ -51,6 +51,8 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
 
     $sql .= "AND part_category_fk IN " . $string;
   }
+
+  // Filter for user
   $sql .= " AND part_owner_u_fk = :user_id";
 
   $stmt = $conn->prepare($sql);
@@ -101,7 +103,7 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
     $sql .= "AND part_category_fk IN " . $string;
   }
 
-  // Select for user
+  // Filter for user
   $sql .= " AND part_owner_u_fk = :user_id";
 
   $sql .= " LIMIT :offset, :results_per_page";
@@ -207,13 +209,14 @@ function getTotalNumberOfBackorderRows($conn, $table_name, $search_column, $sear
   return $total_rows;
 }
 
-function getTotalNumberOfBomRows($conn, $table_name, $search_term)
+function getTotalNumberOfBomRows($conn, $table_name, $search_term, $user_id)
 {
   // Get the total number of rows in the table, filtered by the search term
-  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term";
+  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term AND bom_owner_u_fk = :user_id";
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -221,15 +224,16 @@ function getTotalNumberOfBomRows($conn, $table_name, $search_term)
   return $total_rows;
 }
 
-function bom_query($conn, $table_name, $search_term, $offset, $results_per_page)
+function bom_query($conn, $table_name, $search_term, $offset, $results_per_page, $user_id)
 {
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
 
-  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term LIMIT :offset, :results_per_page";
+  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term AND bom_owner_u_fk = :user_id LIMIT :offset, :results_per_page";
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
   $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $result;

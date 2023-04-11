@@ -45,7 +45,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
   try {
     $search_term = getSuperGlobal('search');
-    $total_rows = getTotalNumberOfBomRows($conn, $table_name, $search_term);
+    $total_rows = getTotalNumberOfBomRows($conn, $table_name, $search_term, $user_id);
 
     if ($total_rows) {
       // Calculate the total number of pages for pagination
@@ -55,7 +55,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       // Calculate the offset for the current page
       $offset = ($current_page - 1) * $results_per_page;
 
-      $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
+      $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page, $user_id);
 
       echo "<br>Displaying $total_rows search results";
 
