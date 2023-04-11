@@ -475,9 +475,18 @@ function stockEntry($conn, $part_id, $to_location, $quantity)
   return $new_id;
 }
 
-function deletePart($conn, $part_id, $table)
+/**
+ * Delete a row in a database table by its ID column name and ID
+ *
+ * @param PDO $conn The PDO object for connecting to the database
+ * @param int $id The ID of the row to be deleted
+ * @param string $table The name of the table
+ * @param string $column The column name in which to find the ID
+ * @return void
+ */
+function deleteRowById($conn, $id, $table, $column)
 {
-  $stmt = $conn->prepare("DELETE FROM " . $table . " WHERE part_id = :part_id");
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt = $conn->prepare("DELETE FROM " . $table . " WHERE " . $column . " = :id");
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
 }

@@ -94,17 +94,19 @@ function initializeMultiSelect(id) {
  * Delete selected rows
  * @param ids Array of IDs to delete
  */
-function deleteSelectedRows(ids, table_name) {
+function deleteSelectedRows(ids, table_name, column) {
     // Like, delete 'em
     $.ajax({
         type: 'POST',
         url: '../includes/deletePart.php',
         data: {
-            part_ids: ids,
-            table: table_name
+            ids: ids,
+            table: table_name,
+            column: column
         },
         success: function (response) {
             console.log(response);
+            console.log('success');
         }
     });
 

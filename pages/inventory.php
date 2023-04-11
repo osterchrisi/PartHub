@@ -205,7 +205,7 @@ $categories = getCategories($conn);
           switch (action) {
             case 'delete':
               if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-                deleteSelectedRows(ids, 'parts');
+                deleteSelectedRows(ids, 'parts', 'part_id');
               }
               break;
             case 'edit':
