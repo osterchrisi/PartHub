@@ -15,7 +15,7 @@ submitBtn.addEventListener('click', function(event) {
   event.preventDefault();
   if (form.checkValidity()) {
     // Form is valid
-    // form.submit();
+    form.submit();
     pn = $("#addPartName").val(); // Part Name
     q = $("#addPartQuantity").val(); // Quantity
     l = $("#addPartLocId").val(); // Quantity
@@ -29,11 +29,7 @@ submitBtn.addEventListener('click', function(event) {
         var partId = JSON.parse(response)["Part ID"];
         console.log(partId);
         updatePartsInfo(partId);
-        $("#mPartEntry").hide(); // Hide modal
-        $("#mPartEntry").removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass('modal-open'); // Reset body class
-        // $('.modal-body').css('overflow', 'auto'); // Reset modal body overflow
+        $('#mPartEntry').modal('hide'); // Hide modal
     });
     
   } else {
