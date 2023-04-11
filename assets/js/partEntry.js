@@ -15,7 +15,6 @@ submitBtn.addEventListener('click', function(event) {
   event.preventDefault();
   if (form.checkValidity()) {
     // Form is valid
-    form.submit();
     pn = $("#addPartName").val(); // Part Name
     q = $("#addPartQuantity").val(); // Quantity
     l = $("#addPartLocId").val(); // Quantity
