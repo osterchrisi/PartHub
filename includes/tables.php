@@ -206,10 +206,12 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     echo '<th data-field="state" data-checkbox="true"></th>';
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Total Stock') {
-            echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
+            // Removing the in-table links to stock levels again...
+            // echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
+            echo "<th data-sortable='true' data-field='$column_header'>$column_header</th>";
         }
         else {
-            echo "<th data-field='$column_header'>$column_header</th>";
+            echo "<th data-sortable='true' data-field='$column_header'>$column_header</th>";
         }
     }
     echo "</tr>";
@@ -222,12 +224,14 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
         $part_id = $row['part_id'];
         echo "<tr data-id=" . $row['part_id'] . " class='whatever'>";
         foreach ($db_columns as $column_data) {
+            // Removing the in-table links to stock levels again...
             if ($column_data == 'total_stock') {
                 // Get total stock
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+                // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $total_stock . "</td>";
             }
             elseif ($column_data == 'category_name') {
                 echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
