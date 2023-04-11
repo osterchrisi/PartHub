@@ -42,9 +42,10 @@ try {
 
 <script>
     console.log();
+    // Using this variable to give each select element a unique ID for selectize-ing it
+    let n = 0;
     function addFields(parts) {
-        console.log();
-
+        n++;
         var container = document.getElementById("dynamicAddParts");
 
         // Create a row and three columns for all the elements
@@ -65,6 +66,7 @@ try {
         var select = document.createElement("select");
         select.name = "dynamic_field[]";
         select.className = "form-select";
+        select.id = "bom-element-" + n;
 
         // Create options for the select element using the passed parts array/JSON
         for (var i = 0; i < parts.length; i++) {
@@ -116,6 +118,9 @@ try {
         row.appendChild(col1);
         row.appendChild(col2);
         row.appendChild(col3);
+
+        id = "bom-element-" + n;
+        $('#' + id).selectize();
     }
 
     function checkBomName() {
