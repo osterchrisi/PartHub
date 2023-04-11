@@ -24,7 +24,7 @@ $total_stock = getTotalStock($stock_levels);
 $_SESSION['stock_levels'] = $stock_levels;
 
 // Get locations
-$locations = getLocations($conn);
+$locations = getLocations($conn, $user_id);
 ?>
 
 <div class="container-fluid">

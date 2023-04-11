@@ -17,7 +17,7 @@ $result = getPartName($conn, $part_id);
 $part_name = $result[0]['part_name'];
 
 // Get locations
-$locations = getLocations($conn);
+$locations = getLocations($conn, $user_id);
 $_SESSION['locations'] = $locations;
 ?>
 

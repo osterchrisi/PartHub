@@ -260,9 +260,10 @@ function getAllParts($conn)
   return $all_parts;
 }
 
-function getAllBoms($conn)
+function getAllBoms($conn, $user_id)
 {
-  $stmt = $conn->query("SELECT bom_id, bom_name FROM bom_names");
+  $stmt = $conn->query("SELECT bom_id, bom_name FROM bom_names WHERE bom_owner_u_id = :user_id");
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $boms = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $boms;
 }
@@ -417,10 +418,12 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
   return $new_id;
 }
 
-function getLocations($conn)
+function getLocations($conn, $user_id)
 {
   $stmt = $conn->prepare("SELECT *
-                          FROM location_names");
+                          FROM location_names
+                          WHERE location_owner_u_fk = :user_id");
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $loc;
