@@ -58,37 +58,27 @@ $table_name = "part_categories";
     return $childTree;
   }
 
+  echo '<div id="jstree">';
   echo generateTreeList($categories);
+  echo '</div>';
 
   ?>
 
-  <style>
-    /* Hide all child nodes by default */
-    #category-tree ul {
-      display: none;
-    }
-
-    /* Show child nodes when the parent node is expanded */
-    #category-tree>li.expanded>ul {
-      display: block;
-    }
-
-    /* Add expand/collapse icon to parent nodes */
-    #category-tree>li:before {
-      content: "+";
-      margin-right: 5px;
-    }
-
-    #category-tree>li.expanded:before {
-      content: "-";
-    }
-
-    #category-tree li {
-      list-style-type: none;
-    }
-  </style>
-
   <script>
+    // JSTree
+    $('#jstree').jstree({
+      "core": {
+        "themes": {
+          "theme": "database",
+          "icons": false,
+          "dots": true,
+          "stripes": true,
+          "ellipsis": true
+        }
+      },
+      "plugins": ["themes", "html_data"]
+    });
+
     // Add click event listeners to all parent nodes
     var parents = document.querySelectorAll("#category-tree li > ul");
     for (var i = 0; i < parents.length; i++) {
