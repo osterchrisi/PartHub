@@ -45,16 +45,43 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
     $sql .= "AND part_category_fk > 0";
   }
   else {
-    $string = '(';
-    $string .= implode(", ", $search_category);
-    $string .= ")";
+    // Make a list out of selected categories
+    $cats_selected .= implode(", ", $search_category);
 
-    $sql .= "AND part_category_fk IN " . $string;
+    // Also select all sub-categories of those categories
+    $cats_resulting = $conn->prepare("WITH RECURSIVE selected_parents AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN ($cats_selected)
+                                    ),
+                                    child_nodes AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN (SELECT category_id FROM selected_parents)
+                                      UNION ALL
+                                      SELECT c.category_id
+                                      FROM part_categories c
+                                      INNER JOIN child_nodes cn ON c.parent_category = cn.category_id
+                                    )
+                                    SELECT * FROM child_nodes;");
+    $cats_resulting->execute();
+    $cats = $cats_resulting->fetchAll(PDO::FETCH_ASSOC);
+
+    // Craft resulting category list for query
+    $cats_queried = '(';
+    $cats_queried .= implode(",", array_map(function ($category) {
+      return $category['category_id'];
+    }, $cats));
+    $cats_queried .= ')';
+
+    // Finally add it to the query statement
+    $sql .= "AND part_category_fk IN " . $cats_queried;
   }
 
   // Filter for user
   $sql .= " AND part_owner_u_fk = :user_id";
 
+  // Query
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
@@ -96,11 +123,37 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
     $sql .= "AND part_category_fk > 0 ";
   }
   else {
-    $string = '(';
-    $string .= implode(", ", $search_category);
-    $string .= ") ";
+    // Make a list out of selected categories
+    $cats_selected .= implode(", ", $search_category);
 
-    $sql .= "AND part_category_fk IN " . $string;
+    // Also select all sub-categories of those categories
+    $cats_resulting = $conn->prepare("WITH RECURSIVE selected_parents AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN ($cats_selected)
+                                    ),
+                                    child_nodes AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN (SELECT category_id FROM selected_parents)
+                                      UNION ALL
+                                      SELECT c.category_id
+                                      FROM part_categories c
+                                      INNER JOIN child_nodes cn ON c.parent_category = cn.category_id
+                                    )
+                                    SELECT * FROM child_nodes;");
+    $cats_resulting->execute();
+    $cats = $cats_resulting->fetchAll(PDO::FETCH_ASSOC);
+
+    // Craft resulting category list for query
+    $cats_queried = '(';
+    $cats_queried .= implode(",", array_map(function ($category) {
+      return $category['category_id'];
+    }, $cats));
+    $cats_queried .= ')';
+
+    // Finally add it to the query statement
+    $sql .= "AND part_category_fk IN " . $cats_queried;
   }
 
   // Filter for user
