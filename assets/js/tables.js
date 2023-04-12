@@ -45,6 +45,110 @@ function createCategorySelect(categories, currentValue) {
     return select;
 }
 
+// Get part_id from the clicked row and update parts-info and stock modals
+  //* Update: Removed the class toggling because BT does exactly the same and currently use its functionality
+function workThatTable() {
+    $('#parts_table tbody').on('click', 'tr', function () {
+      if ($('tbody tr.selected-last').length > 0) {
+        $('tbody tr.selected-last').removeClass('selected-last');
+      }
+      $(this).toggleClass('selected-last');
+      var id = $(this).data('id'); // get ID from the selected row
+      updatePartsInfo(id);
+      updateStockModal(id);
+    });
+
+    // Focus the Quantity field in the stock changes modal after showing
+    $('#mAddStock').on('shown.bs.modal', function () {
+      console.log("Modal now ready");
+      $('#addStockQuantity').focus();
+    });
+
+    // Focus the Part Name field in the part entry modal after showing
+    $('#mPartEntry').on('shown.bs.modal', function () {
+      console.log("Modal now ready");
+      $('#addPartName').focus();
+    });
+
+    // Prohibit text selection when pressing shift (for selecting multiple rows)
+    var table = document.getElementById("parts_table");
+
+    // Shift is pressed
+    document.addEventListener("keydown", function (event) {
+      if (event.shiftKey) {
+        table.classList.add("table-no-select");
+      }
+    });
+
+    // Shift is released
+    document.addEventListener("keyup", function (event) {
+      if (!event.shiftKey) {
+        table.classList.remove("table-no-select");
+      }
+    });
+
+    // get a reference to the table element and the custom menu
+    var $table = $('#parts_table');
+    var $menu = $('#parts_table_menu');
+
+    // Event listener for the right-click event on table cells
+    $table.on('contextmenu', 'td', function (event) {
+      if (event.which === 3) {
+        event.preventDefault();
+
+        // Get selected table rows
+        var selectedRows = $table.bootstrapTable('getSelections');
+        // Extract IDs
+        const ids = selectedRows.map(obj => obj._data.id);
+        // Extract Footprints
+        const cats = selectedRows.map(obj => obj.Footprint);
+
+        // Show menu
+        $menu.css({
+          left: event.pageX + 'px',
+          top: event.pageY + 'px',
+          display: 'block'
+        });
+
+        // Event listeners for the menu items
+        $menu.find('.dropdown-item').off('click').on('click', function () {
+          // Get action data attribute
+          var action = $(this).data('action');
+          var number = ids.length;
+
+          switch (action) {
+            case 'delete':
+              if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
+                deleteSelectedRows(ids, 'parts', 'part_id');
+              }
+              break;
+            case 'edit':
+              editSelectedRows(selectedRows);
+              break;
+            case 'copy':
+              copySelectedRows(selectedRows);
+              break;
+            default:
+            // do nothing
+          }
+
+          // Hide menu
+          $menu.hide();
+        });
+      }
+    });
+
+    /**
+     * Event listener for clicks outside the menu to hide it
+     */
+    $(document).on('click', function (event) {
+      if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
+        $menu.hide();
+      }
+    });
+
+  };
+
 // Inline table cell manipulation of parts_table
 //TODO: Extract functions
 //TODO: Remove dropdown upon clicking out of the box or selecting same option again

@@ -1,3 +1,8 @@
+// Remove a click listener
+function removeClickListeners(id) {
+    $(id).off('click');
+}
+
 // Send form upon changing the results per page dropdown
 $(function sendFormOnDropdownChange() {
     var dropdown = document.getElementById("resultspp");
