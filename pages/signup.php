@@ -22,6 +22,7 @@ require_once('../includes/navbar.php');
         <thead>
           <tr>
             <th>
+              <h3 class="alert alert-danger" role="alert">Don't sign up yet, your account will be deleted</h3>
               <h4>Sign up for a free PartHub account</h4>
               <?php if ((isset($_GET['ue']))) {
                 echo '<div class="alert alert-dark" role="alert">A user with that e-mail already exists</div>';
