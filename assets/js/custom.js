@@ -97,6 +97,22 @@ function updateStockModal(id) {
     });
 }
 
+function updateBomInfo(id){
+$.ajax({
+    url: 'show-bom.php',
+    type: 'GET',
+    data: { id: id, hideNavbar: true },
+    success: function (data) {
+      // Replace the content of the info window with the loaded PHP page
+      $('#info-window').html(data);
+    },
+    error: function () {
+      // Display an error message if the PHP page failed to load
+      $('#info-window').html('Failed to load additional BOM data.');
+    }
+  });
+};
+
 /**
  * Make the table-window and the info-window resizable
  */

@@ -15,11 +15,11 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
 
-  <!-- BOM List Right-click Menu -->
-  <div id="parts_table_menu" class="dropdown-menu">
-    <a class="dropdown-item" href="#" data-action="delete">Delete BOM(s)</a>
-    <a class="dropdown-item" href="#" data-action="assignC">Assemble</a>
-  </div>
+<!-- BOM List Right-click Menu -->
+<div id="parts_table_menu" class="dropdown-menu">
+  <a class="dropdown-item" href="#" data-action="delete">Delete BOM(s)</a>
+  <a class="dropdown-item" href="#" data-action="assignC">Assemble</a>
+</div>
 
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
@@ -42,7 +42,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <?php generateResultsDropdown($results_per_page); ?>
     </div>
     <div class="col-1">
-    <button type="button" class="btn btn-outline-primary" onclick='console.log("Maka newa BOMa");'>Add BOM</button>
+      <button type="button" class="btn btn-outline-primary" onclick='console.log("Maka newa BOMa");'>Add BOM</button>
     </div>
     </form>
   </div>
@@ -95,25 +95,8 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
     // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
     $(document).ready(function () {
-      $('#BomListTable tbody').on('click', 'tr', function () {
-        $('tbody tr').removeClass('selected');
-        $(this).toggleClass('selected');
-        var id = $(this).data('id'); // get the ID from the first cell of the selected row
-
-        // Load the PHP page and pass the id variable as a parameter
-        $.ajax({
-          url: 'show-bom.php',
-          type: 'GET',
-          data: { id: id, hideNavbar: true },
-          success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-          },
-          error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional BOM data.');
-          }
-        });
+      onTableRowClick($('#BomListTable'), function (id) {
+        updateBomInfo(id);
       });
     });
   </script>

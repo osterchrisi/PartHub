@@ -46,20 +46,32 @@ function createCategorySelect(categories, currentValue) {
   return select;
 }
 
-// Get part_id from the clicked row and update parts-info and stock modals
-//* Update: Removed the class toggling because BT does exactly the same and currently use its functionality
-function workThatTable() {
-  $('#parts_table tbody').on('click', 'tr', function () {
-    if ($('tbody tr.selected-last').length > 0) {
-      $('tbody tr.selected-last').removeClass('selected-last');
+/**
+ * Attaches a click event listener to the specified table rows and calls the
+ * provided callback function with the extracted ID when a row is selected.
+ *
+ * @param {jQuery} $table - The jQuery object representing the table element
+ * @param {function} onSelect - A callback function to call when a row is selected
+ */
+function onTableRowClick($table, onSelect) {
+  $table.on('click', 'tr', function () {
+    if ($table.find('tr.selected-last').length > 0) {
+      $table.find('tr.selected-last').removeClass('selected-last');
     }
     $(this).toggleClass('selected-last');
     var id = $(this).data('id'); // get ID from the selected row
+    onSelect(id);
+  });
+}
+
+// Get id from the clicked row and update parts-info and stock modals
+function workThatTable() {
+  onTableRowClick($('#parts_table'), function (id) {
     updatePartsInfo(id);
     updateStockModal(id);
   });
 
-  // get a reference to the table element and the custom menu
+  // Get a reference to the table and custom menu
   var $table = $('#parts_table');
   var $menu = $('#parts_table_menu');
 
