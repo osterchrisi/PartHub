@@ -3,11 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 11, 2023 at 09:20 AM
+-- Generation Time: Apr 12, 2023 at 04:12 PM
 -- Server version: 10.3.38-MariaDB-0ubuntu0.20.04.1
 -- PHP Version: 8.2.4
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -21,6 +20,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `PartHub`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bom_elements`
+--
+
+CREATE TABLE IF NOT EXISTS `bom_elements` (
+  `bom_elements_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bom_id_fk` int(11) NOT NULL,
+  `part_id_fk` int(11) NOT NULL,
+  `element_quantity` int(11) NOT NULL,
+  PRIMARY KEY (`bom_elements_id`) USING BTREE,
+  KEY `bom_elements_ibfk_2` (`part_id_fk`),
+  KEY `bom_elements_ibfk_1` (`bom_id_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bom_elements`
@@ -63,24 +78,68 @@ INSERT INTO `bom_elements` (`bom_elements_id`, `bom_id_fk`, `part_id_fk`, `eleme
 (55, 40, 351, 2345),
 (56, 40, 629, 2);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bom_names`
+--
+
+CREATE TABLE IF NOT EXISTS `bom_names` (
+  `bom_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bom_name` varchar(255) NOT NULL,
+  `bom_description` varchar(255) DEFAULT NULL,
+  `bom_owner_g_fk` int(11) DEFAULT NULL,
+  `bom_owner_u_fk` int(11) NOT NULL,
+  PRIMARY KEY (`bom_id`),
+  KEY `bom_owner_u_fk` (`bom_owner_u_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Dumping data for table `bom_names`
 --
 
-INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`) VALUES
-(28, 'First BOM', 'It\'s the first one!'),
-(29, 'Second BOM', 'Let\'s do another'),
-(30, '10 to 50', NULL),
-(31, '234', NULL),
-(32, 'Second BOM', NULL),
-(33, '34r2', NULL),
-(34, '4234', NULL),
-(35, 'fc23', NULL),
-(36, 'q34zt5', NULL),
-(37, 'q34zt5', NULL),
-(38, 'q34zt5', NULL),
-(39, 'q34zt5', NULL),
-(40, 'w43ret2345', NULL);
+INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`, `bom_owner_g_fk`, `bom_owner_u_fk`) VALUES
+(28, 'First BOM', 'It\'s the first one!', NULL, -1),
+(29, 'Second BOM', 'Let\'s do another', NULL, -1),
+(30, '10 to 50', NULL, NULL, -1),
+(31, '234', NULL, NULL, -1),
+(32, 'Second BOM', NULL, NULL, -1),
+(33, '34r2', NULL, NULL, -1),
+(34, '4234', NULL, NULL, -1),
+(35, 'fc23', NULL, NULL, -1),
+(36, 'q34zt5', NULL, NULL, -1),
+(37, 'q34zt5', NULL, NULL, -1),
+(38, 'q34zt5', NULL, NULL, -1),
+(39, 'q34zt5', NULL, NULL, -1),
+(40, 'w43ret2345', NULL, NULL, -1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bom_runs`
+--
+
+CREATE TABLE IF NOT EXISTS `bom_runs` (
+  `bom_run_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bom_id_fk` int(11) NOT NULL,
+  `bom_run_quantity` int(11) NOT NULL,
+  `bom_run_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`bom_run_id`),
+  KEY `bom_id_fk` (`bom_id_fk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `footprints`
+--
+
+CREATE TABLE IF NOT EXISTS `footprints` (
+  `footprint_id` int(11) NOT NULL AUTO_INCREMENT,
+  `footprint_name` varchar(255) NOT NULL,
+  `footprint_alias` varchar(255) NOT NULL,
+  PRIMARY KEY (`footprint_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `footprints`
@@ -90,24 +149,83 @@ INSERT INTO `footprints` (`footprint_id`, `footprint_name`, `footprint_alias`) V
 (1, 'A Footprint', 'Its alias'),
 (2, 'TO-92', '');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `location_names`
+--
+
+CREATE TABLE IF NOT EXISTS `location_names` (
+  `location_id` int(11) NOT NULL AUTO_INCREMENT,
+  `location_name` varchar(255) NOT NULL,
+  `location_description` varchar(255) DEFAULT NULL,
+  `location_owner_u_fk` int(11) NOT NULL,
+  `location_owner_g_fk` int(11) DEFAULT NULL,
+  PRIMARY KEY (`location_id`),
+  KEY `location_owner_g_fk` (`location_owner_g_fk`),
+  KEY `location_owner_u_fk` (`location_owner_u_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Dumping data for table `location_names`
 --
 
-INSERT INTO `location_names` (`location_id`, `location_name`, `location_description`) VALUES
-(1, 'Main Storage', 'Like, all of it'),
-(2, 'EMS Partner', ''),
-(3, 'Hardware Supplier', ''),
-(4, 'External Storage', NULL),
-(5, 'Increase', 'General Stock Increase'),
-(6, 'Decrease', 'General Stock Decrease');
+INSERT INTO `location_names` (`location_id`, `location_name`, `location_description`, `location_owner_u_fk`, `location_owner_g_fk`) VALUES
+(1, 'Main Storage', 'Like, all of it', -1, NULL),
+(2, 'EMS Partner', '', -1, NULL),
+(3, 'Hardware Supplier', '', -1, NULL),
+(4, 'External Storage', NULL, -1, NULL),
+(5, 'Increase', 'General Stock Increase', -1, NULL),
+(6, 'Decrease', 'General Stock Decrease', -1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `minstock_levels`
+--
+
+CREATE TABLE IF NOT EXISTS `minstock_levels` (
+  `minstock_lvl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `part_id_fk` int(11) NOT NULL,
+  `location_id_fk` int(11) NOT NULL,
+  `minstock_level` int(11) NOT NULL,
+  PRIMARY KEY (`minstock_lvl_id`),
+  KEY `location_id` (`location_id_fk`),
+  KEY `part_id` (`part_id_fk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `parts`
+--
+
+CREATE TABLE IF NOT EXISTS `parts` (
+  `part_id` int(11) NOT NULL AUTO_INCREMENT,
+  `part_name` varchar(255) NOT NULL,
+  `part_description` varchar(255) DEFAULT NULL,
+  `part_comment` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `part_category_fk` int(11) DEFAULT 1,
+  `part_footprint_fk` int(11) DEFAULT 1,
+  `part_unit_fk` int(11) DEFAULT 1,
+  `part_owner_u_fk` int(11) NOT NULL,
+  `part_owner_g_fk` int(11) DEFAULT NULL,
+  PRIMARY KEY (`part_id`),
+  KEY `part_category_fk` (`part_category_fk`),
+  KEY `part_unit_fk` (`part_unit_fk`),
+  KEY `part_footprint_fk` (`part_footprint_fk`),
+  KEY `part_owner_u_fk` (`part_owner_u_fk`),
+  KEY `part_owner_g_fk` (`part_owner_g_fk`),
+  KEY `part_name` (`part_name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1655 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `parts`
 --
 
 INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`, `created_at`, `part_category_fk`, `part_footprint_fk`, `part_unit_fk`, `part_owner_u_fk`, `part_owner_g_fk`) VALUES
-(335, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 2, 1, -1, 1),
+(335, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 3, 2, 1, -1, 1),
 (337, 'CD4017BE', 'Decade Counter/Divider with 10 Decoded Outputs', 'Can be used as a sequencer or for LED chasers.', '2023-03-07 00:24:12', 2, 1, 1, -1, 1),
 (338, '1N4148', 'General Purpose Diode', 'fast-switching, widely used signal diode', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (339, 'LM386N-1', 'Audio Amplifier', 'Low voltage audio power amplifier, ideal for battery-powered devices.', '2023-03-07 00:24:12', 3, 1, 1, -1, 1),
@@ -120,7 +238,7 @@ INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`,
 (422, 'Inductor 100uH, 10%, 0805', 'An inductor with 100uH', 'Ideal for low-frequency filtering applications', '2022-03-06 09:15:34', 1, 1, 1, -1, 1),
 (439, 'Transistor', 'Transistor', 'Generic transistor', '2023-03-06 13:12:24', 1, 1, 1, -1, 1),
 (477, 'Capacitor 10uF', '10uF Capacaitor, 35V', 'Generic capacitor', '2023-03-06 13:12:24', 1, 1, 1, -1, 1),
-(532, 'Capacitor 100pF, 5%, 0603', 'Surface mount capacitor with 100 picofarad capacitance and 5% tolerancedc', 'Useful for high-frequency filtering and decoupling applications', '2022-03-06 09:15:39', 1, 1, 1, -1, 1),
+(532, 'Capacitor 100pF, 5%, 0603', 'Surface mount capacitor with 100 picofarad capacitance and 5% tolerance', 'Useful for high-frequency filtering and decoupling applications', '2022-03-06 09:15:39', 1, 1, 1, -1, 1),
 (567, 'Resistor 10K, 1%, 0603', 'Surface mount resistor with 10K ohm resistance and 1% tolerance', 'Good for precision circuits', '2022-03-06 09:15:32', 1, 1, 1, -1, 1),
 (618, 'BC327', 'PNP transistor', 'good for switching and amplification', '0000-00-00 00:00:00', 13, 1, 1, -1, 1),
 (629, 'Capacitor 0.1uF, 10%, 0805', 'Surface mount capacitor with 0.1 microfarad capacitance and 10% tolerance', 'Useful for decoupling and filtering applications', '2022-03-06 09:15:41', 1, 1, 1, -1, 1),
@@ -158,6 +276,19 @@ INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`,
 (1365, 'IRF540N', 'N-Channel MOSFET', 'high-current capability, low on-resistance, fast switching speed', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (1392, 'BC639', 'PNP transistor', 'good for switching and amplification', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (1491, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `part_categories`
+--
+
+CREATE TABLE IF NOT EXISTS `part_categories` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(255) NOT NULL,
+  `parent_category` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `part_categories`
@@ -255,12 +386,40 @@ INSERT INTO `part_categories` (`category_id`, `category_name`, `parent_category`
 (89, 'Alkaline Batteries', 88),
 (90, 'NiMH Batteries', 88);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `part_units`
+--
+
+CREATE TABLE IF NOT EXISTS `part_units` (
+  `unit_id` int(11) NOT NULL AUTO_INCREMENT,
+  `unit_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`unit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Dumping data for table `part_units`
 --
 
 INSERT INTO `part_units` (`unit_id`, `unit_name`) VALUES
 (1, 'PCS');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_levels`
+--
+
+CREATE TABLE IF NOT EXISTS `stock_levels` (
+  `stock_level_id` int(11) NOT NULL AUTO_INCREMENT,
+  `part_id_fk` int(11) NOT NULL,
+  `location_id_fk` int(11) NOT NULL,
+  `stock_level_quantity` int(11) NOT NULL,
+  PRIMARY KEY (`part_id_fk`,`location_id_fk`),
+  UNIQUE KEY `stock_level_id` (`stock_level_id`) USING BTREE,
+  KEY `location_id` (`location_id_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=367 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_levels`
@@ -287,6 +446,28 @@ INSERT INTO `stock_levels` (`stock_level_id`, `part_id_fk`, `location_id_fk`, `s
 (221, 629, 1, 4432),
 (226, 1199, 4, 3698),
 (223, 1491, 1, 1000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_level_change_history`
+--
+
+CREATE TABLE IF NOT EXISTS `stock_level_change_history` (
+  `stock_lvl_chng_id` int(11) NOT NULL AUTO_INCREMENT,
+  `part_id_fk` int(11) NOT NULL,
+  `from_location_fk` int(11) DEFAULT NULL,
+  `to_location_fk` int(11) DEFAULT NULL,
+  `stock_lvl_chng_quantity` int(11) NOT NULL,
+  `stock_lvl_chng_timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `stock_lvl_chng_comment` varchar(255) DEFAULT NULL,
+  `stock_lvl_chng_user_fk` int(11) NOT NULL,
+  PRIMARY KEY (`stock_lvl_chng_id`),
+  KEY `from_location` (`from_location_fk`),
+  KEY `to_location` (`to_location_fk`),
+  KEY `stock_lvl_chng_user_fk` (`stock_lvl_chng_user_fk`),
+  KEY `stock_level_change_history_ibfk_1` (`part_id_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_level_change_history`
@@ -317,6 +498,24 @@ INSERT INTO `stock_level_change_history` (`stock_lvl_chng_id`, `part_id_fk`, `fr
 (306, 1199, NULL, 4, 3698, '2023-04-04 14:03:08', 'Leftover from PR2', -1),
 (307, 532, NULL, 1, 69, '2023-04-04 14:24:50', '', -1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_passwd` varchar(255) NOT NULL,
+  `user_group_fk` int(11) DEFAULT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
+  `user_email` varchar(255) NOT NULL,
+  `register_date` timestamp NULL DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `user_group_fk` (`user_group_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Dumping data for table `users`
 --
@@ -326,13 +525,114 @@ INSERT INTO `users` (`user_id`, `user_passwd`, `user_group_fk`, `user_name`, `us
 (1, '$argon2i$v=19$m=65536,t=4,p=1$amxnekpzQmFiT2oySlg5RQ$s7xb/YpNdh4GNvkVBCA7jHj8hDMrRPia7YKMZmGjEwE', 1, 'chrisi', 'christian@koma-elektronik.com', '2023-03-31 19:13:39', '0000-00-00 00:00:00'),
 (27, '$argon2i$v=19$m=65536,t=4,p=1$MGRmTjA5bXFmU1lIWGJVZQ$mzRkAwRgOtqkyMhviFjzm9e0jtB6inJz3J31tLGHXHc', NULL, 'Great BOM', 'info@koma-elektronik.com', '2023-04-10 21:13:53', '2023-04-10 21:13:53');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_groups`
+--
+
+CREATE TABLE IF NOT EXISTS `user_groups` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Dumping data for table `user_groups`
 --
 
 INSERT INTO `user_groups` (`group_id`, `group_name`) VALUES
 (1, 'First Group');
-SET FOREIGN_KEY_CHECKS=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_settings`
+--
+
+CREATE TABLE IF NOT EXISTS `user_settings` (
+  `user_settings_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id_fk` int(11) NOT NULL,
+  `setting_name` varchar(255) NOT NULL,
+  `setting_value` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_settings_id`),
+  KEY `user_id_fk` (`user_id_fk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `bom_elements`
+--
+ALTER TABLE `bom_elements`
+  ADD CONSTRAINT `bom_elements_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bom_elements_ibfk_2` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bom_names`
+--
+ALTER TABLE `bom_names`
+  ADD CONSTRAINT `bom_names_ibfk_1` FOREIGN KEY (`bom_owner_u_fk`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bom_runs`
+--
+ALTER TABLE `bom_runs`
+  ADD CONSTRAINT `bom_runs_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`);
+
+--
+-- Constraints for table `location_names`
+--
+ALTER TABLE `location_names`
+  ADD CONSTRAINT `location_names_ibfk_1` FOREIGN KEY (`location_owner_g_fk`) REFERENCES `user_groups` (`group_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `location_names_ibfk_2` FOREIGN KEY (`location_owner_u_fk`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `minstock_levels`
+--
+ALTER TABLE `minstock_levels`
+  ADD CONSTRAINT `location_id` FOREIGN KEY (`location_id_fk`) REFERENCES `location_names` (`location_id`),
+  ADD CONSTRAINT `minstock_levels_ibfk_1` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`);
+
+--
+-- Constraints for table `parts`
+--
+ALTER TABLE `parts`
+  ADD CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`part_category_fk`) REFERENCES `part_categories` (`category_id`),
+  ADD CONSTRAINT `parts_ibfk_2` FOREIGN KEY (`part_unit_fk`) REFERENCES `part_units` (`unit_id`),
+  ADD CONSTRAINT `parts_ibfk_3` FOREIGN KEY (`part_footprint_fk`) REFERENCES `footprints` (`footprint_id`),
+  ADD CONSTRAINT `parts_ibfk_4` FOREIGN KEY (`part_owner_u_fk`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `parts_ibfk_5` FOREIGN KEY (`part_owner_g_fk`) REFERENCES `user_groups` (`group_id`);
+
+--
+-- Constraints for table `stock_levels`
+--
+ALTER TABLE `stock_levels`
+  ADD CONSTRAINT `part_id` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `stock_levels_ibfk_1` FOREIGN KEY (`location_id_fk`) REFERENCES `location_names` (`location_id`);
+
+--
+-- Constraints for table `stock_level_change_history`
+--
+ALTER TABLE `stock_level_change_history`
+  ADD CONSTRAINT `stock_level_change_history_ibfk_1` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `stock_level_change_history_ibfk_2` FOREIGN KEY (`from_location_fk`) REFERENCES `location_names` (`location_id`),
+  ADD CONSTRAINT `stock_level_change_history_ibfk_3` FOREIGN KEY (`to_location_fk`) REFERENCES `location_names` (`location_id`),
+  ADD CONSTRAINT `stock_level_change_history_ibfk_4` FOREIGN KEY (`stock_lvl_chng_user_fk`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_group_fk`) REFERENCES `user_groups` (`group_id`);
+
+--
+-- Constraints for table `user_settings`
+--
+ALTER TABLE `user_settings`
+  ADD CONSTRAINT `user_settings_ibfk_1` FOREIGN KEY (`user_id_fk`) REFERENCES `users` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
