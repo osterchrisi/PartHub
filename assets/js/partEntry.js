@@ -1,9 +1,8 @@
 // Modify the "Save Changes" click listener when the modal is toggled
 function callPartEntryModal() {
   $('#mPartEntry').modal('show'); // Show modal
-  removeClickListeners('#mPartEntry'); // Remove previously added click listener
+  // removeClickListeners('#addPart'); // Remove previously added click listener
   validateForm('partEntryForm', 'addPart');
-  // saveChanges(change);
 }
 
 // Validate required fields in part adding modal
@@ -12,7 +11,8 @@ function validateForm(formId, button) {
   const submitBtn = document.getElementById(button);
 
   // Form validation
-  submitBtn.addEventListener('click', function (event) {
+  $('#addPart').click(function (event) {
+    // submitBtn.addEventListener('click', function (event) {
     event.preventDefault();
     if (form.checkValidity()) {
       // Form is valid
@@ -35,6 +35,7 @@ function validateForm(formId, button) {
               $('#table-window').html(data);
               bootstrapPartsTable();
               workThatTable();
+              removeClickListeners('#addPart'); // Remove previously added click listener
             }
           });
         });
