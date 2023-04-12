@@ -1,3 +1,34 @@
+//TODO: Wrap these two in functions and call them in the document ready of inventory.php
+// Focus fields in modals
+$(document).ready(function () {
+    // Focus the Quantity field in the stock changes modal after showing
+    $('#mAddStock').on('shown.bs.modal', function () {
+        $('#addStockQuantity').focus();
+    });
+
+    // Focus the Part Name field in the part entry modal after showing
+    $('#mPartEntry').on('shown.bs.modal', function () {
+        $('#addPartName').focus();
+    });
+
+    // Prohibit text selection when pressing shift (for selecting multiple rows)
+    var table = document.getElementById("parts_table");
+
+    // Shift is pressed
+    document.addEventListener("keydown", function (event) {
+        if (event.shiftKey) {
+            table.classList.add("table-no-select");
+        }
+    });
+
+    // Shift is released
+    document.addEventListener("keyup", function (event) {
+        if (!event.shiftKey) {
+            table.classList.remove("table-no-select");
+        }
+    });
+});
+
 // Remove a click listener
 function removeClickListeners(id) {
     $(id).off('click');
@@ -24,7 +55,11 @@ $(document).ready(function () {
     });
 });
 
-// Load the parts-info page and pass the id variable as a parameter - upon clicking a row in the parts table
+/**
+ * Load the parts-info page and pass the id variable as a parameter
+ * upon clicking a row in the parts table
+ * @param {int} id The part ID for which to update the stock modal content
+ */
 function updatePartsInfo(id) {
     $.ajax({
         url: 'parts-info.php',
@@ -41,7 +76,11 @@ function updatePartsInfo(id) {
     });
 }
 
-// Load the contents of stockModals page, pass the id and replace HTML in modal - upon clicking a row in the parts table
+/**
+ * Load the contents of stockModals page, pass the id and replace HTML in modal
+ * upon clicking a row in the parts table
+ * @param {int} id The part ID for which to update the stock modal content
+ */
 function updateStockModal(id) {
     $.ajax({
         url: '../includes/stockModals.php',
@@ -58,7 +97,9 @@ function updateStockModal(id) {
     });
 }
 
-// Resizable Divs
+/**
+ * Make the table-window and the info-window resizable
+ */
 $(function () {
     $('#table-window').resizable({
         handles: 'e',
@@ -97,14 +138,16 @@ function initializeMultiSelect(id) {
 };
 
 /**
- * Delete selected rows
- * @param ids Array of IDs to delete
+ * Delete selected rows in the database table
+ * @param {array} ids Array of IDs to delete
+ * @param {string} table_name Name of the table in the database
+ * @param {string} column Name of the column that holds the ID, e.g. part_id
  */
 function deleteSelectedRows(ids, table_name, column) {
     // Like, delete 'em
     $.ajax({
         type: 'POST',
-        url: '../includes/deletePart.php',
+        url: '../includes/deleteRowInTable.php',
         data: {
             ids: ids,
             table: table_name,

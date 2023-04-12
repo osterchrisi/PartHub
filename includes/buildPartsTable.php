@@ -1,4 +1,8 @@
 <?php
+/**
+ *@file This is essentially a copy of the code from inventory.php for the purpose of updating the parts table after adding or deleting parts 
+ */
+
 // Including session but not the header - otherwise I have the header multiple times and BS Tables goes haywire
 include 'session.php';
 include '../config/credentials.php';

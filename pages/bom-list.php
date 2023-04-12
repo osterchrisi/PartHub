@@ -14,6 +14,13 @@ $results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
+
+  <!-- BOM List Right-click Menu -->
+  <div id="parts_table_menu" class="dropdown-menu">
+    <a class="dropdown-item" href="#" data-action="delete">Delete BOM(s)</a>
+    <a class="dropdown-item" href="#" data-action="assignC">Assemble</a>
+  </div>
+
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
   <br>
@@ -31,8 +38,11 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
     <div class="col-1">
       <?php echo "Results per page:"; ?>
     </div>
-    <div class="col-5">
+    <div class="col-1">
       <?php generateResultsDropdown($results_per_page); ?>
+    </div>
+    <div class="col-1">
+    <button type="button" class="btn btn-outline-primary" onclick='console.log("Maka newa BOMa");'>Add BOM</button>
     </div>
     </form>
   </div>
@@ -64,6 +74,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       buildBomListTable($bom_list, $db_columns, $nice_columns);
       echo "</div>";
       echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
+      echo "<h6><br>Click on a row in the table</h6>";
       echo "</div>";
       echo "</div>";
       displayPaginationLinks($total_pages, $current_page);
@@ -88,7 +99,6 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
         $('tbody tr').removeClass('selected');
         $(this).toggleClass('selected');
         var id = $(this).data('id'); // get the ID from the first cell of the selected row
-        var bom_name = $(this).find('td:nth-child(2)').text(); //! Don't use it currently and seems a bit silly (think reordering columns)
 
         // Load the PHP page and pass the id variable as a parameter
         $.ajax({
