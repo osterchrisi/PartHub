@@ -1,7 +1,6 @@
 <?php
-$basename = basename(__FILE__);
-require_once('head.html');
-
+// Including session but not the header - otherwise I have the header multiple times and BS Tables goes haywire
+include 'session.php';
 include '../config/credentials.php';
 include 'SQL.php';
 include 'forms.php';

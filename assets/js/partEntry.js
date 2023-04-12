@@ -1,7 +1,6 @@
 // Modify the "Save Changes" click listener when the modal is toggled
 function callPartEntryModal() {
   $('#mPartEntry').modal('show'); // Show modal
-  // removeClickListeners('#addPart'); // Remove previously added click listener
   validateForm('partEntryForm', 'addPart');
 }
 
@@ -32,10 +31,11 @@ function validateForm(formId, button) {
           $.ajax({
             url: '../includes/buildPartsTable.php' + queryString,
             success: function (data) {
-              $('#table-window').html(data);
-              bootstrapPartsTable();
-              workThatTable();
-              removeClickListeners('#addPart'); // Remove previously added click listener
+              $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
+              $('#table-window').html(data); // Update div with new table
+              bootstrapPartsTable(); // Bootstrap it
+              workThatTable(); // Add click listeners and stuff again to table
+              removeClickListeners('#addPart'); // Remove click listener from Add Part button
             }
           });
         });

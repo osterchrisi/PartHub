@@ -128,7 +128,7 @@ $categories = getCategories($conn);
 </div>
 
 <script>
-  <?php include '../assets/js/partEntry.js'; ?>
+  <?php include '../assets/js/partEntry.js'; ?>   // Part Entry Modal JS
   <?php include '../assets/js/tables.js'; ?> //TODO: Strangely it works also without including this here -> investigate!
 
   $(document).ready(function () {
@@ -137,7 +137,4 @@ $categories = getCategories($conn);
     workThatTable();
   });
 
-
-  // Part Entry Modal JS
-  <?php include '../assets/js/partEntry.js'; ?>
 </script>

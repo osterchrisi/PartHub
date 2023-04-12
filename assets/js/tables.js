@@ -1,5 +1,4 @@
 // BootstrapTable a table
-//* I THINK I should convert these back into a document-ready function because sometimes after manipulating the table, it's not responsive anymore
 function bootstrapPartsTable() {
     $('#parts_table').bootstrapTable({
     });
