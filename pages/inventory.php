@@ -135,6 +135,7 @@ $categories = getCategories($conn);
     bootstrapPartsTable();
     initializeMultiSelect('cat-select');
     workThatTable();
+    inlineProcessing();
   });
 
 </script>

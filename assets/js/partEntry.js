@@ -27,8 +27,9 @@ function validateForm(formId, button) {
           var partId = JSON.parse(response)["Part ID"];
           updatePartsInfo(partId);
           $('#mPartEntry').modal('hide'); // Hide modal
-          var queryString = window.location.search;
+          removeClickListeners('#addPart'); // Remove click listener from Add Part button
           // Rebuild parts table
+          var queryString = window.location.search;
           rebuildPartsTable(queryString);
         });
 

@@ -24,19 +24,6 @@ function bootstrapBomDetailsTable() {
     });
 };
 
-function rebuildPartsTable(queryString) {
-    $.ajax({
-        url: '../includes/buildPartsTable.php' + queryString,
-        success: function (data) {
-          $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
-          $('#table-window').html(data); // Update div with new table
-          bootstrapPartsTable(); // Bootstrap it
-          workThatTable(); // Add click listeners and stuff again to table
-          removeClickListeners('#addPart'); // Remove click listener from Add Part button
-        }
-      });
-}
-
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {
     // Remove the href tag and return only the string values
@@ -166,7 +153,7 @@ function workThatTable() {
 // Inline table cell manipulation of parts_table
 //TODO: Extract functions
 //TODO: Remove dropdown upon clicking out of the box or selecting same option again
-$(document).ready(function inlineProcessing() {
+function inlineProcessing() {
     $('.bootstrap-table').on('dbl-click-cell.bs.table', function (e, field, value, row, $element) {
         var cell = $element;
         // Check if the cell is already being edited
@@ -298,7 +285,24 @@ $(document).ready(function inlineProcessing() {
             });
         }
     });
-});
+};
+
+/**
+ * Rebuild the parts table after adding or deleting parts
+ * @param {*} queryString 
+ */
+function rebuildPartsTable(queryString) {
+    $.ajax({
+        url: '../includes/buildPartsTable.php' + queryString,
+        success: function (data) {
+          $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
+          $('#table-window').html(data); // Update div with new table
+          bootstrapPartsTable(); // Bootstrap it
+          workThatTable(); // Add click listeners and stuff again to table
+          inlineProcessing();
+        }
+      });
+}
 
 //* Not using any of the code below this point, it's for appending a part row. Maybe useful later...
 //* You need this button for it: 
