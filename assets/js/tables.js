@@ -118,9 +118,7 @@ function workThatTable() {
           switch (action) {
             case 'delete':
               if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-                deleteSelectedRows(ids, 'parts', 'part_id');
-                var queryString = window.location.search;
-                rebuildPartsTable(queryString);
+                deleteSelectedRows(ids, 'parts', 'part_id'); // Also updates table
               }
               break;
             case 'edit':

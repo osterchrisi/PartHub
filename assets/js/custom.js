@@ -113,6 +113,9 @@ function deleteSelectedRows(ids, table_name, column) {
         success: function (response) {
             console.log(response);
             console.log('success');
+            // Updating table here because otherwise it rebuilds too fast
+            var queryString = window.location.search;
+            rebuildPartsTable(queryString);
         }
     });
 
