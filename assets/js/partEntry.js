@@ -28,16 +28,8 @@ function validateForm(formId, button) {
           updatePartsInfo(partId);
           $('#mPartEntry').modal('hide'); // Hide modal
           var queryString = window.location.search;
-          $.ajax({
-            url: '../includes/buildPartsTable.php' + queryString,
-            success: function (data) {
-              $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
-              $('#table-window').html(data); // Update div with new table
-              bootstrapPartsTable(); // Bootstrap it
-              workThatTable(); // Add click listeners and stuff again to table
-              removeClickListeners('#addPart'); // Remove click listener from Add Part button
-            }
-          });
+          // Rebuild parts table
+          rebuildPartsTable(queryString);
         });
 
     } else {

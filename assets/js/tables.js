@@ -24,6 +24,19 @@ function bootstrapBomDetailsTable() {
     });
 };
 
+function rebuildPartsTable(queryString) {
+    $.ajax({
+        url: '../includes/buildPartsTable.php' + queryString,
+        success: function (data) {
+          $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
+          $('#table-window').html(data); // Update div with new table
+          bootstrapPartsTable(); // Bootstrap it
+          workThatTable(); // Add click listeners and stuff again to table
+          removeClickListeners('#addPart'); // Remove click listener from Add Part button
+        }
+      });
+}
+
 // Custom Sorter for my stock URLs
 function NumberURLSorter(a, b) {
     // Remove the href tag and return only the string values
@@ -119,6 +132,8 @@ function workThatTable() {
             case 'delete':
               if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
                 deleteSelectedRows(ids, 'parts', 'part_id');
+                var queryString = window.location.search;
+                rebuildPartsTable(queryString);
               }
               break;
             case 'edit':
