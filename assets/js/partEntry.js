@@ -31,6 +31,7 @@ function validateForm(formId, button) {
           // Rebuild parts table
           var queryString = window.location.search;
           rebuildPartsTable(queryString);
+          //TODO: Select new row
         });
 
     } else {
