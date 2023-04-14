@@ -76,7 +76,7 @@ function onTableCellContextMenu($table, $menu, actions) {
   // Event listener for the right-click event on table cells
   $table.on('contextmenu', 'td', function (event) {
     if (event.which === 3) {
-      event.preventDefault();
+      event.preventDefault(); // Inhibit browser context menu
 
       // Get selected table rows
       var selectedRows = $table.bootstrapTable('getSelections');
