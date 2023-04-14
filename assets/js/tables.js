@@ -64,17 +64,15 @@ function onTableRowClick($table, onSelect) {
   });
 }
 
-// Get id from the clicked row and update parts-info and stock modals
-function workThatTable() {
-  onTableRowClick($('#parts_table'), function (id) {
-    updatePartsInfo(id);
-    updateStockModal(id);
-  });
 
-  // Get a reference to the table and custom menu
-  var $table = $('#parts_table');
-  var $menu = $('#parts_table_menu');
-
+/**
+ * Attach a context menu to a table cell that is triggered by right-clicking on the cell
+ *
+ * @param {jQuery} $table - The table to attach the context menu to
+ * @param {jQuery} $menu - The context menu to show when a cell is right-clicked
+ * @param {Object} actions - An object containing action names as keys and action functions as values
+ */
+function onTableCellContextMenu($table, $menu, actions) {
   // Event listener for the right-click event on table cells
   $table.on('contextmenu', 'td', function (event) {
     if (event.which === 3) {
@@ -100,38 +98,68 @@ function workThatTable() {
         var action = $(this).data('action');
         var number = ids.length;
 
-        switch (action) {
-          case 'delete':
-            if (confirm('Are you sure you want to delete ' + number + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-              deleteSelectedRows(ids, 'parts', 'part_id'); // Also updates table
-            }
-            break;
-          case 'edit':
-            editSelectedRows(selectedRows);
-            break;
-          case 'copy':
-            copySelectedRows(selectedRows);
-            break;
-          default:
-          // do nothing
-        }
+        // Call the appropriate action function based on the action parameter
+        actions[action](selectedRows, ids);
 
         // Hide menu
         $menu.hide();
       });
     }
   });
+}
 
-  /**
-   * Event listener for clicks outside the menu to hide it
-   */
-  $(document).on('click', function (event) {
-    if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
-      $menu.hide();
+//Example call for above function:
+// onTableCellContextMenu($table, $menu, {
+//   delete: function (selectedRows) {
+//     if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
+//       deleteSelectedRows(ids, 'parts', 'part_id'); // Also updates table
+//     }
+//   },
+//   edit: function (selectedRows) {
+//     editSelectedRows(selectedRows);
+//   },
+//   customAction1: function (selectedRows) {
+//     customAction1(selectedRows);
+//   }
+// });
+
+// Get id from the clicked row and update parts-info and stock modals
+function workThatTable() {
+  onTableRowClick($('#parts_table'), function (id) {
+    updatePartsInfo(id);
+    updateStockModal(id);
+  });
+
+  // Get a reference to the table and custom menu
+  var $table = $('#parts_table');
+  var $menu = $('#parts_table_menu');
+
+  onTableCellContextMenu($table, $menu, {
+    delete: function (selectedRows, ids) {
+      if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
+        deleteSelectedRows(ids, 'parts', 'part_id'); // Also updates table
+      }
+    },
+    edit: function (selectedRows) {
+      editSelectedRows(selectedRows);
+    },
+    customAction1: function (selectedRows) {
+      customAction1(selectedRows);
     }
   });
 
-};
+    /**
+   * Event listener for clicks outside the menu to hide it
+   */
+    $(document).on('click', function (event) {
+      if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
+        $menu.hide();
+      }
+    });
+  
+
+  
+  };
 
 // Inline table cell manipulation of parts_table
 //TODO: Extract functions
