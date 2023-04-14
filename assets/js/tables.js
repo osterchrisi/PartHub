@@ -66,7 +66,7 @@ function onTableRowClick($table, onSelect) {
 
 
 /**
- * Attach a context menu to a table cell that is triggered by right-clicking on the cell
+ * Attach a context menu to a table row that is triggered by right-clicking on a cell
  *
  * @param {jQuery} $table - The table to attach the context menu to
  * @param {jQuery} $menu - The context menu to show when a cell is right-clicked
@@ -75,34 +75,27 @@ function onTableRowClick($table, onSelect) {
 function onTableCellContextMenu($table, $menu, actions) {
   // Event listener for the right-click event on table cells
   $table.on('contextmenu', 'td', function (event) {
-    if (event.which === 3) {
+    if (event.which === 3) { // Right-click
       event.preventDefault(); // Inhibit browser context menu
 
       // Get selected table rows
       var selectedRows = $table.bootstrapTable('getSelections');
       // Extract IDs
       const ids = selectedRows.map(obj => obj._data.id);
-      // Extract Footprints
+      // Extract Footprints - here for later worries
       const footprints = selectedRows.map(obj => obj.Footprint);
 
-      // Show menu
-      $menu.css({
-        left: event.pageX + 'px',
-        top: event.pageY + 'px',
-        display: 'block'
-      });
+      showContextMenu($menu, event)
 
       // Event listeners for the menu items
       $menu.find('.dropdown-item').off('click').on('click', function () {
         // Get action data attribute
         var action = $(this).data('action');
-        var number = ids.length;
 
         // Call the appropriate action function based on the action parameter
         actions[action](selectedRows, ids);
 
-        // Hide menu
-        $menu.hide();
+        hideContextMenu($menu)
       });
     }
   });
@@ -148,18 +141,41 @@ function workThatTable() {
     }
   });
 
-    /**
-   * Event listener for clicks outside the menu to hide it
-   */
-    $(document).on('click', function (event) {
-      if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
-        $menu.hide();
-      }
-    });
-  
+  /**
+ * Event listener for clicks outside the menu to hide it
+ */
+  $(document).on('click', function (event) {
+    if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
+      $menu.hide();
+    }
+  });
+};
 
-  
-  };
+/**
+ * Displays a context menu at the specified event location.
+ *
+ * @param {jQuery} $menu - The context menu element.
+ * @param {Event} event - The event that triggered the context menu display.
+ *                        The event object contains information about the mouse click,
+ *                        including the mouse pointer's X and Y coordinates.
+ *                        The X and Y coordinates are used to position the context menu.
+ */
+function showContextMenu($menu, event) {
+  $menu.css({
+    left: event.pageX + 'px',
+    top: event.pageY + 'px',
+    display: 'block'
+  });
+}
+
+/**
+ * Hides the context menu.
+ *
+ * @param {jQuery} $menu - The jQuery object representing the context menu to hide.
+ */
+function hideContextMenu($menu){
+  $menu.hide();
+}
 
 // Inline table cell manipulation of parts_table
 //TODO: Extract functions
