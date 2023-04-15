@@ -47,13 +47,14 @@ function createCategorySelect(categories, currentValue) {
 }
 
 /**
+ * Defines the actions to perform when a table row is clicked.
  * Attaches a click event listener to the specified table rows and calls the
  * provided callback function with the extracted ID when a row is selected.
  *
  * @param {jQuery} $table - The jQuery object representing the table element
  * @param {function} onSelect - A callback function to call when a row is selected
  */
-function onTableRowClick($table, onSelect) {
+function defineTableRowClickActions($table, onSelect) {
   $table.on('click', 'tr', function () {
     if ($table.find('tr.selected-last').length > 0) {
       $table.find('tr.selected-last').removeClass('selected-last');
@@ -135,7 +136,7 @@ function onTableCellContextMenu($table, $menu, actions) {
  */
 function workThatTable($table, $menu) {
   // Define row click actions
-  onTableRowClick($table, function (id) {
+  defineTableRowClickActions($table, function (id) {
     updatePartsInfo(id);
     updateStockModal(id);
   });

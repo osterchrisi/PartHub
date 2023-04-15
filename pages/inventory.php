@@ -49,7 +49,9 @@ $categories = getCategories($conn);
       <input type="hidden" name="cat[]" id="selected-categories" value="">
 
       <?php
-      generateCategoriesDropdown($categories, $search_category); ?>
+      generateCategoriesDropdown($categories, $search_category);
+      ?>
+
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
@@ -60,7 +62,9 @@ $categories = getCategories($conn);
     </div>
     <div class="col-1">
       <div class="row me-1 justify-content-end">
+
         <?php generateResultsDropdown($results_per_page); ?>
+
       </div>
       <br>
     </div>
@@ -70,9 +74,9 @@ $categories = getCategories($conn);
   <!-- Parts Table Right-click Menu -->
   <div id="parts_table_menu" class="dropdown-menu">
     <a class="dropdown-item" href="#" data-action="delete">Delete Part(s)</a>
-    <a class="dropdown-item" href="#" data-action="assignC">Assign Category</a>
-    <a class="dropdown-item" href="#" data-action="assignF">Assign Footprint</a>
-    <a class="dropdown-item" href="#" data-action="changeStock">Change Stock</a>
+    <a class="dropdown-item disabled" href="#" data-action="assignC">Assign Category</a>
+    <a class="dropdown-item disabled" href="#" data-action="assignF">Assign Footprint</a>
+    <a class="dropdown-item disabled" href="#" data-action="changeStock">Change Stock</a>
   </div>
 
   <!-- Parts Table and Pagination -->
@@ -133,7 +137,7 @@ $categories = getCategories($conn);
 
   $(document).ready(function () {
     initializeMultiSelect('cat-select');
-    
+
     bootstrapPartsTable();
     var $table = $('#parts_table');
     var $menu = $('#parts_table_menu');
