@@ -140,11 +140,6 @@ function workThatTable($table, $menu) {
     updateStockModal(id);
   });
 
-  // Prevent text selection on pressing shift
-  preventTextSelectionOnShift($table);
-  // Hide context menu upon clicking outside of it
-  hideMenuOnClickOutside($menu);
-
   // Define context menu actions
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
@@ -160,6 +155,10 @@ function workThatTable($table, $menu) {
     }
   });
 
+  // Prevent text selection on pressing shift
+  preventTextSelectionOnShift($table);
+  // Hide context menu upon clicking outside of it
+  hideMenuOnClickOutside($menu);
 
 };
 
@@ -225,14 +224,12 @@ function inlineProcessing() {
 
           select.on('change', function () {
             var new_value = $(this).val(); // Get new selected value
-            // console.log("new value = ", new_value);
 
             // Get cell part_id, column name and database table
             // These are encoded in the table data cells
             var part_id = cell.closest('td').data('id');
             var column = 'part_category_fk';
             var table_name = cell.closest('td').data('table_name');
-            // console.log(part_id, column, table_name, new_value);
 
             // Call the updating function
             $.ajax({
