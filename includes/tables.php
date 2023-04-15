@@ -61,7 +61,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
             class="table table-hover table-striped table-sm"
-            id="BomListTable"
+            id="bom_list_table"
             data-resizable="true"
             data-search="true"
             data-search-align="left"

@@ -51,7 +51,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   include '../includes/helpers.php';
   include '../includes/tables.php';
   include '../includes/pagination.php';
-  include '../config/search-bom-columns.php';
+  include '../config/bom-list-columns.php';
 
   try {
     $search_term = getSuperGlobal('search');
@@ -70,7 +70,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       echo "<br>Displaying $total_rows search results";
 
       echo "<div class='row'>";
-      echo "<div class='col-6'>"; // Display BOMs
+      echo "<div class='col-6' id='table-window'>"; // Display BOMs
       buildBomListTable($bom_list, $db_columns, $nice_columns);
       echo "</div>";
       echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
@@ -93,14 +93,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <script>
     bootstrapBomListTable();
 
-    var $table = $('#BomListTable');
+    var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
     defineBomListTableActions($table, $menu)
-
-    // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
-    // $(document).ready(function () {
-    //   onTableRowClick($('#BomListTable'), function (id) {
-    //     updateBomInfo(id);
-    //   });
-    // });
   </script>

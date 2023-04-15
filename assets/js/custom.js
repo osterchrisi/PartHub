@@ -165,6 +165,7 @@ function initializeMultiSelect(id) {
  * @param {function} successCallback Function to call on successful deletion of rows. Used to rebuild the corresponding table
  */
 function deleteSelectedRows(ids, table_name, column, successCallback) {
+    console.log(ids, table_name, column, successCallback);
     // Like, delete 'em
     $.ajax({
         type: 'POST',

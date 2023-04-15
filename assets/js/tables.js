@@ -15,7 +15,7 @@ function bootstrapPartInBomsTable() {
 };
 
 function bootstrapBomListTable() {
-  $('#BomListTable').bootstrapTable({
+  $('#bom_list_table').bootstrapTable({
   });
 };
 
@@ -157,6 +157,25 @@ function rebuildPartsTable(queryString) {
 }
 
 /**
+ * Rebuild the parts table after adding or deleting parts
+ * @param {string} queryString 
+ */
+function rebuildBomListTable(queryString) {
+  $.ajax({
+    url: '../includes/buildBomListTable.php' + queryString,
+    success: function (data) {
+      $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
+      $('#table-window').html(data); // Update div with new table
+      bootstrapBomListTable(); // Bootstrap it
+      var $table = $('#bom_list_table');
+      var $menu = $('#bom_list_table_menu');
+      defineBomListTableActions($table, $menu); // Define table row actions and context menu
+      // inlineProcessing();
+    }
+  });
+}
+
+/**
  * Defines row click actions and prepares / attaches a context menu for the parts table
  * 
  * @param {jQuery} $table - The table element to work
@@ -200,8 +219,8 @@ function defineBomListTableActions($table, $menu) {
   // Define context menu actions
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
-      if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-        deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
+      if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
+        deleteSelectedRows(ids, 'bom_names', 'bom_id', rebuildBomListTable); // Also updates table
       }
     },
     edit: function (selectedRows) {
