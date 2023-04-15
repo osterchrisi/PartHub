@@ -70,11 +70,17 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
             data-cookie="true"
             data-cookie-id-table="BomListTableState"
             data-max-moving-rows="100"
+            data-multiple-select-row="true"
+            data-click-to-select="true"
             >';
 
     // Table headers
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
+
+    // This column is for Bootstrap Table Click-To-Select to work
+    echo '<th data-field="state" data-checkbox="true"></th>';
+
     foreach ($nice_columns as $column_header) {
         echo "<th data-field='$column_header'>$column_header</th>";
     }
@@ -88,7 +94,12 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
         $bom_id = $row['bom_id'];
         echo "<tr data-id=" . $row['bom_id'] . ">";
         foreach ($db_columns as $column_data) {
-            echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            if ($column_data == 'state') {
+                ;
+            }
+            else {
+                echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            }
         }
         echo "</tr>";
     }
@@ -236,7 +247,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             elseif ($column_data == 'category_name') {
                 echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
             }
-            elseif ($column_data == 'state'){
+            elseif ($column_data == 'state') {
                 ;
             }
             else { // Any other table data available

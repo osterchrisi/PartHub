@@ -16,9 +16,9 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
 
 <!-- BOM List Right-click Menu -->
-<div id="parts_table_menu" class="dropdown-menu">
+<div id="bom_list_table_menu" class="dropdown-menu">
   <a class="dropdown-item" href="#" data-action="delete">Delete BOM(s)</a>
-  <a class="dropdown-item" href="#" data-action="assignC">Assemble</a>
+  <a class="dropdown-item disabled" href="#" data-action="assignC">Assemble</a>
 </div>
 
 <div class="container-fluid">
@@ -93,10 +93,14 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <script>
     bootstrapBomListTable();
 
+    var $table = $('#BomListTable');
+    var $menu = $('#bom_list_table_menu');
+    defineBomListTableActions($table, $menu)
+
     // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
-    $(document).ready(function () {
-      onTableRowClick($('#BomListTable'), function (id) {
-        updateBomInfo(id);
-      });
-    });
+    // $(document).ready(function () {
+    //   onTableRowClick($('#BomListTable'), function (id) {
+    //     updateBomInfo(id);
+    //   });
+    // });
   </script>

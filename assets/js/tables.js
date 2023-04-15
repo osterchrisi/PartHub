@@ -92,6 +92,7 @@ function onTableCellContextMenu($table, $menu, actions) {
   $table.on('contextmenu', 'td', function (event) {
     if (event.which === 3) { // Right-click
       event.preventDefault(); // Inhibit browser context menu
+      console.log($table);
 
       // Get selected table rows
       var selectedRows = $table.bootstrapTable('getSelections');
@@ -99,6 +100,8 @@ function onTableCellContextMenu($table, $menu, actions) {
       const ids = selectedRows.map(obj => obj._data.id);
       // Extract Footprints - here for later worries
       const footprints = selectedRows.map(obj => obj.Footprint);
+
+      console.log(selectedRows);
 
       showContextMenu($menu, event)
 
@@ -164,6 +167,34 @@ function definePartsTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     updatePartsInfo(id);
     updateStockModal(id);
+  });
+
+  // Define context menu actions
+  onTableCellContextMenu($table, $menu, {
+    delete: function (selectedRows, ids) {
+      if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
+        deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
+      }
+    },
+    edit: function (selectedRows) {
+      editSelectedRows(selectedRows);
+    },
+    customAction1: function (selectedRows) {
+      customAction1(selectedRows);
+    }
+  });
+};
+
+/**
+ * Defines row click actions and prepares / attaches a context menu for the parts table
+ * 
+ * @param {jQuery} $table - The table element to work
+ * @param {jQuery} $menu - The context menu to attach to that table
+ */
+function defineBomListTableActions($table, $menu) {
+  // Define row click actions
+  defineTableRowClickActions($table, function (id) {
+    updateBomInfo(id);
   });
 
   // Define context menu actions
