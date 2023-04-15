@@ -10,24 +10,26 @@ $(document).ready(function () {
     $('#mPartEntry').on('shown.bs.modal', function () {
         $('#addPartName').focus();
     });
-
-    // Prohibit text selection when pressing shift (for selecting multiple rows)
-    var table = document.getElementById("parts_table");
-
-    // Shift is pressed
-    document.addEventListener("keydown", function (event) {
-        if (event.shiftKey) {
-            table.classList.add("table-no-select");
-        }
-    });
-
-    // Shift is released
-    document.addEventListener("keyup", function (event) {
-        if (!event.shiftKey) {
-            table.classList.remove("table-no-select");
-        }
-    });
 });
+
+function preventTextSelectionOnShift($table) {
+    // Prohibit text selection when pressing shift (for selecting multiple rows)
+    // var table = document.getElementById("parts_table");
+  
+    // Shift is pressed
+    $(document).on('keydown', function(event) {
+      if (event.shiftKey) {
+        $table.addClass('table-no-select');
+      }
+    });
+  
+    // Shift is released
+    $(document).on('keyup', function(event) {
+      if (!event.shiftKey) {
+        $table.removeClass('table-no-select');
+      }
+    });
+  }
 
 // Remove a click listener
 function removeClickListeners(id) {
@@ -97,20 +99,20 @@ function updateStockModal(id) {
     });
 }
 
-function updateBomInfo(id){
-$.ajax({
-    url: 'show-bom.php',
-    type: 'GET',
-    data: { id: id, hideNavbar: true },
-    success: function (data) {
-      // Replace the content of the info window with the loaded PHP page
-      $('#info-window').html(data);
-    },
-    error: function () {
-      // Display an error message if the PHP page failed to load
-      $('#info-window').html('Failed to load additional BOM data.');
-    }
-  });
+function updateBomInfo(id) {
+    $.ajax({
+        url: 'show-bom.php',
+        type: 'GET',
+        data: { id: id, hideNavbar: true },
+        success: function (data) {
+            // Replace the content of the info window with the loaded PHP page
+            $('#info-window').html(data);
+        },
+        error: function () {
+            // Display an error message if the PHP page failed to load
+            $('#info-window').html('Failed to load additional BOM data.');
+        }
+    });
 };
 
 /**

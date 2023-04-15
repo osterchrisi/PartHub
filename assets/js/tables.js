@@ -123,6 +123,8 @@ function workThatTable($table, $menu) {
     updateStockModal(id);
   });
 
+  preventTextSelectionOnShift($table);
+
   // Get a reference to the table and custom menu
   // var $table = $('#parts_table');
   // var $menu = $('#parts_table_menu');
