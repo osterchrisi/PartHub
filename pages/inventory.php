@@ -141,7 +141,7 @@ $categories = getCategories($conn);
     bootstrapPartsTable();
     var $table = $('#parts_table');
     var $menu = $('#parts_table_menu');
-    workThatTable($table, $menu);
+    definePartsTableActions($table, $menu);
     inlineProcessing();
   });
 

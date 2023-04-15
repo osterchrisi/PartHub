@@ -63,6 +63,9 @@ function defineTableRowClickActions($table, onSelect) {
     var id = $(this).data('id'); // get ID from the selected row
     onSelect(id);
   });
+
+  // Prevent text selection on pressing shift for selecting multiple rows
+  preventTextSelectionOnShift($table);
 }
 
 /**
@@ -111,6 +114,9 @@ function onTableCellContextMenu($table, $menu, actions) {
       });
     }
   });
+
+  // Hide context menu upon clicking outside of it
+  hideMenuOnClickOutside($menu);
 }
 
 //Example call for above function:
@@ -129,12 +135,31 @@ function onTableCellContextMenu($table, $menu, actions) {
 // });
 
 /**
- * Defines row click actions and prepares / attaches a context menu
+ * Rebuild the parts table after adding or deleting parts
+ * @param {string} queryString 
+ */
+function rebuildPartsTable(queryString) {
+  $.ajax({
+    url: '../includes/buildPartsTable.php' + queryString,
+    success: function (data) {
+      $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
+      $('#table-window').html(data); // Update div with new table
+      bootstrapPartsTable(); // Bootstrap it
+      var $table = $('#parts_table');
+      var $menu = $('#parts_table_menu');
+      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      inlineProcessing();
+    }
+  });
+}
+
+/**
+ * Defines row click actions and prepares / attaches a context menu for the parts table
  * 
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-function workThatTable($table, $menu) {
+function definePartsTableActions($table, $menu) {
   // Define row click actions
   defineTableRowClickActions($table, function (id) {
     updatePartsInfo(id);
@@ -155,12 +180,6 @@ function workThatTable($table, $menu) {
       customAction1(selectedRows);
     }
   });
-
-  // Prevent text selection on pressing shift
-  preventTextSelectionOnShift($table);
-  // Hide context menu upon clicking outside of it
-  hideMenuOnClickOutside($menu);
-
 };
 
 /**
@@ -323,25 +342,6 @@ function inlineProcessing() {
     }
   });
 };
-
-/**
- * Rebuild the parts table after adding or deleting parts
- * @param {string} queryString 
- */
-function rebuildPartsTable(queryString) {
-  $.ajax({
-    url: '../includes/buildPartsTable.php' + queryString,
-    success: function (data) {
-      $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data); // Update div with new table
-      bootstrapPartsTable(); // Bootstrap it
-      var $table = $('#parts_table');
-      var $menu = $('#parts_table_menu');
-      workThatTable($table, $menu); // Add table row actions and context menu
-      inlineProcessing();
-    }
-  });
-}
 
 //* Not using any of the code below this point, it's for appending a part row. Maybe useful later...
 //* You need this button for it: 

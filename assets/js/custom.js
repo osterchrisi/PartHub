@@ -162,7 +162,7 @@ function initializeMultiSelect(id) {
  * @param {array} ids Array of IDs to delete
  * @param {string} table_name Name of the table in the database
  * @param {string} column Name of the column that holds the ID, e.g. part_id
- * @param {function} successCallback Function to call on successful deletion of rows
+ * @param {function} successCallback Function to call on successful deletion of rows. Used to rebuild the corresponding table
  */
 function deleteSelectedRows(ids, table_name, column, successCallback) {
     // Like, delete 'em
