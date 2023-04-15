@@ -145,7 +145,7 @@ function workThatTable($table, $menu) {
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-        deleteSelectedRows(ids, 'parts', 'part_id'); // Also updates table
+        deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
       }
     },
     edit: function (selectedRows) {
@@ -326,7 +326,7 @@ function inlineProcessing() {
 
 /**
  * Rebuild the parts table after adding or deleting parts
- * @param {*} queryString 
+ * @param {string} queryString 
  */
 function rebuildPartsTable(queryString) {
   $.ajax({
@@ -337,7 +337,7 @@ function rebuildPartsTable(queryString) {
       bootstrapPartsTable(); // Bootstrap it
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
-      workThatTable($table, $menu); // Add click listeners and stuff again to table
+      workThatTable($table, $menu); // Add table row actions and context menu
       inlineProcessing();
     }
   });

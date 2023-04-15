@@ -28,6 +28,7 @@ function validateForm(formId, button) {
           updatePartsInfo(partId);
           $('#mPartEntry').modal('hide'); // Hide modal
           removeClickListeners('#addPart'); // Remove click listener from Add Part button
+          
           // Rebuild parts table
           var queryString = window.location.search;
           rebuildPartsTable(queryString);

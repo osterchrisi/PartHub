@@ -162,8 +162,9 @@ function initializeMultiSelect(id) {
  * @param {array} ids Array of IDs to delete
  * @param {string} table_name Name of the table in the database
  * @param {string} column Name of the column that holds the ID, e.g. part_id
+ * @param {function} successCallback Function to call on successful deletion of rows
  */
-function deleteSelectedRows(ids, table_name, column) {
+function deleteSelectedRows(ids, table_name, column, successCallback) {
     // Like, delete 'em
     $.ajax({
         type: 'POST',
@@ -178,8 +179,7 @@ function deleteSelectedRows(ids, table_name, column) {
             console.log('success');
             // Updating table here because otherwise it rebuilds too fast
             var queryString = window.location.search;
-            rebuildPartsTable(queryString);
+            successCallback(queryString);
         }
     });
-
 }
