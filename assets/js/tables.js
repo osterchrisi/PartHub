@@ -117,15 +117,15 @@ function onTableCellContextMenu($table, $menu, actions) {
 // });
 
 // Get id from the clicked row and update parts-info and stock modals
-function workThatTable() {
-  onTableRowClick($('#parts_table'), function (id) {
+function workThatTable($table, $menu) {
+  onTableRowClick($table, function (id) {
     updatePartsInfo(id);
     updateStockModal(id);
   });
 
   // Get a reference to the table and custom menu
-  var $table = $('#parts_table');
-  var $menu = $('#parts_table_menu');
+  // var $table = $('#parts_table');
+  // var $menu = $('#parts_table_menu');
 
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
@@ -325,7 +325,9 @@ function rebuildPartsTable(queryString) {
       $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
       $('#table-window').html(data); // Update div with new table
       bootstrapPartsTable(); // Bootstrap it
-      workThatTable(); // Add click listeners and stuff again to table
+      var $table = $('#parts_table');
+      var $menu = $('#parts_table_menu');
+      workThatTable($table, $menu); // Add click listeners and stuff again to table
       inlineProcessing();
     }
   });

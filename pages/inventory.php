@@ -134,7 +134,9 @@ $categories = getCategories($conn);
   $(document).ready(function () {
     bootstrapPartsTable();
     initializeMultiSelect('cat-select');
-    workThatTable();
+    var $table = $('#parts_table');
+    var $menu = $('#parts_table_menu');
+    workThatTable($table, $menu);
     inlineProcessing();
   });
 
