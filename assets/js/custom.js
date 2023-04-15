@@ -1,4 +1,4 @@
-//TODO: Wrap these two in functions and call them in the document ready of inventory.php
+//TODO: Wrap these two in functions and call them in the document ready of inventory.php and/or other appropriate locations
 // Focus fields in modals
 $(document).ready(function () {
     // Focus the Quantity field in the stock changes modal after showing
@@ -12,10 +12,12 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * Prevents text selection in the given table when the shift key is pressed (for selecting)
+ * multiple rows at once).
+ * @param {jQuery} $table - The table element to prevent text selection in.
+ */
 function preventTextSelectionOnShift($table) {
-    // Prohibit text selection when pressing shift (for selecting multiple rows)
-    // var table = document.getElementById("parts_table");
-  
     // Shift is pressed
     $(document).on('keydown', function(event) {
       if (event.shiftKey) {

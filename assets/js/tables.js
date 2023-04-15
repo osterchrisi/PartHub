@@ -64,6 +64,17 @@ function onTableRowClick($table, onSelect) {
   });
 }
 
+/**
+* Event listener for clicks outside the menu to hide it
+* @param {jQuery} $menu - The context menu to hide
+*/
+function hideMenuOnClickOutside($menu) {
+  $(document).on('click', function (event) {
+    if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
+      $menu.hide();
+    }
+  });
+}
 
 /**
  * Attach a context menu to a table row that is triggered by right-clicking on a cell
@@ -116,19 +127,25 @@ function onTableCellContextMenu($table, $menu, actions) {
 //   }
 // });
 
-// Get id from the clicked row and update parts-info and stock modals
+/**
+ * Defines row click actions and prepares / attaches a context menu
+ * 
+ * @param {jQuery} $table - The table element to work
+ * @param {jQuery} $menu - The context menu to attach to that table
+ */
 function workThatTable($table, $menu) {
+  // Define row click actions
   onTableRowClick($table, function (id) {
     updatePartsInfo(id);
     updateStockModal(id);
   });
 
+  // Prevent text selection on pressing shift
   preventTextSelectionOnShift($table);
+  // Hide context menu upon clicking outside of it
+  hideMenuOnClickOutside($menu);
 
-  // Get a reference to the table and custom menu
-  // var $table = $('#parts_table');
-  // var $menu = $('#parts_table_menu');
-
+  // Define context menu actions
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
@@ -143,14 +160,7 @@ function workThatTable($table, $menu) {
     }
   });
 
-  /**
- * Event listener for clicks outside the menu to hide it
- */
-  $(document).on('click', function (event) {
-    if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
-      $menu.hide();
-    }
-  });
+
 };
 
 /**
@@ -175,7 +185,7 @@ function showContextMenu($menu, event) {
  *
  * @param {jQuery} $menu - The jQuery object representing the context menu to hide.
  */
-function hideContextMenu($menu){
+function hideContextMenu($menu) {
   $menu.hide();
 }
 

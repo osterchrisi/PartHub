@@ -132,8 +132,9 @@ $categories = getCategories($conn);
   <?php include '../assets/js/tables.js'; ?> //TODO: Strangely it works also without including this here -> investigate!
 
   $(document).ready(function () {
-    bootstrapPartsTable();
     initializeMultiSelect('cat-select');
+    
+    bootstrapPartsTable();
     var $table = $('#parts_table');
     var $menu = $('#parts_table_menu');
     workThatTable($table, $menu);
