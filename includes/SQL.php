@@ -287,10 +287,20 @@ function getBomElements($conn, $bom_id)
   return $elements;
 }
 
-
+/**
+ * Update a row in the database table with a new value for a specified column.
+ *
+ * @param PDO $conn The database connection object.
+ * @param int $id The ID of the row to update.
+ * @param string $id_field The name of the ID column in the table, e.g. part_id, bom_id, ...
+ * @param string $column The name of the column to update.
+ * @param string $table_name The name of the table to update.
+ * @param mixed $new_value The new value to set for the specified column.
+ * 
+ * @return void
+ */
 function updateRow($conn, $id, $id_field, $column, $table_name, $new_value)
 {
-  // bindParam is only for values, not for identifiers like table or column names
   $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE " . $id_field . " = :id");
   $stmt->bindParam(':new_value', $new_value);
   $stmt->bindParam(':id', $id, PDO::PARAM_INT);
