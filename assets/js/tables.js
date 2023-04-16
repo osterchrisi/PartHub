@@ -363,22 +363,24 @@ function inlineProcessing() {
         // Update cell with new value
         cell.text(new_value);
 
-        // Get cell part_id, column name and database table
+        // Get cell id, column name and database table
         // These are encoded in the table data cells
-        var part_id = cell.closest('td').data('id');
+        var id = cell.closest('td').data('id');
         var column = cell.closest('td').data('column');
         var table_name = cell.closest('td').data('table_name')
-        console.log(part_id, column, table_name, new_value);
+        var id_field = cell.closest('td').data('id_field')
+        console.log(id, id_field, column, table_name, new_value);
 
         // Call the updating function
         $.ajax({
           type: 'GET',
           url: '../includes/update-cell.php',
           data: {
-            part_id: part_id,
+            id: id,
             column: column,
             table_name: table_name,
-            new_value: new_value
+            new_value: new_value,
+            id_field: id_field
           },
           success: function (data) {
             console.log('Data updated successfully');

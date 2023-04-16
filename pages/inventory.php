@@ -11,6 +11,7 @@ include '../includes/get.php';
 include '../includes/helpers.php';
 
 $table_name = "parts";
+$id_field = "part_id";
 dealWithCats();
 
 $search_term = getSuperGlobal('search');
@@ -107,7 +108,7 @@ $categories = getCategories($conn);
       echo "<div class='row'>";
       echo "<div class='col-9' id='table-window' style='max-width: 90%;'>"; //9
       // Display parts across a 9-column
-      buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
+      buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $id_field);
       echo "</div>";
       echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center info-window' id='info-window'>"; // height:75vh'>";
       // Display additional info on part in 3-column

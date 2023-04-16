@@ -10,6 +10,7 @@ include '../includes/forms.php';
 include '../includes/get.php';
 
 $table_name = "bom_names";
+$id_field = "bom_id";
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
@@ -71,7 +72,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
       echo "<div class='row'>";
       echo "<div class='col-6' id='table-window'>"; // Display BOMs
-      buildBomListTable($bom_list, $db_columns, $nice_columns);
+      buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $id_field);
       echo "</div>";
       echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
       echo "<h6><br>Click on a row in the table</h6>";
@@ -95,5 +96,6 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
     var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
-    defineBomListTableActions($table, $menu)
+    defineBomListTableActions($table, $menu);
+    inlineProcessing();
   </script>

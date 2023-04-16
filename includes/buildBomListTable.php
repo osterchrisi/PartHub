@@ -12,6 +12,7 @@ include 'get.php';
 include 'helpers.php';
 
 $table_name = "bom_names";
+$id_field = "bom_id";
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
@@ -35,7 +36,7 @@ try {
 
       $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page, $user_id);
 
-      buildBomListTable($bom_list, $db_columns, $nice_columns);
+      buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $id_field);
     }
     else {
       noResults();

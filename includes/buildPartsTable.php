@@ -12,6 +12,7 @@ include 'get.php';
 include 'helpers.php';
 
 $table_name = "parts";
+$id_field = "part_id";
 dealWithCats();
 
 $search_term = getSuperGlobal('search');
@@ -46,7 +47,7 @@ try {
 
       $result = queryDB($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_category, $user_id);
 
-      buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name);
+      buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $id_field);
     }
     else {
       noResults();

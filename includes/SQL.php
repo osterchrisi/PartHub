@@ -288,12 +288,12 @@ function getBomElements($conn, $bom_id)
 }
 
 
-function updateRow($conn, $part_id, $column, $table_name, $new_value)
+function updateRow($conn, $id, $id_field, $column, $table_name, $new_value)
 {
   // bindParam is only for values, not for identifiers like table or column names
-  $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE part_id = :part_id");
+  $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE " . $id_field . " = :id");
   $stmt->bindParam(':new_value', $new_value);
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
 }
 
