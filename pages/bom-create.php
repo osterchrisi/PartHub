@@ -57,7 +57,7 @@ try {
 
         // Create a row and three columns for all the elements
         var row = document.createElement("div");
-        row.className = "row";
+        row.className = "row mx-0 px-0";
         // row.style.marginBottom = "24px";
 
         // Part Dropdown
@@ -88,7 +88,7 @@ try {
 
         // Create input field for entering the amount of elements
         var amountGroup = document.createElement("div");
-        amountGroup.className = "input-group mb-3";
+        amountGroup.className = "input-group mb-1";
 
         var amount = document.createElement("input");
         amount.type = "text";
@@ -123,7 +123,7 @@ try {
         // Create a new button to remove this row
         var removeBtn = document.createElement("button");
         removeBtn.textContent = "X";
-        removeBtn.className = "btn btn-primary";
+        removeBtn.className = "btn";
 
         // Remove row functionality
         removeBtn.addEventListener("click", function () {
