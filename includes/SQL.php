@@ -203,10 +203,21 @@ function bom_query($conn, $table_name, $search_term, $offset, $results_per_page,
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $result;
 }
-
-function getAllParts($conn)
+/**
+ * Get all parts owned by a specified user from the database.
+ *
+ * @param PDO $conn The database connection object.
+ * @param int $user_id The ID of the user whose parts to retrieve.
+ *
+ * @return array An array of associative arrays representing the retrieved parts.
+ */
+function getAllParts($conn, $user_id)
 {
-  $stmt = $conn->query("SELECT part_id, part_name FROM parts");
+  $stmt = $conn->prepare("SELECT part_id, part_name
+                        FROM parts
+                        WHERE part_owner_u_fk = :user_id");
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);       
+  $stmt->execute();                 
   $all_parts = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $all_parts;
 }

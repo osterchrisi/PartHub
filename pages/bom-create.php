@@ -18,7 +18,14 @@ try {
 ?>
 
 <div class="container-fluid">
-    <?php require_once('../includes/navbar.php'); ?>
+<?php
+  // Check if called within the info window
+  if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
+    // Don't include the navbar
+  }
+  else {
+    require_once('../includes/navbar.php');
+  } ?>
     <br>
     <h4>Create new BOM</h4>
     <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">

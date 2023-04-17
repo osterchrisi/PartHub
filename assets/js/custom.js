@@ -117,6 +117,22 @@ function updateBomInfo(id) {
     });
 };
 
+function displayBomCreate() {
+    $.ajax({
+        url: 'bom-create.php',
+        type: 'GET',
+        data: { hideNavbar: true },
+        success: function (data) {
+            // Replace the content of the info window with the loaded PHP page
+            $('#info-window').html(data);
+        },
+        error: function () {
+            // Display an error message if the PHP page failed to load
+            $('#info-window').html('Failed to load BOM creation page.');
+        }
+    });
+};
+
 /**
  * Make the table-window and the info-window resizable
  */
@@ -134,7 +150,7 @@ $(function () {
 
 /**
  * 'Selectize' the category multi select, prepare values and append to the hidden input field
- *
+ * @param {string} id The ID of the multi-select element to initialize.
  * @return void
  */
 function initializeMultiSelect(id) {
