@@ -21,19 +21,15 @@ $table_name = "part_categories";
   // SQL query to retrieve category data
   $categories = getCategories($conn);
 
-  // echo "<pre>";
-  // print_r($categories);
-  // echo "end ";
   function generateTreeList($arr)
   {
-    $url =
-      $childNodes = array();
+    $childNodes = array();
     foreach ($arr as $node) {
       $childNodes[$node['parent_category']][] = $node;
     }
 
     $treeList = '<ul id="category-tree">';
-    foreach ($childNodes[1] as $node) {
+    foreach ($childNodes[0] as $node) {
       $treeList .= '<li><a href="' . $node['category_name'] . '">' . $node['category_name'] . '</a>';
       if (!empty($childNodes[$node['category_id']])) {
         $treeList .= generateChildTree($childNodes, $node['category_id']);
@@ -58,49 +54,24 @@ $table_name = "part_categories";
     return $childTree;
   }
 
+  echo '<div id="jstree">';
   echo generateTreeList($categories);
+  echo '</div>';
 
   ?>
 
-  <style>
-    /* Hide all child nodes by default */
-    #category-tree ul {
-      display: none;
-    }
-
-    /* Show child nodes when the parent node is expanded */
-    #category-tree>li.expanded>ul {
-      display: block;
-    }
-
-    /* Add expand/collapse icon to parent nodes */
-    #category-tree>li:before {
-      content: "+";
-      margin-right: 5px;
-    }
-
-    #category-tree>li.expanded:before {
-      content: "-";
-    }
-
-    #category-tree li {
-      list-style-type: none;
-    }
-  </style>
-
   <script>
-    // Add click event listeners to all parent nodes
-    var parents = document.querySelectorAll("#category-tree li > ul");
-    for (var i = 0; i < parents.length; i++) {
-      parents[i].parentNode.classList.add("parent");
-      parents[i].parentNode.addEventListener("click", toggleNode);
-    }
-
-    // Toggle the expanded state of a node
-    function toggleNode(event) {
-      var target = event.target || event.srcElement;
-      if (target.classList.contains("parent")) {
-        target.classList.toggle("expanded");
-      }
-    }
+    // JSTree
+    $('#jstree').jstree({
+      "core": {
+        "themes": {
+          "theme": "database",
+          "icons": false,
+          "dots": true,
+          "stripes": false,
+          "ellipsis": true
+        }
+      },
+      "plugins": ["themes", "html_data", "sort", "state", "wholerow"]
+    });
   </script>

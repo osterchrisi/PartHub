@@ -6,15 +6,15 @@ If you want to manage small and medium parts inventory and BOMs, **PartHub** is 
 
 # Features
  - Keep an up-to-date inventory of your parts easily
- - Multiple storage locations per part
- - Move stock between locations
+ - Multiple storage locations per part, move stock between locations
  - Send mail upon reaching minimum stock in given location
- - Easily create BOMs by simply adding parts
+ - Easily manage BOMs by uploading CSV file or simply adding parts
  - Execute BOMs when building projects, stock gets automatically deducted
  - Track stock history
- - Works in any browser and mobile
- - Multi-user
- - Import data
+ - Works in any browser and is mobile-friendly
+ - Multi-user, teams
+ - Import data via CSV files
+# Future development
  - KiCad Support
  - Mouser API Support
 

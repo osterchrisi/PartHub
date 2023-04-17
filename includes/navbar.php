@@ -52,7 +52,7 @@ $_SESSION['user_name'] = $user_name;
           <li>
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
                 class="fas fa-user"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end text-end w-auto" style="min-width: 0;">
+            <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
               <!-- Logged in -->
               <?php echo ($_SESSION['user_id'] ? '<li>'.$user_name.'</li><li><hr class="dropdown-divider"></li>' : '');?>
               <?php echo ($_SESSION['user_id'] ? '<li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>' : '');?>

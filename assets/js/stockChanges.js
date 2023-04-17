@@ -97,11 +97,6 @@ function saveChanges(change) {
     });
 }
 
-// Remove the previous click listener
-function removeClickListeners(id) {
-    $(id).off('click');
-}
-
 // Remove the locations dropdowns to keep them from stacking up
 $('#mAddStock').on('hidden.bs.modal', function () {
     if (from_location_exists) {

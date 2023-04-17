@@ -3,14 +3,15 @@
 $basename = basename(__FILE__);
 $title = 'Build BOM';
 require_once('../includes/head.html');
+include '../includes/navbar.php';
 include '../config/credentials.php';
 include '../includes/SQL.php';
 include '../includes/forms.php';
 
-// Connect to database and get available customers and products
+// Connect to database and get avail customers and products
 try {
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-    $boms = getAllBoms($conn);
+    $boms = getAllBoms($conn, $user_id);
 } catch (Exception $e) {
     echo "<br>Error: " . $e->getMessage();
 }

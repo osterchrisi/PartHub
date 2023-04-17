@@ -3,7 +3,7 @@
 function generateCategoriesDropdown($categories, $sc)
 {
   // Generate dropdown menu for the column names
-  echo '<select multiple size="10" class="form-select" id="cat-select">';
+  echo '<select multiple size="10" class="form-select form-select-sm" id="cat-select">';
 
   // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
   echo '<option value="all" ' . ((!$sc or $sc == "all" OR in_array("all", $sc)) ? "selected" : "") . '>All Categories</option>';
@@ -55,7 +55,7 @@ function generateResultsDropdown($results_per_page)
   ];
   ?>
 
-  <select name="resultspp" id="resultspp" class="form-select" style="width:auto">
+  <select name="resultspp" id="resultspp" class="form-select form-select-sm" style="width:auto">
     <?php foreach ($options as $value => $name) { ?>
       <option value="<?= $value; ?>" <?= ($value == $results_per_page) ? ' selected' : ''; ?>><?= $name; ?></option>
     <?php } ?>

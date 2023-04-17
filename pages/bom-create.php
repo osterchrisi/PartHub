@@ -18,21 +18,28 @@ try {
 ?>
 
 <div class="container-fluid">
-    <?php require_once('../includes/navbar.php'); ?>
+    <?php
+    // Check if called within the info window
+    if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
+        // Don't include the navbar
+    }
+    else {
+        require_once('../includes/navbar.php');
+    } ?>
     <br>
     <h4>Create new BOM</h4>
     <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
         <div class="row">
             <div class="col-3">
-                <input type="text" class="form-control" id="bom_name" name="bom_name" placeholder="Enter BOM title">
+                <input type="text" class="form-control form-control-sm" id="bom_name" name="bom_name" placeholder="Enter BOM title">
                 <br>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-sm btn-outline-primary"
                     onclick='addFields(<?php echo json_encode($parts); ?>)'>Add Parts</button>
                 <br><br>
                 <br>
-                <button type="submit" name="submit" class="btn btn-secondary">Submit</button>
+                <button type="submit" name="submit" class="btn btn-sm btn-primary">Submit</button>
             </div>
-            <div class="col-6" id="dynamicAddParts">
+            <div class="col-9" id="dynamicAddParts">
                 <!-- Added Parts go here -->
             </div>
         </div>
@@ -42,29 +49,34 @@ try {
 
 <script>
     console.log();
+    // Using this variable to give each select element a unique ID for selectize-ing it
+    let n = 0;
     function addFields(parts) {
-        console.log();
-
+        n++;
         var container = document.getElementById("dynamicAddParts");
 
         // Create a row and three columns for all the elements
         var row = document.createElement("div");
-        row.className = "row";
-        row.style.marginBottom = "24px";
+        row.className = "row mx-0 px-0";
+        // row.style.marginBottom = "24px";
 
+        // Part Dropdown
         var col1 = document.createElement("div");
-        col1.className = "col-6";
+        col1.className = "col-8";
 
+        // Quantity Field
         var col2 = document.createElement("div");
         col2.className = "col-3";
 
+        // Remove Button
         var col3 = document.createElement("div");
         col3.className = "col-1";
 
         // Create a new select (dropdown) element
         var select = document.createElement("select");
         select.name = "dynamic_field[]";
-        select.className = "form-select";
+        select.className = "form-select form-select-sm";
+        select.id = "bom-element-" + n;
 
         // Create options for the select element using the passed parts array/JSON
         for (var i = 0; i < parts.length; i++) {
@@ -75,11 +87,23 @@ try {
         }
 
         // Create input field for entering the amount of elements
+        var amountGroup = document.createElement("div");
+        amountGroup.className = "input-group input-group-sm";
+
         var amount = document.createElement("input");
         amount.type = "text";
         amount.name = "dynamic_field[]";
-        amount.className = "form-control";
+        amount.className = "form-control form-control-sm";
         amount.placeholder = "Pcs";
+        amount.value = "1";
+
+        var amountAddon = document.createElement("span");
+        amountAddon.className = "input-group-text";
+        amountAddon.textContent = "Pcs";
+
+        amountGroup.appendChild(amount);
+        amountGroup.appendChild(amountAddon);
+
 
         // Allow only numbers to be typed in amount field
         amount.addEventListener("keypress", function (evt) {
@@ -99,7 +123,7 @@ try {
         // Create a new button to remove this row
         var removeBtn = document.createElement("button");
         removeBtn.textContent = "X";
-        removeBtn.className = "btn btn-primary";
+        removeBtn.className = "btn btn-sm";
 
         // Remove row functionality
         removeBtn.addEventListener("click", function () {
@@ -108,14 +132,17 @@ try {
 
         // Add the select element, text input and remove row button
         col1.appendChild(select);
-        col2.appendChild(amount);
+        col2.appendChild(amountGroup);
         col3.appendChild(removeBtn);
 
         // Add the row to the container and the columns to the row
-        container.appendChild(row);
+        container.insertBefore(row, container.firstChild);
         row.appendChild(col1);
         row.appendChild(col2);
         row.appendChild(col3);
+
+        id = "bom-element-" + n;
+        $('#' + id).selectize();
     }
 
     function checkBomName() {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 10, 2023 at 11:23 AM
+-- Generation Time: Apr 12, 2023 at 04:12 PM
 -- Server version: 10.3.38-MariaDB-0ubuntu0.20.04.1
 -- PHP Version: 8.2.4
 
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `bom_elements` (
   `part_id_fk` int(11) NOT NULL,
   `element_quantity` int(11) NOT NULL,
   PRIMARY KEY (`bom_elements_id`) USING BTREE,
-  KEY `bom_id` (`bom_id_fk`),
-  KEY `part_id` (`part_id_fk`)
+  KEY `bom_elements_ibfk_2` (`part_id_fk`),
+  KEY `bom_elements_ibfk_1` (`bom_id_fk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -88,27 +88,30 @@ CREATE TABLE IF NOT EXISTS `bom_names` (
   `bom_id` int(11) NOT NULL AUTO_INCREMENT,
   `bom_name` varchar(255) NOT NULL,
   `bom_description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`bom_id`)
+  `bom_owner_g_fk` int(11) DEFAULT NULL,
+  `bom_owner_u_fk` int(11) NOT NULL,
+  PRIMARY KEY (`bom_id`),
+  KEY `bom_owner_u_fk` (`bom_owner_u_fk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bom_names`
 --
 
-INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`) VALUES
-(28, 'First BOM', 'It\'s the first one!'),
-(29, 'Second BOM', 'Let\'s do another'),
-(30, '10 to 50', NULL),
-(31, '234', NULL),
-(32, 'Second BOM', NULL),
-(33, '34r2', NULL),
-(34, '4234', NULL),
-(35, 'fc23', NULL),
-(36, 'q34zt5', NULL),
-(37, 'q34zt5', NULL),
-(38, 'q34zt5', NULL),
-(39, 'q34zt5', NULL),
-(40, 'w43ret2345', NULL);
+INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`, `bom_owner_g_fk`, `bom_owner_u_fk`) VALUES
+(28, 'First BOM', 'It\'s the first one!', NULL, -1),
+(29, 'Second BOM', 'Let\'s do another', NULL, -1),
+(30, '10 to 50', NULL, NULL, -1),
+(31, '234', NULL, NULL, -1),
+(32, 'Second BOM', NULL, NULL, -1),
+(33, '34r2', NULL, NULL, -1),
+(34, '4234', NULL, NULL, -1),
+(35, 'fc23', NULL, NULL, -1),
+(36, 'q34zt5', NULL, NULL, -1),
+(37, 'q34zt5', NULL, NULL, -1),
+(38, 'q34zt5', NULL, NULL, -1),
+(39, 'q34zt5', NULL, NULL, -1),
+(40, 'w43ret2345', NULL, NULL, -1);
 
 -- --------------------------------------------------------
 
@@ -156,20 +159,24 @@ CREATE TABLE IF NOT EXISTS `location_names` (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
   `location_name` varchar(255) NOT NULL,
   `location_description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`location_id`)
+  `location_owner_u_fk` int(11) NOT NULL,
+  `location_owner_g_fk` int(11) DEFAULT NULL,
+  PRIMARY KEY (`location_id`),
+  KEY `location_owner_g_fk` (`location_owner_g_fk`),
+  KEY `location_owner_u_fk` (`location_owner_u_fk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `location_names`
 --
 
-INSERT INTO `location_names` (`location_id`, `location_name`, `location_description`) VALUES
-(1, 'Main Storage', 'Like, all of it'),
-(2, 'EMS Partner', ''),
-(3, 'Hardware Supplier', ''),
-(4, 'External Storage', NULL),
-(5, 'Increase', 'General Stock Increase'),
-(6, 'Decrease', 'General Stock Decrease');
+INSERT INTO `location_names` (`location_id`, `location_name`, `location_description`, `location_owner_u_fk`, `location_owner_g_fk`) VALUES
+(1, 'Main Storage', 'Like, all of it', -1, NULL),
+(2, 'EMS Partner', '', -1, NULL),
+(3, 'Hardware Supplier', '', -1, NULL),
+(4, 'External Storage', NULL, -1, NULL),
+(5, 'Increase', 'General Stock Increase', -1, NULL),
+(6, 'Decrease', 'General Stock Decrease', -1, NULL);
 
 -- --------------------------------------------------------
 
@@ -211,14 +218,14 @@ CREATE TABLE IF NOT EXISTS `parts` (
   KEY `part_owner_u_fk` (`part_owner_u_fk`),
   KEY `part_owner_g_fk` (`part_owner_g_fk`),
   KEY `part_name` (`part_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1523 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1655 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `parts`
 --
 
 INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`, `created_at`, `part_category_fk`, `part_footprint_fk`, `part_unit_fk`, `part_owner_u_fk`, `part_owner_g_fk`) VALUES
-(335, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 2, 1, -1, 1),
+(335, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 3, 2, 1, -1, 1),
 (337, 'CD4017BE', 'Decade Counter/Divider with 10 Decoded Outputs', 'Can be used as a sequencer or for LED chasers.', '2023-03-07 00:24:12', 2, 1, 1, -1, 1),
 (338, '1N4148', 'General Purpose Diode', 'fast-switching, widely used signal diode', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (339, 'LM386N-1', 'Audio Amplifier', 'Low voltage audio power amplifier, ideal for battery-powered devices.', '2023-03-07 00:24:12', 3, 1, 1, -1, 1),
@@ -231,7 +238,7 @@ INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`,
 (422, 'Inductor 100uH, 10%, 0805', 'An inductor with 100uH', 'Ideal for low-frequency filtering applications', '2022-03-06 09:15:34', 1, 1, 1, -1, 1),
 (439, 'Transistor', 'Transistor', 'Generic transistor', '2023-03-06 13:12:24', 1, 1, 1, -1, 1),
 (477, 'Capacitor 10uF', '10uF Capacaitor, 35V', 'Generic capacitor', '2023-03-06 13:12:24', 1, 1, 1, -1, 1),
-(532, 'Capacitor 100pF, 5%, 0603', 'Surface mount capacitor with 100 picofarad capacitance and 5% tolerancedc', 'Useful for high-frequency filtering and decoupling applications', '2022-03-06 09:15:39', 1, 1, 1, -1, 1),
+(532, 'Capacitor 100pF, 5%, 0603', 'Surface mount capacitor with 100 picofarad capacitance and 5% tolerance', 'Useful for high-frequency filtering and decoupling applications', '2022-03-06 09:15:39', 1, 1, 1, -1, 1),
 (567, 'Resistor 10K, 1%, 0603', 'Surface mount resistor with 10K ohm resistance and 1% tolerance', 'Good for precision circuits', '2022-03-06 09:15:32', 1, 1, 1, -1, 1),
 (618, 'BC327', 'PNP transistor', 'good for switching and amplification', '0000-00-00 00:00:00', 13, 1, 1, -1, 1),
 (629, 'Capacitor 0.1uF, 10%, 0805', 'Surface mount capacitor with 0.1 microfarad capacitance and 10% tolerance', 'Useful for decoupling and filtering applications', '2022-03-06 09:15:41', 1, 1, 1, -1, 1),
@@ -268,10 +275,7 @@ INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`,
 (1326, 'LM393', 'Dual voltage comparator', 'low power consumption, wide supply voltage range', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (1365, 'IRF540N', 'N-Channel MOSFET', 'high-current capability, low on-resistance, fast switching speed', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (1392, 'BC639', 'PNP transistor', 'good for switching and amplification', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
-(1491, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 1, 1, 1, 1),
-(1519, '2323r', NULL, NULL, '2023-04-03 19:16:29', 1, 1, 1, -1, NULL),
-(1520, 'new part', NULL, NULL, '2023-04-03 19:17:40', 1, 1, 1, -1, NULL),
-(1521, 'i will get deleted soon', NULL, NULL, '2023-04-07 10:59:57', 1, 1, 1, -1, NULL);
+(1491, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -404,57 +408,6 @@ INSERT INTO `part_units` (`unit_id`, `unit_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shortage_parts`
---
-
-CREATE TABLE IF NOT EXISTS `shortage_parts` (
-  `part_id` int(11) NOT NULL AUTO_INCREMENT,
-  `part_name` varchar(255) DEFAULT NULL,
-  `global_stock` int(11) DEFAULT NULL,
-  `part_description` varchar(255) DEFAULT NULL,
-  `part_project` varchar(255) DEFAULT NULL,
-  `part_comment` varchar(255) DEFAULT NULL,
-  `storage_location` varchar(255) NOT NULL DEFAULT 'KOMA',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `part_category_fk` int(11) DEFAULT NULL,
-  PRIMARY KEY (`part_id`),
-  UNIQUE KEY `part_name` (`part_name`),
-  KEY `part_category_fk` (`part_category_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `shortage_parts`
---
-
-INSERT INTO `shortage_parts` (`part_id`, `part_name`, `global_stock`, `part_description`, `part_project`, `part_comment`, `storage_location`, `created_at`, `updated_at`, `part_category_fk`) VALUES
-(1, 'TPS54332DDAR', 1000, 'Switching Voltage Regulator', 'FKFX, Strom', 'Strom, FKFX, ...', 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(2, 'LM25575MH/NOPB', 120, 'Switching Voltage Regulator', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(3, 'ATMEGA325PA-AUR', 500, '8-bit Microcontroller MCU', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(4, 'CAT4016HV6-GT2', 240, 'LED Driver', 'None', 'Wäre Komplex, aber jetzt gibts wieder original Teil', 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(5, 'MCP3202T-BI/SN', 15, '12-bit ADC SPI', 'Komplex', 'Das extra \'T\' steht wohl nur für die Standardpackungsgröße', 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(6, 'TL084HIPWR', 2100, 'Opamp JFET TSSOP', 'None', 'Wäre Komplex Ersatz für MC3303 gewesen, aber original wieder verfügbar', 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(7, 'MCP4822-E/SN', 550, '12-bit DAC SPI', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(8, 'TS5A23159DGST', 600, 'Analogue Switch ICs 1Ohm Dual SPDT', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(9, 'MCP3202-BI/SN', 292, '12-bit ADC SPI', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(10, 'TLC5947RHBT', 110, 'LED Driver', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(11, 'LM2700LD-ADJ/NOPB', 106, 'Switching Voltage Regulator', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(12, 'MCP4131-502E/MS-ND', 480, 'Digital Potentiometer 5KOhm', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(13, 'ATMEGA328PB-AU', 500, '8-bit Microcontroller MCU', 'Komplex', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(14, 'SI4825-A10-CSR', 209, 'Radio IC', 'FK oder Radio Module', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(15, 'TPS55340PWPR', 500, 'Switching Voltage Regulator', 'Strom Mobil PR2', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(16, 'SSI2164S-RT', 10000, 'VCA', 'FKFX', '2 haben wir für Chromaplane rausgenommen, 1 Reel also geöffnet', 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(17, 'GD32F303VCT6', 2160, '32-bit Microcontroller MCU', 'FKFX', 'Original wieder verfügbar?', 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(18, 'ATTINY44A-SSURCT-ND', 250, '8-bit Microcontroller MCU', 'SVF-201', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(19, 'PT2399', 4054, 'Digital Delay', 'FKFX oder Delay Module', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(20, 'LM27313XMF/NOPB', 2600, 'Switching Voltage Regulators 1.6 MHZ BOOST CONVERTER', 'FKFX', NULL, 'KOMA', '2023-02-18 15:36:13', NULL, 1),
-(263, 'DC-Motor', 1000, 'Expansion Pack Motor', 'FK Expansion Pack', NULL, 'KOMA', '2023-02-18 18:27:56', NULL, 1),
-(265, 'Solenoid', 1000, 'Expansion Pack Soleoid\r\n\r\n', 'FK Expansion Pack', NULL, 'KOMA', '2023-02-18 21:27:25', NULL, 1),
-(266, '3.5mm Jack Cable', 1000, 'Jack Cable', 'Various', NULL, 'KOMA', '2023-02-18 21:27:25', NULL, 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `stock_levels`
 --
 
@@ -466,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `stock_levels` (
   PRIMARY KEY (`part_id_fk`,`location_id_fk`),
   UNIQUE KEY `stock_level_id` (`stock_level_id`) USING BTREE,
   KEY `location_id` (`location_id_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=367 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_levels`
@@ -492,11 +445,7 @@ INSERT INTO `stock_levels` (`stock_level_id`, `part_id_fk`, `location_id_fk`, `s
 (220, 567, 1, 742),
 (221, 629, 1, 4432),
 (226, 1199, 4, 3698),
-(223, 1491, 1, 1000),
-(200, 1519, 1, 234),
-(202, 1519, 2, 100),
-(204, 1520, 4, 100),
-(228, 1521, 1, 1234567890);
+(223, 1491, 1, 1000);
 
 -- --------------------------------------------------------
 
@@ -514,11 +463,11 @@ CREATE TABLE IF NOT EXISTS `stock_level_change_history` (
   `stock_lvl_chng_comment` varchar(255) DEFAULT NULL,
   `stock_lvl_chng_user_fk` int(11) NOT NULL,
   PRIMARY KEY (`stock_lvl_chng_id`),
-  KEY `part_id` (`part_id_fk`),
   KEY `from_location` (`from_location_fk`),
   KEY `to_location` (`to_location_fk`),
-  KEY `stock_lvl_chng_user_fk` (`stock_lvl_chng_user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=309 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `stock_lvl_chng_user_fk` (`stock_lvl_chng_user_fk`),
+  KEY `stock_level_change_history_ibfk_1` (`part_id_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_level_change_history`
@@ -529,10 +478,6 @@ INSERT INTO `stock_level_change_history` (`stock_lvl_chng_id`, `part_id_fk`, `fr
 (282, 335, NULL, 1, 100, '2023-04-03 18:07:46', 'Initial stock entry', -1),
 (283, 335, NULL, 1, 100, '2023-04-03 18:07:51', 'Initial stock entry', -1),
 (284, 335, NULL, 2, 100, '2023-04-03 18:07:57', 'Initial stock entry', -1),
-(285, 1519, NULL, 1, 234, '2023-04-03 19:16:29', NULL, -1),
-(286, 1519, NULL, 1, 100, '2023-04-03 19:17:13', '', -1),
-(287, 1519, 1, 2, 100, '2023-04-03 19:17:19', '', -1),
-(288, 1520, NULL, 4, 100, '2023-04-03 19:17:40', NULL, -1),
 (289, 339, NULL, 1, 200, '2023-04-03 19:23:44', '', -1),
 (290, 339, 1, 2, 20, '2023-04-03 19:23:52', '', -1),
 (291, 347, NULL, 3, 500, '2023-04-03 22:17:54', 'For later', -1),
@@ -551,8 +496,7 @@ INSERT INTO `stock_level_change_history` (`stock_lvl_chng_id`, `part_id_fk`, `fr
 (304, 338, NULL, 2, 689, '2023-04-04 14:01:09', '', -1),
 (305, 350, NULL, 1, 6844, '2023-04-04 14:01:37', 'Initial stock entry', -1),
 (306, 1199, NULL, 4, 3698, '2023-04-04 14:03:08', 'Leftover from PR2', -1),
-(307, 532, NULL, 1, 69, '2023-04-04 14:24:50', '', -1),
-(308, 1521, NULL, 1, 1234567890, '2023-04-07 10:59:57', NULL, -1);
+(307, 532, NULL, 1, 69, '2023-04-04 14:24:50', '', -1);
 
 -- --------------------------------------------------------
 
@@ -570,7 +514,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_login` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `user_group_fk` (`user_group_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -579,15 +523,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`user_id`, `user_passwd`, `user_group_fk`, `user_name`, `user_email`, `register_date`, `last_login`) VALUES
 (-1, '', 1, 'demo user', '', '2023-03-31 19:13:39', '0000-00-00 00:00:00'),
 (1, '$argon2i$v=19$m=65536,t=4,p=1$amxnekpzQmFiT2oySlg5RQ$s7xb/YpNdh4GNvkVBCA7jHj8hDMrRPia7YKMZmGjEwE', 1, 'chrisi', 'christian@koma-elektronik.com', '2023-03-31 19:13:39', '0000-00-00 00:00:00'),
-(6, '$argon2i$v=19$m=65536,t=4,p=1$aTJhLzFDSG9TakIyNUJRMA$Z9fOAeCAsyU78UItFzmpUXa5j1IyV6CaBuDYepCZTdc', NULL, 'Great BOM', 'great.bom@parthub.online', '2023-03-31 19:49:36', '2023-03-31 19:49:36'),
-(7, '$argon2i$v=19$m=65536,t=4,p=1$ZmpxOEVuT2pMUEVWTG5iVg$AJSTMR97Ra3WJr3+g11gdDsCdHnTNZA/487i0lQ7J1U', NULL, 'Sad BOM', 'sad.bom@parthub.online', '2023-03-31 19:51:51', '2023-03-31 19:51:51'),
-(8, '$argon2i$v=19$m=65536,t=4,p=1$eGdJMS4xM0tHQTVBaDJEbw$U7HTzGJJFSqft906R5DiCG8kpX2ZMKVipEUtId45t0Y', NULL, 'Test User 1', 'tu1@tu1.du', '2023-03-31 20:02:05', '2023-03-31 20:02:05'),
-(9, '$argon2i$v=19$m=65536,t=4,p=1$LjdOOVZkVHlic1kvUTRjdA$PVqu/joLBorpD3r4MlA5iJmkaOM8fRk/SqyMSI3Ttsw', NULL, 'test user 2', 'tu2@du.de', '2023-03-31 20:17:11', '2023-03-31 20:17:11'),
-(10, '$argon2i$v=19$m=65536,t=4,p=1$MEVCZWF6TmJ5eWVxamFzQw$ej/34OxC4JMXUUE2MjV17BTWOmQK7mgJlaG1te0qj60', NULL, 'test user 3', 'tu3@du.de', '2023-03-31 20:42:10', '2023-03-31 20:42:10'),
-(11, '$argon2i$v=19$m=65536,t=4,p=1$Wk12dmhTcVhYM3ExZ3RFSA$71PHhKiaTWbR5V458l0FmEdM0ydJ1g/h9Cze2O7zxEU', NULL, 'test user 4', 'tu4@du.de', '2023-03-31 20:43:13', '2023-03-31 20:43:13'),
-(12, '$argon2i$v=19$m=65536,t=4,p=1$c09WbFZWcnV4L3N5VjBQUw$J15WHKTE4BbEHRWF9tL6Ai+fJaTCuUEarxHRdmbDWng', NULL, 'test user 5', 'tu5q@tu1.du', '2023-03-31 20:44:25', '2023-03-31 20:44:25'),
-(13, '$argon2i$v=19$m=65536,t=4,p=1$bGlJNDh2MzZxZS52bU5yRg$b/xCMOJ7vlcFyyaT0lOw0fn5awWTUdVVhxvj7NPNGmA', NULL, 'test user 6', 'tu6@du.de', '2023-03-31 21:00:54', '2023-03-31 21:00:54'),
-(14, '$argon2i$v=19$m=65536,t=4,p=1$MVR1V0ZQM1d0U1p5N0d1Ng$yTSSRQtT4fjArHPCRlxoDMmvVW6eRUN0GaJHGvlWVdc', NULL, 'Test User 7', 'tu7@tu1.du', '2023-03-31 21:02:55', '2023-03-31 21:02:55');
+(27, '$argon2i$v=19$m=65536,t=4,p=1$MGRmTjA5bXFmU1lIWGJVZQ$mzRkAwRgOtqkyMhviFjzm9e0jtB6inJz3J31tLGHXHc', NULL, 'Great BOM', 'info@koma-elektronik.com', '2023-04-10 21:13:53', '2023-04-10 21:13:53');
 
 -- --------------------------------------------------------
 
@@ -631,14 +567,27 @@ CREATE TABLE IF NOT EXISTS `user_settings` (
 -- Constraints for table `bom_elements`
 --
 ALTER TABLE `bom_elements`
-  ADD CONSTRAINT `bom_elements_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`),
-  ADD CONSTRAINT `bom_elements_ibfk_2` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`);
+  ADD CONSTRAINT `bom_elements_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bom_elements_ibfk_2` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bom_names`
+--
+ALTER TABLE `bom_names`
+  ADD CONSTRAINT `bom_names_ibfk_1` FOREIGN KEY (`bom_owner_u_fk`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `bom_runs`
 --
 ALTER TABLE `bom_runs`
   ADD CONSTRAINT `bom_runs_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`);
+
+--
+-- Constraints for table `location_names`
+--
+ALTER TABLE `location_names`
+  ADD CONSTRAINT `location_names_ibfk_1` FOREIGN KEY (`location_owner_g_fk`) REFERENCES `user_groups` (`group_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `location_names_ibfk_2` FOREIGN KEY (`location_owner_u_fk`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `minstock_levels`
@@ -661,14 +610,14 @@ ALTER TABLE `parts`
 -- Constraints for table `stock_levels`
 --
 ALTER TABLE `stock_levels`
-  ADD CONSTRAINT `part_id` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`),
+  ADD CONSTRAINT `part_id` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `stock_levels_ibfk_1` FOREIGN KEY (`location_id_fk`) REFERENCES `location_names` (`location_id`);
 
 --
 -- Constraints for table `stock_level_change_history`
 --
 ALTER TABLE `stock_level_change_history`
-  ADD CONSTRAINT `stock_level_change_history_ibfk_1` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`),
+  ADD CONSTRAINT `stock_level_change_history_ibfk_1` FOREIGN KEY (`part_id_fk`) REFERENCES `parts` (`part_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `stock_level_change_history_ibfk_2` FOREIGN KEY (`from_location_fk`) REFERENCES `location_names` (`location_id`),
   ADD CONSTRAINT `stock_level_change_history_ibfk_3` FOREIGN KEY (`to_location_fk`) REFERENCES `location_names` (`location_id`),
   ADD CONSTRAINT `stock_level_change_history_ibfk_4` FOREIGN KEY (`stock_lvl_chng_user_fk`) REFERENCES `users` (`user_id`);

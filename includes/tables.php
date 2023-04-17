@@ -56,12 +56,12 @@ function buildHTMLTable($column_names, $nice_columns, $result, $width = "100%")
     return $html;
 }
 
-function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%")
+function buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $id_field, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
             class="table table-hover table-striped table-sm"
-            id="BomListTable"
+            id="bom_list_table"
             data-resizable="true"
             data-search="true"
             data-search-align="left"
@@ -70,11 +70,17 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
             data-cookie="true"
             data-cookie-id-table="BomListTableState"
             data-max-moving-rows="100"
+            data-multiple-select-row="true"
+            data-click-to-select="true"
             >';
 
     // Table headers
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
+
+    // This column is for Bootstrap Table Click-To-Select to work
+    echo '<th data-field="state" data-checkbox="true"></th>';
+
     foreach ($nice_columns as $column_header) {
         echo "<th data-field='$column_header'>$column_header</th>";
     }
@@ -88,7 +94,12 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $width = "100%
         $bom_id = $row['bom_id'];
         echo "<tr data-id=" . $row['bom_id'] . ">";
         foreach ($db_columns as $column_data) {
-            echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+            if ($column_data == 'state') {
+                ;
+            }
+            else {
+                echo "<td data-editable='true' class='editable' data-id=" . $bom_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";
+            }
         }
         echo "</tr>";
     }
@@ -179,7 +190,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     echo "</div>";
 }
 
-function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $width = "100%")
+function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $id_field, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
@@ -206,10 +217,12 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     echo '<th data-field="state" data-checkbox="true"></th>';
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Total Stock') {
-            echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
+            // Removing the in-table links to stock levels again...
+            // echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
+            echo "<th data-sortable='true' data-field='$column_header'>$column_header</th>";
         }
         else {
-            echo "<th data-field='$column_header'>$column_header</th>";
+            echo "<th data-sortable='true' data-field='$column_header'>$column_header</th>";
         }
     }
     echo '<th data-field="state" data-checkbox="true"></th>';
@@ -223,21 +236,26 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
         $part_id = $row['part_id'];
         echo "<tr data-id=" . $row['part_id'] . " class='whatever'>";
         foreach ($db_columns as $column_data) {
+            // Removing the in-table links to stock levels again...
             if ($column_data == 'total_stock') {
                 // Get total stock
                 $stock = getStockLevels($conn, $part_id);
                 $total_stock = getTotalStock($stock);
                 // Display total stock number as link to showing stock levels
-                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+                // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
+                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
             }
             elseif ($column_data == 'category_name') {
-                echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
+                echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";
+            }
+            elseif ($column_data == 'state') {
+                ;
             }
             elseif ($column_data == 'state'){
                 ;
             }
             else { // Any other table data available
-                echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . ">" . $row[$column_data] . "</td>";
+                echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";
             }
         }
 

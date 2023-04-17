@@ -26,7 +26,7 @@ $table_name = "location_names";
 
     <?php  
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-    $loc = getLocations($conn);
+    $loc = getLocations($conn, $user_id);
     // print_r($loc);
     $column_names = array('location_id', 'location_name', 'location_description');
     $nice_columns = array('ID', 'Name', 'Description');

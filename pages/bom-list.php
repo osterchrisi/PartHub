@@ -1,7 +1,7 @@
 <?php
 // BOM List Page
 $basename = basename(__FILE__);
-$title = 'Show BOM';
+$title = 'BOM List';
 require_once('../includes/head.html');
 
 include '../config/credentials.php';
@@ -10,10 +10,18 @@ include '../includes/forms.php';
 include '../includes/get.php';
 
 $table_name = "bom_names";
+$id_field = "bom_id";
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 ?>
+
+<!-- BOM List Right-click Menu -->
+<div id="bom_list_table_menu" class="dropdown-menu">
+  <a class="dropdown-item" href="#" data-action="delete">Delete BOM(s)</a>
+  <a class="dropdown-item disabled" href="#" data-action="assignC">Assemble</a>
+</div>
+
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
   <br>
@@ -23,29 +31,44 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <div class="row">
     <div class="col-3">
       <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input class="form-control" type="text" id="search" name="search" placeholder="Search BOMs...">
+        <input class="form-control form-control-sm" type="text" id="search" name="search" placeholder="Search BOMs...">
     </div>
     <div class="col-1">
-      <button type="submit" name="submit" class="btn btn-primary">Show Results</button>
+      <button type="submit" name="submit" class="btn btn-sm btn-primary">Show Results</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
     </div>
-    <div class="col-5">
+    <div class="col-1">
       <?php generateResultsDropdown($results_per_page); ?>
     </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-sm btn-outline-primary" onclick="displayBomCreate()">Add BOM</button>
+    </div>
     </form>
+    <div class="col">
+      <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-1">
+          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+            data-bs-target="#bomUploadForm">Upload</button></div>
+            <div class="col">
+          <div class="collapse collapse-horizontal" id="bomUploadForm"><input class="form-control form-control-sm"
+              type="file" id="formFile" name="csvFile" accept=".csv"></div></div>
+        </div>
+      </form>
+    </div>
   </div>
 
   <?php
   include '../includes/helpers.php';
   include '../includes/tables.php';
   include '../includes/pagination.php';
-  include '../config/search-bom-columns.php';
+  include '../config/bom-list-columns.php';
 
   try {
     $search_term = getSuperGlobal('search');
-    $total_rows = getTotalNumberOfBomRows($conn, $table_name, $search_term);
+    $total_rows = getTotalNumberOfBomRows($conn, $table_name, $search_term, $user_id);
 
     if ($total_rows) {
       // Calculate the total number of pages for pagination
@@ -55,15 +78,16 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       // Calculate the offset for the current page
       $offset = ($current_page - 1) * $results_per_page;
 
-      $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page);
+      $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page, $user_id);
 
-      echo "<br>Displaying $total_rows search results";
-
+      // echo "<br>Displaying $total_rows search results";
+  
       echo "<div class='row'>";
-      echo "<div class='col-6'>"; // Display BOMs
-      buildBomListTable($bom_list, $db_columns, $nice_columns);
+      echo "<div class='col-6' id='table-window' style='max-width: 90%;'>"; // Display BOMs
+      buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $id_field);
       echo "</div>";
-      echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
+      echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center info-window' id='info-window' style='max-width: 90%;'>"; // Display additional data on BOM
+      echo "<h6><br>Click on a row in the table</h6>";
       echo "</div>";
       echo "</div>";
       displayPaginationLinks($total_pages, $current_page);
@@ -82,28 +106,8 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <script>
     bootstrapBomListTable();
 
-    // Get BOM ID from the clicked row and pass it to show-bom.php for showing details in the info-window
-    $(document).ready(function () {
-      $('#BomListTable tbody').on('click', 'tr', function () {
-        $('tbody tr').removeClass('selected');
-        $(this).toggleClass('selected');
-        var id = $(this).data('id'); // get the ID from the first cell of the selected row
-        var bom_name = $(this).find('td:nth-child(2)').text(); //! Don't use it currently and seems a bit silly (think reordering columns)
-
-        // Load the PHP page and pass the id variable as a parameter
-        $.ajax({
-          url: 'show-bom.php',
-          type: 'GET',
-          data: { id: id, hideNavbar: true },
-          success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-          },
-          error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional BOM data.');
-          }
-        });
-      });
-    });
+    var $table = $('#bom_list_table');
+    var $menu = $('#bom_list_table_menu');
+    defineBomListTableActions($table, $menu);
+    inlineProcessing();
   </script>

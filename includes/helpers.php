@@ -68,7 +68,10 @@ function validateEmail($email)
     return 'true';
 }
 
-// I need this function to deal with the JSON encoded array that the selectized multiselect function sends in the form
+/**
+ * Converts the JSON encoded array from the selectized multiselect into a PHP array and puts it into the $_GET array
+ * @return void
+ */ 
 function dealWithCats()
 {
     $cat = $_GET['cat'][0]; // Get the JSON-encoded string from the $_GET arry

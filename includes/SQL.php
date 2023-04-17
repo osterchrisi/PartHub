@@ -45,14 +45,43 @@ function getTotalNumberOfRows($conn, $table_name, $search_column, $search_term, 
     $sql .= "AND part_category_fk > 0";
   }
   else {
-    $string = '(';
-    $string .= implode(", ", $search_category);
-    $string .= ")";
+    // Make a list out of selected categories
+    $cats_selected .= implode(", ", $search_category);
 
-    $sql .= "AND part_category_fk IN " . $string;
+    // Also select all sub-categories of those categories
+    $cats_resulting = $conn->prepare("WITH RECURSIVE selected_parents AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN ($cats_selected)
+                                    ),
+                                    child_nodes AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN (SELECT category_id FROM selected_parents)
+                                      UNION ALL
+                                      SELECT c.category_id
+                                      FROM part_categories c
+                                      INNER JOIN child_nodes cn ON c.parent_category = cn.category_id
+                                    )
+                                    SELECT * FROM child_nodes;");
+    $cats_resulting->execute();
+    $cats = $cats_resulting->fetchAll(PDO::FETCH_ASSOC);
+
+    // Craft resulting category list for query
+    $cats_queried = '(';
+    $cats_queried .= implode(",", array_map(function ($category) {
+      return $category['category_id'];
+    }, $cats));
+    $cats_queried .= ')';
+
+    // Finally add it to the query statement
+    $sql .= "AND part_category_fk IN " . $cats_queried;
   }
+
+  // Filter for user
   $sql .= " AND part_owner_u_fk = :user_id";
 
+  // Query
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
@@ -94,14 +123,40 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
     $sql .= "AND part_category_fk > 0 ";
   }
   else {
-    $string = '(';
-    $string .= implode(", ", $search_category);
-    $string .= ") ";
+    // Make a list out of selected categories
+    $cats_selected .= implode(", ", $search_category);
 
-    $sql .= "AND part_category_fk IN " . $string;
+    // Also select all sub-categories of those categories
+    $cats_resulting = $conn->prepare("WITH RECURSIVE selected_parents AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN ($cats_selected)
+                                    ),
+                                    child_nodes AS (
+                                      SELECT category_id
+                                      FROM part_categories
+                                      WHERE category_id IN (SELECT category_id FROM selected_parents)
+                                      UNION ALL
+                                      SELECT c.category_id
+                                      FROM part_categories c
+                                      INNER JOIN child_nodes cn ON c.parent_category = cn.category_id
+                                    )
+                                    SELECT * FROM child_nodes;");
+    $cats_resulting->execute();
+    $cats = $cats_resulting->fetchAll(PDO::FETCH_ASSOC);
+
+    // Craft resulting category list for query
+    $cats_queried = '(';
+    $cats_queried .= implode(",", array_map(function ($category) {
+      return $category['category_id'];
+    }, $cats));
+    $cats_queried .= ')';
+
+    // Finally add it to the query statement
+    $sql .= "AND part_category_fk IN " . $cats_queried;
   }
 
-  // Select for user
+  // Filter for user
   $sql .= " AND part_owner_u_fk = :user_id";
 
   $sql .= " LIMIT :offset, :results_per_page";
@@ -117,89 +172,16 @@ function queryDB($table_name, $search_column, $search_term, $offset, $results_pe
   return $result;
 }
 
-function backorder_query($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_status)
-{
-  // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
 
-  $sql = "SELECT customer_name, customer_po, created_at, product_name, amount, status_name FROM backorders JOIN customers ON backorders.customer_id = customers.id JOIN backorders_product_lookup ON backorders.id = backorders_product_lookup.backorder_id JOIN products ON backorders_product_lookup.product_id = products.id JOIN backorder_statuses ON backorders.backorder_status = backorder_statuses.id WHERE ";
 
-  if ($search_column == 'everywhere') {
-    // Search all columns
-    $sql .= "CONCAT(customer_name, customer_po, created_at, product_name, status_name) LIKE :search_term ";
-  }
-  else {
-    // Search only the specified column
-    $sql .= "$search_column LIKE :search_term ";
-  }
-
-  $sql .= "AND backorder_status LIKE ";
-  if ($search_status == 1) {
-    $sql .= "1 ";
-  }
-  elseif ($search_status == 2) {
-    $sql .= "2 ";
-  }
-  elseif ($search_status == 3) {
-    $sql .= "3 ";
-  }
-  elseif ($search_status == 'all') {
-    $sql .= "'%' ";
-  }
-
-  $sql .= "LIMIT :offset, :results_per_page";
-  $stmt = $conn->prepare($sql);
-  $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
-  $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-  $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
-  $stmt->execute();
-  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return $result;
-}
-
-function show_backorder_query($table_name, $search_column, $search_term, $offset, $results_per_page, $conn, $column_names, $search_status)
-{
-  // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
-
-  $sql = "SELECT customer_name, customer_po, created_at, product_name, amount, status_name FROM backorders JOIN customers ON backorders.customer_id = customers.id JOIN backorders_product_lookup ON backorders.id = backorders_product_lookup.backorder_id JOIN products ON backorders_product_lookup.product_id = products.id JOIN backorder_statuses ON backorders.backorder_status = backorder_statuses.id WHERE $search_column = :search_term LIMIT :offset, :results_per_page";
-  $stmt = $conn->prepare($sql);
-  $stmt->bindValue(':search_term', "$search_term", PDO::PARAM_STR);
-  $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-  $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
-  $stmt->execute();
-  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return $result;
-}
-
-function getTotalNumberOfBackorderRows($conn, $table_name, $search_column, $search_term, $search_status)
+function getTotalNumberOfBomRows($conn, $table_name, $search_term, $user_id)
 {
   // Get the total number of rows in the table, filtered by the search term
-  $sql = "SELECT customer_name, customer_po, created_at, product_name, amount, backorder_status FROM backorders JOIN customers ON backorders.customer_id = customers.id JOIN backorders_product_lookup ON backorders.id = backorders_product_lookup.backorder_id JOIN products ON backorders_product_lookup.product_id = products.id JOIN backorder_statuses ON backorders.backorder_status = backorder_statuses.id WHERE ";
-
-  if ($search_column == 'everywhere') {
-    // Search all columns
-    $sql .= "CONCAT(customer_name, customer_po, created_at, product_name, backorder_status) LIKE :search_term ";
-  }
-  else {
-    // Search only the specified column
-    $sql .= "$search_column LIKE :search_term ";
-  }
-
-  $sql .= "AND backorder_status LIKE ";
-  if ($search_status == 1) {
-    $sql .= "1 ";
-  }
-  elseif ($search_status == 2) {
-    $sql .= "2 ";
-  }
-  elseif ($search_status == 3) {
-    $sql .= "3 ";
-  }
-  elseif ($search_status == 'all') {
-    $sql .= "'%' ";
-  }
+  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term AND bom_owner_u_fk = :user_id";
 
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -207,58 +189,43 @@ function getTotalNumberOfBackorderRows($conn, $table_name, $search_column, $sear
   return $total_rows;
 }
 
-function getTotalNumberOfBomRows($conn, $table_name, $search_term)
-{
-  // Get the total number of rows in the table, filtered by the search term
-  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term";
-
-  $stmt = $conn->prepare($sql);
-  $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
-  $stmt->execute();
-  $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-  $total_rows = $stmt->rowCount();
-  return $total_rows;
-}
-
-function bom_query($conn, $table_name, $search_term, $offset, $results_per_page)
+function bom_query($conn, $table_name, $search_term, $offset, $results_per_page, $user_id)
 {
   // Select a limited set of data from the table, based on the current page and number of results per page, filtered by the search term
 
-  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term LIMIT :offset, :results_per_page";
+  $sql = "SELECT bom_id, bom_name, bom_description FROM bom_names WHERE bom_name LIKE :search_term AND bom_owner_u_fk = :user_id LIMIT :offset, :results_per_page";
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':search_term', "%$search_term%", PDO::PARAM_STR);
   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
   $stmt->bindValue(':results_per_page', $results_per_page, PDO::PARAM_INT);
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $result;
 }
-
-function getBackordersCustomers($conn)
+/**
+ * Get all parts owned by a specified user from the database.
+ *
+ * @param PDO $conn The database connection object.
+ * @param int $user_id The ID of the user whose parts to retrieve.
+ *
+ * @return array An array of associative arrays representing the retrieved parts.
+ */
+function getAllParts($conn, $user_id)
 {
-  $stmt = $conn->query("SELECT id, customer_name FROM customers");
-  $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return $customers;
-}
-
-function getBackordersProducts($conn)
-{
-  $stmt = $conn->query("SELECT id, product_name FROM products");
-  $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return $products;
-}
-
-function getAllParts($conn)
-{
-  $stmt = $conn->query("SELECT part_id, part_name FROM parts");
+  $stmt = $conn->prepare("SELECT part_id, part_name
+                        FROM parts
+                        WHERE part_owner_u_fk = :user_id");
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);       
+  $stmt->execute();                 
   $all_parts = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $all_parts;
 }
 
-function getAllBoms($conn)
+function getAllBoms($conn, $user_id)
 {
-  $stmt = $conn->query("SELECT bom_id, bom_name FROM bom_names");
+  $stmt = $conn->query("SELECT bom_id, bom_name FROM bom_names WHERE bom_owner_u_id = :user_id");
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $boms = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $boms;
 }
@@ -282,26 +249,17 @@ function getBomName($conn, $bom_id)
   $bom_name = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $bom_name;
 }
-function createBackorder($conn, $customer_id, $customer_po)
-{
-  $stmt = $conn->prepare("INSERT INTO backorders (id, customer_id, customer_po, created_at) VALUES (NULL, :customer_id, :customer_po, current_timestamp())");
-  $stmt->bindParam(':customer_id', $customer_id);
-  $stmt->bindParam(':customer_po', $customer_po);
-  $stmt->execute();
 
-  $new_id = $conn->lastInsertId();
-  return $new_id;
-}
-
-function createBom($conn, $bom_name, $bom_description = NULL)
+function createBom($conn, $bom_name, $bom_description = NULL, $user_id)
 {
   $stmt = $conn->prepare("INSERT INTO bom_names (
-                            bom_id, bom_name, bom_description
+                            bom_id, bom_name, bom_description, bom_owner_g_fk, bom_owner_u_fk
                         ) VALUES (
-                            NULL, :bom_name, :bom_description
+                            NULL, :bom_name, :bom_description, NULL, :user_id
                         )");
   $stmt->bindParam(':bom_name', $bom_name, PDO::PARAM_STR);
   $stmt->bindParam(':bom_description', $bom_description, PDO::PARAM_STR);
+  $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
 
   $new_id = $conn->lastInsertId();
@@ -341,21 +299,23 @@ function getBomElements($conn, $bom_id)
   return $elements;
 }
 
-function insertBackorderProducts($conn, $new_id, $product_id, $amount)
+/**
+ * Update a row in the database table with a new value for a specified column.
+ *
+ * @param PDO $conn The database connection object.
+ * @param int $id The ID of the row to update.
+ * @param string $id_field The name of the ID column in the table, e.g. part_id, bom_id, ...
+ * @param string $column The name of the column to update.
+ * @param string $table_name The name of the table to update.
+ * @param mixed $new_value The new value to set for the specified column.
+ * 
+ * @return void
+ */
+function updateRow($conn, $id, $id_field, $column, $table_name, $new_value)
 {
-  $stmt = $conn->prepare("INSERT INTO backorders_product_lookup (id, backorder_id, product_id, amount) VALUES (NULL, :backorder_id, :product_id, :amount)");
-  $stmt->bindParam(':backorder_id', $new_id);
-  $stmt->bindParam(':product_id', $product_id);
-  $stmt->bindParam(':amount', $amount);
-  $stmt->execute();
-}
-
-function updateRow($conn, $part_id, $column, $table_name, $new_value)
-{
-  // bindParam is only for values, not for identifiers like table or column names
-  $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE part_id = :part_id");
+  $stmt = $conn->prepare("UPDATE " . $table_name . " SET " . $column . " = :new_value WHERE " . $id_field . " = :id");
   $stmt->bindParam(':new_value', $new_value);
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
 }
 
@@ -413,10 +373,12 @@ function stockChange($conn, $part_id, $from_location, $to_location, $quantity, $
   return $new_id;
 }
 
-function getLocations($conn)
+function getLocations($conn, $user_id)
 {
   $stmt = $conn->prepare("SELECT *
-                          FROM location_names");
+                          FROM location_names
+                          WHERE location_owner_u_fk = :user_id");
+  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
   $loc = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $loc;
@@ -518,7 +480,15 @@ function createUser($conn, $email, $passwd, $name)
   $new_id = $conn->lastInsertId();
   return $new_id;
 }
-
+/**
+ * Insert new row into stock_levels table
+ *
+ * @param PDO $conn The PDO object for connecting to the database
+ * @param int $part_id Part ID for which to create the stock level entry
+ * @param int $to_location ID of location for which to create stock level entry
+ * @param int $quantity Quantity of stock level entry
+ * @return int ID of newly created stock level entry
+ */
 function stockEntry($conn, $part_id, $to_location, $quantity)
 {
   $stmt = $conn->prepare("INSERT INTO stock_levels (
@@ -535,9 +505,18 @@ function stockEntry($conn, $part_id, $to_location, $quantity)
   return $new_id;
 }
 
-function deletePart($conn, $part_id)
+/**
+ * Delete a row in a database table by its ID column name and ID
+ *
+ * @param PDO $conn The PDO object for connecting to the database
+ * @param int $id The ID of the row to be deleted
+ * @param string $table The name of the table
+ * @param string $column The column name in which to find the ID
+ * @return void
+ */
+function deleteRowById($conn, $id, $table, $column)
 {
-  $stmt = $conn->prepare("DELETE FROM parts WHERE part_id = :part_id");
-  $stmt->bindParam(':part_id', $part_id, PDO::PARAM_INT);
+  $stmt = $conn->prepare("DELETE FROM " . $table . " WHERE " . $column . " = :id");
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
 }
