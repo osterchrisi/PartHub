@@ -31,10 +31,10 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <div class="row">
     <div class="col-3">
       <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input class="form-control" type="text" id="search" name="search" placeholder="Search BOMs...">
+        <input class="form-control form-control-sm" type="text" id="search" name="search" placeholder="Search BOMs...">
     </div>
     <div class="col-1">
-      <button type="submit" name="submit" class="btn btn-primary">Show Results</button>
+      <button type="submit" name="submit" class="btn btn-sm btn-primary">Show Results</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -43,16 +43,19 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <?php generateResultsDropdown($results_per_page); ?>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-outline-primary" onclick="displayBomCreate()">Add BOM</button>
+      <button type="button" class="btn btn-sm btn-outline-primary" onclick="displayBomCreate()">Add BOM</button>
     </div>
     </form>
     <div class="col">
       <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label for="formFile" class="form-label">Select CSV file to upload. Maximum 1000 lines per file</label>
-          <input class="form-control" type="file" id="formFile" name="csvFile" accept=".csv">
+        <div class="row">
+          <div class="col-1">
+          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+            data-bs-target="#bomUploadForm">Upload</button></div>
+            <div class="col">
+          <div class="collapse collapse-horizontal" id="bomUploadForm"><input class="form-control form-control-sm"
+              type="file" id="formFile" name="csvFile" accept=".csv"></div></div>
         </div>
-        <button type="submit" class="btn btn-primary" name="apply">Upload</button>
       </form>
     </div>
   </div>
@@ -77,13 +80,13 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
       $bom_list = bom_query($conn, $table_name, $search_term, $offset, $results_per_page, $user_id);
 
-      echo "<br>Displaying $total_rows search results";
-
+      // echo "<br>Displaying $total_rows search results";
+  
       echo "<div class='row'>";
-      echo "<div class='col-6' id='table-window'>"; // Display BOMs
+      echo "<div class='col-6' id='table-window' style='max-width: 90%;'>"; // Display BOMs
       buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $id_field);
       echo "</div>";
-      echo "<div class='col-6' id='info-window' style='border:1px solid rgba(0, 255, 255, 0.1)'>"; // Display additional data on BOM
+      echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center info-window' id='info-window' style='max-width: 90%;'>"; // Display additional data on BOM
       echo "<h6><br>Click on a row in the table</h6>";
       echo "</div>";
       echo "</div>";

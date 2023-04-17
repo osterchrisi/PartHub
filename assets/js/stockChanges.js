@@ -3,7 +3,6 @@ var to_location_exists = false;
 
 // Creat the "To Location" dropdown
 function toStockLocationDropdown(locations) {
-    console.log(locations);
     var div = document.getElementById("ToStockLocationDiv");
     var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
     for (var i = 0; i < locations.length; i++) {

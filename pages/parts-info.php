@@ -58,12 +58,9 @@ $locations = getLocations($conn, $user_id);
       <!-- Stock movement buttons -->
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Stock:" disabled readonly>
-        <button type="button" class="btn btn-outline-primary"
-          onclick='callStockModal("1", <?php echo json_encode($locations); ?>);'>Add</button>
-        <button type="button" class="btn btn-outline-primary"
-          onclick='callStockModal("0", <?php echo json_encode($locations); ?>);'>Move</button>
-        <button type="button" class="btn btn-outline-primary"
-          onclick='callStockModal("-1", <?php echo json_encode($locations); ?>);'>Reduce</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick='callStockModal("1", <?php echo json_encode($locations); ?>);'>Add</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick='callStockModal("0", <?php echo json_encode($locations); ?>);'>Move</button>
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick='callStockModal("-1", <?php echo json_encode($locations); ?>);'>Reduce</button>
       </div>
       <br><br>
 

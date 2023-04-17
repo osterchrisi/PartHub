@@ -42,7 +42,7 @@ $categories = getCategories($conn);
   <div class="row">
     <div class="col-3">
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="text" class="form-control" id="search" name="search" placeholder="Search parts..."
+        <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="Search parts..."
           value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
         <input type="text" class="form-control" id="filter" placeholder="Filter results on this page...">
     </div>
@@ -55,8 +55,8 @@ $categories = getCategories($conn);
 
     </div>
     <div class="col-1">
-      <button type="submit" class="btn btn-primary" name="apply">Search</button><br><br>
-      <button type="button" class="btn btn-outline-primary" onclick='callPartEntryModal();'>Enter New</button>
+      <button type="submit" class="btn btn-sm btn-primary" name="apply">Search</button><br><br>
+      <button type="button" class="btn btn-sm btn-outline-primary" onclick='callPartEntryModal();'>Enter New</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>

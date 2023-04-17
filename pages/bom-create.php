@@ -31,13 +31,13 @@ try {
     <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
         <div class="row">
             <div class="col-3">
-                <input type="text" class="form-control" id="bom_name" name="bom_name" placeholder="Enter BOM title">
+                <input type="text" class="form-control form-control-sm" id="bom_name" name="bom_name" placeholder="Enter BOM title">
                 <br>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-sm btn-outline-primary"
                     onclick='addFields(<?php echo json_encode($parts); ?>)'>Add Parts</button>
                 <br><br>
                 <br>
-                <button type="submit" name="submit" class="btn btn-secondary">Submit</button>
+                <button type="submit" name="submit" class="btn btn-sm btn-primary">Submit</button>
             </div>
             <div class="col-9" id="dynamicAddParts">
                 <!-- Added Parts go here -->
@@ -75,7 +75,7 @@ try {
         // Create a new select (dropdown) element
         var select = document.createElement("select");
         select.name = "dynamic_field[]";
-        select.className = "form-select";
+        select.className = "form-select form-select-sm";
         select.id = "bom-element-" + n;
 
         // Create options for the select element using the passed parts array/JSON
@@ -88,12 +88,12 @@ try {
 
         // Create input field for entering the amount of elements
         var amountGroup = document.createElement("div");
-        amountGroup.className = "input-group mb-1";
+        amountGroup.className = "input-group input-group-sm";
 
         var amount = document.createElement("input");
         amount.type = "text";
         amount.name = "dynamic_field[]";
-        amount.className = "form-control";
+        amount.className = "form-control form-control-sm";
         amount.placeholder = "Pcs";
         amount.value = "1";
 
@@ -123,7 +123,7 @@ try {
         // Create a new button to remove this row
         var removeBtn = document.createElement("button");
         removeBtn.textContent = "X";
-        removeBtn.className = "btn";
+        removeBtn.className = "btn btn-sm";
 
         // Remove row functionality
         removeBtn.addEventListener("click", function () {
