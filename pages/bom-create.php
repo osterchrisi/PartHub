@@ -89,6 +89,7 @@ try {
         amount.name = "dynamic_field[]";
         amount.className = "form-control";
         amount.placeholder = "Pcs";
+        amount.value = "1";
 
         // Allow only numbers to be typed in amount field
         amount.addEventListener("keypress", function (evt) {
@@ -121,7 +122,7 @@ try {
         col3.appendChild(removeBtn);
 
         // Add the row to the container and the columns to the row
-        container.appendChild(row);
+        container.insertBefore(row, container.firstChild);
         row.appendChild(col1);
         row.appendChild(col2);
         row.appendChild(col3);
