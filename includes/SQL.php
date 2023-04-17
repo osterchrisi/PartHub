@@ -250,15 +250,16 @@ function getBomName($conn, $bom_id)
   return $bom_name;
 }
 
-function createBom($conn, $bom_name, $bom_description = NULL)
+function createBom($conn, $bom_name, $bom_description = NULL, $user_id)
 {
   $stmt = $conn->prepare("INSERT INTO bom_names (
-                            bom_id, bom_name, bom_description
+                            bom_id, bom_name, bom_description, bom_owner_g_fk, bom_owner_u_fk
                         ) VALUES (
-                            NULL, :bom_name, :bom_description
+                            NULL, :bom_name, :bom_description, NULL, :user_id
                         )");
   $stmt->bindParam(':bom_name', $bom_name, PDO::PARAM_STR);
   $stmt->bindParam(':bom_description', $bom_description, PDO::PARAM_STR);
+  $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
   $stmt->execute();
 
   $new_id = $conn->lastInsertId();

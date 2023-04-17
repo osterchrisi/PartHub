@@ -39,7 +39,7 @@ try {
                 <br>
                 <button type="submit" name="submit" class="btn btn-secondary">Submit</button>
             </div>
-            <div class="col-6" id="dynamicAddParts">
+            <div class="col-9" id="dynamicAddParts">
                 <!-- Added Parts go here -->
             </div>
         </div>
@@ -58,14 +58,17 @@ try {
         // Create a row and three columns for all the elements
         var row = document.createElement("div");
         row.className = "row";
-        row.style.marginBottom = "24px";
+        // row.style.marginBottom = "24px";
 
+        // Part Dropdown
         var col1 = document.createElement("div");
-        col1.className = "col-6";
+        col1.className = "col-8";
 
+        // Quantity Field
         var col2 = document.createElement("div");
         col2.className = "col-3";
 
+        // Remove Button
         var col3 = document.createElement("div");
         col3.className = "col-1";
 

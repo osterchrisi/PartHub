@@ -3,6 +3,7 @@
  * @file This script takes an array of 'amound x part' and creates a BOM in the SQL table
  */
 $basename = basename(__FILE__);
+require_once('../includes/head.html');
 include '../config/credentials.php';
 include 'SQL.php';
 
@@ -16,7 +17,7 @@ if ($bom_name) {
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
     // First, insert new BOM
-    $new_id = createBom($conn, $bom_name, $bom_description);
+    $new_id = createBom($conn, $bom_name, $bom_description, $user_id);
     }
     catch (Exception $e) {
         echo "<br>Error: " . $e->getMessage();
