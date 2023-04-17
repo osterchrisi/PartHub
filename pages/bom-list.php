@@ -46,6 +46,15 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <button type="button" class="btn btn-outline-primary" onclick="displayBomCreate()">Add BOM</button>
     </div>
     </form>
+    <div class="col">
+      <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Select CSV file to upload. Maximum 1000 lines per file</label>
+          <input class="form-control" type="file" id="formFile" name="csvFile" accept=".csv">
+        </div>
+        <button type="submit" class="btn btn-primary" name="apply">Upload</button>
+      </form>
+    </div>
   </div>
 
   <?php
