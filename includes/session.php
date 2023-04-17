@@ -10,7 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Do not redirect on these pages
 $doNothingArray = ['login.php',
                     'demo.php',
-                    'parts-info.php',
+                    // 'parts-info.php', //if I keep it in, it doesn't have access to the user_id for locations
                     'stockModals.php',
                     'show-bom.php',
                     'stock-history.php',
