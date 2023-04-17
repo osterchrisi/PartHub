@@ -18,14 +18,14 @@ try {
 ?>
 
 <div class="container-fluid">
-<?php
-  // Check if called within the info window
-  if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
-    // Don't include the navbar
-  }
-  else {
-    require_once('../includes/navbar.php');
-  } ?>
+    <?php
+    // Check if called within the info window
+    if (isset($_GET['hideNavbar']) && $_GET['hideNavbar'] == 'true') {
+        // Don't include the navbar
+    }
+    else {
+        require_once('../includes/navbar.php');
+    } ?>
     <br>
     <h4>Create new BOM</h4>
     <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
@@ -84,12 +84,23 @@ try {
         }
 
         // Create input field for entering the amount of elements
+        var amountGroup = document.createElement("div");
+        amountGroup.className = "input-group mb-3";
+
         var amount = document.createElement("input");
         amount.type = "text";
         amount.name = "dynamic_field[]";
         amount.className = "form-control";
         amount.placeholder = "Pcs";
         amount.value = "1";
+
+        var amountAddon = document.createElement("span");
+        amountAddon.className = "input-group-text";
+        amountAddon.textContent = "Pcs";
+
+        amountGroup.appendChild(amount);
+        amountGroup.appendChild(amountAddon);
+
 
         // Allow only numbers to be typed in amount field
         amount.addEventListener("keypress", function (evt) {
@@ -118,7 +129,7 @@ try {
 
         // Add the select element, text input and remove row button
         col1.appendChild(select);
-        col2.appendChild(amount);
+        col2.appendChild(amountGroup);
         col3.appendChild(removeBtn);
 
         // Add the row to the container and the columns to the row
