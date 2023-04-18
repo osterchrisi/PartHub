@@ -11,6 +11,7 @@ include 'SQL.php';
 
 // Get variables from the entry script
 $bom_name = $_POST['bom_name'];
+$bom_description = $_POST['bom_description'];
 $dynamicFields = $_POST['dynamic_field'];
 
 if ($bom_name) {
@@ -44,7 +45,7 @@ if ($bom_name) {
         }
         $i++;
     }
-    echo $new_id;
+    echo json_encode(array('BOM ID' => $new_id));
 
 }
 else {echo "You somehow managed to not enter a BOM name";}

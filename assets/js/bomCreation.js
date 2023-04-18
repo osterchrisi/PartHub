@@ -31,33 +31,28 @@ function addBomManually() {
     bn = $("#bom_name").val(); // BOM Name
     bd = $("#bom_description").val(); // BOM Description
 
-   // BOM Elements
-   var df = {};
-   var selects = document.getElementsByName("dynamic_field[]");
-   for (var i = 0; i < selects.length; i += 2) {
-       var partId = selects[i].value;
-       var quantity = selects[i + 1].value;
-       df[i] = partId;
-       df[i + 1] = quantity;
-   }
+    // BOM Elements
+    var df = {};
+    var selects = document.getElementsByName("dynamic_field[]");
+    for (var i = 0; i < selects.length; i += 2) {
+        var partId = selects[i].value;
+        var quantity = selects[i + 1].value;
+        df[i] = partId;
+        df[i + 1] = quantity;
+    }
 
     $.post('/PartHub/includes/bom-processing.php',
         { bom_name: bn, bom_description: bd, dynamic_field: df },
         function (response) {
-            //     // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
-            //     var partId = JSON.parse(response)["Part ID"];
-            //     updatePartsInfo(partId);
-            //     $('#mPartEntry').modal('hide'); // Hide modal
-            //     removeClickListeners('#addPart'); // Remove click listener from Add Part button
+            // Extract 'BOM ID' from response
+            var bomId = JSON.parse(response)["BOM ID"];
+            updateBomInfo(bomId);
 
-            //     // Rebuild parts table
-            //     var queryString = window.location.search;
-            //     rebuildPartsTable(queryString);
-            //     //TODO: Select new row
-            // var url = '/PartHub/includes/bom-processing.php?' + $.param({ bom_name: bn, bom_description: bd, dynamic_field: df });
+            // Rebuild BOM list table
+            var queryString = window.location.search;
+            rebuildBomListTable(queryString);
 
-            // console.log(url);
-            console.log("New BOM ID:", response);
+            //TODO: Select new row
         });
 }
 

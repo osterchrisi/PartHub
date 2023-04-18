@@ -157,7 +157,7 @@ function rebuildPartsTable(queryString) {
 }
 
 /**
- * Rebuild the parts table after adding or deleting parts
+ * Rebuild the BOM list table after adding or deleting BOMs
  * @param {string} queryString 
  */
 function rebuildBomListTable(queryString) {
@@ -205,7 +205,7 @@ function definePartsTableActions($table, $menu) {
 };
 
 /**
- * Defines row click actions and prepares / attaches a context menu for the parts table
+ * Defines row click actions and prepares / attaches a context menu for the BOM list table
  * 
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
