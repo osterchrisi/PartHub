@@ -131,7 +131,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $bom_id
     foreach ($nice_columns as $column_header) {
         if ($column_header == 'Quantity needed') {
             // Align quantity headers right
-            echo "<th class='editable' data-halign='right' data-field='$column_header'>$column_header</th>";
+            echo "<th data-halign='right' data-field='$column_header'>$column_header</th>";
         }
         elseif ($column_header == 'Total stock available') {
             // Align quantity headers right
@@ -178,6 +178,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $bom_id
                 // Align right and add necessary data-attributes for inline editing
                 echo "<td
                         style='text-align:right'
+                        class='editable'
                         data-id=" . $bom_elements_id . "
                         data-column=" . $column_data . "
                         data-table_name='bom_elements'
