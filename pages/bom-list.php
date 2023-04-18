@@ -28,7 +28,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <h4>BOM List</h4>
 
   <!-- Search Form -->
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-3">
       <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input class="form-control form-control-sm" type="text" id="search" name="search" placeholder="Search BOMs...">
@@ -74,7 +74,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       echo "<div class='col-6' id='table-window' style='max-width: 90%;'>"; // Display BOMs
       buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $id_field);
       echo "</div>";
-      echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center info-window' id='info-window' style='max-width: 90%;'>"; // Display additional data on BOM
+      echo "<div class='col d-flex h-50 sticky-top resizable justify-content-center info-window pb-3' id='info-window' style='max-width: 90%;'>"; // Display additional data on BOM
       echo "<h6><br>Click on a row in the table</h6>";
       echo "</div>";
       echo "</div>";

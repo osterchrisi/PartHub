@@ -41,17 +41,31 @@ try {
         </li>
     </ul>
 
+    <!-- BOM Creation Tabs Content -->
     <div class="tab-content" id="bomCreationTabsContent">
-        <div class="tab-pane fade show active" id="bomAddCSV" role="tabpanel" tabindex="0">
+
+        <!-- Fixed BOM Name and Description fields -->
+        <div class="mt-3">
+            <div class="row">
+                <div class="col">
+                    <input class="form-control form-control-sm" placeholder="BOM Name" required>
+                </div>
+                <div class="col">
+                    <input class="form-control form-control-sm" placeholder="BOM Description" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload CSV Tab -->
+        <div class="tab-pane fade show active mt-3" id="bomAddCSV" role="tabpanel" tabindex="0">
             <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
-                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-                    data-bs-target="#bomUploadForm">Upload</button>
-                <div class="collapse collapse-horizontal" id="bomUploadForm"><input class="form-control form-control-sm"
-                        type="file" id="formFile" name="csvFile" accept=".csv"></div>
+                <input class="form-control form-control-sm mb-3" type="file" id="formFile" name="csvFile" accept=".csv">
+                <button type="button" class="btn btn-sm btn-primary" id="submitBomUpload" disabled>Upload</button>
             </form>
         </div>
 
-        <div class="tab-pane fade" id="bomAddManually" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <!-- Manually add BOM Tab -->
+        <div class="tab-pane fade mt-3" id="bomAddManually" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
             <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
                 <div class="row">
                     <div class="col-3">
@@ -74,6 +88,20 @@ try {
 
 
 </div>
+
+<script>
+    const fileInput = document.getElementById("formFile");
+
+    fileInput.addEventListener("change", () => {
+        const button = document.getElementById('submitBomUpload');
+        if (fileInput.files.length > 0 && fileInput.files[0].type === "text/csv") {
+            button.disabled = "false";
+        }
+        else {
+            button.disabled = "true";
+        }
+    });
+</script>
 
 
 <script>
