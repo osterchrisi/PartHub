@@ -19,7 +19,7 @@ $table_name = "part_categories";
   $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 
   // SQL query to retrieve category data
-  $categories = getCategories($conn);
+  $categories = getCategories($conn, $user_id);
 
   function generateTreeList($arr)
   {
