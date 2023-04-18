@@ -262,7 +262,8 @@ function hideContextMenu($menu) {
 //TODO: Extract functions
 //TODO: Remove dropdown upon clicking out of the box or selecting same option again
 function inlineProcessing() {
-  $('.bootstrap-table').on('dbl-click-cell.bs.table', function (e, field, value, row, $element) {
+  $('.bootstrap-table').on('dblclick', '.editable', function (e) {
+    var $element = $(this);
     var cell = $element;
     // Check if the cell is already being edited
     if (cell.hasClass('editing')) {
