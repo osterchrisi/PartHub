@@ -225,7 +225,6 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             echo "<th data-sortable='true' data-field='$column_header'>$column_header</th>";
         }
     }
-    echo '<th data-field="state" data-checkbox="true"></th>';
     echo "</tr>";
     echo "</thead>";
 

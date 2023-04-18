@@ -39,8 +39,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
           <div class="col-3">
             <input class="form-control" placeholder="Quantity" id="addPartQuantity" required>
           </div>
-          <div class="col"><input class="form-select" placeholder="Storage Location" id="addPartLocId" required>
-          </div>
+          <div class="col"><div class="input-group" id="addPartLocDropdown"></div></div>
         </div>
         <br>
         <button class="btn btn-sm" id="showAdvanced" type="button" data-bs-toggle="collapse"
