@@ -109,7 +109,7 @@ function buildBomListTable($bom_list, $db_columns, $nice_columns, $table_name, $
     echo "</div>";
 }
 
-function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, $width = "100%")
+function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $bom_id, $conn, $width = "100%")
 {
     echo '<div class="table-responsive" style="overflow-x:auto; font-size:12px">';
     echo '<table
@@ -129,7 +129,11 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
     echo "<thead class='table table-sm table-dark'>";
     echo "<tr>";
     foreach ($nice_columns as $column_header) {
-        if ($column_header == 'Quantity needed' || $column_header == 'Total stock available') {
+        if ($column_header == 'Quantity needed') {
+            // Align quantity headers right
+            echo "<th class='editable' data-halign='right' data-field='$column_header'>$column_header</th>";
+        }
+        elseif ($column_header == 'Total stock available') {
             // Align quantity headers right
             echo "<th data-halign='right' data-field='$column_header'>$column_header</th>";
         }
@@ -152,6 +156,7 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
 
         $part_id = $row['part_id'];
         $part_name = $row['part_name'];
+        $bom_elements_id = $row['bom_elements_id'];
 
         // This is the popover mini stock table
         $db_columns_inline = array('location_name', 'stock_level_quantity');
@@ -170,8 +175,14 @@ function buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn, 
                 echo '<td style="text-align:right"><a tabindex="0" role="button" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-title="Stock for ' . $part_name . '" data-bs-html="true" data-bs-content="' . $inline_table_content . '" data-bs-sanitize="false" href="#">' . $total_stock . '</a></td>';
             }
             elseif ($column_data == 'element_quantity') {
-                // Align quantity cells right
-                echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . ">" . $row[$column_data] . "</td>";
+                // Align right and add necessary data-attributes for inline editing
+                echo "<td
+                        style='text-align:right'
+                        data-id=" . $bom_elements_id . "
+                        data-column=" . $column_data . "
+                        data-table_name='bom_elements'
+                        data-id_field='bom_elements_id'>"
+                        . $row[$column_data] . "</td>";
             }
             elseif ($column_data == 'can_build') {
                 // Align quantity cells right
@@ -250,7 +261,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             elseif ($column_data == 'state') {
                 ;
             }
-            elseif ($column_data == 'state'){
+            elseif ($column_data == 'state') {
                 ;
             }
             else { // Any other table data available

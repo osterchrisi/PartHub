@@ -41,13 +41,14 @@ $bom_elements = getBomElements($conn, $bom_id);
 
   <!-- BOM Elements Table -->
   <?php
-  // print_r(($bom_elements));
+  print_r(($bom_elements));
   include '../config/bom-details-columns.php';
-  buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $conn); ?>
+  buildBomDetailsTable($db_columns, $nice_columns, $bom_elements, $bom_id, $conn); ?>
 </div>
 
 <script>
   bootstrapBomDetailsTable();
+  inlineProcessing();
 
   // Allow extra HTML elements for the popover mini stock table
   var myDefaultAllowList = bootstrap.Tooltip.Default.allowList

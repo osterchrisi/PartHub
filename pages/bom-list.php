@@ -42,7 +42,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
     <div class="col-1">
       <?php generateResultsDropdown($results_per_page); ?>
     </div>
-    <div class="col-1">
+    <div class="col-1 px-0">
       <button type="button" class="btn btn-sm btn-outline-primary" onclick="displayBomCreate()">Add BOM</button>
     </div>
     </form>

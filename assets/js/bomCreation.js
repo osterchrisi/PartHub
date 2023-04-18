@@ -51,6 +51,7 @@ function addBomManually() {
             // Rebuild BOM list table
             var queryString = window.location.search;
             rebuildBomListTable(queryString);
+            inlineProcessing();
 
             //TODO: Select new row
         });
