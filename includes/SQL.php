@@ -242,7 +242,7 @@ function getPartName($conn, $part_id)
 
 function getBomName($conn, $bom_id)
 {
-  $sql = "SELECT bom_name FROM bom_names WHERE bom_id = :bom_id";
+  $sql = "SELECT bom_name, bom_description FROM bom_names WHERE bom_id = :bom_id";
   $stmt = $conn->prepare($sql);
   $stmt->bindValue(':bom_id', $bom_id, PDO::PARAM_INT);
   $stmt->execute();

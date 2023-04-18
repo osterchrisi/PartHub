@@ -11,8 +11,10 @@ include '../includes/tables.php';
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $bom_id = getSuperGlobal('id'); // It's the BOM ID
 
-// Get BOM name 
-$bom_name = getBomName($conn, $bom_id)[0]['bom_name'];
+// Get BOM name and description
+$bom_info = getBomName($conn, $bom_id);
+$bom_name = $bom_info[0]['bom_name'];
+$bom_description = $bom_info[0]['bom_description'];
 
 // Get BOM elements
 $bom_elements = getBomElements($conn, $bom_id);
@@ -32,6 +34,10 @@ $bom_elements = getBomElements($conn, $bom_id);
   <h4>
     <?php echo $bom_name; ?>
   </h4>
+
+  <h5>
+    <?php echo $bom_description;?>
+</h5>
 
   <!-- BOM Elements Table -->
   <?php
