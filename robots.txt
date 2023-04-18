@@ -1,7 +1,0 @@
-User-agent: Googlebot
-Disallow: /assets
-Disallow: /config
-Disallow: /legacy
-Disallow: /vendor
-Disallow: /includes
-

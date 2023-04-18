@@ -1,5 +1,6 @@
 // Modify the "Save Changes" click listener when the modal is toggled
-function callPartEntryModal() {
+function callPartEntryModal(locations) {
+  addPartLocationDropdown(locations)
   $('#mPartEntry').modal('show'); // Show modal
   validateForm('partEntryForm', 'addPart');
 }
@@ -17,7 +18,7 @@ function validateForm(formId, button) {
       // Form is valid
       pn = $("#addPartName").val(); // Part Name
       q = $("#addPartQuantity").val(); // Quantity
-      l = $("#addPartLocId").val(); // Quantity
+      l = $("#addPartLocId").val(); // Location
 
       // Inset new part into table
       $.post('/PartHub/includes/create-part.php',
@@ -48,4 +49,16 @@ function validateForm(formId, button) {
       });
     }
   });
+}
+
+// Create the part entry location dropdown
+function addPartLocationDropdown(locations) {
+  var div = document.getElementById("addPartLocDropdown");
+  var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
+  for (var i = 0; i < locations.length; i++) {
+      selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+  }
+  selectHTML += "</select>";
+  div.innerHTML = selectHTML;
+  $("#addPartLocSelect").selectize();
 }

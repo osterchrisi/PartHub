@@ -319,10 +319,13 @@ function updateRow($conn, $id, $id_field, $column, $table_name, $new_value)
   $stmt->execute();
 }
 
-function getCategories($conn)
+function getCategories($conn, $user_id)
 {
-  $sql = "SELECT * FROM part_categories";
+  $sql = "SELECT *
+          FROM part_categories
+          WHERE part_category_owner_u_fk = :user_id";
   $stmt = $conn->prepare($sql);
+  $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
   $stmt->execute();
   $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $categories;

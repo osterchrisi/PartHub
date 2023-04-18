@@ -22,6 +22,7 @@ $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $categories = getCategories($conn);
+$locations = getLocations($conn, $user_id);
 ?>
 
 <!-- Stock Modal -->
@@ -56,7 +57,7 @@ $categories = getCategories($conn);
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-sm btn-primary" name="apply">Search</button><br><br>
-      <button type="button" class="btn btn-sm btn-outline-primary" onclick='callPartEntryModal();'>Enter New</button>
+      <button type="button" class="btn btn-sm btn-outline-primary" onclick='callPartEntryModal(<?php echo json_encode($locations); ?>);'>Enter New</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
