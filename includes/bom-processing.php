@@ -46,5 +46,5 @@ if ($bom_name) {
     header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
     exit;
 }
-else {echo "You didn't enter a BOM name";}
+else {echo "You didn't enter a BOM name"; var_dump($_POST);}
 ?>
