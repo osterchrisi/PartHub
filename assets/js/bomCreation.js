@@ -48,12 +48,12 @@ function addBomManually() {
             var bomId = JSON.parse(response)["BOM ID"];
             updateBomInfo(bomId);
 
-            // Rebuild BOM list table
+            // Rebuild BOM list table and select new row
             var queryString = window.location.search;
-            rebuildBomListTable(queryString);
+            $.when(rebuildBomListTable(queryString)).done(function () {
+                $('tr[data-id="' + bomId + '"]').addClass('selected selected-last');
+            });
             inlineProcessing();
-            $('tr[data-id="' + bomId + '"]').addClass('selected selected-last');
-            //TODO: Select new row
         });
 }
 

@@ -158,10 +158,11 @@ function rebuildPartsTable(queryString) {
 
 /**
  * Rebuild the BOM list table after adding or deleting BOMs
- * @param {string} queryString 
+ * @param {string} queryString - The query string to send with the AJAX request
+ * @returns {Promise} - A promise that resolves when the table has been rebuilt
  */
 function rebuildBomListTable(queryString) {
-  $.ajax({
+  return $.ajax({
     url: '../includes/buildBomListTable.php' + queryString,
     success: function (data) {
       $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
@@ -170,7 +171,6 @@ function rebuildBomListTable(queryString) {
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
       defineBomListTableActions($table, $menu); // Define table row actions and context menu
-      // inlineProcessing();
     }
   });
 }
