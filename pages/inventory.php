@@ -21,7 +21,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $column_names = getColumnNames($conn, $table_name);
 $results_per_page = getSuperGlobal('resultspp', '50');
 
-$categories = getCategories($conn);
+$categories = getCategories($conn, $user_id);
 $locations = getLocations($conn, $user_id);
 ?>
 
