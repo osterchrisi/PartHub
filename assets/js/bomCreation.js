@@ -52,7 +52,7 @@ function addBomManually() {
             var queryString = window.location.search;
             rebuildBomListTable(queryString);
             inlineProcessing();
-
+            $('tr[data-id="' + bomId + '"]').addClass('selected selected-last');
             //TODO: Select new row
         });
 }

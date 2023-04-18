@@ -245,7 +245,7 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
     foreach ($result as $row) {
         // echo "<tr>";
         $part_id = $row['part_id'];
-        echo "<tr data-id=" . $row['part_id'] . " class='whatever'>";
+        echo "<tr data-id=" . $row['part_id'] . ">";
         foreach ($db_columns as $column_data) {
             // Removing the in-table links to stock levels again...
             if ($column_data == 'total_stock') {
@@ -256,13 +256,20 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
                 // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
                 echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
             }
+            // Category (editable category)
             elseif ($column_data == 'category_name') {
                 echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";
             }
+            // Select column (do nothing)
             elseif ($column_data == 'state') {
                 ;
             }
-            else { // Any other table data available
+            // Part ID (non-editable)
+            elseif ($column_data == 'part_id'){
+                echo "<td data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";      
+            }
+            // Any other table data available
+            else { 
                 echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";
             }
         }
