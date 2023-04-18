@@ -31,18 +31,15 @@ function addBomManually() {
     bn = $("#bom_name").val(); // BOM Name
     bd = $("#bom_description").val(); // BOM Description
 
-    // BOM Elements
-    var df = [];
-    var selects = document.getElementsByName("dynamic_field[]");
-    for (var i = 0; i < selects.length; i += 2) {
-        var partId = selects[i].value;
-        var quantity = selects[i + 1].value;
-        df.push({ part_id: partId, quantity: quantity });
-    }
-
-    console.log("bn = ", bn);
-    console.log("bd = ", bd);
-    console.log("df = ", df);
+   // BOM Elements
+   var df = {};
+   var selects = document.getElementsByName("dynamic_field[]");
+   for (var i = 0; i < selects.length; i += 2) {
+       var partId = selects[i].value;
+       var quantity = selects[i + 1].value;
+       df[i] = partId;
+       df[i + 1] = quantity;
+   }
 
     $.post('/PartHub/includes/bom-processing.php',
         { bom_name: bn, bom_description: bd, dynamic_field: df },
@@ -57,9 +54,10 @@ function addBomManually() {
             //     var queryString = window.location.search;
             //     rebuildPartsTable(queryString);
             //     //TODO: Select new row
-            var url = '/PartHub/includes/bom-processing.php?' + $.param({ bom_name: bn, bom_description: bd, dynamic_field: df });
+            // var url = '/PartHub/includes/bom-processing.php?' + $.param({ bom_name: bn, bom_description: bd, dynamic_field: df });
 
-            console.log(url);
+            // console.log(url);
+            console.log("New BOM ID:", response);
         });
 }
 

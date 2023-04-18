@@ -3,16 +3,18 @@
  * @file This script takes an array of 'amound x part' and creates a BOM in the SQL table
  */
 $basename = basename(__FILE__);
-require_once('../includes/head.html');
+// require_once('../includes/head.html');
+include 'session.php';
 include '../config/credentials.php';
 include 'SQL.php';
+
 
 // Get variables from the entry script
 $bom_name = $_POST['bom_name'];
 $dynamicFields = $_POST['dynamic_field'];
-var_dump($_POST);
 
 if ($bom_name) {
+    
     try {
     // Connect to database
     $conn = connectToSQLDB($hostname, $username, $password, $database_name);
@@ -42,10 +44,10 @@ if ($bom_name) {
         }
         $i++;
     }
-    // Redirect to showing the newly created BOM
-    //! Can't have ANY output before this, not even whitespaces
-    // header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
-    // exit;
+    echo $new_id;
+
 }
-else {echo "You didn't enter a BOM name"; var_dump($_POST);}
+else {echo "You somehow managed to not enter a BOM name";}
+
+
 ?>
