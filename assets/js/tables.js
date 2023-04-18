@@ -265,10 +265,12 @@ function inlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
     var $element = $(this);
     var cell = $element;
+    
     // Check if the cell is already being edited
     if (cell.hasClass('editing')) {
       return;
     }
+
     // Add editing class to the cell
     cell.addClass('editing');
 
@@ -278,6 +280,8 @@ function inlineProcessing() {
     // * It's a category cell
     if (cell.hasClass('category')) {
       // Get list of available categories and populate dropdown
+      //TODO: After changing everything to have an owner, I need to pass user_id here!!!
+      //! So, not tested after here - need to debug
       categories = $.ajax({
         type: 'GET',
         url: '../includes/getCategories.php',
