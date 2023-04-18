@@ -280,8 +280,6 @@ function inlineProcessing() {
     // * It's a category cell
     if (cell.hasClass('category')) {
       // Get list of available categories and populate dropdown
-      //TODO: After changing everything to have an owner, I need to pass user_id here!!!
-      //! So, not tested after here - need to debug
       categories = $.ajax({
         type: 'GET',
         url: '../includes/getCategories.php',
