@@ -46,18 +46,6 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <button type="button" class="btn btn-sm btn-outline-primary" onclick="displayBomCreate()">Add BOM</button>
     </div>
     </form>
-    <div class="col">
-      <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
-        <div class="row">
-          <div class="col-1">
-          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="collapse"
-            data-bs-target="#bomUploadForm">Upload</button></div>
-            <div class="col">
-          <div class="collapse collapse-horizontal" id="bomUploadForm"><input class="form-control form-control-sm"
-              type="file" id="formFile" name="csvFile" accept=".csv"></div></div>
-        </div>
-      </form>
-    </div>
   </div>
 
   <?php

@@ -28,22 +28,51 @@ try {
     } ?>
     <br>
     <h4>Create new BOM</h4>
-    <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
-        <div class="row">
-            <div class="col-3">
-                <input type="text" class="form-control form-control-sm" id="bom_name" name="bom_name" placeholder="Enter BOM title">
-                <br>
-                <button type="button" class="btn btn-sm btn-outline-primary"
-                    onclick='addFields(<?php echo json_encode($parts); ?>)'>Add Parts</button>
-                <br><br>
-                <br>
-                <button type="submit" name="submit" class="btn btn-sm btn-primary">Submit</button>
-            </div>
-            <div class="col-9" id="dynamicAddParts">
-                <!-- Added Parts go here -->
-            </div>
+
+    <!-- BOM Creation Tabs -->
+    <ul class="nav nav-tabs" id="bomCreationTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="bomUploadCsv" data-bs-toggle="tab" data-bs-target="#bomAddCSV"
+                type="button" role="tab">Upload</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="bomCreateManually" data-bs-toggle="tab" data-bs-target="#bomAddManually"
+                type="button" role="tab">Manually</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="bomCreationTabsContent">
+        <div class="tab-pane fade show active" id="bomAddCSV" role="tabpanel" tabindex="0">
+            <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="collapse"
+                    data-bs-target="#bomUploadForm">Upload</button>
+                <div class="collapse collapse-horizontal" id="bomUploadForm"><input class="form-control form-control-sm"
+                        type="file" id="formFile" name="csvFile" accept=".csv"></div>
+            </form>
         </div>
-    </form>
+
+        <div class="tab-pane fade" id="bomAddManually" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()">
+                <div class="row">
+                    <div class="col-3">
+                        <input type="text" class="form-control form-control-sm" id="bom_name" name="bom_name"
+                            placeholder="Enter BOM title">
+                        <br>
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                            onclick='addFields(<?php echo json_encode($parts); ?>)'>Add Parts</button>
+                        <br><br>
+                        <br>
+                        <button type="submit" name="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </div>
+                    <div class="col-9" id="dynamicAddParts">
+                        <!-- Added Parts go here -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </div>
 
 
