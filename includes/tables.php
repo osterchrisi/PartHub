@@ -262,9 +262,6 @@ function buildPartsTable($result, $db_columns, $nice_columns, $total_stock, $con
             elseif ($column_data == 'state') {
                 ;
             }
-            elseif ($column_data == 'state') {
-                ;
-            }
             else { // Any other table data available
                 echo "<td data-editable='true' class='editable' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $row[$column_data] . "</td>";
             }
