@@ -10,6 +10,7 @@ include 'SQL.php';
 // Get variables from the entry script
 $bom_name = $_POST['bom_name'];
 $dynamicFields = $_POST['dynamic_field'];
+var_dump($_POST);
 
 if ($bom_name) {
     try {
@@ -43,8 +44,8 @@ if ($bom_name) {
     }
     // Redirect to showing the newly created BOM
     //! Can't have ANY output before this, not even whitespaces
-    header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
-    exit;
+    // header("Location: ../pages/show-bom.php?id=" . urlencode($new_id));
+    // exit;
 }
 else {echo "You didn't enter a BOM name"; var_dump($_POST);}
 ?>

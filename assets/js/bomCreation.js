@@ -27,14 +27,11 @@ function checkBomName() {
 }
 
 function addBomManually() {
-    console.log("Here I am!");
 
-    bn = $("#bom_name").val(); // Part Name
-    bd = $("#bom_description").val(); // Quantity
+    bn = $("#bom_name").val(); // BOM Name
+    bd = $("#bom_description").val(); // BOM Description
 
-
-    // df = $("#addPartLocId").val(); // Location
-
+    // BOM Elements
     var df = [];
     var selects = document.getElementsByName("dynamic_field[]");
     for (var i = 0; i < selects.length; i += 2) {
@@ -60,7 +57,9 @@ function addBomManually() {
             //     var queryString = window.location.search;
             //     rebuildPartsTable(queryString);
             //     //TODO: Select new row
-            console.log("Success");
+            var url = '/PartHub/includes/bom-processing.php?' + $.param({ bom_name: bn, bom_description: bd, dynamic_field: df });
+
+            console.log(url);
         });
 }
 
