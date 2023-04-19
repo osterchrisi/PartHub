@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2023 at 04:12 PM
+-- Generation Time: Apr 19, 2023 at 12:22 PM
 -- Server version: 10.3.38-MariaDB-0ubuntu0.20.04.1
 -- PHP Version: 8.2.4
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `bom_elements` (
   PRIMARY KEY (`bom_elements_id`) USING BTREE,
   KEY `bom_elements_ibfk_2` (`part_id_fk`),
   KEY `bom_elements_ibfk_1` (`bom_id_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bom_elements`
@@ -62,21 +62,16 @@ INSERT INTO `bom_elements` (`bom_elements_id`, `bom_id_fk`, `part_id_fk`, `eleme
 (39, 30, 335, 30),
 (40, 30, 655, 40),
 (41, 30, 655, 50),
-(42, 31, 351, 234),
-(43, 32, 351, 23),
-(44, 32, 351, 23),
-(45, 32, 351, 3232),
-(46, 32, 351, 32),
-(47, 33, 351, 23),
-(48, 34, 629, 2),
-(49, 34, 532, 3),
-(50, 35, 618, 327),
-(51, 36, 351, 342),
-(52, 37, 351, 342),
-(53, 38, 351, 342),
-(54, 39, 351, 342),
-(55, 40, 351, 2345),
-(56, 40, 629, 2);
+(42, 31, 351, 2),
+(58, 42, 1148, 2),
+(59, 42, 849, 4),
+(60, 42, 477, 10),
+(61, 42, 567, 15),
+(62, 42, 1055, 4),
+(81, 62, 335, 1),
+(82, 63, 335, 1),
+(83, 68, 335, 1),
+(84, 68, 344, 3);
 
 -- --------------------------------------------------------
 
@@ -92,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `bom_names` (
   `bom_owner_u_fk` int(11) NOT NULL,
   PRIMARY KEY (`bom_id`),
   KEY `bom_owner_u_fk` (`bom_owner_u_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bom_names`
@@ -101,17 +96,13 @@ CREATE TABLE IF NOT EXISTS `bom_names` (
 INSERT INTO `bom_names` (`bom_id`, `bom_name`, `bom_description`, `bom_owner_g_fk`, `bom_owner_u_fk`) VALUES
 (28, 'First BOM', 'It\'s the first one!', NULL, -1),
 (29, 'Second BOM', 'Let\'s do another', NULL, -1),
-(30, '10 to 50', NULL, NULL, -1),
-(31, '234', NULL, NULL, -1),
-(32, 'Second BOM', NULL, NULL, -1),
-(33, '34r2', NULL, NULL, -1),
-(34, '4234', NULL, NULL, -1),
-(35, 'fc23', NULL, NULL, -1),
-(36, 'q34zt5', NULL, NULL, -1),
-(37, 'q34zt5', NULL, NULL, -1),
-(38, 'q34zt5', NULL, NULL, -1),
-(39, 'q34zt5', NULL, NULL, -1),
-(40, 'w43ret2345', NULL, NULL, -1);
+(30, '10 to 50 element quantities', 'Go figure', NULL, -1),
+(31, 'Luxury product', 'It\'s pricey!', NULL, -1),
+(42, 'New awesome product', 'Description added afterwards', NULL, -1),
+(62, 'name', 'desc', NULL, -1),
+(63, 'now it', 'works for sure', NULL, -1),
+(64, 'new', 'bom', NULL, -1),
+(68, 'Hectic Oscillator', 'It\'s, like, crazy', NULL, -1);
 
 -- --------------------------------------------------------
 
@@ -124,8 +115,10 @@ CREATE TABLE IF NOT EXISTS `bom_runs` (
   `bom_id_fk` int(11) NOT NULL,
   `bom_run_quantity` int(11) NOT NULL,
   `bom_run_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `bom_run_user_fk` int(11) NOT NULL,
   PRIMARY KEY (`bom_run_id`),
-  KEY `bom_id_fk` (`bom_id_fk`)
+  KEY `bom_runs_ibfk_1` (`bom_id_fk`),
+  KEY `bom_run_user_fk` (`bom_run_user_fk`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -218,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `parts` (
   KEY `part_owner_u_fk` (`part_owner_u_fk`),
   KEY `part_owner_g_fk` (`part_owner_g_fk`),
   KEY `part_name` (`part_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1655 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1748 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `parts`
@@ -275,7 +268,10 @@ INSERT INTO `parts` (`part_id`, `part_name`, `part_description`, `part_comment`,
 (1326, 'LM393', 'Dual voltage comparator', 'low power consumption, wide supply voltage range', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (1365, 'IRF540N', 'N-Channel MOSFET', 'high-current capability, low on-resistance, fast switching speed', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
 (1392, 'BC639', 'PNP transistor', 'good for switching and amplification', '0000-00-00 00:00:00', 1, 1, 1, -1, 1),
-(1491, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 1, 1, 1, 1);
+(1491, 'BC847B', 'Transistor NPN 45V 100mA SOT-23', 'Your general NPN transistor workhorse', '2023-03-07 00:24:12', 2, 1, 1, 1, 1),
+(1722, 'Newer value', 'Newest description', NULL, '2023-04-16 10:16:32', 1, 1, 1, -1, NULL),
+(1746, '^', NULL, NULL, '2023-04-19 10:09:01', 1, 1, 1, -1, NULL),
+(1747, 'sdg', NULL, NULL, '2023-04-19 10:11:13', 1, 1, 1, -1, NULL);
 
 -- --------------------------------------------------------
 
@@ -287,104 +283,106 @@ CREATE TABLE IF NOT EXISTS `part_categories` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(255) NOT NULL,
   `parent_category` int(11) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`category_id`)
+  `part_category_owner_u_fk` int(11) NOT NULL,
+  PRIMARY KEY (`category_id`),
+  KEY `part_category_owner_u_fk` (`part_category_owner_u_fk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `part_categories`
 --
 
-INSERT INTO `part_categories` (`category_id`, `category_name`, `parent_category`) VALUES
-(1, 'Electronics', 0),
-(2, 'Passive Components', 1),
-(3, 'Resistors', 2),
-(4, 'Thermistors', 2),
-(5, 'Varistors', 2),
-(6, 'Inductors', 2),
-(7, 'Ferrite Beads', 2),
-(8, 'Capacitors', 2),
-(9, 'Ceramic Capacitors', 8),
-(10, 'Tantalum Capacitors', 8),
-(11, 'Aluminum Electrolytic Capacitors', 8),
-(12, 'Film Capacitors', 8),
-(13, 'Super Capacitors', 8),
-(14, 'Electromechanical Components', 1),
-(15, 'Switches', 14),
-(16, 'Tactile Switches', 15),
-(17, 'Push Button Switches', 15),
-(18, 'Rocker Switches', 15),
-(19, 'Toggle Switches', 15),
-(20, 'Slide Switches', 15),
-(21, 'DIP Switches', 15),
-(22, 'Micro Switches', 15),
-(23, 'Rotary Switches', 15),
-(24, 'Encoder Switches', 15),
-(25, 'Keypads', 15),
-(26, 'Relays', 14),
-(27, 'Electromagnetic Relays', 26),
-(28, 'Solid State Relays', 26),
-(29, 'Contactors', 26),
-(30, 'Connectors', 14),
-(31, 'PCB Mount Connectors', 30),
-(32, 'Circular Connectors', 30),
-(33, 'D-Sub Connectors', 30),
-(34, 'RF Connectors', 30),
-(35, 'Terminal Blocks', 30),
-(36, 'Headers', 30),
-(37, 'Cable Assemblies', 14),
-(38, 'Wiring Accessories', 14),
-(39, 'Cable Ties', 38),
-(40, 'Sleeving', 38),
-(41, 'Heat Shrink Tubing', 38),
-(42, 'Cable Glands', 38),
-(43, 'Adhesives', 14),
-(44, 'Tapes', 14),
-(45, 'Enclosures', 14),
-(46, 'Plastic Enclosures', 45),
-(47, 'Metal Enclosures', 45),
-(48, 'Box Enclosures', 45),
-(49, 'Panel Mount Enclosures', 45),
-(50, 'Heat Sinks', 14),
-(51, 'Aluminum Heat Sinks', 50),
-(52, 'Copper Heat Sinks', 50),
-(53, 'Fans', 14),
-(54, 'DC Fans', 53),
-(55, 'AC Fans', 53),
-(56, 'Blowers', 53),
-(57, 'Thermal Management Accessories', 14),
-(58, 'Thermal Interface Materials', 57),
-(59, 'Fans Accessories', 57),
-(60, 'Heaters', 14),
-(61, 'Cartridge Heaters', 60),
-(62, 'Band Heaters', 60),
-(63, 'Strip Heaters', 60),
-(64, 'Immersion Heaters', 60),
-(65, 'Thermocouples', 14),
-(66, 'Thermostats', 14),
-(67, 'Proximity Sensors', 14),
-(68, 'Level Sensors', 14),
-(69, 'Potentiometers', 14),
-(70, 'Rotary Potentiometers', 69),
-(71, 'Linear Potentiometers', 69),
-(72, 'Trimmers', 69),
-(73, 'Encoders', 14),
-(74, 'Optoelectronics', 1),
-(75, 'LEDs', 74),
-(76, 'LED Displays', 74),
-(77, 'LED Strips', 74),
-(78, 'Infrared Components', 74),
-(79, 'Laser Diodes', 74),
-(80, 'Photoelectric Sensors', 74),
-(81, 'Optocouplers', 74),
-(82, 'Optical Filters', 74),
-(83, 'Power Supplies', 1),
-(84, 'AC-DC Power Supplies', 83),
-(85, 'DC-DC Converters', 83),
-(86, 'Inverters', 83),
-(87, 'UPS Systems', 83),
-(88, 'Batteries', 1),
-(89, 'Alkaline Batteries', 88),
-(90, 'NiMH Batteries', 88);
+INSERT INTO `part_categories` (`category_id`, `category_name`, `parent_category`, `part_category_owner_u_fk`) VALUES
+(1, 'Electronics', 0, -1),
+(2, 'Passive Components', 1, -1),
+(3, 'Resistors', 2, -1),
+(4, 'Thermistors', 2, -1),
+(5, 'Varistors', 2, -1),
+(6, 'Inductors', 2, -1),
+(7, 'Ferrite Beads', 2, -1),
+(8, 'Capacitors', 2, -1),
+(9, 'Ceramic Capacitors', 8, -1),
+(10, 'Tantalum Capacitors', 8, -1),
+(11, 'Aluminum Electrolytic Capacitors', 8, -1),
+(12, 'Film Capacitors', 8, -1),
+(13, 'Super Capacitors', 8, -1),
+(14, 'Electromechanical Components', 1, -1),
+(15, 'Switches', 14, -1),
+(16, 'Tactile Switches', 15, -1),
+(17, 'Push Button Switches', 15, -1),
+(18, 'Rocker Switches', 15, -1),
+(19, 'Toggle Switches', 15, -1),
+(20, 'Slide Switches', 15, -1),
+(21, 'DIP Switches', 15, -1),
+(22, 'Micro Switches', 15, -1),
+(23, 'Rotary Switches', 15, -1),
+(24, 'Encoder Switches', 15, -1),
+(25, 'Keypads', 15, -1),
+(26, 'Relays', 14, -1),
+(27, 'Electromagnetic Relays', 26, -1),
+(28, 'Solid State Relays', 26, -1),
+(29, 'Contactors', 26, -1),
+(30, 'Connectors', 14, -1),
+(31, 'PCB Mount Connectors', 30, -1),
+(32, 'Circular Connectors', 30, -1),
+(33, 'D-Sub Connectors', 30, -1),
+(34, 'RF Connectors', 30, -1),
+(35, 'Terminal Blocks', 30, -1),
+(36, 'Headers', 30, -1),
+(37, 'Cable Assemblies', 14, -1),
+(38, 'Wiring Accessories', 14, -1),
+(39, 'Cable Ties', 38, -1),
+(40, 'Sleeving', 38, -1),
+(41, 'Heat Shrink Tubing', 38, -1),
+(42, 'Cable Glands', 38, -1),
+(43, 'Adhesives', 14, -1),
+(44, 'Tapes', 14, -1),
+(45, 'Enclosures', 14, -1),
+(46, 'Plastic Enclosures', 45, -1),
+(47, 'Metal Enclosures', 45, -1),
+(48, 'Box Enclosures', 45, -1),
+(49, 'Panel Mount Enclosures', 45, -1),
+(50, 'Heat Sinks', 14, -1),
+(51, 'Aluminum Heat Sinks', 50, -1),
+(52, 'Copper Heat Sinks', 50, -1),
+(53, 'Fans', 14, -1),
+(54, 'DC Fans', 53, -1),
+(55, 'AC Fans', 53, -1),
+(56, 'Blowers', 53, -1),
+(57, 'Thermal Management Accessories', 14, -1),
+(58, 'Thermal Interface Materials', 57, -1),
+(59, 'Fans Accessories', 57, -1),
+(60, 'Heaters', 14, -1),
+(61, 'Cartridge Heaters', 60, -1),
+(62, 'Band Heaters', 60, -1),
+(63, 'Strip Heaters', 60, -1),
+(64, 'Immersion Heaters', 60, -1),
+(65, 'Thermocouples', 14, -1),
+(66, 'Thermostats', 14, -1),
+(67, 'Proximity Sensors', 14, -1),
+(68, 'Level Sensors', 14, -1),
+(69, 'Potentiometers', 14, -1),
+(70, 'Rotary Potentiometers', 69, -1),
+(71, 'Linear Potentiometers', 69, -1),
+(72, 'Trimmers', 69, -1),
+(73, 'Encoders', 14, -1),
+(74, 'Optoelectronics', 1, -1),
+(75, 'LEDs', 74, -1),
+(76, 'LED Displays', 74, -1),
+(77, 'LED Strips', 74, -1),
+(78, 'Infrared Components', 74, -1),
+(79, 'Laser Diodes', 74, -1),
+(80, 'Photoelectric Sensors', 74, -1),
+(81, 'Optocouplers', 74, -1),
+(82, 'Optical Filters', 74, -1),
+(83, 'Power Supplies', 1, -1),
+(84, 'AC-DC Power Supplies', 83, -1),
+(85, 'DC-DC Converters', 83, -1),
+(86, 'Inverters', 83, -1),
+(87, 'UPS Systems', 83, -1),
+(88, 'Batteries', 1, -1),
+(89, 'Alkaline Batteries', 88, -1),
+(90, 'NiMH Batteries', 88, -1);
 
 -- --------------------------------------------------------
 
@@ -419,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `stock_levels` (
   PRIMARY KEY (`part_id_fk`,`location_id_fk`),
   UNIQUE KEY `stock_level_id` (`stock_level_id`) USING BTREE,
   KEY `location_id` (`location_id_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=367 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=442 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_levels`
@@ -445,7 +443,10 @@ INSERT INTO `stock_levels` (`stock_level_id`, `part_id_fk`, `location_id_fk`, `s
 (220, 567, 1, 742),
 (221, 629, 1, 4432),
 (226, 1199, 4, 3698),
-(223, 1491, 1, 1000);
+(223, 1491, 1, 1000),
+(434, 1722, 1, 1),
+(440, 1746, 1, 1),
+(441, 1747, 2, 12);
 
 -- --------------------------------------------------------
 
@@ -467,7 +468,7 @@ CREATE TABLE IF NOT EXISTS `stock_level_change_history` (
   KEY `to_location` (`to_location_fk`),
   KEY `stock_lvl_chng_user_fk` (`stock_lvl_chng_user_fk`),
   KEY `stock_level_change_history_ibfk_1` (`part_id_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=509 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stock_level_change_history`
@@ -496,7 +497,10 @@ INSERT INTO `stock_level_change_history` (`stock_lvl_chng_id`, `part_id_fk`, `fr
 (304, 338, NULL, 2, 689, '2023-04-04 14:01:09', '', -1),
 (305, 350, NULL, 1, 6844, '2023-04-04 14:01:37', 'Initial stock entry', -1),
 (306, 1199, NULL, 4, 3698, '2023-04-04 14:03:08', 'Leftover from PR2', -1),
-(307, 532, NULL, 1, 69, '2023-04-04 14:24:50', '', -1);
+(307, 532, NULL, 1, 69, '2023-04-04 14:24:50', '', -1),
+(502, 1722, NULL, 1, 1, '2023-04-16 10:16:32', NULL, -1),
+(507, 1746, NULL, 1, 1, '2023-04-19 10:09:01', NULL, -1),
+(508, 1747, NULL, 2, 12, '2023-04-19 10:11:13', NULL, -1);
 
 -- --------------------------------------------------------
 
@@ -580,7 +584,8 @@ ALTER TABLE `bom_names`
 -- Constraints for table `bom_runs`
 --
 ALTER TABLE `bom_runs`
-  ADD CONSTRAINT `bom_runs_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`);
+  ADD CONSTRAINT `bom_runs_ibfk_1` FOREIGN KEY (`bom_id_fk`) REFERENCES `bom_names` (`bom_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `bom_runs_ibfk_2` FOREIGN KEY (`bom_run_user_fk`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `location_names`
@@ -605,6 +610,12 @@ ALTER TABLE `parts`
   ADD CONSTRAINT `parts_ibfk_3` FOREIGN KEY (`part_footprint_fk`) REFERENCES `footprints` (`footprint_id`),
   ADD CONSTRAINT `parts_ibfk_4` FOREIGN KEY (`part_owner_u_fk`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `parts_ibfk_5` FOREIGN KEY (`part_owner_g_fk`) REFERENCES `user_groups` (`group_id`);
+
+--
+-- Constraints for table `part_categories`
+--
+ALTER TABLE `part_categories`
+  ADD CONSTRAINT `part_categories_ibfk_1` FOREIGN KEY (`part_category_owner_u_fk`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `stock_levels`
