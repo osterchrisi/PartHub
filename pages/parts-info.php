@@ -11,8 +11,9 @@ include '../includes/tables.php';
 
 // Connect to database
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-//TODO: This variable comes from JS updatePartsInfo via GET - want to change it to POST
-$part_id = getSuperGlobal('part_id');
+
+// Get part ID
+$part_id = $_POST['part_id'];
 
 // Get part name
 $result = getPartName($conn, $part_id);
@@ -22,9 +23,10 @@ $part_name = $result[0]['part_name'];
 $stock_levels = getStockLevels($conn, $part_id);
 $total_stock = getTotalStock($stock_levels);
 
+// Putting it into the session array for stockChanges.php to use
 $_SESSION['stock_levels'] = $stock_levels;
 
-// Get locations
+// Get available locations
 $locations = getLocations($conn, $user_id);
 ?>
 

@@ -64,11 +64,10 @@ $(document).ready(function () {
  * upon clicking a row in the parts table
  * @param {int} id The part ID for which to update the stock modal content
  */
-//TODO: Change this to POST. Check parts-info.php on how it's used there
 function updatePartsInfo(id) {
     $.ajax({
         url: 'parts-info.php',
-        type: 'GET',
+        type: 'POST',
         data: { part_id: id, hideNavbar: true },
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
