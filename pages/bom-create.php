@@ -48,16 +48,21 @@ try {
 
             <div class="row">
                 <div class="col">
-                    <input class="form-control form-control-sm" id="bom_name" name="bom_name" placeholder="BOM Name" required>
+                    <input class="form-control form-control-sm" id="bom_name" name="bom_name" placeholder="BOM Name"
+                        required>
                 </div>
                 <div class="col">
-                    <input class="form-control form-control-sm" id="bom_description" name="bom_description" placeholder="BOM Description" required>
+                    <input class="form-control form-control-sm" id="bom_description" name="bom_description"
+                        placeholder="BOM Description" required>
                 </div>
             </div>
         </div>
 
         <!-- Upload CSV Tab -->
         <div class="tab-pane fade show active mt-3" id="bomAddCSV" role="tabpanel" tabindex="0">
+            <div class="alert alert-danger" role="alert">
+                Does not work yet!
+            </div>
             <form action="../includes/import-csv.php" method="post" enctype="multipart/form-data">
                 <input class="form-control form-control-sm mb-3" type="file" id="formFile" name="csvFile" accept=".csv">
                 <button type="button" class="btn btn-sm btn-primary" id="submitBomUpload" disabled>Upload</button>
@@ -67,18 +72,17 @@ try {
         <!-- Manually add BOM Tab -->
         <div class="tab-pane fade mt-3" id="bomAddManually" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
             <!-- <form action="../includes/bom-processing.php" method="post" onsubmit="return checkBomName()"> -->
-                <div class="row">
-                    <div class="col-3">
-                        <button type="button" class="btn btn-sm btn-outline-primary"
-                            onclick='addFields(<?php echo json_encode($parts); ?>)'>Add Parts</button>
-                        <br><br>
-                        <button class="btn btn-sm btn-primary" onclick='addBomManually()'>Submit</button>
-                    </div>
-                    <div class="col-9" id="dynamicAddParts">
-                        <!-- Added Parts go here -->
-                    </div>
+            <div class="row">
+                <div class="col-3">
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                        onclick='addFields(<?php echo json_encode($parts); ?>)'>Add Parts</button>
+                    <br><br>
+                    <button class="btn btn-sm btn-primary" onclick='addBomManually()'>Submit</button>
                 </div>
-            <!-- </form> -->
+                <div class="col-9" id="dynamicAddParts">
+                    <!-- Added Parts go here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -86,7 +90,7 @@ try {
 </div>
 
 <script>
-     <?php include '../assets/js/bomCreation.js'; ?>
+    <?php include '../assets/js/bomCreation.js'; ?>
 </script>
 
 <?php

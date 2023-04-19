@@ -14,6 +14,7 @@ If you want to manage small and medium parts inventory and BOMs, **PartHub** is 
  - Works in any browser and is mobile-friendly
  - Multi-user, teams
  - Import data via CSV files
+ - Barcode scanner integration
 # Future development
  - KiCad Support
  - Mouser API Support
