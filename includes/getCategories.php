@@ -9,5 +9,5 @@ include 'SQL.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $categories = getCategories($conn, $_user_id);
-$r = json_encode($categories);
-echo $r;
+$c = json_encode($categories);
+echo $c;

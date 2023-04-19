@@ -11,6 +11,7 @@ include '../includes/tables.php';
 
 // Connect to database
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
+//TODO: This variable comes from JS updatePartsInfo via GET - want to change it to POST
 $part_id = getSuperGlobal('part_id');
 
 // Get part name

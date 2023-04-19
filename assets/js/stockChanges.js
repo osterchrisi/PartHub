@@ -1,7 +1,7 @@
 var from_location_exists = false;
 var to_location_exists = false;
 
-// Creat the "To Location" dropdown
+// Create the "To Location" dropdown
 function toStockLocationDropdown(locations) {
     var div = document.getElementById("ToStockLocationDiv");
     var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
@@ -25,10 +25,8 @@ function fromStockLocationDropdown(locations) {
     from_location_exists = true;
 }
 
-// Modify the "Save Changes" click listener when the modal is toggled
+// Show the Stock Modal, remove old click listener and attach new one
 function callStockModal(change, locations) {
-    //TODO: Make the form look bissi besser
-    //TODO: Make all locations available, not only the currently used one
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
@@ -53,15 +51,14 @@ function callStockModal(change, locations) {
 
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
-    saveChanges(change);
+    stockChangeSaveChangesClickListener(change); // Add click listener to the Save Changes button
 }
 
 // ClickListener for "Save Changes" button in Add Stock Modal
-function saveChanges(change) {
+function stockChangeSaveChangesClickListener(change) {
     $('#AddStock').click(function () {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
-
 
         if (change == '1') {
             tl = $("#toStockLocation").val(); // To Location

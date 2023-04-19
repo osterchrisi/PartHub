@@ -1,6 +1,6 @@
 /**
- * @file update-cell.php Update an editable table cell in a table
- */
+* @file update-cell.php Update an editable table cell in a table
+*/
 <?php
 include '../config/credentials.php';
 include 'SQL.php';
