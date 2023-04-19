@@ -44,6 +44,7 @@ foreach ($ids as $bom_id) {
             $data_string = http_build_query($data); // Encode into URL string
             $_POST = array();
             parse_str($data_string, $_POST);
+            print_r($_POST);
             include 'stockChanges.php';
 
         }

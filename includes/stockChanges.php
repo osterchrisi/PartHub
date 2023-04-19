@@ -2,15 +2,15 @@
 // Add, reduce or move stock
 include "session.php";
 include "../config/credentials.php";
-include "SQL.php";
+require_once "SQL.php";
 include "helpers.php";
 include 'get.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $test = getUserName($conn);
 
-//TODO: Sanitize and validate data before doing anything. Better yet in the JS section, so user
-//TODO: can know about it!
+// //TODO: Sanitize and validate data before doing anything. Better yet in the JS section, so user
+// //TODO: can know about it!
 
 // Determine type of change
 $change = $_POST['change'];
