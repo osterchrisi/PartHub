@@ -36,7 +36,6 @@ function preventTextSelectionOnShift($table) {
 // Remove a click listener
 function removeClickListeners(id) {
     $(id).off('click');
-    console.log("Removed old click listener from ", id);
 }
 
 // Send form upon changing the results per page dropdown

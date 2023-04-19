@@ -23,6 +23,7 @@ echo 1;
           <div class="col-3">
             <input class="form-control" placeholder="Quantity" id="bomAssembleQuantity" required>
           </div>
+          <div id="bomAssembleLocationDiv"></div>
         </div>
       </form>
     </div>

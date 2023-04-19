@@ -14,8 +14,8 @@ function toStockLocationDropdown(locations) {
 }
 
 // Create the "From Location" dropdown
-function fromStockLocationDropdown(locations) {
-    var div = document.getElementById("FromStockLocationDiv");
+function fromStockLocationDropdown(divId, locations) {
+    var div = document.getElementById(divId);
     var selectHTML = "<label class='input-group-text' for='fromStockLocation'>From</label><select class='form-select' id='fromStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
@@ -37,14 +37,14 @@ function callStockModal(change, locations) {
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
-        fromStockLocationDropdown(locations);
+        fromStockLocationDropdown("FromStockLocationDiv", locations);
         $("#fromStockLocation").selectize();
     }
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
         toStockLocationDropdown(locations);
-        fromStockLocationDropdown(locations);
+        fromStockLocationDropdown("FromStockLocationDiv", locations);
         $("#toStockLocation").selectize();
         $("#fromStockLocation").selectize();
     }

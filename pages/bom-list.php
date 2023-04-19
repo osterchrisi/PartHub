@@ -14,6 +14,9 @@ $id_field = "bom_id";
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
+
+// Get available locations
+$locations = getLocations($conn, $user_id);
 ?>
 
 <!-- BOM List Right-click Menu -->
@@ -97,10 +100,12 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   ?>
 
   <script>
+    <?php include '../assets/js/stockChanges.js'; ?>
     bootstrapBomListTable();
 
     var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
     defineBomListTableActions($table, $menu);
     inlineProcessing();
+    fromStockLocationDropdown('bomAssembleLocationDiv', <?php echo json_encode($locations); ?>)
   </script>
