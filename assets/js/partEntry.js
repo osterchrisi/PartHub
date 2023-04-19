@@ -18,7 +18,8 @@ function validateForm(formId, button) {
       // Form is valid
       pn = $("#addPartName").val(); // Part Name
       q = $("#addPartQuantity").val(); // Quantity
-      l = $("#addPartLocId").val(); // Location
+      l = $("#addPartLocSelect").val(); // Location
+      console.log(pn, q, l);
 
       // Inset new part into table
       $.post('/PartHub/includes/create-part.php',
@@ -29,11 +30,12 @@ function validateForm(formId, button) {
           updatePartsInfo(partId);
           $('#mPartEntry').modal('hide'); // Hide modal
           removeClickListeners('#addPart'); // Remove click listener from Add Part button
-          
-          // Rebuild parts table
+
+          // Rebuild parts table and select new row
           var queryString = window.location.search;
-          rebuildPartsTable(queryString);
-          //TODO: Select new row
+          $.when(rebuildPartsTable(queryString)).done(function () {
+            $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
+          });
         });
 
     } else {
@@ -56,7 +58,7 @@ function addPartLocationDropdown(locations) {
   var div = document.getElementById("addPartLocDropdown");
   var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
   for (var i = 0; i < locations.length; i++) {
-      selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+    selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
   }
   selectHTML += "</select>";
   div.innerHTML = selectHTML;

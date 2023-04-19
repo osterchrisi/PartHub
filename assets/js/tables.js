@@ -142,7 +142,7 @@ function onTableCellContextMenu($table, $menu, actions) {
  * @param {string} queryString 
  */
 function rebuildPartsTable(queryString) {
-  $.ajax({
+  return $.ajax({
     url: '../includes/buildPartsTable.php' + queryString,
     success: function (data) {
       $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
@@ -171,6 +171,7 @@ function rebuildBomListTable(queryString) {
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
       defineBomListTableActions($table, $menu); // Define table row actions and context menu
+      inlineProcessing();
     }
   });
 }

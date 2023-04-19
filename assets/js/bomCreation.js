@@ -41,6 +41,7 @@ function addBomManually() {
         df[i + 1] = quantity;
     }
 
+    // Create BOM on server side
     $.post('/PartHub/includes/bom-processing.php',
         { bom_name: bn, bom_description: bd, dynamic_field: df },
         function (response) {
@@ -53,7 +54,6 @@ function addBomManually() {
             $.when(rebuildBomListTable(queryString)).done(function () {
                 $('tr[data-id="' + bomId + '"]').addClass('selected selected-last');
             });
-            inlineProcessing();
         });
 }
 
