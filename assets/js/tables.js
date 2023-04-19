@@ -263,7 +263,7 @@ function inlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
     var $element = $(this);
     var cell = $element;
-    
+
     // Check if the cell is already being edited
     if (cell.hasClass('editing')) {
       return;
@@ -396,20 +396,26 @@ function inlineProcessing() {
   });
 };
 
-function assembleBoms(selectedRows, ids){
-  console.log("Assembling ", selectedRows, ids);
-    // Like, delete 'em
+function assembleBoms(selectedRows, ids) {
+  console.log("Attempting assembly of: ", selectedRows, ids);
+
+  $('#mBomAssembly').modal('show'); // Show Modal
+  $('#btnAssembleBOMs').click(function () {// Attach clicklistener
+    
+    q = $("#bomAssembleQuantity").val(); // Quantity
     $.ajax({
-        type: 'POST',
-        url: '../includes/bom-assembly.php',
-        data: {
-            ids: ids,
-        },
-        success: function (response) {
-            console.log(response);
-            console.log('success');
-        }
+      type: 'POST',
+      url: '../includes/bom-assembly.php',
+      data: {
+        ids: ids,
+        quantity: q
+      },
+      success: function (response) {
+        console.log(response);
+        console.log('success');
+      }
     });
+  })
 }
 
 //* Not using any of the code below this point, it's for appending a part row. Maybe useful later...

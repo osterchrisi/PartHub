@@ -22,6 +22,11 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
   <a class="dropdown-item" href="#" data-action="assemble">Assemble</a>
 </div>
 
+<!-- BOM Assembly Modal -->
+<div class="modal fade" id="mBomAssembly" tabindex="-1">
+  <?php include '../includes/bomAssemblyModal.php'; ?>
+</div>
+
 <div class="container-fluid">
   <?php require_once('../includes/navbar.php'); ?>
   <br>

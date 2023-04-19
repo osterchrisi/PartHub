@@ -2,22 +2,8 @@
 // The part entry modal from the parts inventory
 $basename = basename(__FILE__);
 include '../config/credentials.php';
-// include 'SQL.php';
-// include 'forms.php';
-// include 'get.php';
-// include 'tables.php';
-// include 'session.php';
-
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-// $part_id = getSuperGlobal('part_id');
 
-// // Get part name
-// $result = getPartName($conn, $part_id);
-// $part_name = $result[0]['part_name'];
-
-// // Get locations
-// $locations = getLocations($conn);
-// $_SESSION['locations'] = $locations;
 ?>
 
 <!-- HTML for modal -->

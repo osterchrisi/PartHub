@@ -8,7 +8,6 @@ include 'session.php';
 include '../config/credentials.php';
 include 'SQL.php';
 
-
 // Get variables from the entry script
 $bom_name = $_POST['bom_name'];
 $bom_description = $_POST['bom_description'];
