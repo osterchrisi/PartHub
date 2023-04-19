@@ -224,11 +224,8 @@ function defineBomListTableActions($table, $menu) {
         deleteSelectedRows(ids, 'bom_names', 'bom_id', rebuildBomListTable); // Also updates table
       }
     },
-    edit: function (selectedRows) {
-      editSelectedRows(selectedRows);
-    },
-    customAction1: function (selectedRows) {
-      customAction1(selectedRows);
+    assemble: function (selectedRows, ids) {
+      assembleBoms(selectedRows, ids);
     }
   });
 };
@@ -398,6 +395,22 @@ function inlineProcessing() {
     }
   });
 };
+
+function assembleBoms(selectedRows, ids){
+  console.log("Assembling ", selectedRows, ids);
+    // Like, delete 'em
+    $.ajax({
+        type: 'POST',
+        url: '../includes/bom-assembly.php',
+        data: {
+            ids: ids,
+        },
+        success: function (response) {
+            console.log(response);
+            console.log('success');
+        }
+    });
+}
 
 //* Not using any of the code below this point, it's for appending a part row. Maybe useful later...
 //* You need this button for it: 

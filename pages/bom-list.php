@@ -19,7 +19,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 <!-- BOM List Right-click Menu -->
 <div id="bom_list_table_menu" class="dropdown-menu">
   <a class="dropdown-item" href="#" data-action="delete">Delete BOM(s)</a>
-  <a class="dropdown-item disabled" href="#" data-action="assignC">Assemble</a>
+  <a class="dropdown-item" href="#" data-action="assemble">Assemble</a>
 </div>
 
 <div class="container-fluid">
