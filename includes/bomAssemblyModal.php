@@ -17,13 +17,18 @@ echo 1;
 
     <!-- Modal Body -->
     <div class="modal-body mx-1">
-      <span id="partEntryText">Assemble selected BOM(s)</span>
+      <div class="row">
+        <span id="partEntryText">Assemble selected BOM(s)</span><br>
+      </div>
       <form id="partEntryForm">
         <div class="row">
           <div class="col-3">
             <input class="form-control" placeholder="Quantity" id="bomAssembleQuantity" required>
+            <br>
           </div>
-          <div id="bomAssembleLocationDiv"></div>
+        </div>
+        <div class="row">
+          <div class="input-group" id="bomAssembleLocationDiv"></div>
         </div>
       </form>
     </div>

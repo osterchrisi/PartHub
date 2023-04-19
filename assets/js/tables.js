@@ -403,16 +403,19 @@ function assembleBoms(selectedRows, ids) {
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
     
     q = $("#bomAssembleQuantity").val(); // Quantity
+    fl = $("#fromStockLocation").val(); // From Location
+
     $.ajax({
       type: 'POST',
       url: '../includes/bom-assembly.php',
       data: {
         ids: ids,
-        quantity: q
+        quantity: q,
+        from_location: fl
       },
       success: function (response) {
         console.log(response);
-        console.log('success');
+        removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
       }
     });
   })
