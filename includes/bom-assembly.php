@@ -26,8 +26,6 @@ foreach ($ids as $bom_id) {
         echo "Assembling $assemble_quantity times BOM with ID: $bom_id\n";
         //TODO: Make new query here without joining parts - I don't actually need the extra info
         $elements = getBomElements($conn, $bom_id);
-        echo "These are the elements:\n";
-        echo print_r($elements);
 
         foreach ($elements as $element) {
             $element_quantity = $element['element_quantity'];
@@ -38,17 +36,10 @@ foreach ($ids as $bom_id) {
             //TODO: $_SESSION array but did this earlier for stockChanges.php 
             // Get stock levels
             $stock_levels = getStockLevels($conn, $part_id);
-            echo "stock_levels in bom_assembly.php: ";
-            // echo print_r($stock_levels);
-            // echo "Putting them into SESSION array now!";
 
             // Putting it into the session array for stockChanges.php to use
             $_SESSION['stock_levels'] = $stock_levels;
-            // echo "SESSION array after putting them in:";
-            // echo print_r($_SESSION);
-            // echo "\n"; 
 
-            echo "quantity = $assemble_quantity\n";
             echo "Reducing part ID $part_id by $reducing_quantity because element quantity is: $element_quantity\n";
 
             $data = array(
@@ -66,11 +57,6 @@ foreach ($ids as $bom_id) {
             include 'stockChanges.php';
 
         }
-
-        // calculate reducing quantity (element quantity times quantity)
-        // call stockChanges with POST: (-1 (reduce), reducing_quantity, to_location (NULL), from_location (selected location), comment (BOM Build), user_id, part_id)
-
-
         // $success += 1;
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage(), "\n";

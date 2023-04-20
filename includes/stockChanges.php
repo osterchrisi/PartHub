@@ -33,11 +33,7 @@ $user_id = $_SESSION['user_id'];
 $part_id = $_POST['part_id'];
 
 // Get all dem stock levels from the $_SESSION array
-//! This won't work for assembling BOMs!
 $stock_levels = $_SESSION['stock_levels'];
-// echo "SESSION array in stockChanges.php: ";
-// echo print_r($_SESSION);
-// echo "\n";
 $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
@@ -49,8 +45,6 @@ if ($change == 1) { // Add Stock
     $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
 }
 elseif ($change == -1) { // Reduce Stock
-    // echo "I'm reducing\n";
-    // echo "Reducing quantity: $quantity\n";
     $new_quantity = $current_stock_level_from - $quantity;
     $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
 }
