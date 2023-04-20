@@ -3,8 +3,10 @@
  * @file This script is not documented yet
  */
 
+include 'session.php';
 include '../config/credentials.php';
 include 'SQL.php';
+
 $ids = $_POST['ids'];
 $quantity = $_POST['quantity'];
 $from_location = $_POST['from_location'];
@@ -30,6 +32,20 @@ foreach ($ids as $bom_id) {
             $element_quantity = $element['element_quantity'];
             $part_id = $element['part_id'];
             $reducing_quantity = $quantity * $element_quantity;
+
+            //TODO: Not super happy with getting these here and putting it into the
+            //TODO: $_SESSION array but did this earlier for stockChanges.php 
+            // Get stock levels
+            $stock_levels = getStockLevels($conn, $part_id);
+            echo "stock_levels in bom_assembly.php: ";
+            echo print_r($stock_levels);
+            echo "Putting them into SESSION array now!";
+
+            // Putting it into the session array for stockChanges.php to use
+            $_SESSION['stock_levels'] = $stock_levels;
+            echo "SESSION array after putting them in:";
+            echo print_r($_SESSION);
+            echo "\n"; 
 
             echo "Reducing part ID $part_id by $reducing_quantity because element quantity is: $element_quantity\n";
 

@@ -416,6 +416,7 @@ function assembleBoms(selectedRows, ids) {
       success: function (response) {
         console.log(response);
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
+        $('#mBomAssembly').modal('hide'); // Hide Modal
       }
     });
   })
