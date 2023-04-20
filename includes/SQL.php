@@ -279,12 +279,13 @@ function insertBomElements($conn, $new_id, $part_id, $amount)
 }
 
 function getStockLevels($conn, $part_id)
+// This function used to filter for only entries with quantity > 0 but I changed it
 {
   $stmt = $conn->query("SELECT location_id, location_name, stock_level_quantity
                         FROM stock_levels
                         JOIN location_names ON stock_levels.location_id_fk = location_names.location_id 
-                        WHERE part_id_fk = $part_id 
-                        AND stock_level_quantity > 0");
+                        WHERE part_id_fk = $part_id");
+                        // AND stock_level_quantity > 0");
   $stock = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $stock;
 }

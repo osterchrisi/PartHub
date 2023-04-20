@@ -92,7 +92,6 @@ function onTableCellContextMenu($table, $menu, actions) {
   $table.on('contextmenu', 'td', function (event) {
     if (event.which === 3) { // Right-click
       event.preventDefault(); // Inhibit browser context menu
-      console.log($table);
 
       // Get selected table rows
       var selectedRows = $table.bootstrapTable('getSelections');
@@ -100,8 +99,6 @@ function onTableCellContextMenu($table, $menu, actions) {
       const ids = selectedRows.map(obj => obj._data.id);
       // Extract Footprints - here for later worries
       const footprints = selectedRows.map(obj => obj.Footprint);
-
-      console.log(selectedRows);
 
       showContextMenu($menu, event)
 
@@ -121,21 +118,6 @@ function onTableCellContextMenu($table, $menu, actions) {
   // Hide context menu upon clicking outside of it
   hideMenuOnClickOutside($menu);
 }
-
-//Example call for above function:
-// onTableCellContextMenu($table, $menu, {
-//   delete: function (selectedRows) {
-//     if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-//       deleteSelectedRows(ids, 'parts', 'part_id'); // Also updates table
-//     }
-//   },
-//   edit: function (selectedRows) {
-//     editSelectedRows(selectedRows);
-//   },
-//   customAction1: function (selectedRows) {
-//     customAction1(selectedRows);
-//   }
-// });
 
 /**
  * Rebuild the parts table after adding or deleting parts
@@ -397,8 +379,6 @@ function inlineProcessing() {
 };
 
 function assembleBoms(selectedRows, ids) {
-  console.log("Attempting assembly of: ", selectedRows, ids);
-
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
     
@@ -428,7 +408,6 @@ function assembleBoms(selectedRows, ids) {
 // Click listener for the New Entry button
 $(document).ready(function () {
   $('#AddNew').click(function () {
-    console.log("New Entry button has been buttoned");
     $.ajax({
       type: "POST",
       url: "../includes/create-part.php",
