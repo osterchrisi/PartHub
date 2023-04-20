@@ -397,6 +397,8 @@ function assembleBoms(selectedRows, ids) {
         console.log(response);
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
         $('#mBomAssembly').modal('hide'); // Hide Modal
+        updateBomInfo(ids[ids.length -1]);
+        //TODO: Also select in table
       }
     });
   })
