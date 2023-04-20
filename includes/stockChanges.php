@@ -1,10 +1,10 @@
 <?php
 // Add, reduce or move stock
-include "session.php";
-include "../config/credentials.php";
+require_once "session.php";
+require_once "../config/credentials.php";
 require_once "SQL.php";
-include "helpers.php";
-include 'get.php';
+require_once "helpers.php";
+require_once 'get.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $test = getUserName($conn);
@@ -35,9 +35,9 @@ $part_id = $_POST['part_id'];
 // Get all dem stock levels from the $_SESSION array
 //! This won't work for assembling BOMs!
 $stock_levels = $_SESSION['stock_levels'];
-echo "SESSION array in stockChanges.php: ";
-echo print_r($_SESSION);
-echo "\n";
+// echo "SESSION array in stockChanges.php: ";
+// echo print_r($_SESSION);
+// echo "\n";
 $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
@@ -49,8 +49,8 @@ if ($change == 1) { // Add Stock
     $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
 }
 elseif ($change == -1) { // Reduce Stock
-    echo "I'm reducing\n";
-    echo "Reducing quantity: $quantity\n";
+    // echo "I'm reducing\n";
+    // echo "Reducing quantity: $quantity\n";
     $new_quantity = $current_stock_level_from - $quantity;
     $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
 }
