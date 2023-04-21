@@ -26,6 +26,7 @@ function getCurrentStock($stock_levels, $location)
     foreach ($stock_levels as $entry) {
         if (isset($entry['location_id']) && $entry['location_id'] == $location) {
             $current_stock_level = $entry['stock_level_quantity'];
+            return $current_stock_level;
         } else {
             $current_stock_level = 0;
         }

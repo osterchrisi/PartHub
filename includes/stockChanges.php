@@ -31,13 +31,18 @@ if ($from_location == 'NULL') {
 $comment = $_POST['comment'];
 $user_id = $_SESSION['user_id'];
 $part_id = $_POST['part_id'];
+$permission = $_POST['permission'];
+
 
 // Get all dem stock levels from the $_SESSION array
 $stock_levels = $_SESSION['stock_levels'];
+// echo print_r($stock_levels);
+// echo "\n";
+// echo "from_location: $from_location\n";
 $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
-echo "Current stock: $current_stock_level_from\n";
+// echo "Current stock: $current_stock_level_from\n";
 
 // Change the stock level entries that exist for this part in that location
 if ($change == 1) { // Add Stock
@@ -46,7 +51,7 @@ if ($change == 1) { // Add Stock
 }
 elseif ($change == -1) { // Reduce Stock
     $new_quantity = $current_stock_level_from - $quantity;
-    if ($new_quantity < 0) {
+    if ($new_quantity < 0 && $permission == false) {
         $data = array(
             'status' => 'permission_required',
             'part_id' => $part_id,
@@ -55,12 +60,11 @@ elseif ($change == -1) { // Reduce Stock
         );
         $json_data = json_encode($data);
         echo $json_data;
+        exit;
     }
     else {
         $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
     }
-
-    // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
 }
 elseif ($change == 0) { // Move Stock
     // Add stock for the to_location

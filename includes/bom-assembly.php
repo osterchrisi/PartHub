@@ -23,7 +23,7 @@ $fail = 0;
 foreach ($ids as $bom_id) {
     try {
         // deleteRowById($conn, $id, $table, $column);
-        echo "Assembling $assemble_quantity times BOM with ID: $bom_id\n";
+        // echo "Assembling $assemble_quantity times BOM with ID: $bom_id\n";
         //TODO: Make new query here without joining parts - I don't actually need the extra info
         $elements = getBomElements($conn, $bom_id);
 
@@ -40,7 +40,7 @@ foreach ($ids as $bom_id) {
             // Putting it into the session array for stockChanges.php to use
             $_SESSION['stock_levels'] = $stock_levels;
 
-            echo "Reducing part ID $part_id by $reducing_quantity because element quantity is: $element_quantity\n";
+            // echo "Reducing part ID $part_id by $reducing_quantity because element quantity is: $element_quantity\n";
 
             $data = array(
                 'change' => '-1',
@@ -48,7 +48,8 @@ foreach ($ids as $bom_id) {
                 'to_location' => NULL,
                 'from_location' => $from_location,
                 'comment' => 'some meaningful comment',
-                'part_id' => $part_id
+                'part_id' => $part_id,
+                'permission' => false
             );
             $data_string = http_build_query($data); // Encode into URL string
             parse_str($data_string, $_POST);
