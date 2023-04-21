@@ -31,6 +31,9 @@ echo 1;
           <div class="input-group" id="bomAssembleLocationDiv"></div>
         </div>
       </form>
+      <div class="row">
+        <div id="mBomAssemblyInfo"></div>
+      </div>
     </div>
 
     <!-- Modal Footer -->

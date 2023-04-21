@@ -381,7 +381,7 @@ function inlineProcessing() {
 function assembleBoms(selectedRows, ids) {
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
-    
+
     q = $("#bomAssembleQuantity").val(); // Quantity
     fl = $("#fromStockLocation").val(); // From Location
 
@@ -395,10 +395,22 @@ function assembleBoms(selectedRows, ids) {
       },
       success: function (response) {
         console.log(response);
+        if (response.status === 'success') {
+          $('#mBomAssembly').modal('hide'); // Hide Modal
+          updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+          //TODO: Also select in table}
+        }
+        else if (response.status === 'permission_required') {
+          // User permission required
+          var stockLevel = response.stock_level;
+          var message = "There is not enough stock available to build this BOM. Only " + stockLevel + " parts are available. Do you want to continue anyway?";
+          if (confirm(message)) {
+            // User granted permission, do something with the part_id and new_quantity variables
+          } else {
+            // User denied permission, handle accordingly
+          }
+        }
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
-        $('#mBomAssembly').modal('hide'); // Hide Modal
-        updateBomInfo(ids[ids.length -1]);
-        //TODO: Also select in table
       }
     });
   })

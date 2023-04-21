@@ -46,11 +46,21 @@ if ($change == 1) { // Add Stock
 }
 elseif ($change == -1) { // Reduce Stock
     $new_quantity = $current_stock_level_from - $quantity;
-    $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
-    echo "new quantity: $new_quantity\n";
     if ($new_quantity < 0) {
-        echo "Not enough stock for $part_id\n";
+        $data = array(
+            'status' => 'permission_required',
+            'part_id' => $part_id,
+            'new_quantity' => $new_quantity,
+            'stock_level' => $current_stock_level_from
+        );
+        $json_data = json_encode($data);
+        echo $json_data;
     }
+    else {
+        $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
+    }
+
+    // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
 }
 elseif ($change == 0) { // Move Stock
     // Add stock for the to_location
@@ -69,4 +79,4 @@ $stock = getStockLevels($conn, $part_id);
 $total_stock = getTotalStock($stock);
 
 //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-echo json_encode([$hist_id, $stock_level_id, $total_stock]);
+echo json_encode([$hist_id, $stock_level_id, $total_stock, 'status' => 'success']);
