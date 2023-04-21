@@ -33,16 +33,10 @@ $user_id = $_SESSION['user_id'];
 $part_id = $_POST['part_id'];
 $permission = $_POST['permission'];
 
-
 // Get all dem stock levels from the $_SESSION array
 $stock_levels = $_SESSION['stock_levels'];
-// echo print_r($stock_levels);
-// echo "\n";
-// echo "from_location: $from_location\n";
 $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
 $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
-
-// echo "Current stock: $current_stock_level_from\n";
 
 // Change the stock level entries that exist for this part in that location
 if ($change == 1) { // Add Stock
@@ -51,6 +45,8 @@ if ($change == 1) { // Add Stock
 }
 elseif ($change == -1) { // Reduce Stock
     $new_quantity = $current_stock_level_from - $quantity;
+
+    // Stock would go negative
     if ($new_quantity < 0 && $permission == false) {
         $data = array(
             'status' => 'permission_required',
