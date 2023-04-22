@@ -5,6 +5,7 @@ require_once "../config/credentials.php";
 require_once "SQL.php";
 require_once "helpers.php";
 require_once 'get.php';
+require_once 'tables.php';
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
 $test = getUserName($conn);
@@ -176,8 +177,11 @@ foreach ($requested_changes as $requested_change) {
 //     echo "Some stuff is out of stock, these are the changes that need permission\n";
 //     echo json_encode($negative_stock);
 // }
-
-echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock));
+if (!empty($negative_stock)){
+$column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
+$nice_columns = array ('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
+$negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);}
+echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock, 'negative_stock_table' => $negative_stock_table));
 
 //*This is original code:
 //* Make record in stock_level_change_history table

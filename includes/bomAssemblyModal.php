@@ -7,7 +7,7 @@ echo 1;
 ?>
 
 <!-- HTML for modal -->
-<div class="modal-dialog">
+<div class="modal-dialog modal-dialog-scrollable">
   <div class="modal-content">
     <!-- Modal Header -->
     <div class="modal-header">
