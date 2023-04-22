@@ -37,7 +37,7 @@ foreach ($ids as $bom_id) {
             $_SESSION['stock_levels'] = $stock_levels;
 
             // Prepare POST array
-            $data = array(
+            $data = array('stock_changes' => array(array(
                 'change' => '-1',
                 'quantity' => $reducing_quantity,
                 'to_location' => NULL,
@@ -45,7 +45,7 @@ foreach ($ids as $bom_id) {
                 'comment' => 'some meaningful comment',
                 'part_id' => $part_id,
                 'permission' => false
-            );
+            )));
             $data_string = http_build_query($data); // Encode into URL string
             parse_str($data_string, $_POST);
 
