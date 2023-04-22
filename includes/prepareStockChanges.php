@@ -12,10 +12,8 @@ $test = getUserName($conn);
 // //TODO: Sanitize and validate data before doing anything. Better yet in the JS section, so user
 // //TODO: can know about it!
 
-// $requested_changes = json_decode($_POST["stock_changes"], true); // The 'true' statement is for returning an associative array
-// echo json_encode($_POST);
+// Access stock changes to prepare
 $requested_changes = $_POST["stock_changes"];
-// echo json_encode($requested_changes);
 
 // Initialize the changes array and negative stock array
 $changes = array();
@@ -23,12 +21,11 @@ $negative_stock = array();
 
 // Iterate over each part
 foreach ($requested_changes as $requested_change) {
-    // echo json_encode($requested_change);
-
-    // Determine type of change
-    $change = $requested_change['change'];
 
     // Gather variables
+    $change = $requested_change['change'];
+    $bom_id = $requested_change['bom_id'];
+    $part_id = $requested_change['part_id'];
     $quantity = $requested_change['quantity'];
 
     $to_location = $requested_change['to_location'];
@@ -42,15 +39,11 @@ foreach ($requested_changes as $requested_change) {
     }
 
     $comment = $requested_change['comment'];
-    $user_id = $_SESSION['user_id']; //! Think I could get rid of this here
-    $part_id = $requested_change['part_id'];
     $permission = $requested_change['permission'];
-    $bom_id = $requested_change['bom_id'];
 
-    // Get all dem stock levels from the $_SESSION array
-    //! //TODO: Think I can get rid of the $_SESSION array after iteration approach
+
+    // Get all dem stock levels for currently iterated part
     $stock_levels = getStockLevels($conn, $part_id);
-    // $stock_levels = $_SESSION['stock_levels'];
     $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
     $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
@@ -66,7 +59,8 @@ foreach ($requested_changes as $requested_change) {
             'to_location' => $to_location,
             'change' => $change,
             'new_quantity' => $new_quantity,
-            'comment' => $comment
+            'comment' => $comment,
+            'status' => 'gtg'
         );
     }
     elseif ($change == -1) { // Reduce Stock
@@ -106,7 +100,8 @@ foreach ($requested_changes as $requested_change) {
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $new_quantity,
-                'comment' => $comment
+                'comment' => $comment,
+                'status' => 'gtg'
             );
             // echo json_encode($changes);
         }
@@ -122,7 +117,8 @@ foreach ($requested_changes as $requested_change) {
             'to_location' => $to_location,
             'change' => $change,
             'new_quantity' => $to_quantity,
-            'comment' => $comment
+            'comment' => $comment,
+            'status' => 'gtg'
         );
 
         // Remove stock in 'from_location'
@@ -163,7 +159,8 @@ foreach ($requested_changes as $requested_change) {
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $from_quantity,
-                'comment' => $comment
+                'comment' => $comment,
+                'status' => 'gtg'
             );
         }
         // $stock_level_id = changeQuantity($conn, $part_id, $from_quantity, $from_location);
@@ -171,8 +168,16 @@ foreach ($requested_changes as $requested_change) {
 
 }
 
-echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock));
+// if (empty($negative_stock)) {
+//     echo "All is well and these are the changes to commit\n";
+//     echo json_encode($changes);
+// }
+// else {
+//     echo "Some stuff is out of stock, these are the changes that need permission\n";
+//     echo json_encode($negative_stock);
+// }
 
+echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock));
 
 //*This is original code:
 //* Make record in stock_level_change_history table

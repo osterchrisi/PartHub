@@ -90,11 +90,8 @@ function stockChangeSaveChangesClickListener(change) {
         // console.log(stockChanges);
 
         // Call the stock changing script
-        $.post('/PartHub/includes/stockChanges.php', { stock_changes: stockChanges },
+        $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
             function (response) {
-                console.log("Sent:\n");
-                console.log(stockChanges);
-                console.log("Recieved:\n");
                 console.log(response);
 
                 //* Original code before iterating iterations down here:

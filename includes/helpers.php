@@ -96,9 +96,8 @@ function dealWithCats()
     $_GET['cat'] = $cat_ids;
 }
 
-function createTempItemName($string, $l)
+function createTempItemName($string, $length)
 {
-    $length = $l;
     $rand_id = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, $length);
     $temp_name = $string . $rand_id;
     return $temp_name;
