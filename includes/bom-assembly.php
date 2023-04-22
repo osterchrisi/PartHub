@@ -19,10 +19,10 @@ $fail = 0;
 // It's an array even if it has just one entry, so I need to iterate here
 foreach ($ids as $bom_id) {
     try {
-        // deleteRowById($conn, $id, $table, $column);
         //TODO: Make new query here without joining parts - I don't actually need the extra info
         $elements = getBomElements($conn, $bom_id);
 
+        // Iterating over BOM elements (parts)
         foreach ($elements as $element) {
             $element_quantity = $element['element_quantity'];
             $part_id = $element['part_id'];
@@ -30,10 +30,10 @@ foreach ($ids as $bom_id) {
 
             //TODO: Not super happy with getting these here and putting it into the
             //TODO: $_SESSION array but did this earlier for stockChanges.php 
-            // Get stock levels
+            // Get stock levels in available locations
             $stock_levels = getStockLevels($conn, $part_id);
 
-            // Putting it into the session array for stockChanges.php to use
+            // Putting stock levels into the session array for stockChanges.php to use
             $_SESSION['stock_levels'] = $stock_levels;
 
             // Prepare POST array

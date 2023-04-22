@@ -77,19 +77,36 @@ function stockChangeSaveChangesClickListener(change) {
         uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
 
+        var stockChanges = [{
+            quantity: q,
+            to_location: tl,
+            from_location: fl,
+            comment: c,
+            user_id: uid,
+            part_id: pid,
+            change: change
+        }];
+
+        // console.log(stockChanges);
+
         // Call the stock changing script
-        $.post('/PartHub/includes/stockChanges.php',
-            { quantity: q, to_location: tl, from_location: fl, comment: c, user_id: uid, part_id: pid, change: change },
+        $.post('/PartHub/includes/stockChanges.php', { stock_changes: stockChanges },
             function (response) {
-                console.log("Succesfully created new stock history entry with number: ", response);
-                updatePartsInfo(pid);
+                console.log("Sent:\n");
+                console.log(stockChanges);
+                console.log("Recieved:\n");
+                console.log(response);
 
-                //TODO: This is bit of a hicky hacky but at least updates the cell for now
-                var new_stock_level = JSON.parse(response)[2];
-                var $cell = $('tr.selected-last td[data-column="total_stock"]');
-                $cell.text(new_stock_level);
+                //* Original code before iterating iterations down here:
+                // console.log("Succesfully created new stock history entry with number: ", response);
+                // updatePartsInfo(pid);
 
-                $("#mAddStock").hide(); // Hide stockChange modal
+                // //TODO: This is bit of a hicky hacky but at least updates the cell for now
+                // var new_stock_level = JSON.parse(response)[2];
+                // var $cell = $('tr.selected-last td[data-column="total_stock"]');
+                // $cell.text(new_stock_level);
+
+                // $("#mAddStock").hide(); // Hide stockChange modal
             });
     });
 }

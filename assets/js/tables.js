@@ -395,24 +395,26 @@ function assembleBoms(selectedRows, ids) {
       },
       success: function (response) {
         console.log(response);
-        var r = JSON.parse(response);
-        console.log(r.status);
-        if (r.status == 'success') {
-          $('#mBomAssembly').modal('hide'); // Hide Modal
-          updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
-          //TODO: Also select in table}
-        }
-        else if (r.status == 'permission_required') {
-          // User permission required
-          var stockLevel = r.stock_level;
-          var message = "There is not enough stock available to build this BOM. Only " + stockLevel + " parts are available. Do you want to continue anyway?";
-          if (confirm(message)) {
-            // User granted permission, do something with the part_id and new_quantity variables
-          } else {
-            // User denied permission, handle accordingly
-          }
-        }
-        removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
+
+        //* Original code before iterating iterations:
+        // var r = JSON.parse(response);
+        // console.log(r.status);
+        // if (r.status == 'success') {
+        //   $('#mBomAssembly').modal('hide'); // Hide Modal
+        //   updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+        //   //TODO: Also select in table}
+        // }
+        // else if (r.status == 'permission_required') {
+        //   // User permission required
+        //   var stockLevel = r.stock_level;
+        //   var message = "There is not enough stock available to build this BOM. Only " + stockLevel + " parts are available. Do you want to continue anyway?";
+        //   if (confirm(message)) {
+        //     // User granted permission, do something with the part_id and new_quantity variables
+        //   } else {
+        //     // User denied permission, handle accordingly
+        //   }
+        // }
+        // removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
       }
     });
   })

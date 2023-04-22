@@ -277,7 +277,16 @@ function insertBomElements($conn, $new_id, $part_id, $amount)
   $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
   $stmt->execute();
 }
-
+/**
+ * Retrieves stock levels for a part ID. Checks for existing entries in stock_levels table, so it will only get stock levels for locations where stock exists.
+ *
+ * @param PDO $conn The database connection object.
+ * @param int $part_id ID for which to fetch the stock levels
+ * @return array An array of associative arrays containing the stock levels for the part, with each element containing the following keys:
+ *               - location_id: The ID of the location where the stock is stored.
+ *               - location_name: The name of the location where the stock is stored.
+ *               - stock_level_quantity: The current stock level for the part at the given location.
+ */
 function getStockLevels($conn, $part_id)
 // This function used to filter for only entries with quantity > 0 but I changed it
 {
