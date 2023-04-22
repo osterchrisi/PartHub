@@ -45,6 +45,7 @@ foreach ($requested_changes as $requested_change) {
     $user_id = $_SESSION['user_id']; //! Think I could get rid of this here
     $part_id = $requested_change['part_id'];
     $permission = $requested_change['permission'];
+    $bom_id = $requested_change['bom_id'];
 
     // Get all dem stock levels from the $_SESSION array
     //! //TODO: Think I can get rid of the $_SESSION array after iteration approach
@@ -59,6 +60,7 @@ foreach ($requested_changes as $requested_change) {
         // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
         //Add entry to changes array
         $changes[] = array(
+            'bom_id' => $bom_id,
             'part_id' => $part_id,
             'quantity' => $quantity,
             'to_location' => $to_location,
@@ -71,30 +73,34 @@ foreach ($requested_changes as $requested_change) {
 
         // Stock would go negative
         if ($new_quantity < 0 && $permission == false) {
-            $data = array(
-                'status' => 'permission_required',
-                'part_id' => $part_id,
-                'new_quantity' => $new_quantity,
-                'stock_level' => $current_stock_level_from
-            );
+            // $data = array(
+            //     'status' => 'permission_required',
+            //     'part_id' => $part_id,
+            //     'new_quantity' => $new_quantity,
+            //     'stock_level' => $current_stock_level_from
+            // );
             // $json_data = json_encode($data);
             // echo $json_data;
             // exit;
             //Add entry to changes array
             $changes[] = array(
+                'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $new_quantity
+                'new_quantity' => $new_quantity,
+                'status' => 'permission_required'
             );
             //Add entry to negative stock array
             $negative_stock[] = array(
+                'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $new_quantity
+                'new_quantity' => $new_quantity,
+                'status' => 'permission_required'
             );
             // echo json_encode($changes);
         }
@@ -102,6 +108,7 @@ foreach ($requested_changes as $requested_change) {
             // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
             //Add entry to changes array
             $changes[] = array(
+                'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
                 'from_location' => $from_location,
@@ -116,6 +123,7 @@ foreach ($requested_changes as $requested_change) {
         $to_quantity = $current_stock_level_to + $quantity;
         // $stock_level_id = changeQuantity($conn, $part_id, $to_quantity, $to_location);
         $changes[] = array(
+            'bom_id' => $bom_id,
             'part_id' => $part_id,
             'quantity' => $quantity,
             'to_location' => $to_location,
@@ -128,33 +136,38 @@ foreach ($requested_changes as $requested_change) {
 
         // Stock in 'from location' goes negative
         if ($from_quantity < 0 && $permission == false) {
-            $data = array(
-                'status' => 'permission_required',
-                'part_id' => $part_id,
-                'new_quantity' => $new_quantity,
-                'stock_level' => $current_stock_level_from
-            );
+            // $data = array(
+            //     'status' => 'permission_required',
+            //     'part_id' => $part_id,
+            //     'new_quantity' => $new_quantity,
+            //     'stock_level' => $current_stock_level_from
+            // );
             //Add entry to changes array
             $changes[] = array(
+                'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $from_quantity
+                'new_quantity' => $from_quantity,
+                'status' => 'permission_required'
             );
             //Add entry to negative stock array
             $negative_stock[] = array(
+                'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $from_quantity
+                'new_quantity' => $from_quantity,
+                'status' => 'permission_required'
             );
         }
         else {
             // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
             //Add entry to changes array
             $changes[] = array(
+                'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
                 'from_location' => $from_location,
