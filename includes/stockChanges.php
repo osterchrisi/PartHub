@@ -17,6 +17,11 @@ $test = getUserName($conn);
 $requested_changes = $_POST["stock_changes"];
 // echo json_encode($requested_changes);
 
+// Initialize the changes array and negative stock array
+$changes = array();
+$negative_stock = array();
+
+// Iterate over each part
 foreach ($requested_changes as $requested_change) {
     // echo json_encode($requested_change);
 
@@ -42,13 +47,11 @@ foreach ($requested_changes as $requested_change) {
     $permission = $requested_change['permission'];
 
     // Get all dem stock levels from the $_SESSION array
-    $stock_levels = $_SESSION['stock_levels'];
+    //! //TODO: Think I can get rid of the $_SESSION array after iteration approach
+    $stock_levels = getStockLevels($conn, $part_id);
+    // $stock_levels = $_SESSION['stock_levels'];
     $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
     $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
-
-    // Initialize the changes array and negative stock array
-    $changes = array();
-    $negative_stock = array();
 
     //* Change the stock level entries that exist for this part in that location
     if ($change == 1) { // Add Stock
@@ -93,6 +96,7 @@ foreach ($requested_changes as $requested_change) {
                 'change' => $change,
                 'new_quantity' => $new_quantity
             );
+            // echo json_encode($changes);
         }
         else {
             // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
@@ -104,6 +108,7 @@ foreach ($requested_changes as $requested_change) {
                 'change' => $change,
                 'new_quantity' => $new_quantity
             );
+            // echo json_encode($changes);
         }
     }
     elseif ($change == 0) { // Move Stock

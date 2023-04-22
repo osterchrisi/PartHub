@@ -390,10 +390,11 @@ function assembleBoms(selectedRows, ids) {
       url: '../includes/bom-assembly.php',
       data: {
         ids: ids,
-        quantity: q,
+        assemble_quantity: q,
         from_location: fl
       },
       success: function (response) {
+        console.log("Response in assembleBoms JS:")
         console.log(response);
 
         //* Original code before iterating iterations:
@@ -414,7 +415,7 @@ function assembleBoms(selectedRows, ids) {
         //     // User denied permission, handle accordingly
         //   }
         // }
-        // removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
+        removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
       }
     });
   })
