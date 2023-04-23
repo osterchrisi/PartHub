@@ -56,10 +56,9 @@ foreach ($requested_changes as $requested_change) {
     $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
     $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
 
-    //* Change the stock level entries that exist for this part in that location
+    //* Collect changes to be made
     if ($change == 1) { // Add Stock
         $new_quantity = $current_stock_level_to + $quantity;
-        // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
         //Add entry to changes array
         $changes[] = array(
             'bom_id' => $bom_id,
@@ -103,7 +102,6 @@ foreach ($requested_changes as $requested_change) {
             );
         }
         else {
-            // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
             //Add entry to changes array
             $changes[] = array(
                 'bom_id' => $bom_id,
@@ -116,13 +114,11 @@ foreach ($requested_changes as $requested_change) {
                 'comment' => $comment,
                 'status' => 'gtg'
             );
-            // echo json_encode($changes);
         }
     }
     elseif ($change == 0) { // Move Stock
         // Add stock in 'to location'
         $to_quantity = $current_stock_level_to + $quantity;
-        // $stock_level_id = changeQuantity($conn, $part_id, $to_quantity, $to_location);
         $changes[] = array(
             'bom_id' => $bom_id,
             'part_id' => $part_id,
@@ -166,7 +162,6 @@ foreach ($requested_changes as $requested_change) {
             );
         }
         else {
-            // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
             //Add entry to changes array
             $changes[] = array(
                 'bom_id' => $bom_id,
@@ -180,19 +175,10 @@ foreach ($requested_changes as $requested_change) {
                 'status' => 'gtg'
             );
         }
-        // $stock_level_id = changeQuantity($conn, $part_id, $from_quantity, $from_location);
     }
 
 }
 
-// if (empty($negative_stock)) {
-//     echo "All is well and these are the changes to commit\n";
-//     echo json_encode($changes);
-// }
-// else {
-//     echo "Some stuff is out of stock, these are the changes that need permission\n";
-//     echo json_encode($negative_stock);
-// }
 
 // If there are stock shortages, produce table and send back to user
 if (!empty($negative_stock)) {
@@ -202,6 +188,7 @@ if (!empty($negative_stock)) {
     echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock, 'negative_stock_table' => $negative_stock_table));
     exit;
 }
+// If no user permission is necessary
 else {
     foreach ($changes as $commit_change) {
         // $dump = print_r($commit_change);
@@ -229,7 +216,31 @@ else {
             // Report back for updating tables
             echo json_encode([$hist_id, $stock_level_id, $total_stock]);
         }
+        elseif ($change == -1) { // Reduce Stock
+            $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
+            $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
+            // Calculate new stock
+            $stock = getStockLevels($conn, $part_id);
+            $total_stock = getTotalStock($stock);
+
+            // Report back for updating tables
+            echo json_encode([$hist_id, $stock_level_id, $total_stock]);
+        }
+        elseif ($change == 0) {
+            print_r($commit_change); 
+            // First add stock in 'to location'
+            $stock_level_id = changeQuantity($conn, $part_id, $to_quantity, $to_location);
+            
+            // Then reduce stock in 'from location'
+            $stock_level_id = changeQuantity($conn, $part_id, $from_quantity, $from_location);
+
+            // History entry
+            $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+
+            // Stock stays the same, so no stock level update reporting necessary
+
+        }
     }
 }
 
