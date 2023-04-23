@@ -407,8 +407,8 @@ function assembleBoms(selectedRows, ids) {
         else {
           // User permission required
           //   var stockLevel = r.stock_level;
-          // var message = "There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?";
-          message = r.negative_stock_table;
+          var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?</div><br>";
+          message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
             // if (confirm(message)) {
             //   // User granted permission, do something with the part_id and new_quantity variables

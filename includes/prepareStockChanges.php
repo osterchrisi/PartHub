@@ -177,6 +177,8 @@ foreach ($requested_changes as $requested_change) {
 //     echo "Some stuff is out of stock, these are the changes that need permission\n";
 //     echo json_encode($negative_stock);
 // }
+
+// If there are stock shortages, produce table and send back to user
 if (!empty($negative_stock)){
 $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
 $nice_columns = array ('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
