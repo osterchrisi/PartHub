@@ -179,7 +179,11 @@ if (!empty($negative_stock)) {
     $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
     $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
     $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
-    echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock, 'negative_stock_table' => $negative_stock_table));
+    echo json_encode(array(
+        'changes' => $changes,
+        'negative_stock' => $negative_stock,
+        'negative_stock_table' => $negative_stock_table,
+        'status' => 'permission_requested'));
     exit;
 }
 //* If no user permission is necessary
@@ -214,7 +218,14 @@ else {
 
             //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report back for updating tables
-            echo json_encode([$hist_id, $stock_level_id, $total_stock]);
+            $result = [$hist_id, $stock_level_id, $total_stock];
+            echo json_encode(array(
+                'changes' => NULL,
+                'negative_stock' => NULL,
+                'negative_stock_table' => NULL,
+                'status' => 'success',
+                'result' => $result));
+            // echo json_encode([$hist_id, $stock_level_id, $total_stock]);
         }
         elseif ($change == -1) { // Reduce Stock
             $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);

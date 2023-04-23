@@ -400,23 +400,18 @@ function assembleBoms(selectedRows, ids) {
         var r = JSON.parse(response);
         if (r.negative_stock.length === 0) {
           //* Do the normal thing here, all requested stock available
-          // $('#mBomAssembly').modal('hide'); // Hide Modal
-          // updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
-          //TODO: Also select in table}
+          $('#mBomAssembly').modal('hide'); // Hide Modal
+          updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+          //TODO: Also select in table
         }
         else {
-          // User permission required
-          //   var stockLevel = r.stock_level;
+          //* User permission required
+          // Display warning and missing stock table
           $('#btnAssembleBOMs').attr('disabled', true);
           var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
           message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
           message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
-            // if (confirm(message)) {
-            //   // User granted permission, do something with the part_id and new_quantity variables
-            // } else {
-            //   // User denied permission, handle accordingly
-            // }
         }
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
       }

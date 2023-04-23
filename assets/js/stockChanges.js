@@ -93,13 +93,14 @@ function stockChangeSaveChangesClickListener(change) {
         $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
             function (response) {
                 console.log(response);
+                r = JSON.parse(response);
 
                 //* Original code before iterating iterations down here:
                 // console.log("Succesfully created new stock history entry with number: ", response);
                 updatePartsInfo(pid);
 
                 // //TODO: This is bit of a hicky hacky but at least updates the cell for now
-                var new_stock_level = JSON.parse(response)[2];
+                var new_stock_level = r.result[2];
                 var $cell = $('tr.selected-last td[data-column="total_stock"]');
                 $cell.text(new_stock_level);
 
