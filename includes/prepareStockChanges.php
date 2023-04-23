@@ -1,5 +1,13 @@
 <?php
-// Add, reduce or move stock
+/**
+ * Add, reduce or move stock
+ * 
+ * Returns an array of arrays:
+ * The $changes array that has ALL changes requested.
+ * The $negative_stock array that contains only entries for stock changes that would result in negative stock.
+ * The $negative_stock_table is an HTML string that contains a table built out of the negative_stock array
+ */
+
 require_once "session.php";
 require_once "../config/credentials.php";
 require_once "SQL.php";
@@ -58,6 +66,7 @@ foreach ($requested_changes as $requested_change) {
             'part_id' => $part_id,
             'quantity' => $quantity,
             'to_location' => $to_location,
+            'from_location' => $from_location,
             'change' => $change,
             'new_quantity' => $new_quantity,
             'comment' => $comment,
@@ -73,6 +82,7 @@ foreach ($requested_changes as $requested_change) {
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
+                'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $new_quantity,
@@ -84,6 +94,7 @@ foreach ($requested_changes as $requested_change) {
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
+                'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $new_quantity,
@@ -98,6 +109,7 @@ foreach ($requested_changes as $requested_change) {
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
+                'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $new_quantity,
@@ -116,6 +128,7 @@ foreach ($requested_changes as $requested_change) {
             'part_id' => $part_id,
             'quantity' => $quantity,
             'to_location' => $to_location,
+            'from_location' => $from_location,
             'change' => $change,
             'new_quantity' => $to_quantity,
             'comment' => $comment,
@@ -132,6 +145,7 @@ foreach ($requested_changes as $requested_change) {
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
+                'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $from_quantity,
@@ -143,6 +157,7 @@ foreach ($requested_changes as $requested_change) {
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
+                'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $from_quantity,
@@ -157,6 +172,7 @@ foreach ($requested_changes as $requested_change) {
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
                 'quantity' => $quantity,
+                'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
                 'new_quantity' => $from_quantity,
@@ -179,18 +195,51 @@ foreach ($requested_changes as $requested_change) {
 // }
 
 // If there are stock shortages, produce table and send back to user
-if (!empty($negative_stock)){
-$column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
-$nice_columns = array ('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-$negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);}
-echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock, 'negative_stock_table' => $negative_stock_table));
+if (!empty($negative_stock)) {
+    $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
+    $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
+    $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
+    echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock, 'negative_stock_table' => $negative_stock_table));
+    exit;
+}
+else {
+    foreach ($changes as $commit_change) {
+        // $dump = print_r($commit_change);
+        // echo $dump;
+        // First extract variables
+        $part_id = $commit_change['part_id'];
+        $bom_id = $commit_change['bom_id'];
+        $change = $commit_change['change'];
+        $quantity = $commit_change['quantity'];
+        $new_quantity = $commit_change['new_quantity'];
+        $to_location = $commit_change['to_location'];
+        $from_location = $commit_change['from_location'];
+        $comment = $commit_change['comment'];
+        $status = $commit_change['status'];
+
+        if ($change == 1) { // Add Stock
+            // Make records in stock_level and stock_level_change_history tables
+            $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
+            $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+
+            // Calculate new stock
+            $stock = getStockLevels($conn, $part_id);
+            $total_stock = getTotalStock($stock);
+
+            // Report back for updating tables
+            echo json_encode([$hist_id, $stock_level_id, $total_stock]);
+        }
+
+    }
+}
 
 //*This is original code:
-//* Make record in stock_level_change_history table
+// Make record in stock_level_change_history table
 // $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
-// $stock = getStockLevels($conn, $part_id);
-// $total_stock = getTotalStock($stock);
+$stock = getStockLevels($conn, $part_id);
+$total_stock = getTotalStock($stock);
 
 // //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-// echo json_encode([$hist_id, $stock_level_id, $total_stock, 'status' => 'success']);
+// echo json_encode([$hist_id, $stock_level_id]);
+// echo json_encode([$hist_id, $stock_level_id, $total_stock]);

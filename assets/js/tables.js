@@ -407,7 +407,9 @@ function assembleBoms(selectedRows, ids) {
         else {
           // User permission required
           //   var stockLevel = r.stock_level;
-          var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?</div><br>";
+          $('#btnAssembleBOMs').attr('disabled', true);
+          var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
+          message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
           message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
             // if (confirm(message)) {
