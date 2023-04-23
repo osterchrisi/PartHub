@@ -28,7 +28,7 @@ $requested_changes = $_POST["stock_changes"];
 $changes = array();
 $negative_stock = array();
 
-// Iterate over each part
+//* Fill arrays with all requested changes
 foreach ($requested_changes as $requested_change) {
 
     // Gather variables
@@ -117,21 +117,10 @@ foreach ($requested_changes as $requested_change) {
         }
     }
     elseif ($change == 0) { // Move Stock
-        // Add stock in 'to location'
+        // New quantity in 'to location'
         $to_quantity = $current_stock_level_to + $quantity;
-        $changes[] = array(
-            'bom_id' => $bom_id,
-            'part_id' => $part_id,
-            'quantity' => $quantity,
-            'to_location' => $to_location,
-            'from_location' => $from_location,
-            'change' => $change,
-            'new_quantity' => $to_quantity,
-            'comment' => $comment,
-            'status' => 'gtg'
-        );
 
-        // Remove stock in 'from_location'
+        // New quantity in 'from_location'
         $from_quantity = $current_stock_level_from - $quantity;
 
         // Stock in 'from location' goes negative
@@ -144,7 +133,8 @@ foreach ($requested_changes as $requested_change) {
                 'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $from_quantity,
+                'to_quantity' => $to_quantity,
+                'from_quantity' => $from_quantity,
                 'comment' => $comment,
                 'status' => 'permission_required'
             );
@@ -156,7 +146,8 @@ foreach ($requested_changes as $requested_change) {
                 'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $from_quantity,
+                'to_quantity' => $to_quantity,
+                'from_quantity' => $from_quantity,
                 'comment' => $comment,
                 'status' => 'permission_required'
             );
@@ -170,7 +161,8 @@ foreach ($requested_changes as $requested_change) {
                 'to_location' => $to_location,
                 'from_location' => $from_location,
                 'change' => $change,
-                'new_quantity' => $from_quantity,
+                'to_quantity' => $to_quantity,
+                'from_quantity' => $from_quantity,
                 'comment' => $comment,
                 'status' => 'gtg'
             );
@@ -179,8 +171,10 @@ foreach ($requested_changes as $requested_change) {
 
 }
 
+//* Make the actual stock change entries and stock change history entries
+//TODO: Would be maybe nice to extract this to different file?
 
-// If there are stock shortages, produce table and send back to user
+//* If there are stock shortages, produce table and send back to user
 if (!empty($negative_stock)) {
     $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
     $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
@@ -188,7 +182,7 @@ if (!empty($negative_stock)) {
     echo json_encode(array('changes' => $changes, 'negative_stock' => $negative_stock, 'negative_stock_table' => $negative_stock_table));
     exit;
 }
-// If no user permission is necessary
+//* If no user permission is necessary
 else {
     foreach ($changes as $commit_change) {
         // $dump = print_r($commit_change);
@@ -197,7 +191,12 @@ else {
         $part_id = $commit_change['part_id'];
         $bom_id = $commit_change['bom_id'];
         $change = $commit_change['change'];
+        
         $quantity = $commit_change['quantity'];
+        $to_quantity = $commit_change['to_quantity'];
+        $from_quantity = $commit_change['from_quantity'];
+        
+        
         $new_quantity = $commit_change['new_quantity'];
         $to_location = $commit_change['to_location'];
         $from_location = $commit_change['from_location'];
@@ -213,6 +212,7 @@ else {
             $stock = getStockLevels($conn, $part_id);
             $total_stock = getTotalStock($stock);
 
+            //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report back for updating tables
             echo json_encode([$hist_id, $stock_level_id, $total_stock]);
         }
@@ -224,14 +224,15 @@ else {
             $stock = getStockLevels($conn, $part_id);
             $total_stock = getTotalStock($stock);
 
+            //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report back for updating tables
             echo json_encode([$hist_id, $stock_level_id, $total_stock]);
         }
         elseif ($change == 0) {
-            print_r($commit_change); 
+            // print_r($commit_change);
             // First add stock in 'to location'
             $stock_level_id = changeQuantity($conn, $part_id, $to_quantity, $to_location);
-            
+
             // Then reduce stock in 'from location'
             $stock_level_id = changeQuantity($conn, $part_id, $from_quantity, $from_location);
 
@@ -239,18 +240,8 @@ else {
             $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
             // Stock stays the same, so no stock level update reporting necessary
-
+            // Send it anyway, otherwise JS complains about 'Unexpected end of JSON input'
+            echo json_encode([$hist_id, $stock_level_id, $total_stock]);
         }
     }
 }
-
-//*This is original code:
-// Make record in stock_level_change_history table
-// $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-
-$stock = getStockLevels($conn, $part_id);
-$total_stock = getTotalStock($stock);
-
-// //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-// echo json_encode([$hist_id, $stock_level_id]);
-// echo json_encode([$hist_id, $stock_level_id, $total_stock]);
