@@ -220,12 +220,11 @@ else {
             // Report back for updating tables
             $result = [$hist_id, $stock_level_id, $total_stock];
             echo json_encode(array(
-                'changes' => NULL,
-                'negative_stock' => NULL,
-                'negative_stock_table' => NULL,
+                'changes' => array(),
+                'negative_stock' => array(),
+                'negative_stock_table' => array(),
                 'status' => 'success',
                 'result' => $result));
-            // echo json_encode([$hist_id, $stock_level_id, $total_stock]);
         }
         elseif ($change == -1) { // Reduce Stock
             $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
@@ -237,7 +236,13 @@ else {
 
             //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report back for updating tables
-            echo json_encode([$hist_id, $stock_level_id, $total_stock]);
+            $result = [$hist_id, $stock_level_id, $total_stock];
+            echo json_encode(array(
+                'changes' => array(),
+                'negative_stock' => array(),
+                'negative_stock_table' => array(),
+                'status' => 'success',
+                'result' => $result));
         }
         elseif ($change == 0) {
             // print_r($commit_change);
@@ -252,7 +257,13 @@ else {
 
             // Stock stays the same, so no stock level update reporting necessary
             // Send it anyway, otherwise JS complains about 'Unexpected end of JSON input'
-            echo json_encode([$hist_id, $stock_level_id, $total_stock]);
+            $result = [$hist_id, $stock_level_id, $total_stock];
+            echo json_encode(array(
+                'changes' => array(),
+                'negative_stock' => array(),
+                'negative_stock_table' => array(),
+                'status' => 'success',
+                'result' => $result));
         }
     }
 }

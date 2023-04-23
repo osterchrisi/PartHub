@@ -87,15 +87,12 @@ function stockChangeSaveChangesClickListener(change) {
             change: change
         }];
 
-        // console.log(stockChanges);
-
         // Call the stock changing script
         $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
             function (response) {
                 console.log(response);
                 r = JSON.parse(response);
 
-                //* Original code before iterating iterations down here:
                 // console.log("Succesfully created new stock history entry with number: ", response);
                 updatePartsInfo(pid);
 
