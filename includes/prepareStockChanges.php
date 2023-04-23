@@ -255,8 +255,13 @@ else {
             // History entry
             $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
-            // Stock stays the same, so no stock level update reporting necessary
-            // Send it anyway, otherwise JS complains about 'Unexpected end of JSON input'
+            // Reporting stock so that it can be updated in the origin table
+
+            // Calculate new stock
+            $stock = getStockLevels($conn, $part_id);
+            $total_stock = getTotalStock($stock);
+
+            //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             $result = [$hist_id, $stock_level_id, $total_stock];
             echo json_encode(array(
                 'changes' => array(),

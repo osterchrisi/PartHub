@@ -93,7 +93,6 @@ function stockChangeSaveChangesClickListener(change) {
                 console.log(response);
                 r = JSON.parse(response);
 
-                // console.log("Succesfully created new stock history entry with number: ", response);
                 updatePartsInfo(pid);
 
                 // //TODO: This is bit of a hicky hacky but at least updates the cell for now
