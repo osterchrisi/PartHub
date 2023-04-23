@@ -1,5 +1,5 @@
-var from_location_exists = false;
-var to_location_exists = false;
+// var from_location_exists = false;
+// var to_location_exists = false;
 
 // Create the "To Location" dropdown
 function toStockLocationDropdown(locations) {
@@ -74,7 +74,6 @@ function stockChangeSaveChangesClickListener(change) {
         }
 
         //? Okay, this looks weird, maybe there is a cleaner way?
-        uid = <?php echo json_encode($_SESSION['user_id']); ?>;
         pid = <?php echo json_encode($part_id); ?>;
 
         var stockChanges = [{
@@ -82,7 +81,6 @@ function stockChangeSaveChangesClickListener(change) {
             to_location: tl,
             from_location: fl,
             comment: c,
-            user_id: uid,
             part_id: pid,
             change: change
         }];
@@ -97,6 +95,7 @@ function stockChangeSaveChangesClickListener(change) {
 
                 // //TODO: This is bit of a hicky hacky but at least updates the cell for now
                 var new_stock_level = r.result[2];
+
                 var $cell = $('tr.selected-last td[data-column="total_stock"]');
                 $cell.text(new_stock_level);
 
@@ -107,15 +106,9 @@ function stockChangeSaveChangesClickListener(change) {
 
 // Remove the locations dropdowns to keep them from stacking up
 $('#mAddStock').on('hidden.bs.modal', function () {
-    if (from_location_exists) {
         removeLocationDropdown("FromStockLocationDiv");
-        from_location_exists = false;
-    }
-
-    if (to_location_exists) {
         removeLocationDropdown("ToStockLocationDiv");
-        to_location_exists = false;
-    }
+
 });
 
 // Remove a dropdown by ID

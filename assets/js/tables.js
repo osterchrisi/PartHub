@@ -412,11 +412,29 @@ function assembleBoms(selectedRows, ids) {
           message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
           message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
+          $('#btnAssembleBOMsAnyway').on('click', function () {
+            continueAnyway(r);
+          });
         }
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
       }
     });
   })
+}
+
+function continueAnyway(r) {
+  for (const change of r.changes) {
+    change.status = 'gtg';
+  }
+  console.log(r);
+  console.log(JSON.stringify(r.changes));
+
+  // Call the stock changing script
+  $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: JSON.stringify(r.changes) },
+    function (response) {
+      console.log(response);
+    }
+  )
 }
 
 //* Not using any of the code below this point, it's for appending a part row. Maybe useful later...

@@ -48,7 +48,7 @@ foreach ($requested_changes as $requested_change) {
     }
 
     $comment = $requested_change['comment'];
-    $permission = $requested_change['permission'];
+    $status = $requested_change['status'];
 
 
     // Get all dem stock levels for currently iterated part
@@ -76,7 +76,7 @@ foreach ($requested_changes as $requested_change) {
         $new_quantity = $current_stock_level_from - $quantity;
 
         // Stock would go negative
-        if ($new_quantity < 0 && $permission == false) {
+        if ($new_quantity < 0 && $status != 'gtg') {
             $changes[] = array(
                 'bom_id' => $bom_id,
                 'part_id' => $part_id,
@@ -124,7 +124,7 @@ foreach ($requested_changes as $requested_change) {
         $from_quantity = $current_stock_level_from - $quantity;
 
         // Stock in 'from location' goes negative
-        if ($from_quantity < 0 && $permission == false) {
+        if ($from_quantity < 0 && $status != 'gtg') {
             //Add entry to changes array
             $changes[] = array(
                 'bom_id' => $bom_id,
