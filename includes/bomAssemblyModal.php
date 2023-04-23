@@ -3,7 +3,6 @@
 $basename = basename(__FILE__);
 include '../config/credentials.php';
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
-echo 1;
 ?>
 
 <!-- HTML for modal -->

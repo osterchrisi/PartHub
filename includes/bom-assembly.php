@@ -37,7 +37,7 @@ foreach ($ids as $bom_id) {
                 'to_location' => NULL,
                 'from_location' => $from_location,
                 'comment' => 'some meaningful comment',
-                'permission' => false
+                // 'permission' => false
             );
 
             $all_stock_changes[] = $stock_change;

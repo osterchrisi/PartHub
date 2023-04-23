@@ -8,7 +8,7 @@
  * The $negative_stock_table is an HTML string that contains a table built out of the negative_stock array
  */
 
-require_once "session.php";
+require "session.php";
 require_once "../config/credentials.php";
 require_once "SQL.php";
 require_once "helpers.php";
@@ -171,6 +171,8 @@ foreach ($requested_changes as $requested_change) {
 
 }
 
+// echo "Do I actually ever get to here?";
+
 //* Make the actual stock change entries and stock change history entries
 //TODO: Would be maybe nice to extract this to different file?
 
@@ -179,28 +181,30 @@ if (!empty($negative_stock)) {
     $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
     $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
     $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
-    echo json_encode(array(
-        'changes' => $changes,
-        'negative_stock' => $negative_stock,
-        'negative_stock_table' => $negative_stock_table,
-        'status' => 'permission_requested'));
+    echo json_encode(
+        array(
+            'changes' => $changes,
+            'negative_stock' => $negative_stock,
+            'negative_stock_table' => $negative_stock_table,
+            'status' => 'permission_requested'
+        )
+    );
     exit;
 }
 //* If no user permission is necessary
 else {
+    // echo "this should be possible too";
     foreach ($changes as $commit_change) {
-        // $dump = print_r($commit_change);
-        // echo $dump;
         // First extract variables
         $part_id = $commit_change['part_id'];
         $bom_id = $commit_change['bom_id'];
         $change = $commit_change['change'];
-        
+
         $quantity = $commit_change['quantity'];
         $to_quantity = $commit_change['to_quantity'];
         $from_quantity = $commit_change['from_quantity'];
-        
-        
+
+
         $new_quantity = $commit_change['new_quantity'];
         $to_location = $commit_change['to_location'];
         $from_location = $commit_change['from_location'];
@@ -219,16 +223,20 @@ else {
             //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report back for updating tables
             $result = [$hist_id, $stock_level_id, $total_stock];
-            echo json_encode(array(
-                'changes' => array(),
-                'negative_stock' => array(),
-                'negative_stock_table' => array(),
-                'status' => 'success',
-                'result' => $result));
+            echo json_encode(
+                array(
+                    'changes' => array(),
+                    'negative_stock' => array(),
+                    'negative_stock_table' => array(),
+                    'status' => 'success',
+                    'result' => $result
+                )
+            );
         }
         elseif ($change == -1) { // Reduce Stock
             $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
-            $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+            //! Have to write NULL for $to_location. That's alright for now but would like to clean this
+            $hist_id = stockChange($conn, $part_id, $from_location, NULL, $quantity, $comment, $user_id);
 
             // Calculate new stock
             $stock = getStockLevels($conn, $part_id);
@@ -237,15 +245,17 @@ else {
             //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report back for updating tables
             $result = [$hist_id, $stock_level_id, $total_stock];
-            echo json_encode(array(
-                'changes' => array(),
-                'negative_stock' => array(),
-                'negative_stock_table' => array(),
-                'status' => 'success',
-                'result' => $result));
+            echo json_encode(
+                array(
+                    'changes' => array(),
+                    'negative_stock' => array(),
+                    'negative_stock_table' => array(),
+                    'status' => 'success',
+                    'result' => $result
+                )
+            );
         }
         elseif ($change == 0) {
-            // print_r($commit_change);
             // First add stock in 'to location'
             $stock_level_id = changeQuantity($conn, $part_id, $to_quantity, $to_location);
 
@@ -263,12 +273,15 @@ else {
 
             //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             $result = [$hist_id, $stock_level_id, $total_stock];
-            echo json_encode(array(
-                'changes' => array(),
-                'negative_stock' => array(),
-                'negative_stock_table' => array(),
-                'status' => 'success',
-                'result' => $result));
+            echo json_encode(
+                array(
+                    'changes' => array(),
+                    'negative_stock' => array(),
+                    'negative_stock_table' => array(),
+                    'status' => 'success',
+                    'result' => $result
+                )
+            );
         }
     }
 }

@@ -413,7 +413,8 @@ function assembleBoms(selectedRows, ids) {
           message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
           $('#btnAssembleBOMsAnyway').on('click', function () {
-            continueAnyway(r);
+            //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
+            continueAnyway(r, ids);
           });
         }
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
@@ -422,17 +423,19 @@ function assembleBoms(selectedRows, ids) {
   })
 }
 
-function continueAnyway(r) {
+function continueAnyway(r, ids) {
+  //TODO: Recieving ids for updating table after success but this won't work in the future for selectively updating
   for (const change of r.changes) {
     change.status = 'gtg';
   }
-  console.log(r);
-  console.log(JSON.stringify(r.changes));
 
-  // Call the stock changing script
-  $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: JSON.stringify(r.changes) },
+  // Call the stock changing script with the already prepared stock changes
+  $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
     function (response) {
       console.log(response);
+      $('#mBomAssembly').modal('hide'); // Hide Modal
+      updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+      $('#mBomAssembly').modal('dispose'); // Hide Modal
     }
   )
 }

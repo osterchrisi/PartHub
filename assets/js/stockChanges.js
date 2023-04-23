@@ -85,6 +85,8 @@ function stockChangeSaveChangesClickListener(change) {
             change: change
         }];
 
+        console.log(stockChanges);
+
         // Call the stock changing script
         $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
             function (response) {
