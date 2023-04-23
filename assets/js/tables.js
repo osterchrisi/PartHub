@@ -423,6 +423,7 @@ function assembleBoms(selectedRows, ids) {
   })
 }
 
+//TODO: Extract functions
 function continueAnyway(r, ids) {
   //TODO: Recieving ids for updating table after success but this won't work in the future for selectively updating
   for (const change of r.changes) {
@@ -433,9 +434,14 @@ function continueAnyway(r, ids) {
   $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
     function (response) {
       console.log(response);
-      $('#mBomAssembly').modal('hide'); // Hide Modal
+      $('#mBomAssembly').on('hidden.bs.modal', function (e) {
+        $('#partEntryForm')[0].reset();
+        $('#mBomAssemblyInfo').empty();
+        $('#btnAssembleBOMs').attr('disabled', false);
+        $(this).modal('dispose');
+      }).modal('hide');
       updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
-      $('#mBomAssembly').modal('dispose'); // Hide Modal
+      // $('#mBomAssembly').modal('dispose'); // Hide Modal
     }
   )
 }
