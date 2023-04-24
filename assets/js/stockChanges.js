@@ -26,7 +26,7 @@ function fromStockLocationDropdown(divId, locations) {
 }
 
 // Show the Stock Modal, remove old click listener and attach new one
-function callStockModal(change, locations) {
+function callStockModal(change, locations, pid) {
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
@@ -51,11 +51,11 @@ function callStockModal(change, locations) {
 
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
-    stockChangeSaveChangesClickListener(change); // Add click listener to the Save Changes button
+    stockChangeSaveChangesClickListener(change, pid); // Add click listener to the Save Changes button
 }
 
 // ClickListener for "Save Changes" button in Add Stock Modal
-function stockChangeSaveChangesClickListener(change) {
+function stockChangeSaveChangesClickListener(change, pid) {
     $('#AddStock').click(function () {
         q = $("#addStockQuantity").val(); // Quantity
         c = $("#addStockDescription").val(); // Comment
@@ -72,10 +72,6 @@ function stockChangeSaveChangesClickListener(change) {
             tl = $("#toStockLocation").val(); // To Location
             fl = $("#fromStockLocation").val(); // From Location
         }
-
-        //? Okay, this looks weird, maybe there is a cleaner way?
-        //TODO: Make this better
-        pid = <?php echo json_encode($part_id); ?>;
 
         var stockChanges = [{
             quantity: q,
