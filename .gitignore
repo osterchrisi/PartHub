@@ -10,3 +10,4 @@ apigen.neon
 tools/
 docs/
 deploy
+phpinfo.php
