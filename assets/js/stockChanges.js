@@ -91,25 +91,45 @@ function stockChangeSaveChangesClickListener(change) {
         $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
             function (response) {
                 console.log(response);
-                r = JSON.parse(response);
+                var r = JSON.parse(response);
 
-                updatePartsInfo(pid);
+                if (r.negative_stock.length === 0) {
+                    //* Do the normal thing here, all requested stock available
+                    console.log("This");
+                    updatePartsInfo(pid);
 
-                // //TODO: This is bit of a hicky hacky but at least updates the cell for now
-                var new_stock_level = r.result[2];
+                    // //TODO: This is bit of a hicky hacky but at least updates the cell for now
+                    var new_stock_level = r.result[2];
 
-                var $cell = $('tr.selected-last td[data-column="total_stock"]');
-                $cell.text(new_stock_level);
+                    var $cell = $('tr.selected-last td[data-column="total_stock"]');
+                    $cell.text(new_stock_level);
 
-                $("#mAddStock").hide(); // Hide stockChange modal
+                    $("#mAddStock").hide(); // Hide stockChange modal
+                }
+                else {
+                    //* User permission required
+                    // Display warning and missing stock table
+                    console.log("That");
+                    $('#AddStock').attr('disabled', true);
+                    var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
+                    message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
+                    message += r.negative_stock_table;
+                    $('#mStockModalInfo').html(message);
+
+                    // Attach click listener to "Do It Anyway" button
+                    $('#btnAssembleBOMsAnyway').on('click', function () {
+                        //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
+                        continueAnyway(r, ids);
+                    });
+                }
             });
     });
 }
 
 // Remove the locations dropdowns to keep them from stacking up
 $('#mAddStock').on('hidden.bs.modal', function () {
-        removeLocationDropdown("FromStockLocationDiv");
-        removeLocationDropdown("ToStockLocationDiv");
+    removeLocationDropdown("FromStockLocationDiv");
+    removeLocationDropdown("ToStockLocationDiv");
 
 });
 

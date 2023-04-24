@@ -45,12 +45,15 @@ $_SESSION['locations'] = $locations;
         <br>
         <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription" required>
       </form>
+      <div class="row mt-3">
+        <div id="mStockModalInfo"></div>
+      </div>
     </div>
 
     <!-- Modal Footer -->
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="AddStock">Save changes</button>
+      <button type="button" class="btn btn-primary" id="AddStock">Save changes</button>
     </div>
   </div>
 </div>
