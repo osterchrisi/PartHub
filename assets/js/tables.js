@@ -408,12 +408,18 @@ function assembleBoms(selectedRows, ids) {
         var r = JSON.parse(response);
         if (r.negative_stock.length === 0) {
           //* Do the normal thing here, all requested stock available
+
+          console.log(r);
+
           $('#mBomAssembly').modal('hide'); // Hide Modal
           updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
           //TODO: Also select in table
         }
         else {
           //* User permission required
+
+          console.log(r);
+
           // Display warning and missing stock table
           $('#btnAssembleBOMs').attr('disabled', true);
           var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
@@ -453,7 +459,7 @@ function continueAnyway(r, ids) {
     function (response) {
       console.log(response);
       $('#mBomAssembly').on('hidden.bs.modal', function (e) {
-        $('#partEntryForm')[0].reset();
+        $('#bomAssemblyForm')[0].reset();
         $('#mBomAssemblyInfo').empty();
         $('#btnAssembleBOMs').attr('disabled', false);
         $(this).modal('dispose');

@@ -171,13 +171,11 @@ foreach ($requested_changes as $requested_change) {
 
 }
 
-// echo "Do I actually ever get to here?";
-
 //* Make the actual stock change entries and stock change history entries
 //TODO: Would be maybe nice to extract this to different file?
 
-//* If there are stock shortages, produce table and send back to user
-if (!empty($negative_stock)) {
+//* If there are stock shortages processing BOMs, produce table and send back to user
+if (!empty($negative_stock) && !is_null($changes[0]['bom_id'])) {
     $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
     $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
     $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
@@ -191,9 +189,24 @@ if (!empty($negative_stock)) {
     );
     exit;
 }
+//* If there are stock shortages processing parts, produce table and send back to user
+elseif (!empty($negative_stock) && is_null($changes[0]['bom_id'])) {
+    //TODO: This can be made even better asking for type of change and selectively showing only / and "to_location" / "from_location"
+    $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
+    $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
+    $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
+    echo json_encode(
+        array(
+            'changes' => $changes,
+            'negative_stock' => $negative_stock,
+            'negative_stock_table' => $negative_stock_table,
+            'status' => 'permission_requested'
+        )
+    );
+    exit;
+}
 //* If no user permission is necessary
 else {
-    // echo "this should be possible too";
     foreach ($changes as $commit_change) {
         // First extract variables
         $part_id = $commit_change['part_id'];

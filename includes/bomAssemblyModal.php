@@ -19,7 +19,7 @@ $conn = connectToSQLDB($hostname, $username, $password, $database_name);
       <div class="row">
         <span id="partEntryText">Assemble selected BOM(s)</span><br>
       </div>
-      <form id="partEntryForm">
+      <form id="bomAssemblyForm">
         <div class="row">
           <div class="col-3">
             <input class="form-control" placeholder="Quantity" id="bomAssembleQuantity" required>

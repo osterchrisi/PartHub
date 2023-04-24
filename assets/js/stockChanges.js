@@ -111,15 +111,35 @@ function stockChangeSaveChangesClickListener(change) {
                     // Display warning and missing stock table
                     console.log("That");
                     $('#AddStock').attr('disabled', true);
-                    var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
-                    message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
+                    var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " part(s). Do you want to continue anyway?<br>";
+                    message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>"
                     message += r.negative_stock_table;
                     $('#mStockModalInfo').html(message);
 
                     // Attach click listener to "Do It Anyway" button
-                    $('#btnAssembleBOMsAnyway').on('click', function () {
-                        //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
-                        continueAnyway(r, ids);
+                    $('#btnChangeStockAnyway').on('click', function () {
+                        // //! In stock changing JS, this doesn't even have IDs array yet
+                        // //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
+                        // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
+                        // continueAnyway(r, ids);
+
+                        for (const change of r.changes) {
+                            change.status = 'gtg';
+                        }
+                        // Call the stock changing script with the already prepared stock changes
+                        $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
+                            function (response) {
+                                console.log(response);
+                                $('#mAddStock').on('hidden.bs.modal', function (e) {
+                                    $('#stockChangingForm')[0].reset();
+                                    $('#mStockModalInfo').empty();
+                                    $('#AddStock').attr('disabled', false);
+                                    $(this).modal('dispose');
+                                }).modal('hide');
+                                //TODO: This can't work here
+                                updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+                            }
+                        )
                     });
                 }
             });
