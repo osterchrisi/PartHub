@@ -74,6 +74,7 @@ function stockChangeSaveChangesClickListener(change) {
         }
 
         //? Okay, this looks weird, maybe there is a cleaner way?
+        //TODO: Make this better
         pid = <?php echo json_encode($part_id); ?>;
 
         var stockChanges = [{
@@ -104,7 +105,13 @@ function stockChangeSaveChangesClickListener(change) {
                     var $cell = $('tr.selected-last td[data-column="total_stock"]');
                     $cell.text(new_stock_level);
 
-                    $("#mAddStock").hide(); // Hide stockChange modal
+                    // Reset modal and hide it
+                    $('#mAddStock').on('hidden.bs.modal', function (e) {
+                        $('#stockChangingForm')[0].reset();
+                        $('#mStockModalInfo').empty();
+                        $('#AddStock').attr('disabled', false);
+                        $(this).modal('dispose');
+                    }).modal('hide');
                 }
                 else {
                     //* User permission required
@@ -136,8 +143,9 @@ function stockChangeSaveChangesClickListener(change) {
                                     $('#AddStock').attr('disabled', false);
                                     $(this).modal('dispose');
                                 }).modal('hide');
-                                //TODO: This can't work here
-                                updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+                                //TODO: This can't work here (not giving any ids yet like in BOMs)
+                                // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+                                updatePartsInfo(pid);
                             }
                         )
                     });
