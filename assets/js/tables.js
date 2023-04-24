@@ -378,6 +378,14 @@ function inlineProcessing() {
   });
 };
 
+/**
+*
+* Displays a modal for assembling one or more BOMs and sends an AJAX request to the server to assemble the BOMs.
+* If there are stock shortages the user is notified after the AJAX request is complete and can chose to continue.
+* @param {Array} selectedRows - An array of selected rows from the table.
+* @param {Array} ids - An array of BOM IDs.
+* @returns {void}
+*/
 function assembleBoms(selectedRows, ids) {
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
@@ -394,14 +402,14 @@ function assembleBoms(selectedRows, ids) {
         from_location: fl
       },
       success: function (response) {
-        console.log("Response in assembleBoms JS:")
-        console.log(response);
+        // console.log("Response in assembleBoms JS:")
+        // console.log(response);
 
         var r = JSON.parse(response);
         if (r.negative_stock.length === 0) {
           //* Do the normal thing here, all requested stock available
           $('#mBomAssembly').modal('hide'); // Hide Modal
-          updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+          updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
           //TODO: Also select in table
         }
         else {
@@ -412,6 +420,8 @@ function assembleBoms(selectedRows, ids) {
           message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
           message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
+
+          // Attach click listener to "Do It Anyway" button
           $('#btnAssembleBOMsAnyway').on('click', function () {
             //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
             continueAnyway(r, ids);
@@ -424,6 +434,14 @@ function assembleBoms(selectedRows, ids) {
 }
 
 //TODO: Extract functions
+/**
+* Send back the changes array with all statuses set to "gtg" (good to got)
+* when the user chooses to continue with assembling BOMs even if there isn't enough stock for some parts.
+*
+* @param {Object} r - An object containing the changes array received from the server for updating the stock changes.
+* @param {Array} ids - An array containing the IDs of the BOMs that need to be updated.
+* @returns {void}
+*/
 function continueAnyway(r, ids) {
   //TODO: Recieving ids for updating table after success but this won't work in the future for selectively updating
   for (const change of r.changes) {
