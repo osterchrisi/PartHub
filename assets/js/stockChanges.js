@@ -42,12 +42,7 @@ function fromStockLocationDropdown(divId, locations) {
  * Finally remove old click listener and attach new one to the 'Save Changes' button
  * 
  * @param {number} change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
- * @param {Array} locations - An array of objects containing:
- * - location_id
- * - location_name
- * - location_description
- * - location_owner_u_fk
- * - location_owner_g_fk
+ * @param {Array} locations - An array of objects containing location information
  * @param {number} pid - The part ID for which to call the stock modal for
  */
 function callStockModal(change, locations, pid) {
@@ -75,44 +70,40 @@ function callStockModal(change, locations, pid) {
 
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
-    validateForm('stockChangingForm', 'AddStock', stockChangeSaveChangesClickListener(change, pid)); // Attach validate form 
-    
-    // Works:
-    // stockChangeSaveChangesClickListener(change, pid); // Add click listener to the Save Changes button
+    validateForm('stockChangingForm', 'AddStock', stockChangingFormExecution, [change, pid]); // Attach validate form 
 }
 
-// ClickListener for "Save Changes" button in Add Stock Modal
-function stockChangeSaveChangesClickListener(change, pid) {
-    $('#AddStock').click(function () {
-        q = $("#addStockQuantity").val(); // Quantity
-        c = $("#addStockDescription").val(); // Comment
+// ClickListener for "Save Changes" button in Stock Changing Modal
+function stockChangingFormExecution(change, pid) {
+    q = $("#addStockQuantity").val(); // Quantity
+    c = $("#addStockDescription").val(); // Comment
 
-        if (change == '1') {
-            tl = $("#toStockLocation").val(); // To Location
-            fl = 'NULL'; // From Location
-        }
-        if (change == '-1') {
-            tl = 'NULL'; // To Location
-            fl = $("#fromStockLocation").val(); // From Location
-        }
-        if (change == '0') {
-            tl = $("#toStockLocation").val(); // To Location
-            fl = $("#fromStockLocation").val(); // From Location
-        }
+    // Get required locations
+    if (change == '1') {
+        tl = $("#toStockLocation").val(); // To Location
+        fl = 'NULL'; // From Location
+    }
+    if (change == '-1') {
+        tl = 'NULL'; // To Location
+        fl = $("#fromStockLocation").val(); // From Location
+    }
+    if (change == '0') {
+        tl = $("#toStockLocation").val(); // To Location
+        fl = $("#fromStockLocation").val(); // From Location
+    }
 
-        var stockChanges = [{
-            quantity: q,
-            to_location: tl,
-            from_location: fl,
-            comment: c,
-            part_id: pid,
-            change: change
-        }];
+    // Prepare stock changes array
+    var stockChanges = [{
+        quantity: q,
+        to_location: tl,
+        from_location: fl,
+        comment: c,
+        part_id: pid,
+        change: change
+    }];
 
-        // Call the stock changing script
-        console.log(stockChanges);
-        callStockChangingScript(stockChanges);
-    });
+    // Call the stock changing script
+    callStockChangingScript(stockChanges, pid)
 }
 
 /**
@@ -120,12 +111,13 @@ function stockChangeSaveChangesClickListener(change, pid) {
  * If there is stock shortage, display a message and request user permission.
  * 
  * @param {Array} stockChanges - Array containing all parameters necessary for the requested stock change
+ * @param {number} pid - The part ID for which the stock is changes and later the info window updated
  * @return void
  */
-function callStockChangingScript(stockChanges) {
+function callStockChangingScript(stockChanges, pid) {
+    console.log("scs called");
     $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
         function (response) {
-            pid = stockChanges[0].part_id;
             console.log(response);
             var r = JSON.parse(response);
 
@@ -168,7 +160,7 @@ function callStockChangingScript(stockChanges) {
  * @param {Array} r - The response of the stock changing script containing the initially requested changes with one of two statuses:
  * - 'gtg': Good to go
  * - 'permission_required': User permission required
- * @param {number} pid - The part ID for which the stock change was requested
+ * @param {number} pid - The part ID for which the stock change was requested and the info window will be updated
  * @return void
  */
 function changeStockAnywayClickListener(r, pid) {
@@ -212,7 +204,8 @@ $('#mAddStock').on('hidden.bs.modal', function () {
 
 /**
  * Empties a div from all its HTML elements by its element ID
- * @param {*} id - The div ID 
+ * @param {string} id - The div ID 
+ * @return void
  */
 function emptyDivFromHTML(id) {
     var div = document.getElementById(id);

@@ -234,9 +234,11 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
  * @param {string} formId - The ID of the form to validate.
  * @param {string} button - The ID of the button element to attach the click listener to.
  * @param {function} callback - The function to execute when the form is submitted and valid.
- * @return void
+ * @param {Array} [args=[]] - Optional array of additional arguments to pass to the callback function.
+ * @returns {*} - The return value of the callback function, if the form is valid.
+ *                If the form is invalid, the function returns undefined.
  */
-function validateForm(formId, button, callback) {
+function validateForm(formId, button, callback, args = []) {
     const form = document.getElementById(formId);
     const submitBtn = document.getElementById(button);
 
@@ -245,7 +247,8 @@ function validateForm(formId, button, callback) {
         event.preventDefault();
         if (form.checkValidity()) {
             // Form is valid
-            callback();
+            const result = callback.apply(null, args);
+            return result;
         } else {
             console.log("invalid");
             // Form is invalid (required fields not filled)
