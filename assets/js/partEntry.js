@@ -2,41 +2,13 @@
 function callPartEntryModal(locations) {
   addPartLocationDropdown(locations)
   $('#mPartEntry').modal('show'); // Show modal
-  validateForm('partEntryForm', 'addPart', addPartCallback);
+  validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
 }
 
 /**
- * Validates required fields in a form when the specified button is clicked.
- *
- * @param {string} formId - The ID of the form to validate.
- * @param {string} button - The ID of the button element to attach the click listener to.
- * @param {function} callback - The function to execute when the form is submitted and valid.
- */
-function validateForm(formId, button, callback) {
-  const form = document.getElementById(formId);
-  const submitBtn = document.getElementById(button);
-
-  // Form validation
-  $(submitBtn).click(function (event) {
-    event.preventDefault();
-    if (form.checkValidity()) {
-      // Form is valid
-      callback();
-    } else {
-      // Form is invalid (required fields not filled)
-      form.querySelectorAll('[required]').forEach(function (field) {
-        if (field.checkValidity()) {
-          field.classList.remove('is-invalid');
-          field.classList.add('is-valid');
-        } else {
-          field.classList.remove('is-valid');
-          field.classList.add('is-invalid');
-        }
-      });
-    }
-  });
-}
-
+* Callback function for adding a new part to the databaset table.
+* This function retrieves the values of the part name, quantity and location from the relevant input fields in the add part modal, and then sends a POST request to the server to insert the new part into the database. If the insertion is successful, it updates the parts information, hides the add part modal and removes the click listener from the add part button. It then rebuilds the parts table and selects the newly added row.
+*/
 function addPartCallback() {
   pn = $("#addPartName").val(); // Part Name
   q = $("#addPartQuantity").val(); // Quantity

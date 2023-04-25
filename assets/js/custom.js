@@ -1,16 +1,20 @@
-//TODO: Wrap these two in functions and call them in the document ready of inventory.php and/or other appropriate locations
-// Focus fields in modals
-$(document).ready(function () {
-    // Focus the Quantity field in the stock changes modal after showing
-    $('#mAddStock').on('shown.bs.modal', function () {
-        $('#addStockQuantity').focus();
-    });
-
-    // Focus the Part Name field in the part entry modal after showing
+/**
+ * Focus the Part Name field in the part entry modal after showing
+ */
+function focusNewPartName() {
     $('#mPartEntry').on('shown.bs.modal', function () {
         $('#addPartName').focus();
     });
-});
+}
+
+/**
+ * Focus the Quantity field in the stock changes modal after showing
+ */
+function focusStockChangeQuantity() {
+    $('#mAddStock').on('shown.bs.modal', function () {
+        $('#addStockQuantity').focus();
+    });
+}
 
 /**
  * Prevents text selection in the given table when the shift key is pressed (for selecting)
@@ -19,44 +23,52 @@ $(document).ready(function () {
  */
 function preventTextSelectionOnShift($table) {
     // Shift is pressed
-    $(document).on('keydown', function(event) {
-      if (event.shiftKey) {
-        $table.addClass('table-no-select');
-      }
+    $(document).on('keydown', function (event) {
+        if (event.shiftKey) {
+            $table.addClass('table-no-select');
+        }
     });
-  
-    // Shift is released
-    $(document).on('keyup', function(event) {
-      if (!event.shiftKey) {
-        $table.removeClass('table-no-select');
-      }
-    });
-  }
 
-// Remove a click listener
+    // Shift is released
+    $(document).on('keyup', function (event) {
+        if (!event.shiftKey) {
+            $table.removeClass('table-no-select');
+        }
+    });
+}
+
+/**
+* Removes the click event listeners from the HTML element with the specified ID.
+* @param {string} id - The ID of the HTML element from which to remove click event listeners.
+*/
 function removeClickListeners(id) {
     $(id).off('click');
 }
 
-// Send form upon changing the results per page dropdown
-$(function sendFormOnDropdownChange() {
+/**
+* Send form "search_form" upon changing the results per page dropdown
+*/
+function sendFormOnDropdownChange() {
     var dropdown = document.getElementById("resultspp");
 
     dropdown.addEventListener("change", function () {
         var form = document.getElementById("search_form");
         form.submit();
     });
-});
+};
 
-// ClickListener for "Continue as demo user" button
-$(document).ready(function () {
+/** 
+* ClickListener for "Continue as demo user" button
+* Executes demo.php and then refers user back to index.php
+*/
+function continueAsDemoUser() {
     $('#continueDemo').click(function () {
-        $.post('/PartHub/includes/demo.php', { myVariable: 'myValue' }, function (response) {
-            console.log(response);
+        $.post('/PartHub/includes/demo.php', function (response) {
             window.location.href = "/PartHub/index.php?login";
         });
     });
-});
+}
+
 
 /**
  * Load the parts-info page and pass the id variable as a parameter
@@ -196,6 +208,38 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
             // Updating table here because otherwise it rebuilds too fast
             var queryString = window.location.search;
             successCallback(queryString);
+        }
+    });
+}
+
+/**
+ * Validates required fields in a form when the specified button is clicked.
+ *
+ * @param {string} formId - The ID of the form to validate.
+ * @param {string} button - The ID of the button element to attach the click listener to.
+ * @param {function} callback - The function to execute when the form is submitted and valid.
+ */
+function validateForm(formId, button, callback) {
+    const form = document.getElementById(formId);
+    const submitBtn = document.getElementById(button);
+
+    // Form validation
+    $(submitBtn).click(function (event) {
+        event.preventDefault();
+        if (form.checkValidity()) {
+            // Form is valid
+            callback();
+        } else {
+            // Form is invalid (required fields not filled)
+            form.querySelectorAll('[required]').forEach(function (field) {
+                if (field.checkValidity()) {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                } else {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                }
+            });
         }
     });
 }

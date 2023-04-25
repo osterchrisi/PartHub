@@ -7,7 +7,7 @@ include 'includes/head.html';
 include 'config/credentials.php';
 include 'includes/SQL.php';
 
-include 'includes/navbar.php'; 
+include 'includes/navbar.php';
 ?>
 
 <style>
@@ -25,12 +25,13 @@ include 'includes/navbar.php';
         <td colspan="3">
           <h1 class="display-1">PartHub</h1><br>
           <h1>Inventory and BOM management</h1><br>
-          <?php if ((isset($_GET['login'])) && $_SESSION['user_id'] != '-1'){
-  echo '<div class="alert alert-info" role="alert">Nice to have you back, ' . $user_name . '!</div>';
-}?>
+          <?php if ((isset($_GET['login'])) && $_SESSION['user_id'] != '-1') {
+            echo '<div class="alert alert-info" role="alert">Nice to have you back, ' . $user_name . '!</div>';
+          } ?>
           Hello internet stranger that has found their way to PartHub!<br>
           PartHub is <strong>not yet fully functional</strong> but many parts do work.<br><br>
-          So, if you like, start looking at some parts, create a BOM, move some stock and just see what happens. Go ahead and explore!
+          So, if you like, start looking at some parts, create a BOM, move some stock and just see what happens. Go
+          ahead and explore!
           <br>The database will reset every full hour, then all your changes will be lost :(<br><br>
         </td>
       </tr>
@@ -106,3 +107,10 @@ if ($show_modal == 1) {
   echo "<script>var myModal = new bootstrap.Modal(document.getElementById('myModal'));</script>";
   echo '<script>myModal.show();</script>';
 }
+?>
+
+<script>
+  $(document).ready(function () {
+    continueAsDemoUser();
+  });
+</script>

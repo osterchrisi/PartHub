@@ -139,12 +139,17 @@ $locations = getLocations($conn, $user_id);
 
   $(document).ready(function () {
     initializeMultiSelect('cat-select');
+    sendFormOnDropdownChange();
 
     bootstrapPartsTable();
     var $table = $('#parts_table');
     var $menu = $('#parts_table_menu');
     definePartsTableActions($table, $menu);
     inlineProcessing();
+
+    focusStockChangeQuantity();
+    focusNewPartName();
+
   });
 
 </script>
