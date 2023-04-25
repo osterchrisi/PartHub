@@ -1,7 +1,14 @@
-// Create the "To Location" dropdown
-function toStockLocationDropdown(locations) {
-    var div = document.getElementById("ToStockLocationDiv");
-    var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
+/**
+ * Create the "To Location" dropdown
+ * 
+ * @param {string} divId The div element in which the element will be created
+ * @param {Array} locations An array of associative arrays containing locations
+ * 
+ * @return void
+ */
+function toStockLocationDropdown(divId, locations) {
+    var div = document.getElementById(divId);
+    var selectHTML = "<label class='input-group-text' for='toStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
         selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
     }
@@ -10,7 +17,14 @@ function toStockLocationDropdown(locations) {
     to_location_exists = true;
 }
 
-// Create the "From Location" dropdown
+/**
+ * Create the "From Location" dropdown
+ * 
+ * @param {string} divId The div element in which the element will be created
+ * @param {Array} locations An array of associative arrays containing locations
+ * 
+ * @return void
+ */
 function fromStockLocationDropdown(divId, locations) {
     var div = document.getElementById(divId);
     var selectHTML = "<label class='input-group-text' for='fromStockLocation'>From</label><select class='form-select' id='fromStockLocation'>";
@@ -40,7 +54,7 @@ function callStockModal(change, locations, pid) {
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
-        toStockLocationDropdown(locations);
+        toStockLocationDropdown("ToStockLocationDiv", locations);
         $("#toStockLocation").selectize();
 
     }
@@ -53,7 +67,7 @@ function callStockModal(change, locations, pid) {
     else {
         document.getElementById('stockModalTitle').textContent = 'Move Stock';
         document.getElementById('stockChangeText').textContent = 'Move stock of ';
-        toStockLocationDropdown(locations);
+        toStockLocationDropdown("ToStockLocationDiv", locations);
         fromStockLocationDropdown("FromStockLocationDiv", locations);
         $("#toStockLocation").selectize();
         $("#fromStockLocation").selectize();
@@ -61,7 +75,10 @@ function callStockModal(change, locations, pid) {
 
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
-    stockChangeSaveChangesClickListener(change, pid); // Add click listener to the Save Changes button
+    validateForm('stockChangingForm', 'AddStock', stockChangeSaveChangesClickListener(change, pid)); // Attach validate form 
+    
+    // Works:
+    // stockChangeSaveChangesClickListener(change, pid); // Add click listener to the Save Changes button
 }
 
 // ClickListener for "Save Changes" button in Add Stock Modal
@@ -83,36 +100,41 @@ function stockChangeSaveChangesClickListener(change, pid) {
             fl = $("#fromStockLocation").val(); // From Location
         }
 
-            var stockChanges = [{
-                quantity: q,
-                to_location: tl,
-                from_location: fl,
-                comment: c,
-                part_id: pid,
-                change: change
-            }];
+        var stockChanges = [{
+            quantity: q,
+            to_location: tl,
+            from_location: fl,
+            comment: c,
+            part_id: pid,
+            change: change
+        }];
 
         // Call the stock changing script
         console.log(stockChanges);
         callStockChangingScript(stockChanges);
-
     });
 }
 
-
+/**
+ * Makes an AJAX call to the stock changing script. If stock change is supported by available stock, update part info window.
+ * If there is stock shortage, display a message and request user permission.
+ * 
+ * @param {Array} stockChanges - Array containing all parameters necessary for the requested stock change
+ * @return void
+ */
 function callStockChangingScript(stockChanges) {
     $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
         function (response) {
+            pid = stockChanges[0].part_id;
             console.log(response);
             var r = JSON.parse(response);
 
             if (r.negative_stock.length === 0) {
                 //* Do the normal thing here, all requested stock available
-                updatePartsInfo(stockChanges[0].part_id);
+                updatePartsInfo(pid);
 
-                // //TODO: This is bit of a hicky hacky but at least updates the cell for now
+                //TODO: This is bit of a hicky hacky but at least updates the cell for now
                 var new_stock_level = r.result[2];
-
                 var $cell = $('tr.selected-last td[data-column="total_stock"]');
                 $cell.text(new_stock_level);
 
@@ -127,7 +149,6 @@ function callStockChangingScript(stockChanges) {
             else {
                 //* User permission required
                 // Display warning and missing stock table
-                console.log("That");
                 $('#AddStock').attr('disabled', true);
                 var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " part(s). Do you want to continue anyway?<br>";
                 message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>"
@@ -135,34 +156,50 @@ function callStockChangingScript(stockChanges) {
                 $('#mStockModalInfo').html(message);
 
                 // Attach click listener to "Do It Anyway" button
-                $('#btnChangeStockAnyway').on('click', function () {
-                    // //! In stock changing JS, this doesn't even have IDs array yet
-                    // //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
-                    // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
-                    // continueAnyway(r, ids);
-
-                    for (const change of r.changes) {
-                        change.status = 'gtg';
-                    }
-                    // Call the stock changing script with the already prepared stock changes
-                    $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
-                        function (response) {
-                            console.log(response);
-                            $('#mAddStock').on('hidden.bs.modal', function (e) {
-                                $('#stockChangingForm')[0].reset();
-                                $('#mStockModalInfo').empty();
-                                $('#AddStock').attr('disabled', false);
-                                $(this).modal('dispose');
-                            }).modal('hide');
-                            //TODO: This can't work here (not giving any ids yet like in BOMs)
-                            // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
-                            updatePartsInfo(pid);
-                        }
-                    )
-                });
+                changeStockAnywayClickListener(r, pid);
             }
         });
 }
+/**
+ * Changes the status of all requested changes to 'gtg' (good to go).
+ * Attaches a click listener to the 'Do It Anyway' button and makes an AJAX call to the stock changing script (again) with the
+ * requested stock changes now all set to 'gtg'.
+ * 
+ * @param {Array} r - The response of the stock changing script containing the initially requested changes with one of two statuses:
+ * - 'gtg': Good to go
+ * - 'permission_required': User permission required
+ * @param {number} pid - The part ID for which the stock change was requested
+ * @return void
+ */
+function changeStockAnywayClickListener(r, pid) {
+    $('#btnChangeStockAnyway').on('click', function () {
+        // //! In stock changing JS, this doesn't even have IDs array yet
+        // //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
+        // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
+        // continueAnyway(r, ids);
+
+        for (const change of r.changes) {
+            change.status = 'gtg';
+        }
+        // Call the stock changing script with the already prepared stock changes
+        $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
+            function (response) {
+                console.log(response);
+                // Reset modal and hide it
+                $('#mAddStock').on('hidden.bs.modal', function (e) {
+                    $('#stockChangingForm')[0].reset();
+                    $('#mStockModalInfo').empty();
+                    $('#AddStock').attr('disabled', false);
+                    $(this).modal('dispose');
+                }).modal('hide');
+                //TODO: This can't work here (not giving any ids yet like in BOMs)
+                // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+                updatePartsInfo(pid);
+            }
+        )
+    });
+}
+
 /**
  * Event handler for removing all HTML elements inside "FromStockLocationDiv" and "ToStockLocationDiv" divs when the "mAddStock" modal is hidden.
  * This to keep them from stacking up.

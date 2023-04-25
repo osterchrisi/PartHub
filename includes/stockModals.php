@@ -43,7 +43,7 @@ $_SESSION['locations'] = $locations;
         <div class="input-group" id="FromStockLocationDiv"></div><br>
         <div class="input-group" id="ToStockLocationDiv"></div>
         <br>
-        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription" required>
+        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
       </form>
       <div class="row mt-3">
         <div id="mStockModalInfo"></div>

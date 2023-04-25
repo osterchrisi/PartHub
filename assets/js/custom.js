@@ -247,6 +247,7 @@ function validateForm(formId, button, callback) {
             // Form is valid
             callback();
         } else {
+            console.log("invalid");
             // Form is invalid (required fields not filled)
             form.querySelectorAll('[required]').forEach(function (field) {
                 if (field.checkValidity()) {

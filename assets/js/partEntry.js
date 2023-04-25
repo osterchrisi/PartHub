@@ -1,12 +1,7 @@
 /**
  * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
  * 
- * @param {Array} locations An array of objects containing:
- * - location_id
- * - location_name
- * - location_description
- * - location_owner_u_fk
- * - location_owner_g_fk
+ * @param {Array} locations An array of objects containing locations
  * @return void
  */
 function callPartEntryModal(locations) {
