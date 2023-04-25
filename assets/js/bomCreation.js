@@ -2,7 +2,10 @@ $(document).ready(function () {
     toogleUploadButton;
     checkBomName;
 })
-
+/**
+ * Toggles the disabled state of the upload button based on the selected file type. Enables only on CSV files.
+ * @return void
+ */
 function toogleUploadButton() {
     const fileInput = document.getElementById("formFile");
 
@@ -17,6 +20,10 @@ function toogleUploadButton() {
     });
 }
 
+/**
+ * Validates if the BOM name input field is filled out
+ * @returns {boolean} Returns true if BOM name input field is filled out, false otherwise
+ */
 function checkBomName() {
     var bom_name = document.getElementById("bom_name").value;
     if (bom_name === "") {
@@ -26,6 +33,11 @@ function checkBomName() {
     return true;
 }
 
+/**
+ * Collects all necessary fields from the form to create a BOM and sends an AJAX post request to the server-side 'bom-processing.php' script.
+ * This function is called on the 'Submit' button in the 'Manually' add BOM section
+ * @returns {void}
+ */
 function addBomManually() {
 
     bn = $("#bom_name").val(); // BOM Name
@@ -59,6 +71,11 @@ function addBomManually() {
 
 // Using this variable to give each select element a unique ID for selectize-ing it
 let n = 0;
+/**
+ * Adds a new row of Part dropdown, Quantity field and Remove button to the dynamicAddParts container.
+ * 
+ * @param {Array} parts - An array of part objects containing the ID and Name of each Part.
+ */
 function addFields(parts) {
     n++;
     var container = document.getElementById("dynamicAddParts");

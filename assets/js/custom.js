@@ -1,5 +1,6 @@
 /**
  * Focus the Part Name field in the part entry modal after showing
+ * @return void
  */
 function focusNewPartName() {
     $('#mPartEntry').on('shown.bs.modal', function () {
@@ -9,6 +10,7 @@ function focusNewPartName() {
 
 /**
  * Focus the Quantity field in the stock changes modal after showing
+ * @return void
  */
 function focusStockChangeQuantity() {
     $('#mAddStock').on('shown.bs.modal', function () {
@@ -20,6 +22,7 @@ function focusStockChangeQuantity() {
  * Prevents text selection in the given table when the shift key is pressed (for selecting)
  * multiple rows at once).
  * @param {jQuery} $table - The table element to prevent text selection in.
+ * @return void
  */
 function preventTextSelectionOnShift($table) {
     // Shift is pressed
@@ -38,16 +41,17 @@ function preventTextSelectionOnShift($table) {
 }
 
 /**
-* Removes the click event listeners from the HTML element with the specified ID.
-* @param {string} id - The ID of the HTML element from which to remove click event listeners.
-*/
+ * Removes the click event listeners from the HTML element with the specified ID.
+ * @param {string} id - The ID of the HTML element from which to remove click event listeners.
+ * @return void
+ */
 function removeClickListeners(id) {
     $(id).off('click');
 }
 
 /**
-* Send form "search_form" upon changing the results per page dropdown "resultspp"
-*/
+ * Send form "search_form" upon changing the results per page dropdown "resultspp"
+ */
 function sendFormOnDropdownChange() {
     var dropdown = document.getElementById("resultspp");
     dropdown.addEventListener("change", function () {
@@ -57,9 +61,10 @@ function sendFormOnDropdownChange() {
 };
 
 /** 
-* ClickListener for "Continue as demo user" button
-* Executes demo.php and then refers user back to index.php
-*/
+ * ClickListener for "Continue as demo user" button
+ * Executes demo.php and then refers user back to index.php
+ * @return void
+ */
 function continueAsDemoUser() {
     $('#continueDemo').click(function () {
         $.post('/PartHub/includes/demo.php', function (response) {
@@ -73,6 +78,7 @@ function continueAsDemoUser() {
  * Load the parts-info page and pass the id variable as a parameter
  * upon clicking a row in the parts table
  * @param {int} id The part ID for which to update the stock modal content
+ * @return void
  */
 function updatePartsInfo(id) {
     $.ajax({
@@ -94,6 +100,7 @@ function updatePartsInfo(id) {
  * Load the contents of stockModals page, pass the id and replace HTML in modal
  * upon clicking a row in the parts table
  * @param {int} id The part ID for which to update the stock modal content
+ * @return void
  */
 function updateStockModal(id) {
     $.ajax({
@@ -110,7 +117,11 @@ function updateStockModal(id) {
         }
     });
 }
-
+/**
+ * Updates the BOM info in the info window using an AJAX request.
+ * @param {number} id - The ID of the BOM to update the info for.
+ * @return void
+ */
 function updateBomInfo(id) {
     $.ajax({
         url: 'show-bom.php',
@@ -127,6 +138,10 @@ function updateBomInfo(id) {
     });
 };
 
+/**
+ * Displays the BOM creation script in the info window using an AJAX request
+ * @return void
+ */
 function displayBomCreate() {
     $.ajax({
         url: 'bom-create.php',
@@ -145,6 +160,7 @@ function displayBomCreate() {
 
 /**
  * Make the table-window and the info-window resizable
+ * @return void 
  */
 $(function () {
     $('#table-window').resizable({
@@ -189,6 +205,7 @@ function initializeMultiSelect(id) {
  * @param {string} table_name Name of the table in the database
  * @param {string} column Name of the column that holds the ID, e.g. part_id
  * @param {function} successCallback Function to call on successful deletion of rows. Used to rebuild the corresponding table
+ * @return void
  */
 function deleteSelectedRows(ids, table_name, column, successCallback) {
     console.log(ids, table_name, column, successCallback);
@@ -217,6 +234,7 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
  * @param {string} formId - The ID of the form to validate.
  * @param {string} button - The ID of the button element to attach the click listener to.
  * @param {function} callback - The function to execute when the form is submitted and valid.
+ * @return void
  */
 function validateForm(formId, button, callback) {
     const form = document.getElementById(formId);

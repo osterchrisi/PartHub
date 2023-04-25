@@ -1,6 +1,3 @@
-// var from_location_exists = false;
-// var to_location_exists = false;
-
 // Create the "To Location" dropdown
 function toStockLocationDropdown(locations) {
     var div = document.getElementById("ToStockLocationDiv");
@@ -25,7 +22,20 @@ function fromStockLocationDropdown(divId, locations) {
     from_location_exists = true;
 }
 
-// Show the Stock Modal, remove old click listener and attach new one
+/**
+ * Show the stock modal and change text according to type of change.
+ * Then generate location dropdown menus and selectize them.
+ * Finally remove old click listener and attach new one to the 'Save Changes' button
+ * 
+ * @param {number} change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
+ * @param {Array} locations - An array of objects containing:
+ * - location_id
+ * - location_name
+ * - location_description
+ * - location_owner_u_fk
+ * - location_owner_g_fk
+ * @param {number} pid - The part ID for which to call the stock modal for
+ */
 function callStockModal(change, locations, pid) {
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
@@ -73,92 +83,101 @@ function stockChangeSaveChangesClickListener(change, pid) {
             fl = $("#fromStockLocation").val(); // From Location
         }
 
-        var stockChanges = [{
-            quantity: q,
-            to_location: tl,
-            from_location: fl,
-            comment: c,
-            part_id: pid,
-            change: change
-        }];
-
-        console.log(stockChanges);
+            var stockChanges = [{
+                quantity: q,
+                to_location: tl,
+                from_location: fl,
+                comment: c,
+                part_id: pid,
+                change: change
+            }];
 
         // Call the stock changing script
-        $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
-            function (response) {
-                console.log(response);
-                var r = JSON.parse(response);
+        console.log(stockChanges);
+        callStockChangingScript(stockChanges);
 
-                if (r.negative_stock.length === 0) {
-                    //* Do the normal thing here, all requested stock available
-                    console.log("This");
-                    updatePartsInfo(pid);
-
-                    // //TODO: This is bit of a hicky hacky but at least updates the cell for now
-                    var new_stock_level = r.result[2];
-
-                    var $cell = $('tr.selected-last td[data-column="total_stock"]');
-                    $cell.text(new_stock_level);
-
-                    // Reset modal and hide it
-                    $('#mAddStock').on('hidden.bs.modal', function (e) {
-                        $('#stockChangingForm')[0].reset();
-                        $('#mStockModalInfo').empty();
-                        $('#AddStock').attr('disabled', false);
-                        $(this).modal('dispose');
-                    }).modal('hide');
-                }
-                else {
-                    //* User permission required
-                    // Display warning and missing stock table
-                    console.log("That");
-                    $('#AddStock').attr('disabled', true);
-                    var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " part(s). Do you want to continue anyway?<br>";
-                    message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>"
-                    message += r.negative_stock_table;
-                    $('#mStockModalInfo').html(message);
-
-                    // Attach click listener to "Do It Anyway" button
-                    $('#btnChangeStockAnyway').on('click', function () {
-                        // //! In stock changing JS, this doesn't even have IDs array yet
-                        // //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
-                        // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
-                        // continueAnyway(r, ids);
-
-                        for (const change of r.changes) {
-                            change.status = 'gtg';
-                        }
-                        // Call the stock changing script with the already prepared stock changes
-                        $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
-                            function (response) {
-                                console.log(response);
-                                $('#mAddStock').on('hidden.bs.modal', function (e) {
-                                    $('#stockChangingForm')[0].reset();
-                                    $('#mStockModalInfo').empty();
-                                    $('#AddStock').attr('disabled', false);
-                                    $(this).modal('dispose');
-                                }).modal('hide');
-                                //TODO: This can't work here (not giving any ids yet like in BOMs)
-                                // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
-                                updatePartsInfo(pid);
-                            }
-                        )
-                    });
-                }
-            });
     });
 }
 
-// Remove the locations dropdowns to keep them from stacking up
+
+function callStockChangingScript(stockChanges) {
+    $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
+        function (response) {
+            console.log(response);
+            var r = JSON.parse(response);
+
+            if (r.negative_stock.length === 0) {
+                //* Do the normal thing here, all requested stock available
+                updatePartsInfo(stockChanges[0].part_id);
+
+                // //TODO: This is bit of a hicky hacky but at least updates the cell for now
+                var new_stock_level = r.result[2];
+
+                var $cell = $('tr.selected-last td[data-column="total_stock"]');
+                $cell.text(new_stock_level);
+
+                // Reset modal and hide it
+                $('#mAddStock').on('hidden.bs.modal', function (e) {
+                    $('#stockChangingForm')[0].reset();
+                    $('#mStockModalInfo').empty();
+                    $('#AddStock').attr('disabled', false);
+                    $(this).modal('dispose');
+                }).modal('hide');
+            }
+            else {
+                //* User permission required
+                // Display warning and missing stock table
+                console.log("That");
+                $('#AddStock').attr('disabled', true);
+                var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " part(s). Do you want to continue anyway?<br>";
+                message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>"
+                message += r.negative_stock_table;
+                $('#mStockModalInfo').html(message);
+
+                // Attach click listener to "Do It Anyway" button
+                $('#btnChangeStockAnyway').on('click', function () {
+                    // //! In stock changing JS, this doesn't even have IDs array yet
+                    // //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
+                    // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
+                    // continueAnyway(r, ids);
+
+                    for (const change of r.changes) {
+                        change.status = 'gtg';
+                    }
+                    // Call the stock changing script with the already prepared stock changes
+                    $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
+                        function (response) {
+                            console.log(response);
+                            $('#mAddStock').on('hidden.bs.modal', function (e) {
+                                $('#stockChangingForm')[0].reset();
+                                $('#mStockModalInfo').empty();
+                                $('#AddStock').attr('disabled', false);
+                                $(this).modal('dispose');
+                            }).modal('hide');
+                            //TODO: This can't work here (not giving any ids yet like in BOMs)
+                            // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+                            updatePartsInfo(pid);
+                        }
+                    )
+                });
+            }
+        });
+}
+/**
+ * Event handler for removing all HTML elements inside "FromStockLocationDiv" and "ToStockLocationDiv" divs when the "mAddStock" modal is hidden.
+ * This to keep them from stacking up.
+ */
 $('#mAddStock').on('hidden.bs.modal', function () {
-    removeLocationDropdown("FromStockLocationDiv");
-    removeLocationDropdown("ToStockLocationDiv");
+    emptyDivFromHTML("FromStockLocationDiv");
+    emptyDivFromHTML("ToStockLocationDiv");
 
 });
 
-// Remove a dropdown by ID
-function removeLocationDropdown(location) {
-    var div = document.getElementById(location);
+/**
+ * Empties a div from all its HTML elements by its element ID
+ * @param {*} id - The div ID 
+ */
+function emptyDivFromHTML(id) {
+    var div = document.getElementById(id);
     div.innerHTML = '';
 }
