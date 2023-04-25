@@ -11,6 +11,8 @@ include '../includes/get.php';
 
 $table_name = "bom_names";
 $id_field = "bom_id";
+
+$search_term = getSuperGlobal('search');
 $results_per_page = getSuperGlobal('resultspp', '50');
 
 $conn = connectToSQLDB($hostname, $username, $password, $database_name);
@@ -38,11 +40,11 @@ $locations = getLocations($conn, $user_id);
   <!-- Search Form -->
   <div class="row mb-3">
     <div class="col-3">
-      <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input class="form-control form-control-sm" type="text" id="search" name="search" placeholder="Search BOMs...">
+      <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <input class="form-control form-control-sm" type="text" id="search" name="search" placeholder="Search BOMs..." value="<?php echo htmlspecialchars($search_term); ?>">
     </div>
     <div class="col-1">
-      <button type="submit" name="submit" class="btn btn-sm btn-primary">Show Results</button>
+      <button type="submit" class="btn btn-sm btn-primary">Show Results</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -101,11 +103,14 @@ $locations = getLocations($conn, $user_id);
 
   <script>
     <?php include '../assets/js/stockChanges.js'; ?>
-    bootstrapBomListTable();
+    $(document).ready(function () {
+      bootstrapBomListTable();
 
-    var $table = $('#bom_list_table');
-    var $menu = $('#bom_list_table_menu');
-    defineBomListTableActions($table, $menu);
-    inlineProcessing();
-    fromStockLocationDropdown('bomAssembleLocationDiv', <?php echo json_encode($locations); ?>)
+      var $table = $('#bom_list_table');
+      var $menu = $('#bom_list_table_menu');
+      defineBomListTableActions($table, $menu);
+      inlineProcessing();
+      fromStockLocationDropdown('bomAssembleLocationDiv', <?php echo json_encode($locations); ?>);
+      sendFormOnDropdownChange();
+    });
   </script>
