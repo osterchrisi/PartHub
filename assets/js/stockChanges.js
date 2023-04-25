@@ -73,7 +73,11 @@ function callStockModal(change, locations, pid) {
     validateForm('stockChangingForm', 'AddStock', stockChangingFormExecution, [change, pid]); // Attach validate form 
 }
 
-// ClickListener for "Save Changes" button in Stock Changing Modal
+/**
+ * Gets the variables to prepare the stock changing array and sends it to the stock changing script via an AJAX call
+ * @param change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
+ * @param {number} pid - The part ID for the stock change
+ */
 function stockChangingFormExecution(change, pid) {
     q = $("#addStockQuantity").val(); // Quantity
     c = $("#addStockDescription").val(); // Comment
@@ -115,7 +119,6 @@ function stockChangingFormExecution(change, pid) {
  * @return void
  */
 function callStockChangingScript(stockChanges, pid) {
-    console.log("scs called");
     $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
         function (response) {
             console.log(response);

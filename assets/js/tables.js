@@ -1,24 +1,43 @@
-// BootstrapTable a table
+/**
+ * Bootstrap the parts table
+ * @return void
+ */
 function bootstrapPartsTable() {
   $('#parts_table').bootstrapTable({
   });
 };
 
+/**
+ * Bootstrap the part stock history table
+ * @return void
+ */
 function bootstrapHistTable() {
   $('#partStockHistoryTable').bootstrapTable({
   });
 };
 
+/**
+ * Bootstrap the part in BOMs table (part info window)
+ * @return void
+ */
 function bootstrapPartInBomsTable() {
   $('#partInBomsTable').bootstrapTable({
   });
 };
 
+/**
+ * Bootstrap the BOM list table
+ * @return void
+ */
 function bootstrapBomListTable() {
   $('#bom_list_table').bootstrapTable({
   });
 };
 
+/**
+ * Bootstrap the BOM details table
+ * @return void
+ */
 function bootstrapBomDetailsTable() {
   $('#BomDetailsTable').bootstrapTable({
   });
@@ -28,6 +47,7 @@ function bootstrapBomDetailsTable() {
  * Custom Sorter for my stock URLs
  * Remove the href tag and return only the string values
  * Otherwise cells get sorted by the URL which contains part_id
+ * @returns void
  */
 function NumberURLSorter(a, b) {
   return $(a).text() - $(b).text();
