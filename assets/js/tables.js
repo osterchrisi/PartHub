@@ -272,19 +272,19 @@ function hideContextMenu($menu) {
 //TODO: Remove dropdown upon clicking out of the box or selecting same option again
 function inlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
-    var $element = $(this);
-    var cell = $element;
+    var cell = $(this);
 
     // Check if the cell is already being edited
     if (cell.hasClass('editing')) {
       return;
     }
-
-    // Add editing class to the cell
-    cell.addClass('editing');
+    else {
+      // Add editing class to the cell
+      cell.addClass('editing');
+    }
 
     // Get current value
-    var currentValue = $element.text();
+    var currentValue = cell.text();
 
     // * It's a category cell
     if (cell.hasClass('category')) {
@@ -309,19 +309,21 @@ function inlineProcessing() {
 
             // Get cell part_id, column name and database table
             // These are encoded in the table data cells
-            var part_id = cell.closest('td').data('id');
+            var id = cell.closest('td').data('id');
             var column = 'part_category_fk';
             var table_name = cell.closest('td').data('table_name');
+            var id_field = cell.closest('td').data('id_field');
 
             // Call the updating function
             $.ajax({
               type: 'GET',
               url: '../includes/update-cell.php',
               data: {
-                part_id: part_id,
+                id: id,
                 column: column,
                 table_name: table_name,
-                new_value: new_value
+                new_value: new_value,
+                id_field: id_field
               },
               success: function (data) {
                 console.log('Data updated successfully');
@@ -379,8 +381,8 @@ function inlineProcessing() {
         // These are encoded in the table data cells
         var id = cell.closest('td').data('id');
         var column = cell.closest('td').data('column');
-        var table_name = cell.closest('td').data('table_name')
-        var id_field = cell.closest('td').data('id_field')
+        var table_name = cell.closest('td').data('table_name');
+        var id_field = cell.closest('td').data('id_field');
         console.log(id, id_field, column, table_name, new_value);
 
         // Call the updating function
