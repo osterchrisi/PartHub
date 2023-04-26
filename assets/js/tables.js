@@ -300,32 +300,54 @@ function inlineProcessing() {
           // Create select element
           var select = createInlineCategorySelect(categories, currentValue);
 
-          cell.empty().append(select);
-          select.selectize();
-          select.focus();
+          // Append, selectize category dropdown
+          appendInlineCategorySelect(cell, select);
+
+          // Need to focus the selectize control
+          var selectizeControl = select[0].selectize;
+          selectizeControl.focus();
+
+          // Listen for the blur event on the selectize control
+          selectizeControl.on('blur', function () {
+            console.log("losing focus");
+            // Remove the select element when the selectize dropdown loses focus
+            select.remove();
+            cell.text(currentValue);
+            cell.removeClass('editing');
+          });
+
+
+          $(document).on('keydown', function (event) {
+            console.log("keydown event document-wide triggered");
+            if (event.key === "Escape") {
+              var cell = $('.editable.category.editing');
+              if (cell.length > 0) {
+                console.log("escape");
+                var select = cell.find('select');
+                if (select.length > 0) {
+                  select[0].selectize.destroy();
+                }
+                cell.text(currentValue);
+                cell.removeClass('editing');
+              }
+            }
+          });
+
+          // Remove dropdown on "Escape" key press
+          // selectizeControl.on('keydown', function (event) {
+          //   console.log("keydown event triggered");
+          //   if (event.key === "Escape") {
+          //     console.log("escape");
+          //     select.remove();
+          //     cell.text(currentValue);
+          //     cell.removeClass('editing');
+          //     return;
+          //   }
+          // });
 
           // Select element change event handler
-          select.on('change', function () {
-            var new_value = $(this).val(); // Get new selected value
+          inlineCategorySelectEventHandler(select, cell);
 
-            // Get cell part_id, column name and database table
-            // These are encoded in the table data cells
-            var id = cell.closest('td').data('id');
-            var column = 'part_category_fk';
-            var table_name = cell.closest('td').data('table_name');
-            var id_field = cell.closest('td').data('id_field');
-
-            // Call the updating function
-            $.when(updateCell(id, column, table_name, new_value, id_field)).done(function () {
-              // Update HTML cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
-              new_value = categories[new_value - 1]['category_name']
-              cell.text(new_value);
-              select.remove();
-              cell.removeClass('editing');
-            })
-
-
-          });
         }
       });
     }
@@ -335,6 +357,7 @@ function inlineProcessing() {
       cell.empty().append(input);
       input.focus();
 
+      // Create label for input field
       var label = $('<small class="text-muted">Enter: Confirm</small>');
       cell.append(label);
 
@@ -354,6 +377,7 @@ function inlineProcessing() {
           return;
         }
       });
+
       // Enter new value
       input.blur(function () {
         // Get newly entered value
@@ -423,6 +447,35 @@ function updateCell(id, column, table_name, new_value, id_field) {
     error: function (xhr, status, error) {
       console.error(error);
     }
+  });
+}
+
+function appendInlineCategorySelect(cell, select) {
+  cell.empty().append(select);
+  select.selectize();
+}
+
+function inlineCategorySelectEventHandler(select, cell) {
+  select.on('change', function () {
+    var new_value = $(this).val(); // Get new selected value
+
+    // Get cell part_id, column name and database table
+    // These are encoded in the table data cells
+    var id = cell.closest('td').data('id');
+    var column = 'part_category_fk';
+    var table_name = cell.closest('td').data('table_name');
+    var id_field = cell.closest('td').data('id_field');
+
+    // Call the database table updating function
+    $.when(updateCell(id, column, table_name, new_value, id_field)).done(function () {
+      // Update HTML cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
+      new_value = categories[new_value - 1]['category_name'];
+      cell.text(new_value);
+      select.remove();
+      cell.removeClass('editing');
+    })
+
+
   });
 }
 
