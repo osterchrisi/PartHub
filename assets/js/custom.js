@@ -230,7 +230,6 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
 
 /**
  * Validates required fields in a form when the specified button is clicked.
- *
  * @param {string} formId - The ID of the form to validate.
  * @param {string} button - The ID of the button element to attach the click listener to.
  * @param {function} callback - The function to execute when the form is submitted and valid.

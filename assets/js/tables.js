@@ -53,14 +53,25 @@ function NumberURLSorter(a, b) {
   return $(a).text() - $(b).text();
 };
 
-// Select element for the category dropdown in parts table 
-function createCategorySelect(categories, currentValue) {
+/**
+ * Create a select element for the inline category dropdown in parts table and populate it with available categories
+ * @param {Array} categories Array of associative arrays containing the categories
+ * @param {string} currentValue Current text value of the table cell that is edited
+ * @returns 
+ */
+function createInlineCategorySelect(categories, currentValue) {
+  // New select element
   var select = $('<select class="form-select-sm">');
+  // Iterate over all available categories
   for (var i = 0; i < categories.length; i++) {
+    // Create new option for this categorie
     var option = $('<option>').text(categories[i]['category_name']).attr('value', categories[i]['category_id']);
     if (categories[i]['category_name'] === currentValue) {
+      // Add 'selected' attribute to the option with the same text value as the value in the table
+      //TODO: Better would be ID value, in case two categories would have same text?
       option.attr('selected', true);
     }
+    // Append option to select element
     select.append(option);
   }
   return select;
@@ -120,6 +131,7 @@ function onTableCellContextMenu($table, $menu, actions) {
       // Extract Footprints - here for later worries
       const footprints = selectedRows.map(obj => obj.Footprint);
 
+      // Show context menu
       showContextMenu($menu, event)
 
       // Event listeners for the menu items
@@ -130,6 +142,7 @@ function onTableCellContextMenu($table, $menu, actions) {
         // Call the appropriate action function based on the action parameter
         actions[action](selectedRows, ids);
 
+        // Hide menu again
         hideContextMenu($menu)
       });
     }
@@ -180,7 +193,6 @@ function rebuildBomListTable(queryString) {
 
 /**
  * Defines row click actions and prepares / attaches a context menu for the parts table
- * 
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
@@ -209,7 +221,6 @@ function definePartsTableActions($table, $menu) {
 
 /**
  * Defines row click actions and prepares / attaches a context menu for the BOM list table
- * 
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
@@ -234,7 +245,6 @@ function defineBomListTableActions($table, $menu) {
 
 /**
  * Displays a context menu at the specified event location.
- *
  * @param {jQuery} $menu - The context menu element.
  * @param {Event} event - The event that triggered the context menu display.
  *                        The event object contains information about the mouse click,
@@ -251,7 +261,6 @@ function showContextMenu($menu, event) {
 
 /**
  * Hides the context menu.
- *
  * @param {jQuery} $menu - The jQuery object representing the context menu to hide.
  */
 function hideContextMenu($menu) {
@@ -289,7 +298,7 @@ function inlineProcessing() {
           console.log("categories1: ", categories);
 
           // Create select element
-          var select = createCategorySelect(categories, currentValue);
+          var select = createInlineCategorySelect(categories, currentValue);
 
           cell.empty().append(select);
           select.selectize();
