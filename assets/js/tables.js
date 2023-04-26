@@ -309,18 +309,15 @@ function inlineProcessing() {
 
           // Listen for the blur event on the selectize control
           selectizeControl.on('blur', function () {
-            console.log("losing focus");
             // Remove the select element when the selectize dropdown loses focus
             select.remove();
             cell.text(currentValue);
             cell.removeClass('editing');
           });
 
-
           // Listen for the Escape keydown event on the document level because selectized element is eating my events
           $(document).on('keydown', function (event) {
             if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('category') && cell.hasClass('editing')) {
-              console.log("Escape");
               select.remove();
               cell.text(currentValue);
               cell.removeClass('editing');
