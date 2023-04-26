@@ -317,33 +317,17 @@ function inlineProcessing() {
           });
 
 
+          // Listen for the Escape keydown event on the document level because selectized element is eating my events
           $(document).on('keydown', function (event) {
-            console.log("keydown event document-wide triggered");
-            if (event.key === "Escape") {
-              var cell = $('.editable.category.editing');
-              if (cell.length > 0) {
-                console.log("escape");
-                var select = cell.find('select');
-                if (select.length > 0) {
-                  select[0].selectize.destroy();
-                }
-                cell.text(currentValue);
-                cell.removeClass('editing');
-              }
+            if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('category') && cell.hasClass('editing')) {
+              console.log("Escape");
+              select.remove();
+              cell.text(currentValue);
+              cell.removeClass('editing');
+              // Remove the event handler once it has done its job
+              $(document).off('keydown');
             }
           });
-
-          // Remove dropdown on "Escape" key press
-          // selectizeControl.on('keydown', function (event) {
-          //   console.log("keydown event triggered");
-          //   if (event.key === "Escape") {
-          //     console.log("escape");
-          //     select.remove();
-          //     cell.text(currentValue);
-          //     cell.removeClass('editing');
-          //     return;
-          //   }
-          // });
 
           // Select element change event handler
           inlineCategorySelectEventHandler(select, cell);
