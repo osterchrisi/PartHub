@@ -304,6 +304,7 @@ function inlineProcessing() {
           select.selectize();
           select.focus();
 
+          // Select element change event handler
           select.on('change', function () {
             var new_value = $(this).val(); // Get new selected value
 
@@ -315,31 +316,15 @@ function inlineProcessing() {
             var id_field = cell.closest('td').data('id_field');
 
             // Call the updating function
-            $.ajax({
-              type: 'GET',
-              url: '../includes/update-cell.php',
-              data: {
-                id: id,
-                column: column,
-                table_name: table_name,
-                new_value: new_value,
-                id_field: id_field
-              },
-              success: function (data) {
-                console.log('Data updated successfully');
-              },
-              error: function (xhr, status, error) {
-                console.error('Error updating data');
-              },
-              error: function (xhr, status, error) {
-                console.error(error);
-              }
-            });
-            // Update cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
-            new_value = categories[new_value - 1]['category_name']
-            cell.text(new_value);
-            select.remove();
-            cell.removeClass('editing');
+            $.when(updateCell(id, column, table_name, new_value, id_field)).done(function () {
+              // Update HTML cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
+              new_value = categories[new_value - 1]['category_name']
+              cell.text(new_value);
+              select.remove();
+              cell.removeClass('editing');
+            })
+
+
           });
         }
       });
@@ -408,6 +393,38 @@ function inlineProcessing() {
     }
   });
 };
+
+/**
+ * Updates a cell value in the database using AJAX.
+ * @param {number} id - The ID of the row containing the cell to be updated.
+ * @param {string} column - The name of the column containing the cell to be updated.
+ * @param {string} table_name - The name of the database table containing the cell to be updated.
+ * @param {string} new_value - The new value to be assigned to the cell.
+ * @param {string} id_field - The name of the primary key field in the database table.
+ * @returns {object} - A jQuery AJAX object that can be used to handle the success and error events of the request.
+ */
+function updateCell(id, column, table_name, new_value, id_field) {
+  return $.ajax({
+    type: 'GET',
+    url: '../includes/update-cell.php',
+    data: {
+      id: id,
+      column: column,
+      table_name: table_name,
+      new_value: new_value,
+      id_field: id_field
+    },
+    success: function (data) {
+      console.log('Data updated successfully');
+    },
+    error: function (xhr, status, error) {
+      console.error('Error updating data');
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+    }
+  });
+}
 
 /**
 *
