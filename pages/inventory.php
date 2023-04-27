@@ -43,9 +43,9 @@ $locations = getLocations($conn, $user_id);
   <div class="row">
     <div class="col-3">
       <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="Search parts..."
+        <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="Filter parts..."
           value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
-        <input type="text" class="form-control" id="filter" placeholder="Filter results on this page...">
+        <!-- <input type="text" class="form-control" id="filter" placeholder="Filter results on this page..."> -->
     </div>
     <div class="col-3">
       <input type="hidden" name="cat[]" id="selected-categories" value="">
@@ -57,7 +57,8 @@ $locations = getLocations($conn, $user_id);
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-sm btn-primary" name="apply">Search</button><br><br>
-      <button type="button" class="btn btn-sm btn-outline-primary" onclick='callPartEntryModal(<?php echo json_encode($locations); ?>);'>Enter New</button>
+      <button type="button" class="btn btn-sm btn-outline-primary"
+        onclick='callPartEntryModal(<?php echo json_encode($locations); ?>);'>Enter New</button>
     </div>
     <div class="col-1">
       <?php echo "Results per page:"; ?>
@@ -150,26 +151,27 @@ $locations = getLocations($conn, $user_id);
     focusStockChangeQuantity();
     focusNewPartName();
 
-    $('#search').on("keyup input", function(){
-        /* Get input value on change */
-        var inputVal = $(this).val();
-        var resultDropdown = $(this).siblings(".result");
-        if(inputVal.length){
-            $.get("../includes/buildPartsTable.php", {term: inputVal}).done(function(data){
-                // Display the returned data in browser
-                // resultDropdown.html(data);
-                var querystring = "?search=" + inputVal;
-                rebuildPartsTable(querystring);
-            });
-        } else{
-            resultDropdown.empty();
-        }
+    // Experimental ajax search
+    $('#search').on("keyup input", function () {
+      /* Get input value on change */
+      var inputVal = $(this).val();
+      var resultDropdown = $(this).siblings(".result");
+      if (inputVal.length) {
+        $.get("../includes/buildPartsTable.php", { term: inputVal }).done(function (data) {
+          // Display the returned data in browser
+          // resultDropdown.html(data);
+          var querystring = "?search=" + inputVal;
+          rebuildPartsTable(querystring);
+        });
+      } else {
+        resultDropdown.empty();
+      }
     });
-    
+
     // Set search input value on click of result item
-    $(document).on("click", ".result p", function(){
-        $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
-        $(this).parent(".result").empty();
+    $(document).on("click", ".result p", function () {
+      $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
+      $(this).parent(".result").empty();
     });
 
   });
