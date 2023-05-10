@@ -12,10 +12,7 @@
     content="inventory management, BOMs (bills of materials), BOM, production tracking, stock keeping, supply chain management, warehouse management, parts tracking, component tracking, parts inventory, component inventory, self-hosted inventory management, cloud-based inventory management, inventory software, open-source, electronic part inventory, BOM creation, BOM execution">
   <meta name="description"
     content="Simplify your electronic parts inventory and BOM management. Free tiers and self-hosting. Aimed at small electronic makers and tinkerers">
-  <title>PartHub -
-    <?php 
-    // echo $title;
-    ?>
+  <title>PartHub - {{ $title }}
   </title>
 
   <!-- Favicons -->
