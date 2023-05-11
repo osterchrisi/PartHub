@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Inserting this if statement here because I bring my own user table
-        if(!Schema::hasTable('users')){
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -22,7 +20,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-    }
     }
 
     /**
