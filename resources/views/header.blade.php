@@ -68,7 +68,8 @@
   <script src="/PartHub/assets/js/custom.js"></script>
   <script src='/PartHub/assets/js/tables.js'></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="../css/custom.css">
+  <!-- <link rel="stylesheet" href="resources/css/custom.css"> -->
+  <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
