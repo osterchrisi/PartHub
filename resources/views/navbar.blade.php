@@ -1,17 +1,17 @@
 <?php
 // The navbar in the top
 
+use App\Models\User;
+//TODO: There is actually a "Blade" way to figure this out without PHP
 if (auth()->check()) {
     $user = User::findOrFail(auth()->id());
     $user_name = $user['name'];
-}else {
+    $user_id = $user['user_id'];
+} else {
     $user_id = 0;
 }
-
-// echo $user_id;
-// echo "<br>";
-// echo $database_name;
 ?>
+
 <div class="container-fluid px-0">
   <nav class="navbar navbar-expand-lg bg-primary bg-gradient"
     style="background-color: rgba(var(--bs-primary-rgb), 0.5);">
@@ -61,6 +61,7 @@ if (auth()->check()) {
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
                   class="fas fa-user"></i></a>
               <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
+                //TODO: Again, there  is a "Blade" way of doign this
                 <?php
                 if ($user_id > 0){
                 // Logged in

@@ -16,12 +16,7 @@ use App\Models\User;
 */
 
 Route::get('/', function () {    
-    if (auth()->check()) {
-        $user = User::findOrFail(auth()->id());
-        return view('welcome', ['title' => 'Welcome', 'user' => $user]);
-    } else {
-        return view('welcome', ['title' => 'Welcome']);
-    }
+    return view('welcome', ['title' => 'Welcome']);
 });
 
 
