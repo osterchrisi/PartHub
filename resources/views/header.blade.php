@@ -12,10 +12,10 @@
   </title>
 
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/PartHub/assets/favicon/apple-touch-icon.png">
+  <!-- <link rel="apple-touch-icon" sizes="180x180" href="/PartHub/assets/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/PartHub/assets/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/PartHub/assets/favicon/favicon-16x16.png">
-  <link rel="manifest" href="/PartHub/site.webmanifest">
+  <link rel="manifest" href="/PartHub/site.webmanifest"> -->
 
   <!-- JQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -68,7 +68,7 @@
   <script src="/PartHub/assets/js/custom.js"></script>
   <script src='/PartHub/assets/js/tables.js'></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/PartHub/assets/css/custom.css">
+  <link rel="stylesheet" href="../css/custom.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>

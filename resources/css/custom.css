@@ -1,0 +1,95 @@
+/* For index, login and signup */
+.greeting {
+    min-height: 90vh;
+}
+
+/* Get crosshair on column headers to show moving functionality */
+.table-hover thead tr:hover {
+    cursor: move;
+}
+
+/* I don't like underscores in links */
+a {
+    text-decoration: none;
+}
+
+/* Selected row in parts table */
+tr.selected {
+    background-color: rgba(var(--bs-info-rgb), 0.5);
+    border:var(--bs-primary-border-subtle) solid 2px;
+}
+
+tr.selected-last {
+    background-color: rgba(var(--bs-primary-rgb), 0.5);
+    border:var(--bs-primary-border-subtle) solid 2px;
+}
+
+tr.selected-last td {
+    border:var(--bs-primary-border-subtle) solid 2px;
+}
+
+
+/* Prohibit selecting text when pressing shift (selecting multiple rows in table) */
+.table-no-select tbody tr td {
+    user-select: none;
+  }
+
+/* Info window */
+.info-window {
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.1);
+    overflow: auto;
+    z-index: 1; /* Otherwise overlaps with other elements */
+}
+
+/* Action Buttons */
+.btn-label {
+	position: relative;
+	left: -8px;
+	display: inline-block;
+	padding: 2px 12px;
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 3px 0 0 3px;
+}
+
+.btn-labeled {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+
+/* These are for the resizable divs  */
+.ui-resizable-e {
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: col-resize;
+    z-index: 9999;
+}
+
+.ui-resizable-e:before,
+.ui-resizable-e:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #000;
+}
+
+.ui-resizable-e:before {
+    height: 10%;
+    width: 1px;
+    /* margin-top: -3px; */
+    margin-left: -2px;
+    background-color: var(--bs-primary-border-subtle);
+}
+
+.ui-resizable-e:after {
+    height: 10%;
+    width: 1px;
+    /* margin-top: -4px; */
+    /* margin-left: -1px; */
+    background-color: var(--bs-primary-border-subtle);
+}
