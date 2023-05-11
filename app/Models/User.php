@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    //! Chrisi: Added this variable to refer to user_id as this is how I had it coded before changing to Laravel
     protected $primaryKey = 'user_id';
 
     /**

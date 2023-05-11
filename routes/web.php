@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome', ['title' => 'Welcome']);
+Route::get('/', function () {    
+    if (auth()->check()) {
+        $user = User::findOrFail(auth()->id());
+        return view('welcome', ['title' => 'Welcome', 'user' => $user]);
+    } else {
+        return view('welcome', ['title' => 'Welcome']);
+    }
 });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
