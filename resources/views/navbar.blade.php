@@ -61,7 +61,7 @@ if (auth()->check()) {
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
                   class="fas fa-user"></i></a>
               <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
-                //TODO: Again, there  is a "Blade" way of doign this
+                <!-- //TODO: Again, there  is a "Blade" way of doign this -->
                 <?php
                 if ($user_id > 0){
                 // Logged in
