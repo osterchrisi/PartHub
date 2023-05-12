@@ -63,7 +63,7 @@ if (auth()->check()) {
               <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
                 <!-- //TODO: Again, there  is a "Blade" way of doign this -->
                 <?php
-                if ($user_id > 0){
+                if (isset($user_id)){
                 // Logged in
                 echo '<li>' . $user_name . '</li><li><hr class="dropdown-divider"></li>';
                 echo '<li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>';

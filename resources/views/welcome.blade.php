@@ -49,22 +49,20 @@
             <h1><i class="bi bi-outlet"></i></h1>Footprints
           </a></td>
       </tr>
-      <?php
-      if (!isset($_SESSION['user_id'])) {
-        echo '<tr>';
-        echo '<td colspan="3">';
-        echo '<table class="table table-borderless">';
-        echo '<tbody class="alert alert-danger">';
-        echo '<tr>';
-        echo '<td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>';
-        echo '<td><button type="button" class="btn btn-primary" id="logIn" onclick="window.location.href=\'pages/login.php\'">Log into your account</button></td>';
-        echo '</tr>';
-        echo '</tbody>';
-        echo '</table>';
-        echo '</td>';
-        echo '</tr>';
-      }
-      ?>
+      @unless (auth()->check())
+        <tr>
+        <td colspan="3">
+        <table class="table table-borderless">
+        <tbody class="alert alert-danger">
+        <tr>
+        <td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>
+        <td><button type="button" class="btn btn-primary" id="logIn" onclick="window.location.href=\'pages/login.php\'">Log into your account</button></td>
+        </tr>
+        </tbody>
+        </table>
+        </td>
+        </tr>
+      @endunless
     </table>
   </div>
 </div>

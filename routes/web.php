@@ -16,7 +16,7 @@ use App\Models\User;
 */
 
 Route::get('/', function () {    
-    return view('welcome', ['title' => 'Welcome']);
+    return view('welcome', ['title' => 'Open Source Inventory and BOM Management']);
 });
 
 
