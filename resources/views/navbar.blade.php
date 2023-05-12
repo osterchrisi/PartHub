@@ -61,18 +61,18 @@ if (auth()->check()) {
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
                   class="fas fa-user"></i></a>
               <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
-                <!-- //TODO: Again, there  is a "Blade" way of doign this -->
-                <?php
-                if (isset($user_id)){
-                // Logged in
-                echo '<li>' . $user_name . '</li><li><hr class="dropdown-divider"></li>';
-                echo '<li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>';
-                echo '<li><a class="nav-link" href="/PartHub/includes/logout.php">Log Out</a></li>';
-                } else {
-                // Not logged in
-                echo '<li><a class="nav-link" href="/PartHub/pages/login.php">Log In</a></li>'; 
-                }
-                ?>
+                @if (auth()->check())
+                <!-- Logged in -->
+                <li> {{ $user_name }}</li><li><hr class="dropdown-divider"></li>
+                <li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>
+                <li><form id="logout-form" action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="nav-link" style="background: none; border: none;">Log Out</button>
+            </form></li>
+                @else 
+                <!-- Not logged in -->
+                <li><a class="nav-link" href="/login">Log In</a></li>
+                @endif
               </ul>
             </li>
           </ul>
