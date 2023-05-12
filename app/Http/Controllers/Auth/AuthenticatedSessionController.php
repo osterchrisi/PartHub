@@ -18,6 +18,7 @@ class AuthenticatedSessionController extends Controller
     public function create(): View
     {
         return view('auth.login', ['title' => 'Login']);
+        // return view('welcome', ['title' => 'Open Source Inventory and BOM Management']);
     }
 
     /**

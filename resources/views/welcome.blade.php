@@ -56,7 +56,8 @@
         <tbody class="alert alert-danger">
         <tr>
         <td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo user</button></td>
-        <td><button type="button" class="btn btn-primary" id="logIn" onclick="window.location.href=\'pages/login.php\'">Log into your account</button></td>
+        <td><form id="loging-button" action="{{ route('login') }}" method="GET">
+    @csrf<button type="submit" class="btn btn-primary" id="logIn">Log into your account</button></form></td>
         </tr>
         </tbody>
         </table>
