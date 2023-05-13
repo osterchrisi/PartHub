@@ -23,39 +23,39 @@ if (auth()->check()) {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/inventory.php') ? 'active' : ''; ?>"
-              href="/PartHub/pages/inventory.php">Parts</a>
+            <a class="nav-link {{ request()->routeIs('parts') ? 'active' : '' }}"
+              href="{{ route('parts') }}">Parts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/bom-list.php') ? 'active' : ''; ?>"
-              href="/PartHub/pages/bom-list.php">BOMs</a>
+            <a class="nav-link {{ request()->routeIs('boms') ? 'active' : '' }}"
+              href="{{ route('boms') }}">BOMs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/locations.php') ? 'active' : ''; ?>"
-              href="/PartHub/pages/locations.php">Storage Locations</a>
+            <a class="nav-link {{ request()->routeIs('locations') ? 'active' : '' }}"
+              href="{{ route('locations') }}">Storage Locations</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/categories.php') ? 'active' : ''; ?>"
-              href="/PartHub/pages/categories.php">Categories</a>
+            <a class="nav-link {{ request()->routeIs('categories') ? 'active' : '' }}"
+              href="{{ route('categories') }}">Categories</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/suppliers.php') ? 'active' : ''; ?>"
-              href="/PartHub/pages/suppliers.php">Suppliers</a>
+            <a class="nav-link {{ request()->routeIs('suppliers') ? 'active' : '' }}"
+              href="{{ route('suppliers') }}">Suppliers</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/footprints.php') ? 'active' : ''; ?>"
-              href="/PartHub/pages/footprints.php">Footprints</a>
+            <a class="nav-link {{ request()->routeIs('footprints') ? 'active' : '' }}"
+              href="{{ route('footprints') }}">Footprints</a>
           </li>
         </ul>
         <div class="d-flex">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li>
               <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/pricing.php') ? 'active' : ''; ?>"
-                href="/PartHub/pages/pricing.php">Pricing</a>
+                href="/pricing">Pricing</a>
             </li>
             <li>
               <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/signup.php') ? 'active' : ''; ?>"
-                href="/PartHub/pages/signup.php">Sign up</a>
+                href="/signup">Sign up</a>
             </li>
             <li>
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
