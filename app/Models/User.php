@@ -12,7 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     //! Chrisi: Added this variable to refer to user_id as this is how I had it coded before changing to Laravel
-    protected $primaryKey = 'user_id';
+    //! This doesn't actually work with Breeze (e-mail validation failed), so I reverted it... 
+    // protected $primaryKey = 'user_id';
 
     /**
      * The attributes that are mass assignable.

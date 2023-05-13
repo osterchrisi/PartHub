@@ -64,7 +64,7 @@ if (auth()->check()) {
                 @if (auth()->check())
                 <!-- Logged in -->
                 <li> {{ $user_name }}</li><li><hr class="dropdown-divider"></li>
-                <li><a class="nav-link" href="/dashboard">Settings</a></li>
+                <li><a class="nav-link" href="{{ route('dashboard') }}">Settings</a></li>
                 <li><form id="logout-form" action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="nav-link" style="background: none; border: none;">Log Out</button>
