@@ -57,19 +57,18 @@
   <script
     src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
   <!-- Bootstrap Table Reorder Columns -->
-  <link rel="stylesheet" href="/PartHub/assets/dragtable/dragtable.css">
-  <script src="/PartHub/assets/dragtable/jquery.dragtable.js"></script>
+  @vite(['resources/js/dragtable/dragtable.css'])
+  @vite(['resources/js/dragtable/jquery.dragtable.js'])
   <script
     src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.js"></script>
   <!-- Bootstrap Table Cookie to remember table state -->
   <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
   <!-- Custom js -->
-  <script src="/PartHub/assets/js/custom.js"></script>
-  <script src='/PartHub/assets/js/tables.js'></script>
+  @vite(['resources/js/bomCreation.js'])
+  @vite(['resources/js/tables.js'])
   <!-- Custom CSS -->
-  <!-- <link rel="stylesheet" href="resources/css/custom.css"> -->
-  <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+  @vite(['resources/css/custom.css'])
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
