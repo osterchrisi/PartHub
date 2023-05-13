@@ -55,3 +55,11 @@ Route::get('/suppliers', function () {
 Route::get('/footprints', function () {    
     return view('welcome', ['title' => 'Footprints']);
 })->middleware(['auth', 'verified'])->name('footprints');
+
+Route::get('/pricing', function () {    
+    return view('welcome', ['title' => 'Pricing']);
+})->name('pricing');
+
+Route::get('/signup', function () {    
+    return view('welcome', ['title' => 'Signup']);
+})->name('signup');

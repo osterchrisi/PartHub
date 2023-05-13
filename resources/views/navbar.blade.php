@@ -50,12 +50,12 @@ if (auth()->check()) {
         <div class="d-flex">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li>
-              <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/pricing.php') ? 'active' : ''; ?>"
-                href="/pricing">Pricing</a>
+              <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
+                href="{{ route('pricing') }}">Pricing</a>
             </li>
             <li>
-              <a class="nav-link <?php echo ($_SERVER['PHP_SELF'] == '/PartHub/pages/signup.php') ? 'active' : ''; ?>"
-                href="/signup">Sign up</a>
+              <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
+                href="{{ route('signup') }}">Sign up</a>
             </li>
             <li>
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
