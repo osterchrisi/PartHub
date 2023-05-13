@@ -37,7 +37,7 @@ Route::get('/parts', function () {
 })->name('parts');
 
 Route::get('/boms', function () {    
-    return view('welcome', ['title' => 'BOMs']);
+    return view('boms', ['title' => 'BOMs']);
 })->name('boms');
 
 Route::get('/locations', function () {    
