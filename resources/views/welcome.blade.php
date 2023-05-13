@@ -31,24 +31,24 @@
                 </td>
             </tr>
             <tr>
-                <td><a href="/PartHub/pages/inventory.php">
+                <td><a href="{{ route('parts') }}">
                         <h1><i class="bi bi-cpu"></i></h1>Parts<br><br>
                     </a></td>
-                <td><a href="/PartHub/pages/bom-list.php">
+                <td><a href="{{ route('boms') }}">
                         <h1><i class="bi bi-clipboard-check"></i></h1>BOMs<br>
                     </a></td>
-                <td><a href="/PartHub/pages/locations.php">
+                <td><a href="{{ route('locations') }}">
                         <h1><i class="bi bi-buildings"></i></h1>Storage<br>
                     </a></td>
             </tr>
             <tr>
-                <td><a href="/PartHub/pages/categories.php">
+                <td><a href="{{ route('categories') }}">
                         <h1><i class="bi bi-boxes"></i></h1>Categories
                     </a></td>
-                <td><a href="/PartHub/pages/suppliers.php">
+                <td><a href="{{ route('suppliers') }}">
                         <h1><i class="bi bi-cart"></i></h1>Suppliers
                     </a></td>
-                <td><a href="/PartHub/pages/footprints.php">
+                <td><a href="{{ route('footprints') }}">
                         <h1><i class="bi bi-outlet"></i></h1>Footprints
                     </a></td>
             </tr>
