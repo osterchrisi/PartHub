@@ -1,0 +1,1 @@
+<div class="modal fade" id="mAddStock" tabindex="-1"></div>
