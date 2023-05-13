@@ -1,0 +1,3 @@
+[submodule "resources/js/dragtable"]
+	path = resources/js/dragtable
+	url = https://github.com/akottr/dragtable.git
