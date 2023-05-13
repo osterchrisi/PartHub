@@ -16,7 +16,7 @@ if (auth()->check()) {
   <nav class="navbar navbar-expand-lg bg-primary bg-gradient"
     style="background-color: rgba(var(--bs-primary-rgb), 0.5);">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/PartHub/index.php">PartHub</a>
+      <a class="navbar-brand" href="/">PartHub</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -64,7 +64,7 @@ if (auth()->check()) {
                 @if (auth()->check())
                 <!-- Logged in -->
                 <li> {{ $user_name }}</li><li><hr class="dropdown-divider"></li>
-                <li><a class="nav-link" href="/PartHub/pages/settings.php">Settings</a></li>
+                <li><a class="nav-link" href="/dashboard">Settings</a></li>
                 <li><form id="logout-form" action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="nav-link" style="background: none; border: none;">Log Out</button>
