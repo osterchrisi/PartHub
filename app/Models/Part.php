@@ -48,14 +48,14 @@ class Part extends Model
             // ->where('part_owner_u_fk', $user_id);
             ->where('part_owner_u_fk', 1);
 
-        // if ($search_column == 'everywhere') {
-        //     // Search all columns
-        //     $query->where(DB::raw("CONCAT_WS(' ', " . implode(", ", $column_names) . ")"), 'like', "'%$search_term%'");
-        // }
-        // else {
-        //     // Search only the specified column
-        //     $query->where($search_column, 'like', "%$search_term%");
-        // }
+        if ($search_column == 'everywhere') {
+            // Search all columns
+            $query->where(DB::raw("CONCAT_WS(' ', " . implode(", ", $column_names) . ")"), 'like', "%$search_term%");
+        }
+        else {
+            // Search only the specified column
+            $query->where($search_column, 'like', "%$search_term%");
+        }
 
         // if (!in_array('all', $search_category)) {
         //     // Make a list out of selected categories
