@@ -1,17 +1,3 @@
-<?php
-// The navbar in the top
-
-use App\Models\User;
-//TODO: There is actually a "Blade" way to figure this out without PHP
-if (auth()->check()) {
-    $user = User::findOrFail(auth()->id());
-    $user_name = $user['name'];
-    $user_id = $user['user_id'];
-} else {
-    $user_id = 0;
-}
-?>
-
 <div class="container-fluid px-0">
   <nav class="navbar navbar-expand-lg bg-primary bg-gradient"
     style="background-color: rgba(var(--bs-primary-rgb), 0.5);">
