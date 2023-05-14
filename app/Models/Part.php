@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 class Part extends Model
 {
     protected $table = 'parts';
+    protected $primaryKey = 'part_id';
+
     private static $column_names = array(
         'part_id',
         'part_name',
