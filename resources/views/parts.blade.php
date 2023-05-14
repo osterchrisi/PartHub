@@ -1,9 +1,18 @@
 <?php
 use App\Models\User;
-//TODO: There is actually a "Blade" way to figure this out without PHP
+use App\Models\Part;
+
+// User stuff
 $user = optional(auth()->user());
 $user_id = $user ? $user->id : 0;
 $user_name = $user ? $user->name : '';
+
+// Parts stuff
+$search_column = 'everywhere';
+$search_term = '';
+$column_names = Part::getColumnNames();
+$search_category = ['all'];
+
 ?>
 
 {{-- Visible Page Contents --}}
@@ -15,14 +24,6 @@ $user_name = $user ? $user->name : '';
 @include('components.modals.stockModal')
 @include('components.modals.partEntryModal', ['part_name' => ''])
 @include('components.menus.partsTableRightClickMenu')
-
-<?php
-$search_term = '';
-$categories = '';
-
-$search_category = ['all'];
-$search_column = 'everywhere';
-?>
 
 <div class="container-fluid">
     <br>
@@ -52,9 +53,7 @@ $search_column = 'everywhere';
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 <?php
                 // Build Parts Table
-                use App\Models\Part;
-                $column_names = Part::getColumnNames();
-                $x = var_dump(Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id));
+                echo var_dump($parts);
                 ?>
             </div>
             <div class='col d-flex h-50 resizable sticky-top justify-content-center info-window pb-3' id='info-window'>

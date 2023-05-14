@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PartsController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {    
+Route::get('/', function () {
     return view('welcome', ['title' => 'Open Source Inventory and BOM Management']);
 });
 
@@ -29,36 +31,48 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::get('/parts', function () {    
-    return view('parts', ['title' => 'Parts']);
-})->middleware(['auth', 'verified'])->name('parts');
+Route::get('/parts', [PartsController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('parts');
 
-Route::get('/boms', function () {    
+Route::get('/boms', function () {
     return view('boms', ['title' => 'BOMs']);
-})->middleware(['auth', 'verified'])->name('boms');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('boms');
 
-Route::get('/locations', function () {    
+Route::get('/locations', function () {
     return view('welcome', ['title' => 'Storage Locations']);
-})->middleware(['auth', 'verified'])->name('locations');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('locations');
 
-Route::get('/categories', function () {    
+Route::get('/categories', function () {
     return view('welcome', ['title' => 'Categories']);
-})->middleware(['auth', 'verified'])->name('categories');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('categories');
 
-Route::get('/suppliers', function () {    
+Route::get('/suppliers', function () {
     return view('welcome', ['title' => 'Suppliers']);
-})->middleware(['auth', 'verified'])->name('suppliers');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('suppliers');
 
-Route::get('/footprints', function () {    
+Route::get('/footprints', function () {
     return view('welcome', ['title' => 'Footprints']);
-})->middleware(['auth', 'verified'])->name('footprints');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('footprints');
 
-Route::get('/pricing', function () {    
+Route::get('/pricing', function () {
     return view('welcome', ['title' => 'Pricing']);
-})->name('pricing');
+})
+    ->name('pricing');
 
-Route::get('/signup', function () {    
+Route::get('/signup', function () {
     return view('welcome', ['title' => 'Signup']);
-})->name('signup');
+})
+    ->name('signup');
