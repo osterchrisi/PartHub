@@ -3,7 +3,7 @@ use App\Models\User;
 use App\Models\Part;
 use App\Http\Controllers\PartsController;
 
-// User stuff
+//! This is double, fix this
 $user = optional(auth()->user());
 $user_id = $user ? $user->id : 0;
 $user_name = $user ? $user->name : '';
@@ -67,6 +67,7 @@ $search_category = ['all'];
     </div>
 </div>
 
+{{-- Pretty hacky way of doing this but for porting to Laravel and making it work, I let it be --}}
 <script src="http://127.0.0.1:5173/resources/js/tables.js"></script>
 <script src="http://127.0.0.1:5173/resources/js/custom.js"></script>
 @vite(['resources/js/tables.js', 'resources/js/partsView.js'])

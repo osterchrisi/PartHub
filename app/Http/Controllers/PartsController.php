@@ -8,16 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class PartsController extends Controller
 {
+    private static $table_name = 'parts';
+    private static $id_field = 'part_id';
     private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'part_footprint_fk', 'unit_name', "part_id");
+    // 'state' doesn't actually exist but is there to make an empty column for boostrapTable's selected row to have a place
     private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', "ID");
     private static $total_stock = 999;
-    private static $table_name = 'parts';
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        //* This is the alternate way for near future:
+        //* $search_column = $request->get('search_column');
+
         $search_column = 'everywhere';
         $search_term = '';
         $column_names = Part::getColumnNames();
@@ -38,7 +43,7 @@ class PartsController extends Controller
         $nice_columns = self::$nice_columns;
         $total_stock = self::$total_stock;
         $table_name = self::$table_name;
-        $id_field = 'part_id';
+        $id_field = self::$id_field;
 
         echo '<div>';
         echo '<table

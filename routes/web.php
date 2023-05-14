@@ -39,7 +39,7 @@ Route::get('/parts', function () {
 
 Route::get('/parts/index', [PartsController::class, 'index'])
     ->middleware(['auth', 'verified'])
-    ->name('parts');
+    ->name('parts.index');
 
 Route::get('/boms', function () {
     return view('boms', ['title' => 'BOMs']);
