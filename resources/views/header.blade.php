@@ -67,6 +67,7 @@
   <!-- Custom js -->
   @vite(['resources/js/bomCreation.js'])
   @vite(['resources/js/tables.js'])
+  @vite(['resources/js/partEntry.js'])
   <!-- Custom CSS -->
   @vite(['resources/css/custom.css'])
   <!-- Font Awesome -->
