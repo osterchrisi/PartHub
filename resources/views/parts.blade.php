@@ -1,3 +1,11 @@
+<?php
+use App\Models\User;
+//TODO: There is actually a "Blade" way to figure this out without PHP
+$user = optional(auth()->user());
+$user_id = $user ? $user->id : 0;
+$user_name = $user ? $user->name : '';
+?>
+
 {{-- Visible Page Contents --}}
 @include('header')
 @include('navbar')
@@ -11,7 +19,9 @@
 <?php
 $search_term = '';
 $categories = '';
-$search_category = '';
+
+$search_category = ['all'];
+$search_column = 'everywhere';
 ?>
 
 <div class="container-fluid">
@@ -27,8 +37,8 @@ $search_category = '';
             </div>
             <div class="col-3" id="category-box-div">
                 <input type="hidden" name="cat[]" id="selected-categories" value="">
-                <?php 
-                // generateCategoriesDropdown($categories, $search_category); 
+                <?php
+                // generateCategoriesDropdown($categories, $search_category);
                 ?>
             </div>
             <div class="col-1" id="search-button-div">
@@ -41,15 +51,11 @@ $search_category = '';
         <div class='row'>
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 <?php
-                    // Build Parts Table
-                    use App\Models\Part;
-                    $column_names = Part::getColumnNames();
-                    $search_column = 'everywhere';
-                    $search_term = '';
-                    $search_category = ['all'];
-                    $user_id = 1;
-                    $x = var_dump(Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id));
-                    ?>
+                // Build Parts Table
+                use App\Models\Part;
+                $column_names = Part::getColumnNames();
+                $x = var_dump(Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id));
+                ?>
             </div>
             <div class='col d-flex h-50 resizable sticky-top justify-content-center info-window pb-3' id='info-window'>
                 <h6><br>Click on a row in the table</h6>

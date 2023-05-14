@@ -46,7 +46,7 @@ class Part extends Model
             ->join('part_categories', 'parts.part_category_fk', '=', 'part_categories.category_id')
             ->join('part_units', 'parts.part_unit_fk', '=', 'part_units.unit_id')
             // ->where('part_owner_u_fk', $user_id);
-            ->where('part_owner_u_fk', 1);
+            ->where('part_owner_u_fk', $user_id);
 
         if ($search_column == 'everywhere') {
             // Search all columns
@@ -72,7 +72,7 @@ class Part extends Model
 
         $result = $query->select('*', 'part_id as id')->get()->toArray();
 
-        $answer = array($result, $query->toSql()); // add $query->toSql() to the array
+        $answer = array('result' => $result, 'query' => $query->toSql());
         return $answer;
         // return $result;
     }
