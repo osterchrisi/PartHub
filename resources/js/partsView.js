@@ -14,10 +14,6 @@
 // } from "./custom";
 
 $(document).ready(function () {
-    console.log("Fuck Vite");
-
-
-
     //! Commenting this out to make it work laravel
     // initializeMultiSelect('cat-select');
 

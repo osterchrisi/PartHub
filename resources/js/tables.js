@@ -1,5 +1,3 @@
-console.log("Fuck Vite");
-
 /**
  * Bootstrap the parts table
  * @return void
