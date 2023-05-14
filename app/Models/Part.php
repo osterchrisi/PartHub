@@ -45,33 +45,36 @@ class Part extends Model
         $query = DB::table('parts')
             ->join('part_categories', 'parts.part_category_fk', '=', 'part_categories.category_id')
             ->join('part_units', 'parts.part_unit_fk', '=', 'part_units.unit_id')
-            ->where('part_owner_u_fk', $user_id);
+            // ->where('part_owner_u_fk', $user_id);
+            ->where('part_owner_u_fk', 1);
 
-        if ($search_column == 'everywhere') {
-            // Search all columns
-            $query->where(DB::raw("CONCAT_WS(' ', " . implode(", ", $column_names) . ")"), 'like', "'%$search_term%'");
-        }
-        else {
-            // Search only the specified column
-            $query->where($search_column, 'like', "%$search_term%");
-        }
+        // if ($search_column == 'everywhere') {
+        //     // Search all columns
+        //     $query->where(DB::raw("CONCAT_WS(' ', " . implode(", ", $column_names) . ")"), 'like', "'%$search_term%'");
+        // }
+        // else {
+        //     // Search only the specified column
+        //     $query->where($search_column, 'like', "%$search_term%");
+        // }
 
-        if (!in_array('all', $search_category)) {
-            // Make a list out of selected categories
-            $cats_selected = implode(", ", $search_category);
+        // if (!in_array('all', $search_category)) {
+        //     // Make a list out of selected categories
+        //     $cats_selected = implode(", ", $search_category);
 
-            // Also select all sub-categories of those categories
-            $query->whereIn('part_category_fk', function ($query) use ($cats_selected) {
-                $query->select('category_id')
-                    ->from('part_categories')
-                    ->whereIn('category_id', explode(", ", $cats_selected))
-                    ->orWhereIn('parent_category', explode(", ", $cats_selected));
-            });
-        }
+        //     // Also select all sub-categories of those categories
+        //     $query->whereIn('part_category_fk', function ($query) use ($cats_selected) {
+        //         $query->select('category_id')
+        //             ->from('part_categories')
+        //             ->whereIn('category_id', explode(", ", $cats_selected))
+        //             ->orWhereIn('parent_category', explode(", ", $cats_selected));
+        //     });
+        // }
 
         $result = $query->select('*', 'part_id as id')->get()->toArray();
 
-        return $result;
+        $answer = array($result, $query->toSql()); // add $query->toSql() to the array
+        return $answer;
+        // return $result;
     }
 
 
