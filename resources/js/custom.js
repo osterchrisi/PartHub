@@ -1,3 +1,5 @@
+console.log("Fuck Vite");
+
 /**
  * Focus the Part Name field in the part entry modal after showing
  * @return void

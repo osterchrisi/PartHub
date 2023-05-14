@@ -40,9 +40,6 @@ class PartsController extends Controller
         $table_name = self::$table_name;
         $id_field = 'part_id';
 
-        echo "Hi, buildTable here";
-        var_dump($parts);
-
         echo '<div>';
         echo '<table
         class="table table-sm table-responsive table-hover table-striped"
@@ -71,8 +68,6 @@ class PartsController extends Controller
         echo '<th data-field="state" data-checkbox="true"></th>';
         foreach ($nice_columns as $column_header) {
             if ($column_header == 'Total Stock') {
-                // Removing the in-table links to stock levels again...
-                // echo "<th data-sortable='true' data-sorter='NumberURLSorter' data-field='$column_header'>$column_header</th>";
                 echo "<th data-sortable='true' data-field='$column_header'>$column_header</th>";
             }
             else {
@@ -85,11 +80,10 @@ class PartsController extends Controller
         echo "<tbody>";
         // Table rows
         foreach ($parts as $part) {
-            // echo "<tr>";
             $part_id = $part['part_id'];
             echo "<tr data-id=" . $part['part_id'] . ">";
+
             foreach ($db_columns as $column_data) {
-                // Removing the in-table links to stock levels again...
                 if ($column_data == 'total_stock') {
                     // Get total stock
                     //! Commenting this out to hack in temporarliy
@@ -106,7 +100,7 @@ class PartsController extends Controller
                 }
                 // Select column (do nothing)
                 elseif ($column_data == 'state') {
-                    ;
+                    echo "<td></td>";
                 }
                 // Part ID (non-editable)
                 elseif ($column_data == 'part_id') {
