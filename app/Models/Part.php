@@ -57,18 +57,18 @@ class Part extends Model
             $query->where($search_column, 'like', "%$search_term%");
         }
 
-        // if (!in_array('all', $search_category)) {
-        //     // Make a list out of selected categories
-        //     $cats_selected = implode(", ", $search_category);
+        if (!in_array('all', $search_category)) {
+            // Make a list out of selected categories
+            $cats_selected = implode(", ", $search_category);
 
-        //     // Also select all sub-categories of those categories
-        //     $query->whereIn('part_category_fk', function ($query) use ($cats_selected) {
-        //         $query->select('category_id')
-        //             ->from('part_categories')
-        //             ->whereIn('category_id', explode(", ", $cats_selected))
-        //             ->orWhereIn('parent_category', explode(", ", $cats_selected));
-        //     });
-        // }
+            // Also select all sub-categories of those categories
+            $query->whereIn('part_category_fk', function ($query) use ($cats_selected) {
+                $query->select('category_id')
+                    ->from('part_categories')
+                    ->whereIn('category_id', explode(", ", $cats_selected))
+                    ->orWhereIn('parent_category', explode(", ", $cats_selected));
+            });
+        }
 
         $result = $query->select('*', 'part_id as id')->get()->toArray();
 

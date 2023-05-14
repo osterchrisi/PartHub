@@ -44,7 +44,11 @@ $search_category = '';
                     // Build Parts Table
                     use App\Models\Part;
                     $column_names = Part::getColumnNames();
-                    $x = var_dump(Part::queryParts('everywhere', '', $column_names, ['all'], 1));
+                    $search_column = 'everywhere';
+                    $search_term = '';
+                    $search_category = ['all'];
+                    $user_id = 1;
+                    $x = var_dump(Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id));
                     ?>
             </div>
             <div class='col d-flex h-50 resizable sticky-top justify-content-center info-window pb-3' id='info-window'>
