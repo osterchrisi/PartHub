@@ -31,7 +31,7 @@ $(document).ready(function () {
     focusNewPartName();
 
     // Need to re-smallify after hiding / showing columns
-    $('.bootstrap-table').on('column-switch.bs.table', function () {
+    $('.bootstrap-table').on('column-switch.bs.table page-change.bs.table', function () {
         bootstrapTableSmallify();
     });
 

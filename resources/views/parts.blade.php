@@ -3,7 +3,7 @@ use App\Models\User;
 use App\Models\Part;
 use App\Http\Controllers\PartsController;
 
-//! This is double, fix this
+//! This is double (once in header already), fix this
 $user = optional(auth()->user());
 $user_id = $user ? $user->id : 0;
 $user_name = $user ? $user->name : '';
@@ -26,11 +26,12 @@ $search_category = ['all'];
 @include('components.modals.partEntryModal', ['part_name' => ''])
 @include('components.menus.partsTableRightClickMenu')
 
+{{-- Page Body --}}
 <div class="container-fluid">
     <br>
     <div class="row">
 
-        <!-- Parts filter form -->
+        {{-- Parts filter form --}}
         <div class="row collapse" id="parts-filter-form">
             <div class="col-3" id="search-box-div">
                 <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">

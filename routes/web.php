@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartsController;
 use Illuminate\Support\Facades\Route;
 
+require __DIR__ . '/auth.php';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//* Landing Page
 Route::get('/', function () {
     return view('welcome', ['title' => 'Open Source Inventory and BOM Management']);
 });
 
-
+//* User Stuff
 Route::get('/dashboard', function () {
     return view('dashboard', ['title' => 'Settings']);
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -31,8 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
-
+//* Part Routes
 Route::get('/parts', function () {    
     return view('parts', ['title' => 'Parts']);
 })->middleware(['auth', 'verified'])->name('parts');
@@ -41,6 +43,7 @@ Route::get('/parts/index', [PartsController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('parts.index');
 
+//* BOM Routes
 Route::get('/boms', function () {
     return view('boms', ['title' => 'BOMs']);
 })
