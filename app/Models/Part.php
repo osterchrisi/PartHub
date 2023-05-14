@@ -72,11 +72,16 @@ class Part extends Model
             });
         }
 
-        $result = $query->select('*', 'part_id as id')->get()->toArray();
+        $parts = $query->select('*', 'part_id as id')->get();
 
-        $answer = array('result' => $result, 'query' => $query->toSql());
-        return $answer;
-        // return $result;
+        $parts = $parts->map(function ($part) {
+            return (array) $part;
+        })->toArray();
+    
+
+        // $answer = array('result' => $parts, 'query' => $query->toSql());
+        // return $answer;
+        return $parts;
     }
 
 

@@ -33,7 +33,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/parts', [PartsController::class, 'index'])
+Route::get('/parts', function () {    
+    return view('parts', ['title' => 'Parts']);
+})->middleware(['auth', 'verified'])->name('parts');
+
+Route::get('/parts/index', [PartsController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('parts');
 

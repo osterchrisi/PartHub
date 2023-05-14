@@ -1,6 +1,7 @@
 <?php
 use App\Models\User;
 use App\Models\Part;
+use App\Http\Controllers\PartsController;
 
 // User stuff
 $user = optional(auth()->user());
@@ -53,7 +54,13 @@ $search_category = ['all'];
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 <?php
                 // Build Parts Table
-                echo var_dump($parts);
+                $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
+                echo "\$parts gotten";
+                echo "<br>";
+                // var_dump($parts);
+
+                $pc = new PartsController;
+                $pc->buildTable($parts);
                 ?>
             </div>
             <div class='col d-flex h-50 resizable sticky-top justify-content-center info-window pb-3' id='info-window'>

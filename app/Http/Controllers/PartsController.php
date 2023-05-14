@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PartsController extends Controller
 {
+    private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'part_footprint_fk', 'unit_name', "part_id");
+    private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', "ID");
+    private static $total_stock = 999;
+    private static $table_name = 'parts';
+    
     /**
      * Display a listing of the resource.
      */
@@ -27,8 +32,17 @@ class PartsController extends Controller
         ]);
     }
 
-    public function buildTable($parts, $db_columns, $nice_columns, $total_stock, $conn, $table_name, $id_field, $width = "100%")
+    public function buildTable($parts, $width = "100%")
     {
+        $db_columns = self::$db_columns;
+        $nice_columns = self::$nice_columns;
+        $total_stock = self::$total_stock;
+        $table_name = self::$table_name;
+        $id_field = 'part_id';
+
+        echo "Hi, buildTable here";
+        var_dump($parts);
+
         echo '<div>';
         echo '<table
         class="table table-sm table-responsive table-hover table-striped"
@@ -78,8 +92,10 @@ class PartsController extends Controller
                 // Removing the in-table links to stock levels again...
                 if ($column_data == 'total_stock') {
                     // Get total stock
-                    $stock = getStockLevels($conn, $part_id);
-                    $total_stock = getTotalStock($stock);
+                    //! Commenting this out to hack in temporarliy
+                    // $stock = getStockLevels($conn, $part_id);
+                    // $total_stock = getTotalStock($stock);
+                    //!
                     // Display total stock number as link to showing stock levels
                     // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
                     echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
