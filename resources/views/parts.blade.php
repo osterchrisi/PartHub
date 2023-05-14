@@ -41,7 +41,10 @@ $search_category = '';
         <div class='row'>
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 <?php
-                    // include '../includes/buildPartsTable.php'; 
+                    // Build Parts Table
+                    use App\Models\Part;
+                    $column_names = Part::getColumnNames();
+                    $x = var_dump(Part::queryParts('everywhere', '', $column_names, ['all'], 1));
                     ?>
             </div>
             <div class='col d-flex h-50 resizable sticky-top justify-content-center info-window pb-3' id='info-window'>
