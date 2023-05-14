@@ -1,6 +1,19 @@
-// import { bootstrapPartsTable } from "./tables";
+// import {
+//     bootstrapPartsTable,
+//     definePartsTableActions,
+//     inlineProcessing,
+//     bootstrapTableSmallify,
+//     rebuildPartsTable,
+//     initializePopovers,
+//     attachDeleteRowsHandler
+// } from "./tables";
 
-$(document).ready(function() {
+// import {
+//     focusStockChangeQuantity,
+//     focusNewPartName
+// } from "./custom";
+
+$(document).ready(function () {
     console.log("Fuck Vite");
 
 
@@ -22,18 +35,18 @@ $(document).ready(function() {
     focusNewPartName();
 
     // Need to re-smallify after hiding / showing columns
-    $('.bootstrap-table').on('column-switch.bs.table', function() {
+    $('.bootstrap-table').on('column-switch.bs.table', function () {
         bootstrapTableSmallify();
     });
 
     // Experimental ajax search
-    $('#search').on("keyup input", function() {
+    $('#search').on("keyup input", function () {
         /* Get input value on change */
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
         $.get("../includes/buildPartsTable.php", {
             term: inputVal
-        }).done(function(data) {
+        }).done(function (data) {
             var querystring = "?search=" + inputVal;
             rebuildPartsTable(querystring);
         });
@@ -41,7 +54,7 @@ $(document).ready(function() {
 
     // Set search input value on click of result item
     //! Not in use actually
-    $(document).on("click", ".result p", function() {
+    $(document).on("click", ".result p", function () {
         $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
         $(this).parent(".result").empty();
     });

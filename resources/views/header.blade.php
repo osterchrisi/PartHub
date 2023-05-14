@@ -66,7 +66,6 @@
 
   <!-- Custom js -->
   @vite('resources/js/custom.js')
-  <script src="resources/js/tables.js"></script>
   <!-- Custom CSS -->
   @vite('resources/css/custom.css')
   <!-- Font Awesome -->
