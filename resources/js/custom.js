@@ -82,8 +82,8 @@ function continueAsDemoUser() {
  */
 function updatePartsInfo(id) {
     $.ajax({
-        url: 'parts-info.php',
-        type: 'POST',
+        url: "/part/" + id,
+        type: 'GET',
         data: { part_id: id, hideNavbar: true },
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
