@@ -35,13 +35,10 @@ Route::middleware('auth')->group(function () {
 });
 
 //* Part Routes
-Route::get('/parts', function () {    
-    return view('parts', ['title' => 'Parts']);
-})->middleware(['auth', 'verified'])->name('parts');
-
-Route::get('/parts/index', [PartsController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('parts.index');
+Route::controller(PartsController::class)->group(function () {
+    Route::get('/parts', 'index')->middleware(['auth', 'verified'])->name('parts');
+    Route::get('/part/{id}', 'show')->middleware(['auth', 'verified'])->name('parts.show');
+});
 
 //* BOM Routes
 Route::get('/boms', function () {

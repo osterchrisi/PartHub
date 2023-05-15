@@ -31,7 +31,7 @@ class PartsController extends Controller
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
-        return view('parts', [
+        return view('parts.parts', [
             'title' => 'Parts',
             'parts' => $parts
         ]);
@@ -146,7 +146,7 @@ class PartsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('parts.showPart', ['part_id' => $id]);
     }
 
     /**

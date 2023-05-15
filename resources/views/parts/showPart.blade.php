@@ -1,0 +1,1 @@
+<h4>Details for {{ $part_id }}</h4>

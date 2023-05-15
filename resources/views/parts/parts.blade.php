@@ -1,7 +1,6 @@
 <?php
 use App\Models\User;
 use App\Models\Part;
-use App\Http\Controllers\PartsController;
 
 //! This is double (once in header already), fix this
 $user = optional(auth()->user());
@@ -52,15 +51,7 @@ $search_category = ['all'];
 
         <!-- Table div and info div -->
         <div class='row'>
-            <div class='col-9' id='table-window' style='max-width: 90%;'>
-                <?php
-                // Build Parts Table
-                $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
-                
-                $pc = new PartsController();
-                $pc->buildTable($parts);
-                ?>
-            </div>
+            @include('parts.partsTable')
             <div class='col d-flex h-50 resizable sticky-top justify-content-center info-window pb-3' id='info-window'>
                 <h6><br>Click on a row in the table</h6>
             </div>
