@@ -45,7 +45,9 @@ class Part extends Model
 {
     $query = Part::query()->where('part_owner_u_fk', $user_id);
 
+    // Search Column
     if ($search_column == 'everywhere') {
+        // All columns (standard)
         $query->where(function ($query) use ($column_names, $search_term) {
             foreach ($column_names as $column) {
                 $query->orWhere($column, 'like', "%$search_term%");
@@ -53,9 +55,11 @@ class Part extends Model
         });
     }
     else {
+        // Only in specified colum (single)
         $query->where($search_column, 'like', "%$search_term%");
     }
 
+    // Filter for categories
     if (!in_array('all', $search_category)) {
         $query->whereHas('category', function ($query) use ($search_category) {
             $query->whereIn('category_id', $search_category)
