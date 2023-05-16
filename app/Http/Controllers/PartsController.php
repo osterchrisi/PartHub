@@ -13,7 +13,6 @@ class PartsController extends Controller
     private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'part_footprint_fk', 'unit_name', "part_id");
     // 'state' doesn't actually exist but is there to make an empty column for boostrapTable's selected row to have a place
     private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', "ID");
-    private static $total_stock = 999;
 
     /**
      * Display a listing of the resource.
@@ -91,11 +90,12 @@ class PartsController extends Controller
             foreach ($db_columns as $column_data) {
                 if ($column_data == 'total_stock') {
                     // Get total stock
-                    //! Commenting this out to hack in temporarliy
-                    // $stock = getStockLevels($conn, $part_id);
-                    // $total_stock = getTotalStock($stock);
-                    //!
-                    // Display total stock number as link to showing stock levels
+                    $total_stock = 0;
+                    $stock_levels = $part['stock_levels'];
+                    foreach ($stock_levels as $stock_level){
+                        $total_stock += $stock_level['stock_level_quantity'];
+                    }
+                    // Display total stock number as link to showing stock levels - not doing it anymore...
                     // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
                     echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
                 }

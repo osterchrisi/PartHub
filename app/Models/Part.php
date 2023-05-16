@@ -22,6 +22,11 @@ class Part extends Model
         return $this->belongsTo(Unit::class, 'part_unit_fk');
     }
 
+    public function stockLevels()
+    {
+        return $this->hasMany(StockLevel::class, 'part_id_fk');
+    }
+
     private static $column_names = array(
         'part_id',
         'part_name',
@@ -67,7 +72,7 @@ class Part extends Model
         });
     }
 
-    $parts = $query->with('category', 'unit')->get()->toArray();
+    $parts = $query->with('category', 'unit', 'stockLevels')->get()->toArray();
 
     return $parts;
 }
