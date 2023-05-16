@@ -11,6 +11,17 @@ class Part extends Model
     protected $table = 'parts';
     protected $primaryKey = 'part_id';
 
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'part_category_fk');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'part_unit_fk');
+    }
+
     private static $column_names = array(
         'part_id',
         'part_name',
@@ -23,17 +34,6 @@ class Part extends Model
         'part_owner_u_fk',
         'part_owner_g_fk'
     );
-
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'part_category_fk');
-    }
-
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class, 'part_unit_fk');
-    }
 
     public static function getColumnNames()
     {
