@@ -47,7 +47,6 @@ class Part extends Model
         $query = DB::table('parts')
             ->join('part_categories', 'parts.part_category_fk', '=', 'part_categories.category_id')
             ->join('part_units', 'parts.part_unit_fk', '=', 'part_units.unit_id')
-            // ->where('part_owner_u_fk', $user_id);
             ->where('part_owner_u_fk', $user_id);
 
         if ($search_column == 'everywhere') {
