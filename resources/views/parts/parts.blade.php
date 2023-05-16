@@ -1,6 +1,7 @@
 <?php
 use App\Models\User;
 use App\Models\Part;
+use App\Models\Location;
 
 //! This is double (once in header already), fix this
 $user = optional(auth()->user());
@@ -13,10 +14,15 @@ $search_term = '';
 $column_names = Part::getColumnNames();
 $search_category = ['all'];
 
+$locations = Location::availableLocations($user_id);
+
 // // Debug
-// echo "<pre>";
+echo "<pre>";
 // print_r($parts);
-// echo "</pre>";
+echo $user_id;
+echo "<br>";
+print_r($locations);
+echo "</pre>";
 
 ?>
 
