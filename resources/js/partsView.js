@@ -58,13 +58,25 @@ $(document).ready(function () {
     initializePopovers();
     attachDeleteRowsHandler();
 
-    //TODO: It's silly to do it this way...
-    //! Commenting out to make table appear for now
-    // $('#toolbarAddButton').click(function() {
-    //     callPartEntryModal(<?php
-    // echo json_encode($locations);
-    //
-    // ?>);
-    // });
+    var x = fetch('/locations')
+        .then(response => response.json())
+        .then(data => data.data)
+        .then(console.log(x));
+    // console.log(x);
+
+    $.ajax({
+        url: '/locations',
+        dataType: 'json',
+        success: function (locations) {
+            $('#toolbarAddButton').click(function() {
+                callPartEntryModal(locations);
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
+
+
 
 });

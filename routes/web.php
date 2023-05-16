@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartsController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -48,7 +49,7 @@ Route::get('/boms', function () {
     ->name('boms');
 
 Route::get('/locations', function () {
-    return view('welcome', ['title' => 'Storage Locations']);
+    return LocationController::getLocations();
 })
     ->middleware(['auth', 'verified'])
     ->name('locations');

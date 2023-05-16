@@ -16,7 +16,7 @@ class Location extends Model
     protected $table = 'locations';
     protected $primaryKey = 'location_id';
 
-    public static function availableLocations($user_id)
+    public static function availableLocations()
     {
 
         $user = Auth::user();
