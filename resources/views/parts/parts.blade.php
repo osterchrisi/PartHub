@@ -13,6 +13,10 @@ $search_term = '';
 $column_names = Part::getColumnNames();
 $search_category = ['all'];
 
+echo "<pre>";
+print_r($parts);
+echo "</pre>";
+
 ?>
 
 {{-- Visible Page Contents --}}
@@ -51,7 +55,7 @@ $search_category = ['all'];
 
         <!-- Table div and info div -->
         <div class='row'>
-            @include('parts.partsTable')
+            {{-- @include('parts.partsTable') --}}
             <div class='col d-flex h-50 resizable sticky justify-content-center info-window pb-3' id='info-window' style="position: sticky; top: 50px;">
                 <h6><br>Click on a row in the table</h6>
             </div>
