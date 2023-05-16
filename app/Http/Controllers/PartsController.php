@@ -89,15 +89,12 @@ class PartsController extends Controller
 
             foreach ($db_columns as $column_data) {
                 if ($column_data == 'total_stock') {
-                    // Get total stock
-                    $total_stock = 0;
-                    $stock_levels = $part['stock_levels'];
-                    foreach ($stock_levels as $stock_level){
-                        $total_stock += $stock_level['stock_level_quantity'];
-                    }
+                    // Calculate total stock
+                    $total_stock = self::calculateTotalStock($part['stock_levels']);
+                    echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
+
                     // Display total stock number as link to showing stock levels - not doing it anymore...
                     // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
-                    echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
                 }
                 // Category (editable category)
                 elseif ($column_data == 'category_name') {
@@ -150,7 +147,9 @@ class PartsController extends Controller
     public function show(string $id)
     {
         $part = Part::with('stockLevels')->find($id)->toArray();
+
         $total_stock = $this->calculateTotalStock($part['stock_levels']);
+
         return view('parts.showPart', ['part' => $part, 'total_stock' => $total_stock]);
     }
 
@@ -181,10 +180,11 @@ class PartsController extends Controller
     private function calculateTotalStock($stockLevels)
     {
         $total_stock = 0;
+
         foreach ($stockLevels as $stockLevel) {
             $total_stock += $stockLevel['stock_level_quantity'];
         }
-    
+
         return $total_stock;
     }
 }
