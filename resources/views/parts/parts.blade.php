@@ -13,6 +13,7 @@ $search_term = '';
 $column_names = Part::getColumnNames();
 $search_category = ['all'];
 
+// // Debug
 // echo "<pre>";
 // print_r($parts);
 // echo "</pre>";

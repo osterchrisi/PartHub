@@ -1,18 +1,15 @@
 <?php
-// Get stock levels
-// $stock_levels = getStockLevels($conn, $part_id);
-// $total_stock = getTotalStock($stock_levels);
-
 // Putting it into the session array for stockChanges.php to use
 // $_SESSION['stock_levels'] = $stock_levels;
 
 // Get available locations
 // $locations = getLocations($conn, $user_id);
 
-echo '<pre>';
-print_r($part);
-print_r($total_stock);
-echo '</pre>';
+// // Debug
+// echo '<pre>';
+// print_r($part);
+// print_r($total_stock);
+// echo '</pre>';
 ?>
 
 <div class="container-fluid">
