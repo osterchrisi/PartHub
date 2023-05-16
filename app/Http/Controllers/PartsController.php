@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Part;
+use App\Models\StockLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -148,7 +149,9 @@ class PartsController extends Controller
      */
     public function show(string $id)
     {
-        return view('parts.showPart', ['part_id' => $id]);
+        $part = Part::with('stockLevels')->find($id)->toArray();
+        $total_stock = $this->calculateTotalStock($part['stock_levels']);
+        return view('parts.showPart', ['part' => $part, 'total_stock' => $total_stock]);
     }
 
     /**
@@ -173,5 +176,15 @@ class PartsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function calculateTotalStock($stockLevels)
+    {
+        $total_stock = 0;
+        foreach ($stockLevels as $stockLevel) {
+            $total_stock += $stockLevel['stock_level_quantity'];
+        }
+    
+        return $total_stock;
     }
 }
