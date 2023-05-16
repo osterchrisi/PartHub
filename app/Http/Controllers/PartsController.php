@@ -101,7 +101,10 @@ class PartsController extends Controller
                 }
                 // Category (editable category)
                 elseif ($column_data == 'category_name') {
-                    echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $part[$column_data] . "</td>";
+                    echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $part['category'][$column_data] . "</td>";
+                }
+                elseif ($column_data == 'unit_name') {
+                    echo "<td data-editable='true' class='editable category' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $part['unit'][$column_data] . "</td>";
                 }
                 // Select column (do nothing)
                 elseif ($column_data == 'state') {

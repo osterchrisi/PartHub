@@ -42,38 +42,33 @@ class Part extends Model
 
 
     public static function queryParts($search_column, $search_term, $column_names, $search_category, $user_id)
-    {
-        $query = Part::query()->where('part_owner_u_fk', $user_id);
+{
+    $query = Part::query()->where('part_owner_u_fk', $user_id);
 
-        if ($search_column == 'everywhere') {
-            $query->where(function ($query) use ($column_names, $search_term) {
-                foreach ($column_names as $column) {
-                    $query->orWhere($column, 'like', "%$search_term%");
-                }
-            });
-        }
-        else {
-            $query->where($search_column, 'like', "%$search_term%");
-        }
-
-        if (!in_array('all', $search_category)) {
-            $query->whereHas('category', function ($query) use ($search_category) {
-                $query->whereIn('category_id', $search_category)
-                    ->orWhereIn('parent_category', $search_category);
-            });
-        }
-
-        $parts = $query->with('category', 'unit')->get();
-
-        $parts = $parts->map(function ($part) {
-            return (array) $part;
-        })->toArray();
-
-
-        // $answer = array('result' => $parts, 'query' => $query->toSql());
-        // return $answer;
-        return $parts;
+    if ($search_column == 'everywhere') {
+        $query->where(function ($query) use ($column_names, $search_term) {
+            foreach ($column_names as $column) {
+                $query->orWhere($column, 'like', "%$search_term%");
+            }
+        });
     }
+    else {
+        $query->where($search_column, 'like', "%$search_term%");
+    }
+
+    if (!in_array('all', $search_category)) {
+        $query->whereHas('category', function ($query) use ($search_category) {
+            $query->whereIn('category_id', $search_category)
+                ->orWhereIn('parent_category', $search_category);
+        });
+    }
+
+    $parts = $query->with('category', 'unit')->get()->toArray();
+
+    return $parts;
+}
+
+    
 
 
 }
