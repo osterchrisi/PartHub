@@ -39,7 +39,11 @@ class PartsController extends Controller
 
         return view('parts.parts', [
             'title' => 'Parts',
-            'parts' => $parts
+            'parts' => $parts,
+            'db_columns' => self::$db_columns,
+            'nice_columns' => self::$nice_columns,
+            'table_name' => self::$table_name,
+            'id_field' => self::$id_field
         ]);
     }
 

@@ -13,9 +13,9 @@ $search_term = '';
 $column_names = Part::getColumnNames();
 $search_category = ['all'];
 
-echo "<pre>";
-print_r($parts);
-echo "</pre>";
+// echo "<pre>";
+// print_r($parts);
+// echo "</pre>";
 
 ?>
 
