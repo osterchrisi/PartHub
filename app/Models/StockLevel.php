@@ -11,6 +11,11 @@ class StockLevel extends Model
     protected $table = 'stock_levels';
     protected $primaryKey = 'stock_level_id';
 
+    public function part()
+    {
+        return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
+    }
+
     // Need relationships here with Locations andParts
 
 }

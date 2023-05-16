@@ -40,7 +40,6 @@ class PartsController extends Controller
     {
         $db_columns = self::$db_columns;
         $nice_columns = self::$nice_columns;
-        $total_stock = self::$total_stock;
         $table_name = self::$table_name;
         $id_field = self::$id_field;
 
