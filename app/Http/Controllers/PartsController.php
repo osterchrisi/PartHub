@@ -31,6 +31,12 @@ class PartsController extends Controller
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
+        // Calculate and append each part's total stock
+        foreach ($parts as &$part) {
+            $totalStock = self::calculateTotalStock($part['stock_levels']);
+            $part['total_stock'] = $totalStock;
+        }
+
         return view('parts.parts', [
             'title' => 'Parts',
             'parts' => $parts
@@ -89,12 +95,8 @@ class PartsController extends Controller
 
             foreach ($db_columns as $column_data) {
                 if ($column_data == 'total_stock') {
-                    // Calculate total stock
-                    $total_stock = self::calculateTotalStock($part['stock_levels']);
+                    $total_stock = $part['total_stock'];
                     echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . " data-id_field=" . $id_field . ">" . $total_stock . "</td>";
-
-                    // Display total stock number as link to showing stock levels - not doing it anymore...
-                    // echo "<td style='text-align:right' data-id=" . $part_id . " data-column=" . $column_data . " data-table_name=" . $table_name . "><a href='show-stock.php?part_id=$part_id'>" . $total_stock . "</a></td>";
                 }
                 // Category (editable category)
                 elseif ($column_data == 'category_name') {
@@ -146,10 +148,13 @@ class PartsController extends Controller
      */
     public function show(string $id)
     {
+        // Fetch the part with its related stock levels
         $part = Part::with('stockLevels')->find($id)->toArray();
 
+        // Calculate total stock level
         $total_stock = $this->calculateTotalStock($part['stock_levels']);
 
+        // Return view
         return view('parts.showPart', ['part' => $part, 'total_stock' => $total_stock]);
     }
 
