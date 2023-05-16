@@ -15,8 +15,7 @@
             data-cookie-storage="localStorage" 
             data-max-moving-rows="100" 
             data-multiple-select-row="true" 
-            data-click-to-select="true"
-    >
+            data-click-to-select="true">
 
         <thead>
             <tr>
@@ -30,12 +29,13 @@
                 @endforeach
             </tr>
         </thead>
+        
         <tbody>
             @foreach ($parts as $part)
                 @php
                     $part_id = $part['part_id'];
                 @endphp
-                <tr data-id="{{ $part['part_id'] }}">
+                <tr data-id="{{ $part_id }}">
                     @foreach ($db_columns as $column_data)
                         @if ($column_data == 'total_stock')
                             <td style="text-align:right" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['total_stock'] }}</td>
@@ -54,5 +54,6 @@
                 </tr>
             @endforeach
         </tbody>
+
     </table>
 </div>
