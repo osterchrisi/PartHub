@@ -173,7 +173,7 @@ function deleteSelectedRowsFromToolbar($table) {
  */
 function rebuildPartsTable(queryString) {
   return $.ajax({
-    url: '../includes/buildPartsTable.php' + queryString,
+    url: '/parts.partsTable' + queryString,
     success: function (data) {
       $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
       $('#table-window').html(data); // Update div with new table

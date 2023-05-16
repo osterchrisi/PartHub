@@ -64,7 +64,7 @@ class PartsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display part details and return the info-window view
      */
     public function show(string $id)
     {
@@ -111,5 +111,31 @@ class PartsController extends Controller
         }
 
         return $total_stock;
+    }
+
+    public function buildPartsIndex(Request $request)
+    {
+        $search_column = 'everywhere';
+        $search_term = $request->get('term');
+        $column_names = Part::getColumnNames();
+        $search_category = ['all'];
+        $user_id = Auth::user()->id;
+
+        $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
+
+        // Calculate and append each part's total stock
+        foreach ($parts as &$part) {
+            $totalStock = self::calculateTotalStock($part['stock_levels']);
+            $part['total_stock'] = $totalStock;
+        }
+
+        return view('parts.partsTable', [
+            'title' => 'Parts Index Table',
+            'parts' => $parts,
+            'db_columns' => self::$db_columns,
+            'nice_columns' => self::$nice_columns,
+            'table_name' => self::$table_name,
+            'id_field' => self::$id_field
+        ]);
     }
 }

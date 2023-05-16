@@ -17,12 +17,12 @@ $search_category = ['all'];
 $locations = Location::availableLocations($user_id);
 
 // // Debug
-echo "<pre>";
+// echo "<pre>";
 // print_r($parts);
-echo $user_id;
-echo "<br>";
-print_r($locations);
-echo "</pre>";
+// echo $user_id;
+// echo "<br>";
+// print_r($locations);
+// echo "</pre>";
 
 ?>
 

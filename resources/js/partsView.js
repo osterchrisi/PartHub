@@ -40,30 +40,23 @@ $(document).ready(function () {
         /* Get input value on change */
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
-        $.get("../includes/buildPartsTable.php", {
+
+        //! This is actually building it twice currently
+        //! Once in the ajax all (already recieves an HTML table back)
+        //! And then again in the rebuildPartsTable function
+        $.get("/parts.partsTable", {
             term: inputVal
         }).done(function (data) {
-            var querystring = "?search=" + inputVal;
+            var querystring = "?term=" + inputVal;
             rebuildPartsTable(querystring);
         });
-    });
-
-    // Set search input value on click of result item
-    //! Not in use actually
-    $(document).on("click", ".result p", function () {
-        $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
-        $(this).parent(".result").empty();
     });
 
     initializePopovers();
     attachDeleteRowsHandler();
 
-    var x = fetch('/locations')
-        .then(response => response.json())
-        .then(data => data.data)
-        .then(console.log(x));
-    // console.log(x);
 
+    // Get locations and attach click listener to "Add" button in toolbar
     $.ajax({
         url: '/locations',
         dataType: 'json',
