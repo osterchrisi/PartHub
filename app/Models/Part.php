@@ -71,7 +71,7 @@ class Part extends Model
             });
         }
 
-        $parts = $query->select('*', 'part_id as id')->get();
+        $parts = $query->get();
 
         $parts = $parts->map(function ($part) {
             return (array) $part;
