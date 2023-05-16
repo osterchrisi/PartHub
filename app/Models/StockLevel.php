@@ -11,4 +11,6 @@ class StockLevel extends Model
     protected $table = 'stock_levels';
     protected $primaryKey = 'stock_level_id';
 
+    
+
 }
