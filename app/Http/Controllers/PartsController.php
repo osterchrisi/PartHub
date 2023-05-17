@@ -24,7 +24,7 @@ class PartsController extends Controller
         //* $search_column = $request->get('search_column');
 
         $search_column = 'everywhere';
-        $search_term = '';
+        $search_term = request()->has('search') ? request()->input('search') : '';
         $column_names = Part::getColumnNames();
         $search_category = ['all'];
         $user_id = Auth::user()->id;
@@ -43,7 +43,8 @@ class PartsController extends Controller
             'db_columns' => self::$db_columns,
             'nice_columns' => self::$nice_columns,
             'table_name' => self::$table_name,
-            'id_field' => self::$id_field
+            'id_field' => self::$id_field,
+            'search_term' => $search_term
         ]);
     }
 

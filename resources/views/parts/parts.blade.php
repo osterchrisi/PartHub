@@ -10,7 +10,7 @@ $user_name = $user ? $user->name : '';
 
 // Parts stuff
 $search_column = 'everywhere';
-$search_term = '';
+// $search_term = '';
 $column_names = Part::getColumnNames();
 $search_category = ['all'];
 
@@ -44,9 +44,9 @@ $locations = Location::availableLocations($user_id);
         {{-- Parts filter form --}}
         <div class="row collapse" id="parts-filter-form">
             <div class="col-3" id="search-box-div">
-                <form method="get" id="search_form" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                <form method="get" id="search_form" action=" {{ route('parts') }}">
                     <input type="text" class="form-control form-control-sm" id="search" name="search"
-                        placeholder="Filter parts..." value="<?php echo htmlspecialchars($search_term); ?>"><br><br><br>
+                        placeholder="Filter parts..." value="{{ $search_term }}"><br><br><br>
             </div>
             <div class="col-3" id="category-box-div">
                 <input type="hidden" name="cat[]" id="selected-categories" value="">

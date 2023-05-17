@@ -36,6 +36,7 @@ $(document).ready(function () {
     });
 
     // Experimental ajax search
+    //* Used to use both 'keyup' and 'input' but that makes it quite buggy, so need to decide for one of two
     // $('#search').on("keyup input", function () {
     $('#search').on("keyup", function () {
         console.log("keyup triggered");
