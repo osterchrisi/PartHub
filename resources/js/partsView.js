@@ -36,20 +36,15 @@ $(document).ready(function () {
     });
 
     // Experimental ajax search
-    $('#search').on("keyup input", function () {
-        /* Get input value on change */
+    // $('#search').on("keyup input", function () {
+    $('#search').on("keyup", function () {
+        console.log("keyup triggered");
+        // Get input value on change
         var inputVal = $(this).val();
-        var resultDropdown = $(this).siblings(".result");
 
-        //! This is actually building it twice currently
-        //! Once in the ajax all (already recieves an HTML table back)
-        //! And then again in the rebuildPartsTable function
-        // $.get("/parts.partsTable", {
-        //     term: inputVal
-        // }).done(function (data) {
-            var querystring = "?search=" + inputVal;
-            rebuildPartsTable(querystring);
-        // });
+        // Query database and rebuild partstable with result
+        var querystring = "?search=" + inputVal;
+        rebuildPartsTable(querystring);
     });
 
     initializePopovers();
@@ -61,7 +56,7 @@ $(document).ready(function () {
         url: '/locations',
         dataType: 'json',
         success: function (locations) {
-            $('#toolbarAddButton').click(function() {
+            $('#toolbarAddButton').click(function () {
                 callPartEntryModal(locations);
             });
         },
@@ -69,7 +64,4 @@ $(document).ready(function () {
             console.log(error);
         }
     })
-
-
-
 });
