@@ -44,12 +44,12 @@ $(document).ready(function () {
         //! This is actually building it twice currently
         //! Once in the ajax all (already recieves an HTML table back)
         //! And then again in the rebuildPartsTable function
-        $.get("/parts.partsTable", {
-            term: inputVal
-        }).done(function (data) {
-            var querystring = "?term=" + inputVal;
+        // $.get("/parts.partsTable", {
+        //     term: inputVal
+        // }).done(function (data) {
+            var querystring = "?search=" + inputVal;
             rebuildPartsTable(querystring);
-        });
+        // });
     });
 
     initializePopovers();

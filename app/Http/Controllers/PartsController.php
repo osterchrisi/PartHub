@@ -116,7 +116,7 @@ class PartsController extends Controller
     public function buildPartsIndex(Request $request)
     {
         $search_column = 'everywhere';
-        $search_term = $request->get('term');
+        $search_term = $request->get('search');
         $column_names = Part::getColumnNames();
         $search_category = ['all'];
         $user_id = Auth::user()->id;
