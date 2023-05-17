@@ -16,13 +16,13 @@ $locations = Location::availableLocations($user_id);
 $categories = Category::availableCategories($user_id);
 
 // // Debug
-echo "<pre>";
+// echo "<pre>";
 // print_r($parts);
-print_r($categories);
+// print_r($categories);
 // echo $user_id;
 // echo "<br>";
 // print_r($locations);
-echo "</pre>";
+// echo "</pre>";
 
 $sc = $search_category;
 function generateCategoriesDropdown($categories, $sc)

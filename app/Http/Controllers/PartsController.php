@@ -26,8 +26,21 @@ class PartsController extends Controller
         $search_column = 'everywhere';
         $search_term = request()->has('search') ? request()->input('search') : '';
         $column_names = Part::getColumnNames();
-        $search_category = ['all'];
         $user_id = Auth::user()->id;
+
+        $search_category = request()->has('cat') ? request()->input('cat') : [];
+
+        // Need to this because I get a JSON-encoded array of arrays and need to make it
+        // into an simple array of only digits 
+        $cat_ids = array();
+        foreach ($search_category as $cat_array) {
+            $decoded_array = json_decode($cat_array);
+            foreach ($decoded_array as $element) {
+                $cat_ids[] = $element[0];
+            }
+        }
+        $search_category = $cat_ids;
+
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 

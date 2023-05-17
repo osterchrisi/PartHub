@@ -27,6 +27,7 @@ class Category extends Model
         // Find the category with the given id and user_id
         $categories = Category::where('part_category_owner_u_fk', $user->id)
             ->get();
+            // ->pluck('category_id');
 
         // Return the categories as JSON response
         return $categories->toArray();

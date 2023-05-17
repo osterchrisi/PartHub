@@ -15,7 +15,7 @@
 
 $(document).ready(function () {
     //! Commenting this out to make it work laravel
-    // initializeMultiSelect('cat-select');
+    initializeMultiSelect('cat-select');
 
     // This was already commented out
     // sendFormOnDropdownChange();
