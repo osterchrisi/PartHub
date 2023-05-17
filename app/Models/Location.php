@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\User;
-use Illuminate\Http\Response;
-
 
 class Location extends Model
 {
@@ -27,6 +24,5 @@ class Location extends Model
 
         // Return the location as JSON response
         return $locations->toJson();
-        // return response()->json($locations->toArray());
     }
 }

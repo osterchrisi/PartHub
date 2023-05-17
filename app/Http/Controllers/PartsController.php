@@ -44,7 +44,8 @@ class PartsController extends Controller
             'nice_columns' => self::$nice_columns,
             'table_name' => self::$table_name,
             'id_field' => self::$id_field,
-            'search_term' => $search_term
+            'search_term' => $search_term,
+            'search_column' => $search_column
         ]);
     }
 

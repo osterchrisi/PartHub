@@ -2,6 +2,7 @@
 use App\Models\User;
 use App\Models\Part;
 use App\Models\Location;
+use App\Models\Category;
 
 //! This is double (once in header already), fix this
 $user = optional(auth()->user());
@@ -9,20 +10,39 @@ $user_id = $user ? $user->id : 0;
 $user_name = $user ? $user->name : '';
 
 // Parts stuff
-$search_column = 'everywhere';
-// $search_term = '';
 $column_names = Part::getColumnNames();
 $search_category = ['all'];
-
 $locations = Location::availableLocations($user_id);
+$categories = Category::availableCategories($user_id);
 
 // // Debug
-// echo "<pre>";
+echo "<pre>";
 // print_r($parts);
+print_r($categories);
 // echo $user_id;
 // echo "<br>";
 // print_r($locations);
-// echo "</pre>";
+echo "</pre>";
+
+$sc = $search_category;
+function generateCategoriesDropdown($categories, $sc)
+{
+  // Generate dropdown menu for the column names
+  echo '<select multiple size="10" class="form-select form-select-sm" id="cat-select">';
+
+  // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
+  echo '<option value="all" ' . ((!$sc or $sc == "all" OR in_array("all", $sc)) ? "selected" : "") . '>All Categories</option>';
+
+  // Iterate over all available search columns
+  foreach ($categories as $category) {
+    $selected = '';
+    if ($sc && is_array($sc) && in_array($category['category_id'], $sc)) {
+      $selected = 'selected';
+    }
+    echo "<option value='" . $category['category_id'] . "' " . $selected . ">" . $category['category_name'] . "</option>";
+  }
+  echo '</select>';
+}
 
 ?>
 
@@ -46,12 +66,12 @@ $locations = Location::availableLocations($user_id);
             <div class="col-3" id="search-box-div">
                 <form method="get" id="search_form" action=" {{ route('parts') }}">
                     <input type="text" class="form-control form-control-sm" id="search" name="search"
-                        placeholder="Filter parts..." value="{{ $search_term }}"><br><br><br>
+                        placeholder="Start typing to filter..." value="{{ $search_term }}"><br><br><br>
             </div>
             <div class="col-3" id="category-box-div">
                 <input type="hidden" name="cat[]" id="selected-categories" value="">
                 <?php
-                // generateCategoriesDropdown($categories, $search_category);
+                generateCategoriesDropdown($categories, $search_category);
                 ?>
             </div>
             <div class="col-1" id="search-button-div">
