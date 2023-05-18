@@ -3,6 +3,8 @@ use App\Models\User;
 use App\Models\Part;
 use App\Models\Location;
 use App\Models\Category;
+use App\Http\Controllers\PartsController;
+
 
 //! This is double (once in header already), fix this
 $user = optional(auth()->user());
@@ -11,38 +13,22 @@ $user_name = $user ? $user->name : '';
 
 // Parts stuff
 $column_names = Part::getColumnNames();
-$search_category = ['all'];
 $locations = Location::availableLocations($user_id);
 $categories = Category::availableCategories($user_id);
 
+// For categories dropdown
+$search_category = isset($_GET['cat']) ? $_GET['cat'] : ['all'];
+$sc = PartsController::extractCategoryIds($search_category);
+
 // // Debug
-// echo "<pre>";
+// echo '<pre>';
+// print_r($sc);
 // print_r($parts);
 // print_r($categories);
 // echo $user_id;
 // echo "<br>";
 // print_r($locations);
-// echo "</pre>";
-
-$sc = $search_category;
-function generateCategoriesDropdown($categories, $sc)
-{
-  // Generate dropdown menu for the column names
-  echo '<select multiple size="10" class="form-select form-select-sm" id="cat-select">';
-
-  // This ternary operator checks if the searched category $sc is set and selects it, if it is the same as the option
-  echo '<option value="all" ' . ((!$sc or $sc == "all" OR in_array("all", $sc)) ? "selected" : "") . '>All Categories</option>';
-
-  // Iterate over all available search columns
-  foreach ($categories as $category) {
-    $selected = '';
-    if ($sc && is_array($sc) && in_array($category['category_id'], $sc)) {
-      $selected = 'selected';
-    }
-    echo "<option value='" . $category['category_id'] . "' " . $selected . ">" . $category['category_name'] . "</option>";
-  }
-  echo '</select>';
-}
+// echo '</pre>';
 
 ?>
 
@@ -81,9 +67,10 @@ function generateCategoriesDropdown($categories, $sc)
         <!-- Table div and info div -->
         <div class='row'>
             <div class='col-9' id='table-window' style='max-width: 90%;'>
-            @include('parts.partsTable')
+                @include('parts.partsTable')
             </div>
-            <div class='col d-flex h-50 resizable sticky justify-content-center info-window pb-3' id='info-window' style="position: sticky; top: 50px;">
+            <div class='col d-flex h-50 resizable sticky justify-content-center info-window pb-3' id='info-window'
+                style="position: sticky; top: 50px;">
                 <h6><br>Click on a row in the table</h6>
             </div>
         </div>

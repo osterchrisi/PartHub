@@ -141,7 +141,7 @@ class PartsController extends Controller
      * @param array $searchCategory The array containing the JSON-encoded category IDs.
      * @return array The simplified array of category IDs as digits.
      */
-    private function extractCategoryIds($search_category)
+    public static function extractCategoryIds($search_category)
     {
         if (!in_array('all', $search_category)) {
             $cat_ids = [];
