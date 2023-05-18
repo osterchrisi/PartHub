@@ -25,8 +25,8 @@ $sc = PartsController::extractCategoryIds($search_category);
 
 
 @extends('app')
+
 @section('content')
-this is the extra content
 <div class="container-fluid">
     <br>
     <div class="row">
