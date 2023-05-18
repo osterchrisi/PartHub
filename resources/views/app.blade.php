@@ -6,6 +6,7 @@
 @include('components.toolbarTop')
 
 @yield('content')
+@yield('modals_n_menus')
 
 {{-- Pretty hacky way of doing this but for porting to Laravel and making it work, I let it be --}}
 <script src="http://127.0.0.1:5173/resources/js/partEntry.js"></script>

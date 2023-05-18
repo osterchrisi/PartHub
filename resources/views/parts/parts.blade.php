@@ -22,6 +22,8 @@ $sc = PartsController::extractCategoryIds($search_category);
 
 ?>
 
+
+
 @extends('app')
 @section('content')
 this is the extra content
@@ -43,4 +45,11 @@ this is the extra content
         </div>
     </div>
 </div>
+@endsection
+
+@section('modals_n_menus')
+{{-- Modals and Menus --}}
+@include('components.modals.stockModal')
+@include('components.modals.partEntryModal', ['part_name' => ''])
+@include('components.menus.partsTableRightClickMenu')
 @endsection
