@@ -49,6 +49,7 @@ function callStockModal(change, locations, pid) {
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
+        $('#FromStockLocationDiv-row').hide();
         toStockLocationDropdown("ToStockLocationDiv", locations);
         $("#toStockLocation").selectize();
 
@@ -56,6 +57,7 @@ function callStockModal(change, locations, pid) {
     else if (change == -1) {
         document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
         document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
+        $('#ToStockLocationDiv-row').hide();
         fromStockLocationDropdown("FromStockLocationDiv", locations);
         $("#fromStockLocation").selectize();
     }
@@ -135,6 +137,8 @@ function callStockChangingScript(stockChanges, pid) {
 
                 // Reset modal and hide it
                 $('#mAddStock').on('hidden.bs.modal', function (e) {
+                    $('#FromStockLocationDiv-row').show();
+                    $('#ToStockLocationDiv-row').show();
                     $('#stockChangingForm')[0].reset();
                     $('#mStockModalInfo').empty();
                     $('#AddStock').attr('disabled', false);
@@ -182,6 +186,8 @@ function changeStockAnywayClickListener(r, pid) {
                 console.log(response);
                 // Reset modal and hide it
                 $('#mAddStock').on('hidden.bs.modal', function (e) {
+                    $('#FromStockLocationDiv-row').show();
+                    $('#ToStockLocationDiv-row').show();
                     $('#stockChangingForm')[0].reset();
                     $('#mStockModalInfo').empty();
                     $('#AddStock').attr('disabled', false);

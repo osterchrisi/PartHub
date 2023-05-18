@@ -10,18 +10,20 @@
             <!-- Modal Body -->
             <div class="modal-body mx-1">
                 <span id="stockChangeText"></span>
-                {{-- @if (isset($part_name))
-                    {{ $part_name }}
-                @endif --}}
                 <span id="partName"></span>
+                <br><br>
                 <form method="post" action="create-part.php" id="stockChangingForm">
                     <div class="row">
                         <div class="col-3">
                             <input class="form-control" placeholder="Quantity" id="addStockQuantity" required>
                         </div>
-                    </div><br>
-                    <div class="input-group" id="FromStockLocationDiv"></div><br>
+                    </div>
+                    <div class="row mt-3" id="FromStockLocationDiv-row">
+                        <div class="input-group" id="FromStockLocationDiv"></div>
+                    </div>
+                    <div class="row mt-3" id="ToStockLocationDiv-row">
                     <div class="input-group" id="ToStockLocationDiv"></div>
+                    </div>
                     <br>
                     <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
                 </form>
