@@ -46,7 +46,8 @@ tr.selected-last td {
 	position: relative;
 	left: -8px;
 	display: inline-block;
-	padding: 2px 12px;
+	padding: 4px 12px 3px;
+    margin: 0;
 	background: rgba(0, 0, 0, 0.15);
 	border-radius: 3px 0 0 3px;
 }
