@@ -87,13 +87,20 @@ class PartsController extends Controller
     public function show(string $id)
     {
         // Fetch the part with its related stock levels
-        $part = Part::with('stockLevels')->find($id)->toArray();
+        $part = Part::with('stockLevels.locations')->find($id)->toArray();
 
         // Calculate total stock level
         $total_stock = $this->calculateTotalStock($part['stock_levels']);
 
         // Return view
-        return view('parts.showPart', ['part' => $part, 'total_stock' => $total_stock]);
+        return view('parts.showPart',
+                    ['part' => $part,
+                    'total_stock' => $total_stock,
+                    'column_names' => array('location_name', 'stock_level_quantity'),
+                    'nice_columns' => array('Location', 'Quantity'),
+                    'stock_levels' => $part['stock_levels']
+                
+                ]);
     }
 
     /**

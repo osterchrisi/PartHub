@@ -16,6 +16,11 @@ class StockLevel extends Model
         return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
     }
 
+    public function locations()
+    {
+        return $this->belongsTo(Location::class, 'location_id_fk', 'location_id');
+    }
+
     // Need relationships here with Locations and Parts
 
 }
