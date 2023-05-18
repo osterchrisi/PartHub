@@ -104,12 +104,12 @@ function updatePartsInfo(id) {
  */
 function updateStockModal(id) {
     $.ajax({
-        url: '../includes/stockModals.php',
+        url: '/part.getName',
         type: 'GET',
         data: { part_id: id },
-        success: function (data) {
-            // Replace the content of the stock modal with the loaded PHP page
-            $('#mAddStock').html(data);
+        success: function (name) {
+            // Fill the name into the stock modal
+            document.getElementById('partName').textContent = name;
         },
         error: function () {
             // Display an error message if the PHP page failed to load

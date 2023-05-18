@@ -1,10 +1,4 @@
 <?php
-// Putting it into the session array for stockChanges.php to use
-// $_SESSION['stock_levels'] = $stock_levels;
-
-// Get available locations
-// $locations = getLocations($conn, $user_id);
-
 // // Debug
 // echo '<pre>';
 // print_r($part);
@@ -37,25 +31,16 @@
     <div class="tab-content" id="partsTabsContent">
         <div class="tab-pane fade" id="partStockInfoTab" role="tabpanel" tabindex="0">
             <br>
-             <!-- Location / Quantity Table -->
+            <!-- Location / Quantity Table -->
             @include('parts.stockTable')
-        
+
 
             <!-- Stock movement buttons -->
             <div class="input-group">
                 <input type="text" class="form-control form-control-sm" placeholder="Stock:" disabled readonly>
-                <button type="button" class="btn btn-sm btn-outline-primary"
-                    onclick='callStockModal("1", <?php
-                    //   echo json_encode($locations) . ", $part_id";
-                    ?>);'>Add</button>
-                <button type="button" class="btn btn-sm btn-outline-primary"
-                    onclick='callStockModal("0", <?php
-                    //   echo json_encode($locations) . ", $part_id";
-                    ?>);'>Move</button>
-                <button type="button" class="btn btn-sm btn-outline-primary"
-                    onclick='callStockModal("-1", <?php
-                    //   echo json_encode($locations) . ", $part_id";
-                    ?>);'>Reduce</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="addStockButton">Add</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="moveStockButton">Move</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="reduceStockButton">Reduce</button>
             </div>
             <br><br>
 
@@ -93,5 +78,47 @@
         addActiveTabEventListeners();
         bootstrapPartInBomsTable();
         bootstrapTableSmallify();
+
+        // Add Stock Button
+        $.ajax({
+            url: '/locations.get',
+            dataType: 'json',
+            success: function(locations) {
+                $('#addStockButton').click(function() {
+                    callStockModal("1", locations);
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+
+        // Move Stock Button
+        $.ajax({
+            url: '/locations.get',
+            dataType: 'json',
+            success: function(locations) {
+                $('#moveStockButton').click(function() {
+                    callStockModal("0", locations);
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+
+        // Reduce Stock Button
+        $.ajax({
+            url: '/locations.get',
+            dataType: 'json',
+            success: function(locations) {
+                $('#reduceStockButton').click(function() {
+                    callStockModal("-1", locations);
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
     });
 </script>

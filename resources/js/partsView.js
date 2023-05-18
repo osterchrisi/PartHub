@@ -64,8 +64,6 @@ $(document).ready(function () {
         modifiedQueryString = '?' + modifiedQueryString;
 
         console.log(modifiedQueryString);
-
-
         rebuildPartsTable(modifiedQueryString);
     });
 
@@ -75,7 +73,7 @@ $(document).ready(function () {
 
     // Get locations and attach click listener to "Add" button in toolbar
     $.ajax({
-        url: '/locations',
+        url: '/locations.get',
         dataType: 'json',
         success: function (locations) {
             $('#toolbarAddButton').click(function () {

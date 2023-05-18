@@ -169,4 +169,14 @@ class PartsController extends Controller
 
         return $search_category;
     }
+
+    public function getName(Request $request)
+    {
+        // Get part ID
+        $part_id = request()->input('part_id');
+        // Fetch the part 
+        $part = Part::find($part_id)->toArray();
+        // Return part name
+        return $part['part_name'];
+    }
 }

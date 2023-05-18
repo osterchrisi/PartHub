@@ -37,4 +37,5 @@
 <script src="http://127.0.0.1:5173/resources/js/partEntry.js"></script>
 <script src="http://127.0.0.1:5173/resources/js/tables.js"></script>
 <script src="http://127.0.0.1:5173/resources/js/custom.js"></script>
-@vite(['resources/js/tables.js', 'resources/js/partsView.js', 'resources/js/partEntry.js'])
+<script src="http://127.0.0.1:5173/resources/js/stockChanges.js"></script>
+@vite(['resources/js/tables.js', 'resources/js/partsView.js', 'resources/js/partEntry.js', 'resources/js/stockChanges.js'])

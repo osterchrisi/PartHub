@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 Route::controller(PartsController::class)->group(function () {
     Route::get('/parts', 'index')->middleware(['auth', 'verified'])->name('parts');
     Route::get('/part/{id}', 'show')->middleware(['auth', 'verified']);
+    Route::get('/part.getName', 'getName')->middleware(['auth', 'verified']);
     Route::get('/parts.partsTable', 'index')->middleware(['auth', 'verified'])->name('parts.partsTable');
 });
 
@@ -49,7 +50,7 @@ Route::get('/boms', function () {
     ->middleware(['auth', 'verified'])
     ->name('boms');
 
-Route::get('/locations', function () {
+Route::get('/locations.get', function () {
     return LocationController::getLocations();
 })
     ->middleware(['auth', 'verified'])
