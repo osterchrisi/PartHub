@@ -23,7 +23,7 @@
                     data-bs-target="#parts-filter-form"><span class="btn-label"><i
                             class="fas fa-lg fa-filter"></i></span>Filter</button>
             </li>
-            @yield('page-specific-buttons')
+            @yield('page specific buttons')
         </ul>
     </div>
 </div>

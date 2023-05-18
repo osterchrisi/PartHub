@@ -24,41 +24,34 @@ $sc = PartsController::extractCategoryIds($search_category);
 @extends('app')
 
 {{-- Parts filter form --}}
-@section('filter_form')
-    <div class="row collapse" id="parts-filter-form">
-        <div class="col-3" id="search-box-div">
-            <form method="get" id="search_form" action=" {{ route('parts') }}">
-                <input type="text" class="form-control form-control-sm" id="search" name="search"
-                    placeholder="Start typing to filter..." value="{{ $search_term }}"><br><br><br>
-        </div>
-        <div class="col-3" id="category-box-div">
-            <input type="hidden" name="cat[]" id="selected-categories" value="">
-            @include('components.selects.categoryMultiSelect')
-        </div>
-        <div class="col-1" id="search-button-div">
-            <button type="submit" class="btn btn-sm btn-primary">Search</button><br><br>
-        </div>
-        </form>
+@section('filter-form')
+    <div class="col-3" id="search-box-div">
+        <form method="get" id="search_form" action=" {{ route('parts') }}">
+            <input type="text" class="form-control form-control-sm" id="search" name="search"
+                placeholder="Start typing to filter..." value="{{ $search_term }}"><br><br><br>
     </div>
+    <div class="col-3" id="category-box-div">
+        <input type="hidden" name="cat[]" id="selected-categories" value="">
+        @include('components.selects.categoryMultiSelect')
+    </div>
+    <div class="col-1" id="search-button-div">
+        <button type="submit" class="btn btn-sm btn-primary">Search</button><br><br>
+    </div>
+    </form>
 @endsection
 
 {{-- Table Window --}}
 @section('table-window')
-    <div class='col-9' id='table-window' style='max-width: 90%;'>
-        @include('parts.partsTable')
-    </div>
+    @include('parts.partsTable')
 @endsection
 
 {{-- Info Window --}}
 @section('info-window')
-    <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
-        style="position: sticky; top: 50px; height: 89vh;">
-        <h6><br>Click on a row in the table</h6>
-    </div>
+    <h6><br>Click on a row in the table</h6>
 @endsection
 
 {{-- Modals and Menus --}}
-@section('modals_n_menus')
+@section('modals and menus')
     @include('components.modals.stockModal')
     @include('components.modals.partEntryModal', ['part_name' => ''])
     @include('components.menus.partsTableRightClickMenu')

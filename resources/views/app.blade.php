@@ -6,19 +6,31 @@
 @include('components.toolbarTop')
 
 {{-- Page Contents --}}
-<div class="container-fluid" id="content_container">
+<div class="container-fluid" id="content-container">
     <br>
-    <div class="row" id="content_row">
-        @yield('filter_form')
+    <div class="row" id="content-row">
+        {{-- Filter Form --}}
+        <div class="row collapse" id="parts-filter-form">
+            @yield('filter-form')
+        </div>
+
         <div class='row'>
-            @yield('table-window')
-            @yield('info-window')
+            {{-- Table Window --}}
+            <div class='col-9' id='table-window' style='max-width: 90%;'>
+                @yield('table-window')
+            </div>
+            
+            {{-- Info Window --}}
+            <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
+                style="position: sticky; top: 50px; height: 89vh;">
+                @yield('info-window')
+            </div>
         </div>
     </div>
 </div>
 
 {{-- Modals and Menus --}}
-@yield('modals_n_menus')
+@yield('modals and menus')
 
 {{-- Pretty hacky way of doing this but for porting to Laravel and making it work, I let it be --}}
 <script src="http://127.0.0.1:5173/resources/js/partEntry.js"></script>
