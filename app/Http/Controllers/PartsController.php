@@ -20,31 +20,21 @@ class PartsController extends Controller
      */
     public function index(Request $request)
     {
-        //* This is the alternate way for near future:
-        //* $search_column = $request->get('search_column');
-
+        dd($request);
         $search_column = 'everywhere';
         $search_term = request()->has('search') ? request()->input('search') : '';
         $column_names = Part::getColumnNames();
         $user_id = Auth::user()->id;
 
-        $search_category = request()->has('cat') ? request()->input('cat') : [];
-
-        // Need to this because I get a JSON-encoded array of arrays and need to make it
-        // into an simple array of only digits 
-        $cat_ids = array();
-        foreach ($search_category as $cat_array) {
-            $decoded_array = json_decode($cat_array);
-            foreach ($decoded_array as $element) {
-                $cat_ids[] = $element[0];
-            }
-        }
-        $search_category = $cat_ids;
-
+        $search_category = request()->has('cat') ? request()->input('cat') : ['all'];
+        $search_category = $this->extractCategoryIds($search_category);
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
-        // Calculate and append each part's total stock
+        /* Calculate and append each part's total stock
+        / Passing aa reference, so modifications made to $partdirectly affect 
+        / the corresponding element in the original $parts array.
+        */
         foreach ($parts as &$part) {
             $totalStock = self::calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
@@ -79,7 +69,7 @@ class PartsController extends Controller
     }
 
     /**
-     * Display part details and return the info-window view
+     * Display part details and return the showPart view
      */
     public function show(string $id)
     {
@@ -128,13 +118,15 @@ class PartsController extends Controller
         return $total_stock;
     }
 
-    public function buildPartsIndex(Request $request)
+    public function buildPartsTable(Request $request)
     {
         $search_column = 'everywhere';
         $search_term = $request->get('search');
         $column_names = Part::getColumnNames();
-        $search_category = ['all'];
         $user_id = Auth::user()->id;
+
+        $search_category = request()->has('cat') ? request()->input('cat') : ['all'];
+        $search_category = $this->extractCategoryIds($search_category);
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
@@ -145,12 +137,40 @@ class PartsController extends Controller
         }
 
         return view('parts.partsTable', [
-            'title' => 'Parts Index Table',
             'parts' => $parts,
             'db_columns' => self::$db_columns,
             'nice_columns' => self::$nice_columns,
             'table_name' => self::$table_name,
             'id_field' => self::$id_field
         ]);
+    }
+
+    /**
+     * Extracts category IDs from a JSON-encoded array and returns a simple array of digits.
+     *
+     * The input array is expected to be in the format [[3], [5]] due to the limitations of selectizing
+     * the multi-select input field. This function decodes the JSON-encoded array and extracts the
+     * numeric values, returning a simplified array of category IDs.
+     *
+     * @param array $searchCategory The array containing the JSON-encoded category IDs.
+     * @return array The simplified array of category IDs as digits.
+     */
+    private function extractCategoryIds($search_category)
+    {
+        if (!in_array('all', $search_category)) {
+            $cat_ids = [];
+
+            foreach ($search_category as $cat_array) {
+                $decoded_array = json_decode($cat_array);
+
+                foreach ($decoded_array as $element) {
+                    $cat_ids[] = $element[0];
+                }
+            }
+
+            return $cat_ids;
+        }
+
+        return $search_category;
     }
 }

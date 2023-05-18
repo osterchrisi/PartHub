@@ -64,6 +64,8 @@ class Part extends Model
             $query->where($search_column, 'like', "%$search_term%");
         }
 
+        
+
         // Filter for categories
         if (!in_array('all', $search_category)) {
             $query->whereHas('category', function ($query) use ($search_category) {
@@ -73,7 +75,7 @@ class Part extends Model
         }
 
         $parts = $query->with('category', 'unit', 'stockLevels')->get()->toArray();
-
+        // dd($parts);
         return $parts;
     }
 

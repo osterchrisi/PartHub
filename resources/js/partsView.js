@@ -40,9 +40,33 @@ $(document).ready(function () {
         // Get input value on change
         var inputVal = $(this).val();
 
+        // Get the query string from the URL
+        const queryString = window.location.search;
+
+        // Create a URLSearchParams object from the query string
+        const searchParams = new URLSearchParams(queryString);
+
+        // Get the value of the "search" parameter
+        let searchValue = searchParams.get('search');
+
+        // Manipulate the "search" value
+        searchValue = inputVal;
+
+        // Update the "search" parameter in the URL
+        searchParams.set('search', searchValue);
+
+        // Get the modified query string
+        var modifiedQueryString = searchParams.toString();
+
         // Query database and rebuild partstable with result
-        var querystring = "?search=" + inputVal;
-        rebuildPartsTable(querystring);
+        // var querystring = "?search=" + inputVal;
+        
+        modifiedQueryString = '?' + modifiedQueryString;
+
+        console.log(modifiedQueryString);
+
+
+        rebuildPartsTable(modifiedQueryString);
     });
 
     initializePopovers();
