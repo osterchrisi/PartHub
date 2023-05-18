@@ -1,11 +1,23 @@
 {{-- Header --}}
 @include('header')
 
-{{-- Visible Page Contents --}}
+{{-- Navbar and Toolbar --}}
 @include('navbar')
 @include('components.toolbarTop')
 
-@yield('content')
+{{-- Page Contents --}}
+<div class="container-fluid" id="content_container">
+    <br>
+    <div class="row" id="content_row">
+        @yield('filter_form')
+        <div class='row'>
+            @yield('table-window')
+            @yield('info-window')
+        </div>
+    </div>
+</div>
+
+{{-- Modals and Menus --}}
 @yield('modals_n_menus')
 
 {{-- Pretty hacky way of doing this but for porting to Laravel and making it work, I let it be --}}
