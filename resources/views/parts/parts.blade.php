@@ -23,7 +23,14 @@ $sc = PartsController::extractCategoryIds($search_category);
 {{-- Parent Template --}}
 @extends('app')
 
-{{-- Parts filter form --}}
+{{-- Modals and Menus --}}
+@section('modals and menus')
+    @include('components.modals.stockModal')
+    @include('components.modals.partEntryModal', ['part_name' => ''])
+    @include('components.menus.partsTableRightClickMenu')
+@endsection
+
+{{-- Filter form --}}
 @section('filter-form')
     <div class="col-3" id="search-box-div">
         <form method="get" id="search_form" action=" {{ route('parts') }}">
@@ -48,11 +55,4 @@ $sc = PartsController::extractCategoryIds($search_category);
 {{-- Info Window --}}
 @section('info-window')
     <h6><br>Click on a row in the table</h6>
-@endsection
-
-{{-- Modals and Menus --}}
-@section('modals and menus')
-    @include('components.modals.stockModal')
-    @include('components.modals.partEntryModal', ['part_name' => ''])
-    @include('components.menus.partsTableRightClickMenu')
 @endsection
