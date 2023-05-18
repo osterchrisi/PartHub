@@ -6,10 +6,10 @@
 // $locations = getLocations($conn, $user_id);
 
 // // Debug
-echo '<pre>';
-print_r($part);
-print_r($total_stock);
-echo '</pre>';
+// echo '<pre>';
+// print_r($part);
+// print_r($total_stock);
+// echo '</pre>';
 ?>
 
 <div class="container-fluid">
@@ -37,11 +37,9 @@ echo '</pre>';
     <div class="tab-content" id="partsTabsContent">
         <div class="tab-pane fade" id="partStockInfoTab" role="tabpanel" tabindex="0">
             <br>
+             <!-- Location / Quantity Table -->
             @include('parts.stockTable')
-            <!-- Location / Quantity Table -->
-            <?php
-            //   buildTable($db_columns, $nice_columns, $stock_levels);
-            ?>
+        
 
             <!-- Stock movement buttons -->
             <div class="input-group">

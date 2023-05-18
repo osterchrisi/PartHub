@@ -69,7 +69,7 @@ $sc = PartsController::extractCategoryIds($search_category);
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 @include('parts.partsTable')
             </div>
-            <div class='col d-flex h-50 resizable sticky justify-content-center info-window pb-3' id='info-window'
+            <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
                 style="position: sticky; top: 50px;">
                 <h6><br>Click on a row in the table</h6>
             </div>

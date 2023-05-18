@@ -38,8 +38,8 @@ class PartsController extends Controller
         foreach ($parts as &$part) {
             $totalStock = self::calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
-        } 
-        
+        }
+
         // Return full parts view or only parts table depending on route
         $route = $request->route()->getName();
         if ($route == 'parts') {
@@ -93,14 +93,17 @@ class PartsController extends Controller
         $total_stock = $this->calculateTotalStock($part['stock_levels']);
 
         // Return view
-        return view('parts.showPart',
-                    ['part' => $part,
-                    'total_stock' => $total_stock,
-                    'column_names' => array('location_name', 'stock_level_quantity'),
-                    'nice_columns' => array('Location', 'Quantity'),
-                    'stock_levels' => $part['stock_levels']
-                
-                ]);
+        return view(
+            'parts.showPart',
+            [
+                'part' => $part,
+                'total_stock' => $total_stock,
+                'column_names' => array('location_name', 'stock_level_quantity'),
+                'nice_columns' => array('Location', 'Quantity'),
+                'stock_levels' => $part['stock_levels']
+
+            ]
+        );
     }
 
     /**
