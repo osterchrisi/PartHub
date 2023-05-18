@@ -41,7 +41,8 @@ class PartsController extends Controller
         } 
         
         // Return full parts view or only parts table depending on route
-        if ($request->route()->getName() == 'parts') {
+        $route = $request->route()->getName();
+        if ($route == 'parts') {
             return view('parts.parts', [
                 'title' => 'Parts',
                 'parts' => $parts,
@@ -53,7 +54,7 @@ class PartsController extends Controller
                 'search_column' => $search_column
             ]);
         }
-        elseif ($request->route()->getName() == 'parts.partsTable') {
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
