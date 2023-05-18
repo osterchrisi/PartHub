@@ -70,9 +70,7 @@ function generateCategoriesDropdown($categories, $sc)
             </div>
             <div class="col-3" id="category-box-div">
                 <input type="hidden" name="cat[]" id="selected-categories" value="">
-                <?php
-                generateCategoriesDropdown($categories, $search_category);
-                ?>
+                @include('components.selects.categoryMultiSelect')
             </div>
             <div class="col-1" id="search-button-div">
                 <button type="submit" class="btn btn-sm btn-primary">Search</button><br><br>
