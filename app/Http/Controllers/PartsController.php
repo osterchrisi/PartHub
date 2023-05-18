@@ -20,7 +20,7 @@ class PartsController extends Controller
      */
     public function index(Request $request)
     {
-        dd($request);
+        // dd($request);
         $search_column = 'everywhere';
         $search_term = request()->has('search') ? request()->input('search') : '';
         $column_names = Part::getColumnNames();
@@ -38,18 +38,30 @@ class PartsController extends Controller
         foreach ($parts as &$part) {
             $totalStock = self::calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
+        } 
+        
+        // Return full parts view or only parts table depending on route
+        if ($request->route()->getName() == 'parts') {
+            return view('parts.parts', [
+                'title' => 'Parts',
+                'parts' => $parts,
+                'db_columns' => self::$db_columns,
+                'nice_columns' => self::$nice_columns,
+                'table_name' => self::$table_name,
+                'id_field' => self::$id_field,
+                'search_term' => $search_term,
+                'search_column' => $search_column
+            ]);
         }
-
-        return view('parts.parts', [
-            'title' => 'Parts',
-            'parts' => $parts,
-            'db_columns' => self::$db_columns,
-            'nice_columns' => self::$nice_columns,
-            'table_name' => self::$table_name,
-            'id_field' => self::$id_field,
-            'search_term' => $search_term,
-            'search_column' => $search_column
-        ]);
+        elseif ($request->route()->getName() == 'parts.partsTable') {
+            return view('parts.partsTable', [
+                'parts' => $parts,
+                'db_columns' => self::$db_columns,
+                'nice_columns' => self::$nice_columns,
+                'table_name' => self::$table_name,
+                'id_field' => self::$id_field
+            ]);
+        }
     }
 
     /**
@@ -116,33 +128,6 @@ class PartsController extends Controller
         }
 
         return $total_stock;
-    }
-
-    public function buildPartsTable(Request $request)
-    {
-        $search_column = 'everywhere';
-        $search_term = $request->get('search');
-        $column_names = Part::getColumnNames();
-        $user_id = Auth::user()->id;
-
-        $search_category = request()->has('cat') ? request()->input('cat') : ['all'];
-        $search_category = $this->extractCategoryIds($search_category);
-
-        $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
-
-        // Calculate and append each part's total stock
-        foreach ($parts as &$part) {
-            $totalStock = self::calculateTotalStock($part['stock_levels']);
-            $part['total_stock'] = $totalStock;
-        }
-
-        return view('parts.partsTable', [
-            'parts' => $parts,
-            'db_columns' => self::$db_columns,
-            'nice_columns' => self::$nice_columns,
-            'table_name' => self::$table_name,
-            'id_field' => self::$id_field
-        ]);
     }
 
     /**

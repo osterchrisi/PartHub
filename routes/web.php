@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
 Route::controller(PartsController::class)->group(function () {
     Route::get('/parts', 'index')->middleware(['auth', 'verified'])->name('parts');
     Route::get('/part/{id}', 'show')->middleware(['auth', 'verified']);
-    Route::get('/parts.partsTable', 'buildPartsTable')->middleware(['auth', 'verified']);
+    Route::get('/parts.partsTable', 'index')->middleware(['auth', 'verified'])->name('parts.partsTable');
 });
 
 //* BOM Routes
