@@ -70,7 +70,7 @@ $sc = PartsController::extractCategoryIds($search_category);
                 @include('parts.partsTable')
             </div>
             <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
-                style="position: sticky; top: 50px;">
+                style="position: sticky; top: 50px; height: 89vh;">
                 <h6><br>Click on a row in the table</h6>
             </div>
         </div>
