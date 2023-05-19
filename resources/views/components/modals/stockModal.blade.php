@@ -13,6 +13,7 @@
                 <span id="partName"></span>
                 <br><br>
                 <form method="post" action="create-part.php" id="stockChangingForm">
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
                     <div class="row">
                         <div class="col-3">
                             <input class="form-control" placeholder="Quantity" id="addStockQuantity" required>

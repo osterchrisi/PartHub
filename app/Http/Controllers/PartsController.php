@@ -170,6 +170,12 @@ class PartsController extends Controller
         return $search_category;
     }
 
+    /**
+     * Get the part name for a given part ID
+     *
+     * @param Request $request
+     * @return string
+     */
     public function getName(Request $request)
     {
         // Get part ID
@@ -178,5 +184,21 @@ class PartsController extends Controller
         $part = Part::find($part_id)->toArray();
         // Return part name
         return $part['part_name'];
+    }
+
+    /**
+     * Add, reduce or move stock
+     * 
+     * Returns an array of arrays:
+     * The $changes array that has ALL changes requested.
+     * The $negative_stock array that contains only entries for stock changes that would result in negative stock.
+     * The $negative_stock_table is an HTML string that contains a table built out of the negative_stock array
+     */
+    public function prepareStockChanges(Request $request)
+    {
+        // dd($request);
+        $input = $request->all()['stock_changes'][0];
+
+        return json_encode($input);
     }
 }

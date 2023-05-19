@@ -121,8 +121,17 @@ function stockChangingFormExecution(change, pid) {
  * @return void
  */
 function callStockChangingScript(stockChanges, pid) {
-    $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: stockChanges },
-        function (response) {
+
+    var token = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: '/parts.prepareStockChanges',
+        type: 'POST',
+        data: { stock_changes: stockChanges },
+        headers: {
+            'X-CSRF-TOKEN': token
+        },
+        success: function (response) {
             console.log(response);
             var r = JSON.parse(response);
 
@@ -157,8 +166,58 @@ function callStockChangingScript(stockChanges, pid) {
                 // Attach click listener to "Do It Anyway" button
                 changeStockAnywayClickListener(r, pid);
             }
-        });
+        },
+        error: function (xhr) {
+            // Handle the error
+            if (xhr.status === 419) {
+                // Token mismatch error
+                alert('CSRF token mismatch. Please refresh the page and try again.');
+            } else {
+                // Other errors
+                alert('An error occurred. Please try again.');
+            }
+        }
+    });
+
+    // $.post('/parts.prepareStockChanges', { stock_changes: stockChanges },
+    //     function (response) {
+    //         console.log(response);
+    //         var r = JSON.parse(response);
+
+    //         if (r.negative_stock.length === 0) {
+    //             //* Do the normal thing here, all requested stock available
+    //             updatePartsInfo(pid);
+
+    //             //TODO: This is bit of a hicky hacky but at least updates the cell for now
+    //             var new_stock_level = r.result[2];
+    //             var $cell = $('tr.selected-last td[data-column="total_stock"]');
+    //             $cell.text(new_stock_level);
+
+    //             // Reset modal and hide it
+    //             $('#mAddStock').on('hidden.bs.modal', function (e) {
+    //                 $('#FromStockLocationDiv-row').show();
+    //                 $('#ToStockLocationDiv-row').show();
+    //                 $('#stockChangingForm')[0].reset();
+    //                 $('#mStockModalInfo').empty();
+    //                 $('#AddStock').attr('disabled', false);
+    //                 $(this).modal('dispose');
+    //             }).modal('hide');
+    //         }
+    //         else {
+    //             //* User permission required
+    //             // Display warning and missing stock table
+    //             $('#AddStock').attr('disabled', true);
+    //             var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " part(s). Do you want to continue anyway?<br>";
+    //             message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>"
+    //             message += r.negative_stock_table;
+    //             $('#mStockModalInfo').html(message);
+
+    //             // Attach click listener to "Do It Anyway" button
+    //             changeStockAnywayClickListener(r, pid);
+    //         }
+    //     });
 }
+
 /**
  * Changes the status of all requested changes to 'gtg' (good to go).
  * Attaches a click listener to the 'Do It Anyway' button and makes an AJAX call to the stock changing script (again) with the
