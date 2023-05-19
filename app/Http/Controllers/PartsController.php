@@ -241,7 +241,14 @@ class PartsController extends Controller
 
             // Get all dem stock levels for currently iterated part
             $stock_levels = (new StockLevel())->getStockLevelsByPartID($part_id);
-            return $stock_levels;
+            // return $stock_levels;
+            // return gettype($stock_levels);
+
+            if ($stock_levels instanceof \Illuminate\Support\Collection) {
+                return 1;
+            } else {
+                return 2;
+            }
 
             $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
             $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
