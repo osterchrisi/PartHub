@@ -28,7 +28,7 @@ class StockLevel extends Model
             ->where('part_id_fk', $part_id)
             //->where('stock_level_quantity', '>', 0) // Only for locations with stock
             ->get();
-            // ->collect();
+        // ->collect();
     }
 
 
@@ -46,5 +46,21 @@ class StockLevel extends Model
 
         return $current_stock_level;
     }
+
+    public static function changeQuantity($part_id, $quantity, $to_location)
+    {
+        $stockLevel = self::updateOrCreate(
+            [
+                'part_id_fk' => $part_id,
+                'location_id_fk' => $to_location,
+            ],
+            [
+                'stock_level_quantity' => $quantity,
+            ]
+        );
+
+        return $stockLevel->stock_level_id;
+    }
+
 
 }
