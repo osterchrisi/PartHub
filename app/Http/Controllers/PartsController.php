@@ -212,19 +212,11 @@ class PartsController extends Controller
             
             // Gather variables
             $change = $requested_change['change'];
-            
-            if (isset($requested_change['bom_id'])) {
-                $bom_id = $requested_change['bom_id'];
-            } else {
-                $bom_id = null;
-            }
-
 
             $part_id = $requested_change['part_id'];
             $quantity = $requested_change['quantity'];
-
-                     
-
+            $comment = $requested_change['comment'];
+            
             $to_location = $requested_change['to_location'];
             if ($to_location == 'NULL') {
                 $to_location = NULL;
@@ -235,18 +227,17 @@ class PartsController extends Controller
                 $from_location = NULL;
             }
 
-    
-            
-            $comment = $requested_change['comment'];
-
             if (isset($requested_change['status'])) {
                 $status = $requested_change['status'];
             } else {
                 $status = null;
             }
-            // $status = $requested_change['status'];
 
-          
+            if (isset($requested_change['bom_id'])) {
+                $bom_id = $requested_change['bom_id'];
+            } else {
+                $bom_id = null;
+            }          
 
             // Get all dem stock levels for currently iterated part
             $stock_levels = (new StockLevel())->getStockLevelsByPartID($part_id);
