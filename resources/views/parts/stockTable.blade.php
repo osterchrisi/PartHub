@@ -12,7 +12,7 @@
                 <tr>
                     @foreach ($column_names as $column_data)
                         @if ($column_data === 'location_name')
-                            <td>{{ $row['locations']['location_name'] }}</td>
+                            <td>{{ $row['location']['location_name'] }}</td>
                         @else
                             <td>{{ $row[$column_data] }}</td>
                         @endif

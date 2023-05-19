@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Part;
 use App\Models\StockLevel;
+use App\Models\StockLevelHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -87,7 +88,7 @@ class PartsController extends Controller
     public function show(string $id)
     {
         // Fetch the part with its related stock levels
-        $part = Part::with('stockLevels.locations')->find($id)->toArray();
+        $part = Part::with('stockLevels.location')->find($id)->toArray();
 
         // Calculate total stock level
         $total_stock = $this->calculateTotalStock($part['stock_levels']);
@@ -204,6 +205,9 @@ class PartsController extends Controller
         // Initialize the changes array and negative stock array
         $changes = array();
         $negative_stock = array();
+
+        //! Check if this is safe?
+        $user_id = Auth::user()->id;
 
 
 
@@ -434,13 +438,18 @@ class PartsController extends Controller
                     // Make records in stock_level and stock_level_change_history tables
                     $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $new_quantity, $to_location);
                     // return array($commit_change, $stock_level_id);
-                    //! We're already making it to here, Laravel folks!
+                    
                     // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
-                    $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
+                    $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+                    // $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+
+                    //! We're already making it to here, Laravel folks!
+                    // return $hist_id;
+                    
                     // Calculate new stock
-                    $stock = getStockLevels($conn, $part_id);
-                    $total_stock = getTotalStock($stock);
+                    $stock = StockLevel::getStockLevelsByPartID($part_id);
+                    $total_stock = self::calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
                     // Report back for updating tables
