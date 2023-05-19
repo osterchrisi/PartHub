@@ -240,18 +240,13 @@ class PartsController extends Controller
             }          
 
             // Get all dem stock levels for currently iterated part
-            $stock_levels = (new StockLevel())->getStockLevelsByPartID($part_id);
-            // return $stock_levels;
-            // return gettype($stock_levels);
+            $stock_levels = StockLevel::getStockLevelsByPartID($part_id);
 
-            if ($stock_levels instanceof \Illuminate\Support\Collection) {
-                return 1;
-            } else {
-                return 2;
-            }
+            // $current_stock = StockLevel::getCurrentStock($stock_levels, $to_location);
+            // return $current_stock;
 
-            $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
-            $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
+            $current_stock_level_to = StockLevel::getCurrentStock($stock_levels, $to_location);
+            $current_stock_level_from = StockLevel::getCurrentStock($stock_levels, $from_location);
 
             //* Collect changes to be made
             if ($change == 1) { // Add Stock
@@ -368,6 +363,6 @@ class PartsController extends Controller
 
         }
 
-        return json_encode($input);
+        return json_encode(array($changes, $negative_stock));
     }
 }
