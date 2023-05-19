@@ -437,19 +437,10 @@ class PartsController extends Controller
                 if ($change == 1) { // Add Stock
                     // Make records in stock_level and stock_level_change_history tables
                     $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $new_quantity, $to_location);
-                    // return array($commit_change, $stock_level_id);
-                    
-                    // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
-
                     $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-                    // $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-
-                    //! We're already making it to here, Laravel folks!
-                    // return $hist_id;
 
                     // Calculate new stock
                     $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    
                     $total_stock = self::calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
@@ -466,13 +457,12 @@ class PartsController extends Controller
                     );
                 }
                 elseif ($change == -1) { // Reduce Stock
-                    $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $from_location);
-                    //! Have to write NULL for $to_location. That's alright for now but would like to clean this
-                    $hist_id = stockChange($conn, $part_id, $from_location, NULL, $quantity, $comment, $user_id);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $new_quantity, $from_location);
+                    $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
                     // Calculate new stock
-                    $stock = getStockLevels($conn, $part_id);
-                    $total_stock = getTotalStock($stock);
+                    $stock = StockLevel::getStockLevelsByPartID($part_id);
+                    $total_stock = self::calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
                     // Report back for updating tables
@@ -489,19 +479,19 @@ class PartsController extends Controller
                 }
                 elseif ($change == 0) {
                     // First add stock in 'to location'
-                    $stock_level_id = changeQuantity($conn, $part_id, $to_quantity, $to_location);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $to_quantity, $to_location);
 
                     // Then reduce stock in 'from location'
-                    $stock_level_id = changeQuantity($conn, $part_id, $from_quantity, $from_location);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $from_quantity, $from_location);
 
                     // History entry
-                    $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+                    $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
                     // Reporting stock so that it can be updated in the origin table
 
                     // Calculate new stock
-                    $stock = getStockLevels($conn, $part_id);
-                    $total_stock = getTotalStock($stock);
+                    $stock = StockLevel::getStockLevelsByPartID($part_id);
+                    $total_stock = self::calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
                     $result = [$hist_id, $stock_level_id, $total_stock];
