@@ -446,9 +446,10 @@ class PartsController extends Controller
 
                     //! We're already making it to here, Laravel folks!
                     // return $hist_id;
-                    
+
                     // Calculate new stock
                     $stock = StockLevel::getStockLevelsByPartID($part_id);
+                    
                     $total_stock = self::calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
