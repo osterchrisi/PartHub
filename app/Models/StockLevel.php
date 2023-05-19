@@ -52,7 +52,7 @@ class StockLevel extends Model
 
     public static function updateOrCreateStockLevelRecord($part_id, $quantity, $location)
     {
-        $stockLevel = self::updateOrCreate(
+        $stockLevel = self::updateOrInsert(
             [
                 'part_id_fk' => $part_id,
                 'location_id_fk' => $location,
@@ -62,7 +62,13 @@ class StockLevel extends Model
             ]
         );
 
-        return $stockLevel->stock_level_id;
+        // Retrieve the stock level record using the composite key
+        $stockLevel = self::where('part_id_fk', $part_id)
+            ->where('location_id_fk', $location)
+            ->first();
+
+        // Return the stock level ID if found, otherwise return null
+        return $stockLevel ? $stockLevel->stock_level_id : null;
     }
 
 
