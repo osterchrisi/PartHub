@@ -433,8 +433,8 @@ class PartsController extends Controller
                 if ($change == 1) { // Add Stock
                     //! We're already making it to here, Laravel folks!
                     // Make records in stock_level and stock_level_change_history tables
-                    $stock_level_id = StockLevel::changeQuantity($part_id, $quantity, $to_location);
-                    return $stock_level_id;
+                    $stock_level_id = StockLevel::changeQuantity($part_id, $new_quantity, $to_location);
+                    return array($commit_change, $stock_level_id);
                     // $stock_level_id = changeQuantity($conn, $part_id, $new_quantity, $to_location);
                     $hist_id = stockChange($conn, $part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
