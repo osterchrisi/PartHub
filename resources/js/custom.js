@@ -89,9 +89,15 @@ function updatePartsInfo(id) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
         },
-        error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional part data.');
+        error: function (xhr, status, error) {
+            if (xhr.status === 401) {
+                alert("Your session expired. Please log in again.");
+                // Alternatively, show Bootstrap modal when I have time to make a nice one:
+                // $('#unauthorizedModal').modal('show');
+            } else {
+                // Handle other errors
+                console.log("Error:", error);
+            }
         }
     });
 }

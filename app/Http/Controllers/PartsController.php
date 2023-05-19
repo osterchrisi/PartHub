@@ -196,8 +196,179 @@ class PartsController extends Controller
      */
     public function prepareStockChanges(Request $request)
     {
-        // dd($request);
-        $input = $request->all()['stock_changes'][0];
+        // Access stock changes to prepare
+        $requested_changes = $request->all()['stock_changes'];
+        // return $requested_changes;
+        // dd($requested_changes);
+
+        // Initialize the changes array and negative stock array
+        $changes = array();
+        $negative_stock = array();
+
+        
+
+        //* Fill arrays with all requested changes
+        foreach ($requested_changes as $requested_change) {
+            
+            // Gather variables
+            $change = $requested_change['change'];
+            
+            if (isset($requested_change['bom_id'])) {
+                $bom_id = $requested_change['bom_id'];
+            } else {
+                $bom_id = null;
+            }
+
+
+            $part_id = $requested_change['part_id'];
+            $quantity = $requested_change['quantity'];
+
+                     
+
+            $to_location = $requested_change['to_location'];
+            if ($to_location == 'NULL') {
+                $to_location = NULL;
+            }
+
+            $from_location = $requested_change['from_location'];
+            if ($from_location == 'NULL') {
+                $from_location = NULL;
+            }
+
+    
+            
+            $comment = $requested_change['comment'];
+
+            if (isset($requested_change['status'])) {
+                $status = $requested_change['status'];
+            } else {
+                $status = null;
+            }
+            // $status = $requested_change['status'];
+
+          
+
+            // Get all dem stock levels for currently iterated part
+            $stock_levels = (new StockLevel())->getStockLevelsByPartID($part_id);
+            return $stock_levels;
+
+            $current_stock_level_to = getCurrentStock($stock_levels, $to_location);
+            $current_stock_level_from = getCurrentStock($stock_levels, $from_location);
+
+            //* Collect changes to be made
+            if ($change == 1) { // Add Stock
+                $new_quantity = $current_stock_level_to + $quantity;
+                //Add entry to changes array
+                $changes[] = array(
+                    'bom_id' => $bom_id,
+                    'part_id' => $part_id,
+                    'quantity' => $quantity,
+                    'to_location' => $to_location,
+                    'from_location' => $from_location,
+                    'change' => $change,
+                    'new_quantity' => $new_quantity,
+                    'comment' => $comment,
+                    'status' => 'gtg'
+                );
+            }
+            elseif ($change == -1) { // Reduce Stock
+                $new_quantity = $current_stock_level_from - $quantity;
+
+                // Stock would go negative
+                if ($new_quantity < 0 && $status != 'gtg') {
+                    $changes[] = array(
+                        'bom_id' => $bom_id,
+                        'part_id' => $part_id,
+                        'quantity' => $quantity,
+                        'to_location' => $to_location,
+                        'from_location' => $from_location,
+                        'change' => $change,
+                        'new_quantity' => $new_quantity,
+                        'comment' => $comment,
+                        'status' => 'permission_required'
+                    );
+                    //Add entry to negative stock array
+                    $negative_stock[] = array(
+                        'bom_id' => $bom_id,
+                        'part_id' => $part_id,
+                        'quantity' => $quantity,
+                        'to_location' => $to_location,
+                        'from_location' => $from_location,
+                        'change' => $change,
+                        'new_quantity' => $new_quantity,
+                        'comment' => $comment,
+                        'status' => 'permission_required'
+                    );
+                }
+                else {
+                    //Add entry to changes array
+                    $changes[] = array(
+                        'bom_id' => $bom_id,
+                        'part_id' => $part_id,
+                        'quantity' => $quantity,
+                        'to_location' => $to_location,
+                        'from_location' => $from_location,
+                        'change' => $change,
+                        'new_quantity' => $new_quantity,
+                        'comment' => $comment,
+                        'status' => 'gtg'
+                    );
+                }
+            }
+            elseif ($change == 0) { // Move Stock
+                // New quantity in 'to location'
+                $to_quantity = $current_stock_level_to + $quantity;
+
+                // New quantity in 'from_location'
+                $from_quantity = $current_stock_level_from - $quantity;
+
+                // Stock in 'from location' goes negative
+                if ($from_quantity < 0 && $status != 'gtg') {
+                    //Add entry to changes array
+                    $changes[] = array(
+                        'bom_id' => $bom_id,
+                        'part_id' => $part_id,
+                        'quantity' => $quantity,
+                        'to_location' => $to_location,
+                        'from_location' => $from_location,
+                        'change' => $change,
+                        'to_quantity' => $to_quantity,
+                        'from_quantity' => $from_quantity,
+                        'comment' => $comment,
+                        'status' => 'permission_required'
+                    );
+                    //Add entry to negative stock array
+                    $negative_stock[] = array(
+                        'bom_id' => $bom_id,
+                        'part_id' => $part_id,
+                        'quantity' => $quantity,
+                        'to_location' => $to_location,
+                        'from_location' => $from_location,
+                        'change' => $change,
+                        'to_quantity' => $to_quantity,
+                        'from_quantity' => $from_quantity,
+                        'comment' => $comment,
+                        'status' => 'permission_required'
+                    );
+                }
+                else {
+                    //Add entry to changes array
+                    $changes[] = array(
+                        'bom_id' => $bom_id,
+                        'part_id' => $part_id,
+                        'quantity' => $quantity,
+                        'to_location' => $to_location,
+                        'from_location' => $from_location,
+                        'change' => $change,
+                        'to_quantity' => $to_quantity,
+                        'from_quantity' => $from_quantity,
+                        'comment' => $comment,
+                        'status' => 'gtg'
+                    );
+                }
+            }
+
+        }
 
         return json_encode($input);
     }

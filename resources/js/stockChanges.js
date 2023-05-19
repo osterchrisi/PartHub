@@ -108,6 +108,9 @@ function stockChangingFormExecution(change, pid) {
         change: change
     }];
 
+    //!
+    console.log(pid);
+
     // Call the stock changing script
     callStockChangingScript(stockChanges, pid)
 }

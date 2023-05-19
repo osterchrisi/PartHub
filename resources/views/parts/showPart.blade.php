@@ -1,5 +1,5 @@
 <?php
-// // Debug
+// Debug
 // echo '<pre>';
 // print_r($part);
 // print_r($total_stock);
@@ -85,7 +85,7 @@
             dataType: 'json',
             success: function(locations) {
                 $('#addStockButton').click(function() {
-                    callStockModal("1", locations);
+                    callStockModal("1", locations, {{ $part['part_id'] }});
                 });
             },
             error: function(error) {
@@ -99,7 +99,7 @@
             dataType: 'json',
             success: function(locations) {
                 $('#moveStockButton').click(function() {
-                    callStockModal("0", locations);
+                    callStockModal("0", locations, {{ $part['part_id'] }});
                 });
             },
             error: function(error) {
@@ -113,7 +113,7 @@
             dataType: 'json',
             success: function(locations) {
                 $('#reduceStockButton').click(function() {
-                    callStockModal("-1", locations);
+                    callStockModal("-1", locations, {{ $part['part_id'] }});
                 });
             },
             error: function(error) {

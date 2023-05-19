@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartsController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\StockLevelController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -84,3 +85,8 @@ Route::get('/signup', function () {
     return view('welcome', ['title' => 'Signup']);
 })
     ->name('signup');
+
+Route::get('/stocklevels', function () {
+    return StockLevelController::index(335);
+})
+    ->middleware(['auth', 'verified']);
