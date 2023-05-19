@@ -51,12 +51,12 @@ class StockLevel extends Model
         return $current_stock_level;
     }
 
-    public static function changeQuantity($part_id, $quantity, $to_location)
+    public static function updateOrCreateStockLevelEntry($part_id, $quantity, $location)
     {
         $stockLevel = self::updateOrCreate(
             [
                 'part_id_fk' => $part_id,
-                'location_id_fk' => $to_location,
+                'location_id_fk' => $location,
             ],
             [
                 'stock_level_quantity' => $quantity,
