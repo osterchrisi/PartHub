@@ -12,5 +12,25 @@ class StockLevelHistory extends Model
     protected $table = 'stock_level_change_history';
     protected $primaryKey = 'stock_lvl_chng_id';
 
-    // Need relationships here with Locations, Parts and Users
+    public function part()
+    {
+        return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
+    }
+
+    public function stockLevelsFrom()
+    {
+        return $this->hasMany(StockLevel::class, 'from_location_fk', 'location_id');
+    }
+
+    public function stockLevelsTo()
+    {
+        return $this->hasMany(StockLevel::class, 'to_location_fk', 'location_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'stock_lvl_chng_user_fk', 'user_id');
+    }
+
+// Need relationships here with Locations, Parts and Users
 }
