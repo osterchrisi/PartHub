@@ -365,8 +365,6 @@ class PartsController extends Controller
 
         }
 
-        // return json_encode(array($changes, $negative_stock));
-
         //* Make the actual stock change entries and stock change history entries
         //TODO: Would be maybe nice to extract this to different file?
 
@@ -411,8 +409,11 @@ class PartsController extends Controller
                 $bom_id = $commit_change['bom_id'];
                 $change = $commit_change['change'];
 
+                //! Why are there so many quantities!? :D
                 $quantity = $commit_change['quantity'];
 
+                // Need to check these three because depnding on stock change type (1, -1, 0)
+                // they might be present or not
                 if (isset($commit_change['to_quantity'])) {
                     $to_quantity = $commit_change['to_quantity'];
                 }
@@ -428,7 +429,13 @@ class PartsController extends Controller
                 }
 
 
-                $new_quantity = $commit_change['new_quantity'];
+                if (isset($commit_change['new_quantity'])) {
+                    $new_quantity = $commit_change['new_quantity'];
+                }
+                else {
+                    $new_quantity = NULL;
+                }
+
                 $to_location = $commit_change['to_location'];
                 $from_location = $commit_change['from_location'];
                 $comment = $commit_change['comment'];
@@ -478,6 +485,7 @@ class PartsController extends Controller
                     );
                 }
                 elseif ($change == 0) {
+                    // return "this is move";
                     // First add stock in 'to location'
                     $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $to_quantity, $to_location);
 
