@@ -443,7 +443,7 @@ class PartsController extends Controller
 
                 if ($change == 1) { // Add Stock
                     // Make records in stock_level and stock_level_change_history tables
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $new_quantity, $to_location);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
                     $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
                     // Calculate new stock
@@ -464,7 +464,7 @@ class PartsController extends Controller
                     );
                 }
                 elseif ($change == -1) { // Reduce Stock
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $new_quantity, $from_location);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
                     $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
                     // Calculate new stock
@@ -487,10 +487,10 @@ class PartsController extends Controller
                 elseif ($change == 0) {
                     // return "this is move";
                     // First add stock in 'to location'
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $to_quantity, $to_location);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
 
                     // Then reduce stock in 'from location'
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelEntry($part_id, $from_quantity, $from_location);
+                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
 
                     // History entry
                     $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);

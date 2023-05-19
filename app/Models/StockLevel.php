@@ -50,7 +50,7 @@ class StockLevel extends Model
         return $current_stock_level;
     }
 
-    public static function updateOrCreateStockLevelEntry($part_id, $quantity, $location)
+    public static function updateOrCreateStockLevelRecord($part_id, $quantity, $location)
     {
         $stockLevel = self::updateOrCreate(
             [
