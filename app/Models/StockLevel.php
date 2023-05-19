@@ -32,7 +32,7 @@ class StockLevel extends Model
     }
 
 
-    public static function getCurrentStock($stock_levels, $location)
+    public static function getStockInLocation($stock_levels, $location)
     {
         foreach ($stock_levels as $entry) {
             if (isset($entry['location_id']) && $entry['location_id'] == $location) {
