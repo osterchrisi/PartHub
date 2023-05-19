@@ -20,7 +20,7 @@ class StockLevel extends Model
         return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
     }
 
-    public function locations()
+    public function location()
     {
         return $this->belongsTo(Location::class, 'location_id_fk', 'location_id');
     }
@@ -32,7 +32,6 @@ class StockLevel extends Model
             ->where('part_id_fk', $part_id)
             //->where('stock_level_quantity', '>', 0) // Only for locations with stock
             ->get();
-        // ->collect();
     }
 
 

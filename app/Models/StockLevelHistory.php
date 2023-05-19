@@ -32,5 +32,4 @@ class StockLevelHistory extends Model
         return $this->belongsTo(User::class, 'stock_lvl_chng_user_fk', 'user_id');
     }
 
-// Need relationships here with Locations, Parts and Users
 }
