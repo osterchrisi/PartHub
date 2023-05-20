@@ -207,8 +207,6 @@ class PartsController extends Controller
         //! Check if this is safe?
         $user_id = Auth::user()->id;
 
-
-
         //* Fill arrays with all requested changes
         //* Each $requested_change entry holds one part
         foreach ($requested_changes as $requested_change) {
@@ -371,7 +369,6 @@ class PartsController extends Controller
         if (!empty($negative_stock) && !is_null($changes[0]['bom_id'])) {
             $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
             $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-            //!
             $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
             echo json_encode(
                 array(
@@ -392,9 +389,8 @@ class PartsController extends Controller
                 $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
             }
             // return $negative_stock;
-            
+
             $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-            //!
             $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
             echo json_encode(
                 array(
