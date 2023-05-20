@@ -105,7 +105,11 @@ class PartsController extends Controller
                 //Bom Table
                 'bomTableHeaders' => array('bom_name', 'element_quantity', 'bom_description'),
                 'nice_bomTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
-                'bom_list' => Part::getBomsContainingPart($part_id)
+                'bom_list' => Part::getBomsContainingPart($part_id),
+                // Stock History Table
+                'stockHistoryTableHeaders' => array('bom_name', 'element_quantity', 'bom_description'),
+                'nice_stockHistoryTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
+                'stock_history' => StockLevelHistory::getPartStockHistory($part_id)
 
             ]
         );
