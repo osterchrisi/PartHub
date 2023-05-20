@@ -29,7 +29,7 @@ class Part extends Model
 
     public function bomElements()
     {
-        return $this->hasMany(BomElements::class, 'bom_elements_id');
+        return $this->hasMany(BomElements::class, 'part_id_fk');
     }
 
     private static $column_names = array(
@@ -86,7 +86,7 @@ class Part extends Model
 
     public static function getBomsContainingPart($part_id)
     {
-        $part = self::find($part_id);
+        $part = Part::find($part_id);
         if (!$part) {
             return [];
         }
@@ -96,6 +96,7 @@ class Part extends Model
             ->get()
             ->toArray();
 
+            // dd($bom_list);
         return $bom_list;
     }
 

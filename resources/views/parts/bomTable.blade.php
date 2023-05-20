@@ -12,7 +12,7 @@
             data-max-moving-rows="100">
         <thead>
             <tr>
-                @foreach ($bomTableHeaders as $column_header)
+                @foreach ($nice_bomTableHeaders as $column_header)
                     <th data-field="{{ $column_header }}">{{ $column_header }}</th>
                 @endforeach
             </tr>
@@ -23,7 +23,7 @@
                     $bom_id = $row['bom_id'];
                 @endphp
                 <tr data-id="{{ $row['bom_elements_id'] }}">
-                    @foreach ($nice_bomTableHeaders as $column_data)
+                    @foreach ($bomTableHeaders as $column_data)
                         <td data-editable="true" data-id="{{ $bom_id }}" data-column="{{ $column_data }}">{{ $row[$column_data] }}</td>
                     @endforeach
                 </tr>

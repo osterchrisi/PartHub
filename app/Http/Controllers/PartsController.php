@@ -103,8 +103,8 @@ class PartsController extends Controller
                 'nice_columns' => array('Location', 'Quantity'),
                 'stock_levels' => $part['stock_levels'],
                 //Bom Table
-                'bomTableHeaders' => array('location_name', 'stock_level_quantity'),
-                'nice_bomTableHeaders' => array('Location', 'Quantity'),
+                'bomTableHeaders' => array('bom_name', 'element_quantity', 'bom_description'),
+                'nice_bomTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
                 'bom_list' => Part::getBomsContainingPart($part_id)
 
             ]

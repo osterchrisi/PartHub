@@ -14,6 +14,7 @@ class BomElements extends Model
 
     public function part()
     {
+        //! Pretty sure this should be hasMany
         return $this->belongsTo(Part::class, 'part_id_fk');
     }
 }

@@ -3,6 +3,8 @@
 // echo '<pre>';
 // print_r($part);
 // print_r($total_stock);
+// print_r($bom_list);
+// print_r($bomTableHeaders);
 // echo '</pre>';
 ?>
 
