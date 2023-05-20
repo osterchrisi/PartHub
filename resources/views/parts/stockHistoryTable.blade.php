@@ -20,7 +20,7 @@
                 @php
                     $hist_id = $row['stock_lvl_chng_id'];
                 @endphp
-                <tr data-id="{{ $row['part_id'] }}">
+                <tr data-id="{{ $row['part_id_fk'] }}">
                     @foreach ($stockHistoryTableHeaders as $column_data)
                         <td data-editable="true" class="editable" data-id="{{ $hist_id }}" data-column="{{ $column_data }}">
                             {{ $column_data === 'stock_lvl_chng_comment' ? $row[$column_data] : $row[$column_data] }}
