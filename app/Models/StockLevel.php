@@ -37,17 +37,17 @@ class StockLevel extends Model
 
     public static function getStockInLocation($stock_levels, $location)
     {
+
+        $stock_level = 0;
+
         foreach ($stock_levels as $entry) {
             if (isset($entry['location_id']) && $entry['location_id'] == $location) {
-                $current_stock_level = $entry['stock_level_quantity'];
-                return $current_stock_level;
-            }
-            else {
-                $current_stock_level = 0;
+                $stock_level = $entry['stock_level_quantity'];
+                return $stock_level;
             }
         }
 
-        return $current_stock_level;
+        return $stock_level;
     }
 
     public static function updateOrCreateStockLevelRecord($part_id, $quantity, $location)

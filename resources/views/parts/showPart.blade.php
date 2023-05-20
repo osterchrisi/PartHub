@@ -79,39 +79,19 @@
         bootstrapPartInBomsTable();
         bootstrapTableSmallify();
 
-        // Add Stock Button
         $.ajax({
             url: '/locations.get',
             dataType: 'json',
             success: function(locations) {
+                // Add Stock Button
                 $('#addStockButton').click(function() {
                     callStockModal("1", locations, {{ $part['part_id'] }});
                 });
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        })
-
-        // Move Stock Button
-        $.ajax({
-            url: '/locations.get',
-            dataType: 'json',
-            success: function(locations) {
+                // Move Stock Button
                 $('#moveStockButton').click(function() {
                     callStockModal("0", locations, {{ $part['part_id'] }});
                 });
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        })
-
-        // Reduce Stock Button
-        $.ajax({
-            url: '/locations.get',
-            dataType: 'json',
-            success: function(locations) {
+                // Reduce Stock Button
                 $('#reduceStockButton').click(function() {
                     callStockModal("-1", locations, {{ $part['part_id'] }});
                 });
