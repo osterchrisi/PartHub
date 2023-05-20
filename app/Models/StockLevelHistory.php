@@ -63,7 +63,8 @@ class StockLevelHistory extends Model
         $history = self::select(
             'stock_level_change_history.*',
             'from_loc.location_name AS from_location_name',
-            'to_loc.location_name AS to_location_name'
+            'to_loc.location_name AS to_location_name',
+            'users.name AS user_name'
         )
             ->leftJoin('locations AS from_loc', 'stock_level_change_history.from_location_fk', '=', 'from_loc.location_id')
             ->leftJoin('locations AS to_loc', 'stock_level_change_history.to_location_fk', '=', 'to_loc.location_id')

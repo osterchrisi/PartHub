@@ -107,7 +107,7 @@ class PartsController extends Controller
                 'nice_bomTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
                 'bom_list' => Part::getBomsContainingPart($part_id),
                 // Stock History Table
-                'stockHistoryTableHeaders' => array('stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'stock_lvl_chng_user_fk'),
+                'stockHistoryTableHeaders' => array('stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'),
                 'nice_stockHistoryTableHeaders' => array('Date', 'Quantity', 'From', 'To', 'Comment', 'User'),
                 'stock_history' => StockLevelHistory::getPartStockHistory($part_id)
 

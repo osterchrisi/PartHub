@@ -1,12 +1,12 @@
 <?php
 // Debug
-echo '<pre>';
+// echo '<pre>';
 // print_r($part);
 // print_r($total_stock);
 // print_r($bom_list);
 // print_r($bomTableHeaders);
-print_r($stock_history);
-echo '</pre>';
+// print_r($stock_history);
+// echo '</pre>';
 ?>
 
 <div class="container-fluid">
@@ -57,16 +57,7 @@ echo '</pre>';
         </div>
         <div class="tab-pane fade" id="partStockHistoryTab" role="tabpanel" aria-labelledby="profile-tab"
             tabindex="0">
-            @php
-            use App\Models\StockLevelHistory;
-            $s = StockLevelHistory::getPartStockHistory($part['part_id']);
-            print_r($s);
-            @endphp
             @include('parts.stockHistoryTable')
-
-            <?php
-            // include 'stock-history.php';
-            ?>
         </div>
     </div>
 </div>
