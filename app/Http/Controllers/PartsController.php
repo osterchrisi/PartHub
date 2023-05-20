@@ -33,7 +33,7 @@ class PartsController extends Controller
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
         /* Calculate and append each part's total stock
-        / Passing aa reference, so modifications made to $partdirectly affect 
+        / Passing a reference, so modifications made to $part directly affect 
         / the corresponding element in the original $parts array.
         */
         foreach ($parts as &$part) {
@@ -385,8 +385,14 @@ class PartsController extends Controller
         }
         //* If there are stock shortages processing parts, produce table and send back to user
         elseif (!empty($negative_stock) && is_null($changes[0]['bom_id'])) {
-            //TODO: This can be made even better asking for type of change and selectively showing only / and "to_location" / "from_location"
-            $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
+            if ($change == 0) {
+                $column_names = array('part_id', 'quantity', 'from_location', 'from_quantity');
+            }
+            else {
+                $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
+            }
+            // return $negative_stock;
+            
             $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
             //!
             $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);

@@ -181,44 +181,6 @@ function callStockChangingScript(stockChanges, pid) {
             }
         }
     });
-
-    // $.post('/parts.prepareStockChanges', { stock_changes: stockChanges },
-    //     function (response) {
-    //         console.log(response);
-    //         var r = JSON.parse(response);
-
-    //         if (r.negative_stock.length === 0) {
-    //             //* Do the normal thing here, all requested stock available
-    //             updatePartsInfo(pid);
-
-    //             //TODO: This is bit of a hicky hacky but at least updates the cell for now
-    //             var new_stock_level = r.result[2];
-    //             var $cell = $('tr.selected-last td[data-column="total_stock"]');
-    //             $cell.text(new_stock_level);
-
-    //             // Reset modal and hide it
-    //             $('#mAddStock').on('hidden.bs.modal', function (e) {
-    //                 $('#FromStockLocationDiv-row').show();
-    //                 $('#ToStockLocationDiv-row').show();
-    //                 $('#stockChangingForm')[0].reset();
-    //                 $('#mStockModalInfo').empty();
-    //                 $('#AddStock').attr('disabled', false);
-    //                 $(this).modal('dispose');
-    //             }).modal('hide');
-    //         }
-    //         else {
-    //             //* User permission required
-    //             // Display warning and missing stock table
-    //             $('#AddStock').attr('disabled', true);
-    //             var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " part(s). Do you want to continue anyway?<br>";
-    //             message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>"
-    //             message += r.negative_stock_table;
-    //             $('#mStockModalInfo').html(message);
-
-    //             // Attach click listener to "Do It Anyway" button
-    //             changeStockAnywayClickListener(r, pid);
-    //         }
-    //     });
 }
 
 /**
@@ -239,12 +201,21 @@ function changeStockAnywayClickListener(r, pid) {
         // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
         // continueAnyway(r, ids);
 
+        var token = $('meta[name="csrf-token"]').attr('content');
+
         for (const change of r.changes) {
             change.status = 'gtg';
         }
+
         // Call the stock changing script with the already prepared stock changes
-        $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
-            function (response) {
+        $.ajax({
+            url: '/parts.prepareStockChanges',
+            type: 'POST',
+            data: { stock_changes: r.changes },
+            headers: {
+                'X-CSRF-TOKEN': token
+            },
+            success: function (response) {
                 console.log(response);
                 // Reset modal and hide it
                 $('#mAddStock').on('hidden.bs.modal', function (e) {
@@ -258,8 +229,18 @@ function changeStockAnywayClickListener(r, pid) {
                 //TODO: This can't work here (not giving any ids yet like in BOMs)
                 // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
                 updatePartsInfo(pid);
+            },
+            error: function (xhr) {
+                // Handle the error
+                if (xhr.status === 419) {
+                    // Token mismatch error
+                    alert('CSRF token mismatch. Please refresh the page and try again.');
+                } else {
+                    // Other errors
+                    alert('An error occurred. Please try again.');
+                }
             }
-        )
+        });
     });
 }
 
