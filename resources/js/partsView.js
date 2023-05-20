@@ -85,9 +85,12 @@ $(document).ready(function () {
         }
     })
 
-    // Show location divs after potentially having hidden them in the stock modal when hiding the modal
+    /**
+     * Show location divs after potentially
+     * having hidden them in the stock modal when hiding the modal
+     * @return void
+     */ 
     $('#mAddStock').on('hidden.bs.modal', function () {
-        console.log('Bringing location divs back');
         $('#FromStockLocationDiv-row').show();
         $('#ToStockLocationDiv-row').show();
     })

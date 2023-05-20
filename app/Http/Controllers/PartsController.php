@@ -199,8 +199,6 @@ class PartsController extends Controller
     {
         // Access stock changes to prepare
         $requested_changes = $request->all()['stock_changes'];
-        // return $requested_changes;
-        // dd($requested_changes);
 
         // Initialize the changes array and negative stock array
         $changes = array();
@@ -212,6 +210,7 @@ class PartsController extends Controller
 
 
         //* Fill arrays with all requested changes
+        //* Each $requested_change entry holds one part
         foreach ($requested_changes as $requested_change) {
 
             // Gather variables
@@ -485,7 +484,6 @@ class PartsController extends Controller
                     );
                 }
                 elseif ($change == 0) {
-                    // return "this is move";
                     // First add stock in 'to location'
                     $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
 
