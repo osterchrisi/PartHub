@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid pb-3">
     <div>
         <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px"
             id="partStockHistoryTable"
