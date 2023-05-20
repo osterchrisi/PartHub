@@ -48,11 +48,6 @@
 
             <h5>Part of:</h5>
             @include('parts.bomTable')
-            <?php
-            //   include '../config/part-in-boms-columns.php';
-            //   $bom_list = getPartInBoms($conn, $part_id);
-            //   buildPartInBomsTable($db_columns, $nice_columns, $bom_list);
-            ?>
             <br>
             <h5>Datasheet:</h5>
             <br>
@@ -61,6 +56,12 @@
         </div>
         <div class="tab-pane fade" id="partStockHistoryTab" role="tabpanel" aria-labelledby="profile-tab"
             tabindex="0">
+            @php
+            use App\Models\StockLevelHistory;
+            $s = StockLevelHistory::getPartStockHistory($part['part_id']);
+            print_r($s);
+            @endphp
+
             <?php
             // include 'stock-history.php';
             ?>
@@ -80,6 +81,7 @@
         loadActiveTab();
         addActiveTabEventListeners();
         bootstrapPartInBomsTable();
+        bootstrapHistTable();
         bootstrapTableSmallify();
 
         $.ajax({

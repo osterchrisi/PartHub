@@ -22,7 +22,7 @@ class StockLevelHistory extends Model
         'stock_lvl_chng_comment',
         'stock_lvl_chng_user_fk',
     ];
-    
+
 
     public function part()
     {
@@ -41,7 +41,7 @@ class StockLevelHistory extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'stock_lvl_chng_user_fk', 'user_id');
+        return $this->belongsTo(User::class, 'stock_lvl_chng_user_fk', 'id');
     }
 
     public static function createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id)
@@ -58,7 +58,22 @@ class StockLevelHistory extends Model
 
         return $newId;
     }
+    public static function getPartStockHistory($part_id)
+    {
+        $history = self::select(
+            'stock_level_change_history.*',
+            'from_loc.location_name AS from_location_name',
+            'to_loc.location_name AS to_location_name'
+        )
+            ->leftJoin('locations AS from_loc', 'stock_level_change_history.from_location_fk', '=', 'from_loc.location_id')
+            ->leftJoin('locations AS to_loc', 'stock_level_change_history.to_location_fk', '=', 'to_loc.location_id')
+            ->join('users', 'stock_level_change_history.stock_lvl_chng_user_fk', '=', 'users.id')
+            ->where('part_id_fk', $part_id)
+            ->get()
+            ->toArray();
 
+        return $history;
+    }
 
 
 }
