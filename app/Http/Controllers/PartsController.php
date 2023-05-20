@@ -13,7 +13,7 @@ class PartsController extends Controller
     private static $table_name = 'parts';
     private static $id_field = 'part_id';
     private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'part_footprint_fk', 'unit_name', "part_id");
-    // 'state' doesn't actually exist but is there to make an empty column for boostrapTable's selected row to have a place
+    // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
     private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', "ID");
 
     /**
@@ -85,10 +85,10 @@ class PartsController extends Controller
     /**
      * Display part details and return the showPart view
      */
-    public function show(string $id)
+    public function show(string $part_id)
     {
         // Fetch the part with its related stock levels
-        $part = Part::with('stockLevels.location')->find($id)->toArray();
+        $part = Part::with('stockLevels.location')->find($part_id)->toArray();
 
         // Calculate total stock level
         $total_stock = $this->calculateTotalStock($part['stock_levels']);
@@ -101,7 +101,11 @@ class PartsController extends Controller
                 'total_stock' => $total_stock,
                 'column_names' => array('location_name', 'stock_level_quantity'),
                 'nice_columns' => array('Location', 'Quantity'),
-                'stock_levels' => $part['stock_levels']
+                'stock_levels' => $part['stock_levels'],
+                //Bom Table
+                'bomTableHeaders' => array('location_name', 'stock_level_quantity'),
+                'nice_bomTableHeaders' => array('Location', 'Quantity'),
+                'bom_list' => Part::getBomsContainingPart($part_id)
 
             ]
         );

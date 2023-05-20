@@ -27,6 +27,11 @@ class Part extends Model
         return $this->hasMany(StockLevel::class, 'part_id_fk');
     }
 
+    public function bomElements()
+    {
+        return $this->hasMany(BomElements::class, 'bom_elements_id');
+    }
+
     private static $column_names = array(
         'part_id',
         'part_name',
@@ -64,7 +69,7 @@ class Part extends Model
             $query->where($search_column, 'like', "%$search_term%");
         }
 
-        
+
 
         // Filter for categories
         if (!in_array('all', $search_category)) {
@@ -77,6 +82,21 @@ class Part extends Model
         $parts = $query->with('category', 'unit', 'stockLevels')->get()->toArray();
         // dd($parts);
         return $parts;
+    }
+
+    public static function getBomsContainingPart($part_id)
+    {
+        $part = self::find($part_id);
+        if (!$part) {
+            return [];
+        }
+
+        $bom_list = $part->bomElements()
+            ->join('boms', 'bom_elements.bom_id_fk', '=', 'boms.bom_id')
+            ->get()
+            ->toArray();
+
+        return $bom_list;
     }
 
 

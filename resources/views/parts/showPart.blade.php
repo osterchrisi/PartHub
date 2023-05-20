@@ -45,6 +45,7 @@
             <br><br>
 
             <h5>Part of:</h5>
+            @include('parts.bomTable')
             <?php
             //   include '../config/part-in-boms-columns.php';
             //   $bom_list = getPartInBoms($conn, $part_id);
