@@ -40,15 +40,15 @@
                         @if ($column_data == 'total_stock')
                             <td style="text-align:right" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['total_stock'] }}</td>
                         @elseif ($column_data == 'category_name')
-                            <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] }}</td>
+                            <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}</td>
                         @elseif ($column_data == 'unit_name')
-                            <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] }}</td>
+                            <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}</td>
                         @elseif ($column_data == 'state')
                             <td></td>
                         @elseif ($column_data == 'part_id')
                             <td data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part[$column_data] }}</td>
                         @else
-                            <td data-editable="true" class="editable" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part[$column_data] }}</td>
+                            <td data-editable="true" class="editable" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}</td>                      
                         @endif
                     @endforeach
                 </tr>
