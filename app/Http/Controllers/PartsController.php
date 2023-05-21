@@ -74,8 +74,15 @@ class PartsController extends Controller
         $part_name = $request->get('part_name');
         $quantity = $request->get('quantity');
         $to_location = $request->get('to_location');
-        return array($part_name, $quantity, $to_location);
-        Part::createPart($part_name);
+        // return array($part_name, $quantity, $to_location);
+        $new_part_id = Part::createPart($part_name);
+        // CreatStockEntry
+        $new_stock_entry_id = 0;
+        // CreateStockHistoryEntry
+        $new_stock_level_id = 0;
+        echo json_encode(array('Part ID' => $new_part_id,
+                                'Stock Entry ID' => $new_stock_entry_id,
+                                'Stock Level History ID' => $new_stock_level_id));
     }
 
     /**
