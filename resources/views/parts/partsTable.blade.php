@@ -37,6 +37,7 @@
                 @endphp
                 <tr data-id="{{ $part_id }}">
                     @foreach ($db_columns as $column_data)
+                    {{-- I am inserting '' for everything that could potentiall not have a value, especially values that are potentially inside another array. Otherwise I get array offset errors --}}
                         @if ($column_data == 'total_stock')
                             <td style="text-align:right" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['total_stock'] }}</td>
                         @elseif ($column_data == 'category_name')

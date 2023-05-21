@@ -67,19 +67,23 @@ class PartsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create a new part in the database including stock level record and stock level history record
      */
     public function create(Request $request)
     {
         $part_name = $request->get('part_name');
         $quantity = $request->get('quantity');
         $to_location = $request->get('to_location');
-        // return array($part_name, $quantity, $to_location);
+        $comment = '';
+        $user_id = Auth::user()->id;
+
+        // Insert new part 
         $new_part_id = Part::createPart($part_name);
-        // CreatStockEntry
+        // Create a stock level entry
         $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
-        // CreateStockHistoryEntry
-        $new_stock_level_id = 0;
+        // Create a stock level history entry
+        $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
+
         echo json_encode(array('Part ID' => $new_part_id,
                                 'Stock Entry ID' => $new_stock_entry_id,
                                 'Stock Level History ID' => $new_stock_level_id));
