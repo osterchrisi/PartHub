@@ -212,7 +212,6 @@ class PartsController extends Controller
         $changes = array();
         $negative_stock = array();
 
-        //! Check if this is safe?
         $user_id = Auth::user()->id;
 
         //* Fill arrays with all requested changes

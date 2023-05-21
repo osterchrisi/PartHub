@@ -48,7 +48,9 @@
             <br><br>
 
             <h5>Part of:</h5>
+
             @include('parts.bomTable')
+            
             <br>
             <h5>Datasheet:</h5>
             <br>
@@ -57,19 +59,15 @@
         </div>
         <div class="tab-pane fade" id="partStockHistoryTab" role="tabpanel" aria-labelledby="profile-tab"
             tabindex="0">
+
             @include('parts.stockHistoryTable')
+
         </div>
     </div>
 </div>
 
 <!-- Include custom JS -->
 <script>
-    <?php
-    //   include '../assets/js/stockChanges.js';
-    ?>
-    <?php
-    //   include '../assets/js/tables.js';
-    ?>
     $(document).ready(function() {
         loadActiveTab();
         addActiveTabEventListeners();

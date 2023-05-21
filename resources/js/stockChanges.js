@@ -125,7 +125,9 @@ function stockChangingFormExecution(change, pid) {
  */
 function callStockChangingScript(stockChanges, pid) {
 
-    var token = $('meta[name="csrf-token"]').attr('content');
+    // var token = $('meta[name="csrf-token"]').attr('content');
+    var token = $('input[name="_token"]').attr('value');
+    console.log(token);
 
     $.ajax({
         url: '/parts.prepareStockChanges',

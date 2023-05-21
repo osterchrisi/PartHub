@@ -22,7 +22,7 @@ function addPartCallback() {
   console.log(pn, q, l);
 
   // Inset new part into table
-  $.post('/PartHub/includes/create-part.php',
+  $.post('/parts.createPart',
     { part_name: pn, quantity: q, to_location: l },
     function (response) {
       // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'

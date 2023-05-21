@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class Part extends Model
@@ -96,9 +97,29 @@ class Part extends Model
             ->get()
             ->toArray();
 
-            // dd($bom_list);
         return $bom_list;
     }
+
+    //! Does not work for the "advanced" input fields yet
+    public static function createPart($part_name)
+{
+    $user_id = Auth::user()->id;
+
+    $part = new Part();
+    $part->part_name = $part_name;
+    $part->part_description = null;
+    $part->part_comment = null;
+    $part->part_category_fk = null;
+    $part->part_footprint_fk = null;
+    $part->part_unit_fk = null;
+    $part->part_owner_u_fk = $user_id;
+    $part->part_owner_g_fk = null;
+    $part->save();
+
+    $new_part_id = $part->part_id;
+
+    return $new_part_id;
+}
 
 
 
