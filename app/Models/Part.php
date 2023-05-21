@@ -102,7 +102,7 @@ class Part extends Model
 
     //! Does not work for the "advanced" input fields yet
     public static function createPart($part_name)
-{
+{    
     $user_id = Auth::user()->id;
 
     $part = new Part();

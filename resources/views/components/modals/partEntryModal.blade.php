@@ -13,7 +13,6 @@
                 <?php echo $part_name; ?><br><br>
                 <form id="partEntryForm">
                     @csrf
-                    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
                     <input class="form-control form-control-sm" placeholder="Part Name" id="addPartName" required><br>
                     <div class="row">
                         <div class="col-3">

@@ -21,10 +21,16 @@ function addPartCallback() {
   l = $("#addPartLocSelect").val(); // Location
   console.log(pn, q, l);
 
-  // Inset new part into table
-  $.post('/parts.createPart',
-    { part_name: pn, quantity: q, to_location: l },
-    function (response) {
+  var token = $('input[name="_token"]').attr('value');
+
+  $.ajax({
+    url: '/parts.create',
+    type: 'POST',
+    data: { part_name: pn, quantity: q, to_location: l },
+    headers: {
+      'X-CSRF-TOKEN': token
+    },
+    success: function (response) {
       // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
       var partId = JSON.parse(response)["Part ID"];
       updatePartsInfo(partId);
@@ -36,7 +42,36 @@ function addPartCallback() {
       $.when(rebuildPartsTable(queryString)).done(function () {
         $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
       });
-    });
+    },
+    error: function (xhr) {
+      // Handle the error
+      if (xhr.status === 419) {
+        // Token mismatch error
+        alert('CSRF token mismatch. Please refresh the page and try again.');
+      } else {
+        // Other errors
+        alert('An error occurred. Please try again.');
+      }
+    }
+  });
+
+
+  // // Inset new part into table
+  // $.post('/parts.createPart',
+  //   { part_name: pn, quantity: q, to_location: l },
+  //   function (response) {
+  //     // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
+  //     var partId = JSON.parse(response)["Part ID"];
+  //     updatePartsInfo(partId);
+  //     $('#mPartEntry').modal('hide'); // Hide modal
+  //     removeClickListeners('#addPart'); // Remove click listener from Add Part button
+
+  //     // Rebuild parts table and select new row
+  //     var queryString = window.location.search;
+  //     $.when(rebuildPartsTable(queryString)).done(function () {
+  //       $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
+  //     });
+  //   });
 }
 
 /**

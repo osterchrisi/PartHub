@@ -69,9 +69,13 @@ class PartsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $part_name = $request->get('part_name');
+        $quantity = $request->get('quantity');
+        $to_location = $request->get('to_location');
+        return array($part_name, $quantity, $to_location);
+        Part::createPart($part_name);
     }
 
     /**
