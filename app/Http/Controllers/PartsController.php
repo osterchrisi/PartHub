@@ -77,7 +77,7 @@ class PartsController extends Controller
         // return array($part_name, $quantity, $to_location);
         $new_part_id = Part::createPart($part_name);
         // CreatStockEntry
-        $new_stock_entry_id = 0;
+        $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
         // CreateStockHistoryEntry
         $new_stock_level_id = 0;
         echo json_encode(array('Part ID' => $new_part_id,

@@ -71,5 +71,16 @@ class StockLevel extends Model
         return $stockLevel ? $stockLevel->stock_level_id : null;
     }
 
+    public static function createStockLevelRecord($part_id, $to_location, $quantity)
+    {
+        $stockLevel = new StockLevel();
+        $stockLevel->part_id_fk = $part_id;
+        $stockLevel->location_id_fk = $to_location;
+        $stockLevel->stock_level_quantity = $quantity;
+        $stockLevel->save();
+
+        return $stockLevel->stock_level_id;
+    }
+
 
 }
