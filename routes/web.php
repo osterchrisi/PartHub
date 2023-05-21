@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartsController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StockLevelController;
+use App\Services\DatabaseService;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -41,6 +42,7 @@ Route::controller(PartsController::class)->group(function () {
     Route::get('/parts', 'index')->middleware(['auth', 'verified'])->name('parts');
     Route::get('/part/{id}', 'show')->middleware(['auth', 'verified']);
     Route::get('/part.getName', 'getName')->middleware(['auth', 'verified']);
+    Route::post('/part.delete', 'destroy')->middleware(['auth', 'verified']);
     Route::post('/parts.prepareStockChanges', 'prepareStockChanges')->middleware(['auth', 'verified']);
     Route::post('/parts.create', 'create')->middleware(['auth', 'verified']);
     Route::get('/parts.partsTable', 'index')->middleware(['auth', 'verified'])->name('parts.partsTable');

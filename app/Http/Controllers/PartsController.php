@@ -7,6 +7,7 @@ use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\DatabaseService;
 
 class PartsController extends Controller
 {
@@ -85,9 +86,13 @@ class PartsController extends Controller
         // Create a stock level history entry (from_location is NULL)
         $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
 
-        echo json_encode(array('Part ID' => $new_part_id,
-                                'Stock Entry ID' => $new_stock_entry_id,
-                                'Stock Level History ID' => $new_stock_level_id));
+        echo json_encode(
+            array(
+                'Part ID' => $new_part_id,
+                'Stock Entry ID' => $new_stock_entry_id,
+                'Stock Level History ID' => $new_stock_level_id
+            )
+        );
     }
 
     /**
@@ -150,9 +155,17 @@ class PartsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $table = $request->input('table');
+        $column = $request->input('column');
+        $ids = $request->input('ids');
+
+        foreach ($ids as $id) {
+            DatabaseService::deleteRow($table, $column, $id);
+            echo json_encode(array($ids, $table, $column));
+        }
+
     }
 
     private function calculateTotalStock($stockLevels)

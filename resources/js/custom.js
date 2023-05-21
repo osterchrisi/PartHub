@@ -214,15 +214,19 @@ function initializeMultiSelect(id) {
  * @return void
  */
 function deleteSelectedRows(ids, table_name, column, successCallback) {
-    console.log(ids, table_name, column, successCallback);
-    // Like, delete 'em
+
+    var token = $('input[name="_token"]').attr('value');
+
     $.ajax({
+        url: '/part.delete',
         type: 'POST',
-        url: '../includes/deleteRowInTable.php',
         data: {
             ids: ids,
             table: table_name,
             column: column
+        },
+        headers: {
+            'X-CSRF-TOKEN': token
         },
         success: function (response) {
             console.log(response);
@@ -230,6 +234,16 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
             // Updating table here because otherwise it rebuilds too fast
             var queryString = window.location.search;
             successCallback(queryString);
+        },
+        error: function (xhr) {
+            // Handle the error
+            if (xhr.status === 419) {
+                // Token mismatch error
+                alert('CSRF token mismatch. Please refresh the page and try again.');
+            } else {
+                // Other errors
+                alert('An error occurred. Please try again.');
+            }
         }
     });
 }
