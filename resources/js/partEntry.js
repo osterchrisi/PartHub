@@ -16,17 +16,22 @@ function callPartEntryModal(locations) {
  * @return void
  */
 function addPartCallback() {
-  pn = $("#addPartName").val(); // Part Name
-  q = $("#addPartQuantity").val(); // Quantity
-  l = $("#addPartLocSelect").val(); // Location
-  console.log(pn, q, l);
+  pn = $("#addPartName").val();       // Part Name
+  q = $("#addPartQuantity").val();    // Quantity
+  l = $("#addPartLocSelect").val();   // Location
+  c = $("#addPartComment").val();     // Comment
+  d = $("#addPartDescription").val(); // Description
 
   var token = $('input[name="_token"]').attr('value');
 
   $.ajax({
     url: '/parts.create',
     type: 'POST',
-    data: { part_name: pn, quantity: q, to_location: l },
+    data: { part_name: pn,
+            quantity: q,
+            to_location: l,
+            comment: c,
+            description: d },
     headers: {
       'X-CSRF-TOKEN': token
     },

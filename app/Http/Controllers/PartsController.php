@@ -71,17 +71,18 @@ class PartsController extends Controller
      */
     public function create(Request $request)
     {
-        $part_name = $request->get('part_name');
-        $quantity = $request->get('quantity');
-        $to_location = $request->get('to_location');
-        $comment = '';
+        $part_name = $request->input('part_name');
+        $quantity = $request->input('quantity');
+        $to_location = $request->input('to_location');
+        $comment = $request->input('comment', NULL);
+        $description = $request->input('description', NULL);
         $user_id = Auth::user()->id;
 
         // Insert new part 
-        $new_part_id = Part::createPart($part_name);
+        $new_part_id = Part::createPart($part_name, $comment, $description);
         // Create a stock level entry
         $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
-        // Create a stock level history entry
+        // Create a stock level history entry (from_location is NULL)
         $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
 
         echo json_encode(array('Part ID' => $new_part_id,

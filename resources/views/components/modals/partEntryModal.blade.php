@@ -36,9 +36,9 @@
                             </div>
                         </div>
                         <br>
-                        <input class="form-control form-control-sm not-required" placeholder="Description">
+                        <input class="form-control form-control-sm not-required" id="addPartDescription"placeholder="Description">
                         <br>
-                        <input class="form-control form-control-sm not-required" placeholder="Comment">
+                        <input class="form-control form-control-sm not-required" id="addPartComment" placeholder="Comment">
                     </div>
                     <div class="input-group"></div>
                 </form>
