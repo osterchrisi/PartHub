@@ -23,7 +23,7 @@
 
 {{-- Table Window --}}
 @section('table-window')
-    This is table window
+   @include('boms.bomsTable')
 @endsection
 
 {{-- Info Window --}}

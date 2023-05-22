@@ -103,26 +103,23 @@ class Part extends Model
 
     //! Does not work for the "advanced" input fields yet
     public static function createPart($part_name, $comment, $description)
-{    
-    $user_id = Auth::user()->id;
+    {
+        $user_id = Auth::user()->id;
 
-    $part = new Part();
-    $part->part_name = $part_name;
-    $part->part_description = $description;
-    $part->part_comment = $comment;
-    $part->part_category_fk = null;
-    $part->part_footprint_fk = null;
-    $part->part_unit_fk = null;
-    $part->part_owner_u_fk = $user_id;
-    $part->part_owner_g_fk = null;
-    $part->save();
+        $part = new Part();
+        $part->part_name = $part_name;
+        $part->part_description = $description;
+        $part->part_comment = $comment;
+        $part->part_category_fk = null;
+        $part->part_footprint_fk = null;
+        $part->part_unit_fk = null;
+        $part->part_owner_u_fk = $user_id;
+        $part->part_owner_g_fk = null;
+        $part->save();
 
-    $new_part_id = $part->part_id;
+        $new_part_id = $part->part_id;
 
-    return $new_part_id;
-}
-
-
-
+        return $new_part_id;
+    }
 
 }
