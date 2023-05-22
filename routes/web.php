@@ -56,6 +56,8 @@ Route::controller(PartsController::class)->group(function () {
 //* BOM Routes
 Route::controller(BomController::class)->group(function () {
     Route::get('/boms', 'index')->middleware(['auth', 'verified'])->name('boms');
+    Route::get('/boms.bomsTable', 'index')->middleware(['auth', 'verified'])->name('boms.bomsTable');
+    Route::get('/bom/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
 //* Location Routes

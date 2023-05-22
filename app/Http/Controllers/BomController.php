@@ -16,7 +16,7 @@ class BomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public static function index(Request $request)
     {
         $search_term = request()->has('search') ? request()->input('search') : '';
         $bom_list = Bom::searchBoms($search_term);
@@ -42,6 +42,22 @@ class BomController extends Controller
                 'id_field' => self::$id_field,
             ]);
         }
+    }
+
+    public static function show($bom_id)
+    {
+        $bom_info = Bom::getBomNameAndDescription($bom_id);
+        // dd($bom_info);
+        $bom_name = $bom_info[0]->bom_name;
+        $bom_description = $bom_info[0]->bom_description;
+
+        return view(
+            'boms.showBom',
+            [
+                'bom_name' => $bom_name,
+                'bom_description' => $bom_description
+            ]
+            );
     }
 
 }

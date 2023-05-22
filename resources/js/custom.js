@@ -130,7 +130,7 @@ function updateStockModal(id) {
  */
 function updateBomInfo(id) {
     $.ajax({
-        url: 'show-bom.php',
+        url: '/bom/' +id,
         type: 'GET',
         data: { id: id, hideNavbar: true },
         success: function (data) {

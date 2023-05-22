@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Bom extends Model
 {
@@ -26,10 +27,19 @@ class Bom extends Model
         $results = Bom::select('bom_id', 'bom_name', 'bom_description')
             ->where('bom_name', 'LIKE', '%' . $search_term . '%')
             ->where('bom_owner_u_fk', $user_id)
-            ->get()
-            ->toArray();
+            ->get();
+            // ->toArray();
 
         return $results;
+    }
+
+    public static function getBomNameAndDescription($bom_id)
+    {
+        return DB::table('boms')
+            ->select('bom_name', 'bom_description')
+            ->where('bom_id', $bom_id)
+            ->get();
+            // ->toArray();
     }
 
 }
