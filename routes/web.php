@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//* Database Service Routes
+Route::post('/updateRow', [DatabaseService::class, 'updateCell'])->middleware(['auth', 'verified']);
+
 //* Part Routes
 Route::controller(PartsController::class)->group(function () {
     Route::get('/parts', 'index')->middleware(['auth', 'verified'])->name('parts');
@@ -70,24 +73,27 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories.list', 'list')->middleware(['auth', 'verified']);
 });
 
-// Route::get('/categories', function () {
-//     return view('welcome', ['title' => 'Categories']);
-// })
-//     ->middleware(['auth', 'verified'])
-//     ->name('categories');
-
+//* Supplier Routes
 Route::get('/suppliers', function () {
     return view('welcome', ['title' => 'Suppliers']);
 })
     ->middleware(['auth', 'verified'])
     ->name('suppliers');
 
+//* Footprint Routes
 Route::get('/footprints', function () {
     return view('welcome', ['title' => 'Footprints']);
 })
     ->middleware(['auth', 'verified'])
     ->name('footprints');
 
+//* StockLevel Routes
+Route::get('/stocklevels', function () {
+    return StockLevelController::index(335);
+})
+    ->middleware(['auth', 'verified']);
+
+//* Standalone Pages Routes
 Route::get('/pricing', function () {
     return view('welcome', ['title' => 'Pricing']);
 })
@@ -97,8 +103,3 @@ Route::get('/signup', function () {
     return view('welcome', ['title' => 'Signup']);
 })
     ->name('signup');
-
-Route::get('/stocklevels', function () {
-    return StockLevelController::index(335);
-})
-    ->middleware(['auth', 'verified']);
