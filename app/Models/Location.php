@@ -18,7 +18,7 @@ class Location extends Model
 
         $user = Auth::user();
 
-        // Find the location with the given id and user_id
+        // Find all locations for a user_id
         $locations = Location::where('location_owner_u_fk', $user->id)
             ->get();
 

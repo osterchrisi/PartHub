@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Location;
 use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
@@ -33,6 +35,10 @@ class PartsController extends Controller
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
+        $categories = Category::availableCategories();
+        $column_names = Part::getColumnNames();
+        $locations = Location::availableLocations();
+
         /* Calculate and append each part's total stock
         / Passing a reference, so modifications made to $part directly affect 
         / the corresponding element in the original $parts array.
@@ -53,7 +59,8 @@ class PartsController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
                 'search_term' => $search_term,
-                'search_column' => $search_column
+                'search_column' => $search_column,
+                'categories' => $categories
             ]);
         }
         elseif ($route == 'parts.partsTable') {
@@ -62,7 +69,8 @@ class PartsController extends Controller
                 'db_columns' => self::$db_columns,
                 'nice_columns' => self::$nice_columns,
                 'table_name' => self::$table_name,
-                'id_field' => self::$id_field
+                'id_field' => self::$id_field,
+                'categories' => $categories
             ]);
         }
     }

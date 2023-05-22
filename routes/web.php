@@ -55,12 +55,14 @@ Route::get('/boms', function () {
     ->middleware(['auth', 'verified'])
     ->name('boms');
 
+//* Location Routes
 Route::get('/locations.get', function () {
     return LocationController::getLocations();
 })
     ->middleware(['auth', 'verified'])
     ->name('locations');
 
+//* Category Routes
 Route::get('/categories', function () {
     return view('welcome', ['title' => 'Categories']);
 })
