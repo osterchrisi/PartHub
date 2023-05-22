@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BomController;
 use App\Http\Controllers\PartsController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StockLevelController;
@@ -53,11 +54,9 @@ Route::controller(PartsController::class)->group(function () {
 });
 
 //* BOM Routes
-Route::get('/boms', function () {
-    return view('boms', ['title' => 'BOMs']);
-})
-    ->middleware(['auth', 'verified'])
-    ->name('boms');
+Route::controller(BomController::class)->group(function () {
+    Route::get('/boms', 'index')->middleware(['auth', 'verified'])->name('boms');
+});
 
 //* Location Routes
 Route::get('/locations.get', function () {

@@ -19,6 +19,7 @@
 
         <thead>
             <tr>
+                {{-- This column is for Bootstrap Table Click-To-Select to work --}}
                 <th data-field="state" data-checkbox="true"></th>
                 @foreach ($nice_columns as $column_header)
                     @if ($column_header == 'Total Stock')
