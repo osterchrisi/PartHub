@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartsController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StockLevelController;
+use App\Http\Controllers\CategoryController;
 use App\Services\DatabaseService;
 use Illuminate\Support\Facades\Route;
 
@@ -63,11 +64,17 @@ Route::get('/locations.get', function () {
     ->name('locations');
 
 //* Category Routes
-Route::get('/categories', function () {
-    return view('welcome', ['title' => 'Categories']);
-})
-    ->middleware(['auth', 'verified'])
-    ->name('categories');
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('/categories', 'index')->middleware(['auth', 'verified'])->name('categories');
+    Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
+    Route::get('/categories.list', 'list')->middleware(['auth', 'verified']);
+});
+
+// Route::get('/categories', function () {
+//     return view('welcome', ['title' => 'Categories']);
+// })
+//     ->middleware(['auth', 'verified'])
+//     ->name('categories');
 
 Route::get('/suppliers', function () {
     return view('welcome', ['title' => 'Suppliers']);

@@ -318,11 +318,10 @@ function inlineProcessing() {
       // Get list of available categories and populate dropdown
       categories = $.ajax({
         type: 'GET',
-        url: '../includes/getCategories.php',
+        url: '/categories.list',
         dataType: 'JSON',
         success: function (response) {
           categories = response;
-          console.log("categories1: ", categories);
 
           // Create select element
           var select = createInlineCategorySelect(categories, currentValue);
