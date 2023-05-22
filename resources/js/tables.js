@@ -402,23 +402,7 @@ function inlineProcessing() {
         console.log(id, id_field, column, table_name, new_value);
 
         // Call the updating function
-        $.ajax({
-          type: 'GET',
-          url: '../includes/update-cell.php',
-          data: {
-            id: id,
-            column: column,
-            table_name: table_name,
-            new_value: new_value,
-            id_field: id_field
-          },
-          success: function (data) {
-            console.log('Data updated successfully');
-          },
-          error: function (xhr, status, error) {
-            console.error('Error updating data');
-          }
-        });
+        updateCell(id, column, table_name, new_value, id_field);
         cell.removeClass('editing');
       });
     }
