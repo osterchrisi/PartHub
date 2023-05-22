@@ -296,7 +296,7 @@ function hideContextMenu($menu) {
 
 // Inline table cell manipulation of parts_table
 //TODO: Extract functions
-//TODO: Remove dropdown upon clicking out of the box or selecting same option again
+//TODO: Remove dropdown upon selecting same option again
 function inlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
     var cell = $(this);
@@ -446,27 +446,6 @@ function updateCell(id, column, table_name, new_value, id_field) {
         // Other errors
         alert('Error updating data');
       }
-    }
-  });
-
-  return $.ajax({
-    type: 'GET',
-    url: '../includes/update-cell.php',
-    data: {
-      id: id,
-      column: column,
-      table_name: table_name,
-      new_value: new_value,
-      id_field: id_field
-    },
-    success: function (data) {
-      console.log('Data updated successfully');
-    },
-    error: function (xhr, status, error) {
-      console.error('Error updating data');
-    },
-    error: function (xhr, status, error) {
-      console.error(error);
     }
   });
 }
