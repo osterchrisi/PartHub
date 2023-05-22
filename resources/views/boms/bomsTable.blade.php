@@ -22,6 +22,9 @@
                             <td data-editable="true" class="editable" data-id="{{ $bom_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                                 data-id_field="{{ $id_field }}">{{ $row[$column_data] }}</td>
+                        @else
+                        {{-- 'state' is empty, Bootstrap Tables will place a checkbox here --}}
+                        <td></td>
                         @endif
                     @endforeach
                 </tr>

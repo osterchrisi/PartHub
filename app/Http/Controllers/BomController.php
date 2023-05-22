@@ -19,8 +19,6 @@ class BomController extends Controller
     public function index(Request $request)
     {
         $search_term = request()->has('search') ? request()->input('search') : '';
-        $user_id = Auth::user()->id;
-
         $bom_list = Bom::searchBoms($search_term);
 
         // Return full parts view or only parts table depending on route
@@ -33,9 +31,6 @@ class BomController extends Controller
                 'nice_columns' => self::$nice_columns,
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
-                // 'search_term' => $search_term,
-                // 'search_column' => $search_column,
-                // 'categories' => $categories
             ]);
         }
         elseif ($route == 'boms.bomsTable') {
