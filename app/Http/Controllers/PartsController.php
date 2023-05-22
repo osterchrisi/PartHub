@@ -24,7 +24,6 @@ class PartsController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request);
         $search_column = 'everywhere';
         $search_term = request()->has('search') ? request()->input('search') : '';
         $column_names = Part::getColumnNames();
