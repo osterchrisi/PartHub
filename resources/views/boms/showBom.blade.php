@@ -29,8 +29,8 @@
 
 <!-- Include custom JS -->
 <script>
-    // $(document).ready(function() {
-    //     loadActiveTab();
-    //     addActiveTabEventListeners();
-    // });
+    $(document).ready(function() {
+        loadActiveTab('boms', 'bomsTab1');
+        addActiveTabEventListeners('boms');
+    });
 </script>

@@ -71,8 +71,8 @@
 <!-- Include custom JS -->
 <script>
     $(document).ready(function() {
-        loadActiveTab();
-        addActiveTabEventListeners();
+        loadActiveTab('parts', 'partStockInfoTabToggler');
+        addActiveTabEventListeners('parts');
         bootstrapPartInBomsTable();
         bootstrapHistTable();
         bootstrapTableSmallify();

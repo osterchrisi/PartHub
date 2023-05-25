@@ -284,24 +284,25 @@ function validateForm(formId, button, callback, args = []) {
 }
 
 /**
- * Saves the active tab in the local storage. 
+ * Saves the active tab for a specific page in the local storage.
+ * @param {string} page - The identifier of the page.
  * @param {Event} event - The event that triggered this function.
  * @returns {void}
  */
-function saveActiveTab(event) {
+function saveActiveTab(page, event) {
     const tabId = event.target.getAttribute('id');
     if (tabId) {
-        localStorage.setItem('lastActiveTab', tabId);
+        localStorage.setItem('lastActiveTab_' + page , tabId);
     }
 }
 
 /**
-* Loads the active tab from local storage and shows it.
-* @returns {void}
-*/
-function loadActiveTab() {
-    var lastActiveTab = localStorage.getItem('lastActiveTab') || 'partStockInfoTabToggler';
-
+ * Loads the active tab for a specific page from local storage and shows it.
+ * @param {string} page - The identifier of the page.
+ * @returns {void}
+ */
+function loadActiveTab(page, defaultTab) {
+    var lastActiveTab = localStorage.getItem('lastActiveTab_' + page) || defaultTab;
     if (lastActiveTab) {
         const tabElement = document.querySelector(`#${lastActiveTab}`);
         if (tabElement) {
@@ -312,15 +313,18 @@ function loadActiveTab() {
 }
 
 /**
- * Attaches an event listener to all togglable tabs which triggers the saveActiveTab function. 
+ * Attaches an event listener to all togglable tabs on a specific page
+ * which triggers the saveActiveTab function with the corresponding page identifier.
+ * @param {string} page - The identifier of the page.
  * @returns {void}
  */
-function addActiveTabEventListeners() {
+function addActiveTabEventListeners(page) {
     const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
     tabs.forEach((tab) => {
-        tab.addEventListener('shown.bs.tab', saveActiveTab);
+        tab.addEventListener('shown.bs.tab', (event) => saveActiveTab(page, event));
     });
 }
+
 
 /**
  * Initializes Bootstrap popovers on all elements with the `data-bs-toggle="popover"` attribute.
