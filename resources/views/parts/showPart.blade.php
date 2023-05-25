@@ -32,6 +32,7 @@
 
     <!-- Tabs Content -->
     <div class="tab-content" id="partsTabsContent">
+        {{-- Info Tab --}}
         <div class="tab-pane fade" id="partStockInfoTab" role="tabpanel" tabindex="0">
             <br>
             <!-- Location / Quantity Table -->
@@ -57,6 +58,7 @@
             <h5>Image:</h5>
 
         </div>
+        {{-- Stock History Tab --}}
         <div class="tab-pane fade" id="partStockHistoryTab" role="tabpanel" aria-labelledby="profile-tab"
             tabindex="0">
 
