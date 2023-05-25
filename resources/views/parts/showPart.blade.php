@@ -20,20 +20,14 @@
 
     <!-- Parts Tabs -->
     <ul class="nav nav-tabs" id="partsTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="partStockInfoTabToggler" data-bs-toggle="tab" data-bs-target="#partStockInfoTab"
-                type="button" role="tab">Info</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="partStockHistoryTabToggler" data-bs-toggle="tab"
-                data-bs-target="#partStockHistoryTab" type="button" role="tab">Stock History</button>
-        </li>
+        <x-tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
+        <x-tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
     </ul>
 
     <!-- Tabs Content -->
     <div class="tab-content" id="partsTabsContent">
         {{-- Info Tab --}}
-        <div class="tab-pane fade" id="partStockInfoTab" role="tabpanel" tabindex="0">
+        <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
             <!-- Location / Quantity Table -->
             @include('parts.stockTable')
@@ -59,8 +53,7 @@
 
         </div>
         {{-- Stock History Tab --}}
-        <div class="tab-pane fade" id="partStockHistoryTab" role="tabpanel" aria-labelledby="profile-tab"
-            tabindex="0">
+        <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
 
             @include('parts.stockHistoryTable')
 
@@ -71,7 +64,7 @@
 <!-- Include custom JS -->
 <script>
     $(document).ready(function() {
-        loadActiveTab('parts', 'partStockInfoTabToggler');
+        loadActiveTab('parts', '{{ $tabId1 }}');
         addActiveTabEventListeners('parts');
         bootstrapPartInBomsTable();
         bootstrapHistTable();

@@ -137,7 +137,15 @@ class PartsController extends Controller
                 // Stock History Table
                 'stockHistoryTableHeaders' => array('stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'),
                 'nice_stockHistoryTableHeaders' => array('Date', 'Quantity', 'From', 'To', 'Comment', 'User'),
-                'stock_history' => StockLevelHistory::getPartStockHistory($part_id)
+                'stock_history' => StockLevelHistory::getPartStockHistory($part_id),
+                // Tabs Settings
+                'tabId1' => 'info',
+                'tabText1' => 'Info',
+                'tabToggleId1' => 'partInfo',
+                'tabId2' => 'history',
+                'tabText2' => 'Stockk History',
+                'tabToggleId2' => 'partHistory'
+
 
             ]
         );

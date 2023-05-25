@@ -56,6 +56,7 @@ class BomController extends Controller
             [
                 'bom_name' => $bom_name,
                 'bom_description' => $bom_description,
+                // Tabs Settings
                 'tabId1' => 'info',
                 'tabText1' => 'Info',
                 'tabToggleId1' => 'bomInfo',
