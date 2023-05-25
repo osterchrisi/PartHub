@@ -143,7 +143,7 @@ class PartsController extends Controller
                 'tabText1' => 'Info',
                 'tabToggleId1' => 'partInfo',
                 'tabId2' => 'history',
-                'tabText2' => 'Stockk History',
+                'tabText2' => 'Stock History',
                 'tabToggleId2' => 'partHistory'
 
 
