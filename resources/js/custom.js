@@ -130,7 +130,7 @@ function updateStockModal(id) {
  */
 function updateBomInfo(id) {
     $.ajax({
-        url: '/bom/' +id,
+        url: '/bom/' + id,
         type: 'GET',
         data: { id: id, hideNavbar: true },
         success: function (data) {
@@ -215,6 +215,7 @@ function initializeMultiSelect(id) {
  */
 function deleteSelectedRows(ids, table_name, column, successCallback) {
 
+    console.log(ids.length);
     var token = $('input[name="_token"]').attr('value');
 
     $.ajax({
@@ -230,7 +231,7 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
         },
         success: function (response) {
             console.log(response);
-            console.log('success');
+            showDeletionConfirmationToast(ids.length);
             var queryString = window.location.search;
             successCallback(queryString);
         },
@@ -292,7 +293,7 @@ function validateForm(formId, button, callback, args = []) {
 function saveActiveTab(page, event) {
     const tabId = event.target.getAttribute('id');
     if (tabId) {
-        localStorage.setItem('lastActiveTab_' + page , tabId);
+        localStorage.setItem('lastActiveTab_' + page, tabId);
     }
 }
 
@@ -327,7 +328,7 @@ function addActiveTabEventListeners(page) {
 
 
 /**
- * Initializes Bootstrap popovers on all elements with the `data-bs-toggle="popover"` attribute.
+ * Initializes Bootstrap popovers on all elements with the 'data-bs-toggle="popover"' attribute.
  * @returns {void}
  */
 function initializePopovers() {
@@ -335,3 +336,21 @@ function initializePopovers() {
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 }
 
+/**
+ * Initializes Bootstrap toasts on all elements with the 'toast' class.
+ * @returns {void}
+ */
+function initializeToasts() {
+    const toastElList = document.querySelectorAll('.toast')
+    const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
+}
+
+function showDeletionConfirmationToast(numElements) {
+    const deleteToast = document.getElementById('tConfirmDelete');
+    const numDeletedItemsSpan = document.getElementById('numDeletedItems');
+    numDeletedItemsSpan.textContent = numElements.toString();
+
+    const toast = bootstrap.Toast.getOrCreateInstance(deleteToast);
+    toast.show();
+
+}

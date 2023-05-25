@@ -33,6 +33,22 @@
 {{-- Modals and Menus --}}
 @yield('modals and menus')
 
+{{-- Toasts --}}
+{{-- @yield('toasts') --}}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="tConfirmDelete" class="toast" role="alert">
+        <div class="toast-header">
+            {{-- <img src="..." class="rounded me-2" alt="..."> --}}
+            <strong class="me-auto">PartHub</strong>
+            <small>now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Successfully deleted <span id="numDeletedItems"></span> row(s).
+        </div>
+    </div>
+</div>
+
 {{-- Pretty hacky way of doing this but for porting to Laravel and making it work, I let it be --}}
 <script src="http://127.0.0.1:5173/resources/js/partEntry.js"></script>
 <script src="http://127.0.0.1:5173/resources/js/tables.js"></script>
