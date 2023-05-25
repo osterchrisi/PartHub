@@ -55,7 +55,13 @@ class BomController extends Controller
             'boms.showBom',
             [
                 'bom_name' => $bom_name,
-                'bom_description' => $bom_description
+                'bom_description' => $bom_description,
+                'tabId1' => 'info',
+                'tabText1' => 'Info',
+                'tabToggleId1' => 'bomInfo',
+                'tabId2' => 'history',
+                'tabText2' => 'Build History',
+                'tabToggleId2' => 'bomHistory'
             ]
             );
     }
