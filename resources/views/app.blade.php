@@ -38,13 +38,15 @@
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="tConfirmDelete" class="toast" role="alert">
         <div class="toast-header">
-            {{-- <img src="..." class="rounded me-2" alt="..."> --}}
-            <strong class="me-auto">PartHub</strong>
-            <small>now</small>
+            <i class="bi bi-check-square-fill text-primary"></i>
+            <strong class="me-auto text-primary">&nbsp; PartHub</strong>
+            {{-- <small>now</small> --}}
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
+            <div class="text-success m-0 p-1">
             Successfully deleted <span id="numDeletedItems"></span> row(s).
+            </div>
         </div>
     </div>
 </div>
