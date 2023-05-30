@@ -66,7 +66,9 @@
     <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
     <!-- Custom js -->
+    @vite(['resources/js/app.js'])
     @vite(['resources/js/custom.js', 'resources/js/tables.js', 'resources/js/partsView.js', 'resources/js/bomsView.js', 'resources/js/partEntry.js', 'resources/js/stockChanges.js', 'resources/css/custom.css'])
+
     <!-- Custom CSS -->
     {{-- see above --}}
     <!-- Font Awesome -->
