@@ -51,6 +51,9 @@ class BomController extends Controller
         $bom_name = $bom_info[0]->bom_name;
         $bom_description = $bom_info[0]->bom_description;
 
+        // Get BOM elements
+        $bom_elements = 0;
+
         return view(
             'boms.showBom',
             [
