@@ -34,9 +34,8 @@ use App\Http\Controllers\PartsController;
                     $part_id = $row->part_id;
                     $part_name = $row->part_name;
                     $bom_elements_id = $row->bom_elements_id;
-                    $stock = StockLevel::getStockLevelsByPartID($part_id); //getStockLevels($conn, $part_id);
-                    $total_stock = new PartsController();//getTotalStock($stock);
-                    $total_stock = $total_stock->calculateTotalStock($stock);
+                    $stock = StockLevel::getStockLevelsByPartID($part_id);
+                    $total_stock = calculateTotalStock($stock);
                 @endphp
                 <tr data-id="{{ $row->part_id }}">
                     @foreach ($db_columns as $column_data)
@@ -55,7 +54,7 @@ use App\Http\Controllers\PartsController;
                             </td>
                         @elseif ($column_data == 'can_build')
                             @php
-                                $can_build = floor($total_stock / $row['element_quantity']);
+                                $can_build = floor($total_stock / $row->element_quantity);
                             @endphp
                             <td style="text-align:right" data-id="{{ $part_id }}" data-column="{{ $column_data }}">{{ $can_build }}</td>
                         @else

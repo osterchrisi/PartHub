@@ -25,3 +25,14 @@ function buildHTMLTable($column_names, $nice_columns, $table_data, $width = "100
     $html .= "</div>";
     return $html;
 }
+
+function calculateTotalStock($stockLevels)
+{
+    $total_stock = 0;
+
+    foreach ($stockLevels as $stockLevel) {
+        $total_stock += $stockLevel['stock_level_quantity'];
+    }
+
+    return $total_stock;
+}
