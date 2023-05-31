@@ -11,8 +11,10 @@ class BomController extends Controller
 {
     private static $table_name = 'boms';
     private static $id_field = 'bom_id';
-    private static $db_columns = array('state', 'bom_name', 'bom_description', 'bom_id');
-    private static $nice_columns = array("BOM Name", 'Description', 'ID');
+    private static $bom_list_table_headers = array('state', 'bom_name', 'bom_description', 'bom_id');
+    private static $nice_bom_list_table_headers = array("BOM Name", 'Description', 'ID');
+    private static $bom_detail_table_headers = array('part_name', 'element_quantity', 'stock_available', 'can_build');
+    private static $nice_bom_detail_table_headers = array('Part Name', 'Quantity needed', 'Total stock available', 'Can build');
 
     /**
      * Display a listing of the resource.
@@ -28,8 +30,8 @@ class BomController extends Controller
             return view('boms.boms', [
                 'title' => 'BOMs',
                 'bom_list' => $bom_list,
-                'db_columns' => self::$db_columns,
-                'nice_columns' => self::$nice_columns,
+                'db_columns' => self::$bom_list_table_headers,
+                'nice_columns' => self::$nice_bom_list_table_headers,
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
@@ -37,8 +39,8 @@ class BomController extends Controller
         elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
-                'db_columns' => self::$db_columns,
-                'nice_columns' => self::$nice_columns,
+                'db_columns' => self::$bom_list_table_headers,
+                'nice_columns' => self::$nice_bom_list_table_headers,
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
@@ -61,6 +63,9 @@ class BomController extends Controller
                 'bom_name' => $bom_name,
                 'bom_description' => $bom_description,
                 'bom_elements' => $bom_elements,
+                // Bom Details Table
+                'db_columns' => self::$bom_detail_table_headers,
+                'nice_columns' => self::$nice_bom_detail_table_headers,
                 // Tabs Settings
                 'tabId1' => 'info',
                 'tabText1' => 'Info',
@@ -69,7 +74,7 @@ class BomController extends Controller
                 'tabText2' => 'Build History',
                 'tabToggleId2' => 'bomHistory'
             ]
-            );
+        );
     }
 
 }
