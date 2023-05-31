@@ -60,7 +60,7 @@ $user_name = $user ? $user->name : '';
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="nav-link" href="{{ route('dashboard') }}">Settings</a></li>
+                                    <li><a class="nav-link" href="{{ route('dashboard') }}">Profile</a></li>
                                     <li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
