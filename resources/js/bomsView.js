@@ -6,9 +6,23 @@ $(document).ready(function() {
     defineBomListTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
-    fromStockLocationDropdown('bomAssembleLocationDiv'
+
+
+    $.ajax({
+        url: '/locations.get',
+        dataType: 'json',
+        success: function (locations) {
+            fromStockLocationDropdown('bomAssembleLocationDiv', locations);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
+
+
+    // fromStockLocationDropdown('bomAssembleLocationDiv'
     // , <?php echo json_encode($locations); ?>
-    );
+    // );
     // sendFormOnDropdownChange();
 
     // Experimental ajax search
