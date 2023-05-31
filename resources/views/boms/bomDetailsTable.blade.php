@@ -1,6 +1,5 @@
 @php
     use App\Models\StockLevel;
-    use App\Http\Controllers\PartsController;
 @endphp
 
 <div>
@@ -28,8 +27,8 @@
                     $part_id = $row->part_id;
                     $part_name = $row->part_name;
                     $bom_elements_id = $row->bom_elements_id;
-                    $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = calculateTotalStock($stock);
+                    $stock_levels = StockLevel::getStockLevelsByPartID($part_id);
+                    $total_stock = \calculateTotalStock($stock_levels);
                 @endphp
                 <tr data-id="{{ $row->part_id }}">
                     @foreach ($db_columns as $column_data)
@@ -38,7 +37,7 @@
                                 {{-- This is the popover mini stock table --}}
                                 <a tabindex="0" role="button" data-bs-trigger="focus" data-bs-toggle="popover"
                                     data-bs-title="Stock for {{ $part_name }}" data-bs-html="true"
-                                    data-bs-content="{{ buildHTMLTable(['location_name', 'stock_level_quantity'], ['Location', 'Quantity'], StockLevel::getStockLevelsByPartID($part_id)) }}"
+                                    data-bs-content="{{ \buildHTMLTable(['location_name', 'stock_level_quantity'], ['Location', 'Quantity'], $stock_levels) }}"
                                     data-bs-sanitize="false" href="#">{{ $total_stock }}</a>
                             </td>
                         @elseif ($column_data == 'element_quantity')

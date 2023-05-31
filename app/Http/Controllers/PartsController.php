@@ -43,7 +43,7 @@ class PartsController extends Controller
         / the corresponding element in the original $parts array.
         */
         foreach ($parts as &$part) {
-            $totalStock = calculateTotalStock($part['stock_levels']);
+            $totalStock = \calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
         }
 
@@ -119,7 +119,7 @@ class PartsController extends Controller
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
 
         // Calculate total stock level
-        $total_stock = calculateTotalStock($part['stock_levels']);
+        $total_stock = \calculateTotalStock($part['stock_levels']);
 
         // Return view
         return view(
@@ -409,7 +409,7 @@ class PartsController extends Controller
         if (!empty($negative_stock) && !is_null($changes[0]['bom_id'])) {
             $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
             $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-            $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
+            $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
             echo json_encode(
                 array(
                     'changes' => $changes,
@@ -431,7 +431,7 @@ class PartsController extends Controller
             // return $negative_stock;
 
             $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-            $negative_stock_table = buildHTMLTable($column_names, $nice_columns, $negative_stock);
+            $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
             echo json_encode(
                 array(
                     'changes' => $changes,
@@ -489,7 +489,7 @@ class PartsController extends Controller
 
                     // Calculate new stock
                     $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = calculateTotalStock($stock);
+                    $total_stock = \calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
                     // Report back for updating tables
@@ -510,7 +510,7 @@ class PartsController extends Controller
 
                     // Calculate new stock
                     $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = calculateTotalStock($stock);
+                    $total_stock = \calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
                     // Report back for updating tables
@@ -539,7 +539,7 @@ class PartsController extends Controller
 
                     // Calculate new stock
                     $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = calculateTotalStock($stock);
+                    $total_stock = \calculateTotalStock($stock);
 
                     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
                     $result = [$hist_id, $stock_level_id, $total_stock];
