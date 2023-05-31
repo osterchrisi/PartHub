@@ -3,9 +3,8 @@
 
 {{-- Modals and Menus --}}
 @section('modals and menus')
-    @include('components.modals.stockModal')
-    @include('components.modals.partEntryModal', ['part_name' => ''])
-    @include('components.menus.partsTableRightClickMenu')
+    @include('components.modals.bomAssemblyModal')
+    @include('components.menus.bomsTableRightClickMenu')
 @endsection
 
 {{-- Extra Toolbar Buttons --}}
