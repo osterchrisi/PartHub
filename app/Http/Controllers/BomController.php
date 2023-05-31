@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BomElements;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bom;
@@ -52,13 +53,14 @@ class BomController extends Controller
         $bom_description = $bom_info[0]->bom_description;
 
         // Get BOM elements
-        $bom_elements = 0;
+        $bom_elements = BomElements::getBomElements($bom_id);
 
         return view(
             'boms.showBom',
             [
                 'bom_name' => $bom_name,
                 'bom_description' => $bom_description,
+                'bom_elements' => $bom_elements,
                 // Tabs Settings
                 'tabId1' => 'info',
                 'tabText1' => 'Info',
