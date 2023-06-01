@@ -535,7 +535,7 @@ function assembleBoms(selectedRows, ids) {
           // Attach click listener to "Do It Anyway" button
           $('#btnAssembleBOMsAnyway').on('click', function () {
             //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
-            continueAnyway(r, ids);
+            continueAnyway(r, ids, token);
           });
         }
         removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
@@ -551,50 +551,6 @@ function assembleBoms(selectedRows, ids) {
         }
       }
     });
-
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '/bom.assemble',
-    //   data: {
-    //     ids: ids,
-    //     assemble_quantity: q,
-    //     from_location: fl
-    //   },
-    //   success: function (response) {
-    //     // console.log("Response in assembleBoms JS:")
-    //     // console.log(response);
-
-    //     var r = JSON.parse(response);
-    //     if (r.negative_stock.length === 0) {
-    //       //* Do the normal thing here, all requested stock available
-
-    //       console.log(r);
-
-    //       $('#mBomAssembly').modal('hide'); // Hide Modal
-    //       updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
-    //       //TODO: Also select in table
-    //     }
-    //     else {
-    //       //* User permission required
-
-    //       console.log(r);
-
-    //       // Display warning and missing stock table
-    //       $('#btnAssembleBOMs').attr('disabled', true);
-    //       var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
-    //       message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
-    //       message += r.negative_stock_table;
-    //       $('#mBomAssemblyInfo').html(message);
-
-    //       // Attach click listener to "Do It Anyway" button
-    //       $('#btnAssembleBOMsAnyway').on('click', function () {
-    //         //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
-    //         continueAnyway(r, ids);
-    //       });
-    //     }
-    //     removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
-    //   }
-    // });
   })
 }
 
@@ -607,15 +563,22 @@ function assembleBoms(selectedRows, ids) {
 * @param {Array} ids - An array containing the IDs of the BOMs that need to be updated.
 * @returns {void}
 */
-function continueAnyway(r, ids) {
+function continueAnyway(r, ids, token) {
   //TODO: Recieving ids for updating table after success but this won't work in the future for selectively updating
+  // Change all statuses to "good to go"
   for (const change of r.changes) {
     change.status = 'gtg';
   }
 
   // Call the stock changing script with the already prepared stock changes
-  $.post('/PartHub/includes/prepareStockChanges.php', { stock_changes: r.changes },
-    function (response) {
+  $.ajax({
+    url: '/parts.prepareStockChanges',
+    type: 'POST',
+    data: { stock_changes: r.changes },
+    headers: {
+      'X-CSRF-TOKEN': token
+    },
+    success: function (response) {
       console.log(response);
       $('#mBomAssembly').on('hidden.bs.modal', function (e) {
         $('#bomAssemblyForm')[0].reset();
@@ -625,8 +588,18 @@ function continueAnyway(r, ids) {
       }).modal('hide');
       updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
       // $('#mBomAssembly').modal('dispose'); // Hide Modal
+    },
+    error: function (xhr) {
+      // Handle the error
+      if (xhr.status === 419) {
+        // Token mismatch error
+        alert('CSRF token mismatch. Please refresh the page and try again.');
+      } else {
+        // Other errors
+        alert('Error updating data');
+      }
     }
-  )
+  });
 }
 
 /**
