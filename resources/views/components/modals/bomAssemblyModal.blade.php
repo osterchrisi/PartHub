@@ -13,6 +13,7 @@
                     <span id="partEntryText">Assemble selected BOM(s)</span><br>
                 </div>
                 <form id="bomAssemblyForm">
+                    @csrf
                     <div class="row">
                         <div class="col-3">
                             <input class="form-control" placeholder="Quantity" id="bomAssembleQuantity" required>

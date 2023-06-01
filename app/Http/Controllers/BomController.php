@@ -77,4 +77,51 @@ class BomController extends Controller
         );
     }
 
+    public static function prepareBomForAssembly(Request $request)
+    {
+        // Get the input values from the request
+        $ids = $request->input('ids');
+        $assemble_quantity = $request->input('assemble_quantity');
+        $from_location = $request->input('from_location');
+
+        // The array for all acquired stock changes to go in
+        $all_stock_changes = [];
+
+        foreach ($ids as $bom_id) {
+
+            // Retrieve BOM elements (parts)
+            $elements = BomElements::getBomElements($bom_id);
+
+            // Iterating over BOM elements (parts)
+            foreach ($elements as $element) {
+                $element_quantity = $element->element_quantity;
+                $part_id = $element->part_id;
+                $reducing_quantity = $assemble_quantity * $element_quantity;
+
+                // Prepare stock change array
+                $stock_change = [
+                    'bom_id' => $bom_id,
+                    'part_id' => $part_id,
+                    'change' => '-1',
+                    'quantity' => $reducing_quantity,
+                    'to_location' => null,
+                    'from_location' => $from_location,
+                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
+                    // 'permission' => false
+                ];
+
+                $all_stock_changes[] = $stock_change;
+            }
+            // $success += 1;
+
+        }
+
+        // Assign the final array to the stock_changes key in the request input
+        $request->merge(['stock_changes' => $all_stock_changes]);
+
+        // Call the appropriate function in the PartsController
+        $partsController = new PartsController();
+        $partsController->prepareStockChanges($request);
+    }
+
 }
