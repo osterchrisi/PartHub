@@ -105,3 +105,8 @@ Route::get('/signup', function () {
     return view('welcome', ['title' => 'Signup']);
 })
     ->name('signup');
+
+Route::get('/whatis', function () {
+    return view('welcome', ['title' => 'What is PartHub, anyway?']);
+})
+    ->name('whatis');

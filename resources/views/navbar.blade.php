@@ -44,8 +44,8 @@ $user_name = $user ? $user->name : '';
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @unless (Auth::check())
                         <li>
-                            <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
-                                href="{{ route('welcome') }}">What is PartHub?</a>
+                            <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
+                                href="{{ route('whatis') }}">What is PartHub?</a>
                         </li>
                         <li>
                             <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
