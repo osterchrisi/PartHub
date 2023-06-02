@@ -30,7 +30,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Don't have an account yet? Sign up for free <a href="signup.php">here</a>!
+                    <td>Don't have an account yet? Sign up for free <a href={{ route('signup') }}>here</a>!
                     </td>
                 </tr>
                 <!-- Remember Me -->

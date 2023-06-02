@@ -102,7 +102,7 @@ Route::get('/pricing', function () {
     ->name('pricing');
 
 Route::get('/signup', function () {
-    return view('welcome', ['title' => 'Signup']);
+    return view('auth.register', ['title' => 'Signup']);
 })
     ->name('signup');
 
