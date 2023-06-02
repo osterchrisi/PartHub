@@ -97,7 +97,7 @@ Route::get('/stocklevels', function () {
 
 //* Standalone Pages Routes
 Route::get('/pricing', function () {
-    return view('welcome', ['title' => 'Pricing']);
+    return view('pricing', ['title' => 'Pricing']);
 })
     ->name('pricing');
 

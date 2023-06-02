@@ -11,3 +11,17 @@
 
 </body>
 </html>
+
+<style>
+    #welcome-headline::after {
+        content: 'BETA';
+        font-size: 12px;
+        vertical-align: top;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        continueAsDemoUser();
+    });
+</script>
