@@ -6,7 +6,7 @@ $user_name = $user ? $user->name : '';
 
 <div class="container-fluid px-0">
     <nav class="navbar navbar-expand-lg bg-primary bg-gradient"
-        style="background-color: rgba(var(--bs-primary-rgb), 0.5);">
+        style="background-color: rgba(var(--bs-primary-rgb), 0.5); color: white;">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">PartHub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -66,7 +66,10 @@ $user_name = $user ? $user->name : '';
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
+                                    <li><a class="nav-link" href="{{ route('dashboard') }}">User Settings</a></li>
                                     <li><a class="nav-link" href="{{ route('dashboard') }}">Profile</a></li>
+                                    <li><a class="nav-link" href="{{ route('dashboard') }}">Subscription</a></li>
+                                    
                                     <li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
