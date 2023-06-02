@@ -20,11 +20,17 @@
                     <h1><i class="bi bi-2-square"></i></h1>Maker<br>
                 </a></td>
             <td><a href="{{ route('locations') }}">
-                    <h1><i class="bi bi-3-square"></i></h1>Serious Playah<br>
+                    <h1><i class="bi bi-3-square"></i></h1>Serious Player <br>
                 </a></td>
             <td><a href="{{ route('locations') }}">
-                    <h1><i class="bi bi-4-square"></i></h1>Big Corp<br>
+                    <h1><i class="bi bi-4-square"></i></h1><span id="BigCorp">HugeCorp</span><br>
                 </a></td>
+        </tr>
+        <tr>
+            <td>Laying the Foundations</td>
+            <td>Starting up the Engine</td>
+            <td>Kicking into High Gear</td>
+            <td>To the Stars and Beyond</td>
         </tr>
     </table>
 @endsection

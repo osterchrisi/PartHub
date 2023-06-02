@@ -18,6 +18,12 @@
         font-size: 12px;
         vertical-align: top;
     }
+
+    #BigCorp::after {
+        content: 'TM';
+        font-size: 12px;
+        vertical-align: top;
+    }
 </style>
 
 <script>
