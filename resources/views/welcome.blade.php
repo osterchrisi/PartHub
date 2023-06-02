@@ -46,7 +46,7 @@
                         <h1><i class="bi bi-boxes"></i></h1>Categories
                     </a></td>
                 <td><a href="{{ route('suppliers') }}">
-                        <h1><i class="bi bi-cart"></i></h1>Suppliers
+                        <h1><i class="bi bi-cart2"></i></h1>Suppliers
                     </a></td>
                 <td><a href="{{ route('footprints') }}">
                         <h1><i class="bi bi-outlet"></i></h1>Footprints
