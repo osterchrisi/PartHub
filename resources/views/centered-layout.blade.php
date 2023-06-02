@@ -6,3 +6,8 @@
         @yield('content')
     </div>
 </div>
+
+@yield('modals and menus')
+
+</body>
+</html>
