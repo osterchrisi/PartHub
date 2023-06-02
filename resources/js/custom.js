@@ -137,9 +137,14 @@ function updateBomInfo(id) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
         },
-        error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load additional BOM data.');
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                $('#info-window').html('Your session expired. Please login again.')
+            }
+            else {
+                // Display an error message if the PHP page failed to load
+                $('#info-window').html('Failed to load additional BOM data.');
+            }
         }
     });
 };

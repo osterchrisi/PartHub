@@ -26,7 +26,7 @@ require __DIR__ . '/auth.php';
 //* Landing Page
 Route::get('/', function () {
     return view('welcome', ['title' => 'Open Source Inventory and BOM Management']);
-});
+})->name('welcome');
 
 //* User Stuff
 Route::get('/dashboard', function () {

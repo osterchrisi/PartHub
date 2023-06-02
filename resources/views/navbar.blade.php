@@ -42,6 +42,11 @@ $user_name = $user ? $user->name : '';
                 </ul>
                 <div class="d-flex">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        @unless (Auth::check())
+                        <li>
+                            <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
+                                href="{{ route('welcome') }}">What is PartHub?</a>
+                        </li>
                         <li>
                             <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
                                 href="{{ route('pricing') }}">Pricing</a>
@@ -50,11 +55,12 @@ $user_name = $user ? $user->name : '';
                             <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
                                 href="{{ route('signup') }}">Sign up</a>
                         </li>
+                        @endunless
                         <li>
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i class="fas fa-user"></i></a>
                             <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
-                                @if (auth()->check())
+                                @if (Auth::check())
                                     <!-- Logged in -->
                                     <li> {{ $user_name }}</li>
                                     <li>
