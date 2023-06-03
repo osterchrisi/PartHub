@@ -87,10 +87,10 @@ function stockChangingFormExecution(change, pid) {
     // Get required locations
     if (change == '1') {
         tl = $("#toStockLocation").val(); // To Location
-        fl = 'NULL'; // From Location
+        fl = null; // From Location
     }
     if (change == '-1') {
-        tl = 'NULL'; // To Location
+        tl = null; // To Location
         fl = $("#fromStockLocation").val(); // From Location
     }
     if (change == '0') {

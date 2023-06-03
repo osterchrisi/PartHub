@@ -257,19 +257,14 @@ class PartsController extends Controller
             // Get relevant stock levels for currently iterated part
             $requested_change_stock_levels = $this->getRelevantStockLevelsForChange($requested_change_details);
 
-            //* Collect changes to be made
+            // Collect changes to be made
             $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock);
 
+            // Append array of collected changes to the main arrays
             $changes[] = $result['changes'];
             $negative_stock[] = $result['negative_stock'];
 
-            // if (array_key_exists('negative_stock', $result[0])) {
-            //     $negative_stock[] = $result['negative_stock'];
-            // }
-
         }
-
-        // dd($result);
 
         //* For now just naming it back to test if I didn't break anything
         $change = $requested_change_details['change'];
@@ -330,27 +325,9 @@ class PartsController extends Controller
 
                 // Need to check these three because depnding on stock change type (1, -1, 0)
                 // they might be present or not
-                if (isset($commit_change['to_quantity'])) {
-                    $to_quantity = $commit_change['to_quantity'];
-                }
-                else {
-                    $to_quantity = NULL;
-                }
-
-                if (isset($commit_change['from_quantity'])) {
-                    $from_quantity = $commit_change['from_quantity'];
-                }
-                else {
-                    $from_quantity = NULL;
-                }
-
-
-                if (isset($commit_change['new_quantity'])) {
-                    $new_quantity = $commit_change['new_quantity'];
-                }
-                else {
-                    $new_quantity = NULL;
-                }
+                $to_quantity = $commit_change['to_quantity'] ?? NULL;
+                $from_quantity = $commit_change['from_quantity'] ?? NULL;
+                $new_quantity = $commit_change['new_quantity'] ?? NULL;
 
                 $to_location = $commit_change['to_location'];
                 $from_location = $commit_change['from_location'];
@@ -439,30 +416,11 @@ class PartsController extends Controller
         $part_id = $requested_change['part_id'];
         $quantity = $requested_change['quantity'];
         $comment = $requested_change['comment'];
-
         $to_location = $requested_change['to_location'];
-        if ($to_location == 'NULL') {
-            $to_location = NULL;
-        }
-
         $from_location = $requested_change['from_location'];
-        if ($from_location == 'NULL') {
-            $from_location = NULL;
-        }
 
-        if (isset($requested_change['status'])) {
-            $status = $requested_change['status'];
-        }
-        else {
-            $status = NULL;
-        }
-
-        if (isset($requested_change['bom_id'])) {
-            $bom_id = $requested_change['bom_id'];
-        }
-        else {
-            $bom_id = NULL;
-        }
+        $status = $requested_change['status'] ?? NULL;
+        $bom_id = $requested_change['bom_id'] ?? NULL;
 
         return array(
             'change' => $change,
@@ -525,48 +483,9 @@ class PartsController extends Controller
             // Stock in 'from location' goes negative
             if ($from_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-                //Add entry to changes array
-                // $changes[] = array(
-                //     'bom_id' => $bom_id,
-                //     'part_id' => $part_id,
-                //     'quantity' => $quantity,
-                //     'to_location' => $to_location,
-                //     'from_location' => $from_location,
-                //     'change' => $change,
-                //     'to_quantity' => $to_quantity,
-                //     'from_quantity' => $from_quantity,
-                //     'comment' => $comment,
-                //     'status' => 'permission_required'
-                // );
-                //Add entry to negative stock array
-                // $negative_stock[] = array(
-                //     'bom_id' => $bom_id,
-                //     'part_id' => $part_id,
-                //     'quantity' => $quantity,
-                //     'to_location' => $to_location,
-                //     'from_location' => $from_location,
-                //     'change' => $change,
-                //     'to_quantity' => $to_quantity,
-                //     'from_quantity' => $from_quantity,
-                //     'comment' => $comment,
-                //     'status' => 'permission_required'
-                // );
             }
             else {
                 $status = 'gtg';
-                //Add entry to changes array
-                // $changes[] = array(
-                //     'bom_id' => $bom_id,
-                //     'part_id' => $part_id,
-                //     'quantity' => $quantity,
-                //     'to_location' => $to_location,
-                //     'from_location' => $from_location,
-                //     'change' => $change,
-                //     'to_quantity' => $to_quantity,
-                //     'from_quantity' => $from_quantity,
-                //     'comment' => $comment,
-                //     'status' => 'gtg'
-                // );
             }
 
             // Append the new quantities
@@ -581,7 +500,7 @@ class PartsController extends Controller
 
         if ($status == 'permission_required') {
             $negative_stock = $changes;
-            $result['negative_stock'] = array('negative_stock' => $negative_stock);
+            $result['negative_stock'] = array($negative_stock);
         }
 
         return $result;
