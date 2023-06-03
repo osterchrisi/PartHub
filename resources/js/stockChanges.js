@@ -167,7 +167,7 @@ function callStockChangingScript(stockChanges, pid) {
                 $('#mStockModalInfo').html(message);
 
                 // Attach click listener to "Do It Anyway" button
-                changeStockAnywayClickListener(r, pid);
+                changeStockAnywayClickListener(r, pid, token);
             }
         },
         error: function (xhr) {
@@ -194,14 +194,12 @@ function callStockChangingScript(stockChanges, pid) {
  * @param {number} pid - The part ID for which the stock change was requested and the info window will be updated
  * @return void
  */
-function changeStockAnywayClickListener(r, pid) {
+function changeStockAnywayClickListener(r, pid, token) {
     $('#btnChangeStockAnyway').on('click', function () {
         // //! In stock changing JS, this doesn't even have IDs array yet
         // //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
         // //TODO: Left it away for now and just hard-coding. Would be nice to unify in the future
         // continueAnyway(r, ids);
-
-        var token = $('meta[name="csrf-token"]').attr('content');
 
         for (const change of r.changes) {
             change.status = 'gtg';
@@ -234,7 +232,7 @@ function changeStockAnywayClickListener(r, pid) {
                 // Handle the error
                 if (xhr.status === 419) {
                     // Token mismatch error
-                    alert('CSRF token mismatch. Please refresh the page and try again.');
+                    alert('CSRF token mismatch. Please refresh the page and try againn.');
                 } else {
                     // Other errors
                     alert('An error occurred. Please try again.');
