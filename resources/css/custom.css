@@ -60,13 +60,12 @@ tr.selected-last td {
 
 /* Navbar Links */
 .nav-link {
+    /* This overrides --bs-nav-link-color */
     color: white;
-    /* --bs-nav-link-color */
 }
 
 /* Tab Links in info window */
 .nav-link.tab-link {
-    /* color: --bs-primary; */
     color: var(--bs-nav-link-color);
 }
 
@@ -77,8 +76,8 @@ ul.dropdown-menu a {
 
 
 .navbar-nav .nav-link.active {
+    /* This overrides --bs-navbar-active-color */
     color: greenyellow;
-    /* --bs-navbar-active-color */
 }
 
 .navbar-brand,
