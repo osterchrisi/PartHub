@@ -1,7 +1,7 @@
 <div class="container-fluid px-0 sticky-top" style="z-index: 2;">
     <div class="bg-info bg-gradient d-flex align-items-center ">
         <div class="pb-0 mb-0 pt-2 ps-3">
-            <h4>{{ $title }}</h4>
+            <h4 class="toolbar-title">{{ $title }}</h4>
         </div>
         <ul class="nav px-2">
             <li class="nav-item p-1">

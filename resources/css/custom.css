@@ -55,8 +55,23 @@ tr.selected-last td {
 .btn-labeled {
 	padding-top: 0;
 	padding-bottom: 0;
-}y
+}
 
+.nav-link {
+    color: white;
+    /* --bs-nav-link-color */
+  }
+
+.navbar-nav .nav-link.active{
+    color: greenyellow;
+    /* --bs-navbar-active-color */
+}
+
+.navbar-brand,
+.toolbar-title {
+    color:rgb(0, 0, 0);
+}
+  
 
 /* These are for the resizable divs  */
 .ui-resizable-e {
