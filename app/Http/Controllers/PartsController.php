@@ -268,19 +268,8 @@ class PartsController extends Controller
 
         }
 
-
         //* For now just naming it back to test if I didn't break anything
         $change = $requested_change_details['change'];
-        // $negative_stock = $result['negative_stock'];
-        //TODO: Okay, this is kind of silly but currently a consequence of porting to Laravel
-        //TODO: The negative_stock array used to only have relevant entries but currently has an
-        //TODO: empty array for each part that has enough stock.
-        // $negative_stock = array_filter($negative_stock, function($element) {
-        //     return !empty($element);
-        // });
-
-        // dd($changes, $negative_stock);
-
 
         //* Make the actual stock change entries and stock change history entries
         //TODO: Would be maybe nice to extract this to different file?
@@ -507,16 +496,15 @@ class PartsController extends Controller
         $changes['status'] = $status;
 
         // Produce result array
-        // $result = array('changes' => $changes, 'negative_stock' => array());
         $result = array('changes' => $changes);
 
-        // If permission is required, add the negative_stock array also
+        // If permission is required because stock is short,
+        // also append the negative_stock array
         if ($status == 'permission_required') {
             $negative_stock = $changes;
             $result['negative_stock'] = $negative_stock;
         }
 
         return $result;
-        dd($result);
     }
 }
