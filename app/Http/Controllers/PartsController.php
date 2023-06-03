@@ -272,45 +272,13 @@ class PartsController extends Controller
 
         }
 
-        //* Make the actual stock change entries and stock change history entries
-        //TODO: Would be maybe nice to extract this to different file?
 
-        //* If there are stock shortages processing BOMs, produce table and send back to user
-        if (!empty($negative_stock) && !is_null($changes[0]['bom_id'])) {
-            $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
-            $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-            $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
-            echo json_encode(
-                array(
-                    'changes' => $changes,
-                    'negative_stock' => $negative_stock,
-                    'negative_stock_table' => $negative_stock_table,
-                    'status' => 'permission_requested'
-                )
-            );
+        //* There is stock shortage, inform user and exit
+        if (!empty($negative_stock)) {
+            $this->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
         }
-        //* If there are stock shortages processing parts, produce table and send back to user
-        elseif (!empty($negative_stock) && is_null($changes[0]['bom_id'])) {
-            if ($change == 0) {
-                $column_names = array('part_id', 'quantity', 'from_location', 'from_quantity');
-            }
-            else {
-                $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
-            }
 
-            $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
-            $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
-            echo json_encode(
-                array(
-                    'changes' => $changes,
-                    'negative_stock' => $negative_stock,
-                    'negative_stock_table' => $negative_stock_table,
-                    'status' => 'permission_requested'
-                )
-            );
-            exit;
-        }
         //* If no user permission is necessary
         else {
             foreach ($changes as $commit_change) {
@@ -506,5 +474,37 @@ class PartsController extends Controller
         }
 
         return $result;
+    }
+
+    private function generateStockShortageResponse($negative_stock, $changes, $change)
+    {
+        //* Stock shortage while processing parts for BOMs
+        if (!is_null($changes[0]['bom_id'])) {
+            $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
+            $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
+        }
+        //* Stock shortage while processing parts without BOMs
+        else {
+            // Need to select the correct key from the array, depending on the requested change
+            if ($change == 0) {
+                $column_names = array('part_id', 'quantity', 'from_location', 'from_quantity');
+            }
+            else {
+                $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
+            }
+
+            $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
+        }
+
+        //* Produce table and send the whole lot back to the user
+        $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
+        echo json_encode(
+            array(
+                'changes' => $changes,
+                'negative_stock' => $negative_stock,
+                'negative_stock_table' => $negative_stock_table,
+                'status' => 'permission_requested'
+            )
+        );
     }
 }
