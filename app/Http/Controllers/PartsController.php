@@ -262,13 +262,25 @@ class PartsController extends Controller
 
             // Append array of collected changes to the main arrays
             $changes[] = $result['changes'];
-            $negative_stock[] = $result['negative_stock'];
+            if (array_key_exists('negative_stock', $result)) {
+                $negative_stock[] = $result['negative_stock'];
+            }
 
         }
 
+
         //* For now just naming it back to test if I didn't break anything
         $change = $requested_change_details['change'];
-        $negative_stock = $result['negative_stock'];
+        // $negative_stock = $result['negative_stock'];
+        //TODO: Okay, this is kind of silly but currently a consequence of porting to Laravel
+        //TODO: The negative_stock array used to only have relevant entries but currently has an
+        //TODO: empty array for each part that has enough stock.
+        // $negative_stock = array_filter($negative_stock, function($element) {
+        //     return !empty($element);
+        // });
+
+        // dd($changes, $negative_stock);
+
 
         //* Make the actual stock change entries and stock change history entries
         //TODO: Would be maybe nice to extract this to different file?
@@ -291,14 +303,12 @@ class PartsController extends Controller
         }
         //* If there are stock shortages processing parts, produce table and send back to user
         elseif (!empty($negative_stock) && is_null($changes[0]['bom_id'])) {
-            // dd($negative_stock,  $changes);
             if ($change == 0) {
                 $column_names = array('part_id', 'quantity', 'from_location', 'from_quantity');
             }
             else {
                 $column_names = array('part_id', 'quantity', 'from_location', 'new_quantity');
             }
-            // return $negative_stock;
 
             $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
             $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
@@ -496,13 +506,17 @@ class PartsController extends Controller
         // Append status
         $changes['status'] = $status;
 
-        $result = array('changes' => $changes, 'negative_stock' => array());
+        // Produce result array
+        // $result = array('changes' => $changes, 'negative_stock' => array());
+        $result = array('changes' => $changes);
 
+        // If permission is required, add the negative_stock array also
         if ($status == 'permission_required') {
             $negative_stock = $changes;
-            $result['negative_stock'] = array($negative_stock);
+            $result['negative_stock'] = $negative_stock;
         }
 
         return $result;
+        dd($result);
     }
 }

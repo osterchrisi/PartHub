@@ -494,6 +494,8 @@ function assembleBoms(selectedRows, ids) {
     fl = $("#fromStockLocation").val(); // From Location
     var token = $('input[name="_token"]').attr('value');
 
+    console.log('Assembling BOMs with the following ids: ', ids);
+
     $.ajax({
       url: '/bom.assemble',
       type: 'POST',
@@ -510,7 +512,7 @@ function assembleBoms(selectedRows, ids) {
         var r = JSON.parse(response);
         if (r.negative_stock.length === 0) {
           //* Do the normal thing here, all requested stock available
-
+          console.log("All requested stock was available");
           console.log(r);
 
           $('#mBomAssembly').modal('hide'); // Hide Modal
@@ -520,6 +522,7 @@ function assembleBoms(selectedRows, ids) {
         else {
           //* User permission required
 
+          console.log("Not all requested stock was available");
           console.log(r);
 
           // Display warning and missing stock table

@@ -86,6 +86,7 @@ class BomController extends Controller
 
         // The array for all acquired stock changes to go in
         $all_stock_changes = [];
+        // dd($ids);
 
         foreach ($ids as $bom_id) {
 
@@ -118,6 +119,7 @@ class BomController extends Controller
 
         // Assign the final array to the stock_changes key in the request input
         $request->merge(['stock_changes' => $all_stock_changes]);
+        // dd($request['stock_changes']);
 
         // Call the appropriate function in the PartsController
         $partsController = new PartsController();
