@@ -242,7 +242,6 @@ class PartsController extends Controller
         $requested_changes = $request->all()['stock_changes'];
 
         // Extracting the type of change from the first entry
-        //TODO They should all be the same, so I feel there is space for improvement
         $change = $requested_changes[0]['change'];
 
         // Initialize the changes array and negative stock array
@@ -272,7 +271,6 @@ class PartsController extends Controller
 
         }
 
-
         //* There is stock shortage, inform user and exit
         if (!empty($negative_stock)) {
             $this->generateStockShortageResponse($negative_stock, $changes, $change);
@@ -291,7 +289,7 @@ class PartsController extends Controller
                 $quantity = $commit_change['quantity'];
 
                 // Need to check these three because depending on stock change type (1, -1, 0)
-                // they might be present or not. If not, set them to NULL
+                // they might be present or not. If not, set them to NULL so the database doesn't complain
                 $to_quantity = $commit_change['to_quantity'] ?? NULL;
                 $from_quantity = $commit_change['from_quantity'] ?? NULL;
                 $new_quantity = $commit_change['new_quantity'] ?? NULL;
@@ -299,7 +297,6 @@ class PartsController extends Controller
                 $to_location = $commit_change['to_location'];
                 $from_location = $commit_change['from_location'];
                 $comment = $commit_change['comment'];
-                $status = $commit_change['status'];
 
                 //* Make records in Stock Level model
                 // Add Stock
@@ -366,7 +363,10 @@ class PartsController extends Controller
 
     private function getRelevantStockLevelsForChange($requested_change_details)
     {
+        // Retrieve all stock levels for the given part from the database
         $stock_levels = StockLevel::getStockLevelsByPartID($requested_change_details['part_id']);
+
+        // Get the relevant stock leves for the requested change
         $current_stock_level_to = StockLevel::getStockInLocation($stock_levels, $requested_change_details['to_location']);
         $current_stock_level_from = StockLevel::getStockInLocation($stock_levels, $requested_change_details['from_location']);
 
@@ -381,13 +381,13 @@ class PartsController extends Controller
         $changes = $requested_change_details;
         $change = $requested_change_details['change'];
 
-
         //* Add Stock
         if ($change == 1) {
             $new_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
             $status = 'gtg';
         }
+
         //* Reduce Stock
         elseif ($change == -1) {
             $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
@@ -423,14 +423,16 @@ class PartsController extends Controller
             $changes['from_quantity'] = $from_quantity;
         }
 
-        // Append status
+        // Append the status
         $changes['status'] = $status;
 
-        // Produce result array
+        // Produce a result array
         $result = array('changes' => $changes);
 
         // If permission is required because stock is short,
-        // also append the negative_stock array
+        // also append the negative_stock array for generating a
+        // table to show the user
+        //TODO: There might be a better way to do this than to have two separate tables
         if ($status == 'permission_required') {
             $negative_stock = $changes;
             $result['negative_stock'] = $negative_stock;
@@ -459,7 +461,7 @@ class PartsController extends Controller
             $nice_columns = array('Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
         }
 
-        //* Produce table and send the whole lot back to the user
+        //* Produce HTML table and send the whole lot back to the user
         $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
         echo json_encode(
             array(
