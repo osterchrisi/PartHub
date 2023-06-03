@@ -6,7 +6,7 @@ $user_name = $user ? $user->name : '';
 
 <div class="container-fluid px-0">
     <nav class="navbar navbar-expand-lg bg-primary bg-gradient"
-        style="background-color: rgba(var(--bs-primary-rgb), 0.5); color: white;">
+        style="background-color: rgba(var(--bs-primary-rgb), 0.5);">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">PartHub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -74,7 +74,7 @@ $user_name = $user ? $user->name : '';
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <div class="d-grid justify-content-md-end">
-                                                <button type="submit" class="nav-link" style="background: none; border: none;">Log
+                                                <button type="submit" class="nav-link" style="background: none; border: none; color: black">Log
                                                     Out</button>
                                             </div>
                                         </form>

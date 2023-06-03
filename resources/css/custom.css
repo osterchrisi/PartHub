@@ -16,62 +16,68 @@ a {
 /* Selected row in parts table */
 tr.selected {
     background-color: rgba(var(--bs-info-rgb), 0.5);
-    border:var(--bs-primary-border-subtle) solid 2px;
+    border: var(--bs-primary-border-subtle) solid 2px;
 }
 
 tr.selected-last {
     background-color: rgba(var(--bs-primary-rgb), 0.5);
-    border:var(--bs-primary-border-subtle) solid 2px;
+    border: var(--bs-primary-border-subtle) solid 2px;
 }
 
 tr.selected-last td {
-    border:var(--bs-primary-border-subtle) solid 2px;
+    border: var(--bs-primary-border-subtle) solid 2px;
 }
 
 
 /* Prohibit selecting text when pressing shift (selecting multiple rows in table) */
 .table-no-select tbody tr td {
     user-select: none;
-  }
+}
 
 /* Info window */
 .info-window {
     border: 1px solid rgba(var(--bs-primary-rgb), 0.1);
     overflow: auto;
-    z-index: 1; /* Otherwise overlaps with other elements */
+    z-index: 1;
+    /* Otherwise overlaps with other elements */
 }
 
 /* Action Buttons */
 .btn-label {
-	position: relative;
-	left: -8px;
-	display: inline-block;
-	padding: 4px 12px 3px;
+    position: relative;
+    left: -8px;
+    display: inline-block;
+    padding: 4px 12px 3px;
     margin: 0;
-	background: rgba(0, 0, 0, 0.15);
-	border-radius: 3px 0 0 3px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px 0 0 3px;
 }
 
 .btn-labeled {
-	padding-top: 0;
-	padding-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .nav-link {
     color: white;
     /* --bs-nav-link-color */
-  }
+}
 
-.navbar-nav .nav-link.active{
+ul.dropdown-menu a {
+   color: black;
+}
+
+
+.navbar-nav .nav-link.active {
     color: greenyellow;
     /* --bs-navbar-active-color */
 }
 
 .navbar-brand,
 .toolbar-title {
-    color:rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
 }
-  
+
 
 /* These are for the resizable divs  */
 .ui-resizable-e {
