@@ -251,155 +251,14 @@ class PartsController extends Controller
         //* Each $requested_change entry holds one part
         foreach ($requested_changes as $requested_change) {
 
-            // Gather variables
-            $change = $requested_change['change'];
+            // Extract variables from request
+            $requested_change_details = $this->parseRequestedChangeDetails($requested_change);
 
-            $part_id = $requested_change['part_id'];
-            $quantity = $requested_change['quantity'];
-            $comment = $requested_change['comment'];
-
-            $to_location = $requested_change['to_location'];
-            if ($to_location == 'NULL') {
-                $to_location = NULL;
-            }
-
-            $from_location = $requested_change['from_location'];
-            if ($from_location == 'NULL') {
-                $from_location = NULL;
-            }
-
-            if (isset($requested_change['status'])) {
-                $status = $requested_change['status'];
-            }
-            else {
-                $status = NULL;
-            }
-
-            if (isset($requested_change['bom_id'])) {
-                $bom_id = $requested_change['bom_id'];
-            }
-            else {
-                $bom_id = NULL;
-            }
-
-            // Get all dem stock levels for currently iterated part
-            $stock_levels = StockLevel::getStockLevelsByPartID($part_id);
-            $current_stock_level_to = StockLevel::getStockInLocation($stock_levels, $to_location);
-            $current_stock_level_from = StockLevel::getStockInLocation($stock_levels, $from_location);
+            // Get relevant stock levels for currently iterated part
+            $requested_change_stock_levels = $this->getRelevantStockLevelsForChange($requested_change_details);
 
             //* Collect changes to be made
-            if ($change == 1) { // Add Stock
-                $new_quantity = $current_stock_level_to + $quantity;
-                //Add entry to changes array
-                $changes[] = array(
-                    'bom_id' => $bom_id,
-                    'part_id' => $part_id,
-                    'quantity' => $quantity,
-                    'to_location' => $to_location,
-                    'from_location' => $from_location,
-                    'change' => $change,
-                    'new_quantity' => $new_quantity,
-                    'comment' => $comment,
-                    'status' => 'gtg'
-                );
-            }
-            elseif ($change == -1) { // Reduce Stock
-                $new_quantity = $current_stock_level_from - $quantity;
-
-                // Stock would go negative
-                if ($new_quantity < 0 && $status != 'gtg') {
-                    $changes[] = array(
-                        'bom_id' => $bom_id,
-                        'part_id' => $part_id,
-                        'quantity' => $quantity,
-                        'to_location' => $to_location,
-                        'from_location' => $from_location,
-                        'change' => $change,
-                        'new_quantity' => $new_quantity,
-                        'comment' => $comment,
-                        'status' => 'permission_required'
-                    );
-                    //Add entry to negative stock array
-                    $negative_stock[] = array(
-                        'bom_id' => $bom_id,
-                        'part_id' => $part_id,
-                        'quantity' => $quantity,
-                        'to_location' => $to_location,
-                        'from_location' => $from_location,
-                        'change' => $change,
-                        'new_quantity' => $new_quantity,
-                        'comment' => $comment,
-                        'status' => 'permission_required'
-                    );
-                }
-                else {
-                    //Add entry to changes array
-                    $changes[] = array(
-                        'bom_id' => $bom_id,
-                        'part_id' => $part_id,
-                        'quantity' => $quantity,
-                        'to_location' => $to_location,
-                        'from_location' => $from_location,
-                        'change' => $change,
-                        'new_quantity' => $new_quantity,
-                        'comment' => $comment,
-                        'status' => 'gtg'
-                    );
-                }
-            }
-            elseif ($change == 0) { // Move Stock
-                // New quantity in 'to location'
-                $to_quantity = $current_stock_level_to + $quantity;
-
-                // New quantity in 'from_location'
-                $from_quantity = $current_stock_level_from - $quantity;
-
-                // Stock in 'from location' goes negative
-                if ($from_quantity < 0 && $status != 'gtg') {
-                    //Add entry to changes array
-                    $changes[] = array(
-                        'bom_id' => $bom_id,
-                        'part_id' => $part_id,
-                        'quantity' => $quantity,
-                        'to_location' => $to_location,
-                        'from_location' => $from_location,
-                        'change' => $change,
-                        'to_quantity' => $to_quantity,
-                        'from_quantity' => $from_quantity,
-                        'comment' => $comment,
-                        'status' => 'permission_required'
-                    );
-                    //Add entry to negative stock array
-                    $negative_stock[] = array(
-                        'bom_id' => $bom_id,
-                        'part_id' => $part_id,
-                        'quantity' => $quantity,
-                        'to_location' => $to_location,
-                        'from_location' => $from_location,
-                        'change' => $change,
-                        'to_quantity' => $to_quantity,
-                        'from_quantity' => $from_quantity,
-                        'comment' => $comment,
-                        'status' => 'permission_required'
-                    );
-                }
-                else {
-                    //Add entry to changes array
-                    $changes[] = array(
-                        'bom_id' => $bom_id,
-                        'part_id' => $part_id,
-                        'quantity' => $quantity,
-                        'to_location' => $to_location,
-                        'from_location' => $from_location,
-                        'change' => $change,
-                        'to_quantity' => $to_quantity,
-                        'from_quantity' => $from_quantity,
-                        'comment' => $comment,
-                        'status' => 'gtg'
-                    );
-                }
-            }
-
+            $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock);
         }
 
         //* Make the actual stock change entries and stock change history entries
@@ -555,5 +414,140 @@ class PartsController extends Controller
                 }
             }
         }
+    }
+
+    private function parseRequestedChangeDetails($requested_change)
+    {
+        $change = $requested_change['change'];
+
+        $part_id = $requested_change['part_id'];
+        $quantity = $requested_change['quantity'];
+        $comment = $requested_change['comment'];
+
+        $to_location = $requested_change['to_location'];
+        if ($to_location == 'NULL') {
+            $to_location = NULL;
+        }
+
+        $from_location = $requested_change['from_location'];
+        if ($from_location == 'NULL') {
+            $from_location = NULL;
+        }
+
+        if (isset($requested_change['status'])) {
+            $status = $requested_change['status'];
+        }
+        else {
+            $status = NULL;
+        }
+
+        if (isset($requested_change['bom_id'])) {
+            $bom_id = $requested_change['bom_id'];
+        }
+        else {
+            $bom_id = NULL;
+        }
+
+        return array(
+            'change' => $change,
+            'bom_id' => $bom_id,
+            'part_id' => $part_id,
+            'quantity' => $quantity,
+            'to_location' => $to_location,
+            'from_location' => $from_location,
+            'comment' => $comment,
+            'status' => $status
+        );
+    }
+
+    private function getRelevantStockLevelsForChange($requested_change_details)
+    {
+        $stock_levels = StockLevel::getStockLevelsByPartID($requested_change_details['part_id']);
+        $current_stock_level_to = StockLevel::getStockInLocation($stock_levels, $requested_change_details['to_location']);
+        $current_stock_level_from = StockLevel::getStockInLocation($stock_levels, $requested_change_details['from_location']);
+
+        return array(
+            'current_stock_level_to' => $current_stock_level_to,
+            'current_stock_level_from' => $current_stock_level_from
+        );
+    }
+
+    private function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock)
+    {
+        $change = $requested_change_details['change'];
+        if ($change == 1) { // Add Stock
+            $new_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
+            $status = 'gtg';
+        }
+        elseif ($change == -1) { // Reduce Stock
+            $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
+
+            // Stock would go negative
+            if ($new_quantity < 0 && $requested_change_details['status'] != 'gtg') {
+                $status = 'permission_required';
+            }
+            else {
+                $status = 'gtg';
+            }
+        }
+        elseif ($change == 0) { // Move Stock
+            // New quantity in 'to location'
+            $to_quantity = $current_stock_level_to + $quantity;
+
+            // New quantity in 'from_location'
+            $from_quantity = $current_stock_level_from - $quantity;
+
+            // Stock in 'from location' goes negative
+            if ($from_quantity < 0 && $status != 'gtg') {
+                //Add entry to changes array
+                $changes[] = array(
+                    'bom_id' => $bom_id,
+                    'part_id' => $part_id,
+                    'quantity' => $quantity,
+                    'to_location' => $to_location,
+                    'from_location' => $from_location,
+                    'change' => $change,
+                    'to_quantity' => $to_quantity,
+                    'from_quantity' => $from_quantity,
+                    'comment' => $comment,
+                    'status' => 'permission_required'
+                );
+                //Add entry to negative stock array
+                $negative_stock[] = array(
+                    'bom_id' => $bom_id,
+                    'part_id' => $part_id,
+                    'quantity' => $quantity,
+                    'to_location' => $to_location,
+                    'from_location' => $from_location,
+                    'change' => $change,
+                    'to_quantity' => $to_quantity,
+                    'from_quantity' => $from_quantity,
+                    'comment' => $comment,
+                    'status' => 'permission_required'
+                );
+            }
+            else {
+                //Add entry to changes array
+                $changes[] = array(
+                    'bom_id' => $bom_id,
+                    'part_id' => $part_id,
+                    'quantity' => $quantity,
+                    'to_location' => $to_location,
+                    'from_location' => $from_location,
+                    'change' => $change,
+                    'to_quantity' => $to_quantity,
+                    'from_quantity' => $from_quantity,
+                    'comment' => $comment,
+                    'status' => 'gtg'
+                );
+            }
+        }
+
+        // Append new quantity and status to the array
+        $changes = $requested_change_details;
+        $changes['new_quantity'] = $new_quantity;
+        $changes['status'] = $status;
+
+        $negative_stock = $changes;
     }
 }
