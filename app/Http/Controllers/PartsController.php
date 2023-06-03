@@ -290,8 +290,8 @@ class PartsController extends Controller
                 //! Why are there so many quantities!? :D
                 $quantity = $commit_change['quantity'];
 
-                // Need to check these three because depnding on stock change type (1, -1, 0)
-                // they might be present or not
+                // Need to check these three because depending on stock change type (1, -1, 0)
+                // they might be present or not. If not, set them to NULL
                 $to_quantity = $commit_change['to_quantity'] ?? NULL;
                 $from_quantity = $commit_change['from_quantity'] ?? NULL;
                 $new_quantity = $commit_change['new_quantity'] ?? NULL;
@@ -301,77 +301,40 @@ class PartsController extends Controller
                 $comment = $commit_change['comment'];
                 $status = $commit_change['status'];
 
-                if ($change == 1) { // Add Stock
-                    // Make records in stock_level and stock_level_change_history tables
+                //* Make records in Stock Level model
+                // Add Stock
+                if ($change == 1) {
                     $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
-                    $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-
-                    // Calculate new stock
-                    $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = \calculateTotalStock($stock);
-
-                    //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-                    // Report back for updating tables
-                    $result = [$hist_id, $stock_level_id, $total_stock];
-                    echo json_encode(
-                        array(
-                            'changes' => array(),
-                            'negative_stock' => array(),
-                            'negative_stock_table' => array(),
-                            'status' => 'success',
-                            'result' => $result
-                        )
-                    );
                 }
-                elseif ($change == -1) { // Reduce Stock
+                // Reduce Stock
+                elseif ($change == -1) {
                     $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
-                    $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-
-                    // Calculate new stock
-                    $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = \calculateTotalStock($stock);
-
-                    //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-                    // Report back for updating tables
-                    $result = [$hist_id, $stock_level_id, $total_stock];
-                    echo json_encode(
-                        array(
-                            'changes' => array(),
-                            'negative_stock' => array(),
-                            'negative_stock_table' => array(),
-                            'status' => 'success',
-                            'result' => $result
-                        )
-                    );
                 }
+                // Move Stock (need to create or update two entries)
                 elseif ($change == 0) {
                     // First add stock in 'to location'
                     $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
 
                     // Then reduce stock in 'from location'
                     $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
-
-                    // History entry
-                    $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-
-                    // Reporting stock so that it can be updated in the origin table
-
-                    // Calculate new stock
-                    $stock = StockLevel::getStockLevelsByPartID($part_id);
-                    $total_stock = \calculateTotalStock($stock);
-
-                    //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-                    $result = [$hist_id, $stock_level_id, $total_stock];
-                    echo json_encode(
-                        array(
-                            'changes' => array(),
-                            'negative_stock' => array(),
-                            'negative_stock_table' => array(),
-                            'status' => 'success',
-                            'result' => $result
-                        )
-                    );
                 }
+
+                //* Make record in Stock Level History model
+                $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+
+                // Calculate new stock for updating the origin table in browser
+                $stock = StockLevel::getStockLevelsByPartID($part_id);
+                $total_stock = \calculateTotalStock($stock);
+
+                //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
+                // Report all the goodies back for updating tables
+                $result = [$hist_id, $stock_level_id, $total_stock];
+                echo json_encode(
+                    array(
+                        'status' => 'success',
+                        'result' => $result
+                    )
+                );
             }
         }
     }
