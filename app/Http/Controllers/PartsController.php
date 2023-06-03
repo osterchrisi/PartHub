@@ -241,6 +241,10 @@ class PartsController extends Controller
         // Access stock changes to prepare
         $requested_changes = $request->all()['stock_changes'];
 
+        // Extracting the type of change from the first entry
+        //TODO They should all be the same, so I feel there is space for improvement
+        $change = $requested_changes[0]['change'];
+
         // Initialize the changes array and negative stock array
         $changes = array();
         $negative_stock = array();
@@ -268,15 +272,11 @@ class PartsController extends Controller
 
         }
 
-        //* For now just naming it back to test if I didn't break anything
-        $change = $requested_change_details['change'];
-
         //* Make the actual stock change entries and stock change history entries
         //TODO: Would be maybe nice to extract this to different file?
 
         //* If there are stock shortages processing BOMs, produce table and send back to user
         if (!empty($negative_stock) && !is_null($changes[0]['bom_id'])) {
-            // dd($negative_stock);
             $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
             $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
             $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
