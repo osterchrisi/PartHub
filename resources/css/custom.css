@@ -58,11 +58,19 @@ tr.selected-last td {
     padding-bottom: 0;
 }
 
+/* Navbar Links */
 .nav-link {
     color: white;
     /* --bs-nav-link-color */
 }
 
+/* Tab Links in info window */
+.nav-link.tab-link {
+    /* color: --bs-primary; */
+    color: var(--bs-nav-link-color);
+}
+
+/* Links in the user dropdown */
 ul.dropdown-menu a {
    color: black;
 }
