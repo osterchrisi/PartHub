@@ -18,6 +18,8 @@ class BomElements extends Model
         'element_quantity'
     ];
 
+    public $timestamps = false;
+
 
     public function part()
     {

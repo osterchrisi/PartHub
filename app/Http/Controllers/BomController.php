@@ -137,7 +137,7 @@ class BomController extends Controller
         $bom_id = Bom::createBom($bom_name, $bom_description);
 
         // Process the uploaded file
-        Excel::import(new BomImport, $file, $bom_id);
+        Excel::import(new BomImport($bom_id), $file);
 
         // Redirect or return a response
         return redirect()->back()->with('success', 'BOMs imported successfully.');

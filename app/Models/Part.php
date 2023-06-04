@@ -20,7 +20,7 @@ class Part extends Model
 
     public function unit()
     {
-        // return $this->belongsTo(Unit::class, 'part_unit_fk');
+        return $this->belongsTo(Unit::class, 'part_unit_fk');
     }
 
     public function stockLevels()
