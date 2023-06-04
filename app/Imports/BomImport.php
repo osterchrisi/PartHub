@@ -10,13 +10,14 @@ class BomImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        // Logic to transform and create BOM model
-        // Example:
-        return new Bom([
+        $bom = new Bom([
             'bom_name' => $row['bom_name'],
-            'bom_description' => $row['bom_description'],
-            'owner' => auth()->user()->id,
+            'bom_description' => $row['bom_description']
         ]);
+        $bom->bom_owner_u_fk = auth()->user()->id;
+        $bom->save();
+
+        return $bom;
     }
 
     public function headingRow(): int

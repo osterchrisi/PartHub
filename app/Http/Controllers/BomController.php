@@ -126,17 +126,17 @@ class BomController extends Controller
         $partsController->prepareStockChanges($request);
     }
 
-    public function importBom (Request $request)
-{
-    $file = $request->file('file');
+    public function importBom(Request $request)
+    {
+        $file = $request->file('bom_file');
 
-    // Validate the file, e.g., check for file extension, size, etc.
+        // Validate the file, e.g., check for file extension, size, etc.
 
-    // Process the uploaded file
-    Excel::import(new BomImport, $file);
+        // Process the uploaded file
+        Excel::import(new BomImport, $file);
 
-    // Redirect or return a response
-    return redirect()->back()->with('success', 'BOMs imported successfully.');
-}
+        // Redirect or return a response
+        return redirect()->back()->with('success', 'BOMs imported successfully.');
+    }
 
 }
