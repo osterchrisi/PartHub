@@ -87,6 +87,7 @@ class BomController extends Controller
         // The array for all acquired stock changes to go in
         $all_stock_changes = [];
 
+        // Iterate over each individual BOM
         foreach ($ids as $bom_id) {
 
             // Retrieve BOM elements (parts)
@@ -98,7 +99,8 @@ class BomController extends Controller
                 $part_id = $element->part_id;
                 $reducing_quantity = $assemble_quantity * $element_quantity;
 
-                // Prepare stock change array
+                // Prepare stock change array, one array for each part in the BOM
+                // Stored in an array of arrays
                 $stock_change = [
                     'bom_id' => $bom_id,
                     'part_id' => $part_id,

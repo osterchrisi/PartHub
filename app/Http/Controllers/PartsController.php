@@ -236,17 +236,17 @@ class PartsController extends Controller
         // Access stock changes to prepare
         $requested_changes = $request->all()['stock_changes'];
 
-        // Extracting the type of change from the first entry
+        // Extracting the type of change from the first entry in the array (all entries have same type)
         $change = $requested_changes[0]['change'];
 
         // Initialize the changes array and negative stock array
         $changes = array();
         $negative_stock = array();
 
+        // Get current authenticated user
         $user_id = Auth::user()->id;
 
-        //* Fill arrays with all requested changes
-        //* Each $requested_change entry holds one part
+        //* Fill above arrays with all requested changes, each $requested_change entry holds one part and its changes
         foreach ($requested_changes as $requested_change) {
 
             // Extract variables from request
@@ -274,24 +274,23 @@ class PartsController extends Controller
 
         //* No user permission necessary
         else {
-            foreach ($changes as $commit_change) {
+            foreach ($changes as $approved_change) {
                 // First extract variables
-                $part_id = $commit_change['part_id'];
-                $bom_id = $commit_change['bom_id'];
-                $change = $commit_change['change'];
+                $part_id = $approved_change['part_id'];
+                $bom_id = $approved_change['bom_id'];
+                $change = $approved_change['change'];
 
-                //! Why are there so many quantities!? :D
-                $quantity = $commit_change['quantity'];
+                $quantity = $approved_change['quantity'];
 
                 // Need to check these three because depending on stock change type (1, -1, 0)
                 // they might be present or not. If not, set them to NULL so the database doesn't complain
-                $to_quantity = $commit_change['to_quantity'] ?? NULL;
-                $from_quantity = $commit_change['from_quantity'] ?? NULL;
-                $new_quantity = $commit_change['new_quantity'] ?? NULL;
+                $to_quantity = $approved_change['to_quantity'] ?? NULL;
+                $from_quantity = $approved_change['from_quantity'] ?? NULL;
+                $new_quantity = $approved_change['new_quantity'] ?? NULL;
 
-                $to_location = $commit_change['to_location'];
-                $from_location = $commit_change['from_location'];
-                $comment = $commit_change['comment'];
+                $to_location = $approved_change['to_location'];
+                $from_location = $approved_change['from_location'];
+                $comment = $approved_change['comment'];
 
                 //* Make records in Stock Level model
                 // Add Stock
