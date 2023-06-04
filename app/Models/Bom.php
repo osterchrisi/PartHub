@@ -32,7 +32,7 @@ class Bom extends Model
             ->where('bom_name', 'LIKE', '%' . $search_term . '%')
             ->where('bom_owner_u_fk', $user_id)
             ->get();
-            // ->toArray();
+        // ->toArray();
 
         return $results;
     }
@@ -43,7 +43,21 @@ class Bom extends Model
             ->select('bom_name', 'bom_description')
             ->where('bom_id', $bom_id)
             ->get();
-            // ->toArray();
+        // ->toArray();
+    }
+
+    public static function createBom($bom_name, $bom_description)
+    {
+        $bom = new Bom([
+            'bom_name' => $bom_name,
+            'bom_description' => $bom_description
+        ]);
+        $bom->bom_owner_u_fk = auth()->user()->id;
+        $bom->save();
+
+        $bom_id = $bom->bom_id;
+
+        return $bom_id;
     }
 
 }
