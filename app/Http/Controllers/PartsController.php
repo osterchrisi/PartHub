@@ -244,9 +244,6 @@ class PartsController extends Controller
         $changes = array();
         $negative_stock = array();
 
-        // Get current authenticated user
-        $user_id = Auth::user()->id;
-
         //* Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
         foreach ($requested_changes as $requested_change) {
 
@@ -275,61 +272,60 @@ class PartsController extends Controller
 
         //* No user permission necessary
         else {
-            // processApprovedChanges($changes) goes here
+            $this->processApprovedChanges($changes);
+            // foreach ($changes as $approved_change) {
+            //     // First extract variables
+            //     $part_id = $approved_change['part_id'];
+            //     $bom_id = $approved_change['bom_id'];
+            //     $change = $approved_change['change'];
 
-            foreach ($changes as $approved_change) {
-                // First extract variables
-                $part_id = $approved_change['part_id'];
-                $bom_id = $approved_change['bom_id'];
-                $change = $approved_change['change'];
+            //     $quantity = $approved_change['quantity'];
 
-                $quantity = $approved_change['quantity'];
+            //     // Need to check these three because depending on stock change type (1, -1, 0)
+            //     // they might be present or not. If not, set them to NULL so the database doesn't complain
+            //     $to_quantity = $approved_change['to_quantity'] ?? NULL;
+            //     $from_quantity = $approved_change['from_quantity'] ?? NULL;
+            //     $new_quantity = $approved_change['new_quantity'] ?? NULL;
 
-                // Need to check these three because depending on stock change type (1, -1, 0)
-                // they might be present or not. If not, set them to NULL so the database doesn't complain
-                $to_quantity = $approved_change['to_quantity'] ?? NULL;
-                $from_quantity = $approved_change['from_quantity'] ?? NULL;
-                $new_quantity = $approved_change['new_quantity'] ?? NULL;
+            //     $to_location = $approved_change['to_location'];
+            //     $from_location = $approved_change['from_location'];
+            //     $comment = $approved_change['comment'];
 
-                $to_location = $approved_change['to_location'];
-                $from_location = $approved_change['from_location'];
-                $comment = $approved_change['comment'];
+            //     //* Make records in Stock Level model
+            //     // Add Stock
+            //     if ($change == 1) {
+            //         $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
+            //     }
+            //     // Reduce Stock
+            //     elseif ($change == -1) {
+            //         $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
+            //     }
+            //     // Move Stock (need to create or update two entries)
+            //     elseif ($change == 0) {
+            //         // First add stock in 'to location'
+            //         $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
 
-                //* Make records in Stock Level model
-                // Add Stock
-                if ($change == 1) {
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
-                }
-                // Reduce Stock
-                elseif ($change == -1) {
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
-                }
-                // Move Stock (need to create or update two entries)
-                elseif ($change == 0) {
-                    // First add stock in 'to location'
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
+            //         // Then reduce stock in 'from location'
+            //         $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
+            //     }
 
-                    // Then reduce stock in 'from location'
-                    $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
-                }
+            //     //* Make record in Stock Level History model
+            //     $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
 
-                //* Make record in Stock Level History model
-                $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+            //     // Calculate new stock for updating the origin table in browser
+            //     $stock = StockLevel::getStockLevelsByPartID($part_id);
+            //     $total_stock = \calculateTotalStock($stock);
 
-                // Calculate new stock for updating the origin table in browser
-                $stock = StockLevel::getStockLevelsByPartID($part_id);
-                $total_stock = \calculateTotalStock($stock);
-
-                //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
-                // Report all the goodies back for updating tables
-                $result = [$hist_id, $stock_level_id, $total_stock];
-                echo json_encode(
-                    array(
-                        'status' => 'success',
-                        'result' => $result
-                    )
-                );
-            }
+            //     //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
+            //     // Report all the goodies back for updating tables
+            //     $result = [$hist_id, $stock_level_id, $total_stock];
+            //     echo json_encode(
+            //         array(
+            //             'status' => 'success',
+            //             'result' => $result
+            //         )
+            //     );
+            // }
         }
     }
 
@@ -468,5 +464,65 @@ class PartsController extends Controller
                 'status' => 'permission_requested'
             )
         );
+    }
+
+    private function processApprovedChanges($changes)
+    {
+        // Get current authenticated user
+        $user_id = Auth::user()->id;
+        
+        foreach ($changes as $approved_change) {
+            // First extract variables
+            $part_id = $approved_change['part_id'];
+            $bom_id = $approved_change['bom_id'];
+            $change = $approved_change['change'];
+
+            $quantity = $approved_change['quantity'];
+
+            // Need to check these three because depending on stock change type (1, -1, 0)
+            // they might be present or not. If not, set them to NULL so the database doesn't complain
+            $to_quantity = $approved_change['to_quantity'] ?? NULL;
+            $from_quantity = $approved_change['from_quantity'] ?? NULL;
+            $new_quantity = $approved_change['new_quantity'] ?? NULL;
+
+            $to_location = $approved_change['to_location'];
+            $from_location = $approved_change['from_location'];
+            $comment = $approved_change['comment'];
+
+            //* Make records in Stock Level model
+            // Add Stock
+            if ($change == 1) {
+                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
+            }
+            // Reduce Stock
+            elseif ($change == -1) {
+                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
+            }
+            // Move Stock (need to create or update two entries)
+            elseif ($change == 0) {
+                // First add stock in 'to location'
+                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
+
+                // Then reduce stock in 'from location'
+                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
+            }
+
+            //* Make record in Stock Level History model
+            $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
+
+            // Calculate new stock for updating the origin table in browser
+            $stock = StockLevel::getStockLevelsByPartID($part_id);
+            $total_stock = \calculateTotalStock($stock);
+
+            //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
+            // Report all the goodies back for updating tables
+            $result = [$hist_id, $stock_level_id, $total_stock];
+            echo json_encode(
+                array(
+                    'status' => 'success',
+                    'result' => $result
+                )
+            );
+        }
     }
 }
