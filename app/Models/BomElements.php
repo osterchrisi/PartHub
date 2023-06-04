@@ -12,10 +12,20 @@ class BomElements extends Model
 
     protected $table = 'bom_elements';
     protected $primaryKey = 'bom_elements_id';
+    protected $fillable = [
+        'bom_id_fk',
+        'part_id_fk',
+        'element_quantity'
+    ];
+
 
     public function part()
     {
-        return $this->hasMany(Part::class, 'part_id_fk');
+        return $this->belongsTo(Part::class, 'part_id_fk');
+    }
+
+    public function bom(){
+        return $this->belongsTo(Bom::class, 'bom_id_fk');
     }
 
     public static function getBomElements($bom_id)
