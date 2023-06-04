@@ -130,7 +130,7 @@ class BomController extends Controller
     {
         $file = $request->file('bom_file');
 
-        // Validate the file, e.g., check for file extension, size, etc.
+        //! Either validate file here or in middleware
 
         // Process the uploaded file
         Excel::import(new BomImport, $file);
