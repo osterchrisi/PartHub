@@ -129,6 +129,8 @@ class BomController extends Controller
     public function importBom(Request $request)
     {
         $file = $request->file('bom_file');
+        $bom_name = $request->input('bom_name');
+        $bom_description = $request->input('bom_description');
 
         //! Either validate file here or in middleware
 
