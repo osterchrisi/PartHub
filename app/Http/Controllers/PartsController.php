@@ -126,6 +126,7 @@ class PartsController extends Controller
             'parts.showPart',
             [
                 'part' => $part,
+                // Stock Table
                 'total_stock' => $total_stock,
                 'column_names' => array('location_name', 'stock_level_quantity'),
                 'nice_columns' => array('Location', 'Quantity'),
@@ -246,7 +247,7 @@ class PartsController extends Controller
         // Get current authenticated user
         $user_id = Auth::user()->id;
 
-        //* Fill above arrays with all requested changes, each $requested_change entry holds one part and its changes
+        //* Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
         foreach ($requested_changes as $requested_change) {
 
             // Extract variables from request
@@ -274,6 +275,8 @@ class PartsController extends Controller
 
         //* No user permission necessary
         else {
+            // processApprovedChanges($changes) goes here
+
             foreach ($changes as $approved_change) {
                 // First extract variables
                 $part_id = $approved_change['part_id'];
@@ -337,6 +340,7 @@ class PartsController extends Controller
         $part_id = $requested_change['part_id'];
         $quantity = $requested_change['quantity'];
         $comment = $requested_change['comment'];
+
         $to_location = $requested_change['to_location'];
         $from_location = $requested_change['from_location'];
 
@@ -387,7 +391,7 @@ class PartsController extends Controller
             $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
 
-            // Stock would go negative
+            // Stock would go negative and this change is not approved yet
             if ($new_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
             }
@@ -401,10 +405,10 @@ class PartsController extends Controller
         if ($change == 0) {
             // New quantity in 'to location'
             $to_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
-            // New quantity in 'from_location'
+            // New quantity in 'from location'
             $from_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
 
-            // Stock in 'from location' goes negative
+            // Stock in 'from location' would go negative and this change is not approved yet
             if ($from_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
             }
@@ -423,10 +427,9 @@ class PartsController extends Controller
         // Produce a result array
         $result = array('changes' => $changes);
 
-        // If permission is required because stock is short,
-        // also append the negative_stock array for generating a
-        // table to show the user
-        //TODO: There might be a better way to do this than to have two separate tables
+        // If user permission is required because stock is short, also append the negative_stock array
+        //  for generating a table to show the user for approval
+        //TODO: There might be a better way to do this than to have two separate tables that have duplicate entries...
         if ($status == 'permission_required') {
             $negative_stock = $changes;
             $result['negative_stock'] = $negative_stock;
@@ -437,7 +440,7 @@ class PartsController extends Controller
 
     private function generateStockShortageResponse($negative_stock, $changes, $change)
     {
-        //* Stock shortage while processing parts for BOMs
+        //* Stock shortage while processing parts within BOMs
         if (!is_null($changes[0]['bom_id'])) {
             $column_names = array('bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity');
             $nice_columns = array('BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity');
