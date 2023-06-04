@@ -229,12 +229,7 @@ class PartsController extends Controller
     }
 
     /**
-     * Add, reduce or move stock
-     * 
-     * Returns an array of arrays:
-     * The $changes array that has ALL changes requested.
-     * The $negative_stock array that contains only entries for stock changes that would result in negative stock.
-     * The $negative_stock_table is an HTML string that contains a table built out of the negative_stock array
+     * Not yet documented after huge refactoring...
      */
     public function prepareStockChanges(Request $request)
     {
@@ -271,13 +266,13 @@ class PartsController extends Controller
 
         }
 
-        //* There is stock shortage, inform user and exit
+        //* Stock shortage, inform user and exit
         if (!empty($negative_stock)) {
             $this->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
         }
 
-        //* If no user permission is necessary
+        //* No user permission necessary
         else {
             foreach ($changes as $commit_change) {
                 // First extract variables
