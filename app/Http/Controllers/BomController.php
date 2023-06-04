@@ -6,6 +6,8 @@ use App\Models\BomElements;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bom;
+use App\Imports\BomImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BomController extends Controller
 {
@@ -123,5 +125,18 @@ class BomController extends Controller
         $partsController = new PartsController();
         $partsController->prepareStockChanges($request);
     }
+
+    public function importBom (Request $request)
+{
+    $file = $request->file('file');
+
+    // Validate the file, e.g., check for file extension, size, etc.
+
+    // Process the uploaded file
+    Excel::import(new BomImport, $file);
+
+    // Redirect or return a response
+    return redirect()->back()->with('success', 'BOMs imported successfully.');
+}
 
 }
