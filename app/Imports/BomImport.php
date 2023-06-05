@@ -14,19 +14,17 @@ class BomImport implements ToModel, WithHeadingRow
     public function __construct($bom_id){
         $this->bom_id = $bom_id;
     }
+    public function headingRow(): int
+    {
+        return 1; // Set the heading row index (1 for Excel files with headers)
+    }
     public function model(array $row)
     {
-
         $bom = new BomElements([
             'bom_id_fk' => $this->bom_id,
             'part_id_fk' => $row['part'],
             'element_quantity' => $row['quantity']
         ]);
         return $bom;
-    }
-
-    public function headingRow(): int
-    {
-        return 1; // Set the heading row index (1 for Excel files with headers)
     }
 }

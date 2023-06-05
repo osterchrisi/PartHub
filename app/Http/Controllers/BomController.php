@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bom;
 use App\Imports\BomImport;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -135,20 +136,28 @@ class BomController extends Controller
 
         //! Either validate file here or in middleware
 
-
         try {
 
+            // Begin SQL transaction
+            DB::beginTransaction();
+
+            // Create new BOM
             $bom_id = Bom::createBom($bom_name, $bom_description);
 
             // Process the uploaded file
             Excel::import(new BomImport($bom_id), $file);
 
-            // Set success flash message
+            // Persist database changes and set success flash message
+            DB::commit();
             Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
 
             // Redirect to the previous page
             return redirect()->back();
+
         } catch (\Exception $e) {
+            // Roll back database changes made so far
+            DB::rollback();
+
             // Set error flash message
             Session::flash('error', 'Error importing BOMs: ' . $e->getMessage());
 
