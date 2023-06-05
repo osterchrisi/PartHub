@@ -5,11 +5,6 @@
         <form action="{{ route('bom.import') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mt-3">
-                <input class="form-control form-control-sm mb-3" type="file" id="formFile" name="bom_file">
-                <x-input-error :messages="$errors->get('bom_file')" />
-                {{-- <button type="button" class="btn btn-sm btn-primary" id="submitBomUpload" disabled>Upload</button> --}}
-                {{-- <input type="file" name="bom_file"> --}}
-
                 <div class="row">
                     <div class="col">
                         <input class="form-control form-control-sm" id="bom_name" name="bom_name" placeholder="BOM Name"
@@ -20,6 +15,13 @@
                         <input class="form-control form-control-sm" id="bom_description" name="bom_description"
                             placeholder="BOM Description">
                         <x-input-error :messages="$errors->get('bom_description')" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <input class="form-control form-control-sm" type="file" id="formFile" name="bom_file">
+                        <small class="text-muted">Accepted file formats: ods, csv, xls, xlsx, ...</small>
+                        <x-input-error :messages="$errors->get('bom_file')" />
                     </div>
                 </div>
             </div>
