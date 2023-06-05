@@ -204,7 +204,7 @@ function bootstrapTableSmallify() {
  */
 function rebuildBomListTable(queryString) {
   return $.ajax({
-    url: '../includes/buildBomListTable.php' + queryString,
+    url: '/boms.bomsTable' + queryString,
     success: function (data) {
       $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
       $('#table-window').html(data); // Update div with new table
