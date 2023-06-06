@@ -12,7 +12,8 @@ class BomImport implements ToModel, WithHeadingRow
 {
     protected $bom_id;
 
-    public function __construct($bom_id){
+    public function __construct($bom_id)
+    {
         $this->bom_id = $bom_id;
     }
     public function headingRow(): int
@@ -21,37 +22,45 @@ class BomImport implements ToModel, WithHeadingRow
     }
     public function model(array $row)
     {
-        $part_name = $row['Part Name'];
-        $part_id = $row['Part ID'];
-        $quantity = $row['Quantity'];
+        // dd($row);
+        // Column names get formatted like this by Excel plugin
+        $part_name = $row['part_name'];
+        $part_id = $row['part_id'];
+        $quantity = $row['quantity'];
         $user_id = auth()->user()->id;
 
         // Check if both part number and part ID are provided
         if (!empty($part_name) && !empty($part_id)) {
             // Perform query to verify if the part number and part ID match
             $part = Part::where('part_name', $part_name)
-                        ->where('part_id', $part_id)
-                        ->where('part_owner_u_fk', $user_id)
-                        ->first();
+                ->where('part_id', $part_id)
+                ->where('part_owner_u_fk', $user_id)
+                ->first();
 
             if (!$part) {
                 // Part number and part ID do not match,
                 throw new \Exception('Part number and part ID do not match for row: ' . print_r($row, true));
             }
-        } else if (empty($part_name) && empty($part_id)) {
+        }
+        else if (empty($part_name) && empty($part_id)) {
             // Both part number and part ID are empty
             throw new \Exception('Both part number and part ID are missing for row: ' . print_r($row, true));
-        } else {
+        }
+        else {
             // Either part number or part ID is provided, handle accordingly
-            $part = $part_name ? Part::where('part_number', $part_name)->where('part_owner_u_fk', $user_id)->first() : Part::find($part_id)->where('part_owner_u_fk', $user_id);
+            $part = $part_name
+                ? Part::where('part_name', $part_name)
+                    ->where('part_owner_u_fk', $user_id)
+                    ->first()
+                : Part::where('part_id', $part_id)
+                    ->where('part_owner_u_fk', $user_id)
+                    ->first();
 
             if (!$part) {
                 // Part number or part ID does not exist
                 throw new \Exception('Invalid part number or part ID for row: ' . print_r($row, true));
             }
         }
-
-
 
         $bom = new BomElements([
             'bom_id_fk' => $this->bom_id,

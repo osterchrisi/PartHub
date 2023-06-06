@@ -160,7 +160,7 @@ class BomController extends Controller
             DB::rollback();
 
             // Set error flash message
-            Session::flash('error', 'Error importing BOMs: ' . $e->getMessage());
+            Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
 
             // Redirect to the previous page with error status
             return redirect()->back()->withErrors(['import_error' => 'Failed to import BOMs.']);
