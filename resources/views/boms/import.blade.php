@@ -51,12 +51,6 @@
             <div class="col" id="bom_import_example_table">
                 <table class="table table-hover table-sm table-bordered" style="font-size:12px">
                     <thead>
-                        {{-- <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th style="text-align:right"></th>
-                        </tr> --}}
                     </thead>
                     <tbody>
                         <tr>
@@ -86,8 +80,8 @@
                         <tr>
                             <td style="background-color: var(--bs-table-striped-bg);">5</td>
                             <td></td>
-                            <td>LM7812</td>
-                            <td style="text-align:right">1</td>
+                            <td>TL074</td>
+                            <td style="text-align:right">16</td>
                         </tr>
                         <tr>
                             <td style="background-color: var(--bs-table-striped-bg);">6</td>
