@@ -130,6 +130,7 @@ class BomController extends Controller
 
     public function importBom(Request $request)
     {
+        // Form data
         $file = $request->file('bom_file');
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
