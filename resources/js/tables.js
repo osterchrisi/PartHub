@@ -53,6 +53,43 @@ function bootstrapLocationsListTable() {
 };
 
 /**
+ * Bootstrap the Categories table
+ * @return void
+ */
+function bootstrapCategoriesListTable() {
+  var $table = $('#categories_list_table');
+  $table.bootstrapTable({
+    url: '/categories.list',
+    idField: 'category_id',
+    showColumns: true,
+    columns: [
+      {
+        field: 'category_name',
+        title: 'Category Name'
+      },
+      {
+        field: 'parent_category',
+        title: 'Parent Category'
+      }
+    ],
+    treeShowField: 'category_name',
+    parentIdField: 'parent_category',
+    onPostBody: function () {
+      var columns = $table.bootstrapTable('getOptions').columns;
+
+      if (columns && columns[0][1].visible) {
+        $table.treegrid({
+          treeColumn: 0,
+          onChange: function () {
+            $table.bootstrapTable('resetView');
+          }
+        });
+      }
+    }
+  })
+};
+
+/**
  * Custom Sorter for my stock URLs
  * Remove the href tag and return only the string values
  * Otherwise cells get sorted by the URL which contains part_id

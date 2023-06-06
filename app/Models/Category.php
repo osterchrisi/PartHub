@@ -14,9 +14,21 @@ class Category extends Model
     protected $table = 'part_categories';
     protected $primaryKey = 'category_id';
 
-    public function parts()
+    protected $fillable = ['category_name', 'parent_category'];
+
+    public function parent()
     {
-        return $this->hasMany(Part::class, 'part_category_fk');
+        return $this->belongsTo(Category::class, 'parent_category');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_category');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'part_category_owner_u_fk');
     }
 
     public static function availableCategories()
