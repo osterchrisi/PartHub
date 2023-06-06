@@ -13,7 +13,7 @@ class Location extends Model
     protected $table = 'locations';
     protected $primaryKey = 'location_id';
 
-    public static function availableLocations()
+    public static function availableLocations($format = 'json')
     {
 
         $user = Auth::user();
@@ -22,7 +22,14 @@ class Location extends Model
         $locations = Location::where('location_owner_u_fk', $user->id)
             ->get();
 
-        // Return the location as JSON response
-        return $locations->toJson();
+        // Return the location as JSON response (for JS)
+        if ($format === 'json') {
+            return $locations->toJson();
+        }
+
+        // Return as an array of associative arrays
+        elseif ($format === 'array') {
+            return $locations->toArray();
+        }
     }
 }

@@ -44,6 +44,15 @@ function bootstrapBomDetailsTable() {
 };
 
 /**
+ * Bootstrap the Locations table
+ * @return void
+ */
+function bootstrapLocationsListTable() {
+  $('#locations_list_table').bootstrapTable({
+  });
+};
+
+/**
  * Custom Sorter for my stock URLs
  * Remove the href tag and return only the string values
  * Otherwise cells get sorted by the URL which contains part_id

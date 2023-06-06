@@ -6,7 +6,9 @@ dis filter
 @endsection
 
 @section('table-window')
-locations table
+
+@include('locations.locationsTable')
+
 @endsection
 
 @section('info-window')

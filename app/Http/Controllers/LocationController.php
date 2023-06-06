@@ -10,7 +10,7 @@ class LocationController extends Controller
 
     private static $table_name = 'locations';
     private static $id_field = 'location_id';
-    private static $location_list_table_headers = array('state', 'location_name', 'location_description', 'bom_id');
+    private static $location_list_table_headers = array('state', 'location_name', 'location_description', 'location_id');
     private static $nice_location_list_table_headers = array("Location", 'Description', 'ID');
     public static function getLocations()
     {
@@ -20,7 +20,7 @@ class LocationController extends Controller
     public static function index(Request $request)
     {
         $search_term = request()->has('search') ? request()->input('search') : '';
-        $locations_list = Location::availableLocations();
+        $locations_list = Location::availableLocations('array');
 
         // Return full parts view or only parts table depending on route
         $route = $request->route()->getName();

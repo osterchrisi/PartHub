@@ -67,7 +67,7 @@
 
     <!-- Custom js -->
     @vite(['resources/js/app.js'])
-    @vite(['resources/js/custom.js', 'resources/js/tables.js', 'resources/js/partsView.js', 'resources/js/bomsView.js', 'resources/js/partEntry.js', 'resources/js/stockChanges.js', 'resources/css/custom.css'])
+    @vite(['resources/js/custom.js', 'resources/js/tables.js', 'resources/js/partsView.js', 'resources/js/bomsView.js', 'resources/js/partEntry.js', 'resources/js/stockChanges.js', 'resources/js/locationsView.js', 'resources/css/custom.css'])
 
     <!-- Custom CSS -->
     {{-- see above --}}
