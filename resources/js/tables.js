@@ -79,7 +79,7 @@ function bootstrapCategoriesListTable() {
 
       if (columns && columns[0][1].visible) {
         $table.treegrid({
-          treeColumn: 0,
+          treeColumn: 1,
           onChange: function () {
             $table.bootstrapTable('resetView');
           }
@@ -201,14 +201,14 @@ function onTableCellContextMenu($table, $menu, actions) {
 //TODO: There should be a way to unify this with deleteSelectedRows() directly
 //TODO: Given the $table as argument also seems silly
 //TODO: The confirm action is also doubled, could be directly give to deleteSelectedRows() ?
-function deleteSelectedRowsFromToolbar($table) {
+function deleteSelectedRowsFromToolbar($table, model, id_column, successCallback) {
   // Get selected table rows
   var selectedRows = $table.bootstrapTable('getSelections');
   // Extract IDs
   const ids = selectedRows.map(obj => obj._data.id);
 
   if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-    deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
+    deleteSelectedRows(ids, model, id_column, successCallback); // Also updates table
   }
 
 }
@@ -652,9 +652,9 @@ function continueAnyway(r, ids, token) {
  *Attaches a click handler to the Delete button in the toolbar
  *@param {jQuery object} table - jQuery object representing the table that the rows will be deleted from
  */
-function attachDeleteRowsHandler() {
+function attachDeleteRowsHandler($table, model, id_column, successCallback) {
   $('#toolbarDeleteButton').click(function () {
-    deleteSelectedRowsFromToolbar($('#parts_table'));
+    deleteSelectedRowsFromToolbar($table, model, id_column, successCallback);
   });
 }
 

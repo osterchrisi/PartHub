@@ -218,7 +218,7 @@ function initializeMultiSelect(id) {
  * @param {function} successCallback Function to call on successful deletion of rows. Used to rebuild the corresponding table
  * @return void
  */
-function deleteSelectedRows(ids, table_name, column, successCallback) {
+function deleteSelectedRows(ids, model, id_column, successCallback) {
 
     console.log(ids.length);
     var token = $('input[name="_token"]').attr('value');
@@ -228,8 +228,8 @@ function deleteSelectedRows(ids, table_name, column, successCallback) {
         type: 'POST',
         data: {
             ids: ids,
-            table: table_name,
-            column: column
+            table: model,
+            column: id_column
         },
         headers: {
             'X-CSRF-TOKEN': token

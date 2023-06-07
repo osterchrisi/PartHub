@@ -56,7 +56,8 @@ $(document).ready(function () {
     });
 
     initializePopovers();
-    attachDeleteRowsHandler();
+
+    attachDeleteRowsHandler($('#parts_table'), 'parts', 'part_id', rebuildPartsTable);
 
 
     // Get locations and attach click listener to "Add" button in toolbar
