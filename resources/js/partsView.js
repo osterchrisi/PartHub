@@ -14,7 +14,6 @@
 // } from "./custom";
 
 $(document).ready(function () {
-    //! Commenting this out to make it work laravel
     initializeMultiSelect('cat-select');
 
     // This was already commented out
@@ -57,7 +56,7 @@ $(document).ready(function () {
 
     initializePopovers();
 
-    attachDeleteRowsHandler($('#parts_table'), 'parts', 'part_id', rebuildPartsTable);
+    attachDeleteRowsHandler($table, 'parts', 'part_id', rebuildPartsTable);
 
 
     // Get locations and attach click listener to "Add" button in toolbar

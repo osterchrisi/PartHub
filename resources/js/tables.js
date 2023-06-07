@@ -198,19 +198,20 @@ function onTableCellContextMenu($table, $menu, actions) {
   hideMenuOnClickOutside($menu);
 }
 
-//TODO: There should be a way to unify this with deleteSelectedRows() directly
-//TODO: Given the $table as argument also seems silly
-//TODO: The confirm action is also doubled, could be directly give to deleteSelectedRows() ?
 function deleteSelectedRowsFromToolbar($table, model, id_column, successCallback) {
+  console.log("Inside deleteSelectedRowsFromToolbar, this are my vars: ");
+  console.log("$table: ", $table);
+  console.log("model: ", model);
+  console.log("id_column: ", id_column);
+  console.log("successCallback: ", successCallback);
   // Get selected table rows
   var selectedRows = $table.bootstrapTable('getSelections');
   // Extract IDs
   const ids = selectedRows.map(obj => obj._data.id);
 
   if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-    deleteSelectedRows(ids, model, id_column, successCallback); // Also updates table
+    deleteSelectedRows(ids, model, id_column, successCallback);
   }
-
 }
 
 /**
@@ -653,6 +654,7 @@ function continueAnyway(r, ids, token) {
  *@param {jQuery object} table - jQuery object representing the table that the rows will be deleted from
  */
 function attachDeleteRowsHandler($table, model, id_column, successCallback) {
+  // removeClickListeners('#toolbarDeleteButton');
   $('#toolbarDeleteButton').click(function () {
     deleteSelectedRowsFromToolbar($table, model, id_column, successCallback);
   });

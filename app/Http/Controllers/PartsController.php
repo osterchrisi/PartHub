@@ -52,6 +52,7 @@ class PartsController extends Controller
         if ($route == 'parts') {
             return view('parts.parts', [
                 'title' => 'Parts',
+                'view' => 'parts',
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
                 'nice_columns' => self::$nice_columns,
