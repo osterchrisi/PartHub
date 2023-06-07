@@ -14,6 +14,8 @@ import {
     initializeMultiSelect
 } from "./custom";
 
+import { callPartEntryModal } from './partEntry';
+
 
 // $(document).ready(function () {
     export function initializePartsView(){

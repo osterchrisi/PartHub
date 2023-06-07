@@ -1,10 +1,11 @@
+import { validateForm } from "./custom";
 /**
  * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
  * 
  * @param {Array} locations An array of objects containing locations
  * @return void
  */
-function callPartEntryModal(locations) {
+export function callPartEntryModal(locations) {
   addPartLocationDropdown(locations);
   $('#mPartEntry').modal('show'); // Show modal
   validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
@@ -16,11 +17,11 @@ function callPartEntryModal(locations) {
  * @return void
  */
 function addPartCallback() {
-  pn = $("#addPartName").val();       // Part Name
-  q = $("#addPartQuantity").val();    // Quantity
-  l = $("#addPartLocSelect").val();   // Location
-  c = $("#addPartComment").val();     // Comment
-  d = $("#addPartDescription").val(); // Description
+  const pn = $("#addPartName").val();       // Part Name
+  const q = $("#addPartQuantity").val();    // Quantity
+  const l = $("#addPartLocSelect").val();   // Location
+  const c = $("#addPartComment").val();     // Comment
+  const d = $("#addPartDescription").val(); // Description
 
   var token = $('input[name="_token"]').attr('value');
 
