@@ -229,7 +229,7 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
     var token = $('input[name="_token"]').attr('value');
 
     $.ajax({
-        url: '/part.delete',
+        url: '/deleteRow',
         type: 'POST',
         data: {
             ids: ids,

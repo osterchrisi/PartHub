@@ -6,6 +6,7 @@ use App\Http\Controllers\PartsController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DatabaseServiceController;
 use App\Services\DatabaseService;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
 
 //* Database Service Routes
 Route::post('/updateRow', [DatabaseService::class, 'updateCell'])->middleware(['auth', 'verified']);
+Route::post('/deleteRow', [DatabaseServiceController::class, 'deleteRow'])->middleware(['auth', 'verified']);
 
 //* Part Routes
 Route::controller(PartsController::class)->group(function () {
