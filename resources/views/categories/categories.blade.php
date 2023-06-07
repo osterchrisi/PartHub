@@ -15,32 +15,73 @@
         echo '</pre>';
     @endphp
 
-    <table class="table table-sm table-borderless table-responsive table-hover table-striped" style="font-size:12px" id="categories_list_table"
+    {{-- <table class="table table-sm table-borderless table-responsive table-hover table-striped" style="font-size:12px" id="categories_list_table"
         data-resizable="true" data-show-columns="true" data-reorderable-columns="true" data-cookie="true"
         data-cookie-id-table="LocationsListTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
-        data-tree-show-field='category_name', data-parent-id-field='parent_category'>
+        data-tree-enable="true"
+        data-id-field="category_id"
+        data-parent-id-field="parent_category"  
+        data-tree-show-field="category_name"
+        
+        >
         <thead>
             <tr>
                 <th data-field="category_id">ID</th>
                 <th data-field="category_name">Category</th>
-                {{-- <th data-field="parent_category">Parent Category</th> --}}
+                <th data-field="parent_category">Parent Category</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($categories as $category)
                 <tr data-parent-id="{{ $category->parent_category }}">
+                    <td>{{ $category->category_id }}</td>
                     <td>{{ $category->category_name }}</td>
-                    <td>{{ $category->category_name }}</td>
-                    {{-- <td>{{ $category->parent_category }}</td> --}}
+                    <td>{{ $category->parent_category }}</td>
                 </tr>
                 @foreach ($category->children as $child)
                     <tr data-parent-id="{{ $child->parent_category }}">
-                        <td>{{ $category->category_name }}</td>
+                        <td>{{ $category->category_id }}</td>
                         <td>{{ $child->category_name }}</td>
-                        {{-- <td>{{ $category->parent_category }}</td> --}}
+                        <td>{{ $category->parent_category }}</td>
                     </tr>
                 @endforeach
             @endforeach
+        </tbody>
+    </table> --}}
+
+    <table id="table"
+            class="table"
+            data-toggle="table"
+            data-parent-id-field="pid"
+            data-tree-show-field="name"
+    >
+        <thead>
+            <tr>
+                <th data-field="name">name</th>
+                <th data-field="id">id</th>
+                <th data-field="pid">parent_id</th>
+                <th data-field="value">value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>a</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>3</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
         </tbody>
     </table>
 @endsection

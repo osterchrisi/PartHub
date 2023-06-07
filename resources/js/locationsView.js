@@ -1,11 +1,11 @@
 $(document).ready(function () {
-    // var $table = $('#categories_list_table');
+    var $table = $('#categories_list_table');
     // $table.on('post-body.bs.table', function () {
     //     $table.treegrid({
-    //         treeColumn: 1
+    //         treeColumn: 0
     //     })
     // });
-    bootstrapLocationsListTable();
+    // bootstrapLocationsListTable();
 
     // var $table = $('#locations_list_table');
     // var $menu = $('#bom_list_table_menu');

@@ -59,33 +59,33 @@ function bootstrapLocationsListTable() {
 function bootstrapCategoriesListTable() {
   var $table = $('#categories_list_table');
   $table.bootstrapTable({
-    url: '/categories.list',
-    idField: 'category_id',
-    showColumns: true,
-    columns: [
-      {
-        field: 'category_id',
-        title: 'Category ID'
-      },
-      {
-        field: 'category_name',
-        title: 'Category Name'
-      }
-    ],
-    treeShowField: 'category_name',
-    parentIdField: 'parent_category',
-    onPostBody: function () {
-      var columns = $table.bootstrapTable('getOptions').columns;
+    // url: '/categories.list',
+    // idField: 'category_id',
+    // showColumns: true,
+    // columns: [
+    //   {
+    //     field: 'category_id',
+    //     title: 'Category ID'
+    //   },
+    //   {
+    //     field: 'category_name',
+    //     title: 'Category Name'
+    //   }
+    // ],
+    // treeShowField: 'category_name',
+    // parentIdField: 'parent_category',
+    // onPostBody: function () {
+    //   var columns = $table.bootstrapTable('getOptions').columns;
 
-      if (columns && columns[0][1].visible) {
-        $table.treegrid({
-          treeColumn: 0,
-          onChange: function () {
-            $table.bootstrapTable('resetView');
-          }
-        });
-      }
-    }
+    //   if (columns && columns[0][1].visible) {
+    //     $table.treegrid({
+    //       treeColumn: 0,
+    //       onChange: function () {
+    //         $table.bootstrapTable('resetView');
+    //       }
+    //     });
+    //   }
+    // }
   })
 };
 
