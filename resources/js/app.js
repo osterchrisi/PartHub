@@ -1,7 +1,8 @@
 import './bootstrap';
 import { initializePartsView } from './partsView';
 import { initializeBomsView } from './bomsView';
-
+import { initializeCategoriesView} from './categoriesView';
+import { initializeLocationsView } from './locationsView';
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
@@ -16,5 +17,11 @@ $(document).ready(function () {
     }
     else if (currentView === 'boms') {
         initializeBomsView();
+    }
+    else if (currentView === 'categories') {
+        initializeCategoriesView();
+    }
+    else if (currentView === 'locations') {
+        initializeLocationsView();
     }
 });

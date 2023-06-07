@@ -1,4 +1,9 @@
-$(document).ready(function() {
+import {
+    bootstrapCategoriesListTable,
+    bootstrapTableSmallify
+} from "./tables";
+
+export function initializeCategoriesView() {
     bootstrapCategoriesListTable();
 
     // var $table = $('#locations_list_table');
@@ -7,23 +12,6 @@ $(document).ready(function() {
     // inlineProcessing();
     bootstrapTableSmallify();
 
-
-    // $.ajax({
-    //     url: '/locations.get',
-    //     dataType: 'json',
-    //     success: function (locations) {
-    //         fromStockLocationDropdown('bomAssembleLocationDiv', locations);
-    //     },
-    //     error: function (error) {
-    //         console.log(error);
-    //     }
-    // })
-
-
-    // fromStockLocationDropdown('bomAssembleLocationDiv'
-    // , <?php echo json_encode($locations); ?>
-    // );
-    // sendFormOnDropdownChange();
 
     // Experimental ajax search
     // $('#search').on("keyup input", function() {
@@ -37,4 +25,4 @@ $(document).ready(function() {
     //         rebuildBomListTable(querystring);
     //     });
     // });
-});
+};

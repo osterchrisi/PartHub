@@ -64,7 +64,7 @@ export function bootstrapLocationsListTable() {
  * Bootstrap the Categories table
  * @return void
  */
-function bootstrapCategoriesListTable() {
+export function bootstrapCategoriesListTable() {
   var $table = $('#categories_list_table');
   $table.bootstrapTable({
     url: '/categories.list',

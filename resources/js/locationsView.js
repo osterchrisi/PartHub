@@ -1,10 +1,10 @@
-$(document).ready(function () {
-    // var $table = $('#categories_list_table');
-    // $table.on('post-body.bs.table', function () {
-    //     $table.treegrid({
-    //         treeColumn: 1
-    //     })
-    // });
+import {
+    bootstrapLocationsListTable,
+    inlineProcessing,
+    bootstrapTableSmallify
+} from "./tables";
+
+export function initializeLocationsView() {
     bootstrapLocationsListTable();
 
     // var $table = $('#locations_list_table');
@@ -12,21 +12,7 @@ $(document).ready(function () {
     // defineBomListTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
-    // $.ajax({
-    //     url: '/locations.get',
-    //     dataType: 'json',
-    //     success: function (locations) {
-    //         fromStockLocationDropdown('bomAssembleLocationDiv', locations);
-    //     },
-    //     error: function (error) {
-    //         console.log(error);
-    //     }
-    // })
 
-
-    // fromStockLocationDropdown('bomAssembleLocationDiv'
-    // , <?php echo json_encode($locations); ?>
-    // );
     // sendFormOnDropdownChange();
 
     // Experimental ajax search
@@ -41,4 +27,4 @@ $(document).ready(function () {
     //         rebuildBomListTable(querystring);
     //     });
     // });
-});
+};

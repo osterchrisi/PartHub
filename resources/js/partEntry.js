@@ -65,24 +65,6 @@ function addPartCallback() {
       }
     }
   });
-
-
-  // // Inset new part into table
-  // $.post('/parts.createPart',
-  //   { part_name: pn, quantity: q, to_location: l },
-  //   function (response) {
-  //     // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
-  //     var partId = JSON.parse(response)["Part ID"];
-  //     updatePartsInfo(partId);
-  //     $('#mPartEntry').modal('hide'); // Hide modal
-  //     removeClickListeners('#addPart'); // Remove click listener from Add Part button
-
-  //     // Rebuild parts table and select new row
-  //     var queryString = window.location.search;
-  //     $.when(rebuildPartsTable(queryString)).done(function () {
-  //       $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
-  //     });
-  //   });
 }
 
 /**
