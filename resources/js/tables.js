@@ -70,10 +70,6 @@ function bootstrapCategoriesListTable() {
       {
         field: 'category_name',
         title: 'Category Name'
-      },
-      {
-        field: 'parent_category',
-        title: 'Parent Category'
       }
     ],
     treeShowField: 'category_name',
@@ -83,7 +79,7 @@ function bootstrapCategoriesListTable() {
 
       if (columns && columns[0][1].visible) {
         $table.treegrid({
-          treeColumn: 1,
+          treeColumn: 0,
           onChange: function () {
             $table.bootstrapTable('resetView');
           }

@@ -1,4 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    // var $table = $('#categories_list_table');
+    // $table.on('post-body.bs.table', function () {
+    //     $table.treegrid({
+    //         treeColumn: 1
+    //     })
+    // });
     bootstrapLocationsListTable();
 
     // var $table = $('#locations_list_table');
@@ -6,8 +12,6 @@ $(document).ready(function() {
     // defineBomListTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
-
-
     // $.ajax({
     //     url: '/locations.get',
     //     dataType: 'json',
