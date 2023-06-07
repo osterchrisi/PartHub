@@ -60,8 +60,3 @@
         </div>
     </div>
 </div>
-
-<!-- Include custom JS -->
-<script>
-    
-</script>

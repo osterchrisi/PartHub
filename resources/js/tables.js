@@ -1,7 +1,8 @@
 import {
   preventTextSelectionOnShift,
   updatePartsInfo,
-  updateStockModal
+  updateStockModal,
+  updateBomInfo
 } from "./custom";
 
 /**
@@ -255,7 +256,7 @@ export function bootstrapTableSmallify() {
  * @param {string} queryString - The query string to send with the AJAX request
  * @returns {Promise} - A promise that resolves when the table has been rebuilt
  */
-function rebuildBomListTable(queryString) {
+export function rebuildBomListTable(queryString) {
   return $.ajax({
     url: '/boms.bomsTable' + queryString,
     success: function (data) {
@@ -304,7 +305,7 @@ export function definePartsTableActions($table, $menu) {
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-function defineBomListTableActions($table, $menu) {
+export function defineBomListTableActions($table, $menu) {
   // Define row click actions
   defineTableRowClickActions($table, function (id) {
     updateBomInfo(id);

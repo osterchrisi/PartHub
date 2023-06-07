@@ -1,5 +1,6 @@
 import './bootstrap';
 import { initializePartsView } from './partsView';
+import { initializeBomsView } from './bomsView';
 import './partEntry';
 import './tables';
 import './custom';
@@ -14,6 +15,11 @@ Alpine.start();
 const currentView = document.body.getAttribute('data-view');
 console.log("data-view = ", currentView);
 
-if (currentView === 'parts'){
-    initializePartsView();
-}
+$(document).ready(function () {
+    if (currentView === 'parts') {
+        initializePartsView();
+    }
+    else if (currentView === 'boms') {
+        initializeBomsView();
+    }
+});

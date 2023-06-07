@@ -1,3 +1,4 @@
+import { initializeShowBom } from "./showBom";
 import { initializeShowPart} from "./showPart";
 
 /**
@@ -131,7 +132,7 @@ export function updateStockModal(id) {
  * @param {number} id - The ID of the BOM to update the info for.
  * @return void
  */
-function updateBomInfo(id) {
+export function updateBomInfo(id) {
     $.ajax({
         url: '/bom/' + id,
         type: 'GET',
@@ -139,6 +140,7 @@ function updateBomInfo(id) {
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
+            initializeShowBom();
         },
         error: function (xhr) {
             if (xhr.status === 401) {

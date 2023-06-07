@@ -12,7 +12,7 @@ import {
  * 
  * @return void
  */
-function toStockLocationDropdown(divId, locations) {
+export function toStockLocationDropdown(divId, locations) {
     var div = document.getElementById(divId);
     var selectHTML = "<label class='input-group-text' for='toStockLocation'>To</label><select class='form-select' id='toStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
@@ -30,7 +30,7 @@ function toStockLocationDropdown(divId, locations) {
  * 
  * @return void
  */
-function fromStockLocationDropdown(divId, locations) {
+export function fromStockLocationDropdown(divId, locations) {
     var div = document.getElementById(divId);
     var selectHTML = "<label class='input-group-text' for='fromStockLocation'>From</label><select class='form-select' id='fromStockLocation'>";
     for (var i = 0; i < locations.length; i++) {
