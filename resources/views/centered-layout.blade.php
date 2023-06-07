@@ -25,9 +25,3 @@
         vertical-align: top;
     }
 </style>
-
-<script>
-    $(document).ready(function() {
-        continueAsDemoUser();
-    });
-</script>
