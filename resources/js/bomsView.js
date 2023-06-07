@@ -20,7 +20,7 @@ export function initializeBomsView() {
     inlineProcessing();
     bootstrapTableSmallify();
 
-    attachDeleteRowsHandler($table, 'boms', 'bom_id', rebuildBomListTable);
+    attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
 
     $.ajax({
         url: '/locations.get',

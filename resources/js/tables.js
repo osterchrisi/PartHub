@@ -179,7 +179,7 @@ function onTableCellContextMenu($table, $menu, actions) {
       event.preventDefault(); // Inhibit browser context menu
 
       // Get selected table rows
-      var selectedRows = $table.bootstrapTable('getSelections');
+      const selectedRows = $table.bootstrapTable('getSelections');
       // Extract IDs
       const ids = selectedRows.map(obj => obj._data.id);
       // Extract Footprints - here for later worries
@@ -206,15 +206,14 @@ function onTableCellContextMenu($table, $menu, actions) {
   hideMenuOnClickOutside($menu);
 }
 
-function deleteSelectedRowsFromToolbar($table, model, id_column, successCallback) {
-  console.log("Inside deleteSelectedRowsFromToolbar, this are my vars: ");
-  console.log("$table: ", $table);
-  console.log("model: ", model);
-  console.log("id_column: ", id_column);
-  console.log("successCallback: ", successCallback);
+function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
+
+  //! I had `$table` jquery object instead of `table_id` but it bugs around weirdly
+  //! Most likely due to variable scoping, so I just changed it to be a string
   // Get selected table rows
-  var selectedRows = $table.bootstrapTable('getSelections');
+  var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
   console.log("selectedRows: ", selectedRows);
+
   // Extract IDs
   var ids = selectedRows.map(obj => obj._data.id);
 
@@ -660,12 +659,11 @@ function continueAnyway(r, ids, token) {
 
 /**
  *Attaches a click handler to the Delete button in the toolbar
- *@param {jQuery object} table - jQuery object representing the table that the rows will be deleted from
+ *@param {jQuery object} $table - jQuery object representing the table that the rows will be deleted from
  */
-export function attachDeleteRowsHandler($table, model, id_column, successCallback) {
-  // removeClickListeners('#toolbarDeleteButton');
+export function attachDeleteRowsHandler(table_id, model, id_column, successCallback) {
   $('#toolbarDeleteButton').click(function () {
-    deleteSelectedRowsFromToolbar($table, model, id_column, successCallback);
+    deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback);
   });
 }
 

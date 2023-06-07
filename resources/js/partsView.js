@@ -61,7 +61,7 @@ import { callPartEntryModal } from './partEntry';
 
     initializePopovers();
 
-    attachDeleteRowsHandler($table, 'parts', 'part_id', rebuildPartsTable);
+    attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
 
 
     // Get locations and attach click listener to "Add" button in toolbar
