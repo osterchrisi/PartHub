@@ -33,6 +33,7 @@ class BomController extends Controller
         if ($route == 'boms') {
             return view('boms.boms', [
                 'title' => 'BOMs',
+                'view' => 'boms',
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
                 'nice_columns' => self::$nice_bom_list_table_headers,

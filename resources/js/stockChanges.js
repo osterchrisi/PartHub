@@ -1,3 +1,9 @@
+import {
+    removeClickListeners,
+    validateForm,
+    updatePartsInfo
+} from './custom'
+
 /**
  * Create the "To Location" dropdown
  * 
@@ -14,7 +20,6 @@ function toStockLocationDropdown(divId, locations) {
     }
     selectHTML += "</select>";
     div.innerHTML = selectHTML;
-    to_location_exists = true;
 }
 
 /**
@@ -33,7 +38,6 @@ function fromStockLocationDropdown(divId, locations) {
     }
     selectHTML += "</select>";
     div.innerHTML = selectHTML;
-    from_location_exists = true;
 }
 
 /**
@@ -45,7 +49,7 @@ function fromStockLocationDropdown(divId, locations) {
  * @param {Array} locations - An array of objects containing location information
  * @param {number} pid - The part ID for which to call the stock modal for
  */
-function callStockModal(change, locations, pid) {
+export function callStockModal(change, locations, pid) {
     if (change == 1) {
         document.getElementById('stockModalTitle').textContent = 'Add Stock';
         document.getElementById('stockChangeText').textContent = 'Add stock to ';
@@ -81,16 +85,19 @@ function callStockModal(change, locations, pid) {
  * @param {number} pid - The part ID for the stock change
  */
 function stockChangingFormExecution(change, pid) {
-    q = $("#addStockQuantity").val(); // Quantity
-    c = $("#addStockDescription").val(); // Comment
+    let q = $("#addStockQuantity").val(); // Quantity
+    let c = $("#addStockDescription").val(); // Comment
+    
+    let tl = null;
+    let fl = null;
+
+    console.log(change);
 
     // Get required locations
     if (change == '1') {
         tl = $("#toStockLocation").val(); // To Location
-        fl = null; // From Location
     }
     if (change == '-1') {
-        tl = null; // To Location
         fl = $("#fromStockLocation").val(); // From Location
     }
     if (change == '0') {

@@ -1,13 +1,15 @@
 import {
     loadActiveTab,
     addActiveTabEventListeners
-} from "./custom";
+} from './custom';
 
 import {
     bootstrapPartInBomsTable,
     bootstrapHistTable,
     bootstrapTableSmallify
-} from "./tables";
+} from './tables';
+
+import { callStockModal } from './stockChanges';
 
 export function initializeShowPart(part_id) {
     loadActiveTab('parts', '{{ $tabId1 }}');

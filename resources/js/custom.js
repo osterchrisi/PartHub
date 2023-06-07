@@ -47,7 +47,7 @@ export function preventTextSelectionOnShift($table) {
  * @param {string} id - The ID of the HTML element from which to remove click event listeners.
  * @return void
  */
-function removeClickListeners(id) {
+export function removeClickListeners(id) {
     $(id).off('click');
 }
 
@@ -265,7 +265,7 @@ function deleteSelectedRows(ids, model, id_column, successCallback) {
  * @returns {*} - The return value of the callback function, if the form is valid.
  *                If the form is invalid, the function returns undefined.
  */
-function validateForm(formId, button, callback, args = []) {
+export function validateForm(formId, button, callback, args = []) {
     const form = document.getElementById(formId);
     const submitBtn = document.getElementById(button);
 
