@@ -1,8 +1,13 @@
+import {
+  preventTextSelectionOnShift,
+  updatePartsInfo
+} from "./custom";
+
 /**
  * Bootstrap the parts table
  * @return void
  */
-function bootstrapPartsTable() {
+export function bootstrapPartsTable() {
   $('#parts_table').bootstrapTable({
   });
 };
@@ -218,7 +223,7 @@ function deleteSelectedRowsFromToolbar($table, model, id_column, successCallback
  * Rebuild the parts table after adding or deleting parts
  * @param {string} queryString 
  */
-function rebuildPartsTable(queryString) {
+export function rebuildPartsTable(queryString) {
   return $.ajax({
     url: '/parts.partsTable' + queryString,
     success: function (data) {
@@ -237,7 +242,7 @@ function rebuildPartsTable(queryString) {
 /**
  * Makes the button and pagination elements in a Bootstrap Table smaller
  */
-function bootstrapTableSmallify() {
+export function bootstrapTableSmallify() {
   $('.bootstrap-table .btn').addClass('btn-sm');
   $('.bootstrap-table .pagination').addClass('pagination-sm');
   $('.bootstrap-table .form-control').addClass('form-control-sm');
@@ -270,7 +275,7 @@ function rebuildBomListTable(queryString) {
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-function definePartsTableActions($table, $menu) {
+export function definePartsTableActions($table, $menu) {
   // Define row click actions
   defineTableRowClickActions($table, function (id) {
     updatePartsInfo(id);
@@ -344,7 +349,7 @@ function hideContextMenu($menu) {
 // Inline table cell manipulation of parts_table
 //TODO: Extract functions
 //TODO: Remove dropdown upon selecting same option again
-function inlineProcessing() {
+export function inlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
     var cell = $(this);
 
@@ -653,7 +658,7 @@ function continueAnyway(r, ids, token) {
  *Attaches a click handler to the Delete button in the toolbar
  *@param {jQuery object} table - jQuery object representing the table that the rows will be deleted from
  */
-function attachDeleteRowsHandler($table, model, id_column, successCallback) {
+export function attachDeleteRowsHandler($table, model, id_column, successCallback) {
   // removeClickListeners('#toolbarDeleteButton');
   $('#toolbarDeleteButton').click(function () {
     deleteSelectedRowsFromToolbar($table, model, id_column, successCallback);

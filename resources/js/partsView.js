@@ -1,19 +1,22 @@
-// import {
-//     bootstrapPartsTable,
-//     definePartsTableActions,
-//     inlineProcessing,
-//     bootstrapTableSmallify,
-//     rebuildPartsTable,
-//     initializePopovers,
-//     attachDeleteRowsHandler
-// } from "./tables";
+import {
+    bootstrapPartsTable,
+    definePartsTableActions,
+    inlineProcessing,
+    bootstrapTableSmallify,
+    rebuildPartsTable,
+    attachDeleteRowsHandler
+} from "./tables";
 
-// import {
-//     focusStockChangeQuantity,
-//     focusNewPartName
-// } from "./custom";
+import {
+    focusStockChangeQuantity,
+    focusNewPartName,
+    initializePopovers,
+    initializeMultiSelect
+} from "./custom";
 
-$(document).ready(function () {
+
+// $(document).ready(function () {
+    export function initializePartsView(){
     initializeMultiSelect('cat-select');
 
     // This was already commented out
@@ -82,4 +85,5 @@ $(document).ready(function () {
         $('#FromStockLocationDiv-row').show();
         $('#ToStockLocationDiv-row').show();
     })
-});
+}
+// });

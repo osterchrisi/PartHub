@@ -2,7 +2,7 @@
  * Focus the Part Name field in the part entry modal after showing
  * @return void
  */
-function focusNewPartName() {
+export function focusNewPartName() {
     $('#mPartEntry').on('shown.bs.modal', function () {
         $('#addPartName').focus();
     });
@@ -12,7 +12,7 @@ function focusNewPartName() {
  * Focus the Quantity field in the stock changes modal after showing
  * @return void
  */
-function focusStockChangeQuantity() {
+export function focusStockChangeQuantity() {
     $('#mAddStock').on('shown.bs.modal', function () {
         $('#addStockQuantity').focus();
     });
@@ -24,7 +24,7 @@ function focusStockChangeQuantity() {
  * @param {jQuery} $table - The table element to prevent text selection in.
  * @return void
  */
-function preventTextSelectionOnShift($table) {
+export function preventTextSelectionOnShift($table) {
     // Shift is pressed
     $(document).on('keydown', function (event) {
         if (event.shiftKey) {
@@ -80,7 +80,7 @@ function continueAsDemoUser() {
  * @param {int} id The part ID for which to update the stock modal content
  * @return void
  */
-function updatePartsInfo(id) {
+export function updatePartsInfo(id) {
     $.ajax({
         url: "/part/" + id,
         type: 'GET',
@@ -190,7 +190,7 @@ $(function () {
  * @param {string} id The ID of the multi-select element to initialize.
  * @return void
  */
-function initializeMultiSelect(id) {
+export function initializeMultiSelect(id) {
     var $select = $('#' + id).selectize({
         plugins: ["remove_button", "clear_button"]
     });
@@ -336,7 +336,7 @@ function addActiveTabEventListeners(page) {
  * Initializes Bootstrap popovers on all elements with the 'data-bs-toggle="popover"' attribute.
  * @returns {void}
  */
-function initializePopovers() {
+export function initializePopovers() {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 }

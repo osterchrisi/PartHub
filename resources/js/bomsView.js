@@ -8,8 +8,7 @@ $(document).ready(function() {
     bootstrapTableSmallify();
 
     attachDeleteRowsHandler($table, 'boms', 'bom_id', rebuildBomListTable);
-
-
+    
     $.ajax({
         url: '/locations.get',
         dataType: 'json',
