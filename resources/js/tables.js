@@ -1,6 +1,7 @@
 import {
   preventTextSelectionOnShift,
-  updatePartsInfo
+  updatePartsInfo,
+  updateStockModal
 } from "./custom";
 
 /**
@@ -16,7 +17,7 @@ export function bootstrapPartsTable() {
  * Bootstrap the part stock history table
  * @return void
  */
-function bootstrapHistTable() {
+export function bootstrapHistTable() {
   $('#partStockHistoryTable').bootstrapTable({
   });
 };
@@ -25,7 +26,7 @@ function bootstrapHistTable() {
  * Bootstrap the part in BOMs table (part info window)
  * @return void
  */
-function bootstrapPartInBomsTable() {
+export function bootstrapPartInBomsTable() {
   $('#partInBomsTable').bootstrapTable({
   });
 };
@@ -34,7 +35,7 @@ function bootstrapPartInBomsTable() {
  * Bootstrap the BOM list table
  * @return void
  */
-function bootstrapBomListTable() {
+export function bootstrapBomListTable() {
   $('#bom_list_table').bootstrapTable({
   });
 };
@@ -43,7 +44,7 @@ function bootstrapBomListTable() {
  * Bootstrap the BOM details table
  * @return void
  */
-function bootstrapBomDetailsTable() {
+export function bootstrapBomDetailsTable() {
   $('#BomDetailsTable').bootstrapTable({
   });
 };
@@ -52,7 +53,7 @@ function bootstrapBomDetailsTable() {
  * Bootstrap the Locations table
  * @return void
  */
-function bootstrapLocationsListTable() {
+export function bootstrapLocationsListTable() {
   $('#locations_list_table').bootstrapTable({
   });
 };

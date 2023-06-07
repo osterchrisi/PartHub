@@ -1,3 +1,5 @@
+import { initializeShowPart} from "./showPart";
+
 /**
  * Focus the Part Name field in the part entry modal after showing
  * @return void
@@ -88,6 +90,7 @@ export function updatePartsInfo(id) {
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
+            initializeShowPart(id);
         },
         error: function (xhr, status, error) {
             if (xhr.status === 401) {
@@ -108,7 +111,7 @@ export function updatePartsInfo(id) {
  * @param {int} id The part ID for which to update the stock modal content
  * @return void
  */
-function updateStockModal(id) {
+export function updateStockModal(id) {
     $.ajax({
         url: '/part.getName',
         type: 'GET',
@@ -307,7 +310,7 @@ function saveActiveTab(page, event) {
  * @param {string} page - The identifier of the page.
  * @returns {void}
  */
-function loadActiveTab(page, defaultTab) {
+export function loadActiveTab(page, defaultTab) {
     var lastActiveTab = localStorage.getItem('lastActiveTab_' + page) || defaultTab;
     if (lastActiveTab) {
         const tabElement = document.querySelector(`#${lastActiveTab}`);
@@ -324,7 +327,7 @@ function loadActiveTab(page, defaultTab) {
  * @param {string} page - The identifier of the page.
  * @returns {void}
  */
-function addActiveTabEventListeners(page) {
+export function addActiveTabEventListeners(page) {
     const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
     tabs.forEach((tab) => {
         tab.addEventListener('shown.bs.tab', (event) => saveActiveTab(page, event));

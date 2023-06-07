@@ -63,33 +63,5 @@
 
 <!-- Include custom JS -->
 <script>
-    $(document).ready(function() {
-        loadActiveTab('parts', '{{ $tabId1 }}');
-        addActiveTabEventListeners('parts');
-        bootstrapPartInBomsTable();
-        bootstrapHistTable();
-        bootstrapTableSmallify();
-
-        $.ajax({
-            url: '/locations.get',
-            dataType: 'json',
-            success: function(locations) {
-                // Add Stock Button
-                $('#addStockButton').click(function() {
-                    callStockModal("1", locations, {{ $part['part_id'] }});
-                });
-                // Move Stock Button
-                $('#moveStockButton').click(function() {
-                    callStockModal("0", locations, {{ $part['part_id'] }});
-                });
-                // Reduce Stock Button
-                $('#reduceStockButton').click(function() {
-                    callStockModal("-1", locations, {{ $part['part_id'] }});
-                });
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        })
-    });
+    
 </script>
