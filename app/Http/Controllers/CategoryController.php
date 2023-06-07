@@ -18,7 +18,8 @@ class CategoryController extends Controller
 
         return view('categories.categories',
                     ['categories' => $categories,
-                    'title' => 'Categories']);
+                    'title' => 'Categories',
+                    'view' => 'categories']);
     }
 
     public function list(){

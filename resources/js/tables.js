@@ -2,7 +2,8 @@ import {
   preventTextSelectionOnShift,
   updatePartsInfo,
   updateStockModal,
-  updateBomInfo
+  updateBomInfo,
+  deleteSelectedRows
 } from "./custom";
 
 /**
@@ -213,8 +214,9 @@ function deleteSelectedRowsFromToolbar($table, model, id_column, successCallback
   console.log("successCallback: ", successCallback);
   // Get selected table rows
   var selectedRows = $table.bootstrapTable('getSelections');
+  console.log("selectedRows: ", selectedRows);
   // Extract IDs
-  const ids = selectedRows.map(obj => obj._data.id);
+  var ids = selectedRows.map(obj => obj._data.id);
 
   if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
     deleteSelectedRows(ids, model, id_column, successCallback);

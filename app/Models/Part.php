@@ -116,6 +116,9 @@ class Part extends Model
         $part->part_owner_g_fk = null;
         $part->save();
 
+        $new_part_id = $part->part_id;
+
+        return $new_part_id;
         
     }
 

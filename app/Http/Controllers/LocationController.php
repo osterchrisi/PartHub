@@ -27,6 +27,7 @@ class LocationController extends Controller
         if ($route == 'locations') {
             return view('locations.locations', [
                 'title' => 'Storage Locations',
+                'view' => 'locations',
                 'locations_list' => $locations_list,
                 'db_columns' => self::$location_list_table_headers,
                 'nice_columns' => self::$nice_location_list_table_headers,

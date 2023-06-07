@@ -25,12 +25,12 @@ require __DIR__ . '/auth.php';
 
 //* Landing Page
 Route::get('/', function () {
-    return view('welcome', ['title' => 'Open Source Inventory and BOM Management']);
+    return view('welcome', ['title' => 'Open Source Inventory and BOM Management', 'view' => 'welcome']);
 })->name('welcome');
 
 //* User Stuff
 Route::get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Settings']);
+    return view('dashboard', ['title' => 'Settings', 'view' => 'dashboard']);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -84,14 +84,14 @@ Route::controller(CategoryController::class)->group(function () {
 
 //* Supplier Routes
 Route::get('/suppliers', function () {
-    return view('welcome', ['title' => 'Suppliers']);
+    return view('welcome', ['title' => 'Suppliers', 'view' => 'suppliers']);
 })
     ->middleware(['auth', 'verified'])
     ->name('suppliers');
 
 //* Footprint Routes
 Route::get('/footprints', function () {
-    return view('welcome', ['title' => 'Footprints']);
+    return view('welcome', ['title' => 'Footprints', 'view' => 'footprints']);
 })
     ->middleware(['auth', 'verified'])
     ->name('footprints');
@@ -104,16 +104,16 @@ Route::get('/stocklevels', function () {
 
 //* Standalone Pages Routes
 Route::get('/pricing', function () {
-    return view('pricing', ['title' => 'Pricing']);
+    return view('pricing', ['title' => 'Pricing', 'view' => 'pricing']);
 })
     ->name('pricing');
 
 Route::get('/signup', function () {
-    return view('auth.register', ['title' => 'Signup']);
+    return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
 })
     ->name('signup');
 
 Route::get('/whatis', function () {
-    return view('welcome', ['title' => 'What is PartHub, anyway?']);
+    return view('welcome', ['title' => 'What is PartHub, anyway?', 'view' => 'whatis']);
 })
     ->name('whatis');

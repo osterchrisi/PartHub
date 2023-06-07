@@ -1,4 +1,7 @@
-import { validateForm } from "./custom";
+import {
+  validateForm,
+  updatePartsInfo
+} from "./custom";
 /**
  * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
  * 
@@ -28,11 +31,13 @@ function addPartCallback() {
   $.ajax({
     url: '/parts.create',
     type: 'POST',
-    data: { part_name: pn,
-            quantity: q,
-            to_location: l,
-            comment: c,
-            description: d },
+    data: {
+      part_name: pn,
+      quantity: q,
+      to_location: l,
+      comment: c,
+      description: d
+    },
     headers: {
       'X-CSRF-TOKEN': token
     },
