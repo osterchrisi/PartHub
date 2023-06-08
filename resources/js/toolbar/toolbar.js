@@ -29,7 +29,7 @@ export function attachDeleteRowsHandler(table_id, model, id_column, successCallb
 /**
  *Attaches a click handler to the Assemble button in the BOMs toolbar
  */
- export function attachAssembleBomHandler(table_id) {
+export function attachAssembleBomHandler(table_id) {
     $('#toolbarAssembleBomButton').click(function () {
         assembleBomsFromToolbar(table_id);
     });
@@ -42,6 +42,7 @@ export function assembleBomsFromToolbar(table_id) {
 
     // Extract IDs
     var ids = selectedRows.map(obj => obj._data.id);
+    console.log("ids: ", ids);
 
-    assembleBoms(ids);
+    assembleBoms(selectedRows, ids);
 }

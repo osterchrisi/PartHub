@@ -511,8 +511,8 @@ export function assembleBoms(selectedRows, ids) {
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
 
-    const q = $("#bomAssembleQuantity").val(); // Quantity
-    const fl = $("#fromStockLocation").val(); // From Location
+    var q = $("#bomAssembleQuantity").val(); // Quantity
+    var fl = $("#fromStockLocation").val(); // From Location
     var token = $('input[name="_token"]').attr('value');
 
     console.log('Assembling BOMs with the following ids: ', ids);
