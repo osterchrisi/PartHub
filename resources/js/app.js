@@ -10,6 +10,7 @@ window.Alpine = Alpine;
 Alpine.start();
 
 const currentView = document.body.getAttribute('data-view');
+console.log(currentView);
 
 $(document).ready(function () {
     if (currentView === 'parts') {

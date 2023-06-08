@@ -91,7 +91,7 @@
 <!-- Setting height to full viewport for themes to work properly -->
 
 @php
-if (!$view) {$view = 'none';}
+    $view = isset($view) ? $view : 'none';
 @endphp
 
 <body data-view="{{ $view }}" style="min-height: 100vh;">
