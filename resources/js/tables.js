@@ -280,13 +280,13 @@ export function defineBomListTableActions($table, $menu) {
 
   // Define context menu actions
   onTableCellContextMenu($table, $menu, {
-    delete: function (ids) {
+    delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
       }
     },
-    assemble: function (ids) {
-      assembleBoms(ids);
+    assemble: function (selectedRows, ids) {
+      assembleBoms(selectedRows, ids);
     }
   });
 };
@@ -507,7 +507,7 @@ function inlineCategorySelectEventHandler(select, cell) {
 * @param {Array} ids - An array of BOM IDs.
 * @returns {void}
 */
-export function assembleBoms(ids) {
+export function assembleBoms(selectedRows, ids) {
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
 
