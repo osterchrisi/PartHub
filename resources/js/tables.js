@@ -118,7 +118,7 @@ function createInlineCategorySelect(categories, currentValue) {
  * @param {jQuery} $table - The jQuery object representing the table element
  * @param {function} onSelect - A callback function to call when a row is selected
  */
-function defineTableRowClickActions($table, onSelect) {
+export function defineTableRowClickActions($table, onSelect) {
   $table.on('click', 'tbody tr', function () {
     if ($table.find('tr.selected-last').length > 0) {
       $table.find('tr.selected-last').removeClass('selected-last');

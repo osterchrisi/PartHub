@@ -119,3 +119,7 @@ Route::get('/whatis', function () {
     return view('welcome', ['title' => 'What is PartHub, anyway?', 'view' => 'whatis']);
 })
     ->name('whatis');
+
+Route::get('/multi', function () {
+    return view('multi', ['title' => 'Multi Test', 'view' => 'multi']);
+});

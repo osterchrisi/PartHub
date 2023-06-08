@@ -3,6 +3,7 @@ import { initializePartsView } from './partsView';
 import { initializeBomsView } from './bomsView';
 import { initializeCategoriesView} from './categoriesView';
 import { initializeLocationsView } from './locationsView';
+import { initializeMultiView } from './multiView';
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
@@ -23,5 +24,8 @@ $(document).ready(function () {
     }
     else if (currentView === 'locations') {
         initializeLocationsView();
+    }
+    else if (currentView === 'multi') {
+        initializeMultiView();
     }
 });

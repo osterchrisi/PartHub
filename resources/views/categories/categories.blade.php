@@ -20,8 +20,8 @@
         <thead>
             <tr>
                 <th data-field="category_name">Category</th>
-                <th data-field="category_id" data-visible="false" style="diplay: none;">id</th>
-                <th data-field="parent_category" data-visible="false" style="diplay: none;">parent_id</th>
+                <th data-field="category_id" data-visible="false" style="display: none;">id</th>
+                <th data-field="parent_category" data-visible="false" style="display: none;">parent_id</th>
             </tr>
         </thead>
         <tbody>
