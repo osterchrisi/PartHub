@@ -24,11 +24,11 @@
                 style="position: sticky; top: 50px; height: 89vh;">
             </div>
 
-            {{-- Table Window --}}
+            {{-- Table Window 2 --}}
             <div class='col' id='table-window2' style='max-width: 90%;'>
             </div>
 
-            {{-- Info Window --}}
+            {{-- Info Window 2 --}}
             <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window2'
                 style="position: sticky; top: 50px; height: 89vh;">
             </div>
