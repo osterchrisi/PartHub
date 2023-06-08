@@ -1,8 +1,8 @@
 import './bootstrap';
-import { initializePartsView } from './partsView';
-import { initializeBomsView } from './bomsView';
-import { initializeCategoriesView} from './categoriesView';
-import { initializeLocationsView } from './locationsView';
+import { initializePartsView } from './views/partsView';
+import { initializeBomsView } from './views/bomsView';
+import { initializeCategoriesView} from './views/categoriesView';
+import { initializeLocationsView } from './views/locationsView';
 import { initializeMultiView } from './multiView';
 import Alpine from 'alpinejs';
 

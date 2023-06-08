@@ -10,7 +10,7 @@
 {{-- Extra Toolbar Buttons --}}
 @section('page specific buttons')
     <li class="nav-item p-1">
-        <button type="button" class="btn btn-sm btn-primary btn-labeled"><span class="btn-label">
+        <button type="button" class="btn btn-sm btn-primary btn-labeled" id="toolbarAssembleBomButton"><span class="btn-label">
                 <i class="fas fa-lg fa-wrench"></i></span>Assemble</button>
     </li>
 @endsection

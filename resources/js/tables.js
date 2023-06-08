@@ -3,8 +3,11 @@ import {
   updatePartsInfo,
   updateStockModal,
   updateBomInfo,
-  deleteSelectedRows
+  deleteSelectedRows,
+  removeClickListeners
 } from "./custom";
+
+import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
 
 /**
  * Bootstrap the parts table
@@ -185,22 +188,6 @@ function onTableCellContextMenu($table, $menu, actions) {
   hideMenuOnClickOutside($menu);
 }
 
-function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
-
-  //! I had `$table` jquery object instead of `table_id` but it bugs around weirdly
-  //! Most likely due to variable scoping, so I just changed it to be a string
-  // Get selected table rows
-  var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
-  console.log("selectedRows: ", selectedRows);
-
-  // Extract IDs
-  var ids = selectedRows.map(obj => obj._data.id);
-
-  if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-    deleteSelectedRows(ids, model, id_column, successCallback);
-  }
-}
-
 /**
  * Rebuild the parts table after adding or deleting parts
  * @param {string} queryString 
@@ -293,13 +280,13 @@ export function defineBomListTableActions($table, $menu) {
 
   // Define context menu actions
   onTableCellContextMenu($table, $menu, {
-    delete: function (selectedRows, ids) {
+    delete: function (ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
       }
     },
-    assemble: function (selectedRows, ids) {
-      assembleBoms(selectedRows, ids);
+    assemble: function (ids) {
+      assembleBoms(ids);
     }
   });
 };
@@ -520,15 +507,16 @@ function inlineCategorySelectEventHandler(select, cell) {
 * @param {Array} ids - An array of BOM IDs.
 * @returns {void}
 */
-function assembleBoms(selectedRows, ids) {
+export function assembleBoms(ids) {
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
 
-    q = $("#bomAssembleQuantity").val(); // Quantity
-    fl = $("#fromStockLocation").val(); // From Location
+    const q = $("#bomAssembleQuantity").val(); // Quantity
+    const fl = $("#fromStockLocation").val(); // From Location
     var token = $('input[name="_token"]').attr('value');
 
     console.log('Assembling BOMs with the following ids: ', ids);
+    console.log('Other vars. q, fl, token: ', q, fl, token);
 
     $.ajax({
       url: '/bom.assemble',
@@ -633,16 +621,6 @@ function continueAnyway(r, ids, token) {
         alert('Error updating data');
       }
     }
-  });
-}
-
-/**
- *Attaches a click handler to the Delete button in the toolbar
- *@param {jQuery object} $table - jQuery object representing the table that the rows will be deleted from
- */
-export function attachDeleteRowsHandler(table_id, model, id_column, successCallback) {
-  $('#toolbarDeleteButton').click(function () {
-    deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback);
   });
 }
 

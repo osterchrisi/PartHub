@@ -3,18 +3,18 @@ import {
     definePartsTableActions,
     inlineProcessing,
     bootstrapTableSmallify,
-    rebuildPartsTable,
-    attachDeleteRowsHandler
-} from "./tables";
+    rebuildPartsTable
+} from "../tables";
 
 import {
     focusStockChangeQuantity,
     focusNewPartName,
     initializePopovers,
     initializeMultiSelect
-} from "./custom";
+} from "../custom";
 
-import { callPartEntryModal } from './partEntry';
+import { callPartEntryModal } from '../partEntry';
+import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 
 // $(document).ready(function () {

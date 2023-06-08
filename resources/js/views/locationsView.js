@@ -1,17 +1,19 @@
 import {
-    bootstrapCategoriesListTable,
+    bootstrapLocationsListTable,
+    inlineProcessing,
     bootstrapTableSmallify
-} from "./tables";
+} from "../tables";
 
-export function initializeCategoriesView() {
-    bootstrapCategoriesListTable();
+export function initializeLocationsView() {
+    bootstrapLocationsListTable();
 
     // var $table = $('#locations_list_table');
     // var $menu = $('#bom_list_table_menu');
     // defineBomListTableActions($table, $menu);
-    // inlineProcessing();
+    inlineProcessing();
     bootstrapTableSmallify();
 
+    // sendFormOnDropdownChange();
 
     // Experimental ajax search
     // $('#search').on("keyup input", function() {

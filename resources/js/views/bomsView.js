@@ -3,13 +3,14 @@ import {
     defineBomListTableActions,
     inlineProcessing,
     bootstrapTableSmallify,
-    rebuildBomListTable,
-    attachDeleteRowsHandler
-} from './tables';
+    rebuildBomListTable
+} from '../tables';
 
 import {
     fromStockLocationDropdown
-} from './stockChanges';
+} from '../stockChanges';
+
+import { attachDeleteRowsHandler, attachAssembleBomHandler } from '../toolbar/toolbar';
 
 export function initializeBomsView() {
     bootstrapBomListTable();
@@ -21,6 +22,7 @@ export function initializeBomsView() {
     bootstrapTableSmallify();
 
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
+    attachAssembleBomHandler('bom_list_table');
 
     $.ajax({
         url: '/locations.get',

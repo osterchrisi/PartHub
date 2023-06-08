@@ -4,7 +4,6 @@ import {
     inlineProcessing,
     bootstrapTableSmallify,
     rebuildPartsTable,
-    attachDeleteRowsHandler,
     defineTableRowClickActions
 } from "./tables";
 
@@ -23,6 +22,8 @@ import {
 import {
     fromStockLocationDropdown
 } from './stockChanges';
+
+import { attachDeleteRowsHandler } from "./toolbar/toolbar";
 
 function rebuildBomListTable2(queryString) {
     return $.ajax({
