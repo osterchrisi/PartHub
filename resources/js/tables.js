@@ -65,36 +65,15 @@ export function bootstrapLocationsListTable() {
  * @return void
  */
 export function bootstrapCategoriesListTable() {
-  var $table = $('#categories_list_table');
+  const $table = $('#categories_list_table');
   $table.bootstrapTable({
-    url: '/categories.list',
-    idField: 'category_id',
-    showColumns: true,
-    columns: [
-      {
-        field: 'category_id',
-        title: 'Category ID'
-      },
-      {
-        field: 'category_name',
-        title: 'Category Name'
-      }
-    ],
-    treeShowField: 'category_name',
-    parentIdField: 'parent_category',
+    rootParentId: '0',
     onPostBody: function () {
-      var columns = $table.bootstrapTable('getOptions').columns;
-
-      if (columns && columns[0][1].visible) {
-        $table.treegrid({
-          treeColumn: 1,
-          onChange: function () {
-            $table.bootstrapTable('resetView');
-          }
-        });
-      }
+      $table.treegrid({
+        treeColumn: 0
+      })
     }
-  })
+  });
 };
 
 /**
