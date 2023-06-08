@@ -57,20 +57,20 @@
     <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/resizable/bootstrap-table-resizable.min.js">
     </script>
     <!-- Bootstrap Table Reorder Columns -->
-    @vite('resources/js/dragtable/dragtable.css')
-    @vite('resources/js/dragtable/jquery.dragtable.js')
+    <link href="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/dragtable.css" rel="stylesheet">
+    {{-- @vite('resources/js/dragtable/dragtable.css') --}}
+    {{-- @vite('resources/js/dragtable/jquery.dragtable.js') --}}
+    <script src="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/jquery.dragtable.js"></script>
     <script
         src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.js">
     </script>
     <!-- Bootstrap Table Cookie to remember table state -->
     <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
-    <!-- Custom js -->
+    <!-- Custom js and CSS -->
     @vite(['resources/js/app.js'])
     @vite(['resources/css/custom.css'])
 
-    <!-- Custom CSS -->
-    {{-- see above --}}
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
