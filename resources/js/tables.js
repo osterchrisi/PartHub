@@ -245,13 +245,14 @@ export function rebuildBomListTable(queryString) {
  * @param {jQuery} $menu - The context menu to attach to that table
  */
 export function definePartsTableActions($table, $menu) {
-  // Define row click actions
+  // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
     updatePartsInfo(id);
     updateStockModal(id);
   });
 
-  // Define context menu actions
+  // Define context menu actions.
+  //* Important: selectedRows and ids are coming from the higher-level function onTableCellContextMenu
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
@@ -273,12 +274,13 @@ export function definePartsTableActions($table, $menu) {
  * @param {jQuery} $menu - The context menu to attach to that table
  */
 export function defineBomListTableActions($table, $menu) {
-  // Define row click actions
+  // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
     updateBomInfo(id);
   });
 
   // Define context menu actions
+  //* Important: selectedRows and ids are coming from the higher-level function onTableCellContextMenu
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
