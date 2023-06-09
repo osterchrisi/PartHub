@@ -52,6 +52,12 @@ export function bootstrapBomListTable() {
 export function bootstrapBomDetailsTable() {
   $('#BomDetailsTable').bootstrapTable({
   });
+
+  // Find the element with the class "fixed-table-toolbar"
+  var $fixedTableToolbar = $('.fixed-table-toolbar');
+
+  // Tryout for a way to display storage places in the BOM details table
+  $fixedTableToolbar.append('<div class="row"><div class="col"><div class="columns columns-right btn-group float-right"><div class="keep-open btn-group" title="Columns"><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="Columns" title="Columns" aria-expanded="false"><i class="bi bi-buildings"></i><span class="caret"></span></button><div class="dropdown-menu dropdown-menu-right" style=""><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Part Name" value="0" checked="checked"> <span>Storage 1</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Quantity needed" value="1" checked="checked"> <span>Storage 2</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Total stock available" value="2" checked="checked"> <span>Storage 3</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Can build" value="3" checked="checked"> <span>Storage 4</span></label></div></div></div></div></div>');
 };
 
 /**
@@ -78,6 +84,15 @@ export function bootstrapCategoriesListTable() {
     }
   });
 };
+
+/**
+ * Makes the button and pagination elements in a Bootstrap Table smaller
+ */
+export function bootstrapTableSmallify() {
+  $('.bootstrap-table .btn').addClass('btn-sm');
+  $('.bootstrap-table .pagination').addClass('pagination-sm');
+  $('.bootstrap-table .form-control').addClass('form-control-sm');
+}
 
 /**
  * Custom Sorter for my stock URLs
@@ -208,15 +223,6 @@ export function rebuildPartsTable(queryString) {
   });
 }
 
-/**
- * Makes the button and pagination elements in a Bootstrap Table smaller
- */
-export function bootstrapTableSmallify() {
-  $('.bootstrap-table .btn').addClass('btn-sm');
-  $('.bootstrap-table .pagination').addClass('pagination-sm');
-  $('.bootstrap-table .form-control').addClass('form-control-sm');
-}
-
 
 /**
  * Rebuild the BOM list table after adding or deleting BOMs
@@ -255,14 +261,17 @@ export function definePartsTableActions($table, $menu) {
   //* Important: selectedRows and ids are coming from the higher-level function onTableCellContextMenu
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
+      // selectedRows and ids come from onTableCellContextMenu
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
         deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
       }
     },
     edit: function (selectedRows) {
+      // selectedRows and ids come from onTableCellContextMenu
       editSelectedRows(selectedRows);
     },
     customAction1: function (selectedRows) {
+      // selectedRows and ids come from onTableCellContextMenu
       customAction1(selectedRows);
     }
   });
@@ -282,19 +291,21 @@ export function defineBomListTableActions($table, $menu) {
   // Define context menu actions
   //* Important: selectedRows and ids are coming from the higher-level function onTableCellContextMenu
   onTableCellContextMenu($table, $menu, {
+    // selectedRows and ids come from onTableCellContextMenu
     delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
       }
     },
     assemble: function (selectedRows, ids) {
+      // selectedRows and ids come from onTableCellContextMenu
       assembleBoms(selectedRows, ids);
     }
   });
 };
 
 /**
- * Displays a context menu at the specified event location.
+ * Displays a context menu at the specified event location inside a table.
  * @param {jQuery} $menu - The context menu element.
  * @param {Event} event - The event that triggered the context menu display.
  *                        The event object contains information about the mouse click,
@@ -317,7 +328,7 @@ function hideContextMenu($menu) {
   $menu.hide();
 }
 
-// Inline table cell manipulation of parts_table
+// Inline table cell manipulation of bootstrapped tables
 //TODO: Extract functions
 //TODO: Remove dropdown upon selecting same option again
 export function inlineProcessing() {
@@ -339,7 +350,7 @@ export function inlineProcessing() {
     // * It's a category cell
     if (cell.hasClass('category')) {
       // Get list of available categories and populate dropdown
-      categories = $.ajax({
+      var categories = $.ajax({
         type: 'GET',
         url: '/categories.list',
         dataType: 'JSON',
@@ -367,6 +378,7 @@ export function inlineProcessing() {
           // Listen for the Escape keydown event on the document level because selectized element is eating my events
           $(document).on('keydown', function (event) {
             if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('category') && cell.hasClass('editing')) {
+              console.log("escape");
               select.remove();
               cell.text(currentValue);
               cell.removeClass('editing');
