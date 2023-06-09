@@ -18,7 +18,7 @@ import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 
 // $(document).ready(function () {
-    export function initializePartsView(){
+export function initializePartsView() {
     initializeMultiSelect('cat-select');
 
     // This was already commented out

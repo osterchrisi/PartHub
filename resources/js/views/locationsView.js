@@ -1,17 +1,19 @@
 import {
     bootstrapLocationsListTable,
     inlineProcessing,
-    bootstrapTableSmallify
+    bootstrapTableSmallify,
+    defineLocationsListTableActions
 } from "../tables";
 
 export function initializeLocationsView() {
     bootstrapLocationsListTable();
 
-    // var $table = $('#locations_list_table');
-    // var $menu = $('#bom_list_table_menu');
+    var $table = $('#locations_list_table');
+    var $menu = $('#bom_list_table_menu');
     // defineBomListTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
+    defineLocationsListTableActions($table, $menu)
 
     // sendFormOnDropdownChange();
 

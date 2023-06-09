@@ -4,7 +4,8 @@ import {
   updateStockModal,
   updateBomInfo,
   deleteSelectedRows,
-  removeClickListeners
+  removeClickListeners,
+  updateLocationInfo
 } from "./custom";
 
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
@@ -54,7 +55,7 @@ export function bootstrapBomDetailsTable() {
   });
 
   // Find the element with the class "fixed-table-toolbar"
-  var $fixedTableToolbar = $('.fixed-table-toolbar');
+  var $fixedTableToolbar = $('#bomInfo .fixed-table-toolbar');
 
   // Tryout for a way to display storage places in the BOM details table
   $fixedTableToolbar.append('<div class="row"><div class="col"><div class="columns columns-right btn-group float-right"><div class="keep-open btn-group" title="Columns"><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="Columns" title="Columns" aria-expanded="false"><i class="bi bi-buildings"></i><span class="caret"></span></button><div class="dropdown-menu dropdown-menu-right" style=""><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Part Name" value="0" checked="checked"> <span>Storage 1</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Quantity needed" value="1" checked="checked"> <span>Storage 2</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Total stock available" value="2" checked="checked"> <span>Storage 3</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Can build" value="3" checked="checked"> <span>Storage 4</span></label></div></div></div></div></div>');
@@ -303,6 +304,13 @@ export function defineBomListTableActions($table, $menu) {
     }
   });
 };
+
+export function defineLocationsListTableActions($table, $menu) {
+  defineTableRowClickActions($table, function (id) {
+    console.log(id);
+    updateLocationInfo(id);
+  });
+}
 
 /**
  * Displays a context menu at the specified event location inside a table.

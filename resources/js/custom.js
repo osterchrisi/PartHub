@@ -155,6 +155,33 @@ export function updateBomInfo(id) {
 };
 
 /**
+ * Updates the Location info in the info window using an AJAX request.
+ * @param {number} id - The ID of the Location to update the info for.
+ * @return void
+ */
+export function updateLocationInfo(id) {
+    $.ajax({
+        url: '/bom/' + id,
+        type: 'GET',
+        data: { id: id, hideNavbar: true },
+        success: function (data) {
+            // Replace the content of the info window with the loaded PHP page
+            $('#info-window').html(data);
+            initializeShowBom();
+        },
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                $('#info-window').html('Your session expired. Please login again.')
+            }
+            else {
+                // Display an error message if the PHP page failed to load
+                $('#info-window').html('Failed to load additional BOM data.');
+            }
+        }
+    });
+};
+
+/**
  * Displays the BOM creation script in the info window using an AJAX request
  * @return void
  */
