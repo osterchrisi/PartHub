@@ -50,11 +50,27 @@ class LocationController extends Controller
     {
         $location = Location::getLocationById($location_id);
         $stock_levels = $location->getStockLevelEntries();
-        $result = [];
+        $stock_in_location = [];
         foreach ($stock_levels as $stock_level) {
-            $result[] = [$stock_level['part_id_fk'] => $stock_level['stock_level_quantity']];
+            $stock_in_location[] = ['part_name' => $stock_level->part->part_name, 'stock_level' => $stock_level->stock_level_quantity];
         }
-        // dd($stock_levels);
-        dd($result);
+        return view(
+            'locations.showLocation',
+            [
+                'location_name' => $location->location_id,
+                'location_description' => $location->location_description,
+                // Tabs Settings
+                'tabId1' => 'info',
+                'tabText1' => 'Info',
+                'tabToggleId1' => 'locationInfo',
+                'tabId2' => 'history',
+                'tabText2' => 'Location History',
+                'tabToggleId2' => 'locationHistory',
+                // Stock in Location table
+                'stock_in_location' => $stock_in_location,
+                'db_columns' => ['part_name', 'stock_level'],
+                'nice_columns' => ['Part', 'Stock Level']
+            ]
+        );
     }
 }

@@ -46,6 +46,6 @@ class Location extends Model
 
     public function getStockLevelEntries()
     {
-        return $this->stockLevelEntries()->get();
+        return $this->stockLevelEntries()->with('part')->get();
     }
 }
