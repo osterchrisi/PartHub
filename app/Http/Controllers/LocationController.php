@@ -69,7 +69,7 @@ class LocationController extends Controller
                 // Stock in Location table
                 'stock_in_location' => $stock_in_location,
                 'db_columns' => ['part_name', 'stock_level'],
-                'nice_columns' => ['Part', 'Stock Level']
+                'nice_columns' => ['Part', 'Quantity']
             ]
         );
     }

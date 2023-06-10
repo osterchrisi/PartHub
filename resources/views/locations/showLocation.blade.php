@@ -17,6 +17,7 @@
     <div class="tab-content" id="bomsTabsContent">
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
+            <h5>Stock in this Location</h5>
             {{-- @include('locations.locationDetailsTable') --}}
             @php
             $table = \buildHTMLTable($db_columns, $nice_columns, $stock_in_location);
