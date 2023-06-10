@@ -87,7 +87,7 @@ export function updatePartsInfo(id) {
     $.ajax({
         url: "/part/" + id,
         type: 'GET',
-        data: { part_id: id, hideNavbar: true },
+        data: {},
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
@@ -163,7 +163,7 @@ export function updateLocationInfo(id) {
     $.ajax({
         url: '/location/' + id,
         type: 'GET',
-        data: { id: id, hideNavbar: true },
+        data: {},
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);

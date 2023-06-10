@@ -46,7 +46,7 @@ class Bom extends Model
      * Retrieve a BOM record by its ID.
      *
      * @param int $bom_id The ID of the BOM to retrieve.
-     * @return Illuminate\Support\Collection|static[] The BOM record matching the given ID.
+     * @return \Illuminate\Support\Collection|static[] The BOM record matching the given ID.
      */
     public static function getBomById($bom_id)
     {

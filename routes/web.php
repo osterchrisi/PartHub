@@ -75,6 +75,7 @@ Route::controller(LocationController::class)->group(function () {
     Route::get('/locations.get', function () {
         return LocationController::getLocations();
     })->middleware(['auth', 'verified']);
+    Route::get('/location/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
 //* Category Routes

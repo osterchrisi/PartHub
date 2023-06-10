@@ -17,7 +17,7 @@ class LocationController extends Controller
         return Location::availableLocations();
     }
 
-    public static function index(Request $request)
+    public function index(Request $request)
     {
         $search_term = request()->has('search') ? request()->input('search') : '';
         $locations_list = Location::availableLocations('array');
@@ -44,5 +44,17 @@ class LocationController extends Controller
                 'id_field' => self::$id_field,
             ]);
         }
+    }
+
+    public function show($location_id)
+    {
+        $location = Location::getLocationById($location_id);
+        $stock_levels = $location->getStockLevelEntries();
+        $result = [];
+        foreach ($stock_levels as $stock_level) {
+            $result[] = [$stock_level['part_id_fk'] => $stock_level['stock_level_quantity']];
+        }
+        // dd($stock_levels);
+        dd($result);
     }
 }
