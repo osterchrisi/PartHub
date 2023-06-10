@@ -119,38 +119,44 @@ class PartsController extends Controller
         // Fetch the part with its related stock levels
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
 
-        // Calculate total stock level
-        $total_stock = \calculateTotalStock($part['stock_levels']);
+        // Check if request is authorized
+        if (Auth::user()->id === $part['part_owner_u_fk']) {
+            // Calculate total stock level
+            $total_stock = \calculateTotalStock($part['stock_levels']);
 
-        // Return view
-        return view(
-            'parts.showPart',
-            [
-                'part' => $part,
-                // Stock Table
-                'total_stock' => $total_stock,
-                'column_names' => array('location_name', 'stock_level_quantity'),
-                'nice_columns' => array('Location', 'Quantity'),
-                'stock_levels' => $part['stock_levels'],
-                //Bom Table
-                'bomTableHeaders' => array('bom_name', 'element_quantity', 'bom_description'),
-                'nice_bomTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
-                'bom_list' => Part::getBomsContainingPart($part_id),
-                // Stock History Table
-                'stockHistoryTableHeaders' => array('stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'),
-                'nice_stockHistoryTableHeaders' => array('Date', 'Quantity', 'From', 'To', 'Comment', 'User'),
-                'stock_history' => StockLevelHistory::getPartStockHistory($part_id),
-                // Tabs Settings
-                'tabId1' => 'info',
-                'tabText1' => 'Info',
-                'tabToggleId1' => 'partInfo',
-                'tabId2' => 'history',
-                'tabText2' => 'Stock History',
-                'tabToggleId2' => 'partHistory'
+            // Return view
+            return view(
+                'parts.showPart',
+                [
+                    'part' => $part,
+                    // Stock Table
+                    'total_stock' => $total_stock,
+                    'column_names' => array('location_name', 'stock_level_quantity'),
+                    'nice_columns' => array('Location', 'Quantity'),
+                    'stock_levels' => $part['stock_levels'],
+                    //Bom Table
+                    'bomTableHeaders' => array('bom_name', 'element_quantity', 'bom_description'),
+                    'nice_bomTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
+                    'bom_list' => Part::getBomsContainingPart($part_id),
+                    // Stock History Table
+                    'stockHistoryTableHeaders' => array('stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'),
+                    'nice_stockHistoryTableHeaders' => array('Date', 'Quantity', 'From', 'To', 'Comment', 'User'),
+                    'stock_history' => StockLevelHistory::getPartStockHistory($part_id),
+                    // Tabs Settings
+                    'tabId1' => 'info',
+                    'tabText1' => 'Info',
+                    'tabToggleId1' => 'partInfo',
+                    'tabId2' => 'history',
+                    'tabText2' => 'Stock History',
+                    'tabToggleId2' => 'partHistory'
 
 
-            ]
-        );
+                ]
+            );
+        }
+        else {
+            abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
+        }
     }
 
     /**

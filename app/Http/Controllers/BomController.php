@@ -54,32 +54,38 @@ class BomController extends Controller
 
     public static function show($bom_id)
     {
-        $bom_info = Bom::getBomNameAndDescription($bom_id);
-        // dd($bom_info);
+        $bom_info = Bom::getBomById($bom_id);
         $bom_name = $bom_info[0]->bom_name;
         $bom_description = $bom_info[0]->bom_description;
+        $bom_owner = $bom_info[0]->bom_owner_u_fk;
 
-        // Get BOM elements
-        $bom_elements = BomElements::getBomElements($bom_id);
+        if (Auth::user()->id === $bom_owner) {
 
-        return view(
-            'boms.showBom',
-            [
-                'bom_name' => $bom_name,
-                'bom_description' => $bom_description,
-                'bom_elements' => $bom_elements,
-                // Bom Details Table
-                'db_columns' => self::$bom_detail_table_headers,
-                'nice_columns' => self::$nice_bom_detail_table_headers,
-                // Tabs Settings
-                'tabId1' => 'info',
-                'tabText1' => 'Info',
-                'tabToggleId1' => 'bomInfo',
-                'tabId2' => 'history',
-                'tabText2' => 'Build History',
-                'tabToggleId2' => 'bomHistory'
-            ]
-        );
+            // Get BOM elements
+            $bom_elements = BomElements::getBomElements($bom_id);
+
+            return view(
+                'boms.showBom',
+                [
+                    'bom_name' => $bom_name,
+                    'bom_description' => $bom_description,
+                    'bom_elements' => $bom_elements,
+                    // Bom Details Table
+                    'db_columns' => self::$bom_detail_table_headers,
+                    'nice_columns' => self::$nice_bom_detail_table_headers,
+                    // Tabs Settings
+                    'tabId1' => 'info',
+                    'tabText1' => 'Info',
+                    'tabToggleId1' => 'bomInfo',
+                    'tabId2' => 'history',
+                    'tabText2' => 'Build History',
+                    'tabToggleId2' => 'bomHistory'
+                ]
+            );
+        }
+        else {
+            abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
+        }
     }
 
     public static function prepareBomForAssembly(Request $request)

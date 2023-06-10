@@ -136,7 +136,7 @@ export function updateBomInfo(id) {
     $.ajax({
         url: '/bom/' + id,
         type: 'GET',
-        data: { id: id, hideNavbar: true },
+        data: {},
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
@@ -161,7 +161,7 @@ export function updateBomInfo(id) {
  */
 export function updateLocationInfo(id) {
     $.ajax({
-        url: '/bom/' + id,
+        url: '/location/' + id,
         type: 'GET',
         data: { id: id, hideNavbar: true },
         success: function (data) {
