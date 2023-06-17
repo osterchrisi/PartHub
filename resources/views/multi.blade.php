@@ -1,9 +1,18 @@
 {{-- Header --}}
 @include('header')
 
+@section('page specific buttons')
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample">
+        Toggle width collapse
+    </button>
+@endsection
+
 {{-- Navbar and Toolbar --}}
 @include('navbar')
 @include('components.toolbarTop')
+
+
+
 
 {{-- Page Contents --}}
 <div class="container-fluid" id="content-container">
@@ -15,13 +24,15 @@
         </div>
 
         <div class='row'>
-            {{-- Table Window --}}
-            <div class='col' id='table-window' style='max-width: 90%;'>
-            </div>
+            <div class="collapse collapse-horizontal bg-primary" id="collapseWidthExample" style='width: 200px;'>
+                {{-- Table Window --}}
+                <div class='col' id='table-window'>
+                </div>
 
-            {{-- Info Window --}}
-            <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
-                style="position: sticky; top: 50px; height: 89vh;">
+                {{-- Info Window --}}
+                {{-- <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
+                    style="position: sticky; top: 50px; height: 89vh;">
+                </div> --}}
             </div>
 
             {{-- Table Window 2 --}}
@@ -34,26 +45,5 @@
             </div>
         </div>
 
-    </div>
-</div>
-
-{{-- Modals and Menus --}}
-@yield('modals and menus')
-
-{{-- Toasts --}}
-{{-- @yield('toasts') --}}
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="tConfirmDelete" class="toast" role="alert">
-        <div class="toast-header">
-            <i class="bi bi-check-square-fill text-primary"></i>
-            <strong class="me-auto text-primary">&nbsp; PartHub</strong>
-            {{-- <small>now</small> --}}
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            <div class="text-success m-0 p-1">
-                Successfully deleted <span id="numDeletedItems"></span> row(s).
-            </div>
-        </div>
     </div>
 </div>
