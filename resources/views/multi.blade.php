@@ -27,30 +27,39 @@
         </div>
 
         <div class="row">
-            <div class="col collapse collapse-horizontal " id="partsCollapse">
-                {{-- Table Window --}}
-                <div class="row">
-                    <div class='col-9' id='table-window' style='max-width: 90%;'>
-                        <div id="table-only">
-                        </div>
-                    </div>
+            <div class ="col" id="partsMegaContainer">
+                <div class="col collapse collapse-horizontal" id="partsCollapse" style='max-width: 99%;'>
 
-                    {{-- Info Window --}}
-                    <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
-                        style="position: sticky; top: 50px; height: 89vh;">
+                    {{-- Table Window --}}
+                    <div class="row">
+                        <div class='col-9' id='table-window' style='max-width: 85%;'>
+                            <div id="table-only">
+                            </div>
+                        </div>
+
+                        {{-- Info Window --}}
+                        <div class='col d-flex sticky justify-content-center info-window pb-3'
+                            id='info-window' style="position: sticky; top: 50px; height: 89vh;">
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col collapse collapse-horizontal " id="bomsCollapse">
-                {{-- Table Window 2 --}}<div class="row">
-                    <div class='col-9' id='table-window2' style='max-width: 90%;'>
-                        <div id="table-only">
-                        </div>
-                    </div>
+            <div class="col" id="bomsMegaContainer">
+                <div class="col collapse collapse-horizontal" id="bomsCollapse" style='max-width: 99%;'>
 
-                    {{-- Info Window 2 --}}
-                    <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window2'
-                        style="position: sticky; top: 50px; height: 89vh;">
+                    {{-- Table Window 2 --}}
+                    <div class="row">
+                        <div class='col-9' id='table-window2' style='max-width: 85%;'>
+                            <div id="table-only2">
+                                BOMs here
+                            </div>
+                        </div>
+
+                        {{-- Info Window 2 --}}
+                        <div class='col d-flex sticky justify-content-center info-window pb-3'
+                            id='info-window2' style="position: sticky; top: 50px; height: 89vh;">
+                            BOM details here
+                        </div>
                     </div>
                 </div>
             </div>

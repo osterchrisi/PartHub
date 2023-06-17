@@ -23,6 +23,8 @@ import {
     fromStockLocationDropdown
 } from './stockChanges';
 
+import { initializeShowBom } from "./showBom";
+
 import { attachDeleteRowsHandler } from "./toolbar/toolbar";
 
 function rebuildBomListTable2(queryString) {
@@ -30,7 +32,7 @@ function rebuildBomListTable2(queryString) {
       url: '/boms.bomsTable' + queryString,
       success: function (data) {
         $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
-        $('#table-window2').html(data); // Update div with new table
+        $('#table-only2').html(data); // Update div with new table
         bootstrapBomListTable(); // Bootstrap it
         var $table = $('#bom_list_table');
         var $menu = $('#bom_list_table_menu');

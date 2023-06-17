@@ -86,7 +86,7 @@ ul.dropdown-menu a {
 }
 
 
-/* These are for the resizable divs  */
+/* These are for the resizable divs - these are just decorators, no functionality  */
 .ui-resizable-e {
     width: 10px;
     height: 100%;

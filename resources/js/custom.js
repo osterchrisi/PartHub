@@ -215,6 +215,26 @@ $(function () {
             $('#info-window').width(infoWidth);
         }
     });
+
+    $('#table-window2').resizable({
+        handles: 'e',
+        resize: function () {
+            var parentWidth = $('#table-window2').parent().width();
+            var tableWidth = $('#table-window2').width();
+            var infoWidth = parentWidth - tableWidth;
+            $('#info-window2').width(infoWidth);
+        }
+    });
+
+    $('#partsCollapse').resizable({
+        handles: 'e',
+        resize: function () {
+            var parentWidth = $('#partsMegaContainer').parent().width();
+            var tableWidth = $('#partsMegaContainer').width();
+            var infoWidth = parentWidth - tableWidth;
+            $('#bomsMegaContainer').width(infoWidth);
+        }
+    });
 });
 
 /**
