@@ -213,8 +213,7 @@ export function rebuildPartsTable(queryString) {
     url: '/parts.partsTable' + queryString,
     success: function (data) {
       $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
-      //! Changed this for multi-tryout. Was '#table-window' before
-      $('#table-only').html(data); // Update div with new table
+      $('#table-window').html(data); // Update div with new table
       bootstrapPartsTable(); // Bootstrap it
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
@@ -236,8 +235,7 @@ export function rebuildBomListTable(queryString) {
     url: '/boms.bomsTable' + queryString,
     success: function (data) {
       $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
-      //! Changed this for multi-tryout. Was '#table-window' before
-      $('#table-only2').html(data); // Update div with new table
+      $('#table-window').html(data); // Update div with new table
       bootstrapBomListTable(); // Bootstrap it
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');

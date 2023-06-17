@@ -15,7 +15,10 @@
 @include('components.toolbarTop')
 
 
-{{-- <div class="row collapse collapse-horizontal" id="collapseWidthExample"> --}}
+For this shenanigans to work, one needs to change:
+- rebuildBomListTable: Change $('#table-window').html(data); to $('#table-only2').html(data);
+- rebuiltPartsTable: Change $('#table-window').html(data); to $('#table-only').html(data);
+- There's already an extra function to make the mega containers resizable (custom.js)
 
 {{-- Page Contents --}}
 <div class="container-fluid" id="content-container">
