@@ -213,7 +213,7 @@ export function rebuildPartsTable(queryString) {
     url: '/parts.partsTable' + queryString,
     success: function (data) {
       $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data); // Update div with new table
+      $('#table-only').html(data); // Update div with new table
       bootstrapPartsTable(); // Bootstrap it
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
