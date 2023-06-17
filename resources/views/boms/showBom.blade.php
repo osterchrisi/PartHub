@@ -1,10 +1,3 @@
-<?php
-// Debug
-// echo '<pre>';
-// print_r($bom_elements);
-// echo '</pre>';
-?>
-
 <div class="container-fluid">
     <br>
     <h4>

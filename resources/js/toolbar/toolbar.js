@@ -46,3 +46,9 @@ export function assembleBomsFromToolbar(table_id) {
 
     assembleBoms(selectedRows, ids);
 }
+
+export function attachAddBomHandler() {
+    $('#toolbarAddButton').click(function () {
+        $('#info-window').load('/bom.import-test');
+    });
+}

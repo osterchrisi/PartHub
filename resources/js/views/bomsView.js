@@ -10,7 +10,7 @@ import {
     fromStockLocationDropdown
 } from '../stockChanges';
 
-import { attachDeleteRowsHandler, attachAssembleBomHandler } from '../toolbar/toolbar';
+import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
 
 export function initializeBomsView() {
     bootstrapBomListTable();
@@ -23,6 +23,7 @@ export function initializeBomsView() {
 
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
     attachAssembleBomHandler('bom_list_table');
+    attachAddBomHandler();
 
     $.ajax({
         url: '/locations.get',
