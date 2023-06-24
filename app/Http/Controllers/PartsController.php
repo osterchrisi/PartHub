@@ -149,8 +149,6 @@ class PartsController extends Controller
                     'tabId2' => 'history',
                     'tabText2' => 'Stock History',
                     'tabToggleId2' => 'partHistory'
-
-
                 ]
             );
         }

@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 
 class DatabaseService
 {
-    public static function deleteRow($table, $column, $id)
+    public static function deleteRow($table, $column, $id, $owner_column, $user_id)
     {
-        DB::table($table)->where($column, $id)->delete();
+        DB::table($table)
+            ->where($column, $id)
+            ->where($owner_column, $user_id)
+            ->delete();
     }
 
     public static function updateCell(Request $request)
