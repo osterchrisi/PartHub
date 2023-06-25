@@ -29,6 +29,7 @@ class DatabaseServiceController extends Controller
         $user_id = Auth::id();
 
         foreach ($ids as $id) {
+            //! Add try / catch here in case user is not authorized
             DatabaseService::deleteRow($table, $column, $id, $owner_column, $user_id);
             echo json_encode(array($ids, $table, $column));
         }

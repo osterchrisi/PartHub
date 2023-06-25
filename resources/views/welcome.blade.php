@@ -46,10 +46,15 @@
                     <table class="table table-borderless">
                         <tbody class="alert alert-danger">
                             <tr>
-                                <td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo
-                                        user</button></td>
+                                {{-- <td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo
+                                        user</button></td> --}}
                                 <td>
-                                    <form id="loging-button" action="{{ route('login') }}" method="GET">
+                                    <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
+                                        @csrf<button type="submit" class="btn btn-primary" id="continueDemo">Continue as demo
+                                            user</button></form>
+                                </td>
+                                <td>
+                                    <form id="login-button" action="{{ route('login') }}" method="GET">
                                         @csrf<button type="submit" class="btn btn-primary" id="logIn">Log into your
                                             account</button></form>
                                 </td>
@@ -68,11 +73,11 @@
 
 @php
     // Show the login modal if user is not logged in yet
-    if (isset($show_modal) && $show_modal == 1) {
-        echo "<script>
-            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-            myModal.show();
-        </script>";
-    }
+    // if (isset($show_modal) && $show_modal == 1) {
+    //     echo '<script>
+        //         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        //         myModal.show();
+        //     
+    // </script>';
+    // }
 @endphp
-

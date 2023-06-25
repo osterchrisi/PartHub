@@ -8,6 +8,7 @@ use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatabaseServiceController;
 use App\Services\DatabaseService;
+use App\Http\Controllers\Auth\DemoLoginController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -126,3 +127,6 @@ Route::get('/whatis', function () {
 Route::get('/multi', function () {
     return view('multi', ['title' => 'Multi Test', 'view' => 'multi']);
 });
+
+// Demo User Login
+Route::get('/demo-login', [DemoLoginController::class, 'login'])->name('demo.login');
