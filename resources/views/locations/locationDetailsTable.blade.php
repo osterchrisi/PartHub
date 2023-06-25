@@ -5,7 +5,8 @@
 <div>
     <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="BomDetailsTable"
         data-resizable="true" data-search="true" data-search-align="left" data-show-columns="true"
-        data-reorderable-columns="true" data-cookie="true" data-cookie-id-table="BomDetailsTableState"
+        {{-- data-reorderable-columns="true"  --}}
+        data-cookie="true" data-cookie-id-table="BomDetailsTableState"
         data-max-moving-rows="100">
         <thead>
             <tr>

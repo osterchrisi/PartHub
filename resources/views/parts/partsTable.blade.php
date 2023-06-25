@@ -9,7 +9,7 @@
             data-search-align="left" 
             data-pagination="true" 
             data-show-columns="true" 
-            data-reorderable-columns="true" 
+            {{-- data-reorderable-columns="true"  --}}
             data-cookie="true" 
             data-cookie-id-table="PartsTableState" 
             data-cookie-storage="localStorage" 

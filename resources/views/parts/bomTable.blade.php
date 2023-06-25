@@ -6,7 +6,7 @@
             data-search="true"
             data-search-align="left"
             data-show-columns="true"
-            data-reorderable-columns="true"
+            {{-- data-reorderable-columns="true" --}}
             data-cookie="true"
             data-cookie-id-table="PartInBomsTableState"
             data-max-moving-rows="100">

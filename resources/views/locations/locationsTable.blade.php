@@ -1,6 +1,7 @@
 <div>
     <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="locations_list_table"
-        data-resizable="true" data-pagination="true" data-show-columns="true" data-reorderable-columns="true"
+        data-resizable="true" data-pagination="true" data-show-columns="true" 
+        {{-- data-reorderable-columns="true" --}}
         data-cookie="true" data-cookie-id-table="LocationsListTableState" data-cookie-storage="localStorage"
         data-max-moving-rows="100" data-multiple-select-row="true" data-click-to-select="true">
         <thead>

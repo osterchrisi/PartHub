@@ -13,10 +13,9 @@
     @endphp
 
     <table class="table table-sm table-borderless table-responsive table-hover table-striped" style="font-size:12px"
-        id="categories_list_table" data-resizable="true" data-reorderable-columns="true"
-        data-cookie="true" data-cookie-id-table="CategoriesListTableState" data-cookie-storage="localStorage"
-        data-max-moving-rows="100" data-parent-id-field="parent_category" data-tree-show-field="category_name"
-        data-id-field="category_id">
+        id="categories_list_table" data-resizable="true" {{-- data-reorderable-columns="true" --}} data-cookie="true"
+        data-cookie-id-table="CategoriesListTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
+        data-parent-id-field="parent_category" data-tree-show-field="category_name" data-id-field="category_id">
         <thead>
             <tr>
                 <th data-field="category_name">Category</th>
