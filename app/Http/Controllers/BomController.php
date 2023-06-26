@@ -130,7 +130,7 @@ class BomController extends Controller
         // Assign the final array to the stock_changes key in the request input
         $request->merge(['stock_changes' => $all_stock_changes]);
 
-        // Call the appropriate function in the PartsController
+        // Make new PartsController and let it do its thing
         $partsController = new PartsController();
         $partsController->prepareStockChanges($request);
     }

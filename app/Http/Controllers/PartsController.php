@@ -420,6 +420,12 @@ class PartsController extends Controller
         );
     }
 
+    /**
+     * Process the stock changes once they've been approved or no approval was necessary
+     *
+     * @param [type] $changes
+     * @return void
+     */
     private function processApprovedChanges($changes)
     {
         // Get current authenticated user
