@@ -149,9 +149,8 @@ function callStockChangingScript(stockChanges, pid) {
                 //* Do the normal thing here, all requested stock available
                 updatePartsInfo(pid);
 
-                //TODO: This is bit of a hicky hacky but at least updates the cell for now
-                //TODO: Better to explicitly name the three entries with key -> value pairs
-                var new_stock_level = r.result[2];
+                // Update 'Total Stock' in parts table
+                var new_stock_level = r.result[r.result.length -1].new_total_stock;
                 var $cell = $('tr.selected-last td[data-column="total_stock"]');
                 $cell.text(new_stock_level);
 

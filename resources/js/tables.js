@@ -538,7 +538,6 @@ export function assembleBoms(selectedRows, ids) {
     var token = $('input[name="_token"]').attr('value');
 
     console.log('Assembling BOMs with the following ids: ', ids);
-    console.log('Other vars. q, fl, token: ', q, fl, token);
 
     $.ajax({
       url: '/bom.assemble',
@@ -554,19 +553,16 @@ export function assembleBoms(selectedRows, ids) {
       success: function (response) {
 
         var r = JSON.parse(response);
-        if (r.negative_stock.length === 0) {
+        if (r.status === 'success') {
           //* Do the normal thing here, all requested stock available
-          console.log("All requested stock was available");
           console.log(r);
 
           $('#mBomAssembly').modal('hide'); // Hide Modal
           updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
           //TODO: Also select in table
         }
-        else {
+        else if (r.status === 'permission_requested'){
           //* User permission required
-
-          console.log("Not all requested stock was available");
           console.log(r);
 
           // Display warning and missing stock table

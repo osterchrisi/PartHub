@@ -474,15 +474,14 @@ class PartsController extends Controller
             $stock = StockLevel::getStockLevelsByPartID($part_id);
             $total_stock = \calculateTotalStock($stock);
 
-            //TODO: This ist part of my hicky hacky solution to update the stock level in the parts_table after updating
             // Report all the goodies back for updating tables
-            $result = [$hist_id, $stock_level_id, $total_stock];
-            echo json_encode(
-                array(
-                    'status' => 'success',
-                    'result' => $result
-                )
-            );
+            $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
         }
+        echo json_encode(
+            array(
+                'status' => 'success',
+                'result' => $result
+            )
+        );
     }
 }
