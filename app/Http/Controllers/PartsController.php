@@ -474,9 +474,18 @@ class PartsController extends Controller
             $stock = StockLevel::getStockLevelsByPartID($part_id);
             $total_stock = \calculateTotalStock($stock);
 
-            // Report all the goodies back for updating tables
+            // Add entries to the result array
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
+            
+            // Add entries to the BOM IDs array
+            $processed_bom[] = $bom_id;
         }
+        // Array with unique processed BOM IDs
+        $processed_boms = array_unique($processed_bom);
+
+        //TODO: Make BOM History entries with the IDs here
+
+        // Report all the goodies back for updating tables
         echo json_encode(
             array(
                 'status' => 'success',
