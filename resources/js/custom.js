@@ -362,6 +362,7 @@ function saveActiveTab(page, event) {
 export function loadActiveTab(page, defaultTab) {
     var lastActiveTab = localStorage.getItem('lastActiveTab_' + page) || defaultTab;
     if (lastActiveTab) {
+        console.log("lastActiveTab = ", lastActiveTab);
         const tabElement = document.querySelector(`#${lastActiveTab}`);
         if (tabElement) {
             const tab = new bootstrap.Tab(tabElement);

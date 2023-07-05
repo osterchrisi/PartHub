@@ -7,6 +7,8 @@
             data-search-align="left"
             data-show-columns="true"
             {{-- data-reorderable-columns="true" --}}
+            data-sort-name="Date"
+            data-sort-order="desc"
             data-cookie="true"
             data-cookie-id-table="PartsStockHistoryTableState">
             <thead>

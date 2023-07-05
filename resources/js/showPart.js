@@ -12,11 +12,16 @@ import {
 import { callStockModal } from './stockChanges';
 
 export function initializeShowPart(part_id) {
-    loadActiveTab('parts', '{{ $tabId1 }}');
-    addActiveTabEventListeners('parts');
+    // loadActiveTab('parts', '{{ $tabId1 }}');
+    // addActiveTabEventListeners('parts');
     bootstrapPartInBomsTable();
     bootstrapHistTable();
     bootstrapTableSmallify();
+
+    const defaultTab = document.getElementById('partsTabs').dataset.defaultTab; // data-default-tab attribute
+
+    loadActiveTab('parts', defaultTab);
+    addActiveTabEventListeners('parts');
 
     $.ajax({
         url: '/locations.get',

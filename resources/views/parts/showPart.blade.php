@@ -19,7 +19,7 @@
     </h5>
 
     <!-- Parts Tabs -->
-    <ul class="nav nav-tabs" id="partsTabs" role="tablist">
+    <ul class="nav nav-tabs" id="partsTabs" role="tablist" data-default-tab="{{ $tabId1 }}">
         <x-tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
     </ul>
