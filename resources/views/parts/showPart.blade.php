@@ -19,10 +19,10 @@
     </h5>
 
     <!-- Parts Tabs -->
-    <x-tablist id="partsTabs" tabId1="{{ $tabId1 }}" />
+    <x-tablist id="partsTabs" tabId1="{{ $tabId1 }}">
         <x-tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
-    </ul>
+    </x-tablist>
 
     <!-- Tabs Content -->
     <div class="tab-content" id="partsTabsContent">
@@ -45,7 +45,7 @@
             <h5>Part of:</h5>
 
             @include('parts.bomTable')
-            
+
             <br>
             <h5>Datasheet:</h5>
             <br>
