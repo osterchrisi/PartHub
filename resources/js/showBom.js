@@ -9,7 +9,9 @@ import {
 } from './tables';
 
 export function initializeShowBom() {
-    loadActiveTab('boms', '{{ $tabId1 }}');
+    const defaultTab = document.getElementById('bomsTabs').dataset.defaultTab; // data-default-tab attribute
+
+    loadActiveTab('boms', defaultTab);
     addActiveTabEventListeners('boms');
 
     bootstrapBomDetailsTable();
