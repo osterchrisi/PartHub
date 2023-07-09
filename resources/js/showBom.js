@@ -8,15 +8,7 @@ import {
     inlineProcessing
 } from './tables';
 
-export function initializeShowBom() {
-    const defaultTab = document.getElementById('bomsTabs').dataset.defaultTab; // data-default-tab attribute
-
-    loadActiveTab('boms', defaultTab);
-    addActiveTabEventListeners('boms');
-
-    bootstrapBomDetailsTable();
-    inlineProcessing();
-
+function allowHtmlTableElementsInPopover() {
     // Allow extra HTML elements for the popover mini stock table
     var myDefaultAllowList = bootstrap.Tooltip.Default.allowList
 
@@ -29,6 +21,19 @@ export function initializeShowBom() {
 
     // Allow td elements and data-bs-option attributes on td elements
     myDefaultAllowList.td = ['data-bs-option']
+
+}
+
+export function initializeShowBom() {
+    const defaultTab = document.getElementById('bomsTabs').dataset.defaultTab; // data-default-tab attribute
+
+    loadActiveTab('boms', defaultTab);
+    addActiveTabEventListeners('boms');
+
+    bootstrapBomDetailsTable();
+    inlineProcessing();
+
+    allowHtmlTableElementsInPopover();
 
     // Initialize all popovers
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
