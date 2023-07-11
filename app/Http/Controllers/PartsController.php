@@ -297,10 +297,12 @@ class PartsController extends Controller
 
         $status = $requested_change['status'] ?? NULL;
         $bom_id = $requested_change['bom_id'] ?? NULL;
+        $assemble_quantity = $requested_change['assemble_quantity'] ?? NULL;
 
         return array(
             'change' => $change,
             'bom_id' => $bom_id,
+            'assemble_quantity' => $assemble_quantity,
             'part_id' => $part_id,
             'quantity' => $quantity,
             'to_location' => $to_location,
@@ -374,6 +376,10 @@ class PartsController extends Controller
 
         // Append the status
         $changes['status'] = $status;
+
+        // Append originally requested quantity (essentially Bom build quantity)
+        $assemble_quantity = $requested_change_details['assemble_quantity'];
+        $changes['assemble_quantity'] = $assemble_quantity;
 
         // Produce a result array
         $result = array('changes' => $changes);
@@ -477,17 +483,36 @@ class PartsController extends Controller
 
             // Add entries to the result array
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
-            
+
             // Add entries to the BOM IDs array
-            $processed_bom[] = $bom_id;
+            $processed_boms[] = array(
+                'bom_id' => $bom_id,
+                'assemble_quantity' => $approved_change['assemble_quantity']
+            );
         }
+        //TODO: Extract this function
         // Array with unique processed BOM IDs
-        $processed_boms = array_unique($processed_bom);
+        // $processed_boms = array_unique($processed_bom);
+
+        $unique_processed_boms = [];
+        $unique_bom_ids = [];
+
+        foreach ($processed_boms as $processed_bom) {
+            $bomId = $processed_bom["bom_id"];
+            if (!in_array($bomId, $unique_bom_ids)) {
+                $unique_processed_boms[] = $processed_bom;
+                $unique_bom_ids[] = $bomId;
+            }
+        }
+
+        // dd($unique_processed_boms);
 
         //TODO: Make BOM History entries with the IDs here
-        // foreach($processed_boms as $processed_bom){
-        //     BomRun::createBomRun($processed_bom, $quantity, $user_id);
-        // }
+        foreach($unique_processed_boms as $unique_processed_bom){
+            $processed_bom = $unique_processed_bom['bom_id'];
+            $quantity = $unique_processed_bom['assemble_quantity'];
+            BomRun::createBomRun($processed_bom, $quantity, $user_id);
+        }
 
         // Report all the goodies back for updating tables
         echo json_encode(

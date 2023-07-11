@@ -120,7 +120,8 @@ class BomController extends Controller
                     'to_location' => null,
                     'from_location' => $from_location,
                     'comment' => 'BOM build of BOM with ID ' . $bom_id,
-                    'status' => 'BOM build request'
+                    'status' => 'BOM build request',
+                    'assemble_quantity' => $assemble_quantity
                 ];
 
                 $all_stock_changes[] = $stock_change;
