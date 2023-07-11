@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BomElements;
+use App\Models\BomRun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Bom;
@@ -19,6 +20,8 @@ class BomController extends Controller
     private static $nice_bom_list_table_headers = array("BOM Name", 'Description', 'ID');
     private static $bom_detail_table_headers = array('part_name', 'element_quantity', 'stock_available', 'can_build');
     private static $nice_bom_detail_table_headers = array('Part Name', 'Quantity needed', 'Total stock available', 'Can build');
+    private static $bomRunsTableHeaders = array('bom_run_datetime', 'bom_run_quantity', 'name');
+    private static $nice_bomRunsTableHeaders = array('Build Time', 'Quantity', 'User');
 
     /**
      * Display a listing of the resource.
@@ -47,7 +50,7 @@ class BomController extends Controller
                 'db_columns' => self::$bom_list_table_headers,
                 'nice_columns' => self::$nice_bom_list_table_headers,
                 'table_name' => self::$table_name,
-                'id_field' => self::$id_field,
+                'id_field' => self::$id_field
             ]);
         }
     }
@@ -64,6 +67,11 @@ class BomController extends Controller
             // Get BOM elements
             $bom_elements = BomElements::getBomElements($bom_id);
 
+            // Get BOM Run History
+            $bom_runs = BomRun::getBomRunsByBomId($bom_id);
+
+            // dd($bom_runs);
+
             return view(
                 'boms.showBom',
                 [
@@ -73,6 +81,10 @@ class BomController extends Controller
                     // Bom Details Table
                     'db_columns' => self::$bom_detail_table_headers,
                     'nice_columns' => self::$nice_bom_detail_table_headers,
+                    // Bom Runs Table
+                    'nice_bomRunsTableHeaders' => self::$bomRunsTableHeaders,
+                    'bomRunsTableHeaders' => self::$nice_bomRunsTableHeaders,
+                    'bom_runs' => $bom_runs,
                     // Tabs Settings
                     'tabId1' => 'info',
                     'tabText1' => 'Info',
