@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
+use App\Models\BomRun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
@@ -484,6 +485,9 @@ class PartsController extends Controller
         $processed_boms = array_unique($processed_bom);
 
         //TODO: Make BOM History entries with the IDs here
+        // foreach($processed_boms as $processed_bom){
+        //     BomRun::createBomRun($processed_bom, $quantity, $user_id);
+        // }
 
         // Report all the goodies back for updating tables
         echo json_encode(
