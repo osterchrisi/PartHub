@@ -20,11 +20,11 @@
         <tbody>
             @foreach ($bom_runs as $row)
                 @php
-                    $bom_id = $row['bom_id'];
+                    $bom_run_id = $row['bom_run_id'];
                 @endphp
-                <tr data-id="{{ $row['bom_elements_id'] }}">
+                <tr data-id="{{ $row['bom_run_id'] }}">
                     @foreach ($bomRunsTableHeaders as $column_data)
-                        <td data-editable="true" data-id="{{ $bom_id }}" data-column="{{ $column_data }}">{{ $row[$column_data] }}</td>
+                        <td data-editable="true" data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $row[$column_data] }}</td>
                     @endforeach
                 </tr>
             @endforeach

@@ -22,7 +22,6 @@
 
         <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
             <br>
-            dis history
             @include('boms.bomRunsTable')
         </div>
     </div>

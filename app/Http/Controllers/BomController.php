@@ -21,7 +21,7 @@ class BomController extends Controller
     private static $bom_detail_table_headers = array('part_name', 'element_quantity', 'stock_available', 'can_build');
     private static $nice_bom_detail_table_headers = array('Part Name', 'Quantity needed', 'Total stock available', 'Can build');
     private static $bomRunsTableHeaders = array('bom_run_datetime', 'bom_run_quantity', 'name');
-    private static $nice_bomRunsTableHeaders = array('Build Time', 'Quantity', 'User');
+    private static $nice_bomRunsTableHeaders = array('Build Time', 'Build Quantity', 'User');
 
     /**
      * Display a listing of the resource.
@@ -82,8 +82,8 @@ class BomController extends Controller
                     'db_columns' => self::$bom_detail_table_headers,
                     'nice_columns' => self::$nice_bom_detail_table_headers,
                     // Bom Runs Table
-                    'nice_bomRunsTableHeaders' => self::$bomRunsTableHeaders,
-                    'bomRunsTableHeaders' => self::$nice_bomRunsTableHeaders,
+                    'nice_bomRunsTableHeaders' => self::$nice_bomRunsTableHeaders,
+                    'bomRunsTableHeaders' => self::$bomRunsTableHeaders,
                     'bom_runs' => $bom_runs,
                     // Tabs Settings
                     'tabId1' => 'info',

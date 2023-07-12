@@ -22,8 +22,9 @@ class BomRun extends Model
     {
         return $this->belongsTo(BOM::class, 'bom_id_fk');
     }
-    
-    public static function createBomRun($bom_id, $quantity, $user_id){
+
+    public static function createBomRun($bom_id, $quantity, $user_id)
+    {
         $bom_run = new BomRun([
             'bom_id_fk' => $bom_id,
             'bom_run_quantity' => $quantity,
@@ -41,10 +42,13 @@ class BomRun extends Model
         $bom_runs = DB::table('bom_runs')
             ->join('boms', 'bom_id_fk', '=', 'boms.bom_id')
             ->join('users', 'bom_run_user_fk', '=', 'id')
-            ->select('bom_run_datetime', 'bom_run_quantity', 'name')
+            ->select('bom_run_id', 'bom_run_datetime', 'bom_run_quantity', 'name')
             ->where('bom_id_fk', $bom_id)
-            ->get()
-            ->toArray();
+            ->get();
+        // ->toArray();
+
+        // Convert $bom_runs to an array of associative arrays
+        $bom_runs = json_decode(json_encode($bom_runs), true);
 
         return $bom_runs;
     }
