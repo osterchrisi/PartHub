@@ -485,7 +485,7 @@ class PartsController extends Controller
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
 
             // Add entries to the BOM IDs array
-            //! Bit of a hick-hack right now
+            //! Bit of a hick-hack right now - could be written better?
             if ($bom_id != null) {
                 $processed_boms[] = array(
                     'bom_id' => $bom_id,
@@ -497,9 +497,8 @@ class PartsController extends Controller
             }
         }
         //TODO: Extract this function
-        //! Bit hacky
+        //! Bit hacky - could be written better?
         // Array with unique processed BOM IDs
-        // $processed_boms = array_unique($processed_bom);
 
         if (!$processed_boms) {
             $unique_processed_boms = [];
