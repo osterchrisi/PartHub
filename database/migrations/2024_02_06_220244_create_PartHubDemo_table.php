@@ -100,20 +100,6 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('tokenable_type');
-            $table->unsignedBigInteger('tokenable_id');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
-            $table->timestamps();
-
-            $table->index(['tokenable_type', 'tokenable_id']);
-        });
-
         Schema::create('stock_level_change_history', function (Blueprint $table) {
             $table->integer('stock_lvl_chng_id', true);
             $table->integer('part_id_fk')->index('stock_level_change_history_ibfk_1');
@@ -245,8 +231,6 @@ return new class extends Migration
         Schema::dropIfExists('stock_levels');
 
         Schema::dropIfExists('stock_level_change_history');
-
-        Schema::dropIfExists('personal_access_tokens');
 
         Schema::dropIfExists('password_reset_tokens');
 
