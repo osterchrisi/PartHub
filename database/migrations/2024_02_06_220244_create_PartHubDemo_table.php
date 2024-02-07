@@ -112,7 +112,7 @@ return new class extends Migration
         });
 
         Schema::create('stock_levels', function (Blueprint $table) {
-            $table->integer('stock_level_id', true)->unique('stock_level_id');
+            $table->integer('stock_level_id')->unique('stock_level_id');
             $table->integer('part_id_fk');
             $table->integer('location_id_fk')->index('location_id');
             $table->integer('stock_level_quantity');
