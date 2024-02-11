@@ -120,7 +120,7 @@ Route::get('/signup', function () {
     ->name('signup');
 
 Route::get('/whatis', function () {
-    return view('welcome', ['title' => 'What is PartHub, anyway?', 'view' => 'whatis']);
+    return view('whatis', ['title' => 'What is PartHub, anyway?', 'view' => 'whatis']);
 })
     ->name('whatis');
 

@@ -54,6 +54,26 @@
                         @endif
                     </td>
                 </tr>
+                @unless (auth()->check())
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-borderless">
+                                <tbody class="alert alert-danger">
+                                    <tr>
+                                        {{-- <td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo
+                                        user</button></td> --}}
+                                        <td>
+                                            <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
+                                                @csrf<button type="submit" class="btn btn-primary"
+                                                    id="continueDemo">Continue as demo
+                                                    user</button></form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                @endunless
 
             <tbody>
         </table>
