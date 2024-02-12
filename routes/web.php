@@ -94,7 +94,7 @@ Route::get('/suppliers', function () {
     ->middleware(['auth', 'verified'])
     ->name('suppliers');
 
-    //* Footprint Routes
+//* Footprint Routes
 Route::controller(FootprintController::class)->group(function () {
     Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
     Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');

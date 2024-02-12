@@ -12,10 +12,11 @@ class FootprintController extends Controller
     private static $id_field = 'footprint_id';
     private static $footprint_list_table_headers = array('state', 'footprint_name', 'footprint_alias');
     private static $nice_footprint_list_table_headers = array("Footprint", 'Alias', 'ID');
-    // public static function getLocations()
-    // {
-    //     return Location::availableLocations();
-    // }
+    
+    public static function getFootprints()
+    {
+        return Footprint::availableFootprints();
+    }
 
     public function index(Request $request)
     {

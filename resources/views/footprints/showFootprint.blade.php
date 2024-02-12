@@ -1,10 +1,10 @@
-{{-- <div class="container-fluid">
+<div class="container-fluid">
     <br>
     <h4>
-        {{ $location_name }}
+        {{ $footprint_name }}
     </h4>
     <h5>
-        {{ $location_description }}
+        {{ $footprint_description }}
     </h5>
 
     <!-- Parts Tabs -->
@@ -17,10 +17,10 @@
     <div class="tab-content" id="bomsTabsContent">
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
-            <h5>Stock in this Location</h5>
-            {{-- @include('locations.locationDetailsTable') --}}
+            <h5>Parts with this Footprint</h5>
+            {{-- @include('footprints.footprintDetailsTable') --}}
             @php
-            $table = \buildHTMLTable($db_columns, $nice_columns, $stock_in_location);
+            $table = \buildHTMLTable($db_columns, $nice_columns, $stock_in_footprint);
             echo $table;
             @endphp
         </div>
@@ -30,4 +30,4 @@
             dis history
         </div>
     </div>
-</div> --}}
+</div>
