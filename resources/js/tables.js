@@ -324,7 +324,7 @@ export function defineLocationsListTableActions($table, $menu) {
 export function defineFootprintsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     console.log(id);
-    updateLocationInfo(id);
+    updateFootprintInfo(id);
   });
 }
 

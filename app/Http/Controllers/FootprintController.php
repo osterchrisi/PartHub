@@ -10,7 +10,7 @@ class FootprintController extends Controller
 
     private static $table_name = 'footprints';
     private static $id_field = 'footprint_id';
-    private static $footprint_list_table_headers = array('state', 'footprint_name', 'footprint_alias');
+    private static $footprint_list_table_headers = array('state', 'footprint_name', 'footprint_alias', 'footprint_id');
     private static $nice_footprint_list_table_headers = array("Footprint", 'Alias', 'ID');
     
     public static function getFootprints()
