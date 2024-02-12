@@ -8,7 +8,7 @@ import {
 export function initializeFootprintsView() {
     bootstrapFootprintsListTable();
 
-    var $table = $('#lootprints_list_table');
+    var $table = $('#footprints_list_table');
     var $menu = $('#bom_list_table_menu');
     // defineBomListTableActions($table, $menu);
     inlineProcessing();

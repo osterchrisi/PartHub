@@ -13,11 +13,10 @@ class Footprint extends Model
     protected $table = 'footprints';
     protected $primaryKey = 'footprint_id';
 
-    // Muss für footprint_owner umgeschrieben werden (glaub ich)
-    // public function stockLevelEntries()
-    // {
-    //     return $this->hasMany(StockLevel::class, 'location_id_fk');
-    // }
+    public function part()
+    {
+        return $this->belongsTo(Part::class, 'part_footprint_fk', 'part_id');
+    }
 
     public static function availableFootprints($format = 'json')
     {
@@ -44,8 +43,8 @@ class Footprint extends Model
         return self::find($footprint_id);
     }
 
-    public function getStockLevelEntries()
+    public static function getPartsByFootprint($footprint_id)
     {
-        return $this->stockLevelEntries()->with('part')->get();
+        return Part::where('part_footprint_fk', $footprint_id)->get();
     }
 }

@@ -5,7 +5,8 @@ import {
   updateBomInfo,
   deleteSelectedRows,
   removeClickListeners,
-  updateLocationInfo
+  updateLocationInfo,
+  updateFootprintInfo
 } from "./custom";
 
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";

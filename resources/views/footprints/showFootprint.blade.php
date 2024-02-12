@@ -4,7 +4,7 @@
         {{ $footprint_name }}
     </h4>
     <h5>
-        {{ $footprint_description }}
+        {{ $footprint_alias }}
     </h5>
 
     <!-- Parts Tabs -->
@@ -14,13 +14,16 @@
     </ul>
 
     <!-- Tabs Content -->
+    @php
+    // print_r($parts_with_footprint);
+    @endphp
     <div class="tab-content" id="bomsTabsContent">
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
             <h5>Parts with this Footprint</h5>
             {{-- @include('footprints.footprintDetailsTable') --}}
             @php
-            $table = \buildHTMLTable($db_columns, $nice_columns, $stock_in_footprint);
+            $table = \buildHTMLTable($db_columns, $nice_columns, $parts_with_footprint);
             echo $table;
             @endphp
         </div>

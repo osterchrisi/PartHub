@@ -47,31 +47,32 @@ class FootprintController extends Controller
         }
     }
 
-    // public function show($location_id)
-    // {
-    //     $location = Location::getLocationById($location_id);
-    //     $stock_levels = $location->getStockLevelEntries();
-    //     $stock_in_location = [];
-    //     foreach ($stock_levels as $stock_level) {
-    //         $stock_in_location[] = ['part_name' => $stock_level->part->part_name, 'stock_level' => $stock_level->stock_level_quantity];
-    //     }
-    //     return view(
-    //         'locations.showLocation',
-    //         [
-    //             'location_name' => $location->location_id,
-    //             'location_description' => $location->location_description,
-    //             // Tabs Settings
-    //             'tabId1' => 'info',
-    //             'tabText1' => 'Info',
-    //             'tabToggleId1' => 'locationInfo',
-    //             'tabId2' => 'history',
-    //             'tabText2' => 'Location History',
-    //             'tabToggleId2' => 'locationHistory',
-    //             // Stock in Location table
-    //             'stock_in_location' => $stock_in_location,
-    //             'db_columns' => ['part_name', 'stock_level'],
-    //             'nice_columns' => ['Part', 'Quantity']
-    //         ]
-    //     );
-    // }
+    public function show($footprint_id)
+    {
+        $footprint = Footprint::getFootprintById($footprint_id);
+        $parts = Footprint::getPartsByFootprint($footprint_id);
+        $parts_with_footprint = [];
+        foreach ($parts as $part) {
+            $parts_with_footprint[] = ['part_name' => $part->part_name,
+                                       'part_id' => $part->part_id];
+        }
+        return view(
+            'footprints.showFootprint',
+            [
+                'footprint_name' => $footprint->footprint_name,
+                'footprint_alias' => $footprint->footprint_alias,
+                // Tabs Settings
+                'tabId1' => 'info',
+                'tabText1' => 'Info',
+                'tabToggleId1' => 'footprintInfo',
+                'tabId2' => 'history',
+                'tabText2' => 'footprint History',
+                'tabToggleId2' => 'footprintHistory',
+                // 'Parts with Footprint' table
+                'parts_with_footprint' => $parts_with_footprint,
+                'db_columns' => ['part_name', 'part_id'],
+                'nice_columns' => ['Part', 'ID']
+            ]
+        );
+    }
 }

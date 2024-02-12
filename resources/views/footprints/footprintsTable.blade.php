@@ -1,6 +1,6 @@
 @php
 // echo($user_id);
-print_r($footprints_list);
+// print_r($footprints_list);
 @endphp
 <div>
     <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="footprints_list_table"
