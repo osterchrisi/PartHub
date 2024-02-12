@@ -10,7 +10,6 @@ export function initializeFootprintsView() {
 
     var $table = $('#footprints_list_table');
     var $menu = $('#bom_list_table_menu');
-    // defineBomListTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
     defineFootprintsListTableActions($table, $menu)
