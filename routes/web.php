@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BomController;
 use App\Http\Controllers\PartsController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\FootprintController;
 use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatabaseServiceController;
@@ -93,12 +94,15 @@ Route::get('/suppliers', function () {
     ->middleware(['auth', 'verified'])
     ->name('suppliers');
 
-//* Footprint Routes
-Route::get('/footprints', function () {
-    return view('welcome', ['title' => 'Footprints', 'view' => 'footprints']);
-})
-    ->middleware(['auth', 'verified'])
-    ->name('footprints');
+    //* Footprint Routes
+Route::controller(FootprintController::class)->group(function () {
+    Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
+    Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
+    Route::get('/footprints.get', function () {
+        return FootprintController::getFootprints();
+    })->middleware(['auth', 'verified']);
+    Route::get('/footprint/{id}', 'show')->middleware(['auth', 'verified']);
+});
 
 //* StockLevel Routes
 Route::get('/stocklevels', function () {
@@ -124,6 +128,7 @@ Route::get('/whatis', function () {
 })
     ->name('whatis');
 
+// My 'Multi View' Tryout
 Route::get('/multi', function () {
     return view('multi', ['title' => 'Multi Test', 'view' => 'multi']);
 });
