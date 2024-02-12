@@ -71,6 +71,15 @@ export function bootstrapLocationsListTable() {
 };
 
 /**
+ * Bootstrap the Footprints table
+ * @return void
+ */
+export function bootstrapFootprintsListTable() {
+  $('#footprints_list_table').bootstrapTable({
+  });
+};
+
+/**
  * Bootstrap the Categories table
  * @return void
  */
@@ -306,6 +315,13 @@ export function defineBomListTableActions($table, $menu) {
 };
 
 export function defineLocationsListTableActions($table, $menu) {
+  defineTableRowClickActions($table, function (id) {
+    console.log(id);
+    updateLocationInfo(id);
+  });
+}
+
+export function defineFootprintsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     console.log(id);
     updateLocationInfo(id);
