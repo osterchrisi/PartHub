@@ -1,8 +1,13 @@
 {{-- Parent Template --}}
 @extends('app')
 
+{{-- Modals and Menus --}}
+@section('modals and menus')
+    @include('components.modals.locationEntryModal', ['location_name' => ''])
+@endsection
+
 @section('filter-form')
-dis filter
+Filter locations
 @endsection
 
 @section('table-window')

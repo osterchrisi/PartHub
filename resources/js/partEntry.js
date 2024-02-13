@@ -20,7 +20,10 @@ export function callPartEntryModal(locations) {
 
 /**
  * Callback function for adding a new part to the databaset table.
- * This function retrieves the values of the part name, quantity and location from the relevant input fields in the add part modal, and then sends a POST request to the server to insert the new part into the database. If the insertion is successful, it updates the parts information, hides the add part modal and removes the click listener from the add part button. It then rebuilds the parts table and selects the newly added row.
+ * This function retrieves the values of the part name, quantity and location from the relevant input fields in the add part modal
+ * It then sends a POST request to the server to insert the new part into the database.
+ * If the insertion is successful, it updates the parts information, hides the add part modal and removes the click listener from the add part button.
+ * It then rebuilds the parts table and selects the newly added row.
  * @return void
  */
 function addPartCallback() {
