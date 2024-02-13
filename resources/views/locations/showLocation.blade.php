@@ -27,7 +27,7 @@
 
         <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
             <br>
-            dis history
+            Location History is coming soon!
         </div>
     </div>
 </div>
