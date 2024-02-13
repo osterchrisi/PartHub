@@ -5,6 +5,8 @@ import {
     defineLocationsListTableActions
 } from "../tables";
 
+import { callLocationEntryModal } from '../locationEntry';
+
 export function initializeLocationsView() {
     bootstrapLocationsListTable();
 
@@ -13,6 +15,10 @@ export function initializeLocationsView() {
     inlineProcessing();
     bootstrapTableSmallify();
     defineLocationsListTableActions($table, $menu)
+
+    $('#toolbarAddButton').click(function () {
+        callLocationEntryModal();
+    });
 
     // sendFormOnDropdownChange();
 

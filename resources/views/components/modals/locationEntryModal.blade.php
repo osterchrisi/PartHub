@@ -15,32 +15,10 @@
                     @csrf
                     <input class="form-control form-control-sm" placeholder="Location Name" id="addLocationName" required><br>
                     <div class="row">
-                        <div class="col-3">
-                            <input class="form-control form-control-sm" placeholder="Quantity" id="addLocationQuantity"
-                                required>
-                        </div>
                         <div class="col">
-                            <div class="input-group" id="addLocationLocDropdown"></div>
+                            <input class="form-control form-control-sm" placeholder="Location Description" id="addLocationName"><br>
                         </div>
                     </div>
-                    <br>
-                    <button class="btn btn-sm" id="showAdvanced" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#advancedOptions">Show Advanced</button>
-                    <div class="collapse" id="advancedOptions">
-                        <div class="row">
-                            <div class="col">
-                                <input class="form-select form-select-sm not-required" placeholder="Category">
-                            </div>
-                            <div class="col">
-                                <input class="form-select form-select-sm not-required" placeholder="Footprint">
-                            </div>
-                        </div>
-                        <br>
-                        <input class="form-control form-control-sm not-required" id="addLocationDescription"placeholder="Description">
-                        <br>
-                        <input class="form-control form-control-sm not-required" id="addLocationComment" placeholder="Comment">
-                    </div>
-                    <div class="input-group"></div>
                 </form>
             </div>
 
