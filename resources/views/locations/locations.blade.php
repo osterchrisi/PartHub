@@ -12,5 +12,5 @@ dis filter
 @endsection
 
 @section('info-window')
-dis Info
+Click a row in the table to see Location details
 @endsection

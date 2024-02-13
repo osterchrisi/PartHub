@@ -57,7 +57,7 @@ class LocationController extends Controller
         return view(
             'locations.showLocation',
             [
-                'location_name' => $location->location_id,
+                'location_name' => $location->location_name,
                 'location_description' => $location->location_description,
                 // Tabs Settings
                 'tabId1' => 'info',
