@@ -4,7 +4,7 @@ import {
   removeClickListeners
 } from "./custom";
 
-import { rebuildLocationsTable } from "./tables";
+import { rebuildLocationsTable} from "./tables";
 
 /**
  * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
