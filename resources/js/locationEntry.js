@@ -7,7 +7,7 @@ import {
 import { rebuildLocationsTable} from "./tables";
 
 /**
- * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
+ * Displays the location entry modal and attaches the validateForm function with the addLocationCallback function
  * 
  * @param {Array} locations An array of objects containing locations
  * @return void

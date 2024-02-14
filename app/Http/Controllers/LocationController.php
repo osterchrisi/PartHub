@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
+use App\Services\DatabaseService;
+
 
 class LocationController extends Controller
 {
@@ -91,5 +93,21 @@ class LocationController extends Controller
                 'Location ID' => $new_location_id,
             )
         );
+    }
+
+        /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
+    {
+        $table = $request->input('table');
+        $column = $request->input('column');
+        $ids = $request->input('ids');
+
+        foreach ($ids as $id) {
+            DatabaseService::deleteRow($table, $column, $id);
+            echo json_encode(array($ids, $table, $column));
+        }
+
     }
 }

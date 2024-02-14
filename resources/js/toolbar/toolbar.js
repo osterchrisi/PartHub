@@ -19,6 +19,7 @@ export function deleteSelectedRowsFromToolbar(table_id, model, id_column, succes
 
 /**
  *Attaches a click handler to the Delete button in the toolbar
+ *@param table_id The HTML table from which the row to be deleted comes from
  */
 export function attachDeleteRowsHandler(table_id, model, id_column, successCallback) {
     $('#toolbarDeleteButton').click(function () {

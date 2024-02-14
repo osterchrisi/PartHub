@@ -2,10 +2,13 @@ import {
     bootstrapLocationsListTable,
     inlineProcessing,
     bootstrapTableSmallify,
-    defineLocationsListTableActions
+    defineLocationsListTableActions,
+    rebuildLocationsTable
 } from "../tables";
 
 import { callLocationEntryModal } from '../locationEntry';
+import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+
 
 export function initializeLocationsView() {
     bootstrapLocationsListTable();
@@ -19,6 +22,9 @@ export function initializeLocationsView() {
     $('#toolbarAddButton').click(function () {
         callLocationEntryModal();
     });
+
+    attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);
+
 
     // sendFormOnDropdownChange();
 

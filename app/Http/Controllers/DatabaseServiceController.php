@@ -19,7 +19,7 @@ class DatabaseServiceController extends Controller
         $owner_columns = [
             'boms' => 'bom_owner_u_fk',
             'footprints' => 'footprint_owner_u_fk',
-            'location' => 'location_owner_u_fk',
+            'locations' => 'location_owner_u_fk',
             'parts' => 'part_owner_u_fk',
             'part_categories' => 'part_category_owner_u_fk',
             'stock_level_change_history' => 'stock_lvl_chng_user_fk'
