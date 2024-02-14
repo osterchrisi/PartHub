@@ -13,10 +13,17 @@ class Location extends Model
     use HasFactory;
     protected $table = 'locations';
     protected $primaryKey = 'location_id';
+    public $timestamps = false;
+
 
     public function stockLevelEntries()
     {
         return $this->hasMany(StockLevel::class, 'location_id_fk');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'location_owner_u_fk');
     }
 
     public static function availableLocations($format = 'json')
@@ -47,5 +54,22 @@ class Location extends Model
     public function getStockLevelEntries()
     {
         return $this->stockLevelEntries()->with('part')->get();
+    }
+
+    public static function createLocation($location_name, $location_description)
+    {
+        $user_id = Auth::user()->id;
+
+        $location = new Location();
+        $location->location_name = $location_name;
+        $location->location_description = $location_description;
+        $location->location_owner_u_fk = $user_id;
+        $location->location_owner_g_fk = null;
+        $location->save();
+
+        $new_location_id = $location->location_id;
+
+        return $new_location_id;
+        
     }
 }

@@ -1,10 +1,10 @@
 import {
   validateForm,
-  updatePartsInfo,
+  updateLocationInfo,
   removeClickListeners
 } from "./custom";
 
-import { rebuildPartsTable } from "./tables";
+import { rebuildLocationsTable } from "./tables";
 
 /**
  * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
@@ -14,49 +14,43 @@ import { rebuildPartsTable } from "./tables";
  */
 export function callLocationEntryModal() {
   $('#mLocationEntry').modal('show'); // Show modal
-  // validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
+  validateForm('locationEntryForm', 'addLocation', addLocationCallback); // Attach validate form 
 }
 
 /**
- * Callback function for adding a new part to the databaset table.
- * This function retrieves the values of the part name, quantity and location from the relevant input fields in the add part modal
- * It then sends a POST request to the server to insert the new part into the database.
- * If the insertion is successful, it updates the parts information, hides the add part modal and removes the click listener from the add part button.
- * It then rebuilds the parts table and selects the newly added row.
+ * Callback function for adding a new location to the databaset table.
+ * This function retrieves the values of the location name and description from the input fields in the add location modal
+ * It then sends a POST request to the server to insert the new location into the database.
+ * If the insertion is successful, it updates the location information, hides the add location modal and removes the click listener from the add location button.
+ * It then rebuilds the locations table and selects the newly added row.
  * @return void
  */
-function addPartCallback() {
-  const pn = $("#addPartName").val();       // Part Name
-  const q = $("#addPartQuantity").val();    // Quantity
-  const l = $("#addPartLocSelect").val();   // Location
-  const c = $("#addPartComment").val();     // Comment
-  const d = $("#addPartDescription").val(); // Description
+function addLocationCallback() {
+  const ln = $("#addLocationName").val();       // Part Name
+  const ld = $("#addLocationDescription").val();    // Quantity
 
   var token = $('input[name="_token"]').attr('value');
 
   $.ajax({
-    url: '/parts.create',
+    url: '/location.create',
     type: 'POST',
     data: {
-      part_name: pn,
-      quantity: q,
-      to_location: l,
-      comment: c,
-      description: d
+      location_name: ln,
+      location_description: ld,
     },
     headers: {
       'X-CSRF-TOKEN': token
     },
     success: function (response) {
       // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
-      var partId = JSON.parse(response)["Part ID"];
-      updatePartsInfo(partId);
-      $('#mPartEntry').modal('hide'); // Hide modal
-      removeClickListeners('#addPart'); // Remove click listener from Add Part button
+      var locationId = JSON.parse(response)["Location ID"];
+      updateLocationInfo(locationId);
+      $('#mLocationEntry').modal('hide'); // Hide modal
+      removeClickListeners('#addLocation'); // Remove click listener from Add Location button
 
-      // Rebuild parts table and select new row
+      // Rebuild locations table and select new row
       var queryString = window.location.search;
-      $.when(rebuildPartsTable(queryString)).done(function () {
+      $.when(rebuildLocationsTable(queryString)).done(function () {
         $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
       });
     },

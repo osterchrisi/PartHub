@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Location;
+use Illuminate\Support\Facades\Auth;
 
 class LocationController extends Controller
 {
@@ -71,6 +72,24 @@ class LocationController extends Controller
                 'db_columns' => ['part_name', 'stock_level'],
                 'nice_columns' => ['Part', 'Quantity']
             ]
+        );
+    }
+
+        /**
+     * Create a new location in the database
+     */
+    public function create(Request $request)
+    {
+        $location_name = $request->input('location_name');
+        $location_description = $request->input('location_description');
+
+        // Insert new part 
+        $new_location_id = Location::createLocation($location_name, $location_description);
+
+        echo json_encode(
+            array(
+                'Location ID' => $new_location_id,
+            )
         );
     }
 }

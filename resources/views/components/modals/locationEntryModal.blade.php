@@ -16,7 +16,7 @@
                     <input class="form-control form-control-sm" placeholder="Location Name" id="addLocationName" required><br>
                     <div class="row">
                         <div class="col">
-                            <input class="form-control form-control-sm" placeholder="Location Description" id="addLocationName"><br>
+                            <input class="form-control form-control-sm" placeholder="Location Description" id="addLocationDescription"><br>
                         </div>
                     </div>
                 </form>

@@ -234,6 +234,26 @@ export function rebuildPartsTable(queryString) {
   });
 }
 
+/**
+ * Rebuild the locations table after adding or deleting locations
+ * @param {string} queryString 
+ */
+export function rebuildLocationsTable(queryString) {
+  return $.ajax({
+    url: '/locations.locationsTable' + queryString,
+    success: function (data) {
+      $('#locations_table').bootstrapTable('destroy'); // Destroy old parts table
+      $('#table-window').html(data); // Update div with new table
+      bootstrapLocationsListTable(); // Bootstrap it
+      var $table = $('#locations_table');
+      var $menu = $('#parts_table_menu');
+      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      inlineProcessing();
+      bootstrapTableSmallify();
+    }
+  });
+}
+
 
 /**
  * Rebuild the BOM list table after adding or deleting BOMs

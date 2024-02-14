@@ -73,7 +73,8 @@ Route::controller(BomController::class)->group(function () {
 //* Location Routes
 Route::controller(LocationController::class)->group(function () {
     Route::get('/locations', 'index')->middleware(['auth', 'verified'])->name('locations');
-    Route::get('/locationi.locationsTable', 'index')->middleware(['auth', 'verified'])->name('locations.locationsTable');
+    Route::get('/locations.locationsTable', 'index')->middleware(['auth', 'verified'])->name('locations.locationsTable');
+    Route::post('/location.create', 'create')->middleware(['auth', 'verified']);
     Route::get('/locations.get', function () {
         return LocationController::getLocations();
     })->middleware(['auth', 'verified']);
