@@ -66,21 +66,3 @@ function addFootprintCallback() {
     }
   });
 }
-
-/**
- * 
- * Creates and adds a dropdown list of footprints to the part entry modal and 'selectizes' it.
- * @param {Array} footprints - An array of objects representing footprints to be displayed in the dropdown list.
- * Each footprint object must have a "footprint_id" and a "footprint_name" property.
- * @return {void}
- */
-function addPartFootprintDropdown(footprints) {
-  var div = document.getElementById("addPartLocDropdown");
-  var selectHTML = "<label class='input-group-text' for='fromStockFootprint'>To</label><select class='form-select' id='addPartLocSelect' required>";
-  for (var i = 0; i < footprints.length; i++) {
-    selectHTML += "<option value='" + footprints[i]['footprint_id'] + "'>" + footprints[i]['footprint_name'] + "</option>";
-  }
-  selectHTML += "</select>";
-  div.innerHTML = selectHTML;
-  $("#addPartLocSelect").selectize();
-}

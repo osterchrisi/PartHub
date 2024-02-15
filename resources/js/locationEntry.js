@@ -66,21 +66,3 @@ function addLocationCallback() {
     }
   });
 }
-
-/**
- * 
- * Creates and adds a dropdown list of locations to the part entry modal and 'selectizes' it.
- * @param {Array} locations - An array of objects representing locations to be displayed in the dropdown list.
- * Each location object must have a "location_id" and a "location_name" property.
- * @return {void}
- */
-function addPartLocationDropdown(locations) {
-  var div = document.getElementById("addPartLocDropdown");
-  var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
-  for (var i = 0; i < locations.length; i++) {
-    selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
-  }
-  selectHTML += "</select>";
-  div.innerHTML = selectHTML;
-  $("#addPartLocSelect").selectize();
-}
