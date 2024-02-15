@@ -47,4 +47,21 @@ class Footprint extends Model
     {
         return Part::where('part_footprint_fk', $footprint_id)->get();
     }
+
+    public static function createFootprint($footprint_name, $footprint_alias)
+    {
+        $user_id = Auth::user()->id;
+
+        $footprint = new Footprint();
+        $footprint->footprint_name = $footprint_name;
+        $footprint->footprint_alias = $footprint_alias;
+        $footprint->footprint_owner_u_fk = $user_id;
+        // $footprint->footprint_owner_g_fk = null;
+        $footprint->save();
+
+        $new_footprint_id = $footprint->footprint_id;
+
+        return $new_footprint_id;
+        
+    }
 }
