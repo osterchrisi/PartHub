@@ -75,4 +75,22 @@ class FootprintController extends Controller
             ]
         );
     }
+
+     /**
+     * Create a new footprint in the database
+     */
+    public function create(Request $request)
+    {
+        $footprint_name = $request->input('footprint_name');
+        $footprint_alias = $request->input('footprint_alias');
+
+        // Insert new part 
+        $new_footprint_id = Footprint::createFootprint($footprint_name, $footprint_alias);
+
+        echo json_encode(
+            array(
+                'Footprint ID' => $new_footprint_id,
+            )
+        );
+    }
 }
