@@ -14,11 +14,13 @@ import { rebuildFootprintsTable} from "./tables";
  */
 export function callFootprintEntryModal() {
   $('#mFootprintEntry').modal('show'); // Show modal
+  console.log("boom")
+
   validateForm('footprintEntryForm', 'addFootprint', addFootprintCallback); // Attach validate form 
 }
 
 /**
- * Callback function for adding a new footprint to the databaset table.
+ * Callback function for adding a new footprint to the database table.
  * This function retrieves the values of the footprint name and description from the input fields in the add footprint modal
  * It then sends a POST request to the server to insert the new footprint into the database.
  * If the insertion is successful, it updates the footprint information, hides the add footprint modal and removes the click listener from the add footprint button.
@@ -26,8 +28,8 @@ export function callFootprintEntryModal() {
  * @return void
  */
 function addFootprintCallback() {
-  const ln = $("#addFootprintName").val();       // Footprint Name
-  const ld = $("#addFootprintAlias").val();    // Footprint Alias
+  const fn = $("#addFootprintName").val();       // Footprint Name
+  const fa = $("#addFootprintAlias").val();    // Footprint Alias
 
   var token = $('input[name="_token"]').attr('value');
 
@@ -49,7 +51,7 @@ function addFootprintCallback() {
       removeClickListeners('#addFootprint'); // Remove click listener from Add Footprint button
 
       // Rebuild footprints table and select new row
-      var queryString = window.footprint.search;
+      var queryString = window.location.search;
       $.when(rebuildFootprintsTable(queryString)).done(function () {
         $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
       });

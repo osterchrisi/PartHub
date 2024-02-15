@@ -18,7 +18,7 @@ export function callLocationEntryModal() {
 }
 
 /**
- * Callback function for adding a new location to the databaset table.
+ * Callback function for adding a new location to the database table.
  * This function retrieves the values of the location name and description from the input fields in the add location modal
  * It then sends a POST request to the server to insert the new location into the database.
  * If the insertion is successful, it updates the location information, hides the add location modal and removes the click listener from the add location button.
