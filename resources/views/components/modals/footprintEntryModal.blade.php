@@ -16,7 +16,7 @@
                     <input class="form-control form-control-sm" placeholder="Footprint Name" id="addFootprintName" required><br>
                     <div class="row">
                         <div class="col">
-                            <input class="form-control form-control-sm" placeholder="Footprint Description" id="addFootprintDescription"><br>
+                            <input class="form-control form-control-sm" placeholder="Footprint Alias" id="addFootprintAlias"><br>
                         </div>
                     </div>
                 </form>

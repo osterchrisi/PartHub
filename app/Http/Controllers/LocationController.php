@@ -77,7 +77,7 @@ class LocationController extends Controller
         );
     }
 
-        /**
+     /**
      * Create a new location in the database
      */
     public function create(Request $request)

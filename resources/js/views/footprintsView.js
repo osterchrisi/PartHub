@@ -2,8 +2,12 @@ import {
     bootstrapFootprintsListTable,
     inlineProcessing,
     bootstrapTableSmallify,
-    defineFootprintsListTableActions
+    defineFootprintsListTableActions,
+    rebuildFootprintsTable
 } from "../tables";
+
+import { callFootprintEntryModal } from '../footprintEntry';
+import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeFootprintsView() {
     bootstrapFootprintsListTable();
@@ -13,6 +17,12 @@ export function initializeFootprintsView() {
     inlineProcessing();
     bootstrapTableSmallify();
     defineFootprintsListTableActions($table, $menu)
+
+    $('#toolbarAddButton').click(function () {
+        callFootprintEntryModal();
+    });
+
+    attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', rebuildFootprintsTable);
 
     // sendFormOnDropdownChange();
 
