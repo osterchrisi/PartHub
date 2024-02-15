@@ -99,6 +99,7 @@ Route::get('/suppliers', function () {
 Route::controller(FootprintController::class)->group(function () {
     Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
     Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
+    Route::post('/footprint.create', 'create')->middleware(['auth', 'verified']);
     Route::get('/footprints.get', function () {
         return FootprintController::getFootprints();
     })->middleware(['auth', 'verified']);
