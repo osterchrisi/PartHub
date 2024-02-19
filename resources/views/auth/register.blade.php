@@ -49,7 +49,7 @@
                 <tr>
                     <td>
                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                        <button type="submit" class="btn btn-primary" id="signupBtn">Sign up</button>
+                        <button type="submit" class="btn btn-primary" id="signupBtn" disabled>Sign up</button>
                     </td>
                 </tr>
                 <tr>
