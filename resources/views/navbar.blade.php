@@ -50,12 +50,20 @@ $user_name = $user ? $user->name : '';
                             <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
                                 href="{{ route('pricing') }}">Pricing</a>
                         </li>
+                        {{-- Don't show Sign Up Link if you're authorized (signed in) --}}
                         @unless (Auth::check())
-                        <li>
-                            <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
-                                href="{{ route('signup') }}">Sign up</a>
-                        </li>
+                            <li>
+                                <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
+                                    href="{{ route('signup') }}">Sign up</a>
+                            </li>
                         @endunless
+                        {{-- Don't show Sign Up Link if you're authorized (signed in) --}}
+                        @if ($user_id == 1)
+                            <li>
+                                <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
+                                    href="{{ route('signup') }}">Sign up</a>
+                            </li>
+                        @endif
                         <li>
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown"><i class="fas fa-user"></i></a>
@@ -69,12 +77,13 @@ $user_name = $user ? $user->name : '';
                                     <li><a class="nav-link" href="{{ route('dashboard') }}">User Settings</a></li>
                                     <li><a class="nav-link" href="{{ route('dashboard') }}">Profile</a></li>
                                     <li><a class="nav-link" href="{{ route('dashboard') }}">Subscription</a></li>
-                                    
+
                                     <li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <div class="d-grid justify-content-md-end">
-                                                <button type="submit" class="nav-link" style="background: none; border: none; color: black">Log
+                                                <button type="submit" class="nav-link"
+                                                    style="background: none; border: none; color: black">Log
                                                     Out</button>
                                             </div>
                                         </form>
