@@ -37,8 +37,6 @@ class PartsController extends Controller
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
         $categories = Category::availableCategories();
-        // $column_names = Part::getColumnNames();
-        $locations = Location::availableLocations();
         $footprints = Footprint::availableFootprints();
 
         /* Calculate and append each part's total stock
@@ -50,7 +48,6 @@ class PartsController extends Controller
             $part['total_stock'] = $totalStock;
         }
 
-        // dd($footprints, $parts[0]['footprint']);
         // Return full parts view or only parts table depending on route
         $route = $request->route()->getName();
         if ($route == 'parts') {
@@ -64,6 +61,7 @@ class PartsController extends Controller
                 'id_field' => self::$id_field,
                 'search_term' => $search_term,
                 'search_column' => $search_column,
+                // These are sent to extract clear names from foreign keys
                 'categories' => $categories,
                 'footprints' => $footprints
             ]);

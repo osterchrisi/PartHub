@@ -469,6 +469,7 @@ function editTextCell(cell, originalValue) {
     // Call the updating function
     updateCell(id, column, table_name, new_value, id_field);
     cell.removeClass('editing');
+    updatePartsInfo(id);
   });
 }
 

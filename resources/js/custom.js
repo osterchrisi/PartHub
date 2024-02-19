@@ -78,9 +78,8 @@ function continueAsDemoUser() {
 
 
 /**
- * Load the parts-info page and pass the id variable as a parameter
- * upon clicking a row in the parts table
- * @param {int} id The part ID for which to update the stock modal content
+ * Load the parts info window for a given part ID
+ * @param {int} id The part ID for which to update the info window
  * @return void
  */
 export function updatePartsInfo(id) {
