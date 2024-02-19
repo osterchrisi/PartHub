@@ -167,7 +167,7 @@ export function updateLocationInfo(id) {
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
-            initializeShowBom();
+            //* Here would go a initializeShowLocation() function if there is ever any JS in that info window
         },
         error: function (xhr) {
             if (xhr.status === 401) {
@@ -194,7 +194,7 @@ export function updateFootprintInfo(id) {
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
-            initializeShowBom();
+            //* Here would go a initializeShowFootprint() function if there is ever any JS in that info window
         },
         error: function (xhr) {
             if (xhr.status === 401) {
