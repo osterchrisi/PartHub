@@ -469,7 +469,21 @@ function editTextCell(cell, originalValue) {
     // Call the updating function
     updateCell(id, column, table_name, new_value, id_field);
     cell.removeClass('editing');
-    updatePartsInfo(id);
+    
+    //TODO: Not great - but works?!
+    if (table_name == 'parts') {
+      updatePartsInfo(id);
+    }
+    else if (table_name == 'locations') {
+      updateLocationInfo(id);
+    }
+    else if (table_name == 'footprints') {
+      updateFootprintInfo(id);
+    }
+    else if (table_name == 'boms') {
+      updateBomInfo(id);
+    }
+
   });
 }
 
