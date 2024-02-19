@@ -140,6 +140,31 @@ function createInlineCategorySelect(categories, currentValue) {
 }
 
 /**
+ * Create a select element for the inline category dropdown in parts table and populate it with available categories
+ * This is copy of createInlineCategorySelect!!
+ * @param {Array} categories Array of associative arrays containing the categories
+ * @param {string} currentValue Current text value of the table cell that is edited
+ * @returns 
+ */
+function createInlineFootprintSelect(footprints, currentValue) {
+  // New select element
+  var select = $('<select class="form-select-sm">');
+  // Iterate over all available footprints
+  for (var i = 0; i < footprints.length; i++) {
+    // Create new option for this footprint
+    var option = $('<option>').text(footprints[i]['footprint_name']).attr('value', footprints[i]['footprint_id']);
+    if (footprints[i]['footprint_name'] === currentValue) {
+      // Add 'selected' attribute to the option with the same text value as the value in the table
+      //TODO: Better would be ID value, in case two footprints would have same text?
+      option.attr('selected', true);
+    }
+    // Append option to select element
+    select.append(option);
+  }
+  return select;
+}
+
+/**
  * Defines the actions to perform when a table row is clicked.
  * Attaches a click event listener to the specified table rows and calls the
  * provided callback function with the extracted ID when a row is selected.
@@ -453,8 +478,6 @@ function editTextCell(cell, originalValue) {
  * @param {string} originalValue The original value of the cell before editing
  */
 function editCategoryCell(cell, originalValue) {
-  console.log(typeof (cell))
-  console.log(typeof (originalValue))
   // Changed flag
   var valueChanged = false;
   // Get list of available categories and populate dropdown
@@ -504,9 +527,65 @@ function editCategoryCell(cell, originalValue) {
           $(document).off('keydown');
         }
       });
+    }
+  });
+}
 
+/**
+ * Inline table cell editing of a footprint cell in the parts table
+ * @param {jQuery} cell The cell being edited
+ * @param {string} originalValue The original value of the cell before editing
+ */
+function editFootprintCell(cell, originalValue) {
+  // Changed flag
+  var valueChanged = false;
+  // Get list of available footprints and populate dropdown
+  var footprints = $.ajax({
+    type: 'GET',
+    url: '/footprints.get',
+    dataType: 'JSON',
+    success: function (response) {
+      footprints = response;
 
+      // Create select element
+      var select = createInlineFootprintSelect(footprints, originalValue);
 
+      // Append, selectize footprint dropdown
+      appendInlineFootprintSelect(cell, select);
+
+      // Need to focus the selectize control
+      var selectizeControl = select[0].selectize;
+      selectizeControl.focus();
+
+      // Select element change event handler and callback function to set flag
+      inlineFootprintSelectEventHandler(select, cell, footprints, function changeFlagCallback() {
+        valueChanged = true;
+      });
+
+      // Listen for the blur event on the selectize control
+      selectizeControl.on('blur', function () {
+        // Remove the select element when the selectize dropdown loses focus
+        select.remove();
+        // Change cell text back if value was not changed
+        if (!valueChanged) {
+          cell.text(originalValue);
+        }
+        cell.removeClass('editing');
+      });
+
+      // Listen for the Escape keydown event on the document level because selectized element is eating my events
+      $(document).on('keydown', function (event) {
+        if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('footprint') && cell.hasClass('editing')) {
+          select.remove();
+          // Change cell text back if value was not changed
+          if (!valueChanged) {
+            cell.text(originalValue);
+          }
+          cell.removeClass('editing');
+          // Remove the event handler once it has done its job
+          $(document).off('keydown');
+        }
+      });
     }
   });
 }
@@ -533,6 +612,9 @@ export function inlineProcessing() {
     // * It's a category cell
     if (cell.hasClass('category')) {
       editCategoryCell(cell, originalValue);
+    }
+    else if (cell.hasClass('footprint')) {
+      editFootprintCell(cell, originalValue);
     }
     else { // * It's a text cell
       editTextCell(cell, originalValue);
@@ -586,9 +668,14 @@ function appendInlineCategorySelect(cell, select) {
   select.selectize();
 }
 
+function appendInlineFootprintSelect(cell, select) {
+  cell.empty().append(select);
+  select.selectize();
+}
+
 function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCallback) {
   select.on('change', function () {
-    var newValue = $(this).val(); // Get new selected value
+    var selectedValue = $(this).val(); // Get new selected value
 
     // Get cell part_id, column name and database table
     // These are encoded in the table data cells
@@ -598,10 +685,23 @@ function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCa
     var id_field = cell.closest('td').data('id_field');
 
     // Call the database table updating function
-    $.when(updateCell(id, column, table_name, newValue, id_field)).done(function () {
-      // Update HTML cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
-      newValue = categories[newValue - 1]['category_name'];
-      cell.text(newValue);
+    $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
+
+      // Find category name for a given category ID
+      var newValue = categories.find(function (item) {
+        return item.category_id === parseInt(selectedValue); // Return true if the item's categry_id matches selectedValue
+      });
+
+      // Check if newValue is found and update HTML cell
+      if (newValue) {
+        newValue = newValue.category_name; // Get the category_name from the found item
+        cell.text(newValue);
+      } else {
+        console.log("No matching footprint found for footprint_id:", selectedValue);
+        // Handle the case when no matching footprint is found
+      }
+
+      // Editing aftermath
       select.remove();
       cell.removeClass('editing');
       changeFlagCallback(); // Callback function to set change flag
@@ -609,6 +709,42 @@ function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCa
     })
 
 
+  });
+}
+
+function inlineFootprintSelectEventHandler(select, cell, footprints, changeFlagCallback) {
+  select.on('change', function () {
+    var selectedValue = $(this).val(); // Get new selected value
+
+    // Get cell part_id, column name and database table
+    // These are encoded in the table data cells
+    var id = cell.closest('td').data('id');
+    var column = 'part_footprint_fk';
+    var table_name = cell.closest('td').data('table_name');
+    var id_field = cell.closest('td').data('id_field');
+
+    // Call the database table updating function
+    $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
+      // Find footprint name for a given footprint ID
+      var newValue = footprints.find(function (item) {
+        return item.footprint_id === parseInt(selectedValue); // Return true if the item's footprint_id matches selectedValue
+      });
+
+      // Check if newValue is found and update HTML table
+      if (newValue) {
+        newValue = newValue.footprint_name; // Get the footprint_name from the found item
+        cell.text(newValue);
+      } else {
+        console.log("No matching footprint found for footprint_id:", selectedValue);
+        // Handle the case when no matching footprint is found
+      }
+
+      // Editing aftermath
+      select.remove();
+      cell.removeClass('editing');
+      changeFlagCallback(); // Callback function to set change flag
+      $(document).off('keydown'); // Removing the escape handler because it's on document level
+    });
   });
 }
 
