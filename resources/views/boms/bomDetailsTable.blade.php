@@ -50,7 +50,15 @@
                             </td>
                         @elseif ($column_data == 'can_build')
                             @php
+                                                            
+                            // This if statement is here in case someone changes the Quantity Needed to 0...
+                            if ($row->element_quantity != 0) {
                                 $can_build = floor($total_stock / $row->element_quantity);
+                            }
+                            else {
+                                $can_build = 0;
+                            }
+
                             @endphp
                             <td style="text-align:right" data-id="{{ $part_id }}"
                                 data-column="{{ $column_data }}">{{ $can_build }}</td>
