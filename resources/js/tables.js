@@ -414,6 +414,8 @@ export function inlineProcessing() {
 
     // * It's a category cell
     if (cell.hasClass('category')) {
+      // Changed Or Not flag
+      var valueChanged = false;
       // Get list of available categories and populate dropdown
       var categories = $.ajax({
         type: 'GET',
@@ -432,28 +434,37 @@ export function inlineProcessing() {
           var selectizeControl = select[0].selectize;
           selectizeControl.focus();
 
+          // Select element change event handler and callback function to set flag
+          inlineCategorySelectEventHandler(select, cell, categories, function () {
+            valueChanged = true;
+          });
+
           // Listen for the blur event on the selectize control
           selectizeControl.on('blur', function () {
             // Remove the select element when the selectize dropdown loses focus
             select.remove();
-            cell.text(currentValue);
+            console.log("valueChanged (on.blur) = ", valueChanged);
+            if (!valueChanged) {
+              cell.text(currentValue);
+            }
             cell.removeClass('editing');
           });
 
           // Listen for the Escape keydown event on the document level because selectized element is eating my events
           $(document).on('keydown', function (event) {
             if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('category') && cell.hasClass('editing')) {
-              console.log("escape");
               select.remove();
-              cell.text(currentValue);
+              console.log("valueChanged (on.escape) = ", valueChanged);
+              if (!valueChanged) {
+                cell.text(currentValue);
+              }
               cell.removeClass('editing');
               // Remove the event handler once it has done its job
               $(document).off('keydown');
             }
           });
 
-          // Select element change event handler
-          inlineCategorySelectEventHandler(select, cell, categories);
+
 
         }
       });
@@ -555,7 +566,7 @@ function appendInlineCategorySelect(cell, select) {
   select.selectize();
 }
 
-function inlineCategorySelectEventHandler(select, cell, categories) {
+function inlineCategorySelectEventHandler(select, cell, categories, callback) {
   select.on('change', function () {
     var new_value = $(this).val(); // Get new selected value
 
@@ -573,6 +584,8 @@ function inlineCategorySelectEventHandler(select, cell, categories) {
       cell.text(new_value);
       select.remove();
       cell.removeClass('editing');
+      callback(); // Callback function to set change flag
+      $(document).off('keydown'); // Removing the escape handler because it's on document level
     })
 
 
@@ -618,7 +631,7 @@ export function assembleBoms(selectedRows, ids) {
           updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
           //TODO: Also select in table
         }
-        else if (r.status === 'permission_requested'){
+        else if (r.status === 'permission_requested') {
           //* User permission required
           console.log(r);
 
