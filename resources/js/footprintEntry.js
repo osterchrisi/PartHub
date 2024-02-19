@@ -28,7 +28,7 @@ export function callFootprintEntryModal() {
  * @return void
  */
 function addFootprintCallback() {
-  const fn = $("#addFootprintName").val();       // Footprint Name
+  const fn = $("#addFootprintName").val();     // Footprint Name
   const fa = $("#addFootprintAlias").val();    // Footprint Alias
 
   var token = $('input[name="_token"]').attr('value');
@@ -44,11 +44,11 @@ function addFootprintCallback() {
       'X-CSRF-TOKEN': token
     },
     success: function (response) {
-      // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
+      // Response contains the new 'Footprint ID'
       var footprintId = JSON.parse(response)["Footprint ID"];
-      updateFootprintInfo(footprintId);
-      $('#mFootprintEntry').modal('hide'); // Hide modal
-      removeClickListeners('#addFootprint'); // Remove click listener from Add Footprint button
+      updateFootprintInfo(footprintId);       // Update info window
+      $('#mFootprintEntry').modal('hide');    // Hide modal
+      removeClickListeners('#addFootprint');  // Remove click listener from Add Footprint button
 
       // Rebuild footprints table and select new row
       var queryString = window.location.search;

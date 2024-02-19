@@ -26,8 +26,8 @@ export function callLocationEntryModal() {
  * @return void
  */
 function addLocationCallback() {
-  const ln = $("#addLocationName").val();       // Part Name
-  const ld = $("#addLocationDescription").val();    // Quantity
+  const ln = $("#addLocationName").val();           // Location Name
+  const ld = $("#addLocationDescription").val();    // Location Description
 
   var token = $('input[name="_token"]').attr('value');
 
@@ -42,10 +42,10 @@ function addLocationCallback() {
       'X-CSRF-TOKEN': token
     },
     success: function (response) {
-      // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
+      // Response contains the new 'Location ID'
       var locationId = JSON.parse(response)["Location ID"];
-      updateLocationInfo(locationId);
-      $('#mLocationEntry').modal('hide'); // Hide modal
+      updateLocationInfo(locationId);       // Update info window
+      $('#mLocationEntry').modal('hide');   // Hide modal
       removeClickListeners('#addLocation'); // Remove click listener from Add Location button
 
       // Rebuild locations table and select new row
