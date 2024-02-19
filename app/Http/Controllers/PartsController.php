@@ -8,6 +8,7 @@ use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
 use App\Models\BomRun;
+use App\Models\Footprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
@@ -16,7 +17,7 @@ class PartsController extends Controller
 {
     private static $table_name = 'parts';
     private static $id_field = 'part_id';
-    private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'part_footprint_fk', 'unit_name', "part_id");
+    private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id');
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
     private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', "ID");
 
@@ -36,8 +37,9 @@ class PartsController extends Controller
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
         $categories = Category::availableCategories();
-        $column_names = Part::getColumnNames();
+        // $column_names = Part::getColumnNames();
         $locations = Location::availableLocations();
+        $footprints = Footprint::availableFootprints();
 
         /* Calculate and append each part's total stock
         / Passing a reference, so modifications made to $part directly affect 
@@ -48,6 +50,7 @@ class PartsController extends Controller
             $part['total_stock'] = $totalStock;
         }
 
+        // dd($footprints, $parts[0]['footprint']);
         // Return full parts view or only parts table depending on route
         $route = $request->route()->getName();
         if ($route == 'parts') {
@@ -61,7 +64,8 @@ class PartsController extends Controller
                 'id_field' => self::$id_field,
                 'search_term' => $search_term,
                 'search_column' => $search_column,
-                'categories' => $categories
+                'categories' => $categories,
+                'footprints' => $footprints
             ]);
         }
         elseif ($route == 'parts.partsTable') {
