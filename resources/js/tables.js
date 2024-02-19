@@ -126,7 +126,7 @@ function createInlineCategorySelect(categories, currentValue) {
   var select = $('<select class="form-select-sm">');
   // Iterate over all available categories
   for (var i = 0; i < categories.length; i++) {
-    // Create new option for this categorie
+    // Create new option for this category
     var option = $('<option>').text(categories[i]['category_name']).attr('value', categories[i]['category_id']);
     if (categories[i]['category_name'] === currentValue) {
       // Add 'selected' attribute to the option with the same text value as the value in the table
@@ -453,7 +453,7 @@ export function inlineProcessing() {
           });
 
           // Select element change event handler
-          inlineCategorySelectEventHandler(select, cell);
+          inlineCategorySelectEventHandler(select, cell, categories);
 
         }
       });
@@ -555,7 +555,7 @@ function appendInlineCategorySelect(cell, select) {
   select.selectize();
 }
 
-function inlineCategorySelectEventHandler(select, cell) {
+function inlineCategorySelectEventHandler(select, cell, categories) {
   select.on('change', function () {
     var new_value = $(this).val(); // Get new selected value
 

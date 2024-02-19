@@ -38,17 +38,23 @@
                 @endphp
                 <tr data-id="{{ $part_id }}">
                     @foreach ($db_columns as $column_data)
-                    {{-- I am inserting '' for everything that could potentiall not have a value, especially values that are potentially inside another array. Otherwise I get array offset errors --}}
+                    {{-- I am inserting '' for everything that could potentially not have a value, especially values that are potentially inside another array. Otherwise I get array offset errors --}}
+                        {{-- Total Stock --}}
                         @if ($column_data == 'total_stock')
                             <td style="text-align:right" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['total_stock'] }}</td>
+                        {{-- Category --}}
                         @elseif ($column_data == 'category_name')
                             <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}</td>
+                        {{-- Unit --}}
                         @elseif ($column_data == 'unit_name')
                             <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}</td>
+                        {{-- Selected / State  --}}
                         @elseif ($column_data == 'state')
                             <td></td>
+                        {{-- ID --}}
                         @elseif ($column_data == 'part_id')
                             <td data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part[$column_data] }}</td>
+                        {{-- 'Simple' (text-only) Fields --}}
                         @else
                             <td data-editable="true" class="editable" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}</td>                      
                         @endif
