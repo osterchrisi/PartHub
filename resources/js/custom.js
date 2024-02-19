@@ -155,8 +155,8 @@ export function updateBomInfo(id) {
 };
 
 /**
- * Updates the Location info in the info window using an AJAX request.
- * @param {number} id - The ID of the Location to update the info for.
+ * Updates the location info in the info window using an AJAX request.
+ * @param {number} id - The ID of the location to update the info for.
  * @return void
  */
 export function updateLocationInfo(id) {
@@ -181,6 +181,11 @@ export function updateLocationInfo(id) {
     });
 };
 
+/**
+ * Updates the footprint info in the info window using an AJAX request.
+ * @param {number} id - The ID of the footprint to update the info for.
+ * @return void
+ */
 export function updateFootprintInfo(id) {
     $.ajax({
         url: '/footprint/' + id,
