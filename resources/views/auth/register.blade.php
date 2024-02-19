@@ -4,8 +4,8 @@
         <thead>
             <tr>
                 <th>
-                    <h3 class="alert alert-danger" role="alert">Don't sign up yet, your account will be deleted</h3>
-                    <h4>Sign up for a free PartHub account</h4>
+                    <h4 class="alert alert-info" role="alert">Now accepting sign ups for beta usage</h4>
+                    <h2>Sign up for a free PartHub account</h2>
                     @php
                         if (isset($_GET['cnv'])) {
                             echo '<div class="alert alert-dark" role="alert">reCAPTCHA was not verified</div>';
@@ -49,7 +49,7 @@
                 <tr>
                     <td>
                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                        <button type="submit" class="btn btn-primary" id="signupBtn" disabled>Sign up</button>
+                        <button type="submit" class="btn btn-primary" id="signupBtn">Sign up</button>
                     </td>
                 </tr>
                 <tr>
