@@ -410,11 +410,11 @@ export function inlineProcessing() {
     }
 
     // Get current value
-    var currentValue = cell.text();
+    var originalValue = cell.text();
 
     // * It's a category cell
     if (cell.hasClass('category')) {
-      // Changed Or Not flag
+      // Changed flag
       var valueChanged = false;
       // Get list of available categories and populate dropdown
       var categories = $.ajax({
@@ -425,7 +425,7 @@ export function inlineProcessing() {
           categories = response;
 
           // Create select element
-          var select = createInlineCategorySelect(categories, currentValue);
+          var select = createInlineCategorySelect(categories, originalValue);
 
           // Append, selectize category dropdown
           appendInlineCategorySelect(cell, select);
@@ -435,7 +435,7 @@ export function inlineProcessing() {
           selectizeControl.focus();
 
           // Select element change event handler and callback function to set flag
-          inlineCategorySelectEventHandler(select, cell, categories, function () {
+          inlineCategorySelectEventHandler(select, cell, categories, function changeFlagCallback() {
             valueChanged = true;
           });
 
@@ -443,9 +443,9 @@ export function inlineProcessing() {
           selectizeControl.on('blur', function () {
             // Remove the select element when the selectize dropdown loses focus
             select.remove();
-            console.log("valueChanged (on.blur) = ", valueChanged);
+            // Change cell text back if value was not changed
             if (!valueChanged) {
-              cell.text(currentValue);
+              cell.text(originalValue);
             }
             cell.removeClass('editing');
           });
@@ -454,9 +454,9 @@ export function inlineProcessing() {
           $(document).on('keydown', function (event) {
             if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('category') && cell.hasClass('editing')) {
               select.remove();
-              console.log("valueChanged (on.escape) = ", valueChanged);
+              // Change cell text back if value was not changed
               if (!valueChanged) {
-                cell.text(currentValue);
+                cell.text(originalValue);
               }
               cell.removeClass('editing');
               // Remove the event handler once it has done its job
@@ -471,7 +471,7 @@ export function inlineProcessing() {
     }
     else { // * It's a text cell
       // Create input field
-      var input = $('<textarea class="form-control">').val(currentValue);
+      var input = $('<textarea class="form-control">').val(originalValue);
       cell.empty().append(input);
       input.focus();
 
@@ -490,7 +490,7 @@ export function inlineProcessing() {
       input.on('keydown', function (event) {
         if (event.key === "Escape") {
           input.remove();
-          cell.text(currentValue);
+          cell.text(originalValue);
           cell.removeClass('editing');
           return;
         }
@@ -566,9 +566,9 @@ function appendInlineCategorySelect(cell, select) {
   select.selectize();
 }
 
-function inlineCategorySelectEventHandler(select, cell, categories, callback) {
+function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCallback) {
   select.on('change', function () {
-    var new_value = $(this).val(); // Get new selected value
+    var newValue = $(this).val(); // Get new selected value
 
     // Get cell part_id, column name and database table
     // These are encoded in the table data cells
@@ -578,13 +578,13 @@ function inlineCategorySelectEventHandler(select, cell, categories, callback) {
     var id_field = cell.closest('td').data('id_field');
 
     // Call the database table updating function
-    $.when(updateCell(id, column, table_name, new_value, id_field)).done(function () {
+    $.when(updateCell(id, column, table_name, newValue, id_field)).done(function () {
       // Update HTML cell with new value, need to subtract 1 to account for array starting at 0 but categories at 1
-      new_value = categories[new_value - 1]['category_name'];
-      cell.text(new_value);
+      newValue = categories[newValue - 1]['category_name'];
+      cell.text(newValue);
       select.remove();
       cell.removeClass('editing');
-      callback(); // Callback function to set change flag
+      changeFlagCallback(); // Callback function to set change flag
       $(document).off('keydown'); // Removing the escape handler because it's on document level
     })
 
