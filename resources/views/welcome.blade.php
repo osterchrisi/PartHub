@@ -15,7 +15,7 @@
                 Hello internet stranger that has found their way to PartHub!<br>
                 PartHub is <strong>not yet fully functional</strong> but many parts do work.<br><br>
                 Start exploring parts, BOMs, move some stock, assemble a BOM. Go ahead and explore!
-                <br>The database will reset every full hour, then all your changes will be lost :(<br><br>
+                <br>The demo database will reset every full hour, then all your changes will be lost :(<br><br>
             </td>
         </tr>
         <tr>
