@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\User;
 
 class WelcomeEmail extends Mailable
 {
@@ -16,10 +17,9 @@ class WelcomeEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        protected User $user,
+        ){}
 
     /**
      * Get the message envelope.
@@ -27,7 +27,8 @@ class WelcomeEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome Email',
+            // from: new Address('hello@parthub.online', 'PartHub'),
+            subject: 'Welcome to PartHub',
         );
     }
 
@@ -37,7 +38,10 @@ class WelcomeEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mail.WelcomeEmail',
+            with: [
+                'name' => $this->user->name,
+            ]
         );
     }
 
