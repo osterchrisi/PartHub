@@ -58,21 +58,18 @@ export function initializePartsView() {
     initializePopovers();
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
+    fetchDataThenAttachClickListener();
 
-
-    // // Get locations and attach click listener to "Add" button in toolbar
-    // $.ajax({
-    //     url: '/locations.get',
-    //     dataType: 'json',
-    //     success: function (locations) {
-    //         $('#toolbarAddButton').click(function () {
-    //             callPartEntryModal(locations);
-    //         });
-    //     },
-    //     error: function (error) {
-    //         console.log(error);
-    //     }
-    // })
+    /**
+     * Show location divs after potentially
+     * having hidden them in the stock modal when hiding the modal
+     * @return void
+     */
+    $('#mAddStock').on('hidden.bs.modal', function () {
+        $('#FromStockLocationDiv-row').show();
+        $('#ToStockLocationDiv-row').show();
+    })
+}
 
     // Get locations
     function getLocations() {
@@ -109,14 +106,12 @@ export function initializePartsView() {
 
     async function fetchDataThenAttachClickListener() {
         try {
-            // Fetch all data asynchronously
+            // Fetch locations, footprints and categories
             const locations = await getLocations();
             const footprints = await getFootprints();
             // const categories = await getCategoryData();
 
-            console.log(locations, footprints);
-
-            // Attach click listener to button
+            // Attach click listener to Add button
             $('#toolbarAddButton').click(function () {
                 callPartEntryModal(locations, footprints);
             });
@@ -126,15 +121,3 @@ export function initializePartsView() {
             console.error('Error fetching data:', error);
         }
     }
-    fetchDataThenAttachClickListener();
-
-    /**
-     * Show location divs after potentially
-     * having hidden them in the stock modal when hiding the modal
-     * @return void
-     */
-    $('#mAddStock').on('hidden.bs.modal', function () {
-        $('#FromStockLocationDiv-row').show();
-        $('#ToStockLocationDiv-row').show();
-    })
-}

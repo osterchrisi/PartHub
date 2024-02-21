@@ -13,7 +13,6 @@ import { rebuildPartsTable } from "./tables";
  * @return void
  */
 export function callPartEntryModal(locations, footprints) {
-  console.log(locations, footprints);
   addPartLocationDropdown(locations);
   addPartFootprintDropdown(footprints);
   $('#mPartEntry').modal('show'); // Show modal
@@ -29,11 +28,12 @@ export function callPartEntryModal(locations, footprints) {
  * @return void
  */
 function addPartCallback() {
-  const pn = $("#addPartName").val();       // Part Name
-  const q = $("#addPartQuantity").val();    // Quantity
-  const l = $("#addPartLocSelect").val();   // Location
-  const c = $("#addPartComment").val();     // Comment
-  const d = $("#addPartDescription").val(); // Description
+  const pn = $("#addPartName").val();           // Part Name
+  const q = $("#addPartQuantity").val();        // Quantity
+  const l = $("#addPartLocSelect").val();       // Location
+  const c = $("#addPartComment").val();         // Comment
+  const d = $("#addPartDescription").val();     // Description
+  const fp = $("#addPartFootprintSelect").val() // Footprint
 
   var token = $('input[name="_token"]').attr('value');
 
@@ -45,7 +45,8 @@ function addPartCallback() {
       quantity: q,
       to_location: l,
       comment: c,
-      description: d
+      description: d,
+      footprint: fp
     },
     headers: {
       'X-CSRF-TOKEN': token
@@ -102,14 +103,12 @@ function addPartLocationDropdown(locations) {
  * @return {void}
  */
 function addPartFootprintDropdown(footprints) {
-  console.log(footprints);
   var div = document.getElementById("addPartFootprintDropdown");
   var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Footprint' id='addPartFootprintSelect'>";
   for (var i = 0; i < footprints.length; i++) {
     selectHTML += "<option value='" + footprints[i]['footprint_id'] + "'>" + footprints[i]['footprint_name'] + "</option>";
   }
   selectHTML += "</select>";
-  console.log(selectHTML);
   div.innerHTML = selectHTML;
   $("#addPartFootprintSelect").selectize();
 }
