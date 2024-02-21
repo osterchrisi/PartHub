@@ -17,12 +17,8 @@ import { callPartEntryModal } from '../partEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 
-// $(document).ready(function () {
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
-
-    // This was already commented out
-    // sendFormOnDropdownChange();
 
     bootstrapPartsTable();
     var $table = $('#parts_table');
@@ -78,6 +74,57 @@ export function initializePartsView() {
         }
     })
 
+    // Get locations
+    function getLocations() {
+        return $.ajax({
+            url: '/locations.get',
+            dataType: 'json',
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    // Get footprints
+    function getFootprints() {
+        return $.ajax({
+            url: '/footprints.get',
+            dataType: 'json',
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    // Get categories
+    function getCategories() {
+        return $.ajax({
+            url: '/categories.get',
+            dataType: 'json',
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    async function fetchDataThenAttachClickListener() {
+        try {
+            // Fetch all data asynchronously
+            const locations = await getLocations();
+            const footprints = await getFootprints();
+            // const categories = await getCategoryData();
+
+            // Attach click listener to button
+            $('#toolbarAddButton').click(function () {
+                callPartEntryModal(locations, footprints);
+            });
+
+        } catch (error) {
+            // Handle errors
+            console.error('Error fetching data:', error);
+        }
+    }
+
     /**
      * Show location divs after potentially
      * having hidden them in the stock modal when hiding the modal
@@ -88,4 +135,3 @@ export function initializePartsView() {
         $('#ToStockLocationDiv-row').show();
     })
 }
-// });

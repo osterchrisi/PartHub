@@ -12,8 +12,9 @@ import { rebuildPartsTable } from "./tables";
  * @param {Array} locations An array of objects containing locations
  * @return void
  */
-export function callPartEntryModal(locations) {
+export function callPartEntryModal(locations, footprints) {
   addPartLocationDropdown(locations);
+  addPartFootprintDropdown(footprints);
   $('#mPartEntry').modal('show'); // Show modal
   validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
 }
@@ -82,6 +83,24 @@ function addPartCallback() {
  * @return {void}
  */
 function addPartLocationDropdown(locations) {
+  var div = document.getElementById("addPartLocDropdown");
+  var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
+  for (var i = 0; i < locations.length; i++) {
+    selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+  }
+  selectHTML += "</select>";
+  div.innerHTML = selectHTML;
+  $("#addPartLocSelect").selectize();
+}
+
+/**
+ * 
+ * Creates and adds a dropdown list of locations to the part entry modal and 'selectizes' it.
+ * @param {Array} locations - An array of objects representing locations to be displayed in the dropdown list.
+ * Each location object must have a "location_id" and a "location_name" property.
+ * @return {void}
+ */
+function addPartFootprintDropdown(footprints) {
   var div = document.getElementById("addPartLocDropdown");
   var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
   for (var i = 0; i < locations.length; i++) {
