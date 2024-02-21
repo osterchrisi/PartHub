@@ -32,15 +32,25 @@
                                 <input class="form-select form-select-sm not-required" placeholder="Category">
                             </div>
                             <div class="col">
-                                <input class="form-select form-select-sm not-required" placeholder="Footprint">
+                                <div id="addPartFootprintDropdown">
+                                </div>
                             </div>
                         </div>
-                        <br>
-                        <input class="form-control form-control-sm not-required" id="addPartDescription"placeholder="Description">
-                        <br>
-                        <input class="form-control form-control-sm not-required" id="addPartComment" placeholder="Comment">
+                        <div class="row">
+                            <div class="col">
+                                <br>
+                                <input class="form-control form-control-sm not-required"
+                                    id="addPartDescription"placeholder="Description">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <br>
+                                <input class="form-control form-control-sm not-required" id="addPartComment"
+                                    placeholder="Comment">
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-group"></div>
                 </form>
             </div>
 

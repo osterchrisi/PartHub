@@ -60,19 +60,19 @@ export function initializePartsView() {
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
 
 
-    // Get locations and attach click listener to "Add" button in toolbar
-    $.ajax({
-        url: '/locations.get',
-        dataType: 'json',
-        success: function (locations) {
-            $('#toolbarAddButton').click(function () {
-                callPartEntryModal(locations);
-            });
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    })
+    // // Get locations and attach click listener to "Add" button in toolbar
+    // $.ajax({
+    //     url: '/locations.get',
+    //     dataType: 'json',
+    //     success: function (locations) {
+    //         $('#toolbarAddButton').click(function () {
+    //             callPartEntryModal(locations);
+    //         });
+    //     },
+    //     error: function (error) {
+    //         console.log(error);
+    //     }
+    // })
 
     // Get locations
     function getLocations() {
@@ -114,6 +114,8 @@ export function initializePartsView() {
             const footprints = await getFootprints();
             // const categories = await getCategoryData();
 
+            console.log(locations, footprints);
+
             // Attach click listener to button
             $('#toolbarAddButton').click(function () {
                 callPartEntryModal(locations, footprints);
@@ -124,6 +126,7 @@ export function initializePartsView() {
             console.error('Error fetching data:', error);
         }
     }
+    fetchDataThenAttachClickListener();
 
     /**
      * Show location divs after potentially

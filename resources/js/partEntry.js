@@ -13,6 +13,7 @@ import { rebuildPartsTable } from "./tables";
  * @return void
  */
 export function callPartEntryModal(locations, footprints) {
+  console.log(locations, footprints);
   addPartLocationDropdown(locations);
   addPartFootprintDropdown(footprints);
   $('#mPartEntry').modal('show'); // Show modal
@@ -95,18 +96,20 @@ function addPartLocationDropdown(locations) {
 
 /**
  * 
- * Creates and adds a dropdown list of locations to the part entry modal and 'selectizes' it.
- * @param {Array} locations - An array of objects representing locations to be displayed in the dropdown list.
- * Each location object must have a "location_id" and a "location_name" property.
+ * Creates and adds a dropdown list of footprints to the part entry modal and 'selectizes' it.
+ * @param {Array} footprints - An array of objects representing footprints to be displayed in the dropdown list.
+ * Each footprint object must have a "footprint_id" and a "footprint_name" property.
  * @return {void}
  */
 function addPartFootprintDropdown(footprints) {
-  var div = document.getElementById("addPartLocDropdown");
-  var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
-  for (var i = 0; i < locations.length; i++) {
-    selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+  console.log(footprints);
+  var div = document.getElementById("addPartFootprintDropdown");
+  var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Footprint' id='addPartFootprintSelect'>";
+  for (var i = 0; i < footprints.length; i++) {
+    selectHTML += "<option value='" + footprints[i]['footprint_id'] + "'>" + footprints[i]['footprint_name'] + "</option>";
   }
   selectHTML += "</select>";
+  console.log(selectHTML);
   div.innerHTML = selectHTML;
-  $("#addPartLocSelect").selectize();
+  $("#addPartFootprintSelect").selectize();
 }
