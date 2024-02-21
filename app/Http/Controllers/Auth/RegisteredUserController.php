@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeEmail;
 use App\Models\User;
 use App\Models\Location;
 use App\Providers\RouteServiceProvider;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+
 
 class RegisteredUserController extends Controller
 {
@@ -55,6 +58,9 @@ class RegisteredUserController extends Controller
 
         // Create a default location, so user can start adding parts immediately
         Location::createLocation("Default Location", "Feel free to change the description");
+
+        // Send welcome e-mail
+        Mail::to($request->user())->bcc(env('MAIL_FROM_ADDRESS'))->send(new WelcomeEmail($user));
 
         return redirect(RouteServiceProvider::HOME);
     }
