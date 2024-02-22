@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords"
-        content="inventory management, BOMs (bills of materials), BOM, production tracking, stock keeping, supply chain management, warehouse management, parts tracking, component tracking, parts inventory, component inventory, self-hosted inventory management, cloud-based inventory management, inventory software, open-source, electronic part inventory, BOM creation, BOM execution">
+        content="inventory management, electronics part inventory, inventory, electronics inventory, BOMs (bills of materials), BOM, production tracking, stock keeping, supply chain management, warehouse management, parts tracking, component tracking, parts inventory, component inventory, self-hosted inventory management, cloud-based inventory management, inventory software, open-source, electronic part inventory, BOM creation, BOM execution">
     <meta name="description"
-        content="Simplify your electronic parts inventory and BOM management. Free tiers and self-hosting. Aimed at small electronic makers and tinkerers">
+        content="Your friendly electronic parts inventory and BOM management. Simple. Free tiers and self-hosting. Aimed at small electronic makers and tinkerers">
     <title>PartHub - {{ $title }}
     </title>
 
@@ -41,7 +41,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap -->
-    <!-- <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -67,7 +66,7 @@
     <!-- Bootstrap Table Cookie to remember table state -->
     <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
-    <!-- Custom js and CSS -->
+    <!-- Custom JS and CSS -->
     @vite(['resources/js/app.js'])
     @vite(['resources/css/custom.css'])
 

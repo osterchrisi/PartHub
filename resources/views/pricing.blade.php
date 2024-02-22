@@ -9,7 +9,8 @@
                 <h1>Pricing</h1><br>
 
                 PartHub helps you focus on the fun part of making things<br>
-                by taking care of the annoying tasks of stock keeping for you!
+                by taking care of the annoying tasks of stock keeping for you!<br><br>
+                Currently PartHub is for free and there will always be a free tier.
             </td>
         </tr>
         <tr>
