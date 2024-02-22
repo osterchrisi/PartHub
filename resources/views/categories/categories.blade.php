@@ -25,7 +25,7 @@
         </thead>
         <tbody>
             @foreach ($categories as $category)
-                <tr data-parent-id="{{ $category->parent_category }}">
+                <tr data-parent-id="{{ $category->parent_category }}" data-id="{{ $category->category_id }}" >
                     <td>{{ $category->category_name }}</td>
                     <td style="display: none;">{{ $category->category_id }}</td>
                     <td style="display: none;">{{ $category->parent_category }}</td>

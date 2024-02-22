@@ -2,6 +2,7 @@ import { initializeShowBom } from "./showBom";
 import { initializeShowPart} from "./showPart";
 import { initializeShowFootprint } from "./showFootprint";
 import { initializeShowLocation } from "./showLocation";
+import { initializeShowCategory } from "./showCategory";
 
 /**
  * Focus the Part Name field in the part entry modal after showing
@@ -176,7 +177,7 @@ export function updateLocationInfo(id) {
             }
             else {
                 // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional BOM data.');
+                $('#info-window').html('Failed to load additional location data.');
             }
         }
     });
@@ -203,7 +204,34 @@ export function updateFootprintInfo(id) {
             }
             else {
                 // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional BOM data.');
+                $('#info-window').html('Failed to load additional footprint data.');
+            }
+        }
+    });
+};
+
+/**
+ * Updates the category info in the info window using an AJAX request.
+ * @param {number} id - The ID of the category to update the info for.
+ * @return void
+ */
+export function updateCategoryInfo(id) {
+    $.ajax({
+        url: '/category/' + id,
+        type: 'GET',
+        data: {},
+        success: function (data) {
+            // Replace the content of the info window with the loaded PHP page
+            $('#info-window').html(data);
+            initializeShowCategory();
+        },
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                $('#info-window').html('Your session expired. Please login again.')
+            }
+            else {
+                // Display an error message if the PHP page failed to load
+                $('#info-window').html('Failed to load additional category data.');
             }
         }
     });

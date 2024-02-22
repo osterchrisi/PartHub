@@ -6,7 +6,8 @@ import {
   deleteSelectedRows,
   removeClickListeners,
   updateLocationInfo,
-  updateFootprintInfo
+  updateFootprintInfo,
+  updateCategoryInfo
 } from "./custom";
 
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
@@ -389,6 +390,12 @@ export function defineLocationsListTableActions($table, $menu) {
 export function defineFootprintsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     updateFootprintInfo(id);
+  });
+}
+
+export function defineCategoriesListTableActions($table, $menu) {
+  defineTableRowClickActions($table, function (id) {
+    updateCategoryInfo(id);
   });
 }
 

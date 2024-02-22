@@ -1,14 +1,15 @@
 import {
     bootstrapCategoriesListTable,
-    bootstrapTableSmallify
+    bootstrapTableSmallify,
+    defineCategoriesListTableActions
 } from "../tables";
 
 export function initializeCategoriesView() {
     bootstrapCategoriesListTable();
 
-    // var $table = $('#locations_list_table');
-    // var $menu = $('#bom_list_table_menu');
-    // defineBomListTableActions($table, $menu);
+    var $table = $('#categories_list_table');
+    var $menu = $('#bom_list_table_menu');
+    defineCategoriesListTableActions($table, $menu);
     // inlineProcessing();
     bootstrapTableSmallify();
 

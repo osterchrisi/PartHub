@@ -16,6 +16,12 @@ class Category extends Model
 
     protected $fillable = ['category_name', 'parent_category'];
 
+    public function part()
+    {
+        return $this->belongsTo(Part::class, 'part_category_fk', 'part_id');
+    }
+
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_category');
@@ -43,4 +49,15 @@ class Category extends Model
         // Return the categories as JSON response
         return $categories->toArray();
     }
+
+    public static function getCategoryById($category_id)
+    {
+        return self::find($category_id);
+    }
+
+    public static function getPartsByCategory($category_id)
+    {
+        return Part::where('part_category_fk', $category_id)->get();
+    }
+
 }
