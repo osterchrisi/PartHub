@@ -29,7 +29,7 @@ export function callPartEntryModal(locations, footprints, categories) {
  * @return void
  */
 function addPartCallback() {
-  const pn = $("#addPartName").val();           // Part Name
+  const pn = $("#addPartName").val();           // Name
   const q = $("#addPartQuantity").val();        // Quantity
   const l = $("#addPartLocSelect").val();       // Location
   const c = $("#addPartComment").val();         // Comment

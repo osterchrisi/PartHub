@@ -66,7 +66,7 @@ class FootprintController extends Controller
                 'tabText1' => 'Info',
                 'tabToggleId1' => 'footprintInfo',
                 'tabId2' => 'history',
-                'tabText2' => 'footprint History',
+                'tabText2' => 'Footprint History',
                 'tabToggleId2' => 'footprintHistory',
                 // 'Parts with Footprint' table
                 'parts_with_footprint' => $parts_with_footprint,

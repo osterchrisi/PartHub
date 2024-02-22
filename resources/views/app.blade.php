@@ -6,7 +6,7 @@
 @include('components.toolbarTop')
 
 {{-- Page Contents --}}
-<div class="container-fluid" id="content-container">
+<div class="container-fluid pb-3" id="content-container">
     <br>
     <div class="row" id="content-row">
         {{-- Filter Form --}}
@@ -29,6 +29,8 @@
 
     </div>
 </div>
+
+{{-- @include('footer') --}}
 
 {{-- Modals and Menus --}}
 @yield('modals and menus')

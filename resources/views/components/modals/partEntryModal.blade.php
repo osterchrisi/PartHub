@@ -13,12 +13,15 @@
                 <?php echo $part_name; ?><br><br>
                 <form id="partEntryForm">
                     @csrf
+                    {{-- Name --}}
                     <input class="form-control form-control-sm" placeholder="Part Name" id="addPartName" required><br>
                     <div class="row">
+                        {{-- Quantity --}}
                         <div class="col-3">
                             <input class="form-control form-control-sm" placeholder="Quantity" id="addPartQuantity"
                                 required>
                         </div>
+                        {{-- Location --}}
                         <div class="col">
                             <div class="input-group" id="addPartLocDropdown"></div>
                         </div>
@@ -28,15 +31,18 @@
                         data-bs-target="#advancedOptions">Show Advanced</button>
                     <div class="collapse" id="advancedOptions">
                         <div class="row">
+                            {{-- Category --}}
                             <div class="col">
                                 <div class="form-floating" id="addPartCategoryDropdown">
                             </div>
+                            {{-- Footprint --}}
                             <div class="col">
                                 <div class="form-floating" id="addPartFootprintDropdown">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
+                            {{-- Description --}}
                             <div class="col">
                                 <br>
                                 <input class="form-control form-control-sm not-required"
@@ -44,6 +50,7 @@
                             </div>
                         </div>
                         <div class="row">
+                            {{-- Comment --}}
                             <div class="col">
                                 <br>
                                 <input class="form-control form-control-sm not-required" id="addPartComment"

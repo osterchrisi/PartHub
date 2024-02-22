@@ -27,5 +27,5 @@
 
 {{-- Info Window --}}
 @section('info-window')
-    This is info window
+Click on a row in the table
 @endsection
