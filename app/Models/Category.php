@@ -37,7 +37,7 @@ class Category extends Model
         return $this->belongsTo(User::class, 'part_category_owner_u_fk');
     }
 
-    public static function availableCategories()
+    public static function availableCategories($format = 'json')
     {
 
         $user = Auth::user();
@@ -46,8 +46,15 @@ class Category extends Model
         $categories = Category::where('part_category_owner_u_fk', $user->id)
             ->get();
 
-        // Return the categories as JSON response
-        return $categories->toArray();
+        // Return the footprint as JSON response (for JS)
+        if ($format === 'json') {
+            return $categories->toJson();
+        }
+
+        // Return as an array of associative arrays
+        elseif ($format === 'array') {
+            return $categories->toArray();
+        }
     }
 
     public static function getCategoryById($category_id)

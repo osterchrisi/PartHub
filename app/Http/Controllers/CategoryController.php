@@ -13,7 +13,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         $categories = Category::where('part_category_owner_u_fk', $user->id)
-            ->with('children') // Eager load the child categories
+            ->with('children')
             ->get();
 
         return view('categories.categories',
@@ -46,7 +46,7 @@ class CategoryController extends Controller
                 'tabText1' => 'Info',
                 'tabToggleId1' => 'categoryInfo',
                 'tabId2' => 'history',
-                'tabText2' => 'category History',
+                'tabText2' => 'Category History',
                 'tabToggleId2' => 'categoryHistory',
                 // 'Parts with Category' table
                 'parts_with_category' => $parts_with_category,
