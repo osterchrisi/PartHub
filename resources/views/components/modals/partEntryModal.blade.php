@@ -29,10 +29,10 @@
                     <div class="collapse" id="advancedOptions">
                         <div class="row">
                             <div class="col">
-                                <input class="form-select form-select-sm not-required" placeholder="Category">
+                                <div class="form-floating" id="addPartCategoryDropdown">
                             </div>
                             <div class="col">
-                                <div id="addPartFootprintDropdown">
+                                <div class="form-floating" id="addPartFootprintDropdown">
                                 </div>
                             </div>
                         </div>

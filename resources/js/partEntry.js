@@ -12,9 +12,10 @@ import { rebuildPartsTable } from "./tables";
  * @param {Array} locations An array of objects containing locations
  * @return void
  */
-export function callPartEntryModal(locations, footprints) {
+export function callPartEntryModal(locations, footprints, categories) {
   addPartLocationDropdown(locations);
   addPartFootprintDropdown(footprints);
+  addPartCategoryDropdown(categories);
   $('#mPartEntry').modal('show'); // Show modal
   validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
 }
@@ -34,6 +35,7 @@ function addPartCallback() {
   const c = $("#addPartComment").val();         // Comment
   const d = $("#addPartDescription").val();     // Description
   const fp = $("#addPartFootprintSelect").val() // Footprint
+  const ct = $("#addPartCategorySelect").val()  // Category
 
   var token = $('input[name="_token"]').attr('value');
 
@@ -46,7 +48,8 @@ function addPartCallback() {
       to_location: l,
       comment: c,
       description: d,
-      footprint: fp
+      footprint: fp,
+      category: ct
     },
     headers: {
       'X-CSRF-TOKEN': token
@@ -109,6 +112,26 @@ function addPartFootprintDropdown(footprints) {
     selectHTML += "<option value='" + footprints[i]['footprint_id'] + "'>" + footprints[i]['footprint_name'] + "</option>";
   }
   selectHTML += "</select>";
+  selectHTML += "<label for='addPartFootprintSelect'>Footprint</label>";
   div.innerHTML = selectHTML;
   $("#addPartFootprintSelect").selectize();
+}
+
+/**
+ * 
+ * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
+ * @param {Array} categories - An array of objects representing categories to be displayed in the dropdown list.
+ * Each category object must have a "category_id" and a "category_name" property.
+ * @return {void}
+ */
+function addPartCategoryDropdown(categories) {
+  var div = document.getElementById("addPartCategoryDropdown");
+  var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Category' id='addPartCategorySelect'>";
+  for (var i = 0; i < categories.length; i++) {
+    selectHTML += "<option value='" + categories[i]['category_id'] + "'>" + categories[i]['category_name'] + "</option>";
+  }
+  selectHTML += "</select>";
+  selectHTML += "<label for='addPartCategorySelect'>Category</label>";
+  div.innerHTML = selectHTML;
+  $("#addPartCategorySelect").selectize();
 }

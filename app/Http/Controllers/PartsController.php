@@ -36,7 +36,7 @@ class PartsController extends Controller
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
-        $categories = Category::availableCategories();
+        $categories = Category::availableCategories('array'); // Request as array of arrays
         $footprints = Footprint::availableFootprints();
 
         /* Calculate and append each part's total stock
@@ -89,10 +89,11 @@ class PartsController extends Controller
         $comment = $request->input('comment', NULL);
         $description = $request->input('description', NULL);
         $footprint = $request->input('footprint', NULL);
+        $category = $request->input('category', NULL);
         $user_id = Auth::user()->id;
 
         // Insert new part 
-        $new_part_id = Part::createPart($part_name, $comment, $description, $footprint);
+        $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category);
         // Create a stock level entry
         $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
         // Create a stock level history entry (from_location is NULL)

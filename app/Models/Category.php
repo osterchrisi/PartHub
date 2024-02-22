@@ -46,7 +46,7 @@ class Category extends Model
         $categories = Category::where('part_category_owner_u_fk', $user->id)
             ->get();
 
-        // Return the footprint as JSON response (for JS)
+        // Return the category as JSON response (for JS)
         if ($format === 'json') {
             return $categories->toJson();
         }

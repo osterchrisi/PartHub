@@ -96,7 +96,7 @@ export function initializePartsView() {
     // Get categories
     function getCategories() {
         return $.ajax({
-            url: '/categories.get',
+            url: '/categories.list',
             dataType: 'json',
             error: function (error) {
                 console.log(error);
@@ -109,11 +109,11 @@ export function initializePartsView() {
             // Fetch locations, footprints and categories
             const locations = await getLocations();
             const footprints = await getFootprints();
-            // const categories = await getCategoryData();
+            const categories = await getCategories();
 
             // Attach click listener to Add button
             $('#toolbarAddButton').click(function () {
-                callPartEntryModal(locations, footprints);
+                callPartEntryModal(locations, footprints, categories);
             });
 
         } catch (error) {
