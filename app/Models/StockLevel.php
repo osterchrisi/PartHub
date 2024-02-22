@@ -11,8 +11,6 @@ class StockLevel extends Model
     protected $table = 'stock_levels';
     protected $primaryKey = 'stock_level_id';
     protected $fillable = ['stock_level_quantity'];
-    public $timestamps = false;
-
 
 
     public function part()

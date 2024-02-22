@@ -12,8 +12,6 @@ class Footprint extends Model
     use HasFactory;
     protected $table = 'footprints';
     protected $primaryKey = 'footprint_id';
-    public $timestamps = false;
-
 
     public function part()
     {

@@ -13,7 +13,6 @@ class Bom extends Model
 
     protected $table = 'boms';
     protected $primaryKey = 'bom_id';
-    public $timestamps = false;
     protected $fillable = [
         'bom_name',
         'bom_description'

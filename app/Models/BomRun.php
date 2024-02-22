@@ -11,7 +11,6 @@ class BomRun extends Model
     use HasFactory;
     protected $table = 'bom_runs';
     protected $primaryKey = 'bom_run_id';
-    public $timestamps = false;
 
     protected $fillable = [
         'bom_id_fk',

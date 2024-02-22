@@ -18,9 +18,6 @@ class BomElements extends Model
         'element_quantity'
     ];
 
-    public $timestamps = false;
-
-
     public function part()
     {
         return $this->belongsTo(Part::class, 'part_id_fk');
