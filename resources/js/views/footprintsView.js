@@ -23,19 +23,4 @@ export function initializeFootprintsView() {
     });
 
     attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', rebuildFootprintsTable);
-
-    // sendFormOnDropdownChange();
-
-    // Experimental ajax search
-    // $('#search').on("keyup input", function() {
-    //     /* Get input value on change */
-    //     var inputVal = $(this).val();
-    //     var resultDropdown = $(this).siblings(".result");
-    //     $.get("../includes/buildBomListTable.php", {
-    //         term: inputVal
-    //     }).done(function(data) {
-    //         var querystring = "?search=" + inputVal;
-    //         rebuildBomListTable(querystring);
-    //     });
-    // });
 };

@@ -1,5 +1,7 @@
 import { initializeShowBom } from "./showBom";
 import { initializeShowPart} from "./showPart";
+import { initializeShowFootprint } from "./showFootprint";
+import { initializeShowLocation } from "./showLocation";
 
 /**
  * Focus the Part Name field in the part entry modal after showing
@@ -166,7 +168,7 @@ export function updateLocationInfo(id) {
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
-            //* Here would go a initializeShowLocation() function if there is ever any JS in that info window
+            initializeShowLocation();
         },
         error: function (xhr) {
             if (xhr.status === 401) {
@@ -193,7 +195,7 @@ export function updateFootprintInfo(id) {
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
             $('#info-window').html(data);
-            //* Here would go a initializeShowFootprint() function if there is ever any JS in that info window
+            initializeShowFootprint();
         },
         error: function (xhr) {
             if (xhr.status === 401) {

@@ -382,14 +382,12 @@ export function defineBomListTableActions($table, $menu) {
 
 export function defineLocationsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
-    console.log(id);
     updateLocationInfo(id);
   });
 }
 
 export function defineFootprintsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
-    console.log(id);
     updateFootprintInfo(id);
   });
 }
