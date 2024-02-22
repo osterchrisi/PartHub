@@ -10,7 +10,6 @@ class Part extends Model
 {
     protected $table = 'parts';
     protected $primaryKey = 'part_id';
-    public $timestamps = false;
 
 
     public function category()
