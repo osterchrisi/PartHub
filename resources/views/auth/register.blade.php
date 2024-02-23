@@ -54,6 +54,7 @@
                 </tr>
                 <tr>
                     <td style="text-align:center">
+                        <p class="fw-light">We don't tend lightly to bots around here</p>
                         <div class="g-recaptcha" data-sitekey="6Lca_UAlAAAAAHLO5OHYaIvpzTPZAhf51cvz3LZE"
                             data-callback="enableSignupBtn">
                         </div>

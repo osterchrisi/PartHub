@@ -12,10 +12,12 @@
                         {{ optional(Auth::user())->name }}!</div>
                 @endif
 
-                Hello internet stranger that has found their way to PartHub!<br>
-                PartHub is <strong>not yet fully functional</strong> but many parts do work.<br><br>
-                Start exploring parts, BOMs, move some stock, assemble a BOM. Go ahead and explore!
-                <br>The demo database will reset every full hour, then all your changes will be lost :(<br><br>
+                Hello internet stranger that has found their way to PartHub! 👋 <br>
+                PartHub is currently in beta and you can use it and snatch a <a href="{{ route('signup') }}">free early-bird account</a>.<br><br>
+
+                If you just want to hang around and explore the app, click some stuff, that is fine with us too!<br>
+                Go ahead and explore by logging in as the demo user below!<br>
+                <br>As a heads up, the demo database will reset every once in a while<br><br>
             </td>
         </tr>
         <tr>
