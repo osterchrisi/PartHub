@@ -4,9 +4,9 @@
 }
 
 /* Get crosshair on column headers to show moving functionality */
-.table-hover thead tr:hover {
+/* .table-hover thead tr:hover {
     cursor: move;
-}
+} */
 
 /* I don't like underscores in links */
 a {

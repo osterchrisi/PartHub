@@ -17,5 +17,5 @@ Filter locations
 @endsection
 
 @section('info-window')
-Click a row in the table to see Location details
+<h6><br>Click a row in the table to see location details</h6>
 @endsection

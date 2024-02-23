@@ -47,5 +47,5 @@ $sc = PartsController::extractCategoryIds($search_category);
 
 {{-- Info Window --}}
 @section('info-window')
-    <h6><br>Click on a row in the table</h6>
+    <h6><br>Click a row in the table to see part details</h6>
 @endsection

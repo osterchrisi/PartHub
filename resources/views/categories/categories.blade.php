@@ -34,3 +34,7 @@
         </tbody>
     </table>
 @endsection
+
+@section('info-window')
+<h6><br>Click a row in the table to see category details</h6>
+@endsection

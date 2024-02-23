@@ -17,5 +17,5 @@ dis filter
 @endsection
 
 @section('info-window')
-dis Info
+<h6><br>Click a row in the table to see footprint details</h6>
 @endsection

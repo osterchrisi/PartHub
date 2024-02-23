@@ -27,5 +27,5 @@
 
 {{-- Info Window --}}
 @section('info-window')
-Click on a row in the table
+<h6><br>Click a row in the table to see BOM details</h6>
 @endsection

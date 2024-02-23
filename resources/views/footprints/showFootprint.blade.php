@@ -30,7 +30,7 @@
 
         <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
             <br>
-            dis history
+            No footprint history
         </div>
     </div>
 </div>
