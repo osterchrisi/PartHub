@@ -10,10 +10,10 @@
 
                 PartHub helps you focus on the fun part of making things<br>
                 by taking care of the annoying tasks of stock keeping for you!<br><br>
-                Currently PartHub is for free and there will always be a free tier.
+                Currently PartHub is in beta and it's a really good time to snatch a <a href="{{ route('signup') }}">free early-bird account</a>!
             </td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td><a href="{{ route('parts') }}">
                     <h1><i class="bi bi-1-square"></i></h1>Enthusiast<br><br>
                 </a></td>
@@ -32,7 +32,7 @@
             <td>Starting up the Engine</td>
             <td>Kicking into High Gear</td>
             <td>To the Stars and Beyond</td>
-        </tr>
+        </tr> --}}
     </table>
 @endsection
 
