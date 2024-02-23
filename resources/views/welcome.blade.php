@@ -12,12 +12,14 @@
                         {{ optional(Auth::user())->name }}!</div>
                 @endif
 
+                @unless (auth()->check())
                 Hello internet stranger that has found their way to PartHub! 👋 <br>
                 PartHub is currently in beta and you can use it and snatch a <a href="{{ route('signup') }}">free early-bird account</a>.<br><br>
 
                 If you just want to hang around and explore the app, click some stuff, that is fine with us too!<br>
                 Go ahead and explore by logging in as the demo user below!<br>
                 <br>As a heads up, the demo database will reset every once in a while<br><br>
+                @endunless
             </td>
         </tr>
         <tr>
@@ -48,8 +50,6 @@
                     <table class="table table-borderless">
                         <tbody class="alert alert-danger">
                             <tr>
-                                {{-- <td><button type="button" class="btn btn-primary" id="continueDemo">Continue as demo
-                                        user</button></td> --}}
                                 <td>
                                     <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
                                         @csrf<button type="submit" class="btn btn-primary" id="continueDemo">Continue as demo
