@@ -66,20 +66,6 @@ function sendFormOnDropdownChange() {
     });
 };
 
-/** 
- * ClickListener for "Continue as demo user" button
- * Executes demo.php and then refers user back to index.php
- * @return void
- */
-function continueAsDemoUser() {
-    $('#continueDemo').click(function () {
-        $.post('/PartHub/includes/demo.php', function (response) {
-            window.location.href = "/PartHub/index.php?login";
-        });
-    });
-}
-
-
 /**
  * Load the parts info window for a given part ID
  * @param {int} id The part ID for which to update the info window
@@ -238,26 +224,6 @@ export function updateCategoryInfo(id) {
 };
 
 /**
- * Displays the BOM creation script in the info window using an AJAX request
- * @return void
- */
-function displayBomCreate() {
-    $.ajax({
-        url: 'bom-create.php',
-        type: 'GET',
-        data: { hideNavbar: true },
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-        },
-        error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#info-window').html('Failed to load BOM creation page.');
-        }
-    });
-};
-
-/**
  * Make the table-window and the info-window resizable
  * @return void 
  */
@@ -271,6 +237,8 @@ $(function () {
             $('#info-window').width(infoWidth);
         }
     });
+
+    // The two functions below here are just for the experimental multi-view
 
     $('#table-window2').resizable({
         handles: 'e',
