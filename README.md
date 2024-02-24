@@ -26,7 +26,14 @@ If you want to manage small and medium parts inventory and BOMs, **PartHub** is 
 ![BOMs](public/screenshots/BOMs.png?raw=true "BOM List")
 
 # Installation
-**PartHub** is currently my personal pleasure. A full-featured installation process for self-hosting will follow.
+**PartHub** is currently my personal pleasure. I'm working on a nice outline how to host this on your own server.
+
+## Requirements
+- PHP
+- Node
+- Composer
+- SQL databse (MySQL or MariaDB)
+- Optionally your own webserver if you want to configure more in-depth
 
 ## Database
 Works with SQL databases like MariaDB or MySQL.
