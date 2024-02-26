@@ -8,18 +8,21 @@
                 <h1 class="display-1" id="welcome-headline">PartHub</h1><br>
                 <h1>Inventory and BOM management</h1><br>
                 @if (session('loggedIn'))
-                    <div class="alert alert-info" role="alert">Nice to have you back,
-                        {{ optional(Auth::user())->name }}!</div>
+                    <div class="alert alert-info" role="alert">Nice to have you back, {{ optional(Auth::user())->name }}! 🚀
+                    </div>
+                @elseif (session('firstLogin'))
+                    <div class="alert alert-info" role="alert">Glad to have you onboard, {{ optional(Auth::user())->name }}!
+                        🚀</div>
                 @endif
 
                 @unless (auth()->check())
                     Hello internet stranger that has found their way to PartHub! 👋 <br>
-                    PartHub is currently in beta and you can use it and snatch a <a href="{{ route('signup') }}">free early-bird
+                    PartHub is currently in beta, you can use it and snatch a <a href="{{ route('signup') }}">free early-bird
                         account</a>.<br><br>
 
                     If you just want to hang around and explore the app, click some stuff, that is fine with us too!<br>
                     Go ahead and explore by logging in as the demo user below!<br>
-                    <br>As a heads up, the demo database will reset every once in a while<br><br>
+                    (As a heads up, the demo database will reset every once in a while.)<br><br>
                 @endunless
             </td>
         </tr>
@@ -81,13 +84,11 @@
 @endsection
 
 @php
-    // Show the login modal if user is not logged in yet
+    // // Show the login modal if user is not logged in yet
     // if (isset($show_modal) && $show_modal == 1) {
     //     echo '<script>
-        //         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        //         myModal.show();
-        //     
-        // 
-    // </script>';
+    //         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    //         myModal.show();
+    //     </script>';
     // }
 @endphp
