@@ -38,14 +38,3 @@
 @section('modals and menus')
     @include('components.modals.userStuffModal')
 @endsection
-
-@php
-    // Show the login modal if user is not logged in yet
-    // if (isset($show_modal) && $show_modal == 1) {
-    //     echo '<script>
-        //         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        //         myModal.show();
-        //     
-    // </script>';
-    // }
-@endphp

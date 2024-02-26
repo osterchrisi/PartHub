@@ -75,7 +75,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <!-- Google Tag (gtag.js) --> 
+    <!-- Google Tag (gtag.js) -->
     <script async src=https://www.googletagmanager.com/gtag/js?id={{ config('services.gtag.tag') }}"></script>
     <script>
         var gtagTag = "{{ config('services.gtag.tag') }}";

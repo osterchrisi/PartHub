@@ -7,6 +7,8 @@
     </div>
 </div>
 
+{{-- @include('footer') --}}
+
 @yield('modals and menus')
 
 </body>
