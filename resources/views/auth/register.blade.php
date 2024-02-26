@@ -48,15 +48,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
                         <button type="submit" class="btn btn-primary" id="signupBtn" disabled>Sign up</button>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align:center">
                         <p class="fw-light">We don't tend lightly to bots around here</p>
-                        <div class="g-recaptcha" data-sitekey="6Lca_UAlAAAAAHLO5OHYaIvpzTPZAhf51cvz3LZE"
-                            data-callback="enableSignupBtn">
+                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.siteKey') }}"
+                            data-callback="processChallenge">
                         </div>
                         <input type="hidden" id="recaptchaResponse" name="recaptcha_response">
                     </td>
@@ -122,18 +121,26 @@
     }
 </style>
 
+<script async src="https://www.google.com/recaptcha/api.js"></script>
+
 <script>
-    //TODO: Would maybe be nice to add a listener to the button, telling the user to complete the challenge first
-    function enableSignupBtn() {
-        document.getElementById('signupBtn').disabled = false;
+    if (typeof grecaptcha === 'undefined') {
+        grecaptcha = {};
     }
 
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6Lca_UAlAAAAAHLO5OHYaIvpzTPZAhf51cvz3LZE', {
-                action: 'signup'
-            })
-            .then(function(token) {
-                document.getElementById('recaptchaResponse').value = token;
-            });
-    });
+    grecaptcha.ready = function(cb) {
+        if (typeof grecaptcha === 'undefined') {
+            const c = '___grecaptcha_cfg';
+            window[c] = window[c] || {};
+            (window[c]['fns'] = window[c]['fns'] || []).push(cb);
+        } else {
+            cb();
+        }
+    }
+
+    function processChallenge() {
+        document.getElementById('signupBtn').disabled = false;              // Enable Signup Button after challenge is completed
+        response = grecaptcha.getResponse();                                // Get challenge response
+        document.getElementById('recaptchaResponse').value = response;      // Send challenge response with the form
+    }
 </script>

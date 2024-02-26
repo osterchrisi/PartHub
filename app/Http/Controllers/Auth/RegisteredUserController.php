@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
 
 
 class RegisteredUserController extends Controller
@@ -25,7 +26,6 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        // dd("bla");
         return view('auth.register');
     }
 
@@ -37,11 +37,29 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // dd($request->all());
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'recaptcha_response' => ['required', 'string'],
         ]);
+
+        $recaptcha_response = $request->input('recaptcha_response');
+
+        $siteVerify = Http::asForm()
+            ->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' =>  config('services.recaptcha.secretKey'),
+                'response' => $recaptcha_response,
+            ]);
+
+
+        $recaptcha = $siteVerify->json();
+        // dd($recaptcha);
+
+        if (!$recaptcha['success']) {
+            return redirect()->route('register')->withErrors(['recaptcha' => 'reCAPTCHA validation failed.'])->withInput();
+        }
 
         $user = User::create([
             'name' => $request->name,
