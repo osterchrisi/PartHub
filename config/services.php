@@ -36,4 +36,8 @@ return [
         'secretKey' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
+    'gtag' => [
+        'tag' => env('VITE_GTAG'),
+    ],
+
 ];

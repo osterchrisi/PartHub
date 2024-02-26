@@ -71,7 +71,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Need this to show the welcome message properly
+        // Onboarding message
         Session::put('firstLogin', true);
 
         // Create a default location, so user can start adding parts immediately
