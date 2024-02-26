@@ -8,8 +8,8 @@
         content="inventory management, electronics part inventory, inventory, electronics inventory, BOMs (bills of materials), BOM, production tracking, stock keeping, supply chain management, warehouse management, parts tracking, component tracking, parts inventory, component inventory, self-hosted inventory management, cloud-based inventory management, inventory software, open-source, electronic part inventory, BOM creation, BOM execution">
     <meta name="description"
         content="Your friendly electronic parts inventory and BOM management. Simple. Free tiers and self-hosting. Aimed at small electronic makers and tinkerers">
-    {{-- <title>PartHub - {{ $title }}
-    </title> --}}
+    <title>PartHub - {{ $title }}
+    </title>
 
     <!-- Favicons -->
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="/PartHub/assets/favicon/apple-touch-icon.png">
