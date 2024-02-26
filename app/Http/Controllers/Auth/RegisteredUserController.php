@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 
     /**
@@ -36,8 +36,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // dd($request->all());
-
+        // Validate Request
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
@@ -45,6 +44,7 @@ class RegisteredUserController extends Controller
             'recaptcha_response' => ['required', 'string'],
         ]);
 
+        // Recaptcha processing
         $recaptcha_response = $request->input('recaptcha_response');
 
         $siteVerify = Http::asForm()
@@ -55,12 +55,12 @@ class RegisteredUserController extends Controller
 
 
         $recaptcha = $siteVerify->json();
-        // dd($recaptcha);
 
         if (!$recaptcha['success']) {
             return redirect()->route('register')->withErrors(['recaptcha' => 'reCAPTCHA validation failed.'])->withInput();
         }
 
+        // Create User
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -72,7 +72,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Need this to show the welcome message properly
-        Session::put('loggedIn', true);
+        Session::put('firstLogin', true);
 
         // Create a default location, so user can start adding parts immediately
         Location::createLocation("Default Location", "Feel free to change the description");

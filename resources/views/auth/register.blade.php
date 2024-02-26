@@ -56,6 +56,7 @@
                         <p class="fw-light">We don't tend lightly to bots around here</p>
                         <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.siteKey') }}"
                             data-callback="processChallenge">
+                            <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
                         </div>
                         <input type="hidden" id="recaptchaResponse" name="recaptcha_response">
                     </td>
