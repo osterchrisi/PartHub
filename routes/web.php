@@ -8,6 +8,7 @@ use App\Http\Controllers\FootprintController;
 use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatabaseServiceController;
+use App\Http\Controllers\SupplierController;
 use App\Services\DatabaseService;
 use App\Http\Controllers\Auth\DemoLoginController;
 use App\Models\User;
@@ -90,11 +91,15 @@ Route::controller(CategoryController::class)->group(function () {
 });
 
 //* Supplier Routes
-Route::get('/suppliers', function () {
-    return view('welcome', ['title' => 'Suppliers', 'view' => 'suppliers']);
-})
-    ->middleware(['auth', 'verified'])
-    ->name('suppliers');
+Route::controller(SupplierController::class)->group(function () {
+    Route::get('/suppliers', 'index')->middleware(['auth', 'verified'])->name('suppliers');
+    Route::get('/suppliers.suppliersTable', 'index')->middleware(['auth', 'verified'])->name('suppliers.suppliersTable');
+    Route::post('/supplier.create', 'create')->middleware(['auth', 'verified']);
+    Route::get('/suppliers.get', function () {
+        return FootprintController::getFootprints();
+    })->middleware(['auth', 'verified']);
+    Route::get('/supplier/{id}', 'show')->middleware(['auth', 'verified']);
+});
 
 //* Footprint Routes
 Route::controller(FootprintController::class)->group(function () {
