@@ -482,7 +482,9 @@ class PartsController extends Controller
         //! Bit hacky - could be written better?
         // Array with unique processed BOM IDs
 
-        if (!$processed_boms) {
+
+        // Check if the stock changes came from a BOM build
+        if (!empty($processed_boms)) {
             $unique_processed_boms = [];
             $unique_bom_ids = [];
 

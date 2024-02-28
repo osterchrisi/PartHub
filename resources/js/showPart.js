@@ -41,7 +41,7 @@ export function initializeShowPart(part_id) {
             });
         },
         error: function (error) {
-            console.log(error);
+            // console.log(error);
         }
     })
 };

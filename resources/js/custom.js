@@ -324,7 +324,7 @@ export function initializeMultiSelect(id) {
  */
 export function deleteSelectedRows(ids, model, id_column, successCallback) {
 
-    console.log(ids.length);
+    // console.log(ids.length);
     var token = $('input[name="_token"]').attr('value');
 
     $.ajax({
@@ -339,7 +339,7 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             'X-CSRF-TOKEN': token
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             showDeletionConfirmationToast(ids.length);
             var queryString = window.location.search;
             successCallback(queryString);
@@ -414,7 +414,7 @@ function saveActiveTab(page, event) {
 export function loadActiveTab(page, defaultTab) {
     var lastActiveTab = localStorage.getItem('lastActiveTab_' + page) || defaultTab;
     if (lastActiveTab) {
-        console.log("lastActiveTab = ", lastActiveTab);
+        // console.log("lastActiveTab = ", lastActiveTab);
         const tabElement = document.querySelector(`#${lastActiveTab}`);
         if (tabElement) {
             const tab = new bootstrap.Tab(tabElement);

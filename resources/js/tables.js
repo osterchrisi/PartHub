@@ -757,8 +757,8 @@ function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCa
         newValue = newValue.category_name; // Get the category_name from the found item
         cell.text(newValue);
       } else {
-        console.log("No matching footprint found for footprint_id:", selectedValue);
-        // Handle the case when no matching footprint is found
+        // console.log("No matching category found for category_id:", selectedValue);
+        // Handle the case when no matching category is found
       }
 
       // Editing aftermath
@@ -823,7 +823,7 @@ export function assembleBoms(selectedRows, ids) {
     var fl = $("#fromStockLocation").val(); // From Location
     var token = $('input[name="_token"]').attr('value');
 
-    console.log('Assembling BOMs with the following ids: ', ids);
+    // console.log('Assembling BOMs with the following ids: ', ids);
 
     $.ajax({
       url: '/bom.assemble',
@@ -841,7 +841,7 @@ export function assembleBoms(selectedRows, ids) {
         var r = JSON.parse(response);
         if (r.status === 'success') {
           //* Do the normal thing here, all requested stock available
-          console.log(r);
+          // console.log(r);
 
           $('#mBomAssembly').modal('hide'); // Hide Modal
           updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
@@ -849,7 +849,7 @@ export function assembleBoms(selectedRows, ids) {
         }
         else if (r.status === 'permission_requested') {
           //* User permission required
-          console.log(r);
+          // console.log(r);
 
           // Display warning and missing stock table
           $('#btnAssembleBOMs').attr('disabled', true);
@@ -905,7 +905,7 @@ function continueAnyway(r, ids, token) {
       'X-CSRF-TOKEN': token
     },
     success: function (response) {
-      console.log(response);
+      // console.log(response);
       $('#mBomAssembly').on('hidden.bs.modal', function (e) {
         $('#bomAssemblyForm')[0].reset();
         $('#mBomAssemblyInfo').empty();
@@ -939,9 +939,9 @@ $(document).ready(function () {
       url: "../includes/create-part.php",
       dataType: "json",
       success: function (response) {
-        console.log("Succes");
+        // console.log("Success");
         var newId = response.id;
-        console.log("new parts id: ", newId);
+        // console.log("new parts id: ", newId);
         createNewRow(newId);
       }
     });

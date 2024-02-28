@@ -7,7 +7,7 @@ export function deleteSelectedRowsFromToolbar(table_id, model, id_column, succes
     //! Most likely due to variable scoping, so I just changed it to be a string
     // Get selected table rows
     var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
-    console.log("selectedRows: ", selectedRows);
+    // console.log("selectedRows: ", selectedRows);
 
     // Extract IDs
     var ids = selectedRows.map(obj => obj._data.id);
@@ -39,11 +39,11 @@ export function attachAssembleBomHandler(table_id) {
 export function assembleBomsFromToolbar(table_id) {
     // Get selected table rows
     var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
-    console.log("selectedRows: ", selectedRows);
+    // console.log("selectedRows: ", selectedRows);
 
     // Extract IDs
     var ids = selectedRows.map(obj => obj._data.id);
-    console.log("ids: ", ids);
+    // console.log("ids: ", ids);
 
     assembleBoms(selectedRows, ids);
 }

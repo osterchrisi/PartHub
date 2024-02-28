@@ -91,7 +91,7 @@ function stockChangingFormExecution(change, pid) {
     let tl = null;
     let fl = null;
 
-    console.log(change);
+    // console.log(change);
 
     // Get required locations
     if (change == '1') {
@@ -116,7 +116,7 @@ function stockChangingFormExecution(change, pid) {
     }];
 
     //!
-    console.log(pid);
+    // console.log(pid);
 
     // Call the stock changing script
     callStockChangingScript(stockChanges, pid)
@@ -142,7 +142,7 @@ function callStockChangingScript(stockChanges, pid) {
             'X-CSRF-TOKEN': token
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             var r = JSON.parse(response);
 
             if (r.status === 'success') {
@@ -221,7 +221,7 @@ function changeStockAnywayClickListener(r, pid, token) {
                 'X-CSRF-TOKEN': token
             },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
                 // Reset modal and hide it
                 $('#mAddStock').on('hidden.bs.modal', function (e) {
                     $('#FromStockLocationDiv-row').show();

@@ -123,8 +123,6 @@ async function fetchDataThenAttachClickListener() {
         const categories = await getCategories();
         const suppliers = await getSuppliers();
 
-        console.log(suppliers);
-
         // Attach click listener to Add button
         $('#toolbarAddButton').click(function () {
             callPartEntryModal(locations, footprints, categories, suppliers);
