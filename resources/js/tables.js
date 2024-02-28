@@ -506,7 +506,7 @@ function editTextCell(cell, originalValue) {
     var column = cell.closest('td').data('column');
     var table_name = cell.closest('td').data('table_name');
     var id_field = cell.closest('td').data('id_field');
-    console.log(id, id_field, column, table_name, new_value);
+    // console.log(id, id_field, column, table_name, new_value);
 
     // Call the updating function
     updateCell(id, column, table_name, new_value, id_field);
@@ -708,7 +708,7 @@ function updateCell(id, column, table_name, new_value, id_field) {
       'X-CSRF-TOKEN': token
     },
     success: function (data) {
-      console.log('Data updated successfully');
+      // console.log('Data updated successfully');
     },
     error: function (xhr) {
       // Handle the error
