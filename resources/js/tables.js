@@ -522,6 +522,9 @@ function editTextCell(cell, originalValue) {
     else if (table_name == 'footprints') {
       updateFootprintInfo(id);
     }
+    else if (table_name == 'suppliers') {
+      updateSupplierInfo(id);
+    }
     else if (table_name == 'boms') {
       updateBomInfo(id);
     }

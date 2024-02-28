@@ -16,7 +16,7 @@ export function initializeSuppliersView() {
     var $menu = $('#bom_list_table_menu');
     inlineProcessing();
     bootstrapTableSmallify();
-    defineSuppliersListTableActions($table, $menu)
+    defineSuppliersListTableActions($table, $menu);
 
     $('#toolbarAddButton').click(function () {
         callSupplierEntryModal();
