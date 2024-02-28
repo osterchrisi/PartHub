@@ -12,10 +12,11 @@ import { rebuildPartsTable } from "./tables";
  * @param {Array} locations An array of objects containing locations
  * @return void
  */
-export function callPartEntryModal(locations, footprints, categories) {
+export function callPartEntryModal(locations, footprints, categories, suppliers) {
   addPartLocationDropdown(locations);
   addPartFootprintDropdown(footprints);
   addPartCategoryDropdown(categories);
+  addPartSupplierDropdown(suppliers);
   $('#mPartEntry').modal('show'); // Show modal
   validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
 }
@@ -35,6 +36,7 @@ function addPartCallback() {
   const c = $("#addPartComment").val();         // Comment
   const d = $("#addPartDescription").val();     // Description
   const fp = $("#addPartFootprintSelect").val() // Footprint
+  const s = $("#addPartSupplierSelect").val()   // Supplier
   const ct = $("#addPartCategorySelect").val()  // Category
 
   var token = $('input[name="_token"]').attr('value');
@@ -49,6 +51,7 @@ function addPartCallback() {
       comment: c,
       description: d,
       footprint: fp,
+      supplier: s,
       category: ct
     },
     headers: {
@@ -115,6 +118,25 @@ function addPartFootprintDropdown(footprints) {
   selectHTML += "<label for='addPartFootprintSelect'>Footprint</label>";
   div.innerHTML = selectHTML;
   $("#addPartFootprintSelect").selectize();
+}
+
+/**
+ * 
+ * Creates and adds a dropdown list of suppliers to the part entry modal and 'selectizes' it.
+ * @param {Array} suppliers - An array of objects representing suppliers to be displayed in the dropdown list.
+ * Each supplier object must have a "supplier_id" and a "supplier_name" property.
+ * @return {void}
+ */
+function addPartSupplierDropdown(suppliers) {
+  var div = document.getElementById("addPartSupplierDropdown");
+  var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Supplier' id='addPartSupplierSelect'>";
+  for (var i = 0; i < suppliers.length; i++) {
+    selectHTML += "<option value='" + suppliers[i]['supplier_id'] + "'>" + suppliers[i]['supplier_name'] + "</option>";
+  }
+  selectHTML += "</select>";
+  selectHTML += "<label for='addPartSupplierSelect'>Supplier</label>";
+  div.innerHTML = selectHTML;
+  $("#addPartSupplierSelect").selectize();
 }
 
 /**

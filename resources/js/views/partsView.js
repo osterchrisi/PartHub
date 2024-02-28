@@ -71,53 +71,67 @@ export function initializePartsView() {
     })
 }
 
-    // Get locations
-    function getLocations() {
-        return $.ajax({
-            url: '/locations.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        })
-    }
-
-    // Get footprints
-    function getFootprints() {
-        return $.ajax({
-            url: '/footprints.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        })
-    }
-
-    // Get categories
-    function getCategories() {
-        return $.ajax({
-            url: '/categories.list',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        })
-    }
-
-    async function fetchDataThenAttachClickListener() {
-        try {
-            // Fetch locations, footprints and categories
-            const locations = await getLocations();
-            const footprints = await getFootprints();
-            const categories = await getCategories();
-
-            // Attach click listener to Add button
-            $('#toolbarAddButton').click(function () {
-                callPartEntryModal(locations, footprints, categories);
-            });
-
-        } catch (error) {
-            // Handle errors
-            console.error('Error fetching data:', error);
+// Get locations
+function getLocations() {
+    return $.ajax({
+        url: '/locations.get',
+        dataType: 'json',
+        error: function (error) {
+            console.log(error);
         }
+    })
+}
+
+// Get footprints
+function getFootprints() {
+    return $.ajax({
+        url: '/footprints.get',
+        dataType: 'json',
+        error: function (error) {
+            console.log(error);
+        }
+    })
+}
+
+// Get categories
+function getCategories() {
+    return $.ajax({
+        url: '/categories.list',
+        dataType: 'json',
+        error: function (error) {
+            console.log(error);
+        }
+    })
+}
+
+// Get suppliers
+function getSuppliers() {
+    return $.ajax({
+        url: '/suppliers.get',
+        dataType: 'json',
+        error: function (error) {
+            console.log(error);
+        }
+    })
+}
+
+async function fetchDataThenAttachClickListener() {
+    try {
+        // Fetch locations, footprints and categories
+        const locations = await getLocations();
+        const footprints = await getFootprints();
+        const categories = await getCategories();
+        const suppliers = await getSuppliers();
+
+        console.log(suppliers);
+
+        // Attach click listener to Add button
+        $('#toolbarAddButton').click(function () {
+            callPartEntryModal(locations, footprints, categories, suppliers);
+        });
+
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching data:', error);
     }
+}

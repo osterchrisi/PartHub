@@ -96,7 +96,7 @@ Route::controller(SupplierController::class)->group(function () {
     Route::get('/suppliers.suppliersTable', 'index')->middleware(['auth', 'verified'])->name('suppliers.suppliersTable');
     Route::post('/supplier.create', 'create')->middleware(['auth', 'verified']);
     Route::get('/suppliers.get', function () {
-        return FootprintController::getFootprints();
+        return SupplierController::getSuppliers();
     })->middleware(['auth', 'verified']);
     Route::get('/supplier/{id}', 'show')->middleware(['auth', 'verified']);
 });

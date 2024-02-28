@@ -40,6 +40,11 @@
                                 <div class="form-floating" id="addPartFootprintDropdown">
                                 </div>
                             </div>
+                            {{-- Supplier --}}
+                            <div class="col">
+                                <div class="form-floating" id="addPartSupplierDropdown">
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             {{-- Description --}}

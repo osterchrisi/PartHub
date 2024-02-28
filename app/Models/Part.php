@@ -104,8 +104,7 @@ class Part extends Model
         return $bom_list;
     }
 
-    //! Does not work for the "advanced" input fields yet
-    public static function createPart($part_name, $comment, $description, $footprint, $category)
+    public static function createPart($part_name, $comment, $description, $footprint, $category, $supplier)
     {
         $user_id = Auth::user()->id;
 
@@ -115,6 +114,7 @@ class Part extends Model
         $part->part_comment = $comment;
         $part->part_category_fk = $category;
         $part->part_footprint_fk = $footprint;
+        $part->part_supplier_fk = $supplier;
         $part->part_unit_fk = null;
         $part->part_owner_u_fk = $user_id;
         $part->part_owner_g_fk = null;
@@ -123,7 +123,7 @@ class Part extends Model
         $new_part_id = $part->part_id;
 
         return $new_part_id;
-        
+
     }
 
 }

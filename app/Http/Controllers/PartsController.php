@@ -90,10 +90,11 @@ class PartsController extends Controller
         $description = $request->input('description', NULL);
         $footprint = $request->input('footprint', NULL);
         $category = $request->input('category', NULL);
+        $supplier = $request->input('supplier', NULL);
         $user_id = Auth::user()->id;
 
         // Insert new part 
-        $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category);
+        $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier);
         // Create a stock level entry
         $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
         // Create a stock level history entry (from_location is NULL)

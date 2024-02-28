@@ -7,7 +7,7 @@
 @endsection
 
 @section('filter-form')
-dis filter
+Filter comming soon
 @endsection
 
 @section('table-window')
