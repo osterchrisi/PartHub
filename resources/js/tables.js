@@ -7,7 +7,8 @@ import {
   removeClickListeners,
   updateLocationInfo,
   updateFootprintInfo,
-  updateCategoryInfo
+  updateCategoryInfo,
+  updateSupplierInfo
 } from "./custom";
 
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
@@ -80,6 +81,16 @@ export function bootstrapFootprintsListTable() {
   $('#footprints_list_table').bootstrapTable({
   });
 };
+
+/**
+ * Bootstrap the Suppliers table
+ * @return void
+ */
+export function bootstrapSuppliersListTable() {
+  $('#suppliers_list_table').bootstrapTable({
+  });
+};
+
 
 /**
  * Bootstrap the Categories table
@@ -300,6 +311,26 @@ export function rebuildFootprintsTable(queryString) {
   });
 }
 
+/**
+ * Rebuild the suppliers table after adding or deleting suppliers
+ * @param {string} queryString 
+ */
+export function rebuildSuppliersTable(queryString) {
+  return $.ajax({
+    url: '/suppliers.suppliersTable' + queryString,
+    success: function (data) {
+      $('#suppliers_table').bootstrapTable('destroy'); // Destroy old parts table
+      $('#table-window').html(data); // Update div with new table
+      bootstrapSuppliersListTable(); // Bootstrap it
+      var $table = $('#suppliers_table');
+      var $menu = $('#parts_table_menu');
+      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      inlineProcessing();
+      bootstrapTableSmallify();
+    }
+  });
+}
+
 
 /**
  * Rebuild the BOM list table after adding or deleting BOMs
@@ -396,6 +427,12 @@ export function defineFootprintsListTableActions($table, $menu) {
 export function defineCategoriesListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     updateCategoryInfo(id);
+  });
+}
+
+export function defineSuppliersListTableActions($table, $menu) {
+  defineTableRowClickActions($table, function (id) {
+    updateSupplierInfo(id);
   });
 }
 

@@ -4,6 +4,7 @@ import { initializeBomsView } from './views/bomsView';
 import { initializeCategoriesView} from './views/categoriesView';
 import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
+import { initializeSuppliersView } from './views/suppliersView';
 import { initializeMultiView } from './multiView';
 import Alpine from 'alpinejs';
 
@@ -28,6 +29,9 @@ $(document).ready(function () {
     }
     else if (currentView === 'footprints') {
         initializeFootprintsView();
+    }
+    else if (currentView === 'suppliers') {
+        initializeSuppliersView();
     }
     else if (currentView === 'multi') {
         initializeMultiView();

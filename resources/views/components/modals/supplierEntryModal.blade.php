@@ -14,11 +14,11 @@
                 <form id="supplierEntryForm">
                     @csrf
                     <input class="form-control form-control-sm" placeholder="Supplier Name" id="addSupplierName" required><br>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col">
                             <input class="form-control form-control-sm" placeholder="Supplier Alias" id="addSupplierAlias"><br>
                         </div>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
 

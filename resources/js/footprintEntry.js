@@ -14,8 +14,6 @@ import { rebuildFootprintsTable} from "./tables";
  */
 export function callFootprintEntryModal() {
   $('#mFootprintEntry').modal('show'); // Show modal
-  console.log("boom")
-
   validateForm('footprintEntryForm', 'addFootprint', addFootprintCallback); // Attach validate form 
 }
 
