@@ -4,7 +4,7 @@ import {
   removeClickListeners
 } from "./custom";
 
-import { rebuildLocationsTable} from "./tables";
+import { rebuildLocationsTable } from "./tables";
 
 /**
  * Displays the location entry modal and attaches the validateForm function with the addLocationCallback function
@@ -29,7 +29,7 @@ function addLocationCallback() {
   const ln = $("#addLocationName").val();           // Location Name
   const ld = $("#addLocationDescription").val();    // Location Description
 
-  var token = $('input[name="_token"]').attr('value');
+  var token = $('input[name="_token"]').attr('value'); // X-CSRF Token
 
   $.ajax({
     url: '/location.create',
@@ -51,7 +51,7 @@ function addLocationCallback() {
       // Rebuild locations table and select new row
       var queryString = window.location.search;
       $.when(rebuildLocationsTable(queryString)).done(function () {
-        $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
+        $('tr[data-id="' + locationId + '"]').addClass('selected selected-last');
       });
     },
     error: function (xhr) {
@@ -62,6 +62,8 @@ function addLocationCallback() {
       } else {
         // Other errors
         alert('An error occurred. Please try again.');
+        $('#mLocationEntry').modal('hide');   // Hide modal
+        removeClickListeners('#addLocation'); // Remove click listener from Add Location button
       }
     }
   });

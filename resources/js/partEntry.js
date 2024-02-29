@@ -55,13 +55,13 @@ function addPartCallback() {
       category: ct
     },
     headers: {
-      'X-CSRF-TOKEN': token
+      'X-CSRF-TOKEN': token // X-CSRF Token
     },
     success: function (response) {
       // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
       var partId = JSON.parse(response)["Part ID"];
       updatePartsInfo(partId);
-      $('#mPartEntry').modal('hide'); // Hide modal
+      $('#mPartEntry').modal('hide');   // Hide modal
       removeClickListeners('#addPart'); // Remove click listener from Add Part button
 
       // Rebuild parts table and select new row
@@ -78,6 +78,8 @@ function addPartCallback() {
       } else {
         // Other errors
         alert('An error occurred. Please try again.');
+        $('#mPartEntry').modal('hide');   // Hide modal
+        removeClickListeners('#addPart'); // Remove click listener from Add Part button
       }
     }
   });

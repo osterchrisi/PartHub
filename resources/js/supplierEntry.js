@@ -26,8 +26,8 @@ export function callSupplierEntryModal() {
  * @return void
  */
 function addSupplierCallback() {
-  const sn = $("#addSupplierName").val();     // Supplier Name
-  var token = $('input[name="_token"]').attr('value');
+  const sn = $("#addSupplierName").val();               // Supplier Name
+  var token = $('input[name="_token"]').attr('value');  // X-CSRF Token
 
   $.ajax({
     url: '/supplier.create',
@@ -41,14 +41,14 @@ function addSupplierCallback() {
     success: function (response) {
       // Response contains the new 'Supplier ID'
       var supplierId = JSON.parse(response)["Supplier ID"];
-      updateSupplierInfo(supplierId);       // Update info window
-      $('#mSupplierEntry').modal('hide');    // Hide modal
-      removeClickListeners('#addSupplier');  // Remove click listener from Add Supplier button
+      updateSupplierInfo(supplierId);         // Update info window
+      $('#mSupplierEntry').modal('hide');     // Hide modal
+      removeClickListeners('#addSupplier');   // Remove click listener from Add Supplier button
 
       // Rebuild suppliers table and select new row
       var queryString = window.location.search;
       $.when(rebuildSuppliersTable(queryString)).done(function () {
-        $('tr[data-id="' + partId + '"]').addClass('selected selected-last');
+        $('tr[data-id="' + supplierId + '"]').addClass('selected selected-last');
       });
     },
     error: function (xhr) {
@@ -59,6 +59,8 @@ function addSupplierCallback() {
       } else {
         // Other errors
         alert('An error occurred. Please try again.');
+        $('#mSupplierEntry').modal('hide');     // Hide modal
+      removeClickListeners('#addSupplier');     // Remove click listener from Add Supplier button
       }
     }
   });
