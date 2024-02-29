@@ -466,7 +466,7 @@ class PartsController extends Controller
             // Add entries to the result array
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
 
-            // Add entries to the BOM IDs array
+            // If stock changes came from BOM changes, prepare array of BOM ID and assemble quantity
             //! Bit of a hick-hack right now - could be written better?
             if ($bom_id != null) {
                 $processed_boms[] = array(
@@ -480,10 +480,8 @@ class PartsController extends Controller
         }
         //TODO: Extract this function
         //! Bit hacky - could be written better?
-        // Array with unique processed BOM IDs
 
-
-        // Check if the stock changes came from a BOM build
+        // If BOMs were assembled, extract single BOM IDs and quantities
         if (!empty($processed_boms)) {
             $unique_processed_boms = [];
             $unique_bom_ids = [];
@@ -496,7 +494,7 @@ class PartsController extends Controller
                 }
             }
 
-            //TODO: Make BOM History entries with the IDs here
+            //* Create BOM Run entries
             foreach ($unique_processed_boms as $unique_processed_bom) {
                 $processed_bom = $unique_processed_bom['bom_id'];
                 $quantity = $unique_processed_bom['assemble_quantity'];
