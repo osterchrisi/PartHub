@@ -821,6 +821,12 @@ export function assembleBoms(selectedRows, ids) {
     return
   }
   $('#mBomAssembly').modal('show');         // Show Modal
+
+  // Attach click listener to the main "Cancel" button of the modal
+  $('#btnCancelAssembly').on('click', function () {
+    hideBOMAssemblyModalAndCleanup();
+  });
+
   $('#btnAssembleBOMs').click(function () { // Attach clicklistener
 
     var q = $("#bomAssembleQuantity").val();                // Quantity
@@ -854,9 +860,9 @@ export function assembleBoms(selectedRows, ids) {
           // console.log(r);
 
           // Display warning and missing stock table
-          $('#btnAssembleBOMs').attr('disabled', true);
+          $('#btnAssembleBOMs').attr('disabled', true);  // Disable main "Assemble" button of modal
           var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
-          message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
+          message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal' id='btnCancelAnywayAssembly'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
           message += r.negative_stock_table;
           $('#mBomAssemblyInfo').html(message);
 
@@ -865,8 +871,14 @@ export function assembleBoms(selectedRows, ids) {
             //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
             continueAnyway(r, ids, token);
           });
+
+          // Attach click listener to "Cancel" button next to the "Do It Anyway" button
+          $('#btnCancelAnywayAssembly').on('click', function () {
+            // Hide modal and perform cleanup operations
+            hideBOMAssemblyModalAndCleanup();
+          });
         }
-        removeClickListeners('#btnAssembleBOMs'); // Remove click listener after assembly
+        removeClickListeners('#btnAssembleBOMs'); // Remove click listener assembly
       },
       error: function (xhr) {
         // Handle the error
@@ -880,6 +892,26 @@ export function assembleBoms(selectedRows, ids) {
       }
     });
   })
+}
+
+
+/*
+* Hides BOM Assembly modal and cleans all info and click listeners from it
+*/
+function hideBOMAssemblyModalAndCleanup() {
+  // Empty form
+  $('#bomAssemblyForm')[0].reset();
+  $('#mBomAssemblyInfo').empty();
+  $('#btnAssembleBOMs').attr('disabled', false);
+  // Hide modal
+  $('#mBomAssembly').modal('hide');
+  // Remove click listeners
+  removeClickListeners('#btnAssembleBOMs'); // Remove click listener assembly
+  removeClickListeners('#btnAssembleBOMsAnyway'); // Remove click listener assembly
+  // Dispose modal after it's hidden
+  $('#mBomAssembly').on('hidden.bs.modal', function (e) {
+    $(this).modal('dispose');
+  });
 }
 
 //TODO: Extract functions
