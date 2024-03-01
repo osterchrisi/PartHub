@@ -1,3 +1,5 @@
+//! This is OG PartHub code
+
 $(document).ready(function () {
     toogleUploadButton;
     checkBomName;

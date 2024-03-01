@@ -7,7 +7,7 @@
     </div>
 </div>
 
-{{-- @include('footer') --}}
+@include('footer')
 
 @yield('modals and menus')
 

@@ -124,6 +124,7 @@ Route::get('/pricing', function () {
 })
     ->name('pricing');
 
+// Sign Up for new users
 Route::get('/signup', function () {
     //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
     //! Passwort darf keine Leerzeichen enthalten
@@ -131,10 +132,23 @@ Route::get('/signup', function () {
 })
     ->name('signup');
 
+// What is PartHub?
 Route::get('/whatis', function () {
     return view('whatis', ['title' => 'What is PartHub, anyway?', 'view' => 'whatis']);
 })
     ->name('whatis');
+
+// Terms of Service
+Route::get('/TOS', function () {
+    return view('TOS', ['title' => 'Terms of Service', 'view' => 'TOS']);
+})
+    ->name('TOS');
+
+// Imprint
+Route::get('/imprint', function () {
+    return view('imprint', ['title' => 'Imprint', 'view' => 'imprint']);
+})
+    ->name('imprint');
 
 // My 'Multi View' Tryout
 Route::get('/multi', function () {
