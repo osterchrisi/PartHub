@@ -324,7 +324,7 @@ export function initializeMultiSelect(id) {
  */
 export function deleteSelectedRows(ids, model, id_column, successCallback) {
 
-    // console.log(ids.length);
+    console.log(ids.length);
     var token = $('input[name="_token"]').attr('value');
 
     $.ajax({
