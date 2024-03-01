@@ -3,12 +3,10 @@ import { assembleBoms } from "../tables";
 
 export function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
 
-    //! I had `$table` jquery object instead of `table_id` but it bugs around weirdly
-    //! Most likely due to variable scoping, so I just changed it to be a string
     // Get selected table rows
     var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
-    // console.log("selectedRows: ", selectedRows);
 
+    // Check if rows have been selected
     if (selectedRows.length === 0) {
         // console.log("Nothing selected")
         alert("Please select row(s) to be deleted.\nYou can use Ctrl and Shift to select multiple rows");
@@ -17,6 +15,7 @@ export function deleteSelectedRowsFromToolbar(table_id, model, id_column, succes
         // Extract IDs
         var ids = selectedRows.map(obj => obj._data.id);
 
+        // Show confirmation alert and proceed to delete selected rows
         if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
             deleteSelectedRows(ids, model, id_column, successCallback);
         }

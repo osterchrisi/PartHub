@@ -796,7 +796,6 @@ function inlineFootprintSelectEventHandler(select, cell, footprints, changeFlagC
         cell.text(newValue);
       } else {
         console.log("No matching footprint found for footprint_id:", selectedValue);
-        // Handle the case when no matching footprint is found
       }
 
       // Editing aftermath
@@ -821,14 +820,12 @@ export function assembleBoms(selectedRows, ids) {
     alert("Please select BOM(s) to be assembled.\nYou can use Ctrl and Shift to select multiple rows");
     return
   }
-  $('#mBomAssembly').modal('show'); // Show Modal
-  $('#btnAssembleBOMs').click(function () {// Attach clicklistener
+  $('#mBomAssembly').modal('show');         // Show Modal
+  $('#btnAssembleBOMs').click(function () { // Attach clicklistener
 
-    var q = $("#bomAssembleQuantity").val(); // Quantity
-    var fl = $("#fromStockLocation").val(); // From Location
-    var token = $('input[name="_token"]').attr('value');
-
-    // console.log('Assembling BOMs with the following ids: ', ids);
+    var q = $("#bomAssembleQuantity").val();                // Quantity
+    var fl = $("#fromStockLocation").val();                 // From Location
+    var token = $('input[name="_token"]').attr('value');    // X-CSRF token
 
     $.ajax({
       url: '/bom.assemble',
@@ -848,8 +845,8 @@ export function assembleBoms(selectedRows, ids) {
           //* Do the normal thing here, all requested stock available
           // console.log(r);
 
-          $('#mBomAssembly').modal('hide'); // Hide Modal
-          updateBomInfo(ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
+          $('#mBomAssembly').modal('hide');     // Hide Modal
+          updateBomInfo(ids[ids.length - 1]);   // Update BOM info window with last BOM ID in array
           //TODO: Also select in table
         }
         else if (r.status === 'permission_requested') {
@@ -869,7 +866,7 @@ export function assembleBoms(selectedRows, ids) {
             continueAnyway(r, ids, token);
           });
         }
-        removeClickListeners('#btnAssembleBOMs'); // Remove previously added click listener
+        removeClickListeners('#btnAssembleBOMs'); // Remove click listener after assembly
       },
       error: function (xhr) {
         // Handle the error
@@ -917,7 +914,7 @@ function continueAnyway(r, ids, token) {
         $('#btnAssembleBOMs').attr('disabled', false);
         $(this).modal('dispose');
       }).modal('hide');
-      updateBomInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
+      updateBomInfo(ids[ids.length - 1]);     // Update BOM info with last BOM ID in array
       // $('#mBomAssembly').modal('dispose'); // Hide Modal
     },
     error: function (xhr) {
