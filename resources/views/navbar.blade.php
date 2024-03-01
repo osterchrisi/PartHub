@@ -50,14 +50,19 @@ $user_name = $user ? $user->name : '';
                             <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
                                 href="{{ route('pricing') }}">Pricing</a>
                         </li>
-                        {{-- Don't show Sign Up Link if you're authorized (signed in) --}}
+                        {{-- Don't show Sign Up Link / Demo button if you're authorized (signed in) --}}
                         @unless (Auth::check())
                             <li>
                                 <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}">Sign up</a>
                             </li>
+                            <li>
+                                <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
+                                    @csrf<button type="submit" class="btn btn-warning" id="continueDemo">Continue as demo
+                                        user</button></form>
+                            </li>
                         @endunless
-                        {{-- Don't show Sign Up Link if you're authorized (signed in) --}}
+                        {{-- Don't show Sign Up Link if you're demo user (signed in) --}}
                         @if ($user_id == 1)
                             <li>
                                 <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"

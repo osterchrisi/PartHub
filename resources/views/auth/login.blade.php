@@ -62,7 +62,7 @@
                                     <tr>
                                         <td>
                                             <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
-                                                @csrf<button type="submit" class="btn btn-primary"
+                                                @csrf<button type="submit" class="btn btn-danger"
                                                     id="continueDemo">Continue as demo
                                                     user</button></form>
                                         </td>
