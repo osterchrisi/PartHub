@@ -7,10 +7,10 @@ export function deleteSelectedRowsFromToolbar(table_id, model, id_column, succes
     //! Most likely due to variable scoping, so I just changed it to be a string
     // Get selected table rows
     var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
-    console.log("selectedRows: ", selectedRows);
+    // console.log("selectedRows: ", selectedRows);
 
     if (selectedRows.length === 0) {
-        console.log("Nothing selected")
+        // console.log("Nothing selected")
         alert("Please select row(s) to be deleted.\nYou can use Ctrl and Shift to select multiple rows");
     }
     else {
