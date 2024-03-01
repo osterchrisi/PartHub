@@ -279,12 +279,12 @@ export function rebuildLocationsTable(queryString) {
   return $.ajax({
     url: '/locations.locationsTable' + queryString,
     success: function (data) {
-      $('#locations_table').bootstrapTable('destroy');  // Destroy old parts table
+      $('#locations_list_table').bootstrapTable('destroy');  // Destroy old parts table
       $('#table-window').html(data);                    // Update div with new table
       bootstrapLocationsListTable();                    // Bootstrap it
-      var $table = $('#locations_table');
+      var $table = $('#locations_list_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu);           // Define table row actions and context menu
+      defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
@@ -299,12 +299,12 @@ export function rebuildFootprintsTable(queryString) {
   return $.ajax({
     url: '/footprints.footprintsTable' + queryString,
     success: function (data) {
-      $('#footprints_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data);                    // Update div with new table
-      bootstrapFootprintsListTable();                   // Bootstrap it
-      var $table = $('#footprints_table');
+      $('#footprints_list_table').bootstrapTable('destroy'); // Destroy old footprints table
+      $('#table-window').html(data);                         // Update div with new table
+      bootstrapFootprintsListTable();                        // Bootstrap it
+      var $table = $('#footprints_list_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu);           // Define table row actions and context menu
+      defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
@@ -319,12 +319,12 @@ export function rebuildSuppliersTable(queryString) {
   return $.ajax({
     url: '/suppliers.suppliersTable' + queryString,
     success: function (data) {
-      $('#suppliers_table').bootstrapTable('destroy');  // Destroy old parts table
+      $('#suppliers_list_table').bootstrapTable('destroy');  // Destroy old parts table
       $('#table-window').html(data);                    // Update div with new table
       bootstrapSuppliersListTable();                    // Bootstrap it
-      var $table = $('#suppliers_table');
+      var $table = $('#suppliers_list_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu);           // Define table row actions and context menu
+      defineSuppliersListTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
