@@ -4,7 +4,7 @@ import {
   removeClickListeners
 } from "./custom";
 
-import { rebuildSuppliersTable} from "./tables";
+import { rebuildSuppliersTable } from "./tables";
 
 /**
  * Displays the supplier entry modal and attaches the validateForm function with the addSupplierCallback function
@@ -60,7 +60,7 @@ function addSupplierCallback() {
         // Other errors
         alert('An error occurred. Please try again.');
         $('#mSupplierEntry').modal('hide');     // Hide modal
-      removeClickListeners('#addSupplier');     // Remove click listener from Add Supplier button
+        removeClickListeners('#addSupplier');     // Remove click listener from Add Supplier button
       }
     }
   });

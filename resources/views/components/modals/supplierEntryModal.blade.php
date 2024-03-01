@@ -16,7 +16,7 @@
                     <input class="form-control form-control-sm" placeholder="Supplier Name" id="addSupplierName" required><br>
                     {{-- <div class="row">
                         <div class="col">
-                            <input class="form-control form-control-sm" placeholder="Supplier Alias" id="addSupplierAlias"><br>
+                            <input class="form-control form-control-sm" placeholder="Supplier Description" id="addSupplierAlias"><br>
                         </div>
                     </div> --}}
                 </form>
