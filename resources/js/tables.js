@@ -259,12 +259,12 @@ export function rebuildPartsTable(queryString) {
   return $.ajax({
     url: '/parts.partsTable' + queryString,
     success: function (data) {
-      $('#parts_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data); // Update div with new table
-      bootstrapPartsTable(); // Bootstrap it
+      $('#parts_table').bootstrapTable('destroy');    // Destroy old parts table
+      $('#table-window').html(data);                  // Update div with new table
+      bootstrapPartsTable();                          // Bootstrap it
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      definePartsTableActions($table, $menu);         // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
@@ -279,12 +279,12 @@ export function rebuildLocationsTable(queryString) {
   return $.ajax({
     url: '/locations.locationsTable' + queryString,
     success: function (data) {
-      $('#locations_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data); // Update div with new table
-      bootstrapLocationsListTable(); // Bootstrap it
+      $('#locations_table').bootstrapTable('destroy');  // Destroy old parts table
+      $('#table-window').html(data);                    // Update div with new table
+      bootstrapLocationsListTable();                    // Bootstrap it
       var $table = $('#locations_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      definePartsTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
@@ -300,11 +300,11 @@ export function rebuildFootprintsTable(queryString) {
     url: '/footprints.footprintsTable' + queryString,
     success: function (data) {
       $('#footprints_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data); // Update div with new table
-      bootstrapFootprintsListTable(); // Bootstrap it
+      $('#table-window').html(data);                    // Update div with new table
+      bootstrapFootprintsListTable();                   // Bootstrap it
       var $table = $('#footprints_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      definePartsTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
@@ -319,12 +319,12 @@ export function rebuildSuppliersTable(queryString) {
   return $.ajax({
     url: '/suppliers.suppliersTable' + queryString,
     success: function (data) {
-      $('#suppliers_table').bootstrapTable('destroy'); // Destroy old parts table
-      $('#table-window').html(data); // Update div with new table
-      bootstrapSuppliersListTable(); // Bootstrap it
+      $('#suppliers_table').bootstrapTable('destroy');  // Destroy old parts table
+      $('#table-window').html(data);                    // Update div with new table
+      bootstrapSuppliersListTable();                    // Bootstrap it
       var $table = $('#suppliers_table');
       var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu); // Define table row actions and context menu
+      definePartsTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
@@ -342,11 +342,11 @@ export function rebuildBomListTable(queryString) {
     url: '/boms.bomsTable' + queryString,
     success: function (data) {
       $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
-      $('#table-window').html(data); // Update div with new table
-      bootstrapBomListTable(); // Bootstrap it
+      $('#table-window').html(data);                  // Update div with new table
+      bootstrapBomListTable();                        // Bootstrap it
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
-      defineBomListTableActions($table, $menu); // Define table row actions and context menu
+      defineBomListTableActions($table, $menu);       // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
     }
