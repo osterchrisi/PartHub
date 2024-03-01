@@ -16,11 +16,13 @@ $sc = PartsController::extractCategoryIds($search_category);
 {{-- Parent Template --}}
 @extends('app')
 
+{{-- Need to figure out why the order of these modals matters.
+If the right-click menu is not on top, it won't show --}}
 {{-- Modals and Menus --}}
 @section('modals and menus')
+    @include('components.menus.partsTableRightClickMenu')
     @include('components.modals.stockModal')
     @include('components.modals.partEntryModal', ['part_name' => ''])
-    @include('components.menus.partsTableRightClickMenu')
 @endsection
 
 {{-- Filter form --}}

@@ -220,7 +220,7 @@ function hideMenuOnClickOutside($menu) {
 function onTableCellContextMenu($table, $menu, actions) {
   // Event listener for the right-click event on table cells
   $table.on('contextmenu', 'td', function (event) {
-    if (event.which === 3) { // Right-click
+    if (event.which === 3) {  // Right-click
       event.preventDefault(); // Inhibit browser context menu
 
       // Get selected table rows
@@ -366,20 +366,17 @@ export function definePartsTableActions($table, $menu) {
   });
 
   // Define context menu actions.
-  //* Important: selectedRows and ids are coming from the higher-level function onTableCellContextMenu
+  //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
-      // selectedRows and ids come from onTableCellContextMenu
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
         deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
       }
     },
     edit: function (selectedRows) {
-      // selectedRows and ids come from onTableCellContextMenu
       editSelectedRows(selectedRows);
     },
     customAction1: function (selectedRows) {
-      // selectedRows and ids come from onTableCellContextMenu
       customAction1(selectedRows);
     }
   });
@@ -397,16 +394,14 @@ export function defineBomListTableActions($table, $menu) {
   });
 
   // Define context menu actions
-  //* Important: selectedRows and ids are coming from the higher-level function onTableCellContextMenu
+  //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
   onTableCellContextMenu($table, $menu, {
-    // selectedRows and ids come from onTableCellContextMenu
     delete: function (selectedRows, ids) {
       if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
       }
     },
     assemble: function (selectedRows, ids) {
-      // selectedRows and ids come from onTableCellContextMenu
       assembleBoms(selectedRows, ids);
     }
   });
