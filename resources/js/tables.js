@@ -511,7 +511,7 @@ function editTextCell(cell, originalValue) {
     // Call the updating function
     updateCell(id, column, table_name, new_value, id_field);
     cell.removeClass('editing');
-    
+
     //TODO: Not great - but works?!
     if (table_name == 'parts') {
       updatePartsInfo(id);
@@ -816,6 +816,11 @@ function inlineFootprintSelectEventHandler(select, cell, footprints, changeFlagC
 * @returns {void}
 */
 export function assembleBoms(selectedRows, ids) {
+
+  if (ids.length === 0) {
+    alert("Please select BOM(s) to be assembled.\nYou can use Ctrl and Shift to select multiple rows");
+    return
+  }
   $('#mBomAssembly').modal('show'); // Show Modal
   $('#btnAssembleBOMs').click(function () {// Attach clicklistener
 
