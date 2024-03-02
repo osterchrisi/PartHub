@@ -233,6 +233,7 @@ class PartsController extends Controller
         // Extracting the type of change from the first entry in the array (all entries have same type)
         $change = $requested_changes[0]['change'];
 
+
         // Initialize the changes array and negative stock array
         $changes = array();
         $negative_stock = array();
@@ -262,7 +263,10 @@ class PartsController extends Controller
             $this->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
         }
-
+        //* To location and From location are the same - not using it right now as I take care of it directly in the front end
+        // else if ($requested_change['to_location'] == $requested_change['from_location']) {
+        //     dd($requested_changes, $change);
+        // }
         //* No user permission necessary
         else {
             $this->processApprovedChanges($changes);

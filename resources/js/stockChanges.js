@@ -85,23 +85,23 @@ export function callStockModal(change, locations, pid) {
  * @param {number} pid - The part ID for the stock change
  */
 function stockChangingFormExecution(change, pid) {
-    let q = $("#addStockQuantity").val(); // Quantity
-    let c = $("#addStockDescription").val(); // Comment
+    let q = $("#addStockQuantity").val();       // Quantity
+    let c = $("#addStockDescription").val();    // Comment
     
     let tl = null;
     let fl = null;
 
-    // console.log(change);
+    console.log(change);
 
     // Get required locations
     if (change == '1') {
-        tl = $("#toStockLocation").val(); // To Location
+        tl = $("#toStockLocation").val();   // To Location
     }
     if (change == '-1') {
         fl = $("#fromStockLocation").val(); // From Location
     }
     if (change == '0') {
-        tl = $("#toStockLocation").val(); // To Location
+        tl = $("#toStockLocation").val();   // To Location
         fl = $("#fromStockLocation").val(); // From Location
     }
 
@@ -115,8 +115,12 @@ function stockChangingFormExecution(change, pid) {
         change: change
     }];
 
-    //!
-    // console.log(pid);
+    // To and From location are identical - inform user
+    if (change == '0' && tl == fl ){
+        const message='<div class="alert alert-warning text-center">To and From location are identical</div>';
+        $('#mStockModalInfo').html(message);
+        return;
+    }
 
     // Call the stock changing script
     callStockChangingScript(stockChanges, pid)
