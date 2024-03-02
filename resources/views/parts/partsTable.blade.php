@@ -1,4 +1,8 @@
 <div>
+    {{-- @php
+    echo("<pre>");
+    print_r($parts);
+    @endphp --}}
     <table  class="table table-sm table-responsive table-hover table-striped"
             style="font-size:12px" 
             id="parts_table" 
@@ -47,10 +51,13 @@
                             <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}</td>
                         {{-- Unit --}}
                         @elseif ($column_data == 'unit_name')
-                            <td data-editable="true" class="editable category" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}</td>
+                            <td data-editable="true" class="editable unit" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}</td>
                         {{-- Footprint --}}
                         @elseif ($column_data == 'footprint_name')
                             <td data-editable="true" class="editable footprint" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['footprint'][$column_data] ?? '' }}</td>
+                        {{-- Supplier --}}
+                        @elseif ($column_data == 'supplier_name')
+                        <td data-editable="true" class="editable supplier" data-id="{{ $part_id }}" data-column="{{ $column_data }}" data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">{{ $part['supplier'][$column_data] ?? '' }}</td>
                         {{-- Selected / State  --}}
                         @elseif ($column_data == 'state')
                             <td></td>

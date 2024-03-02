@@ -9,6 +9,7 @@ use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
 use App\Models\BomRun;
 use App\Models\Footprint;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
@@ -17,9 +18,9 @@ class PartsController extends Controller
 {
     private static $table_name = 'parts';
     private static $id_field = 'part_id';
-    private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id');
+    private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'supplier_name', 'unit_name', 'part_id');
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
-    private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', "ID");
+    private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', "ID");
 
     /**
      * Display a listing of the resource.
@@ -38,6 +39,7 @@ class PartsController extends Controller
 
         $categories = Category::availableCategories('array'); // Request as array of arrays
         $footprints = Footprint::availableFootprints();
+        $suppliers = Supplier::availableSuppliers();
 
         /* Calculate and append each part's total stock
         / Passing a reference, so modifications made to $part directly affect 
@@ -61,9 +63,10 @@ class PartsController extends Controller
                 'id_field' => self::$id_field,
                 'search_term' => $search_term,
                 'search_column' => $search_column,
-                // These are sent to extract clear names from foreign keys
+                // These are sent to extract clear names from foreign keys for the dropdown menus in the table
                 'categories' => $categories,
-                'footprints' => $footprints
+                'footprints' => $footprints,
+                'suppliers' => $suppliers
             ]);
         }
         elseif ($route == 'parts.partsTable') {

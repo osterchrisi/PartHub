@@ -22,6 +22,11 @@ class Part extends Model
         return $this->belongsTo(Footprint::class, 'part_footprint_fk');
     }
 
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'part_supplier_fk');
+    }
+
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'part_unit_fk');
@@ -84,7 +89,7 @@ class Part extends Model
             });
         }
 
-        $parts = $query->with('category', 'unit', 'stockLevels', 'footprint')->get()->toArray();
+        $parts = $query->with('category', 'unit', 'stockLevels', 'footprint', 'supplier')->get()->toArray();
         // dd($parts);
         return $parts;
     }
