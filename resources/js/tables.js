@@ -152,9 +152,9 @@ function createInlineCategorySelect(categories, currentValue) {
 }
 
 /**
- * Create a select element for the inline category dropdown in parts table and populate it with available categories
+ * Create a select element for the inline footpring dropdown in parts table and populate it with available footprints
  * This is copy of createInlineCategorySelect!!
- * @param {Array} categories Array of associative arrays containing the categories
+ * @param {Array} footprints Array of associative arrays containing the footprints
  * @param {string} currentValue Current text value of the table cell that is edited
  * @returns 
  */
@@ -168,6 +168,31 @@ function createInlineFootprintSelect(footprints, currentValue) {
     if (footprints[i]['footprint_name'] === currentValue) {
       // Add 'selected' attribute to the option with the same text value as the value in the table
       //TODO: Better would be ID value, in case two footprints would have same text?
+      option.attr('selected', true);
+    }
+    // Append option to select element
+    select.append(option);
+  }
+  return select;
+}
+
+/**
+ * Create a select element for the inline supplier dropdown in parts table and populate it with available suppliers
+ * This is copy of createInlineFootprintSelect!!
+ * @param {Array} supplier Array of associative arrays containing the suppliers
+ * @param {string} currentValue Current text value of the table cell that is edited
+ * @returns 
+ */
+function createInlineSupplierSelect(suppliers, currentValue) {
+  // New select element
+  var select = $('<select class="form-select-sm">');
+  // Iterate over all available suppliers
+  for (var i = 0; i < suppliers.length; i++) {
+    // Create new option for this supplier
+    var option = $('<option>').text(suppliers[i]['supplier_name']).attr('value', suppliers[i]['supplier_id']);
+    if (suppliers[i]['supplier_name'] === currentValue) {
+      // Add 'selected' attribute to the option with the same text value as the value in the table
+      //TODO: Better would be ID value, in case two suppliers would have same text?
       option.attr('selected', true);
     }
     // Append option to select element
@@ -646,6 +671,65 @@ function editFootprintCell(cell, originalValue) {
 }
 
 /**
+ * Inline table cell editing of a supplier cell in the parts table
+ * @param {jQuery} cell The cell being edited
+ * @param {string} originalValue The original value of the cell before editing
+ */
+function editSupplierCell(cell, originalValue) {
+  // Changed flag
+  var valueChanged = false;
+  // Get list of available suppliers and populate dropdown
+  var suppliers = $.ajax({
+    type: 'GET',
+    url: '/suppliers.get',
+    dataType: 'JSON',
+    success: function (response) {
+      suppliers = response;
+
+      // Create select element
+      var select = createInlineSupplierSelect(suppliers, originalValue);
+
+      // Append, selectize supplier dropdown
+      appendInlineSupplierSelect(cell, select);
+
+      // Need to focus the selectize control
+      var selectizeControl = select[0].selectize;
+      selectizeControl.focus();
+
+      // Select element change event handler and callback function to set flag
+      inlineSupplierSelectEventHandler(select, cell, suppliers, function changeFlagCallback() {
+        valueChanged = true;
+      });
+
+      // Listen for the blur event on the selectize control
+      selectizeControl.on('blur', function () {
+        // Remove the select element when the selectize dropdown loses focus
+        select.remove();
+        // Change cell text back if value was not changed
+        if (!valueChanged) {
+          cell.text(originalValue);
+        }
+        cell.removeClass('editing');
+      });
+
+      // Listen for the Escape keydown event on the document level because selectized element is eating my events
+      $(document).on('keydown', function (event) {
+        if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('supplier') && cell.hasClass('editing')) {
+          select.remove();
+          // Change cell text back if value was not changed
+          if (!valueChanged) {
+            cell.text(originalValue);
+          }
+          cell.removeClass('editing');
+          // Remove the event handler once it has done its job
+          $(document).off('keydown');
+        }
+      });
+    }
+  });
+}
+
+/**
  * Inline table cell manipulation of bootstrapped tables
  */
 export function inlineProcessing() {
@@ -664,14 +748,18 @@ export function inlineProcessing() {
     // Get current value
     var originalValue = cell.text();
 
-    // * It's a category cell
+    // * Dropdown cells
     if (cell.hasClass('category')) {
       editCategoryCell(cell, originalValue);
     }
     else if (cell.hasClass('footprint')) {
       editFootprintCell(cell, originalValue);
     }
-    else { // * It's a text cell
+    else if (cell.hasClass('supplier')) {
+      editSupplierCell(cell, originalValue);
+    }
+    //* It's a text cell
+    else {
       editTextCell(cell, originalValue);
     }
   });
@@ -724,6 +812,11 @@ function appendInlineCategorySelect(cell, select) {
 }
 
 function appendInlineFootprintSelect(cell, select) {
+  cell.empty().append(select);
+  select.selectize();
+}
+
+function appendInlineSupplierSelect(cell, select) {
   cell.empty().append(select);
   select.selectize();
 }
@@ -791,6 +884,41 @@ function inlineFootprintSelectEventHandler(select, cell, footprints, changeFlagC
         cell.text(newValue);
       } else {
         console.log("No matching footprint found for footprint_id:", selectedValue);
+      }
+
+      // Editing aftermath
+      select.remove();
+      cell.removeClass('editing');
+      changeFlagCallback(); // Callback function to set change flag
+      $(document).off('keydown'); // Removing the escape handler because it's on document level
+    });
+  });
+}
+
+function inlineSupplierSelectEventHandler(select, cell, suppliers, changeFlagCallback) {
+  select.on('change', function () {
+    var selectedValue = $(this).val(); // Get new selected value
+
+    // Get cell part_id, column name and database table
+    // These are encoded in the table data cells
+    var id = cell.closest('td').data('id');
+    var column = 'part_supplier_fk';
+    var table_name = cell.closest('td').data('table_name');
+    var id_field = cell.closest('td').data('id_field');
+
+    // Call the database table updating function
+    $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
+      // Find supplier name for a given supplier ID
+      var newValue = suppliers.find(function (item) {
+        return item.supplier_id === parseInt(selectedValue); // Return true if the item's supplier_id matches selectedValue
+      });
+
+      // Check if newValue is found and update HTML table
+      if (newValue) {
+        newValue = newValue.supplier_name; // Get the supplier_name from the found item
+        cell.text(newValue);
+      } else {
+        console.log("No matching supplier found for supplier_id:", selectedValue);
       }
 
       // Editing aftermath
