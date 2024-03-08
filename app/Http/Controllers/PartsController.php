@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StockMovementOccured;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Part;
@@ -508,6 +509,9 @@ class PartsController extends Controller
                 BomRun::createBomRun($processed_bom, $quantity, $user_id);
             }
         }
+
+        event(new StockMovementOccured($result));
+
 
         // Report all the goodies back for updating tables
         echo json_encode(
