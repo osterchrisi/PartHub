@@ -17,9 +17,9 @@ class StockMovementOccured
     /**
      * Create a new event instance.
      */
-    public function __construct(array $stockLevels)
+    public function __construct(array $stock_level)
     {
-        $this->stockLevels = $stockLevels;
+        $this->stock_levels = $stock_level;
     }
 
     /**
