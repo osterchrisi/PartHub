@@ -426,7 +426,9 @@ class PartsController extends Controller
     private function processApprovedChanges($changes)
     {
         // Get current authenticated user
-        $user_id = Auth::user()->id;
+        $user = Auth::user();
+        $user_id = $user->id;
+        $user_name = $user->name;
 
         foreach ($changes as $approved_change) {
             // First extract variables
@@ -451,25 +453,25 @@ class PartsController extends Controller
             if ($change == 1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
                 $stock_level = [$part_id, $new_quantity, $to_location];
-                event(new StockMovementOccured($stock_level));
+                event(new StockMovementOccured($stock_level, $user));
             }
             // Reduce Stock
             elseif ($change == -1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
                 $stock_level = [$part_id, $new_quantity, $from_location];
-                event(new StockMovementOccured($stock_level));
+                event(new StockMovementOccured($stock_level, $user));
             }
             // Move Stock (need to create or update two entries)
             elseif ($change == 0) {
                 // First add stock in 'to location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
                 $stock_level = [$part_id, $to_quantity, $to_location];
-                event(new StockMovementOccured($stock_level));
+                event(new StockMovementOccured($stock_level, $user));
 
                 // Then reduce stock in 'from location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
                 $stock_level = [$part_id, $from_quantity, $from_location];
-                event(new StockMovementOccured($stock_level));
+                event(new StockMovementOccured($stock_level, $user));
             }
 
             //* Make record in Stock Level History model

@@ -10,7 +10,8 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
-class WelcomeEmail extends Mailable
+
+class StocklevelNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,6 +20,7 @@ class WelcomeEmail extends Mailable
      */
     public function __construct(
         protected User $user,
+        protected $stock_level,
     ) {
 
     }
@@ -29,7 +31,7 @@ class WelcomeEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to PartHub',
+            subject: 'Stocklevel Notification',
         );
     }
 
@@ -39,9 +41,11 @@ class WelcomeEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.WelcomeEmail',
+            view: 'mail.StocklevelNotifiacation',
             with: [
                 'name' => $this->user->name,
+                'stock_level' => $this->stock_level,
+
             ]
         );
     }
