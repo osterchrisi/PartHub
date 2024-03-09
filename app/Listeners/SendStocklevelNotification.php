@@ -20,6 +20,6 @@ class SendStocklevelNotification
      */
     public function handle(object $event): void
     {
-        //
+        dd($event->stockLevels);
     }
 }

@@ -450,18 +450,26 @@ class PartsController extends Controller
             // Add Stock
             if ($change == 1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
+                $result = [$part_id, $new_quantity, $to_location];
+                event(new StockMovementOccured($result));
             }
             // Reduce Stock
             elseif ($change == -1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
+                $result = [$part_id, $new_quantity, $from_location];
+                event(new StockMovementOccured($result));
             }
             // Move Stock (need to create or update two entries)
             elseif ($change == 0) {
                 // First add stock in 'to location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
+                $result = [$part_id, $to_quantity, $to_location];
+                event(new StockMovementOccured($result));
 
                 // Then reduce stock in 'from location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
+                $result = [$part_id, $from_quantity, $from_location];
+                event(new StockMovementOccured($result));
             }
 
             //* Make record in Stock Level History model
@@ -471,6 +479,7 @@ class PartsController extends Controller
             $stock = StockLevel::getStockLevelsByPartID($part_id);
             $total_stock = \calculateTotalStock($stock);
 
+            //! Check what this is used for and if - in the case of moving stock - both stock_level_ids are needed
             // Add entries to the result array
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
 
@@ -509,9 +518,6 @@ class PartsController extends Controller
                 BomRun::createBomRun($processed_bom, $quantity, $user_id);
             }
         }
-
-        event(new StockMovementOccured($result));
-
 
         // Report all the goodies back for updating tables
         echo json_encode(
