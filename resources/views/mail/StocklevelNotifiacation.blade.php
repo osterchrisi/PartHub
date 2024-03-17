@@ -14,20 +14,14 @@
 
 <body>
     <div>
-        <h1>Thank you for chosing PartHub, {{ $name }}!</h1>
-        <h4>We're glad to have you onboard 🚀 </h4>
+        <h1>Hey, {{ $name }}!</h1>
+        <h4>There are some important stock level changes </h4>
         @php
-            // Assuming $data is your array
-            // Convert array into a string representation
             $arrayString = print_r($stock_level, true);
         @endphp
 
         <pre>{{ $arrayString }}</pre>
         <p>
-            Your user account has been created and you can start adding parts right away.<br>
-            If you have any questions or feedback don't hesitate to contact us at: <a
-                href="mailto:hello@parthub.online">hello@parthub.online</a><br>
-            <br>
             All the best,<br>
             the PartHub team from Berlin<br><br>
             <img src="{{ env('APP_FAVICON') }}" alt="PartHub Logo"></img>

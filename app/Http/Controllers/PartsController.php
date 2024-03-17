@@ -249,7 +249,7 @@ class PartsController extends Controller
             $requested_change_stock_levels = $this->getRelevantStockLevelsForChange($requested_change_details);
 
             // Collect changes to be made
-            $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock);
+            $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock);
 
             // Append array of collected changes to the main arrays
             $changes[] = $result['changes'];
@@ -259,7 +259,7 @@ class PartsController extends Controller
 
         }
 
-        //* Stock shortage, inform user and exit
+        //* Stock shortage (i.e. entries in the negative_stock array), inform user and exit
         if (!empty($negative_stock)) {
             $this->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
@@ -317,7 +317,16 @@ class PartsController extends Controller
         );
     }
 
-    private function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock)
+    /**
+     * Calculates resulting stock levels from requested stock changes. If stock level would go negative, set status 'permission_required',
+     * otherwise set status 'gtg' (good to go).
+     *
+     * @param array $requested_change_details The array that came back from parseRequestedChangeDetails, containing the requested change for a part / stock level
+     * @param array $requested_change_stock_levels The array that came back from getRelevantStockLevelsForChange, holding current stock levels in to and from locations
+     * @param array $negative_stock An empty array to be populated with details of a change resulting in negative stock
+     * @return array
+     */
+    private function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock)
     {
         $changes = $requested_change_details;
         $change = $requested_change_details['change'];
@@ -428,7 +437,6 @@ class PartsController extends Controller
         // Get current authenticated user
         $user = Auth::user();
         $user_id = $user->id;
-        $user_name = $user->name;
 
         foreach ($changes as $approved_change) {
             // First extract variables
@@ -453,7 +461,6 @@ class PartsController extends Controller
             if ($change == 1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
                 $stock_level = [$part_id, $new_quantity, $to_location];
-                event(new StockMovementOccured($stock_level, $user));
             }
             // Reduce Stock
             elseif ($change == -1) {
@@ -466,13 +473,14 @@ class PartsController extends Controller
                 // First add stock in 'to location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
                 $stock_level = [$part_id, $to_quantity, $to_location];
-                event(new StockMovementOccured($stock_level, $user));
 
                 // Then reduce stock in 'from location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
                 $stock_level = [$part_id, $from_quantity, $from_location];
                 event(new StockMovementOccured($stock_level, $user));
             }
+
+
 
             //* Make record in Stock Level History model
             $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
