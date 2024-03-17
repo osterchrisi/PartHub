@@ -41,7 +41,7 @@ class StocklevelNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.StocklevelNotifiacation',
+            view: 'mail.StocklevelNotification',
             with: [
                 'name' => $this->user->name,
                 'stock_level' => $this->stock_level,
