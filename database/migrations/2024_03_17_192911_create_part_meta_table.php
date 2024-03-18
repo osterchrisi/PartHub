@@ -16,15 +16,12 @@ return new class extends Migration
             $table->string('meta_key');
             $table->string('meta_description');
             $table->string('meta_value');
-            $table->foreignId('part_id_fk')->constrained(
-                table: 'parts',
-                indexName: '_id'
-            )->index('part_id_fk');
-            $table->foreignId('meta_owner_u_fk')->constrained(
-                table: 'users',
-                indexName: '_id'
-            )->index('meta_owner_u_fk');
+            $table->integer('part_id_fk');
+            $table->unsignedBigInteger('meta_owner_u_fk');
             $table->timestamps();
+
+            $table->foreign('part_id_fk')->references('part_id')->on('parts')->index('part_id_fk');
+            $table->foreign('meta_owner_u_fk')->references('id')->on('users')->index('meta_owner_u_fk');
         });
     }
 
