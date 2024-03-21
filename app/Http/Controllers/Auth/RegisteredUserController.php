@@ -26,8 +26,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return redirect('https://parthub.online/register');
-        // return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
+        return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 
     /**

@@ -128,7 +128,8 @@ Route::get('/pricing', function () {
 Route::get('/signup', function () {
     //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
     //! Passwort darf keine Leerzeichen enthalten
-    return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
+    return redirect('https://parthub.online/signup');
+    // return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
 })
     ->name('signup');
 
