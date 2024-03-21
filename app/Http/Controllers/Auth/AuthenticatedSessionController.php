@@ -16,7 +16,7 @@ class AuthenticatedSessionController extends Controller
      * Display the login view.
      */
     // public function create(): View
-    public function create():
+    public function create()
     {
         //TODO: Das geht wahrscheinlich sauberer...
         if (env('APP_ENV') == 'demo') {
