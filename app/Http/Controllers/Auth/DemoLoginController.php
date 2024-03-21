@@ -15,9 +15,9 @@ class DemoLoginController extends Controller
     {
         // Live environment
         if (env('APP_ENV') == 'live') {
-            $redirectUrl = $request->getScheme() . '://demo.parthub.online';
+            // $redirectUrl = $request->getScheme() . '://demo.parthub.online';
 
-            return redirect($redirectUrl); // Redirect to the demo subdomain
+            return redirect('https://demo.parthub.online/demo-login'); // Redirect to the demo subdomain
         }
         // Demo environment
         else {
