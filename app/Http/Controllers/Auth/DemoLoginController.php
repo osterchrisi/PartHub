@@ -21,6 +21,14 @@ class DemoLoginController extends Controller
         // Need this to show the welcome message properly
         Session::put('loggedIn', true);
 
-        return redirect('/'); // Redirect to the desired page after successful login
+        // Determine the URL to redirect based on the domain
+        if (env('APP_ENV') == 'demo') {
+            $redirectUrl = $request->getScheme() . '://demo.parthub.online';
+
+            return redirect($redirectUrl); // Redirect to the demo subdomain
+        }
+        else {
+            return redirect('/'); // Redirect to the desired page after successful login
+        }
     }
 }
