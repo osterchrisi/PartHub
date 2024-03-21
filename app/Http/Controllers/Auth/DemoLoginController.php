@@ -22,7 +22,7 @@ class DemoLoginController extends Controller
         Session::put('loggedIn', true);
 
         // Determine the URL to redirect based on the domain
-        if (env('APP_ENV') == 'demo') {
+        if (env('APP_ENV') == 'live') {
             $redirectUrl = $request->getScheme() . '://demo.parthub.online';
 
             return redirect($redirectUrl); // Redirect to the demo subdomain
