@@ -13,6 +13,8 @@ import {
 
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
 
+import { makeTableWindowResizable } from './custom.js';
+
 /**
  * Bootstrap the parts table
  * @return void
@@ -292,6 +294,7 @@ export function rebuildPartsTable(queryString) {
       definePartsTableActions($table, $menu);         // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
+      makeTableWindowResizable();
     }
   });
 }
@@ -312,6 +315,7 @@ export function rebuildLocationsTable(queryString) {
       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
+      makeTableWindowResizable();
     }
   });
 }
@@ -332,6 +336,7 @@ export function rebuildFootprintsTable(queryString) {
       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
+      makeTableWindowResizable();
     }
   });
 }
@@ -352,6 +357,7 @@ export function rebuildSuppliersTable(queryString) {
       defineSuppliersListTableActions($table, $menu);           // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
+      makeTableWindowResizable();
     }
   });
 }
@@ -374,6 +380,7 @@ export function rebuildBomListTable(queryString) {
       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
+      makeTableWindowResizable();
     }
   });
 }

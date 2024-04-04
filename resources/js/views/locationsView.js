@@ -8,6 +8,7 @@ import {
 
 import { callLocationEntryModal } from '../locationEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+import { makeTableWindowResizable } from '../custom';
 
 
 export function initializeLocationsView() {
@@ -18,6 +19,7 @@ export function initializeLocationsView() {
     inlineProcessing();
     bootstrapTableSmallify();
     defineLocationsListTableActions($table, $menu)
+    makeTableWindowResizable();
 
     $('#toolbarAddButton').click(function () {
         callLocationEntryModal();

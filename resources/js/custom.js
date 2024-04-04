@@ -255,7 +255,7 @@ export function updateCategoryInfo(id) {
  * Make the table-window and the info-window resizable
  * @return void 
  */
-$(function () {
+export function makeTableWindowResizable () {
     $('#table-window').resizable({
         handles: 'e',
         resize: function () {
@@ -287,7 +287,7 @@ $(function () {
             $('#bomsMegaContainer').width(infoWidth);
         }
     });
-});
+};
 
 /**
  * 'Selectize' the category multi select, prepare values and append to the hidden input field

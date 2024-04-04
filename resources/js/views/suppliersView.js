@@ -8,6 +8,7 @@ import {
 
 import { callSupplierEntryModal } from '../supplierEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+import { makeTableWindowResizable } from '../custom';
 
 export function initializeSuppliersView() {
     bootstrapSuppliersListTable();
@@ -16,6 +17,7 @@ export function initializeSuppliersView() {
     var $menu = $('#bom_list_table_menu');
     inlineProcessing();
     bootstrapTableSmallify();
+    makeTableWindowResizable();
     defineSuppliersListTableActions($table, $menu);
 
     $('#toolbarAddButton').click(function () {

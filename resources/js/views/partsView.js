@@ -10,7 +10,8 @@ import {
     focusStockChangeQuantity,
     focusNewPartName,
     initializePopovers,
-    initializeMultiSelect
+    initializeMultiSelect,
+    makeTableWindowResizable
 } from "../custom";
 
 import { callPartEntryModal } from '../partEntry';
@@ -26,6 +27,7 @@ export function initializePartsView() {
     definePartsTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
+    makeTableWindowResizable();
 
     focusStockChangeQuantity();
     focusNewPartName();

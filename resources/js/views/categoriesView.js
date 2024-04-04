@@ -4,6 +4,8 @@ import {
     defineCategoriesListTableActions
 } from "../tables";
 
+import { makeTableWindowResizable } from '../custom.js';
+
 export function initializeCategoriesView() {
     bootstrapCategoriesListTable();
 
@@ -12,6 +14,7 @@ export function initializeCategoriesView() {
     defineCategoriesListTableActions($table, $menu);
     // inlineProcessing();
     bootstrapTableSmallify();
+    makeTableWindowResizable();
 
 
     // Experimental ajax search
