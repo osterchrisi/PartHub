@@ -7,15 +7,24 @@ use App\Models\Image;
 
 class ImageController extends Controller
 {
+    /**
+     * Uploads an image file and stores it on the server.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request object.
+     * @param string $type The type of entity the image belongs to (e.g., 'part', 'location', etc.).
+     * @param int $id The ID of the entity the image belongs to.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the success of the upload.
+     *
+     * @throws \Illuminate\Validation\ValidationException If validation fails for the image upload.
+     */
     public function upload(Request $request, $type, $id)
     {
-        // dd($request);
         // Validate the request
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Store the image
+        // Retrieve image from request
         $image = $request->file('image');
 
         // Retrieve the original filename
@@ -32,7 +41,7 @@ class ImageController extends Controller
         $user_id = auth()->id();
 
         // Define the directory path based on the type of entity
-        $directory = 'images/' . $type . '/' . $user_id . '/' . $id;
+        $directory = 'storage/images/' . $type . '/' . $user_id . '/' . $id; // Ends up e.g. /stoarge/images/part/355/filename.jpg
 
         // Create the directory if it doesn't exist
         if (!file_exists(public_path($directory))) {
@@ -45,9 +54,9 @@ class ImageController extends Controller
         // Save image details to database
         $imageModel = new Image();
         $imageModel->filename = $directory . '/' . $imageName;
-        $imageModel->image_owner_u_id = $user_id; // User that owns this image / uploaded it
-        $imageModel->type = $type; // Type = part, location, ...
-        $imageModel->associated_id = $id; // ID of the entity
+        $imageModel->image_owner_u_id = $user_id;   // User that owns this image / uploaded it
+        $imageModel->type = $type;                  // Type = part, location, ...
+        $imageModel->associated_id = $id;           // ID of the entity
         $imageModel->save();
 
         return response()->json(['success' => 'Image uploaded successfully']);
