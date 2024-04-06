@@ -1,14 +1,9 @@
 import {
   preventTextSelectionOnShift,
-  updatePartsInfo,
   updateStockModal,
-  updateBomInfo,
   deleteSelectedRows,
   removeClickListeners,
-  updateLocationInfo,
-  updateFootprintInfo,
-  updateCategoryInfo,
-  updateSupplierInfo
+  updateInfoWindow
 } from "./custom";
 
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
@@ -393,7 +388,7 @@ export function rebuildBomListTable(queryString) {
 export function definePartsTableActions($table, $menu) {
   // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
-    updatePartsInfo(id);
+    updateInfoWindow('part', id)
     updateStockModal(id);
   });
 
@@ -422,7 +417,7 @@ export function definePartsTableActions($table, $menu) {
 export function defineBomListTableActions($table, $menu) {
   // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
-    updateBomInfo(id);
+    updateInfoWindow('bom', id);
   });
 
   // Define context menu actions
@@ -441,25 +436,25 @@ export function defineBomListTableActions($table, $menu) {
 
 export function defineLocationsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
-    updateLocationInfo(id);
+    updateInfoWindow('location', id);
   });
 }
 
 export function defineFootprintsListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
-    updateFootprintInfo(id);
+    updateInfoWindow('footprint', id);
   });
 }
 
 export function defineCategoriesListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
-    updateCategoryInfo(id);
+    updateInfoWindow('category', id);
   });
 }
 
 export function defineSuppliersListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
-    updateSupplierInfo(id);
+    updateInfoWindow('supplier', id);
   });
 }
 
@@ -541,19 +536,19 @@ function editTextCell(cell, originalValue) {
 
     //TODO: Not great - but works?!
     if (table_name == 'parts') {
-      updatePartsInfo(id);
+      updateInfoWindow('part', id);
     }
     else if (table_name == 'locations') {
-      updateLocationInfo(id);
+      updateInfoWindow('location', id);
     }
     else if (table_name == 'footprints') {
-      updateFootprintInfo(id);
+      updateInfoWindow('footprint', id);
     }
     else if (table_name == 'suppliers') {
-      updateSupplierInfo(id);
+      updateInfoWindow('supplier', id);
     }
     else if (table_name == 'boms') {
-      updateBomInfo(id);
+      updateInfoWindow('bom', id);
     }
 
   });
@@ -982,7 +977,7 @@ export function assembleBoms(selectedRows, ids) {
           // console.log(r);
 
           $('#mBomAssembly').modal('hide');     // Hide Modal
-          updateBomInfo(ids[ids.length - 1]);   // Update BOM info window with last BOM ID in array
+          updateInfoWindow('bom', ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
           //TODO: Also select in table
         }
         else if (r.status === 'permission_requested') {
@@ -1076,7 +1071,7 @@ function continueAnyway(r, ids, token) {
         $('#btnAssembleBOMs').attr('disabled', false);
         $(this).modal('dispose');
       }).modal('hide');
-      updateBomInfo(ids[ids.length - 1]);     // Update BOM info with last BOM ID in array
+      updateInfoWindow('bom', ids[ids.length - 1]) // Update BOM info with last BOM ID in array
       // $('#mBomAssembly').modal('dispose'); // Hide Modal
     },
     error: function (xhr) {

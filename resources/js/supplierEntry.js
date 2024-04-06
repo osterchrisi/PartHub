@@ -1,7 +1,7 @@
 import {
   validateForm,
-  updateSupplierInfo,
-  removeClickListeners
+  removeClickListeners,
+  updateInfoWindow
 } from "./custom";
 
 import { rebuildSuppliersTable } from "./tables";
@@ -41,9 +41,9 @@ function addSupplierCallback() {
     success: function (response) {
       // Response contains the new 'Supplier ID'
       var supplierId = JSON.parse(response)["Supplier ID"];
-      updateSupplierInfo(supplierId);         // Update info window
-      $('#mSupplierEntry').modal('hide');     // Hide modal
-      removeClickListeners('#addSupplier');   // Remove click listener from Add Supplier button
+      updateInfoWindow('supplier', supplierId);         // Update info window
+      $('#mSupplierEntry').modal('hide');               // Hide modal
+      removeClickListeners('#addSupplier');             // Remove click listener from Add Supplier button
 
       // Rebuild suppliers table and select new row
       var queryString = window.location.search;

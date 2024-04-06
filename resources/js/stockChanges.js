@@ -1,7 +1,7 @@
 import {
     removeClickListeners,
     validateForm,
-    updatePartsInfo
+    updateInfoWindow
 } from './custom'
 
 /**
@@ -151,8 +151,7 @@ function callStockChangingScript(stockChanges, pid) {
 
             if (r.status === 'success') {
                 //* Do the normal thing here, all requested stock available
-                updatePartsInfo(pid);
-
+                updateInfoWindow('part', pid);
                 // Update 'Total Stock' in parts table
                 var new_stock_level = r.result[r.result.length -1].new_total_stock;
                 var $cell = $('tr.selected-last td[data-column="total_stock"]');
@@ -237,7 +236,7 @@ function changeStockAnywayClickListener(r, pid, token) {
                 }).modal('hide');
                 //TODO: This can't work here (not giving any ids yet like in BOMs)
                 // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
-                updatePartsInfo(pid);
+                updateInfoWindow('part', pid)
             },
             error: function (xhr) {
                 // Handle the error

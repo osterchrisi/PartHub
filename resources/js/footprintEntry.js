@@ -1,7 +1,7 @@
 import {
   validateForm,
-  updateFootprintInfo,
-  removeClickListeners
+  removeClickListeners,
+  updateInfoWindow
 } from "./custom";
 
 import { rebuildFootprintsTable } from "./tables";
@@ -44,9 +44,9 @@ function addFootprintCallback() {
     success: function (response) {
       // Response contains the new 'Footprint ID'
       var footprintId = JSON.parse(response)["Footprint ID"];
-      updateFootprintInfo(footprintId);       // Update info window
-      $('#mFootprintEntry').modal('hide');    // Hide modal
-      removeClickListeners('#addFootprint');  // Remove click listener from Add Footprint button
+      updateInfoWindow('footprint', footprintId);       // Update info window
+      $('#mFootprintEntry').modal('hide');              // Hide modal
+      removeClickListeners('#addFootprint');            // Remove click listener from Add Footprint button
 
       // Rebuild footprints table and select new row
       var queryString = window.location.search;
