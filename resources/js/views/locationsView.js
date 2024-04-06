@@ -28,8 +28,6 @@ export function initializeLocationsView() {
     attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);
 
 
-    // sendFormOnDropdownChange();
-
     // Experimental ajax search
     // $('#search').on("keyup input", function() {
     //     /* Get input value on change */

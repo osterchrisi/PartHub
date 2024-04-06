@@ -40,7 +40,7 @@ class PartMeta extends Model
         }
     }
 
-    public static function getPartMetaById(meta_id)
+    public static function getPartMetaById($meta_id)
     {
         return self::find($meta_id);
     }

@@ -40,10 +40,6 @@ export function initializeBomsView() {
     });
 
 
-    // fromStockLocationDropdown('bomAssembleLocationDiv'
-    // , <?php echo json_encode($locations); ?>
-    // );
-    // sendFormOnDropdownChange();
     // Experimental ajax search
     $('#search').on("keyup input", function () {
         /* Get input value on change */
