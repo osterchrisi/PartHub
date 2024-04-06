@@ -9,6 +9,7 @@ use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatabaseServiceController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ImageController;
 use App\Services\DatabaseService;
 use App\Http\Controllers\Auth\DemoLoginController;
 use App\Models\User;
@@ -117,6 +118,9 @@ Route::get('/stocklevels', function () {
     return StockLevelController::index(335);
 })
     ->middleware(['auth', 'verified']);
+
+//* Image Route
+Route::post('/upload-image/{type}', [ImageController::class, 'upload']);
 
 //* Standalone Pages Routes
 Route::get('/pricing', function () {
