@@ -57,19 +57,6 @@ export function removeClickListeners(id) {
 }
 
 /**
- * Send form "search_form" upon changing the results per page dropdown "resultspp"
- */
-function sendFormOnDropdownChange() {
-    var dropdown = document.getElementById("resultspp");
-    dropdown.addEventListener("change", function () {
-        var form = document.getElementById("search_form");
-        form.submit();
-    });
-};
-
-
-
-/**
  * Load the contents of stockModals page, pass the id and replace HTML in modal
  * upon clicking a row in the parts table
  * @param {int} id The part ID for which to update the stock modal content
