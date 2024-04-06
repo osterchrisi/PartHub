@@ -119,8 +119,11 @@ Route::get('/stocklevels', function () {
 })
     ->middleware(['auth', 'verified']);
 
-//* Image Route
-Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
+//* Image Controller
+Route::controller(FootprintController::class)->group(function () {
+    Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
+    Route::get('/part/{type}/{id}/images', [ImageController::class, 'getImagesByTypeAndId'])->name('part.images');
+});
 
 //* Standalone Pages Routes
 Route::get('/pricing', function () {

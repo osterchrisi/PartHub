@@ -61,4 +61,15 @@ class ImageController extends Controller
 
         return response()->json(['success' => 'Image uploaded successfully']);
     }
+
+    public function getImagesByTypeAndId($type, $id)
+    {
+        // Retrieve images associated with the part ID
+        $images = Image::where('associated_id', $id)
+            ->where('type', $type)
+            ->get();
+
+        return response()->json($images);
+    }
+
 }

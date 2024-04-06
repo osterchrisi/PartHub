@@ -50,22 +50,25 @@
             <h5>Datasheet:</h5>
             <br>
             <h5>Image:</h5>
+            <div id="imageContainer"></div>
             <br>
             <div class="container px-0">
                 <div class="row">
                     <div class="col">
                         <div class="card">
                             <div class="card-header">Upload Image</div>
-            
+
                             <div class="card-body">
-                                <form action="{{ route('upload-image', ['type' => 'part', 'id' => $part['part_id']]) }}" method="POST" enctype="multipart/form-data">
+                                <form
+                                    action="{{ route('upload-image', ['type' => 'part', 'id' => $part['part_id']]) }}"
+                                    method="POST" enctype="multipart/form-data">
                                     @csrf
-            
+
                                     <div class="mb-3">
                                         <label for="image" class="form-label form-label-sm">Select Image</label>
                                         <input type="file" class="form-control" id="image" name="image">
                                     </div>
-            
+
                                     <button type="submit" class="btn btn-sm btn-primary">Upload</button>
                                 </form>
                             </div>
@@ -83,3 +86,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Fetch images associated with the given type and ID
+
+    function fetchImages(type, id) {
+        $.ajax({
+            url: "{{ route('part.images', ['id' => ':id', 'type' => ':type']) }}".replace(':id', id).replace(':type', type),
+            type: 'GET',
+            data: {
+                type: type,
+                id: id
+            },
+            success: function(response) {
+                // Check if images exist
+                if (response.length > 0) {
+                    // Loop through images and append them to a container
+                    response.forEach(function(image) {
+                        $('#imageContainer').append('<img src="' + image.filename +
+                            '" alt="Image">');
+                    });
+                }
+            }
+        });
+    }
+
+    // Call fetchImages function with the current part type and ID
+    var currentPartType = "part"; // Change this to the appropriate type
+    var currentPartId = {{ $part['part_id'] }};
+    fetchImages(currentPartType, currentPartId);
+</script>
