@@ -120,7 +120,7 @@ Route::get('/stocklevels', function () {
     ->middleware(['auth', 'verified']);
 
 //* Image Route
-Route::post('/upload-image/{type}', [ImageController::class, 'upload']);
+Route::post('/upload-image/{type}', [ImageController::class, 'upload'])->name('upload-image');
 
 //* Standalone Pages Routes
 Route::get('/pricing', function () {
@@ -172,4 +172,9 @@ Route::get('/demo-login', [DemoLoginController::class, 'login'])->name('demo.log
 Route::get('/preview-email', function () {
     $user = User::first();
     return new App\Mail\WelcomeEmail($user);
+});
+
+// For testing views
+Route::get('/image-testing', function () {
+    return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });
