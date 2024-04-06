@@ -120,7 +120,7 @@ Route::get('/stocklevels', function () {
     ->middleware(['auth', 'verified']);
 
 //* Image Route
-Route::post('/upload-image/{type}', [ImageController::class, 'upload'])->name('upload-image');
+Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
 
 //* Standalone Pages Routes
 Route::get('/pricing', function () {

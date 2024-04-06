@@ -7,7 +7,7 @@ use App\Models\Image;
 
 class ImageController extends Controller
 {
-    public function upload(Request $request, $type)
+    public function upload(Request $request, $type, $id)
     {
         // dd($request);
         // Validate the request
@@ -17,7 +17,7 @@ class ImageController extends Controller
 
         // Store the image
         $image = $request->file('image');
-        
+
         // Retrieve the original filename
         $originalFilename = $image->getClientOriginalName();
 
@@ -45,8 +45,9 @@ class ImageController extends Controller
         // Save image details to database
         $imageModel = new Image();
         $imageModel->filename = $directory . '/' . $imageName;
-        $imageModel->image_owner_u_id = $user_id; // Save user ID with image if needed
-        $imageModel->type = $type; // Save the type of entity
+        $imageModel->image_owner_u_id = $user_id; // User that owns this image / uploaded it
+        $imageModel->type = $type; // Type = part, location, ...
+        $imageModel->associated_id = $id; // ID of the entity
         $imageModel->save();
 
         return response()->json(['success' => 'Image uploaded successfully']);

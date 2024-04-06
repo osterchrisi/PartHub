@@ -50,6 +50,29 @@
             <h5>Datasheet:</h5>
             <br>
             <h5>Image:</h5>
+            <br>
+            <div class="container px-0">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">Upload Image</div>
+            
+                            <div class="card-body">
+                                <form action="{{ route('upload-image', ['type' => 'part', 'id' => $part['part_id']]) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+            
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label form-label-sm">Select Image</label>
+                                        <input type="file" class="form-control" id="image" name="image">
+                                    </div>
+            
+                                    <button type="submit" class="btn btn-sm btn-primary">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
         {{-- Stock History Tab --}}
