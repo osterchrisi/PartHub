@@ -32,7 +32,7 @@ class ImageController extends Controller
         $user_id = auth()->id();
 
         // Define the directory path based on the type of entity
-        $directory = 'images/' . $type . '/' . $user_id;
+        $directory = 'images/' . $type . '/' . $user_id . '/' . $id;
 
         // Create the directory if it doesn't exist
         if (!file_exists(public_path($directory))) {
