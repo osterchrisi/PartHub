@@ -122,7 +122,7 @@ Route::get('/stocklevels', function () {
 //* Image Controller
 Route::controller(FootprintController::class)->group(function () {
     Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
-    Route::get('/part/{type}/{id}/images', [ImageController::class, 'getImagesByTypeAndId'])->name('part.images');
+    Route::get('/images/{type}/{id}', [ImageController::class, 'getImagesByTypeAndId'])->name('part.images');
 });
 
 //* Standalone Pages Routes

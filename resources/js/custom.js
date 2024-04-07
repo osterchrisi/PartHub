@@ -338,3 +338,20 @@ export function updateInfoWindow(type, id) {
         }
     });
 }
+
+export function fetchImages(type, id) {
+    $.ajax({
+        url: `/images/${type}/${id}`,
+        type: 'GET',
+        success: function(response) {
+            // Check if images exist
+            if (response.length > 0) {
+                // Loop through images and append them to a container
+                response.forEach(function(image) {
+                    $('#imageContainer').append('<img src="' + image.filename +
+                        '" alt="Image">');
+                });
+            }
+        }
+    });
+}

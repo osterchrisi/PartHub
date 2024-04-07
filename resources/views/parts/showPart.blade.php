@@ -86,33 +86,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    // Fetch images associated with the given type and ID
-
-    function fetchImages(type, id) {
-        $.ajax({
-            url: "{{ route('part.images', ['id' => ':id', 'type' => ':type']) }}".replace(':id', id).replace(':type', type),
-            type: 'GET',
-            data: {
-                type: type,
-                id: id
-            },
-            success: function(response) {
-                // Check if images exist
-                if (response.length > 0) {
-                    // Loop through images and append them to a container
-                    response.forEach(function(image) {
-                        $('#imageContainer').append('<img src="' + image.filename +
-                            '" alt="Image">');
-                    });
-                }
-            }
-        });
-    }
-
-    // Call fetchImages function with the current part type and ID
-    var currentPartType = "part"; // Change this to the appropriate type
-    var currentPartId = {{ $part['part_id'] }};
-    fetchImages(currentPartType, currentPartId);
-</script>

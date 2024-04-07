@@ -1,6 +1,7 @@
 import {
     loadActiveTab,
-    addActiveTabEventListeners
+    addActiveTabEventListeners,
+    fetchImages
 } from './custom';
 
 import {
@@ -44,4 +45,8 @@ export function initializeShowPart(part_id) {
             // console.log(error);
         }
     })
+
+    var currentPartType = "part"; // Change this to the appropriate type
+    var currentPartId = part_id;
+    fetchImages(currentPartType, currentPartId);
 };
