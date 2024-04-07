@@ -49,14 +49,14 @@
             <br>
             <h5>Datasheet:</h5>
             <br>
-            <h5>Image:</h5>
+            <h5>Images:</h5>
             <div id="imageContainer"></div>
             <br>
             <div class="container px-0">
-                <div class="row">
+                <div class="row ">
                     <div class="col">
                         <div class="card">
-                            <div class="card-header">Upload Image</div>
+                            <div class="card-header">Upload Images</div>
 
                             <div class="card-body">
                                 <form

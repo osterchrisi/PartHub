@@ -357,7 +357,7 @@ export function fetchImages(type, id) {
                     var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
 
                     // Append a link to the real image
-                    $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>');
+                    $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>&nbsp;');
 
                     // Initialize Bootstrap 5 Lightbox on all thumbnails
                     document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
