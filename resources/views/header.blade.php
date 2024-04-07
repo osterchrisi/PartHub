@@ -68,6 +68,9 @@
     <!-- Bootstrap Table Cookie to remember table state -->
     <script src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
+    <!-- Lightbox 2 for Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
+
     <!-- Custom JS and CSS -->
     @vite(['resources/js/app.js'])
     @vite(['resources/css/custom.css'])

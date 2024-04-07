@@ -5,6 +5,8 @@ import { initializeShowLocation } from "./showLocation";
 import { initializeShowCategory } from "./showCategory";
 import { initializeShowSupplier } from "./showSupplier";
 
+import Lightbox from 'bs5-lightbox';
+
 /**
  * Focus the Part Name field in the part entry modal after showing
  * @return void
@@ -343,11 +345,11 @@ export function fetchImages(type, id) {
     $.ajax({
         url: `/images/${type}/${id}`,
         type: 'GET',
-        success: function(response) {
+        success: function (response) {
             // Check if images exist
             if (response.length > 0) {
                 // Loop through images and append them to a container
-                response.forEach(function(image) {
+                response.forEach(function (image) {
                     // Extract the file name from the full path
                     var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
@@ -355,7 +357,10 @@ export function fetchImages(type, id) {
                     var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
 
                     // Append a link to the real image
-                    $('#imageContainer').append('<a href="' + image.filename + '" target="_blank"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>');
+                    $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>');
+
+                    // Initialize Bootstrap 5 Lightbox on all thumbnails
+                    document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
                 });
             }
         }
