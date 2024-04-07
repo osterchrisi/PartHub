@@ -35,8 +35,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
-
-
     <!-- Custom Bootstrap Theme-->
     <!-- <link href="/PartHub/assets/scss/quartz-bootstrap.min.css" rel="stylesheet"> -->
     <!-- OG Bootstrap Theme-->

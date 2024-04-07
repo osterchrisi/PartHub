@@ -18,7 +18,8 @@
         data-parent-id-field="parent_category" data-tree-show-field="category_name" data-id-field="category_id">
         <thead>
             <tr>
-                <th data-field="category_name">Category</th>
+                <th data-field="category_edit">Edit</th>
+                <th data-field="category_name">Categories <button type="button" class="btn btn-sm btn-outline-primary" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;" id="cat-edit-btn">Edit</th>
                 <th data-field="category_id" data-visible="false" style="display: none;">id</th>
                 <th data-field="parent_category" data-visible="false" style="display: none;">parent_id</th>
             </tr>
@@ -26,6 +27,7 @@
         <tbody>
             @foreach ($categories as $category)
                 <tr data-parent-id="{{ $category->parent_category }}" data-id="{{ $category->category_id }}" >
+                    <td><i class="fas fa-s fa-plus"> <i class="fas fa-s fa-minus"> <i class="fas fa-s fa-pen"> <i class="fas fa-s fa-trash"></td>
                     <td>{{ $category->category_name }}</td>
                     <td style="display: none;">{{ $category->category_id }}</td>
                     <td style="display: none;">{{ $category->parent_category }}</td>

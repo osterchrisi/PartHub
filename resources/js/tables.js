@@ -99,8 +99,13 @@ export function bootstrapCategoriesListTable() {
     rootParentId: '0',
     onPostBody: function () {
       $table.treegrid({
-        treeColumn: 0
-      })
+        treeColumn: 1
+      });
+      $('#cat-edit-btn').on('click', function () {
+        console.log("edit");
+        var columnIndex = 0;
+        $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
+      });
     }
   });
 };
