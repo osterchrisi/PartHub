@@ -348,10 +348,17 @@ export function fetchImages(type, id) {
             if (response.length > 0) {
                 // Loop through images and append them to a container
                 response.forEach(function(image) {
-                    $('#imageContainer').append('<img src="' + image.filename +
-                        '" alt="Image">');
+                    // Extract the file name from the full path
+                    var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+
+                    // Construct the thumbnail path by replacing the file name and swapping extension to .webp
+                    var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
+
+                    // Append a link to the real image
+                    $('#imageContainer').append('<a href="' + image.filename + '" target="_blank"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>');
                 });
             }
         }
     });
 }
+
