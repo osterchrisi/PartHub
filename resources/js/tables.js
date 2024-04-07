@@ -97,14 +97,44 @@ export function bootstrapCategoriesListTable() {
   const $table = $('#categories_list_table');
   $table.bootstrapTable({
     rootParentId: '0',
+    onResize: function (column, width, isResizing) {
+      console.log("resizing");
+      // Check if the column width is less than the minimum width
+      var minWidth = parseInt(column.attr('data-min-width')) || 0;
+      if (width < minWidth) {
+        // If the column width is less than the minimum, set it to the minimum width
+        $('#categories_list_table').bootstrapTable('resize', {
+          field: column.attr('data-field'),
+          width: minWidth
+        });
+      }
+    },
     onPostBody: function () {
+      // Treegrid
       $table.treegrid({
         treeColumn: 1
       });
+
+      // Edit toggle button click listener
       $('#cat-edit-btn').on('click', function () {
         console.log("edit");
         var columnIndex = 0;
         $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
+      });
+
+      // Attach click listeners to edit buttons
+      $('#categories_list_table').on('click', 'tbody .edit-icon', function () {
+        // Get the parent <tr> element
+        var $row = $(this).closest('tr');
+        // Extract the data attributes from the <tr> element
+        var parentId = $row.data('parent-id');
+        var categoryId = $row.data('id');
+        // Extract the action from the clicked icon's data attribute
+        var action = $(this).data('action');
+        // Log the clicked icon, its action, and its attributes
+        console.log('Clicked icon:', action);
+        console.log('Parent ID:', parentId);
+        console.log('Category ID:', categoryId);
       });
     }
   });
@@ -1091,63 +1121,3 @@ function continueAnyway(r, ids, token) {
     }
   });
 }
-
-//* Not using any of the code below this point, it's for appending a part row. Maybe useful later...
-//* You need this button for it: 
-//* <button class="btn btn-primary" name="AddNew" id="AddNew" type="button">New Entry</button>
-// Click listener for the New Entry button
-$(document).ready(function () {
-  $('#AddNew').click(function () {
-    $.ajax({
-      type: "POST",
-      url: "../includes/create-part.php",
-      dataType: "json",
-      success: function (response) {
-        // console.log("Success");
-        var newId = response.id;
-        // console.log("new parts id: ", newId);
-        createNewRow(newId);
-      }
-    });
-  });
-});
-
-// Prepend new row to parts table
-function createNewRow(part_id) {
-  var $table = $('#parts_table');
-  var newRowHtml = '<tr data-id="' + part_id + '">' +
-    '<td><input type="text" class="form-control" name="name" value="" required></td>' +
-    '<td><input type="text" class="form-control" name="email" value=""></td>' +
-    '<td><input type="text" class="form-control" name="phone" value=""></td>' +
-    '<td><input type="text" class="form-control" name="phone" value=""></td>' +
-    '<td><input type="text" class="form-control" name="phone" value=""></td>' +
-    '<td><input type="text" class="form-control" name="phone" value=""></td>' +
-    '<td><input type="text" class="form-control" name="phone" value=""></td>' +
-    '<td><button class="btn btn-sm btn-success save-new-row">OK</button><button class="btn btn-sm btn-danger cancel-new-row">Cncl</button></td>' +
-    '</tr>';
-  $table.prepend(newRowHtml);
-}
-
-// Placeholder function for inserting new row into DB
-$('.save-new-row').click(function () {
-  var name = $(this).closest('tr').find('input[name="name"]').val();
-  var email = $(this).closest('tr').find('input[name="email"]').val();
-  var phone = $(this).closest('tr').find('input[name="phone"]').val();
-  var data = {
-    'name': name,
-    'email': email,
-    'phone': phone
-  };
-  $.ajax({
-    url: 'insert.php',
-    type: 'POST',
-    data: data,
-    success: function (response) {
-      // Refresh the table
-      $('#parts_table').bootstrapTable('refresh');
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(textStatus, errorThrown);
-    }
-  });
-});
