@@ -348,22 +348,30 @@ export function fetchImages(type, id) {
         success: function (response) {
             // Check if images exist
             if (response.length > 0) {
-                // Loop through images and append them to a container
-                response.forEach(function (image) {
-                    // Extract the file name from the full path
-                    var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
-
-                    // Construct the thumbnail path by replacing the file name and swapping extension to .webp
-                    var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
-
-                    // Append a link to the real image
-                    $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>&nbsp;');
-
-                    // Initialize Bootstrap 5 Lightbox on all thumbnails
-                    document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
-                });
+                updateImages(response);
+            }
+            else {
+                exit;
             }
         }
     });
+}
+
+export function updateImages(response) {
+    $('#imageContainer').empty();
+    response.forEach(function (image) {
+        // Extract the file name from the full path
+        var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+
+        // Construct the thumbnail path by replacing the file name and swapping extension to .webp
+        var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
+
+        // Append a link to the real image
+        $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox" data-gallery="1"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>&nbsp;');
+
+        // Initialize Bootstrap 5 Lightbox on all thumbnails
+        document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
+    });
+
 }
 

@@ -61,12 +61,13 @@
                             <div class="card-body">
                                 <form
                                     action="{{ route('upload-image', ['type' => 'part', 'id' => $part['part_id']]) }}"
-                                    method="POST" enctype="multipart/form-data">
+                                    method="POST" enctype="multipart/form-data"
+                                    id="imageUploadForm">
                                     @csrf
 
                                     <div class="mb-3">
                                         <label for="image" class="form-label form-label-sm">Select Image</label>
-                                        <input type="file" class="form-control" id="image" name="image">
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
                                     </div>
 
                                     <button type="submit" class="btn btn-sm btn-primary">Upload</button>

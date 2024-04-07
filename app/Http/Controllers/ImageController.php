@@ -71,6 +71,7 @@ class ImageController extends Controller
         // Retrieve images associated with the part ID
         $images = Image::where('associated_id', $id)
             ->where('type', $type)
+            ->where('image_owner_u_id', auth()->id())
             ->get();
 
         return response()->json($images);
