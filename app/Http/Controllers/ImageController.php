@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Image;
+use App\Services\ImageService;
 
 class ImageController extends Controller
 {
@@ -37,7 +38,8 @@ class ImageController extends Controller
         $sanitizedFilename = preg_replace("/[^a-zA-Z0-9_.]/", "", $filenameWithoutExtension);
 
         // Generate a unique filename using the sanitized original filename and current timestamp
-        $imageName = $sanitizedFilename . '_' . time() . '.' . $image->extension();
+        $imageNameWithoutExtension = $sanitizedFilename . '_' . time();
+        $imageName = $imageNameWithoutExtension . '.' . $image->extension();
         $user_id = auth()->id();
 
         // Define the directory path based on the type of entity
@@ -58,6 +60,8 @@ class ImageController extends Controller
         $imageModel->type = $type;                  // Type = part, location, ...
         $imageModel->associated_id = $id;           // ID of the entity
         $imageModel->save();
+
+        ImageService::createThumbnail($directory, $imageName, $imageNameWithoutExtension);
 
         return response()->json(['success' => 'Image uploaded successfully']);
     }
