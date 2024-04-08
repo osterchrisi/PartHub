@@ -123,7 +123,7 @@ export function bootstrapCategoriesListTable() {
       });
 
       // Attach click listeners to edit buttons
-      $('#categories_list_table').on('click', 'tbody .edit-icon', function () {
+      $('#categories_list_table').on('click', 'tbody .edit-button', function () {
         // Get the parent <tr> element
         var $row = $(this).closest('tr');
         // Extract the data attributes from the <tr> element
