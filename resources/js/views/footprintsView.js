@@ -8,6 +8,7 @@ import {
 
 import { callFootprintEntryModal } from '../footprintEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+import { makeTableWindowResizable } from '../custom';
 
 export function initializeFootprintsView() {
     bootstrapFootprintsListTable();
@@ -16,6 +17,7 @@ export function initializeFootprintsView() {
     var $menu = $('#bom_list_table_menu');
     inlineProcessing();
     bootstrapTableSmallify();
+    makeTableWindowResizable();
     defineFootprintsListTableActions($table, $menu)
 
     $('#toolbarAddButton').click(function () {

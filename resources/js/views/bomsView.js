@@ -12,6 +12,8 @@ import {
 
 import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
 
+import { makeTableWindowResizable } from '../custom';
+
 export function initializeBomsView() {
     bootstrapBomListTable();
 
@@ -20,6 +22,7 @@ export function initializeBomsView() {
     defineBomListTableActions($table, $menu);
     inlineProcessing();
     bootstrapTableSmallify();
+    makeTableWindowResizable();
 
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
     attachAssembleBomHandler('bom_list_table');
@@ -37,10 +40,6 @@ export function initializeBomsView() {
     });
 
 
-    // fromStockLocationDropdown('bomAssembleLocationDiv'
-    // , <?php echo json_encode($locations); ?>
-    // );
-    // sendFormOnDropdownChange();
     // Experimental ajax search
     $('#search').on("keyup input", function () {
         /* Get input value on change */

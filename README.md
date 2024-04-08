@@ -29,7 +29,7 @@ If you want to manage small and medium parts inventory and BOMs, **PartHub** is 
 **PartHub** is currently my personal pleasure. I'm working on a nice outline how to host this on your own server.
 
 ## Requirements
-- PHP
+- PHP 8.1 with mbstring, Image Processing, Exif, GD Image or Imagick
 - Node
 - Composer
 - SQL databse (MySQL or MariaDB)

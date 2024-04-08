@@ -1,5 +1,5 @@
 import { initializeShowBom } from "./showBom";
-import { initializeShowPart} from "./showPart";
+import { initializeShowPart } from "./showPart";
 import { initializeShowFootprint } from "./showFootprint";
 import { initializeShowLocation } from "./showLocation";
 import { initializeShowCategory } from "./showCategory";
@@ -57,45 +57,6 @@ export function removeClickListeners(id) {
 }
 
 /**
- * Send form "search_form" upon changing the results per page dropdown "resultspp"
- */
-function sendFormOnDropdownChange() {
-    var dropdown = document.getElementById("resultspp");
-    dropdown.addEventListener("change", function () {
-        var form = document.getElementById("search_form");
-        form.submit();
-    });
-};
-
-/**
- * Load the parts info window for a given part ID
- * @param {int} id The part ID for which to update the info window
- * @return void
- */
-export function updatePartsInfo(id) {
-    $.ajax({
-        url: "/part/" + id,
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-            initializeShowPart(id);
-        },
-        error: function (xhr, status, error) {
-            if (xhr.status === 401) {
-                alert("Your session expired. Please log in again.");
-                // Alternatively, show Bootstrap modal when I have time to make a nice one:
-                // $('#unauthorizedModal').modal('show');
-            } else {
-                // Handle other errors
-                console.log("Error:", error);
-            }
-        }
-    });
-}
-
-/**
  * Load the contents of stockModals page, pass the id and replace HTML in modal
  * upon clicking a row in the parts table
  * @param {int} id The part ID for which to update the stock modal content
@@ -116,146 +77,13 @@ export function updateStockModal(id) {
         }
     });
 }
-/**
- * Updates the BOM info in the info window using an AJAX request.
- * @param {number} id - The ID of the BOM to update the info for.
- * @return void
- */
-export function updateBomInfo(id) {
-    $.ajax({
-        url: '/bom/' + id,
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-            initializeShowBom();
-        },
-        error: function (xhr) {
-            if (xhr.status === 401) {
-                $('#info-window').html('Your session expired. Please login again.')
-            }
-            else {
-                // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional BOM data.');
-            }
-        }
-    });
-};
 
-/**
- * Updates the location info in the info window using an AJAX request.
- * @param {number} id - The ID of the location to update the info for.
- * @return void
- */
-export function updateLocationInfo(id) {
-    $.ajax({
-        url: '/location/' + id,
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-            initializeShowLocation();
-        },
-        error: function (xhr) {
-            if (xhr.status === 401) {
-                $('#info-window').html('Your session expired. Please login again.')
-            }
-            else {
-                // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional location data.');
-            }
-        }
-    });
-};
-
-/**
- * Updates the footprint info in the info window using an AJAX request.
- * @param {number} id - The ID of the footprint to update the info for.
- * @return void
- */
-export function updateFootprintInfo(id) {
-    $.ajax({
-        url: '/footprint/' + id,
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-            initializeShowFootprint();
-        },
-        error: function (xhr) {
-            if (xhr.status === 401) {
-                $('#info-window').html('Your session expired. Please login again.')
-            }
-            else {
-                // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional footprint data.');
-            }
-        }
-    });
-};
-
-/**
- * Updates the supplier info in the info window using an AJAX request.
- * @param {number} id - The ID of the supplier to update the info for.
- * @return void
- */
-export function updateSupplierInfo(id) {
-    $.ajax({
-        url: '/supplier/' + id,
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-            initializeShowSupplier();
-        },
-        error: function (xhr) {
-            if (xhr.status === 401) {
-                $('#info-window').html('Your session expired. Please login again.')
-            }
-            else {
-                // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional supplier data.');
-            }
-        }
-    });
-};
-
-/**
- * Updates the category info in the info window using an AJAX request.
- * @param {number} id - The ID of the category to update the info for.
- * @return void
- */
-export function updateCategoryInfo(id) {
-    $.ajax({
-        url: '/category/' + id,
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            // Replace the content of the info window with the loaded PHP page
-            $('#info-window').html(data);
-            initializeShowCategory();
-        },
-        error: function (xhr) {
-            if (xhr.status === 401) {
-                $('#info-window').html('Your session expired. Please login again.')
-            }
-            else {
-                // Display an error message if the PHP page failed to load
-                $('#info-window').html('Failed to load additional category data.');
-            }
-        }
-    });
-};
 
 /**
  * Make the table-window and the info-window resizable
  * @return void 
  */
-$(function () {
+export function makeTableWindowResizable() {
     $('#table-window').resizable({
         handles: 'e',
         resize: function () {
@@ -287,7 +115,7 @@ $(function () {
             $('#bomsMegaContainer').width(infoWidth);
         }
     });
-});
+};
 
 /**
  * 'Selectize' the category multi select, prepare values and append to the hidden input field
@@ -464,3 +292,84 @@ function showDeletionConfirmationToast(numElements) {
     toast.show();
 
 }
+
+/**
+ * Updates the info window with data fetched via AJAX request based on the provided type and ID.
+ * @param {string} type - The type of data to update ('part', 'bom', 'location', 'footprint', 'supplier', 'category').
+ * @param {number} id - The ID of the data to update the info for.
+ * @return {void}
+ */
+export function updateInfoWindow(type, id) {
+    $.ajax({
+        url: `/${type}/${id}`,
+        type: 'GET',
+        data: {},
+        success: function (data) {
+            $('#info-window').html(data);
+            switch (type) {
+                case 'part':
+                    initializeShowPart(id);
+                    break;
+                case 'bom':
+                    initializeShowBom();
+                    break;
+                case 'location':
+                    initializeShowLocation();
+                    break;
+                case 'footprint':
+                    initializeShowFootprint();
+                    break;
+                case 'supplier':
+                    initializeShowSupplier();
+                    break;
+                case 'category':
+                    initializeShowCategory();
+                    break;
+                default:
+                    break;
+            }
+        },
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                $('#info-window').html('Your session expired. Please login again.')
+            } else {
+                $('#info-window').html(`Failed to load additional ${type} data.`);
+            }
+        }
+    });
+}
+
+export function fetchImages(type, id) {
+    $.ajax({
+        url: `/images/${type}/${id}`,
+        type: 'GET',
+        success: function (response) {
+            // Check if images exist
+            if (response.length > 0) {
+                updateImages(response);
+            }
+            else {
+                exit;
+            }
+        }
+    });
+}
+
+export function updateImages(response) {
+    $('#imageContainer').empty();
+    response.forEach(function (image) {
+        // Extract the file name from the full path
+        var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+
+        // Construct the thumbnail path by replacing the file name and swapping extension to .webp
+        var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
+
+        // Append a link to the real image
+        $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox" data-gallery="1"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>&nbsp;');
+
+        // Initialize Bootstrap 5 Lightbox on all thumbnails
+        document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
+    });
+
+}
+

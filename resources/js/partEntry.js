@@ -1,7 +1,7 @@
 import {
   validateForm,
-  updatePartsInfo,
-  removeClickListeners
+  removeClickListeners,
+  updateInfoWindow
 } from "./custom";
 
 import { rebuildPartsTable } from "./tables";
@@ -60,7 +60,7 @@ function addPartCallback() {
     success: function (response) {
       // Response contains 'Part ID', 'Stock Entry ID' and 'Stock Level History ID'
       var partId = JSON.parse(response)["Part ID"];
-      updatePartsInfo(partId);
+      updateInfoWindow('part', partId);
       $('#mPartEntry').modal('hide');   // Hide modal
       removeClickListeners('#addPart'); // Remove click listener from Add Part button
 

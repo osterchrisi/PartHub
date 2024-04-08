@@ -13,14 +13,22 @@ class DemoLoginController extends Controller
 {
     public function login(Request $request)
     {
-        $demoUser = User::find(1);
+        // Live environment
+        if (env('APP_ENV') == 'live') {
+            // $redirectUrl = $request->getScheme() . '://demo.parthub.online';
 
-        // Log in the user
-        Auth::login($demoUser);
+            return redirect('https://demo.parthub.online/demo-login'); // Redirect to the demo subdomain
+        }
+        // Demo environment
+        else {
+            $demoUser = User::find(1);
 
-        // Need this to show the welcome message properly
-        Session::put('loggedIn', true);
-
-        return redirect('/'); // Redirect to the desired page after successful login
+            // Log in the user
+            Auth::login($demoUser);
+    
+            // Need this to show the welcome message properly
+            Session::put('loggedIn', true);
+            return redirect('/'); // Redirect to the desired page after successful login
+        }
     }
 }

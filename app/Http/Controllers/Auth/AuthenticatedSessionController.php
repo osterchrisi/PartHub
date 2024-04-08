@@ -15,9 +15,17 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    // public function create(): View
+    public function create()
     {
-        return view('auth.login', ['title' => 'Login', 'view' => 'login']);
+        //TODO: Das geht wahrscheinlich sauberer...
+        if (env('APP_ENV') == 'demo') {
+            return redirect('https://parthub.online/login');
+        }
+        else {
+            return view('auth.login', ['title' => 'Login', 'view' => 'login']);
+        }
+        
     }
 
     /**

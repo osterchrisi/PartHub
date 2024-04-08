@@ -1,7 +1,7 @@
 import {
   validateForm,
-  updateLocationInfo,
-  removeClickListeners
+  removeClickListeners,
+  updateInfoWindow
 } from "./custom";
 
 import { rebuildLocationsTable } from "./tables";
@@ -44,9 +44,9 @@ function addLocationCallback() {
     success: function (response) {
       // Response contains the new 'Location ID'
       var locationId = JSON.parse(response)["Location ID"];
-      updateLocationInfo(locationId);       // Update info window
-      $('#mLocationEntry').modal('hide');   // Hide modal
-      removeClickListeners('#addLocation'); // Remove click listener from Add Location button
+      updateInfoWindow('location', locationId);       // Update info window
+      $('#mLocationEntry').modal('hide');             // Hide modal
+      removeClickListeners('#addLocation');           // Remove click listener from Add Location button
 
       // Rebuild locations table and select new row
       var queryString = window.location.search;

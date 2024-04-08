@@ -9,6 +9,7 @@ use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatabaseServiceController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ImageController;
 use App\Services\DatabaseService;
 use App\Http\Controllers\Auth\DemoLoginController;
 use App\Models\User;
@@ -118,6 +119,12 @@ Route::get('/stocklevels', function () {
 })
     ->middleware(['auth', 'verified']);
 
+//* Image Controller
+Route::controller(FootprintController::class)->group(function () {
+    Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
+    Route::get('/images/{type}/{id}', [ImageController::class, 'getImagesByTypeAndId'])->name('part.images');
+});
+
 //* Standalone Pages Routes
 Route::get('/pricing', function () {
     return view('pricing', ['title' => 'Pricing', 'view' => 'pricing']);
@@ -128,7 +135,13 @@ Route::get('/pricing', function () {
 Route::get('/signup', function () {
     //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
     //! Passwort darf keine Leerzeichen enthalten
-    return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
+    //TODO: Das geht wahrscheinlich sauberer...
+    if (env('APP_ENV') == 'demo') {
+        return redirect('https://parthub.online/signup');
+    }
+    else {
+        return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
+    }
 })
     ->name('signup');
 
@@ -162,4 +175,9 @@ Route::get('/demo-login', [DemoLoginController::class, 'login'])->name('demo.log
 Route::get('/preview-email', function () {
     $user = User::first();
     return new App\Mail\WelcomeEmail($user);
+});
+
+// For testing views
+Route::get('/image-testing', function () {
+    return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });

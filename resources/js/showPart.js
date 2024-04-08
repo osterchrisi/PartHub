@@ -1,6 +1,7 @@
 import {
     loadActiveTab,
-    addActiveTabEventListeners
+    addActiveTabEventListeners,
+    fetchImages
 } from './custom';
 
 import {
@@ -44,4 +45,35 @@ export function initializeShowPart(part_id) {
             // console.log(error);
         }
     })
+
+    var currentPartType = "part"; // Change this to the appropriate type
+    var currentPartId = part_id;
+    fetchImages(currentPartType, currentPartId);
+
+    // Handle form submission
+    $('#imageUploadForm').submit(function (event) {
+        // Prevent the default form submission
+        event.preventDefault();
+
+        // Serialize the form data
+        var formData = new FormData(this);
+
+        // Submit the form data via AJAX
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log(response);
+                fetchImages(currentPartType, currentPartId);
+            },
+            error: function (xhr, status, error) {
+                // Handle any errors that occur during the upload process
+                console.error(error);
+            }
+        });
+    });
+
 };

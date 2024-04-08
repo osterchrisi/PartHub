@@ -1,5 +1,7 @@
 //! This is OG PartHub code
 
+import { updateInfoWindow } from "./custom";
+
 $(document).ready(function () {
     toogleUploadButton;
     checkBomName;
@@ -61,7 +63,7 @@ function addBomManually() {
         function (response) {
             // Extract 'BOM ID' from response
             var bomId = JSON.parse(response)["BOM ID"];
-            updateBomInfo(bomId);
+            updateInfoWindow('bom', bomId);
 
             // Rebuild BOM list table and select new row
             var queryString = window.location.search;

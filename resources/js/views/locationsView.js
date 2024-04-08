@@ -8,6 +8,7 @@ import {
 
 import { callLocationEntryModal } from '../locationEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+import { makeTableWindowResizable } from '../custom';
 
 
 export function initializeLocationsView() {
@@ -18,6 +19,7 @@ export function initializeLocationsView() {
     inlineProcessing();
     bootstrapTableSmallify();
     defineLocationsListTableActions($table, $menu)
+    makeTableWindowResizable();
 
     $('#toolbarAddButton').click(function () {
         callLocationEntryModal();
@@ -25,8 +27,6 @@ export function initializeLocationsView() {
 
     attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);
 
-
-    // sendFormOnDropdownChange();
 
     // Experimental ajax search
     // $('#search').on("keyup input", function() {

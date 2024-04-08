@@ -47,7 +47,7 @@
         </div>
         <div class="toast-body">
             <div class="text-success m-0 p-1">
-            Successfully deleted <span id="numDeletedItems"></span> row(s).
+                Successfully deleted <span id="numDeletedItems"></span> row(s).
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StockMovementOccured;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Part;
@@ -248,7 +249,7 @@ class PartsController extends Controller
             $requested_change_stock_levels = $this->getRelevantStockLevelsForChange($requested_change_details);
 
             // Collect changes to be made
-            $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock);
+            $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock);
 
             // Append array of collected changes to the main arrays
             $changes[] = $result['changes'];
@@ -258,7 +259,7 @@ class PartsController extends Controller
 
         }
 
-        //* Stock shortage, inform user and exit
+        //* Stock shortage (i.e. entries in the negative_stock array), inform user and exit
         if (!empty($negative_stock)) {
             $this->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
@@ -316,7 +317,16 @@ class PartsController extends Controller
         );
     }
 
-    private function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $changes, $negative_stock)
+    /**
+     * Calculates resulting stock levels from requested stock changes. If stock level would go negative, set status 'permission_required',
+     * otherwise set status 'gtg' (good to go).
+     *
+     * @param array $requested_change_details The array that came back from parseRequestedChangeDetails, containing the requested change for a part / stock level
+     * @param array $requested_change_stock_levels The array that came back from getRelevantStockLevelsForChange, holding current stock levels in to and from locations
+     * @param array $negative_stock An empty array to be populated with details of a change resulting in negative stock
+     * @return array
+     */
+    private function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock)
     {
         $changes = $requested_change_details;
         $change = $requested_change_details['change'];
@@ -425,7 +435,8 @@ class PartsController extends Controller
     private function processApprovedChanges($changes)
     {
         // Get current authenticated user
-        $user_id = Auth::user()->id;
+        $user = Auth::user();
+        $user_id = $user->id;
 
         foreach ($changes as $approved_change) {
             // First extract variables
@@ -449,19 +460,27 @@ class PartsController extends Controller
             // Add Stock
             if ($change == 1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
+                $stock_level = [$part_id, $new_quantity, $to_location];
             }
             // Reduce Stock
             elseif ($change == -1) {
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
+                $stock_level = [$part_id, $new_quantity, $from_location];
+                event(new StockMovementOccured($stock_level, $user));
             }
             // Move Stock (need to create or update two entries)
             elseif ($change == 0) {
                 // First add stock in 'to location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
+                $stock_level = [$part_id, $to_quantity, $to_location];
 
                 // Then reduce stock in 'from location'
                 $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
+                $stock_level = [$part_id, $from_quantity, $from_location];
+                event(new StockMovementOccured($stock_level, $user));
             }
+
+
 
             //* Make record in Stock Level History model
             $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
@@ -470,6 +489,7 @@ class PartsController extends Controller
             $stock = StockLevel::getStockLevelsByPartID($part_id);
             $total_stock = \calculateTotalStock($stock);
 
+            //! Check what this is used for and if - in the case of moving stock - both stock_level_ids are needed
             // Add entries to the result array
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
 
