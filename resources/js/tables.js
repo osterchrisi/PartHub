@@ -88,7 +88,7 @@ export function bootstrapSuppliersListTable() {
   });
 };
 
-
+//TODO: Extract functions
 /**
  * Bootstrap the Categories table
  * @return void
