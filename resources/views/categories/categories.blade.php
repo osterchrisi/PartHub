@@ -19,7 +19,7 @@
         <thead>
             <tr>
                 <th data-field="category_edit"></th>
-                <th data-field="category_name">Categories <button type="button" class="btn btn-sm btn-outline-primary" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;" id="cat-edit-btn">Edit</th>
+                <th data-field="category_name">Categories <button type="button" class="btn btn-sm btn-outline-secondary" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;" id="cat-edit-btn">Edit</th>
                 <th data-field="category_id" data-visible="false" style="display: none;">id</th>
                 <th data-field="parent_category" data-visible="false" style="display: none;">parent_id</th>
             </tr>
