@@ -5,8 +5,6 @@ import { initializeShowLocation } from "./showLocation";
 import { initializeShowCategory } from "./showCategory";
 import { initializeShowSupplier } from "./showSupplier";
 
-import Lightbox from 'bs5-lightbox';
-
 /**
  * Focus the Part Name field in the part entry modal after showing
  * @return void
