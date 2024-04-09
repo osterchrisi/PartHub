@@ -3,11 +3,6 @@ use App\Models\User;
 use App\Models\Part;
 use App\Http\Controllers\PartsController;
 
-//! This is double (once in header already), fix this -> uncommented 13.02.2024 let's see
-// $user = optional(auth()->user());
-// $user_id = $user ? $user->id : 0;
-// $user_name = $user ? $user->name : '';
-
 // For categories dropdown
 $search_category = isset($_GET['cat']) ? $_GET['cat'] : ['all'];
 $sc = PartsController::extractCategoryIds($search_category);
