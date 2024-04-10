@@ -116,11 +116,7 @@ export function bootstrapCategoriesListTable() {
       });
 
       // Edit toggle button click listener
-      $('#cat-edit-btn').on('click', function () {
-        console.log("edit");
-        var columnIndex = 0;
-        $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
-      });
+      attachEditCategoriesButtonClickListener();
 
       // Attach click listeners to edit buttons
       $('#categories_list_table').on('click', 'tbody .edit-button', function () {
@@ -139,6 +135,17 @@ export function bootstrapCategoriesListTable() {
     }
   });
 };
+
+/**
+ * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories list (table)
+ */
+function attachEditCategoriesButtonClickListener() {
+  $('#cat-edit-btn').on('click', function () {
+    console.log("edit");
+    var columnIndex = 0;
+    $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
+  });
+}
 
 /**
  * Makes the button and pagination elements in a Bootstrap Table smaller
