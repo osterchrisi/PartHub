@@ -97,18 +97,18 @@ export function bootstrapCategoriesListTable() {
   const $table = $('#categories_list_table');
   $table.bootstrapTable({
     rootParentId: '0',
-    onResize: function (column, width, isResizing) {
-      console.log("resizing");
-      // Check if the column width is less than the minimum width
-      var minWidth = parseInt(column.attr('data-min-width')) || 0;
-      if (width < minWidth) {
-        // If the column width is less than the minimum, set it to the minimum width
-        $('#categories_list_table').bootstrapTable('resize', {
-          field: column.attr('data-field'),
-          width: minWidth
-        });
-      }
-    },
+    // onResize: function (column, width, isResizing) {
+    //   console.log("resizing");
+    //   // Check if the column width is less than the minimum width
+    //   var minWidth = parseInt(column.attr('data-min-width')) || 0;
+    //   if (width < minWidth) {
+    //     // If the column width is less than the minimum, set it to the minimum width
+    //     $('#categories_list_table').bootstrapTable('resize', {
+    //       field: column.attr('data-field'),
+    //       width: minWidth
+    //     });
+    //   }
+    // },
     onPostBody: function () {
       // Treegrid
       $table.treegrid({
@@ -142,7 +142,8 @@ export function bootstrapCategoriesListTable() {
 function attachEditCategoriesButtonClickListener() {
   $('#cat-edit-btn').on('click', function () {
     var columnIndex = 0;
-    $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
+    // $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
+    $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').toggle();
   });
 }
 
