@@ -17,7 +17,7 @@ class CategoryController extends Controller
             ->get();
 
         return view('categories.categories',
-                    ['categories' => $categories,
+                    ['categoriesForCategoriesTable' => $categories,
                     'title' => 'Categories',
                     'view' => 'categories']);
     }

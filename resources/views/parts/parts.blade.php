@@ -39,7 +39,7 @@ If the right-click menu is not on top, it won't show --}}
 
 {{-- Category Window --}}
 @section('category-window')
-    @include('parts.partsTable')
+    @include('categories.categoriesTable')
 @endsection
 
 {{-- Table Window --}}
