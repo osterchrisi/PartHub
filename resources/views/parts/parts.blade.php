@@ -37,6 +37,11 @@ If the right-click menu is not on top, it won't show --}}
     </form>
 @endsection
 
+{{-- Category Window --}}
+@section('category-window')
+    @include('parts.partsTable')
+@endsection
+
 {{-- Table Window --}}
 @section('table-window')
     @include('parts.partsTable')

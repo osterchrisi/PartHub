@@ -39,6 +39,9 @@ class PartsController extends Controller
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
         $categories = Category::availableCategories('array'); // Request as array of arrays
+        $categoriesForCategoriesTable = Category::where('part_category_owner_u_fk', $user_id)
+        ->with('children')
+        ->get();
         $footprints = Footprint::availableFootprints();
         $suppliers = Supplier::availableSuppliers();
 
@@ -66,6 +69,7 @@ class PartsController extends Controller
                 'search_column' => $search_column,
                 // These are sent to extract clear names from foreign keys for the dropdown menus in the table
                 'categories' => $categories,
+                'categoresForCategoriesTable' => $categoriesForCategoriesTable,
                 'footprints' => $footprints,
                 'suppliers' => $suppliers
             ]);
