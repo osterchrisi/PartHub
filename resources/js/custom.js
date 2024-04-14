@@ -323,9 +323,6 @@ export function fetchImages(type, id) {
             if (response.length > 0) {
                 updateImages(response);
             }
-            else {
-                exit;
-            }
         }
     });
 }
