@@ -15,11 +15,6 @@
         </div>
 
         <div class='row'>
-            {{-- Category Table Window Only--}}
-            <div class='col' id='category-window' style='max-width: 90%;'>
-                @yield('category-window')
-            </div>
-
             {{-- Table Window --}}
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 @yield('table-window')
