@@ -19,8 +19,8 @@
             @if (isset($view) && $view === 'parts')
             <div><button type="button" class="btn btn-sm btn-outline-secondary"
                 style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                id="cat-show-btn">Categories</button></div>
-                <div class='col-md-auto pe-0' id='category-window' style="display:none;">
+                id="cat-show-btn">Toggle Categories</button></div>
+                <div class='col-md-auto pe-0' id='category-window' style="display: none;">
                     @include('categories.categoriesTable')
                 </div>
             @endif
