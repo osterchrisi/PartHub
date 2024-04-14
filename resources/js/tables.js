@@ -142,17 +142,15 @@ export function bootstrapCategoriesListTable() {
 function attachEditCategoriesButtonClickListener() {
   $('#cat-edit-btn').on('click', function () {
     var columnIndex = 0;
-    // $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').toggle();
   });
 }
 
 /**
- * Attach the click listener to the "Categories" button. The button toggles the visibility of the Categories list (table)
+ * Attach the click listener to the "Toggle Categories" button. The button toggles the visibility of the Categories div in the parts view
  */
 export function attachShowCategoriesButtonClickListener() {
   $('#cat-show-btn').on('click', function () {
-    console.log("blu");
     $('#category-window').toggle();
   });
 }
