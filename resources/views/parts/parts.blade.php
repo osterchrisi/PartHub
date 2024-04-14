@@ -39,9 +39,7 @@ If the right-click menu is not on top, it won't show --}}
 
 {{-- Table Window --}}
 @section('table-window')
-    <div>
-        @include('parts.partsTable')
-    </div>
+    @include('parts.partsTable')
 @endsection
 
 {{-- Info Window --}}
