@@ -85,7 +85,7 @@ export function updateStockModal(id) {
  */
 export function makeTableWindowResizable() {
     $('#table-window').resizable({
-        handles: 'e'
+        // handles: 'e'
     });
 };
 

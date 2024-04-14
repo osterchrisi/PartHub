@@ -1,5 +1,6 @@
 import {
     bootstrapPartsTable,
+    bootstrapCategoriesListTable,
     definePartsTableActions,
     inlineProcessing,
     bootstrapTableSmallify,
@@ -25,6 +26,10 @@ export function initializePartsView() {
     var $table = $('#parts_table');
     var $menu = $('#parts_table_menu');
     definePartsTableActions($table, $menu);
+
+    bootstrapCategoriesListTable();
+    $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+
     inlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();

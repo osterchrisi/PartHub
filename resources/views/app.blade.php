@@ -15,6 +15,13 @@
         </div>
 
         <div class='row'>
+            {{-- Categories Window - only in Parts view --}}
+            @if (isset($view) && $view === 'parts')
+                <div class='col-md-auto' id='category-window'>
+                    @include('categories.categoriesTable')
+                </div>
+            @endif
+
             {{-- Table Window --}}
             <div class='col-9' id='table-window' style='max-width: 90%;'>
                 @yield('table-window')
