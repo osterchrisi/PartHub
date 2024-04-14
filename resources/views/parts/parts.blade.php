@@ -23,7 +23,7 @@ If the right-click menu is not on top, it won't show --}}
 {{-- Filter form --}}
 @section('filter-form')
     <div class="col-3" id="search-box-div">
-        <form method="get" id="search_form" action=" {{ route('parts.partsTable') }}">
+        <form method="get" id="search_form" action=" {{ route('parts') }}">
             <input type="text" class="form-control form-control-sm" id="search" name="search"
                 placeholder="Start typing to filter..." value="{{ $search_term }}"><br><br><br>
     </div>
