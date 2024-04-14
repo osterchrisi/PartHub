@@ -17,7 +17,7 @@
         <div class='row'>
             {{-- Categories Window - only in Parts view --}}
             @if (isset($view) && $view === 'parts')
-                <div class='col-md-auto' id='category-window'>
+                <div class='col-md-auto pe-0' id='category-window'>
                     @include('categories.categoriesTable')
                 </div>
             @endif
