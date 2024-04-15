@@ -502,6 +502,16 @@ export function defineCategoriesListTableActions($table, $menu) {
   });
 }
 
+export function defineCategoriesListInPartsViewTableActions($table, $menu, categories) {
+  defineTableRowClickActions($table, function (id) {
+    // Extract clicked category and update parts table
+    var category_name = categories[id-1]['category_name'];
+    $('#parts_table').bootstrapTable('filterBy', {
+      Category: category_name
+    })
+  });
+}
+
 export function defineSuppliersListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('supplier', id);

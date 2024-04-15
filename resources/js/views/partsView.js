@@ -2,6 +2,7 @@ import {
     bootstrapPartsTable,
     bootstrapCategoriesListTable,
     definePartsTableActions,
+    defineCategoriesListInPartsViewTableActions,
     inlineProcessing,
     bootstrapTableSmallify,
     rebuildPartsTable,
@@ -19,14 +20,14 @@ import {
 import { callPartEntryModal } from '../partEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
-
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
 
     bootstrapPartsTable();
-    var $table = $('#parts_table');
-    var $menu = $('#parts_table_menu');
-    definePartsTableActions($table, $menu);
+    definePartsTableActions($('#parts_table'), $('#parts_table_menu'));
+    //TODO: This is silly, I'm later fetching the categories again...
+    // const categories = getCategories();
+    // defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
 
     bootstrapCategoriesListTable();
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
@@ -63,6 +64,7 @@ export function initializePartsView() {
 
         // Query database and rebuild partstable with result
         modifiedQueryString = '?' + modifiedQueryString;
+
         rebuildPartsTable(modifiedQueryString);
     });
 
@@ -138,6 +140,8 @@ async function fetchDataThenAttachClickListener() {
         $('#toolbarAddButton').click(function () {
             callPartEntryModal(locations, footprints, categories, suppliers);
         });
+
+        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
 
     } catch (error) {
         // Handle errors
