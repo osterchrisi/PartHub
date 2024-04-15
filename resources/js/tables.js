@@ -9,6 +9,7 @@ import {
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
 
 import { makeTableWindowResizable } from './custom.js';
+import { isAxiosError } from "axios";
 
 /**
  * Bootstrap the parts table
@@ -505,11 +506,45 @@ export function defineCategoriesListTableActions($table, $menu) {
 export function defineCategoriesListInPartsViewTableActions($table, $menu, categories) {
   defineTableRowClickActions($table, function (id) {
     // Extract clicked category and update parts table
-    var category_name = categories[id-1]['category_name'];
+    const orig_id = id;
+    id = orig_id - 1; // Need to subtract array offset
+
+    var cats = getChildCategoriesNames(categories, orig_id);
+
     $('#parts_table').bootstrapTable('filterBy', {
-      Category: category_name
+      Category: cats
     })
   });
+}
+
+// Fabricate array of category names matching the given category ID and its children
+function getChildCategoriesNames(categories, categoryId) {
+  // Initialize an array to store matching category names
+  let childCategoriesNames = [];
+
+  // Find the category name corresponding to the provided category ID
+  const category = categories.find(cat => cat.category_id === categoryId);
+  if (category) {
+    childCategoriesNames.push(category.category_name);
+  }
+
+  // Helper function to recursively find child categories
+  function findChildCategoriesNames(parentCategoryId) {
+    // Find categories whose parent category matches the given category ID
+    const children = categories.filter(category => category.parent_category === parentCategoryId);
+
+    // Add the names of found children to the result array
+    children.forEach(child => {
+      childCategoriesNames.push(child.category_name);
+      // Recursively find children of children
+      findChildCategoriesNames(child.category_id);
+    });
+  }
+
+  // Find child categories starting from the given category ID
+  findChildCategoriesNames(categoryId);
+
+  return childCategoriesNames;
 }
 
 export function defineSuppliersListTableActions($table, $menu) {
