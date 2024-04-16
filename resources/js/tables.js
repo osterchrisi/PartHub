@@ -578,7 +578,7 @@ function hideContextMenu($menu) {
 }
 
 /**
- * Inline table cell editing of a text cell in the parts table
+ * Inline table cell editing of a text cell
  * @param {jQuery} cell The cell being edited
  * @param {string} originalValue The original value of the cell before editing
  */
@@ -644,6 +644,11 @@ function editTextCell(cell, originalValue) {
     }
     else if (table_name == 'boms') {
       updateInfoWindow('bom', id);
+    }
+    else if (table_name == 'part_categories') {
+      $('#categories_list_table').treegrid({
+        treeColumn: 1
+      });
     }
 
   });

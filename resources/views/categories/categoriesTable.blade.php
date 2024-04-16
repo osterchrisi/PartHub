@@ -42,7 +42,9 @@
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
                         id="cat-edit-btn" data-action="edit"><i class="fas fa-s fa-pen" data-action="edit"></i></button>
                 </td>
-                <td>{{ $category->category_name }}</td>
+                <td data-editable="true" class="editable" data-id="{{ $category->category_id }}"
+                data-column="category_name" data-table_name="part_categories"
+                data-id_field="category_id">{{ $category->category_name }}</td>
                 <td style="display: none;">{{ $category->category_id }}</td>
                 <td style="display: none;">{{ $category->parent_category }}</td>
             </tr>
