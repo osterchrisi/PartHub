@@ -660,7 +660,7 @@ function editCategoryCell(cell, originalValue) {
   // Get list of available categories and populate dropdown
   var categories = $.ajax({
     type: 'GET',
-    url: '/categories.list',
+    url: '/categories.get',
     dataType: 'JSON',
     success: function (response) {
       categories = response;

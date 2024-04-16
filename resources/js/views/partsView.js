@@ -25,9 +25,6 @@ export function initializePartsView() {
 
     bootstrapPartsTable();
     definePartsTableActions($('#parts_table'), $('#parts_table_menu'));
-    //TODO: This is silly, I'm later fetching the categories again...
-    // const categories = getCategories();
-    // defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
 
     bootstrapCategoriesListTable();
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
@@ -57,6 +54,7 @@ export function initializePartsView() {
         const searchParams = new URLSearchParams(queryString);
 
         // Manipulate the "search" value and update it in the URL
+        //! Doesn't actually update the URl and not sure if I want to
         let searchValue = searchParams.get('search');
         searchValue = inputVal;
         searchParams.set('search', searchValue);
@@ -71,7 +69,7 @@ export function initializePartsView() {
     initializePopovers();
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
-    fetchDataThenAttachClickListener();
+    fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
 
     /**
      * Show location divs after potentially
@@ -109,7 +107,7 @@ function getFootprints() {
 // Get categories
 function getCategories() {
     return $.ajax({
-        url: '/categories.list',
+        url: '/categories.get',
         dataType: 'json',
         error: function (error) {
             console.log(error);
@@ -128,9 +126,9 @@ function getSuppliers() {
     })
 }
 
-async function fetchDataThenAttachClickListener() {
+async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
     try {
-        // Fetch locations, footprints and categories
+        // Fetch locations, footprints, categories and suppliers for part entry modal
         const locations = await getLocations();
         const footprints = await getFootprints();
         const categories = await getCategories();
@@ -141,6 +139,7 @@ async function fetchDataThenAttachClickListener() {
             callPartEntryModal(locations, footprints, categories, suppliers);
         });
 
+        // Define filtering table row actions for categories table on side pane
         defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
 
     } catch (error) {

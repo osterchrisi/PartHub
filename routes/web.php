@@ -78,9 +78,7 @@ Route::controller(LocationController::class)->group(function () {
     Route::get('/locations', 'index')->middleware(['auth', 'verified'])->name('locations');
     Route::get('/locations.locationsTable', 'index')->middleware(['auth', 'verified'])->name('locations.locationsTable');
     Route::post('/location.create', 'create')->middleware(['auth', 'verified']);
-    Route::get('/locations.get', function () {
-        return LocationController::getLocations();
-    })->middleware(['auth', 'verified']);
+    Route::get('/locations.get', 'getLocations')->middleware(['auth', 'verified']);
     Route::get('/location/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
@@ -88,7 +86,7 @@ Route::controller(LocationController::class)->group(function () {
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->middleware(['auth', 'verified'])->name('categories');
     Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
-    Route::get('/categories.list', 'list')->middleware(['auth', 'verified']);
+    Route::get('/categories.get', 'list')->middleware(['auth', 'verified']);
 });
 
 //* Supplier Routes
@@ -96,9 +94,7 @@ Route::controller(SupplierController::class)->group(function () {
     Route::get('/suppliers', 'index')->middleware(['auth', 'verified'])->name('suppliers');
     Route::get('/suppliers.suppliersTable', 'index')->middleware(['auth', 'verified'])->name('suppliers.suppliersTable');
     Route::post('/supplier.create', 'create')->middleware(['auth', 'verified']);
-    Route::get('/suppliers.get', function () {
-        return SupplierController::getSuppliers();
-    })->middleware(['auth', 'verified']);
+    Route::get('/suppliers.get', 'getSuppliers')->middleware(['auth', 'verified']);
     Route::get('/supplier/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
@@ -107,9 +103,7 @@ Route::controller(FootprintController::class)->group(function () {
     Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
     Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
     Route::post('/footprint.create', 'create')->middleware(['auth', 'verified']);
-    Route::get('/footprints.get', function () {
-        return FootprintController::getFootprints();
-    })->middleware(['auth', 'verified']);
+    Route::get('/footprints.get', 'getFootprints')->middleware(['auth', 'verified']);
     Route::get('/footprint/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
