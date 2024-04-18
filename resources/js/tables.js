@@ -89,7 +89,7 @@ export function bootstrapSuppliersListTable() {
   });
 };
 
-//TODO: Extract functions
+//TODO: Extract functions -> Also at editTextCell()->else if->part_categories->treegrid
 /**
  * Bootstrap the Categories table
  * @return void
