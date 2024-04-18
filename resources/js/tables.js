@@ -133,6 +133,14 @@ export function bootstrapCategoriesListTable() {
         console.log('Parent ID:', parentId);
         console.log('Category ID:', categoryId);
       });
+
+
+      //TODO: This info should be encoded into the HTML table like with my other tables
+      //TODO: Does not work yet, need to pass selection first
+      $('#categories_list_table').on('click', 'tbody .trash-button', function () {
+        console.log("tis trash");
+        deleteSelectedRowsFromToolbar('categories_list_table', 'part_category', 'category_id', '');
+      });
     }
   });
 };
@@ -503,9 +511,9 @@ export function defineCategoriesListTableActions($table, $menu) {
   });
 }
 
+// Extract clicked category and update parts table
 export function defineCategoriesListInPartsViewTableActions($table, $menu, categories) {
   defineTableRowClickActions($table, function (id) {
-    // Extract clicked category and update parts table
     const orig_id = id;
     id = orig_id - 1; // Need to subtract array offset
 
@@ -605,6 +613,15 @@ function editTextCell(cell, originalValue) {
       input.remove();
       cell.text(originalValue);
       cell.removeClass('editing');
+
+      //TODO: Don't really like this solution
+      // If exiting through escape happened on categories last in parts view
+      if ($('#categories_list_table')) {
+        $('#categories_list_table').treegrid({
+          treeColumn: 1
+        })
+      };
+
       return;
     }
   });

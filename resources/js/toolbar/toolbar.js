@@ -9,7 +9,7 @@ export function deleteSelectedRowsFromToolbar(table_id, model, id_column, succes
     // Check if rows have been selected
     if (selectedRows.length === 0) {
         // console.log("Nothing selected")
-        alert("Please select row(s) to be deleted.\nYou can use Ctrl and Shift to select multiple rows");
+        alert("Please select row(s) to be deleted.\nYou can use Ctrl and/or Shift to select multiple rows");
     }
     else {
         // Extract IDs

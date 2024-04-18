@@ -34,7 +34,7 @@
                 <td data-field="category_edit"><button type="button" class="btn btn-sm btn-outline-secondary edit-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
                         id="cat-edit-btn" data-action="add"><i class="fas fa-s fa-plus"></i></button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary edit-button"
+                    <button type="button" class="btn btn-sm btn-outline-secondary edit-button trash-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
                         id="cat-edit-btn" data-action="remove"><i class="fas fa-s fa-trash edit-icon"
                             data-action="trash"></i></button>
