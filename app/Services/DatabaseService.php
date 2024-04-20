@@ -9,6 +9,7 @@ class DatabaseService
 {
     public static function deleteRow($table, $column, $id, $owner_column, $user_id)
     {
+        dd($user_id);
         DB::table($table)
             ->where($column, $id)
             ->where($owner_column, $user_id)

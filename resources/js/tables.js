@@ -139,7 +139,13 @@ export function bootstrapCategoriesListTable() {
       //TODO: Does not work yet, need to pass selection first
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         console.log("tis trash");
-        deleteSelectedRowsFromToolbar('categories_list_table', 'part_category', 'category_id', '');
+        var $row = $(this).closest('tr');
+        var categoryId = [$row.data('id')];
+
+        //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
+        // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
+
+        // deleteSelectedRowsFromToolbar('categories_list_table', 'part_category', 'category_id', '');
       });
     }
   });
