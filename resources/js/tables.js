@@ -141,12 +141,16 @@ export function bootstrapCategoriesListTable() {
         console.log("tis trash");
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-
+    
+        // Find child categories recursively
+        findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
+    
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
         // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
-
+        console.log(categoryId);
+    
         // deleteSelectedRowsFromToolbar('categories_list_table', 'part_category', 'category_id', '');
-      });
+    });
     }
   });
 };
@@ -559,6 +563,19 @@ function getChildCategoriesNames(categories, categoryId) {
   findChildCategoriesNames(categoryId);
 
   return childCategoriesNames;
+}
+
+function findChildCategoriesFromCategoryTable(parentId, categoryId) {
+  $('#categories_list_table tbody tr').each(function() {
+      var $currentRow = $(this);
+      var currentParentId = $currentRow.data('parent-id');
+      if (currentParentId === parentId) {
+          var childCategoryId = $currentRow.data('id');
+          categoryId.push(childCategoryId);
+          // Recursively find child categories of this child category
+          findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
+      }
+  });
 }
 
 export function defineSuppliersListTableActions($table, $menu) {
