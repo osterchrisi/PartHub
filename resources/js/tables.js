@@ -520,12 +520,16 @@ export function defineCategoriesListTableActions($table, $menu) {
   });
 }
 
-// Extract clicked category and update parts table
+/**
+ * Extract clicked category, find all children and filter parts table accordingly.
+ * Note that filtering is based on bootstrap-tables filter algo and is based on strings.
+ * @param {*} $table 
+ * @param {*} $menu 
+ * @param {*} categories 
+ */
 export function defineCategoriesListInPartsViewTableActions($table, $menu, categories) {
   defineTableRowClickActions($table, function (id) {
     const orig_id = id;
-    id = orig_id - 1; // Need to subtract array offset
-
     var cats = getChildCategoriesNames(categories, orig_id);
 
     $('#parts_table').bootstrapTable('filterBy', {
@@ -534,7 +538,12 @@ export function defineCategoriesListInPartsViewTableActions($table, $menu, categ
   });
 }
 
-// Fabricate array of category names matching the given category ID and its children
+/**
+ * Fabricate array of category names matching the given category ID and its children
+ * @param {*} categories 
+ * @param {*} categoryId 
+ * @returns 
+ */
 function getChildCategoriesNames(categories, categoryId) {
   // Initialize an array to store matching category names
   let childCategoriesNames = [];
@@ -564,6 +573,11 @@ function getChildCategoriesNames(categories, categoryId) {
   return childCategoriesNames;
 }
 
+/**
+ * Recursively find child categories in case a user wants to delete a category
+ * @param {string} parentId Category ID of the clicked category and first entry in the categoryId array
+ * @param {Array} categoryId Array to store clicked categery and recursive child categories
+ */
 function findChildCategoriesFromCategoryTable(parentId, categoryId) {
   $('#categories_list_table tbody tr').each(function() {
       var $currentRow = $(this);
