@@ -138,7 +138,6 @@ export function bootstrapCategoriesListTable() {
       //TODO: This info should be encoded into the HTML table like with my other tables
       //TODO: Does not work yet, need to pass selection first
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
-        console.log("tis trash");
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
     
