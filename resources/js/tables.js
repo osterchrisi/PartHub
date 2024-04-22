@@ -129,14 +129,13 @@ export function bootstrapCategoriesListTable() {
         // Extract the action from the clicked icon's data attribute
         var action = $(this).data('action');
         // Log the clicked icon, its action, and its attributes
-        console.log('Clicked icon:', action);
-        console.log('Parent ID:', parentId);
-        console.log('Category ID:', categoryId);
+        // console.log('Clicked icon:', action);
+        // console.log('Parent ID:', parentId);
+        // console.log('Category ID:', categoryId);
       });
 
 
       //TODO: This info should be encoded into the HTML table like with my other tables
-      //TODO: Does not work yet, need to pass selection first
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
@@ -147,9 +146,7 @@ export function bootstrapCategoriesListTable() {
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
         // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
         console.log(categoryId);
-    
-        // deleteSelectedRowsFromToolbar('categories_list_table', 'part_category', 'category_id', '');
-    });
+        });
     }
   });
 };
@@ -521,17 +518,22 @@ export function defineCategoriesListTableActions($table, $menu) {
 }
 
 /**
- * Extract clicked category, find all children and filter parts table accordingly.
- * Note that filtering is based on bootstrap-tables filter algo and is based on strings.
+ * Define actions when clicking rows in the Categories List Table.
+ * 
+ * Extract clicked category, find its children and filter parts table accordingly.
+ * Note that filtering is based on bootstrap-tables' filter algo and works on strings, not category IDs.
  * @param {*} $table 
  * @param {*} $menu 
- * @param {*} categories 
+ * @param {*} categories JSON array of available categories
  */
 export function defineCategoriesListInPartsViewTableActions($table, $menu, categories) {
   defineTableRowClickActions($table, function (id) {
     const orig_id = id;
+
+    // Array of category and potential child category names as strings for filtering parts table
     var cats = getChildCategoriesNames(categories, orig_id);
 
+    // Filter by categories
     $('#parts_table').bootstrapTable('filterBy', {
       Category: cats
     })
@@ -539,7 +541,8 @@ export function defineCategoriesListInPartsViewTableActions($table, $menu, categ
 }
 
 /**
- * Fabricate array of category names matching the given category ID and its children
+ * Fabricate array of category names matching the given category ID and its children.
+ * This array is suited to work with bootstrap-tables' filter algorithm
  * @param {*} categories 
  * @param {*} categoryId 
  * @returns 

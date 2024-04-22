@@ -134,7 +134,7 @@ async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions()
         const categories = await getCategories();
         const suppliers = await getSuppliers();
 
-        // Attach click listener to Add button
+        // Attach click listener to Add (Parts) button
         $('#toolbarAddButton').click(function () {
             callPartEntryModal(locations, footprints, categories, suppliers);
         });
