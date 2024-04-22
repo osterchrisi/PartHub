@@ -5,6 +5,7 @@
 @include('navbar')
 @include('components.toolbarTop')
 
+
 {{-- Page Contents --}}
 <div class="container-fluid pb-3" id="content-container">
     <br>
@@ -42,11 +43,9 @@
 
 @include('footer')
 
-{{-- Modals and Menus --}}
-@yield('modals and menus')
-
 {{-- Toasts --}}
 {{-- @yield('toasts') --}}
+{{-- For some reason the toast needs to be placed before the modals and menus, otherwise it won't show --}}
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="tConfirmDelete" class="toast" role="alert">
         <div class="toast-header">
@@ -62,3 +61,6 @@
         </div>
     </div>
 </div>
+
+{{-- Modals and Menus --}}
+@yield('modals and menus')
