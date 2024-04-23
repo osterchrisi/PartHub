@@ -9,6 +9,7 @@ import {
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
 
 import { makeTableWindowResizable } from './custom.js';
+import { isAxiosError } from "axios";
 
 /**
  * Bootstrap the parts table
@@ -88,7 +89,7 @@ export function bootstrapSuppliersListTable() {
   });
 };
 
-//TODO: Extract functions
+//TODO: Extract functions -> Also at editTextCell()->else if->part_categories->treegrid
 /**
  * Bootstrap the Categories table
  * @return void
@@ -97,18 +98,18 @@ export function bootstrapCategoriesListTable() {
   const $table = $('#categories_list_table');
   $table.bootstrapTable({
     rootParentId: '0',
-    onResize: function (column, width, isResizing) {
-      console.log("resizing");
-      // Check if the column width is less than the minimum width
-      var minWidth = parseInt(column.attr('data-min-width')) || 0;
-      if (width < minWidth) {
-        // If the column width is less than the minimum, set it to the minimum width
-        $('#categories_list_table').bootstrapTable('resize', {
-          field: column.attr('data-field'),
-          width: minWidth
-        });
-      }
-    },
+    // onResize: function (column, width, isResizing) {
+    //   console.log("resizing");
+    //   // Check if the column width is less than the minimum width
+    //   var minWidth = parseInt(column.attr('data-min-width')) || 0;
+    //   if (width < minWidth) {
+    //     // If the column width is less than the minimum, set it to the minimum width
+    //     $('#categories_list_table').bootstrapTable('resize', {
+    //       field: column.attr('data-field'),
+    //       width: minWidth
+    //     });
+    //   }
+    // },
     onPostBody: function () {
       // Treegrid
       $table.treegrid({
@@ -116,11 +117,7 @@ export function bootstrapCategoriesListTable() {
       });
 
       // Edit toggle button click listener
-      $('#cat-edit-btn').on('click', function () {
-        console.log("edit");
-        var columnIndex = 0;
-        $('#categories_list_table th:nth-child(' + (columnIndex + 1) + '), #categories_list_table td:nth-child(' + (columnIndex + 1) + ')').toggle();
-      });
+      attachEditCategoriesButtonClickListener();
 
       // Attach click listeners to edit buttons
       $('#categories_list_table').on('click', 'tbody .edit-button', function () {
@@ -132,13 +129,47 @@ export function bootstrapCategoriesListTable() {
         // Extract the action from the clicked icon's data attribute
         var action = $(this).data('action');
         // Log the clicked icon, its action, and its attributes
-        console.log('Clicked icon:', action);
-        console.log('Parent ID:', parentId);
-        console.log('Category ID:', categoryId);
+        // console.log('Clicked icon:', action);
+        // console.log('Parent ID:', parentId);
+        // console.log('Category ID:', categoryId);
       });
+
+
+      //TODO: This info should be encoded into the HTML table like with my other tables
+      $('#categories_list_table').on('click', 'tbody .trash-button', function () {
+        var $row = $(this).closest('tr');
+        var categoryId = [$row.data('id')];
+    
+        // Find child categories recursively
+        findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
+    
+        //! Next up:
+        //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
+        // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
+        console.log(categoryId);
+        });
     }
   });
 };
+
+/**
+ * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories Edit column
+ */
+function attachEditCategoriesButtonClickListener() {
+  $('#cat-edit-btn').on('click', function () {
+    var columnIndex = 0;
+    $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').toggle();
+  });
+}
+
+/**
+ * Attach the click listener to the "Toggle Categories" button. The button toggles the visibility of the Categories div in the parts view
+ */
+export function attachShowCategoriesButtonClickListener() {
+  $('#cat-show-btn').on('click', function () {
+    $('#category-window').toggle();
+  });
+}
 
 /**
  * Makes the button and pagination elements in a Bootstrap Table smaller
@@ -487,6 +518,83 @@ export function defineCategoriesListTableActions($table, $menu) {
   });
 }
 
+/**
+ * Define actions when clicking rows in the Categories List Table.
+ * 
+ * Extract clicked category, find its children and filter parts table accordingly.
+ * Note that filtering is based on bootstrap-tables' filter algo and works on strings, not category IDs.
+ * @param {*} $table 
+ * @param {*} $menu 
+ * @param {*} categories JSON array of available categories
+ */
+export function defineCategoriesListInPartsViewTableActions($table, $menu, categories) {
+  defineTableRowClickActions($table, function (id) {
+    const orig_id = id;
+
+    // Array of category and potential child category names as strings for filtering parts table
+    var cats = getChildCategoriesNames(categories, orig_id);
+
+    // Filter by categories
+    $('#parts_table').bootstrapTable('filterBy', {
+      Category: cats
+    })
+  });
+}
+
+/**
+ * Fabricate array of category names matching the given category ID and its children.
+ * This array is suited to work with bootstrap-tables' filter algorithm
+ * @param {*} categories 
+ * @param {*} categoryId 
+ * @returns 
+ */
+function getChildCategoriesNames(categories, categoryId) {
+  // Initialize an array to store matching category names
+  let childCategoriesNames = [];
+
+  // Find the category name corresponding to the provided category ID
+  const category = categories.find(cat => cat.category_id === categoryId);
+  if (category) {
+    childCategoriesNames.push(category.category_name);
+  }
+
+  // Helper function to recursively find child categories
+  function findChildCategoriesNames(parentCategoryId) {
+    // Find categories whose parent category matches the given category ID
+    const children = categories.filter(category => category.parent_category === parentCategoryId);
+
+    // Add the names of found children to the result array
+    children.forEach(child => {
+      childCategoriesNames.push(child.category_name);
+      // Recursively find children of children
+      findChildCategoriesNames(child.category_id);
+    });
+  }
+
+  // Find child categories starting from the given category ID
+  findChildCategoriesNames(categoryId);
+
+  return childCategoriesNames;
+}
+
+/**
+ * Recursively find child categories in case a user wants to delete a category
+ * @param {string} parentId Category ID of the clicked category and first entry in the categoryId array
+ * @param {Array} categoryId Array to store clicked categery and recursive child categories
+ */
+function findChildCategoriesFromCategoryTable(parentId, categoryId) {
+  $('#categories_list_table tbody tr').each(function() {
+      var $currentRow = $(this);
+      var currentParentId = $currentRow.data('parent-id');
+      if (currentParentId === parentId) {
+          var childCategoryId = $currentRow.data('id');
+          categoryId.push(childCategoryId);
+          // Recursively find child categories of this child category
+          findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
+      }
+  });
+}
+
 export function defineSuppliersListTableActions($table, $menu) {
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('supplier', id);
@@ -518,7 +626,7 @@ function hideContextMenu($menu) {
 }
 
 /**
- * Inline table cell editing of a text cell in the parts table
+ * Inline table cell editing of a text cell
  * @param {jQuery} cell The cell being edited
  * @param {string} originalValue The original value of the cell before editing
  */
@@ -545,6 +653,15 @@ function editTextCell(cell, originalValue) {
       input.remove();
       cell.text(originalValue);
       cell.removeClass('editing');
+
+      //TODO: Don't really like this solution
+      // If exiting through escape happened on categories last in parts view
+      if ($('#categories_list_table')) {
+        $('#categories_list_table').treegrid({
+          treeColumn: 1
+        })
+      };
+
       return;
     }
   });
@@ -585,6 +702,11 @@ function editTextCell(cell, originalValue) {
     else if (table_name == 'boms') {
       updateInfoWindow('bom', id);
     }
+    else if (table_name == 'part_categories') {
+      $('#categories_list_table').treegrid({
+        treeColumn: 1
+      });
+    }
 
   });
 }
@@ -600,7 +722,7 @@ function editCategoryCell(cell, originalValue) {
   // Get list of available categories and populate dropdown
   var categories = $.ajax({
     type: 'GET',
-    url: '/categories.list',
+    url: '/categories.get',
     dataType: 'JSON',
     success: function (response) {
       categories = response;

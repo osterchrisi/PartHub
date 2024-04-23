@@ -13,8 +13,6 @@ import {
 import { callStockModal } from './stockChanges';
 
 export function initializeShowPart(part_id) {
-    // loadActiveTab('parts', '{{ $tabId1 }}');
-    // addActiveTabEventListeners('parts');
     bootstrapPartInBomsTable();
     bootstrapHistTable();
     bootstrapTableSmallify();

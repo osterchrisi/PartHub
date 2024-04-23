@@ -85,35 +85,10 @@ export function updateStockModal(id) {
  */
 export function makeTableWindowResizable() {
     $('#table-window').resizable({
-        handles: 'e',
-        resize: function () {
-            var parentWidth = $('#table-window').parent().width();
-            var tableWidth = $('#table-window').width();
-            var infoWidth = parentWidth - tableWidth;
-            $('#info-window').width(infoWidth);
-        }
+        handles: 'e'
     });
-
-    // The two functions below here are just for the experimental multi-view
-
-    $('#table-window2').resizable({
-        handles: 'e',
-        resize: function () {
-            var parentWidth = $('#table-window2').parent().width();
-            var tableWidth = $('#table-window2').width();
-            var infoWidth = parentWidth - tableWidth;
-            $('#info-window2').width(infoWidth);
-        }
-    });
-
-    $('#partsCollapse').resizable({
-        handles: 'e',
-        resize: function () {
-            var parentWidth = $('#partsMegaContainer').parent().width();
-            var tableWidth = $('#partsMegaContainer').width();
-            var infoWidth = parentWidth - tableWidth;
-            $('#bomsMegaContainer').width(infoWidth);
-        }
+    $('#category-window').resizable({
+        handles: 'e'
     });
 };
 
@@ -167,10 +142,10 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             'X-CSRF-TOKEN': token
         },
         success: function (response) {
-            // console.log(response);
             showDeletionConfirmationToast(ids.length);
             var queryString = window.location.search;
             successCallback(queryString);
+
         },
         error: function (xhr) {
             // Handle the error
@@ -347,9 +322,6 @@ export function fetchImages(type, id) {
             // Check if images exist
             if (response.length > 0) {
                 updateImages(response);
-            }
-            else {
-                exit;
             }
         }
     });

@@ -1,9 +1,12 @@
 import {
     bootstrapPartsTable,
+    bootstrapCategoriesListTable,
     definePartsTableActions,
+    defineCategoriesListInPartsViewTableActions,
     inlineProcessing,
     bootstrapTableSmallify,
-    rebuildPartsTable
+    rebuildPartsTable,
+    attachShowCategoriesButtonClickListener
 } from "../tables";
 
 import {
@@ -17,20 +20,24 @@ import {
 import { callPartEntryModal } from '../partEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
-
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
 
     bootstrapPartsTable();
-    var $table = $('#parts_table');
-    var $menu = $('#parts_table_menu');
-    definePartsTableActions($table, $menu);
+    definePartsTableActions($('#parts_table'), $('#parts_table_menu'));
+
+    bootstrapCategoriesListTable();
+    $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+    //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
+    $('#category-window').width($('#category-window').width()+1);
+
     inlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();
 
     focusStockChangeQuantity();
     focusNewPartName();
+    attachShowCategoriesButtonClickListener();
 
     // Need to re-smallify after hiding / showing columns
     $('.bootstrap-table').on('column-switch.bs.table page-change.bs.table', function () {
@@ -47,6 +54,7 @@ export function initializePartsView() {
         const searchParams = new URLSearchParams(queryString);
 
         // Manipulate the "search" value and update it in the URL
+        //! Doesn't actually update the URl and not sure if I want to
         let searchValue = searchParams.get('search');
         searchValue = inputVal;
         searchParams.set('search', searchValue);
@@ -54,13 +62,14 @@ export function initializePartsView() {
 
         // Query database and rebuild partstable with result
         modifiedQueryString = '?' + modifiedQueryString;
+
         rebuildPartsTable(modifiedQueryString);
     });
 
     initializePopovers();
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
-    fetchDataThenAttachClickListener();
+    fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
 
     /**
      * Show location divs after potentially
@@ -98,7 +107,7 @@ function getFootprints() {
 // Get categories
 function getCategories() {
     return $.ajax({
-        url: '/categories.list',
+        url: '/categories.get',
         dataType: 'json',
         error: function (error) {
             console.log(error);
@@ -117,18 +126,21 @@ function getSuppliers() {
     })
 }
 
-async function fetchDataThenAttachClickListener() {
+async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
     try {
-        // Fetch locations, footprints and categories
+        // Fetch locations, footprints, categories and suppliers for part entry modal
         const locations = await getLocations();
         const footprints = await getFootprints();
         const categories = await getCategories();
         const suppliers = await getSuppliers();
 
-        // Attach click listener to Add button
+        // Attach click listener to Add (Parts) button
         $('#toolbarAddButton').click(function () {
             callPartEntryModal(locations, footprints, categories, suppliers);
         });
+
+        // Define filtering table row actions for categories table on side pane
+        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
 
     } catch (error) {
         // Handle errors
