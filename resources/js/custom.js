@@ -142,12 +142,9 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             'X-CSRF-TOKEN': token
         },
         success: function (response) {
-            console.log(response);
             showDeletionConfirmationToast(ids.length);
-            console.log(response);
             var queryString = window.location.search;
             successCallback(queryString);
-            console.log(response);
 
         },
         error: function (xhr) {
