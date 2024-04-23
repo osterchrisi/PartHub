@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('suppliers', function (Blueprint $table) {
-            $table->dropForeign('supplier_owner_u_fk');
+            $table->dropForeign('suppliers_supplier_owner_u_fk');
         });
 
         Schema::table('parts', function (Blueprint $table) {
@@ -34,11 +34,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('suppliers', function (Blueprint $table) {
-            $table->foreignId('supplier_owner_u_fk')->constrained(
-                table: 'users',
-                indexName: '_id'
-            )->index('supplier_owner_u_fk');
+        Schema::table('suppliers', function (Blueprint $table) {
+            $table->foreign(['supplier_owner_u_fk'], 'suppliers_supplier_owner_u_fk')->references('id')->on('users');
+            // $table->foreign('supplier_owner_u_fk')->constrained(
+            //     table: 'users',
+            //     indexName: '_id'
+            // )->index('supplier_owner_u_fk');
         });
 
         Schema::table('parts', function (Blueprint $table) {
@@ -48,12 +49,12 @@ return new class extends Migration
                 ->onDelete('restrict');
         });
 
-        Schema::create('part_meta', function (Blueprint $table) {
+        Schema::table('part_meta', function (Blueprint $table) {
             $table->foreign('part_id_fk')->references('part_id')->on('parts')->index('part_id_fk');
             $table->foreign('meta_owner_u_fk')->references('id')->on('users')->index('meta_owner_u_fk');
         });
 
-        Schema::create('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table) {
             $table->foreign('image_owner_u_id')->references('id')->on('users')->index('image_owner_u_fk');
         });
     }
