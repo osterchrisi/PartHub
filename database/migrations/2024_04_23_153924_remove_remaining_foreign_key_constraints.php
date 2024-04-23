@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('suppliers', function (Blueprint $table) {
-            $table->dropForeign('suppliers_supplier_owner_u_fk');
+            $table->dropForeign('supplier_owner_u_fk');
         });
 
         Schema::table('parts', function (Blueprint $table) {
@@ -35,7 +35,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('suppliers', function (Blueprint $table) {
-            $table->foreign(['supplier_owner_u_fk'], 'suppliers_supplier_owner_u_fk')->references('id')->on('users');
+            $table->foreign(['supplier_owner_u_fk'], 'supplier_owner_u_fk')->references('id')->on('users');
             // $table->foreign('supplier_owner_u_fk')->constrained(
             //     table: 'users',
             //     indexName: '_id'
