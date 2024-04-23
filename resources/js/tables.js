@@ -143,6 +143,7 @@ export function bootstrapCategoriesListTable() {
         // Find child categories recursively
         findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
     
+        //! Next up:
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
         // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
         console.log(categoryId);
