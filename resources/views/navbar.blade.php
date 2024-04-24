@@ -5,8 +5,8 @@ $user_name = $user ? $user->name : '';
 ?>
 
 <div class="container-fluid px-0">
-    <nav class="navbar navbar-expand-lg bg-primary bg-gradient"
-        style="background-color: rgba(var(--bs-primary-rgb), 0.5);">
+    <nav class="navbar navbar-expand-lg bg-gradient"
+        style="background-color: rgba(32,62,105, 1);">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">PartHub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
