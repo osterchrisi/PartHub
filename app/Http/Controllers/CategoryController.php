@@ -16,13 +16,18 @@ class CategoryController extends Controller
             ->with('children')
             ->get();
 
-        return view('categories.categories',
-                    ['categoriesForCategoriesTable' => $categories,
-                    'title' => 'Categories',
-                    'view' => 'categories']);
+        return view(
+            'categories.categories',
+            [
+                'categoriesForCategoriesTable' => $categories,
+                'title' => 'Categories',
+                'view' => 'categories'
+            ]
+        );
     }
 
-    public function list(){
+    public function list()
+    {
         return Category::availableCategories();
     }
 
@@ -32,8 +37,10 @@ class CategoryController extends Controller
         $parts = Category::getPartsByCategory($category_id);
         $parts_with_category = [];
         foreach ($parts as $part) {
-            $parts_with_category[] = ['part_name' => $part->part_name,
-                                      'part_id' => $part->part_id];
+            $parts_with_category[] = [
+                'part_name' => $part->part_name,
+                'part_id' => $part->part_id
+            ];
         }
         // $parts_with_category[] = ['id' => $category_id];
         return view(
@@ -54,5 +61,10 @@ class CategoryController extends Controller
                 'nice_columns' => ['Part', 'ID']
             ]
         );
+    }
+
+    public function create($parent_id)
+    {
+        //
     }
 }

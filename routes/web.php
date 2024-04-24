@@ -87,6 +87,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->middleware(['auth', 'verified'])->name('categories');
     Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
     Route::get('/categories.get', 'list')->middleware(['auth', 'verified']);
+    Route::post('/categories.create', 'create')->middleware(['auth', 'verified']);
 });
 
 //* Supplier Routes
@@ -114,6 +115,7 @@ Route::get('/stocklevels', function () {
     ->middleware(['auth', 'verified']);
 
 //* Image Controller
+//! Wut? FootprintController?
 Route::controller(FootprintController::class)->group(function () {
     Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
     Route::get('/images/{type}/{id}', [ImageController::class, 'getImagesByTypeAndId'])->name('part.images');
