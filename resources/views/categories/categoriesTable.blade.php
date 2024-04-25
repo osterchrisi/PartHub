@@ -27,18 +27,28 @@
                 <td data-field="category_edit"><button type="button"
                         class="btn btn-sm btn-outline-secondary edit-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-edit-btn" data-action="add" data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
-                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"><i
+                        id="cat-edit-btn" data-action="add"
+                        @if (config('app.env') === 'demo')
+                        data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
+                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"
+                        @endif><i
                             class="fas fa-s fa-plus"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-secondary edit-button trash-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-edit-btn" data-action="remove" data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
-                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"><i class="fas fa-s fa-trash edit-icon"
-                            data-action="trash"></i></button>
+                        id="cat-edit-btn" data-action="remove"
+                        @if (config('app.env') === 'demo')
+                        data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
+                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"
+                        @endif><i
+                            class="fas fa-s fa-trash edit-icon" data-action="trash"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-secondary edit-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-edit-btn" data-action="edit" data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
-                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"><i class="fas fa-s fa-pen" data-action="edit"></i></button>
+                        id="cat-edit-btn" data-action="edit"
+                        @if (config('app.env') === 'demo')
+                        data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
+                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"
+                        @endif><i
+                            class="fas fa-s fa-pen" data-action="edit"></i></button>
                 </td>
                 <td data-editable="true" class="editable" data-id="{{ $category->category_id }}"
                     data-column="category_name" data-table_name="part_categories" data-id_field="category_id">
