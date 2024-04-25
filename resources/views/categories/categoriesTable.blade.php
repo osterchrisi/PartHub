@@ -2,18 +2,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-treegrid@0.3.0/js/jquery.treegrid.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/treegrid/bootstrap-table-treegrid.min.js">
 </script>
-<table  class="table table-sm table-borderless table-responsive table-hover table-striped w-auto"
-        style="font-size:12px"
-        id="categories_list_table"
-        data-resizable="true" 
-        {{-- data-reorderable-columns="true" --}}
-        data-cookie="true"
-        data-cookie-id-table="CategoriesListTableState"
-        data-cookie-storage="localStorage"
-        data-max-moving-rows="100"
-        data-parent-id-field="parent_category" 
-        data-tree-show-field="category_name"
-        data-id-field="category_id">
+<table class="table table-sm table-borderless table-responsive table-hover table-striped w-auto" style="font-size:12px"
+    id="categories_list_table" data-resizable="true" {{-- data-reorderable-columns="true" --}} data-cookie="true"
+    data-cookie-id-table="CategoriesListTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
+    data-parent-id-field="parent_category" data-tree-show-field="category_name" data-id-field="category_id">
     <thead>
         <tr>
             <th data-field="category_edit"></th>
@@ -30,21 +22,27 @@
     </thead>
     <tbody>
         @foreach ($categoriesForCategoriesTable as $category)
-            <tr data-parent-id="{{ $category->parent_category }}" data-id="{{ $category->category_id }}" data-table_name="categories">
-                <td data-field="category_edit"><button type="button" class="btn btn-sm btn-outline-secondary edit-button"
+            <tr data-parent-id="{{ $category->parent_category }}" data-id="{{ $category->category_id }}"
+                data-table_name="categories">
+                <td data-field="category_edit"><button type="button"
+                        class="btn btn-sm btn-outline-secondary edit-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-edit-btn" data-action="add"><i class="fas fa-s fa-plus"></i></button>
+                        id="cat-edit-btn" data-action="add" data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
+                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"><i
+                            class="fas fa-s fa-plus"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-secondary edit-button trash-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-edit-btn" data-action="remove"><i class="fas fa-s fa-trash edit-icon"
+                        id="cat-edit-btn" data-action="remove" data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
+                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"><i class="fas fa-s fa-trash edit-icon"
                             data-action="trash"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-secondary edit-button"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-edit-btn" data-action="edit"><i class="fas fa-s fa-pen" data-action="edit"></i></button>
+                        id="cat-edit-btn" data-action="edit" data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
+                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"><i class="fas fa-s fa-pen" data-action="edit"></i></button>
                 </td>
                 <td data-editable="true" class="editable" data-id="{{ $category->category_id }}"
-                data-column="category_name" data-table_name="part_categories"
-                data-id_field="category_id">{{ $category->category_name }}</td>
+                    data-column="category_name" data-table_name="part_categories" data-id_field="category_id">
+                    {{ $category->category_name }}</td>
                 <td style="display: none;">{{ $category->category_id }}</td>
                 <td style="display: none;">{{ $category->parent_category }}</td>
             </tr>
