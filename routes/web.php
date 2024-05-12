@@ -85,6 +85,7 @@ Route::controller(LocationController::class)->group(function () {
 //* Category Routes
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->middleware(['auth', 'verified'])->name('categories');
+    Route::get('/categories.categoriesTable', 'index')->middleware(['auth', 'verified'])->name('categories.categoriesTable');
     Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
     Route::get('/categories.get', 'list')->middleware(['auth', 'verified']);
     Route::post('/category.create', 'create')->middleware(['auth', 'verified']);

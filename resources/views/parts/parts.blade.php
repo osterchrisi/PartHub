@@ -17,6 +17,7 @@ If the right-click menu is not on top, it won't show --}}
 @section('modals and menus')
     @include('components.menus.partsTableRightClickMenu')
     @include('components.modals.stockModal')
+    @include('components.modals.categoryEntryModal')
     @include('components.modals.partEntryModal', ['part_name' => ''])
 @endsection
 

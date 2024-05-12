@@ -127,7 +127,6 @@ export function initializeMultiSelect(id) {
  */
 export function deleteSelectedRows(ids, model, id_column, successCallback) {
 
-    console.log(ids.length);
     var token = $('input[name="_token"]').attr('value');
 
     $.ajax({
@@ -181,7 +180,6 @@ export function validateForm(formId, button, callback, args = []) {
             const result = callback.apply(null, args);
             return result;
         } else {
-            console.log("invalid");
             // Form is invalid (required fields not filled)
             form.querySelectorAll('[required]').forEach(function (field) {
                 if (field.checkValidity()) {

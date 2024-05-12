@@ -64,7 +64,6 @@ export function initializeShowPart(part_id) {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response);
                 fetchImages(currentPartType, currentPartId);
             },
             error: function (xhr, status, error) {

@@ -9,6 +9,10 @@ import {
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
 
 import { makeTableWindowResizable } from './custom.js';
+
+import { callCategoryEntryModal } from './categoryEntry.js';
+
+import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
 
 /**
@@ -94,31 +98,20 @@ export function bootstrapSuppliersListTable() {
  * Bootstrap the Categories table
  * @return void
  */
-export function bootstrapCategoriesListTable() {
+export function bootstrapCategoriesListTable(treeColumn = 1) {
   const $table = $('#categories_list_table');
   $table.bootstrapTable({
     rootParentId: '0',
-    // onResize: function (column, width, isResizing) {
-    //   console.log("resizing");
-    //   // Check if the column width is less than the minimum width
-    //   var minWidth = parseInt(column.attr('data-min-width')) || 0;
-    //   if (width < minWidth) {
-    //     // If the column width is less than the minimum, set it to the minimum width
-    //     $('#categories_list_table').bootstrapTable('resize', {
-    //       field: column.attr('data-field'),
-    //       width: minWidth
-    //     });
-    //   }
-    // },
     onPostBody: function () {
       // Treegrid
       $table.treegrid({
-        treeColumn: 1
+        treeColumn: treeColumn,
       });
 
       // Edit toggle button click listener
       attachEditCategoriesButtonClickListener();
 
+      //TODO: Use this structure to trigger Deletion / Adding of Categories
       // Attach click listeners to edit buttons
       $('#categories_list_table').on('click', 'tbody .edit-button', function () {
         // Get the parent <tr> element
@@ -128,26 +121,30 @@ export function bootstrapCategoriesListTable() {
         var categoryId = $row.data('id');
         // Extract the action from the clicked icon's data attribute
         var action = $(this).data('action');
-        // Log the clicked icon, its action, and its attributes
-        // console.log('Clicked icon:', action);
-        // console.log('Parent ID:', parentId);
-        // console.log('Category ID:', categoryId);
+
       });
 
 
+      //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-    
+
         // Find child categories recursively
         findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
-    
+
         //! Next up:
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
-        // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
-        console.log(categoryId);
-        });
+        deleteSelectedRows(categoryId, 'part_categories', 'category_id', rebuildCategoriesTable);
+      });
+
+      //* Add Category
+      $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
+        var $row = $(this).closest('tr');
+        var categoryId = [$row.data('id')];
+        callCategoryEntryModal(categoryId);
+      });
     }
   });
 };
@@ -382,6 +379,34 @@ export function rebuildLocationsTable(queryString) {
 }
 
 /**
+ * Rebuild the categories table after adding or deleting categories
+ */
+export function rebuildCategoriesTable() {
+  console.log("Rebuilding cat table");
+  return $.ajax({
+    url: '/categories.categoriesTable',
+    success: function (data) {
+      $('#categories_list_table').bootstrapTable('destroy');   // Destroy old categories table
+      $('#category-window').html(data);                        // Update div with new table
+      bootstrapCategoriesListTable();                          // Bootstrap it
+
+      var $table = $('#categories_list_table');
+      var $menu = $('#parts_table_menu');
+      // defineCategoriesListTableActions($table, $menu);           // Define table row actions and context menu
+      // $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+      // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
+      // $('#category-window').width($('#category-window').width()+1);
+      inlineProcessing();
+      bootstrapTableSmallify();
+      makeTableWindowResizable();
+
+      //! Ziemlich sicher, dass das mehrere Click Listener zum Add Part Button macht
+      fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
+    }
+  });
+}
+
+/**
  * Rebuild the footprints table after adding or deleting footprints
  * @param {string} queryString 
  */
@@ -583,15 +608,15 @@ function getChildCategoriesNames(categories, categoryId) {
  * @param {Array} categoryId Array to store clicked categery and recursive child categories
  */
 function findChildCategoriesFromCategoryTable(parentId, categoryId) {
-  $('#categories_list_table tbody tr').each(function() {
-      var $currentRow = $(this);
-      var currentParentId = $currentRow.data('parent-id');
-      if (currentParentId === parentId) {
-          var childCategoryId = $currentRow.data('id');
-          categoryId.push(childCategoryId);
-          // Recursively find child categories of this child category
-          findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
-      }
+  $('#categories_list_table tbody tr').each(function () {
+    var $currentRow = $(this);
+    var currentParentId = $currentRow.data('parent-id');
+    if (currentParentId === parentId) {
+      var childCategoryId = $currentRow.data('id');
+      categoryId.push(childCategoryId);
+      // Recursively find child categories of this child category
+      findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
+    }
   });
 }
 
