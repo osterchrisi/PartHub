@@ -9,6 +9,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Part;
+use App\Models\Location;
 
 class StockMovementOccured
 {
@@ -20,6 +22,8 @@ class StockMovementOccured
     public function __construct(array $stock_level, $user)
     {
         $this->stock_levels = $stock_level;
+        $this->stock_levels[0] = Part::find($stock_level[0])->part_name;
+        $this->stock_levels[2] = Location::find($stock_level[2])->location_name;        
         $this->user = $user;
     }
 

@@ -22,10 +22,7 @@ class SendStocklevelNotification
      */
     public function handle(object $event): void
     {
-        // dd($event);
-
-        // Send welcome e-mail
+        // Send Stock Level Notification Mail
         Mail::to($event->user)->bcc(env('MAIL_FROM_ADDRESS'))->send(new StocklevelNotification($event->user, $event->stock_levels));
-        // dd($event->stock_level);
     }
 }
