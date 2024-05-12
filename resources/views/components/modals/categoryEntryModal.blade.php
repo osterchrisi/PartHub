@@ -10,7 +10,6 @@
             <!-- Modal Body -->
             <div class="modal-body mx-1">
                 <span id="categoryEntryText">Add new Category</span>
-                <?php echo $category_name; ?><br><br>
                 <form id="categoryEntryForm">
                     @csrf
                     <input class="form-control form-control-sm" placeholder="Category Name" id="addCategoryName" required><br>

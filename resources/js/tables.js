@@ -9,6 +9,10 @@ import {
 import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
 
 import { makeTableWindowResizable } from './custom.js';
+
+import { callCategoryEntryModal } from './categoryEntry.js';
+
+import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
 
 /**
@@ -94,27 +98,19 @@ export function bootstrapSuppliersListTable() {
  * Bootstrap the Categories table
  * @return void
  */
-export function bootstrapCategoriesListTable() {
+export function bootstrapCategoriesListTable(treeColumn = 1) {
+  console.log("a");
   const $table = $('#categories_list_table');
+  console.log("b");
   $table.bootstrapTable({
     rootParentId: '0',
-    // onResize: function (column, width, isResizing) {
-    //   console.log("resizing");
-    //   // Check if the column width is less than the minimum width
-    //   var minWidth = parseInt(column.attr('data-min-width')) || 0;
-    //   if (width < minWidth) {
-    //     // If the column width is less than the minimum, set it to the minimum width
-    //     $('#categories_list_table').bootstrapTable('resize', {
-    //       field: column.attr('data-field'),
-    //       width: minWidth
-    //     });
-    //   }
-    // },
     onPostBody: function () {
+      console.log("before treegrid");
       // Treegrid
       $table.treegrid({
-        treeColumn: 1
+        treeColumn: treeColumn,
       });
+      console.log("after treegrid");
 
       // Edit toggle button click listener
       attachEditCategoriesButtonClickListener();
@@ -146,7 +142,7 @@ export function bootstrapCategoriesListTable() {
 
         //! Next up:
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
-        // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
+        deleteSelectedRows(categoryId, 'part_categories', 'category_id', rebuildCategoriesTable);
         console.log(categoryId);
       });
 
@@ -154,8 +150,8 @@ export function bootstrapCategoriesListTable() {
       $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-
         console.log("New category as sub-category of: ", categoryId);
+        callCategoryEntryModal(categoryId);
       });
     }
   });
@@ -386,6 +382,37 @@ export function rebuildLocationsTable(queryString) {
       inlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
+    }
+  });
+}
+
+/**
+ * Rebuild the categories table after adding or deleting categories
+ */
+export function rebuildCategoriesTable() {
+  console.log("Rebuilding cat table");
+  return $.ajax({
+    url: '/categories.categoriesTable',
+    success: function (data) {
+      $('#categories_list_table').bootstrapTable('destroy');   // Destroy old categories table
+      $('#category-window').html(data);                        // Update div with new table
+      console.log("1");
+      bootstrapCategoriesListTable();                          // Bootstrap it
+      console.log("2");
+
+      var $table = $('#categories_list_table');
+      var $menu = $('#parts_table_menu');
+      // defineCategoriesListTableActions($table, $menu);           // Define table row actions and context menu
+      // $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+      // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
+      // $('#category-window').width($('#category-window').width()+1);
+      inlineProcessing();
+      bootstrapTableSmallify();
+      makeTableWindowResizable();
+
+      fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
+      console.log("3");
+
     }
   });
 }

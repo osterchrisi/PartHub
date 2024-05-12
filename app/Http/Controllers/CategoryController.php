@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
@@ -16,14 +16,25 @@ class CategoryController extends Controller
             ->with('children')
             ->get();
 
-        return view(
-            'categories.categories',
-            [
-                'categoriesForCategoriesTable' => $categories,
-                'title' => 'Categories',
-                'view' => 'categories'
-            ]
-        );
+        $route = $request->route()->getName();
+        if ($route == 'categories') {
+            return view(
+                'categories.categories',
+                [
+                    'categoriesForCategoriesTable' => $categories,
+                    'title' => 'Categories',
+                    'view' => 'categories'
+                ]
+            );
+        }
+        elseif ($route == 'categories.categoriesTable') {
+            return view(
+                'categories.categoriesTable',
+                [
+                    'categoriesForCategoriesTable' => $categories,
+                ]
+            );
+        }
     }
 
     public function list()
@@ -74,7 +85,7 @@ class CategoryController extends Controller
         $category->category_name = request()->input('category_name');
         $category->parent_category = request()->input('parent_category');
         $category->part_category_owner_u_fk = $user->id;
-        
+
         if ($category->save()) {
             $categoryId = $category->category_id;
 

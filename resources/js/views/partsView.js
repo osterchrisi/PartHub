@@ -126,7 +126,7 @@ function getSuppliers() {
     })
 }
 
-async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
+export async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
     try {
         // Fetch locations, footprints, categories and suppliers for part entry modal
         const locations = await getLocations();
