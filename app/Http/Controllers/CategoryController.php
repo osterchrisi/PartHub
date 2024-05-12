@@ -63,8 +63,37 @@ class CategoryController extends Controller
         );
     }
 
-    public function create($parent_id)
+    public function create()
     {
-        //
+        $user = Auth::user();
+
+        // Create a new category instance
+        $category = new Category();
+
+        // Assign values to the category attributes
+        $category->category_name = request()->input('category_name');
+        $category->parent_category = request()->input('parent_category');
+        $category->part_category_owner_u_fk = $user->id; // Assuming this field should be set to the currently authenticated user
+
+        if ($category->save()) {
+            $categoryId = $category->category_id;
+
+            // Construct JSON response
+            $response = [
+                'category_id' => $categoryId,
+                'status' => 'success'
+            ];
+
+            return response()->json($response);
+        }
+        else {
+            $errorResponse = [
+                'status' => 'error'
+            ];
+
+            // Return error JSON response with HTTP status code 500 (Internal Server Error)
+            return response()->json($errorResponse, 500);
+        }
     }
+
 }

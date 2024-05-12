@@ -87,7 +87,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->middleware(['auth', 'verified'])->name('categories');
     Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
     Route::get('/categories.get', 'list')->middleware(['auth', 'verified']);
-    Route::post('/categories.create', 'create')->middleware(['auth', 'verified']);
+    Route::post('/category.create', 'create')->middleware(['auth', 'verified']);
 });
 
 //* Supplier Routes
