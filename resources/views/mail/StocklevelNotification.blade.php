@@ -16,16 +16,18 @@
     <div>
         <h1>Hey, {{ $name }}!</h1>
         <h4>There are some important stock level changes </h4>
-        @php
-            $arrayString = print_r($stock_level, true);
-        @endphp
+        
+        Part: {{$stock_level[0]}}<br>
+        Location: {{$stock_level[2]}}<br>
+        Quantity: {{$stock_level[1]}}<br>
 
-        <pre>{{ $arrayString }}</pre>
         <p>
             All the best,<br>
             the PartHub team from Berlin<br><br>
             <img src="{{ env('APP_FAVICON') }}" alt="PartHub Logo"></img>
         </p>
+        <br><br>
+        PS: This message will look nicer in the future :)
     </div>
 </body>
 
