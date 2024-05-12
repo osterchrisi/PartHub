@@ -99,22 +99,19 @@ export function bootstrapSuppliersListTable() {
  * @return void
  */
 export function bootstrapCategoriesListTable(treeColumn = 1) {
-  console.log("a");
   const $table = $('#categories_list_table');
-  console.log("b");
   $table.bootstrapTable({
     rootParentId: '0',
     onPostBody: function () {
-      console.log("before treegrid");
       // Treegrid
       $table.treegrid({
         treeColumn: treeColumn,
       });
-      console.log("after treegrid");
 
       // Edit toggle button click listener
       attachEditCategoriesButtonClickListener();
 
+      //TODO: Use this structure to trigger Deletion / Adding of Categories
       // Attach click listeners to edit buttons
       $('#categories_list_table').on('click', 'tbody .edit-button', function () {
         // Get the parent <tr> element
@@ -124,10 +121,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
         var categoryId = $row.data('id');
         // Extract the action from the clicked icon's data attribute
         var action = $(this).data('action');
-        // Log the clicked icon, its action, and its attributes
-        // console.log('Clicked icon:', action);
-        // console.log('Parent ID:', parentId);
-        // console.log('Category ID:', categoryId);
+
       });
 
 
@@ -143,14 +137,12 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
         //! Next up:
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
         deleteSelectedRows(categoryId, 'part_categories', 'category_id', rebuildCategoriesTable);
-        console.log(categoryId);
       });
 
       //* Add Category
       $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-        console.log("New category as sub-category of: ", categoryId);
         callCategoryEntryModal(categoryId);
       });
     }
@@ -396,9 +388,7 @@ export function rebuildCategoriesTable() {
     success: function (data) {
       $('#categories_list_table').bootstrapTable('destroy');   // Destroy old categories table
       $('#category-window').html(data);                        // Update div with new table
-      console.log("1");
       bootstrapCategoriesListTable();                          // Bootstrap it
-      console.log("2");
 
       var $table = $('#categories_list_table');
       var $menu = $('#parts_table_menu');
@@ -410,9 +400,8 @@ export function rebuildCategoriesTable() {
       bootstrapTableSmallify();
       makeTableWindowResizable();
 
+      //! Ziemlich sicher, dass das mehrere Click Listener zum Add Part Button macht
       fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
-      console.log("3");
-
     }
   });
 }

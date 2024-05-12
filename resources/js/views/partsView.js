@@ -14,7 +14,8 @@ import {
     focusNewPartName,
     initializePopovers,
     initializeMultiSelect,
-    makeTableWindowResizable
+    makeTableWindowResizable,
+    removeClickListeners
 } from "../custom";
 
 import { callPartEntryModal } from '../partEntry';
@@ -133,6 +134,8 @@ export async function fetchDataThenAttachClickListenerAndDefineCategoriesTableAc
         const footprints = await getFootprints();
         const categories = await getCategories();
         const suppliers = await getSuppliers();
+
+        removeClickListeners('#toolbarAddButton');
 
         // Attach click listener to Add (Parts) button
         $('#toolbarAddButton').click(function () {

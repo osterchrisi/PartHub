@@ -1,7 +1,4 @@
-<link href="https://cdn.jsdelivr.net/npm/jquery-treegrid@0.3.0/css/jquery.treegrid.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/jquery-treegrid@0.3.0/js/jquery.treegrid.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/treegrid/bootstrap-table-treegrid.min.js">
-</script>
+
 <table class="table table-sm table-borderless table-responsive table-hover table-striped w-auto" style="font-size:12px"
     id="categories_list_table" data-resizable="true" {{-- data-reorderable-columns="true" --}} data-cookie="true"
     data-cookie-id-table="CategoriesListTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
