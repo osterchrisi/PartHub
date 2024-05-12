@@ -26,7 +26,7 @@ export function initializePartsView() {
     bootstrapPartsTable();
     definePartsTableActions($('#parts_table'), $('#parts_table_menu'));
 
-    bootstrapCategoriesListTable();
+    bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
     $('#category-window').width($('#category-window').width()+1);

@@ -73,8 +73,8 @@ class CategoryController extends Controller
         // Assign values to the category attributes
         $category->category_name = request()->input('category_name');
         $category->parent_category = request()->input('parent_category');
-        $category->part_category_owner_u_fk = $user->id; // Assuming this field should be set to the currently authenticated user
-
+        $category->part_category_owner_u_fk = $user->id;
+        
         if ($category->save()) {
             $categoryId = $category->category_id;
 

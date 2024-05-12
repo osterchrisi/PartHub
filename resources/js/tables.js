@@ -135,19 +135,28 @@ export function bootstrapCategoriesListTable() {
       });
 
 
+      //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-    
+
         // Find child categories recursively
         findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
-    
+
         //! Next up:
         //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
         // deleteSelectedRows(categoryId, 'part_categories', 'category_id');
         console.log(categoryId);
-        });
+      });
+
+      //* Add Category
+      $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
+        var $row = $(this).closest('tr');
+        var categoryId = [$row.data('id')];
+
+        console.log("New category as sub-category of: ", categoryId);
+      });
     }
   });
 };
@@ -583,15 +592,15 @@ function getChildCategoriesNames(categories, categoryId) {
  * @param {Array} categoryId Array to store clicked categery and recursive child categories
  */
 function findChildCategoriesFromCategoryTable(parentId, categoryId) {
-  $('#categories_list_table tbody tr').each(function() {
-      var $currentRow = $(this);
-      var currentParentId = $currentRow.data('parent-id');
-      if (currentParentId === parentId) {
-          var childCategoryId = $currentRow.data('id');
-          categoryId.push(childCategoryId);
-          // Recursively find child categories of this child category
-          findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
-      }
+  $('#categories_list_table tbody tr').each(function () {
+    var $currentRow = $(this);
+    var currentParentId = $currentRow.data('parent-id');
+    if (currentParentId === parentId) {
+      var childCategoryId = $currentRow.data('id');
+      categoryId.push(childCategoryId);
+      // Recursively find child categories of this child category
+      findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
+    }
   });
 }
 
