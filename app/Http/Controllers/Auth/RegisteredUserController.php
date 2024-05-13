@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\Category;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -76,6 +77,10 @@ class RegisteredUserController extends Controller
 
         // Create a default location, so user can start adding parts immediately
         Location::createLocation("Default Location", "Feel free to change the description");
+
+        // Create a root category
+        Category::createNewRootCategory();
+
 
         // Send welcome e-mail
         Mail::to($request->user())->bcc(env('MAIL_FROM_ADDRESS'))->send(new WelcomeEmail($user));
