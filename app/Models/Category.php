@@ -67,4 +67,24 @@ class Category extends Model
         return Part::where('part_category_fk', $category_id)->get();
     }
 
+    public static function createNewRootCategory()
+    {
+        $user = Auth::user();
+
+        // Create a new category instance
+        $category = new Category();
+
+        // Assign values to the category attributes
+        $category->category_name = 'All Parts';
+        $category->parent_category = '0';
+        $category->part_category_owner_u_fk = $user->id;
+
+        $category->save();
+
+        $new_category_id = $category->category_id;
+
+        return $new_category_id;
+        
+    }
+
 }
