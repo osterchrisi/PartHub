@@ -25,6 +25,8 @@
             We are actively developing new features every week. If you are looking to contribute to our project, you can do so via <a href="https://github.com/osterchrisi/PartHub" target="_blank">GitHub</a>.<br>
             We are working on ways to also give financial support in order to increase the speed of development.
             <br><br>
+            Currently you will receive a stock level notification if stock goes below 0. In the future you can adjust that number.
+            <br><br>
             Again, we would love to hear your thoughts and feedback. Just drop us a line to <a href="mailto:hello@parthub.online">hello@parthub.online</a>.
             <br><br>
             Thanks again and all the best,<br>
