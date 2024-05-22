@@ -27,10 +27,10 @@ $user_name = $user ? $user->name : '';
                         <a class="nav-link {{ request()->routeIs('locations') ? 'active' : '' }}"
                             href="{{ route('locations') }}">Storage Locations</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('categories') ? 'active' : '' }}"
                             href="{{ route('categories') }}">Categories</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('suppliers') ? 'active' : '' }}"
                             href="{{ route('suppliers') }}">Suppliers</a>
