@@ -22,8 +22,10 @@ class StockMovementOccured
     public function __construct(array $stock_level, $user)
     {
         $this->stock_levels = $stock_level;
-        $this->stock_levels[0] = Part::find($stock_level[0])->part_name;
-        $this->stock_levels[2] = Location::find($stock_level[2])->location_name;        
+        // Get human-readable part name
+        $this->stock_levels[3] = Part::find($stock_level[0])->part_name;
+        //Replace location ID with corresponding name
+        $this->stock_levels[2] = Location::find($stock_level[2])->location_name;
         $this->user = $user;
     }
 

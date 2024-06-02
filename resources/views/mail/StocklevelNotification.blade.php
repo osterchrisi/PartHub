@@ -17,9 +17,10 @@
         <h1>Hey, {{ $name }}!</h1>
         <h4>There are some important stock level changes </h4>
         
-        Part: {{$stock_level[0]}}<br>
+        Part: {{$stock_level[3]}}<br>
+        ID: {{$stock_level[0]}}<br>
         Location: {{$stock_level[2]}}<br>
-        Quantity: {{$stock_level[1]}}<br>
+        New Quantity: {{$stock_level[1]}}<br>
 
         <p>
             All the best,<br>
