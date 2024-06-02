@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('parts', function (Blueprint $table) {
-            $table->integer('notification_threshold')->default(0);
+            $table->integer('stocklevel_notification_threshold')->default(0);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('parts', function (Blueprint $table) {
-            $table->dropColumn('notification_threshold');
+            $table->dropColumn('stocklevel_notification_threshold');
         });
     }
 };
