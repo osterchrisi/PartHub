@@ -1,5 +1,5 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
 } from "./custom";
@@ -7,14 +7,14 @@ import {
 import { rebuildFootprintsTable } from "./tables";
 
 /**
- * Displays the footprint entry modal and attaches the validateForm function with the addFootprintCallback function
+ * Displays the footprint entry modal and attaches the validateAndSubmitForm function with the addFootprintCallback function
  * 
  * @param {Array} footprints An array of objects containing footprints
  * @return void
  */
 export function callFootprintEntryModal() {
   $('#mFootprintEntry').modal('show'); // Show modal
-  validateForm('footprintEntryForm', 'addFootprint', addFootprintCallback); // Attach validate form 
+  validateAndSubmitForm('footprintEntryForm', 'addFootprint', addFootprintCallback); // Attach validate form 
 }
 
 /**

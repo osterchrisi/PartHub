@@ -1,5 +1,5 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
 } from "./custom";
@@ -7,15 +7,15 @@ import {
 import { rebuildCategoriesTable } from "./tables";
 
 /**
- * Displays the category entry modal and attaches the validateForm function with the addCategoryCallback function
+ * Displays the category entry modal and attaches the validateAndSubmitForm function with the addCategoryCallback function
  * 
  * @param {Array} categories An array of objects containing categories
  * @return void
  */
 export function callCategoryEntryModal(categoryId) {
   $('#mCategoryEntry').modal('show'); // Show modal
-  // validateForm('categoryEntryForm', 'addCategory', addCategoryCallback(categoryId)); // Attach validate form 
-  validateForm('categoryEntryForm', 'addCategory', addCategoryCallback, [categoryId]);
+  // validateAndSubmitForm('categoryEntryForm', 'addCategory', addCategoryCallback(categoryId)); // Attach validate form 
+  validateAndSubmitForm('categoryEntryForm', 'addCategory', addCategoryCallback, [categoryId]);
 
 }
 

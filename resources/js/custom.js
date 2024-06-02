@@ -160,30 +160,28 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
 }
 
 /**
- * Validates required fields in a form when the specified button is clicked or Enter is hit.
- * If all required fields are valid, the form is sumitted, otherwise the user is notified.
+ * Validates required fields in a form and handles form submission when the specified button is clicked or Enter is hit.
+ * If all required fields are valid, the form is submitted, otherwise the user is notified.
  * @param {string} formId - The ID of the form to validate.
  * @param {string} button - The ID of the button element to attach the click listener to.
- * @param {function} callback - The function to execute when the form is submitted and valid.
- * @param {Array} [args=[]] - Optional array of additional arguments to pass to the callback function.
- * @returns {*} - The return value of the callback function, if the form is valid.
+ * @param {function} submitCallback - The function to execute when the form is submitted and valid.
+ * @param {Array} [submitArgs=[]] - Optional array of additional arguments to pass to the submitCallback function.
+ * @returns {*} - The return value of the submitCallback function, if the form is valid.
  *                If the form is invalid, the function returns undefined.
  */
-export function validateForm(formId, button, callback, args = []) {
+export function validateAndSubmitForm(formId, button, submitCallback, submitArgs = []) {
     const form = document.getElementById(formId);
     const submitBtn = document.getElementById(button);
 
-    // Form validation for click event
+    // Attach event listeners for form validation and submission
     $(submitBtn).click(function (event) {
         event.preventDefault();
         submitFormIfValid();
     });
 
-    // Form validation for Enter key press
     $(form).on('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // Prevent default form submission
-
             submitFormIfValid();
         }
     });
@@ -191,19 +189,24 @@ export function validateForm(formId, button, callback, args = []) {
     // Function to submit the form if it's valid
     function submitFormIfValid() {
         if (form.checkValidity()) {
-            const result = callback.apply(null, args);
+            const result = submitCallback.apply(null, submitArgs);
             return result;
         } else {
-            form.querySelectorAll('[required]').forEach(function (field) {
-                if (field.checkValidity()) {
-                    field.classList.remove('is-invalid');
-                    field.classList.add('is-valid');
-                } else {
-                    field.classList.remove('is-valid');
-                    field.classList.add('is-invalid');
-                }
-            });
+            displayFieldValidity();
         }
+    }
+
+    // Function to display validity status of required fields
+    function displayFieldValidity() {
+        form.querySelectorAll('[required]').forEach(function (field) {
+            if (field.checkValidity()) {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+            } else {
+                field.classList.remove('is-valid');
+                field.classList.add('is-invalid');
+            }
+        });
     }
 }
 

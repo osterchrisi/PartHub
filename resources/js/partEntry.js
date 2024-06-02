@@ -1,5 +1,5 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
 } from "./custom";
@@ -7,7 +7,7 @@ import {
 import { rebuildPartsTable } from "./tables";
 
 /**
- * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
+ * Displays the part entry modal, initializes the location dropdown and attaches the validateAndSubmitForm function with the addPartCallback function
  * 
  * @param {Array} locations An array of objects containing locations
  * @return void
@@ -18,7 +18,7 @@ export function callPartEntryModal(locations, footprints, categories, suppliers)
   addPartCategoryDropdown(categories);
   addPartSupplierDropdown(suppliers);
   $('#mPartEntry').modal('show'); // Show modal
-  validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
+  validateAndSubmitForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
 }
 
 /**
