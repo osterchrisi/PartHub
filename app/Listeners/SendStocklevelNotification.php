@@ -22,7 +22,14 @@ class SendStocklevelNotification
      */
     public function handle(object $event): void
     {
-        // Send Stock Level Notification Mail
-        Mail::to($event->user)->bcc(env('MAIL_FROM_ADDRESS'))->send(new StocklevelNotification($event->user, $event->stock_levels));
+        // Extract the stock quantity from the stock levels array
+        $resulting_quantity = $event->stock_levels[1];
+
+        // Check if the stock quantity is below zero
+        if ($resulting_quantity < 0) {
+            // Send Stock Level Notification Mail
+            Mail::to($event->user)->bcc(env('MAIL_FROM_ADDRESS'))->send(new StocklevelNotification($event->user, $event->stock_levels));
+        }
     }
+
 }
