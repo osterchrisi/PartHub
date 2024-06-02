@@ -160,7 +160,8 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
 }
 
 /**
- * Validates required fields in a form when the specified button is clicked.
+ * Validates required fields in a form when the specified button is clicked or Enter is hit.
+ * If all required fields are valid, the form is sumitted, otherwise the user is notified.
  * @param {string} formId - The ID of the form to validate.
  * @param {string} button - The ID of the button element to attach the click listener to.
  * @param {function} callback - The function to execute when the form is submitted and valid.
@@ -172,15 +173,27 @@ export function validateForm(formId, button, callback, args = []) {
     const form = document.getElementById(formId);
     const submitBtn = document.getElementById(button);
 
-    // Form validation
+    // Form validation for click event
     $(submitBtn).click(function (event) {
         event.preventDefault();
+        submitFormIfValid();
+    });
+
+    // Form validation for Enter key press
+    $(form).on('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent default form submission
+
+            submitFormIfValid();
+        }
+    });
+
+    // Function to submit the form if it's valid
+    function submitFormIfValid() {
         if (form.checkValidity()) {
-            // Form is valid
             const result = callback.apply(null, args);
             return result;
         } else {
-            // Form is invalid (required fields not filled)
             form.querySelectorAll('[required]').forEach(function (field) {
                 if (field.checkValidity()) {
                     field.classList.remove('is-invalid');
@@ -191,7 +204,7 @@ export function validateForm(formId, button, callback, args = []) {
                 }
             });
         }
-    });
+    }
 }
 
 /**
