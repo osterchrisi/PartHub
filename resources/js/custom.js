@@ -180,7 +180,8 @@ export function validateAndSubmitForm(formId, button, submitCallback, submitArgs
     });
 
     $(form).on('keydown', function(event) {
-        if (event.key === 'Enter') {
+        // Check if the Enter key is pressed and the active element is not the selectized input
+        if (event.key === 'Enter' && document.activeElement.id !== 'addPartLocSelect-selectized') {
             event.preventDefault(); // Prevent default form submission
             submitFormIfValid();
         }
@@ -209,6 +210,7 @@ export function validateAndSubmitForm(formId, button, submitCallback, submitArgs
         });
     }
 }
+
 
 /**
  * Saves the active tab for a specific page in the local storage.

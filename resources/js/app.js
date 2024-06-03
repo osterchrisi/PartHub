@@ -36,4 +36,12 @@ $(document).ready(function () {
     else if (currentView === 'multi') {
         initializeMultiView();
     }
+
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Enter') {
+            console.log('Enter key pressed:', event);
+            console.log('Enter key pressed while focused on:', document.activeElement);
+        }
+    });
+    
 });
