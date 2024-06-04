@@ -56,7 +56,7 @@ Route::controller(PartsController::class)->group(function () {
     Route::get('/part.getName', 'getName')->middleware(['auth', 'verified']);
     Route::post('/part.delete', 'destroy')->middleware(['auth', 'verified']);
     Route::post('/parts.prepareStockChanges', 'prepareStockChanges')->middleware(['auth', 'verified']);
-    Route::post('/parts.create', 'create')->middleware(['auth', 'verified']);
+    Route::post('/part.create', 'create')->middleware(['auth', 'verified']);
     Route::get('/parts.partsTable', 'index')->middleware(['auth', 'verified'])->name('parts.partsTable');
 });
 

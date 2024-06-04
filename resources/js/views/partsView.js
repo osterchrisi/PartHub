@@ -20,6 +20,7 @@ import {
 
 import { callPartEntryModal } from '../partEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+import { ResourceCreator } from "../resourceCreator";
 
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
@@ -30,7 +31,7 @@ export function initializePartsView() {
     bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
-    $('#category-window').width($('#category-window').width()+1);
+    $('#category-window').width($('#category-window').width() + 1);
 
     inlineProcessing();
     bootstrapTableSmallify();
@@ -70,7 +71,43 @@ export function initializePartsView() {
     initializePopovers();
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
-    fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
+    // fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
+
+    const newPartCreator = new ResourceCreator({
+        type: 'part',
+        endpoint: '/part.create',
+        newIdName: 'Part ID',
+        inputForm: '#partEntryForm',
+        inputFields: [
+            { name: 'part_name', selector: '#addPartName' },
+            { name: 'quantity', selector: '#addPartQuantity' },
+            { name: 'to_location', selector: '#addPartLocSelect' },
+            { name: 'comment', selector: '#addPartComment' },
+            { name: 'description', selector: '#addPartDescription' },
+            { name: 'footprint', selector: '#addPartFootprintSelect' },
+            { name: 'supplier', selector: '#addPartSupplierSelect' },
+            { name: 'category', selector: '#addPartCategorySelect' },
+        ],
+        inputModal: '#mPartEntry',
+        addButton: '#addPart',
+        tableRebuildFunction: rebuildPartsTable
+    });
+
+
+    $('#toolbarAddButton').click(function () {
+        newPartCreator.showModal();
+        newPartCreator.attachAddButtonClickListener();
+    });
+
+    $.ajax({
+        url: '/categories.get',
+        dataType: 'json',
+        error: function (error) {
+          console.log(error);
+        }
+      }).done(categories => {
+        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
+      });
 
     /**
      * Show location divs after potentially
@@ -127,26 +164,15 @@ function getSuppliers() {
     })
 }
 
-export async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
-    try {
-        // Fetch locations, footprints, categories and suppliers for part entry modal
-        const locations = await getLocations();
-        const footprints = await getFootprints();
-        const categories = await getCategories();
-        const suppliers = await getSuppliers();
+// export async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
+//     try {
+//         // Fetch locations, footprints, categories and suppliers for part entry modal
+//         removeClickListeners('#toolbarAddButton');
+//         // Define filtering table row actions for categories table on side pane
+//         defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
 
-        removeClickListeners('#toolbarAddButton');
-
-        // Attach click listener to Add (Parts) button
-        $('#toolbarAddButton').click(function () {
-            callPartEntryModal(locations, footprints, categories, suppliers);
-        });
-
-        // Define filtering table row actions for categories table on side pane
-        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
-
-    } catch (error) {
-        // Handle errors
-        console.error('Error fetching data:', error);
-    }
-}
+//     } catch (error) {
+//         // Handle errors
+//         console.error('Error fetching data:', error);
+//     }
+// }

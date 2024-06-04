@@ -42,7 +42,7 @@ function addPartCallback() {
   var token = $('input[name="_token"]').attr('value');
 
   $.ajax({
-    url: '/parts.create',
+    url: '/part.create',
     type: 'POST',
     data: {
       part_name: pn,

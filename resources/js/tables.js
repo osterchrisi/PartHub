@@ -12,7 +12,7 @@ import { makeTableWindowResizable } from './custom.js';
 
 import { callCategoryEntryModal } from './categoryEntry.js';
 
-import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
+// import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
 
 /**
@@ -392,16 +392,22 @@ export function rebuildCategoriesTable() {
 
       var $table = $('#categories_list_table');
       var $menu = $('#parts_table_menu');
-      // defineCategoriesListTableActions($table, $menu);           // Define table row actions and context menu
-      // $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+  
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
       inlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
 
-      //! Ziemlich sicher, dass das mehrere Click Listener zum Add Part Button macht
-      fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
+      $.ajax({
+        url: '/categories.get',
+        dataType: 'json',
+        error: function (error) {
+          console.log(error);
+        }
+      }).done(categories => {
+        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
+      });
     }
   });
 }
