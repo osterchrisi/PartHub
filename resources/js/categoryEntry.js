@@ -49,8 +49,7 @@ function addCategoryCallback(categoryId) {
       removeClickListeners('#addCategory');           // Remove click listener from Add Category button
 
       // Rebuild categories table and select new row
-      // var queryString = window.category.search;
-      $.when(rebuildCategoriesTable()).done(function () {
+            $.when(rebuildCategoriesTable()).done(function () {
         // $('tr[data-id="' + categoryId + '"]').addClass('selected selected-last');
       });
     },

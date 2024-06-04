@@ -6,11 +6,9 @@ import {
   updateInfoWindow
 } from "./custom";
 
-import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
-
 import { makeTableWindowResizable } from './custom.js';
-
 import { callCategoryEntryModal } from './categoryEntry.js';
+import { ResourceCreator } from "./resourceCreator.js";
 
 // import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
@@ -143,8 +141,25 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
       $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-        callCategoryEntryModal(categoryId);
+
+        const newCategoryCreator = new ResourceCreator({
+          type: 'category',
+          endpoint: '/category.create',
+          newIdName: 'Category ID',
+          inputForm: '#categoryEntryForm',
+          inputFields: [
+            { name: 'category_name', selector: '#addCategoryName' }
+          ],
+          inputModal: '#mCategoryEntry',
+          addButton: '#addCategory', //! Is not in use anymore
+          tableRebuildFunction: rebuildPartsTable //! Would be great to rebuild the category table as well!
+        },
+          { categoryId: categoryId[0] });
+
+        newCategoryCreator.showModal();
+        newCategoryCreator.attachAddButtonClickListener(); //! Not necessary anymore
       });
+      // callCategoryEntryModal(categoryId);
     }
   });
 };
@@ -392,7 +407,7 @@ export function rebuildCategoriesTable() {
 
       var $table = $('#categories_list_table');
       var $menu = $('#parts_table_menu');
-  
+
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
       inlineProcessing();

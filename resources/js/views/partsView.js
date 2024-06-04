@@ -18,7 +18,7 @@ import {
     removeClickListeners
 } from "../custom";
 
-import { callPartEntryModal } from '../partEntry';
+import { callPartEntryModal } from '../legacy/partEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
 
@@ -69,9 +69,7 @@ export function initializePartsView() {
     });
 
     initializePopovers();
-
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
-    // fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
 
     const newPartCreator = new ResourceCreator({
         type: 'part',
@@ -95,8 +93,8 @@ export function initializePartsView() {
 
 
     $('#toolbarAddButton').click(function () {
-        newPartCreator.showModal();
         newPartCreator.attachAddButtonClickListener();
+        newPartCreator.showModal();
     });
 
     $.ajax({
@@ -119,60 +117,3 @@ export function initializePartsView() {
         $('#ToStockLocationDiv-row').show();
     })
 }
-
-// Get locations
-function getLocations() {
-    return $.ajax({
-        url: '/locations.get',
-        dataType: 'json',
-        error: function (error) {
-            console.log(error);
-        }
-    })
-}
-
-// Get footprints
-function getFootprints() {
-    return $.ajax({
-        url: '/footprints.get',
-        dataType: 'json',
-        error: function (error) {
-            console.log(error);
-        }
-    })
-}
-
-// Get categories
-function getCategories() {
-    return $.ajax({
-        url: '/categories.get',
-        dataType: 'json',
-        error: function (error) {
-            console.log(error);
-        }
-    })
-}
-
-// Get suppliers
-function getSuppliers() {
-    return $.ajax({
-        url: '/suppliers.get',
-        dataType: 'json',
-        error: function (error) {
-            console.log(error);
-        }
-    })
-}
-
-// export async function fetchDataThenAttachClickListenerAndDefineCategoriesTableActions() {
-//     try {
-//         // Fetch locations, footprints, categories and suppliers for part entry modal
-//         removeClickListeners('#toolbarAddButton');
-//         // Define filtering table row actions for categories table on side pane
-//         defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories);
-
-//     } catch (error) {
-//         // Handle errors
-//         console.error('Error fetching data:', error);
-//     }
-// }

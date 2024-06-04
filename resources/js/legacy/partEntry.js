@@ -2,9 +2,9 @@ import {
   validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildPartsTable } from "./tables";
+import { rebuildPartsTable } from "../tables";
 
 /**
  * Displays the part entry modal, initializes the location dropdown and attaches the validateAndSubmitForm function with the addPartCallback function

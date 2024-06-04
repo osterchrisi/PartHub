@@ -2,7 +2,7 @@ export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
 
 class ResourceCreator {
-  constructor(options) {
+  constructor(options, categoryId = null) {
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -19,6 +19,9 @@ class ResourceCreator {
       this.removeAddButtonClickListener()
       this.clickListenerAttached = false;
     });
+    if (categoryId) {
+      this.categoryId = categoryId.categoryId;
+    }
   }
 
   requestCreation() {
@@ -27,6 +30,8 @@ class ResourceCreator {
       data[field.name] = $(field.selector).val();
     });
 
+    if (this.categoryId) { data['parent_category'] = this.categoryId; }
+
     const token = $('input[name="_token"]').attr('value');
 
     $.ajax({
@@ -34,10 +39,12 @@ class ResourceCreator {
       type: 'POST',
       data: Object.assign({ _token: token }, data),
       success: (response) => {
-        const id = JSON.parse(response)[this.newIdName];  // Get new ID
-        updateInfoWindow(this.type, id);                  // Update InfoWindow
-        this.hideModal();                                 // Hide Modal
-        this.removeAddButtonClickListener();              // Remove Click Listener
+        if (this.type != 'category') {
+          const id = JSON.parse(response)[this.newIdName];  // Get new ID
+          updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
+        }
+        this.hideModal();                                   // Hide Modal
+        this.removeAddButtonClickListener();                // Remove Click Listener
         const queryString = window.location.search;
         $.when(this.tableRebuildFunction(queryString)).done(() => {
           $(`tr[data-id="${id}"]`).addClass('selected selected-last');
@@ -48,8 +55,8 @@ class ResourceCreator {
           alert('CSRF token mismatch. Please refresh the page and try again.');
         } else {
           alert('An error occurred. Please try again.');
-          $(this.inputModal).modal('hide');
-          this.removeAddButtonClickListener();
+          this.hideModal();                                 // Hide Modal
+          this.removeAddButtonClickListener();              // Remove Click Listener
         }
       }
     });
