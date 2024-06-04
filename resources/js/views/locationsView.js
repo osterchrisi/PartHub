@@ -6,9 +6,10 @@ import {
     rebuildLocationsTable
 } from "../tables";
 
-import { callLocationEntryModal } from '../locationEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { makeTableWindowResizable } from '../custom';
+import { ResourceCreator } from "../resourceCreator";
+
 
 
 export function initializeLocationsView() {
@@ -21,8 +22,27 @@ export function initializeLocationsView() {
     defineLocationsListTableActions($table, $menu)
     makeTableWindowResizable();
 
+    // $('#toolbarAddButton').click(function () {
+    //     callLocationEntryModal();
+    // });
+
+    const newLocationCreator = new ResourceCreator({
+        type: 'location',
+        endpoint: '/location.create',
+        newIdName: 'Location ID',
+        inputForm: '#locationEntryForm',
+        inputFields: [
+            { name: 'location_name', selector: '#addLocationName' },
+            { name: 'location_description', selector: '#addLocationDescription' }
+        ],
+        inputModal: '#mLocationEntry',
+        addButton: '#addLocation',
+        tableRebuildFunction: rebuildLocationsTable
+    });
+
     $('#toolbarAddButton').click(function () {
-        callLocationEntryModal();
+        newLocationCreator.showModal();
+        newLocationCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);

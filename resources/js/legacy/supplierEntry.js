@@ -2,9 +2,9 @@ import {
   validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildSuppliersTable } from "./tables";
+import { rebuildSuppliersTable } from "../tables";
 
 /**
  * Displays the supplier entry modal and attaches the validateAndSubmitForm function with the addSupplierCallback function

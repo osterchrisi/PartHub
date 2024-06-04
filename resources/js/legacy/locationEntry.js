@@ -2,9 +2,9 @@ import {
   validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildLocationsTable } from "./tables";
+import { rebuildLocationsTable } from "../tables";
 
 /**
  * Displays the location entry modal and attaches the validateAndSubmitForm function with the addLocationCallback function
