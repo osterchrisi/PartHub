@@ -1,5 +1,6 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
+import { rebuildCategoriesTable } from "./tables";
 
 class ResourceCreator {
   constructor(options, categoryId = null) {
@@ -45,10 +46,17 @@ class ResourceCreator {
         }
         this.hideModal();                                   // Hide Modal
         this.removeAddButtonClickListener();                // Remove Click Listener
+
         const queryString = window.location.search;
+
         $.when(this.tableRebuildFunction(queryString)).done(() => {
           $(`tr[data-id="${id}"]`).addClass('selected selected-last');
         });
+
+        //TODO: Select row in categories table
+        if (this.type == 'category') {
+          rebuildCategoriesTable();
+        }
       },
       error: (xhr) => {
         if (xhr.status === 419) {

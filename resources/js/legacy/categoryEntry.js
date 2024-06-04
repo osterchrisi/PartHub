@@ -2,9 +2,9 @@ import {
   validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildCategoriesTable } from "./tables";
+import { rebuildCategoriesTable } from "../tables";
 
 /**
  * Displays the category entry modal and attaches the validateAndSubmitForm function with the addCategoryCallback function

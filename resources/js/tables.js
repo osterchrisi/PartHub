@@ -7,7 +7,6 @@ import {
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
-import { callCategoryEntryModal } from './categoryEntry.js';
 import { ResourceCreator } from "./resourceCreator.js";
 
 // import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
