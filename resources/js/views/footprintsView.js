@@ -20,7 +20,7 @@ export function initializeFootprintsView() {
     makeTableWindowResizable();
     defineFootprintsListTableActions($table, $menu)
 
-    const newFootprint = new ResourceCreator({
+    const newFootprintCreator = new ResourceCreator({
         type: 'footprint',
         endpoint: '/footprint.create',
         newIdName: 'Footprint ID',
@@ -35,8 +35,8 @@ export function initializeFootprintsView() {
     });
 
     $('#toolbarAddButton').click(function () {
-        newFootprint.showModal();
-        newFootprint.attachAddButtonClickListener();
+        newFootprintCreator.showModal();
+        newFootprintCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', rebuildFootprintsTable);

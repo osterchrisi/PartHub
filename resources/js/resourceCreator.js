@@ -3,6 +3,7 @@ import { updateInfoWindow } from "./custom";
 
 class ResourceCreator {
   constructor(options) {
+    // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
     this.newIdName = options.newIdName;
@@ -34,9 +35,9 @@ class ResourceCreator {
       data: Object.assign({ _token: token }, data),
       success: (response) => {
         const id = JSON.parse(response)[this.newIdName];  // Get new ID
-        updateInfoWindow(this.type, id);           // Update InfoWindow
-        this.hideModal();                               // Hide Modal
-        this.removeAddButtonClickListener();            // Remove Click Listener
+        updateInfoWindow(this.type, id);                  // Update InfoWindow
+        this.hideModal();                                 // Hide Modal
+        this.removeAddButtonClickListener();              // Remove Click Listener
         const queryString = window.location.search;
         $.when(this.tableRebuildFunction(queryString)).done(() => {
           $(`tr[data-id="${id}"]`).addClass('selected selected-last');
