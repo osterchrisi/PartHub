@@ -6,7 +6,6 @@ import {
     rebuildFootprintsTable
 } from "../tables";
 
-import { callFootprintEntryModal } from '../footprintEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { makeTableWindowResizable } from '../custom';
 import { ResourceCreator } from "../resourceCreator";
@@ -20,10 +19,6 @@ export function initializeFootprintsView() {
     bootstrapTableSmallify();
     makeTableWindowResizable();
     defineFootprintsListTableActions($table, $menu)
-
-    // $('#toolbarAddButton').click(function () {
-    //     callFootprintEntryModal();
-    // });
 
     const newFootprint = new ResourceCreator({
         type: 'footprint',
