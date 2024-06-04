@@ -30,9 +30,8 @@ export function initializeFootprintsView() {
             { name: 'footprint_alias', selector: '#addFootprintAlias' }
         ],
         inputModal: '#mFootprintEntry',
-        addButton: '#addFootprint',
-        tableRebuildFunction: rebuildFootprintsTable
-    });
+        addButton: '#addFootprint'
+    }, [rebuildFootprintsTable]);
 
     $('#toolbarAddButton').click(function () {
         newFootprintCreator.showModal();

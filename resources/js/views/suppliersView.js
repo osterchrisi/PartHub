@@ -30,9 +30,8 @@ export function initializeSuppliersView() {
             { name: 'supplier_name', selector: '#addSupplierName' },
         ],
         inputModal: '#mSupplierEntry',
-        addButton: '#addSupplier',
-        tableRebuildFunction: rebuildSuppliersTable
-    });
+        addButton: '#addSupplier'
+    }, [rebuildSuppliersTable]);
 
     $('#toolbarAddButton').click(function () {
         newSupplierCreator.showModal();

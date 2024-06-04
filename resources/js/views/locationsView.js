@@ -22,10 +22,6 @@ export function initializeLocationsView() {
     defineLocationsListTableActions($table, $menu)
     makeTableWindowResizable();
 
-    // $('#toolbarAddButton').click(function () {
-    //     callLocationEntryModal();
-    // });
-
     const newLocationCreator = new ResourceCreator({
         type: 'location',
         endpoint: '/location.create',
@@ -36,9 +32,8 @@ export function initializeLocationsView() {
             { name: 'location_description', selector: '#addLocationDescription' }
         ],
         inputModal: '#mLocationEntry',
-        addButton: '#addLocation',
-        tableRebuildFunction: rebuildLocationsTable
-    });
+        addButton: '#addLocation'
+    }, [rebuildLocationsTable]);
 
     $('#toolbarAddButton').click(function () {
         newLocationCreator.showModal();
@@ -46,18 +41,4 @@ export function initializeLocationsView() {
     });
 
     attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);
-
-
-    // Experimental ajax search
-    // $('#search').on("keyup input", function() {
-    //     /* Get input value on change */
-    //     var inputVal = $(this).val();
-    //     var resultDropdown = $(this).siblings(".result");
-    //     $.get("../includes/buildBomListTable.php", {
-    //         term: inputVal
-    //     }).done(function(data) {
-    //         var querystring = "?search=" + inputVal;
-    //         rebuildBomListTable(querystring);
-    //     });
-    // });
 };

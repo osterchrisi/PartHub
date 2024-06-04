@@ -87,9 +87,8 @@ export function initializePartsView() {
             { name: 'category', selector: '#addPartCategorySelect' },
         ],
         inputModal: '#mPartEntry',
-        addButton: '#addPart',
-        tableRebuildFunction: rebuildPartsTable
-    });
+        addButton: '#addPart'
+    }, [rebuildPartsTable]);
 
 
     $('#toolbarAddButton').click(function () {

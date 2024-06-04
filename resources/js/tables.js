@@ -150,9 +150,9 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
             { name: 'category_name', selector: '#addCategoryName' }
           ],
           inputModal: '#mCategoryEntry',
-          addButton: '#addCategory', //! Is not in use anymore
-          tableRebuildFunction: rebuildPartsTable //! Would be great to rebuild the category table as well!
+          addButton: '#addCategory' //! Is not in use anymore
         },
+          [rebuildPartsTable, rebuildCategoriesTable],
           { categoryId: categoryId[0] });
 
         newCategoryCreator.showModal();
