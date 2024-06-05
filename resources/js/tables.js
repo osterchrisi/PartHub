@@ -130,9 +130,6 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
         // Find child categories recursively
         findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
-
-        //! Next up:
-        //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
         deleteSelectedRows(categoryId, 'part_categories', 'category_id', rebuildCategoriesTable);
       });
 
@@ -623,9 +620,9 @@ function getChildCategoriesNames(categories, categoryId) {
 }
 
 /**
- * Recursively find child categories in case a user wants to delete a category
+ * Recursively find child categories in case a user wants to delete a category and it has child categories
  * @param {string} parentId Category ID of the clicked category and first entry in the categoryId array
- * @param {Array} categoryId Array to store clicked categery and recursive child categories
+ * @param {Array} categoryId Array to store clicked category and recursive child categories
  */
 function findChildCategoriesFromCategoryTable(parentId, categoryId) {
   $('#categories_list_table tbody tr').each(function () {
