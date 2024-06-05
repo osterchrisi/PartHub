@@ -6,13 +6,10 @@ import {
   updateInfoWindow
 } from "./custom";
 
-import { deleteSelectedRowsFromToolbar } from "./toolbar/toolbar";
-
 import { makeTableWindowResizable } from './custom.js';
+import { ResourceCreator } from "./resourceCreator.js";
 
-import { callCategoryEntryModal } from './categoryEntry.js';
-
-import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
+// import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
 
 /**
@@ -124,27 +121,40 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       });
 
-
       //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
-        var categoryId = [$row.data('id')];
-
-        // Find child categories recursively
-        findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
-
-        //! Next up:
-        //TODO: Need custom deletion AJAX call / server implementation as I need to take care of potentially nested categories
-        deleteSelectedRows(categoryId, 'part_categories', 'category_id', rebuildCategoriesTable);
+        var categoryId = $row.data('id');
+      
+        // Find child categories recursively and return an array of category IDs
+        var categoryIds = findChildCategoriesFromCategoryTable(categoryId);
+        deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
       });
 
       //* Add Category
       $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-        callCategoryEntryModal(categoryId);
+
+        const newCategoryCreator = new ResourceCreator({
+          type: 'category',
+          endpoint: '/category.create',
+          newIdName: 'Category ID',
+          inputForm: '#categoryEntryForm',
+          inputFields: [
+            { name: 'category_name', selector: '#addCategoryName' }
+          ],
+          inputModal: '#mCategoryEntry',
+          addButton: '#addCategory' //! Is not in use anymore
+        },
+          [rebuildPartsTable, rebuildCategoriesTable],
+          { categoryId: categoryId[0] });
+
+        newCategoryCreator.showModal();
+        newCategoryCreator.attachAddButtonClickListener(); //! Not necessary anymore
       });
+      // callCategoryEntryModal(categoryId);
     }
   });
 };
@@ -392,16 +402,22 @@ export function rebuildCategoriesTable() {
 
       var $table = $('#categories_list_table');
       var $menu = $('#parts_table_menu');
-      // defineCategoriesListTableActions($table, $menu);           // Define table row actions and context menu
-      // $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
       inlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
 
-      //! Ziemlich sicher, dass das mehrere Click Listener zum Add Part Button macht
-      fetchDataThenAttachClickListenerAndDefineCategoriesTableActions();
+      $.ajax({
+        url: '/categories.get',
+        dataType: 'json',
+        error: function (error) {
+          console.log(error);
+        }
+      }).done(categories => {
+        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
+      });
     }
   });
 }
@@ -603,21 +619,28 @@ function getChildCategoriesNames(categories, categoryId) {
 }
 
 /**
- * Recursively find child categories in case a user wants to delete a category
- * @param {string} parentId Category ID of the clicked category and first entry in the categoryId array
- * @param {Array} categoryId Array to store clicked categery and recursive child categories
+ * Recursively find child categories in case a user wants to delete a category and it has child categories.
+ * @param {string} parentId Category ID of the clicked category.
+ * @returns {Array} Array of category IDs including the clicked category and its recursive child categories.
  */
-function findChildCategoriesFromCategoryTable(parentId, categoryId) {
-  $('#categories_list_table tbody tr').each(function () {
-    var $currentRow = $(this);
-    var currentParentId = $currentRow.data('parent-id');
-    if (currentParentId === parentId) {
-      var childCategoryId = $currentRow.data('id');
-      categoryId.push(childCategoryId);
-      // Recursively find child categories of this child category
-      findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
-    }
-  });
+function findChildCategoriesFromCategoryTable(parentId) {
+  var categoryIds = [parentId];
+
+  function findChildren(parentId) {
+    $('#categories_list_table tbody tr').each(function () {
+      var $currentRow = $(this);
+      var currentParentId = $currentRow.data('parent-id');
+      if (currentParentId === parentId) {
+        var childCategoryId = $currentRow.data('id');
+        categoryIds.push(childCategoryId);
+        // Recursively find child categories of this child category
+        findChildren(childCategoryId);
+      }
+    });
+  }
+
+  findChildren(parentId);
+  return categoryIds;
 }
 
 export function defineSuppliersListTableActions($table, $menu) {

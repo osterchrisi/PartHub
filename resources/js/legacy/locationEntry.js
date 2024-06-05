@@ -1,20 +1,20 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildLocationsTable } from "./tables";
+import { rebuildLocationsTable } from "../tables";
 
 /**
- * Displays the location entry modal and attaches the validateForm function with the addLocationCallback function
+ * Displays the location entry modal and attaches the validateAndSubmitForm function with the addLocationCallback function
  * 
  * @param {Array} locations An array of objects containing locations
  * @return void
  */
 export function callLocationEntryModal() {
   $('#mLocationEntry').modal('show'); // Show modal
-  validateForm('locationEntryForm', 'addLocation', addLocationCallback); // Attach validate form 
+  validateAndSubmitForm('locationEntryForm', 'addLocation', addLocationCallback); // Attach validate form 
 }
 
 /**

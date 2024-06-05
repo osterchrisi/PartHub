@@ -52,7 +52,8 @@ class Part extends Model
         'part_footprint_fk',
         'part_unit_fk',
         'part_owner_u_fk',
-        'part_owner_g_fk'
+        'part_owner_g_fk',
+        'stocklevel_notification_threshold'
     );
 
     public static function getColumnNames()

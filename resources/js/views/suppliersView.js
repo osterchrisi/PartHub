@@ -6,9 +6,10 @@ import {
     rebuildSuppliersTable
 } from "../tables";
 
-import { callSupplierEntryModal } from '../supplierEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { makeTableWindowResizable } from '../custom';
+
+import { ResourceCreator } from "../resourceCreator";
 
 export function initializeSuppliersView() {
     bootstrapSuppliersListTable();
@@ -20,8 +21,21 @@ export function initializeSuppliersView() {
     makeTableWindowResizable();
     defineSuppliersListTableActions($table, $menu);
 
+    const newSupplierCreator = new ResourceCreator({
+        type: 'supplier',
+        endpoint: '/supplier.create',
+        newIdName: 'Supplier ID',
+        inputForm: '#supplierEntryForm',
+        inputFields: [
+            { name: 'supplier_name', selector: '#addSupplierName' },
+        ],
+        inputModal: '#mSupplierEntry',
+        addButton: '#addSupplier'
+    }, [rebuildSuppliersTable]);
+
     $('#toolbarAddButton').click(function () {
-        callSupplierEntryModal();
+        newSupplierCreator.showModal();
+        newSupplierCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('suppliers_list_table', 'suppliers', 'supplier_id', rebuildSuppliersTable);

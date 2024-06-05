@@ -6,9 +6,10 @@ import {
     rebuildLocationsTable
 } from "../tables";
 
-import { callLocationEntryModal } from '../locationEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { makeTableWindowResizable } from '../custom';
+import { ResourceCreator } from "../resourceCreator";
+
 
 
 export function initializeLocationsView() {
@@ -21,23 +22,23 @@ export function initializeLocationsView() {
     defineLocationsListTableActions($table, $menu)
     makeTableWindowResizable();
 
+    const newLocationCreator = new ResourceCreator({
+        type: 'location',
+        endpoint: '/location.create',
+        newIdName: 'Location ID',
+        inputForm: '#locationEntryForm',
+        inputFields: [
+            { name: 'location_name', selector: '#addLocationName' },
+            { name: 'location_description', selector: '#addLocationDescription' }
+        ],
+        inputModal: '#mLocationEntry',
+        addButton: '#addLocation'
+    }, [rebuildLocationsTable]);
+
     $('#toolbarAddButton').click(function () {
-        callLocationEntryModal();
+        newLocationCreator.showModal();
+        newLocationCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);
-
-
-    // Experimental ajax search
-    // $('#search').on("keyup input", function() {
-    //     /* Get input value on change */
-    //     var inputVal = $(this).val();
-    //     var resultDropdown = $(this).siblings(".result");
-    //     $.get("../includes/buildBomListTable.php", {
-    //         term: inputVal
-    //     }).done(function(data) {
-    //         var querystring = "?search=" + inputVal;
-    //         rebuildBomListTable(querystring);
-    //     });
-    // });
 };

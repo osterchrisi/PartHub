@@ -1,13 +1,13 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildPartsTable } from "./tables";
+import { rebuildPartsTable } from "../tables";
 
 /**
- * Displays the part entry modal, initializes the location dropdown and attaches the validateForm function with the addPartCallback function
+ * Displays the part entry modal, initializes the location dropdown and attaches the validateAndSubmitForm function with the addPartCallback function
  * 
  * @param {Array} locations An array of objects containing locations
  * @return void
@@ -18,7 +18,7 @@ export function callPartEntryModal(locations, footprints, categories, suppliers)
   addPartCategoryDropdown(categories);
   addPartSupplierDropdown(suppliers);
   $('#mPartEntry').modal('show'); // Show modal
-  validateForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
+  validateAndSubmitForm('partEntryForm', 'addPart', addPartCallback); // Attach validate form 
 }
 
 /**
@@ -42,7 +42,7 @@ function addPartCallback() {
   var token = $('input[name="_token"]').attr('value');
 
   $.ajax({
-    url: '/parts.create',
+    url: '/part.create',
     type: 'POST',
     data: {
       part_name: pn,
@@ -96,12 +96,22 @@ function addPartLocationDropdown(locations) {
   var div = document.getElementById("addPartLocDropdown");
   var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
   for (var i = 0; i < locations.length; i++) {
-    selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
+      selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
   }
   selectHTML += "</select>";
   div.innerHTML = selectHTML;
-  $("#addPartLocSelect").selectize();
+
+  var $select = $("#addPartLocSelect").selectize();
+
+  // Get the Selectize instance
+  var selectizeInstance = $select[0].selectize;
+
+  // Prevent form submission when Enter is pressed while the dropdown is active
+  selectizeInstance.on('change', function(event) {
+    console.log("item selected");
+  });
 }
+
 
 /**
  * 

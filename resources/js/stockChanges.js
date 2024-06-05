@@ -1,6 +1,6 @@
 import {
     removeClickListeners,
-    validateForm,
+    validateAndSubmitForm,
     updateInfoWindow
 } from './custom'
 
@@ -76,7 +76,7 @@ export function callStockModal(change, locations, pid) {
 
     $('#mAddStock').modal('show'); // Show modal
     removeClickListeners('#AddStock'); // Remove previously added click listener
-    validateForm('stockChangingForm', 'AddStock', stockChangingFormExecution, [change, pid]); // Attach validate form 
+    validateAndSubmitForm('stockChangingForm', 'AddStock', stockChangingFormExecution, [change, pid]); // Attach validate form 
 }
 
 /**

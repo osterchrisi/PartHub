@@ -6,9 +6,9 @@ import {
     rebuildFootprintsTable
 } from "../tables";
 
-import { callFootprintEntryModal } from '../footprintEntry';
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { makeTableWindowResizable } from '../custom';
+import { ResourceCreator } from "../resourceCreator";
 
 export function initializeFootprintsView() {
     bootstrapFootprintsListTable();
@@ -20,8 +20,22 @@ export function initializeFootprintsView() {
     makeTableWindowResizable();
     defineFootprintsListTableActions($table, $menu)
 
+    const newFootprintCreator = new ResourceCreator({
+        type: 'footprint',
+        endpoint: '/footprint.create',
+        newIdName: 'Footprint ID',
+        inputForm: '#footprintEntryForm',
+        inputFields: [
+            { name: 'footprint_name', selector: '#addFootprintName' },
+            { name: 'footprint_alias', selector: '#addFootprintAlias' }
+        ],
+        inputModal: '#mFootprintEntry',
+        addButton: '#addFootprint'
+    }, [rebuildFootprintsTable]);
+
     $('#toolbarAddButton').click(function () {
-        callFootprintEntryModal();
+        newFootprintCreator.showModal();
+        newFootprintCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', rebuildFootprintsTable);

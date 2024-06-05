@@ -1,20 +1,20 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildSuppliersTable } from "./tables";
+import { rebuildSuppliersTable } from "../tables";
 
 /**
- * Displays the supplier entry modal and attaches the validateForm function with the addSupplierCallback function
+ * Displays the supplier entry modal and attaches the validateAndSubmitForm function with the addSupplierCallback function
  * 
  * @param {Array} suppliers An array of objects containing suppliers
  * @return void
  */
 export function callSupplierEntryModal() {
   $('#mSupplierEntry').modal('show'); // Show modal
-  validateForm('supplierEntryForm', 'addSupplier', addSupplierCallback); // Attach validate form 
+  validateAndSubmitForm('supplierEntryForm', 'addSupplier', addSupplierCallback); // Attach validate form 
 }
 
 /**

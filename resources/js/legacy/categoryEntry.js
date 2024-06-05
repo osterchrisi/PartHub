@@ -1,21 +1,21 @@
 import {
-  validateForm,
+  validateAndSubmitForm,
   removeClickListeners,
   updateInfoWindow
-} from "./custom";
+} from "../custom";
 
-import { rebuildCategoriesTable } from "./tables";
+import { rebuildCategoriesTable } from "../tables";
 
 /**
- * Displays the category entry modal and attaches the validateForm function with the addCategoryCallback function
+ * Displays the category entry modal and attaches the validateAndSubmitForm function with the addCategoryCallback function
  * 
  * @param {Array} categories An array of objects containing categories
  * @return void
  */
 export function callCategoryEntryModal(categoryId) {
   $('#mCategoryEntry').modal('show'); // Show modal
-  // validateForm('categoryEntryForm', 'addCategory', addCategoryCallback(categoryId)); // Attach validate form 
-  validateForm('categoryEntryForm', 'addCategory', addCategoryCallback, [categoryId]);
+  // validateAndSubmitForm('categoryEntryForm', 'addCategory', addCategoryCallback(categoryId)); // Attach validate form 
+  validateAndSubmitForm('categoryEntryForm', 'addCategory', addCategoryCallback, [categoryId]);
 
 }
 
@@ -49,8 +49,7 @@ function addCategoryCallback(categoryId) {
       removeClickListeners('#addCategory');           // Remove click listener from Add Category button
 
       // Rebuild categories table and select new row
-      // var queryString = window.category.search;
-      $.when(rebuildCategoriesTable()).done(function () {
+            $.when(rebuildCategoriesTable()).done(function () {
         // $('tr[data-id="' + categoryId + '"]').addClass('selected selected-last');
       });
     },

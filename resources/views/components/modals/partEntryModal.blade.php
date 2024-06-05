@@ -27,9 +27,9 @@
                         </div>
                     </div>
                     <br>
-                    <button class="btn btn-sm" id="showAdvanced" type="button" data-bs-toggle="collapse"
+                    <button class="btn btn-sm btn-light" id="showAdvanced" type="button" data-bs-toggle="collapse"
                         data-bs-target="#advancedOptions">Show Advanced</button>
-                    <div class="collapse" id="advancedOptions">
+                    <div class="collapse mb-4" id="advancedOptions">
                         <div class="row">
                             {{-- Category --}}
                             <div class="col">
