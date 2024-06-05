@@ -15,9 +15,7 @@ export function initializeFootprintsView() {
 
     var $table = $('#footprints_list_table');
     var $menu = $('#bom_list_table_menu');
-    enableInlineProcessing();
-    bootstrapTableSmallify();
-    makeTableWindowResizable();
+
     defineFootprintsListTableActions($table, $menu)
 
     const newFootprintCreator = new ResourceCreator({

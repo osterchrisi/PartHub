@@ -1,6 +1,6 @@
 export { InlineTableCellEditor }
 import { updateInfoWindow } from "./custom";
-import { rebuildPartsTable } from "./tables";
+import { rebuildCategoriesTable, rebuildPartsTable } from "./tables";
 
 class InlineTableCellEditor {
     constructor(options) {
@@ -57,12 +57,13 @@ class InlineTableCellEditor {
             this.$cell.text(new_value);
 
             // Get cell id, column name and database table
-            // These are encoded in the table data cells
+            // These are encoded in the table data cells and look like this, e.g.:
+            // 337 'part_id' 'part_description' 'parts' 'Decade Counter/Divider with 10 Decoded Outputs'
             const id = this.$cell.closest('td').data('id');
             const column = this.$cell.closest('td').data('column');
             const table_name = this.$cell.closest('td').data('table_name');
             const id_field = this.$cell.closest('td').data('id_field');
-            console.log(id, id_field, column, table_name, new_value);
+            // console.log(id, id_field, column, table_name, new_value);
 
             // Call the updating function
             this.updateCell(id, column, table_name, new_value, id_field);
@@ -80,11 +81,8 @@ class InlineTableCellEditor {
             } else if (table_name == 'boms') {
                 updateInfoWindow('bom', id);
             } else if (table_name == 'part_categories') {
-                $('#categories_list_table').treegrid({
-                    treeColumn: 1
-                });
-                //! This does not really work so I just leave it and try to get away with saying it's rare to rename a category
-                // rebuildPartsTable('');
+                rebuildCategoriesTable();
+                rebuildPartsTable('');
             }
         });
     }
@@ -109,6 +107,8 @@ class InlineTableCellEditor {
                 selectizeControl.focus();
 
                 // Select element change event handler and callback function to set flag
+                // Selectize.js does not natively support listening to multiple events
+                // This covers changing the value or chosing a value for the first time
                 selectizeControl.on('change', () => {
                     this.selectEventHandler(select, this.$cell, data, () => {
                         this.valueChanged = true;
@@ -121,7 +121,7 @@ class InlineTableCellEditor {
                     });
                 });
 
-                // Listen for the blur event on the selectize control
+                // When done selecting
                 selectizeControl.on('blur', () => {
                     // Remove the select element when the selectize dropdown loses focus
                     select.remove();
@@ -195,12 +195,13 @@ class InlineTableCellEditor {
         // Call the database table updating function
         $.when(this.updateCell(id, column, table_name, selectedValue, id_field)).done(() => {
             // Find the name for a given ID
-            const newValue = data.find(item => item[`${this.type}_id`] === parseInt(selectedValue));
+            const newValue = data.find(item => item[`${this.type}_id`] == parseInt(selectedValue));
             // Check if newValue is found and update HTML cell
             if (newValue) {
                 cell.text(newValue[`${this.type}_name`]); // Get the name from the found item
             } else {
-                console.log(`No matching ${this.type} found for id:`, selectedValue);
+                // Do not get confused. Since I listen to two types of events, one never finds a matching ID
+                // console.log(`No matching ${this.type} found for id:`, selectedValue);
             }
             // Editing aftermath
             select.remove();

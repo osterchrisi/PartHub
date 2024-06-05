@@ -9,7 +9,6 @@ import {
 import { makeTableWindowResizable } from './custom.js';
 import { ResourceCreator } from "./resourceCreator.js";
 import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
-// import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
 
 /**
@@ -617,7 +616,6 @@ export function enableInlineProcessing() {
 
     // Get current value
     var originalValue = cell.text();
-    console.log("original Value: ", originalValue);
 
     // * Dropdown cells
     if (cell.hasClass('category')) {

@@ -16,9 +16,7 @@ export function initializeSuppliersView() {
 
     var $table = $('#suppliers_list_table');
     var $menu = $('#bom_list_table_menu');
-    enableInlineProcessing();
-    bootstrapTableSmallify();
-    makeTableWindowResizable();
+
     defineSuppliersListTableActions($table, $menu);
 
     const newSupplierCreator = new ResourceCreator({

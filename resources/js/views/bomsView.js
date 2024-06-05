@@ -20,9 +20,6 @@ export function initializeBomsView() {
     var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
     defineBomListTableActions($table, $menu);
-    enableInlineProcessing();
-    bootstrapTableSmallify();
-    makeTableWindowResizable();
 
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
     attachAssembleBomHandler('bom_list_table');
