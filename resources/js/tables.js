@@ -451,12 +451,12 @@ export function rebuildSuppliersTable(queryString) {
   return $.ajax({
     url: '/suppliers.suppliersTable' + queryString,
     success: function (data) {
-      $('#suppliers_list_table').bootstrapTable('destroy');  // Destroy old parts table
-      $('#table-window').html(data);                    // Update div with new table
-      bootstrapSuppliersListTable();                    // Bootstrap it
+      $('#suppliers_list_table').bootstrapTable('destroy');   // Destroy old parts table
+      $('#table-window').html(data);                          // Update div with new table
+      bootstrapSuppliersListTable();                          // Bootstrap it
       var $table = $('#suppliers_list_table');
       var $menu = $('#parts_table_menu');
-      defineSuppliersListTableActions($table, $menu);           // Define table row actions and context menu
+      defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
       inlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
@@ -986,6 +986,14 @@ export function inlineProcessing() {
     // * Dropdown cells
     if (cell.hasClass('category')) {
       editCategoryCell(cell, originalValue);
+
+      //* This would be new style
+      editor = new InlineTableCellEditor({
+        type: 'category',
+        $cell: cell,
+        originalValue: originalValue
+
+      }).editCell();
     }
     else if (cell.hasClass('footprint')) {
       editFootprintCell(cell, originalValue);
