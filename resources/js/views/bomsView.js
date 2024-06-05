@@ -1,7 +1,7 @@
 import {
     bootstrapBomListTable,
     defineBomListTableActions,
-    inlineProcessing,
+    enableInlineProcessing,
     bootstrapTableSmallify,
     rebuildBomListTable
 } from '../tables';
@@ -20,7 +20,7 @@ export function initializeBomsView() {
     var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
     defineBomListTableActions($table, $menu);
-    inlineProcessing();
+    enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();
 

@@ -1,6 +1,6 @@
 import {
     bootstrapLocationsListTable,
-    inlineProcessing,
+    enableInlineProcessing,
     bootstrapTableSmallify,
     defineLocationsListTableActions,
     rebuildLocationsTable
@@ -17,7 +17,7 @@ export function initializeLocationsView() {
 
     var $table = $('#locations_list_table');
     var $menu = $('#bom_list_table_menu');
-    inlineProcessing();
+    enableInlineProcessing();
     bootstrapTableSmallify();
     defineLocationsListTableActions($table, $menu)
     makeTableWindowResizable();

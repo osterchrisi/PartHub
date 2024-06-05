@@ -1,7 +1,7 @@
 import {
     bootstrapPartsTable,
     definePartsTableActions,
-    inlineProcessing,
+    enableInlineProcessing,
     bootstrapTableSmallify,
     rebuildPartsTable,
     defineTableRowClickActions
@@ -37,7 +37,7 @@ function rebuildBomListTable2(queryString) {
         var $table = $('#bom_list_table');
         var $menu = $('#bom_list_table_menu');
         defineBomListTableActions2($table, $menu); // Define table row actions and context menu
-        inlineProcessing();
+        enableInlineProcessing();
         bootstrapTableSmallify();
       }
     });

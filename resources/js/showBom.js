@@ -5,7 +5,7 @@ import {
 
 import {
     bootstrapBomDetailsTable,
-    inlineProcessing
+    enableInlineProcessing
 } from './tables';
 
 function allowHtmlTableElementsInPopover() {
@@ -31,7 +31,7 @@ export function initializeShowBom() {
     addActiveTabEventListeners('boms');
 
     bootstrapBomDetailsTable();
-    inlineProcessing();
+    enableInlineProcessing();
 
     allowHtmlTableElementsInPopover();
 

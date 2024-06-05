@@ -8,7 +8,7 @@ import {
 
 import { makeTableWindowResizable } from './custom.js';
 import { ResourceCreator } from "./resourceCreator.js";
-
+import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
 // import { fetchDataThenAttachClickListenerAndDefineCategoriesTableActions } from './views/partsView';
 import { isAxiosError } from "axios";
 
@@ -198,80 +198,6 @@ function NumberURLSorter(a, b) {
 };
 
 /**
- * Create a select element for the inline category dropdown in parts table and populate it with available categories
- * @param {Array} categories Array of associative arrays containing the categories
- * @param {string} currentValue Current text value of the table cell that is edited
- * @returns 
- */
-function createInlineCategorySelect(categories, currentValue) {
-  // New select element
-  var select = $('<select class="form-select-sm">');
-  // Iterate over all available categories
-  for (var i = 0; i < categories.length; i++) {
-    // Create new option for this category
-    var option = $('<option>').text(categories[i]['category_name']).attr('value', categories[i]['category_id']);
-    if (categories[i]['category_name'] === currentValue) {
-      // Add 'selected' attribute to the option with the same text value as the value in the table
-      //TODO: Better would be ID value, in case two categories would have same text?
-      option.attr('selected', true);
-    }
-    // Append option to select element
-    select.append(option);
-  }
-  return select;
-}
-
-/**
- * Create a select element for the inline footpring dropdown in parts table and populate it with available footprints
- * This is copy of createInlineCategorySelect!!
- * @param {Array} footprints Array of associative arrays containing the footprints
- * @param {string} currentValue Current text value of the table cell that is edited
- * @returns 
- */
-function createInlineFootprintSelect(footprints, currentValue) {
-  // New select element
-  var select = $('<select class="form-select-sm">');
-  // Iterate over all available footprints
-  for (var i = 0; i < footprints.length; i++) {
-    // Create new option for this footprint
-    var option = $('<option>').text(footprints[i]['footprint_name']).attr('value', footprints[i]['footprint_id']);
-    if (footprints[i]['footprint_name'] === currentValue) {
-      // Add 'selected' attribute to the option with the same text value as the value in the table
-      //TODO: Better would be ID value, in case two footprints would have same text?
-      option.attr('selected', true);
-    }
-    // Append option to select element
-    select.append(option);
-  }
-  return select;
-}
-
-/**
- * Create a select element for the inline supplier dropdown in parts table and populate it with available suppliers
- * This is copy of createInlineFootprintSelect!!
- * @param {Array} supplier Array of associative arrays containing the suppliers
- * @param {string} currentValue Current text value of the table cell that is edited
- * @returns 
- */
-function createInlineSupplierSelect(suppliers, currentValue) {
-  // New select element
-  var select = $('<select class="form-select-sm">');
-  // Iterate over all available suppliers
-  for (var i = 0; i < suppliers.length; i++) {
-    // Create new option for this supplier
-    var option = $('<option>').text(suppliers[i]['supplier_name']).attr('value', suppliers[i]['supplier_id']);
-    if (suppliers[i]['supplier_name'] === currentValue) {
-      // Add 'selected' attribute to the option with the same text value as the value in the table
-      //TODO: Better would be ID value, in case two suppliers would have same text?
-      option.attr('selected', true);
-    }
-    // Append option to select element
-    select.append(option);
-  }
-  return select;
-}
-
-/**
  * Defines the actions to perform when a table row is clicked.
  * Attaches a click event listener to the specified table rows and calls the
  * provided callback function with the extracted ID when a row is selected.
@@ -360,7 +286,7 @@ export function rebuildPartsTable(queryString) {
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
       definePartsTableActions($table, $menu);         // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -381,7 +307,7 @@ export function rebuildLocationsTable(queryString) {
       var $table = $('#locations_list_table');
       var $menu = $('#parts_table_menu');
       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -405,7 +331,7 @@ export function rebuildCategoriesTable() {
 
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
 
@@ -436,7 +362,7 @@ export function rebuildFootprintsTable(queryString) {
       var $table = $('#footprints_list_table');
       var $menu = $('#parts_table_menu');
       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -451,13 +377,13 @@ export function rebuildSuppliersTable(queryString) {
   return $.ajax({
     url: '/suppliers.suppliersTable' + queryString,
     success: function (data) {
-      $('#suppliers_list_table').bootstrapTable('destroy');  // Destroy old parts table
-      $('#table-window').html(data);                    // Update div with new table
-      bootstrapSuppliersListTable();                    // Bootstrap it
+      $('#suppliers_list_table').bootstrapTable('destroy');   // Destroy old parts table
+      $('#table-window').html(data);                          // Update div with new table
+      bootstrapSuppliersListTable();                          // Bootstrap it
       var $table = $('#suppliers_list_table');
       var $menu = $('#parts_table_menu');
-      defineSuppliersListTableActions($table, $menu);           // Define table row actions and context menu
-      inlineProcessing();
+      defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -480,7 +406,7 @@ export function rebuildBomListTable(queryString) {
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -674,299 +600,9 @@ function hideContextMenu($menu) {
 }
 
 /**
- * Inline table cell editing of a text cell
- * @param {jQuery} cell The cell being edited
- * @param {string} originalValue The original value of the cell before editing
- */
-function editTextCell(cell, originalValue) {
-  // Create input field
-  var input = $('<textarea class="form-control">').val(originalValue);
-  cell.empty().append(input);
-  input.focus();
-
-  // Create label for input field
-  var label = $('<small class="text-muted">Enter: Confirm</small>');
-  cell.append(label);
-
-  // Confirm upon pressing Enter key
-  input.keypress(function (event) {
-    if (event.keyCode === 13) {
-      input.blur();
-    }
-  });
-
-  // Close input on "Escape" key press
-  input.on('keydown', function (event) {
-    if (event.key === "Escape") {
-      input.remove();
-      cell.text(originalValue);
-      cell.removeClass('editing');
-
-      //TODO: Don't really like this solution
-      // If exiting through escape happened on categories last in parts view
-      if ($('#categories_list_table')) {
-        $('#categories_list_table').treegrid({
-          treeColumn: 1
-        })
-      };
-
-      return;
-    }
-  });
-
-  // Enter new value
-  input.blur(function () {
-    // Get newly entered value
-    var new_value = input.val();
-
-    // Update cell with new value
-    cell.text(new_value);
-
-    // Get cell id, column name and database table
-    // These are encoded in the table data cells
-    var id = cell.closest('td').data('id');
-    var column = cell.closest('td').data('column');
-    var table_name = cell.closest('td').data('table_name');
-    var id_field = cell.closest('td').data('id_field');
-    // console.log(id, id_field, column, table_name, new_value);
-
-    // Call the updating function
-    updateCell(id, column, table_name, new_value, id_field);
-    cell.removeClass('editing');
-
-    //TODO: Not great - but works?!
-    if (table_name == 'parts') {
-      updateInfoWindow('part', id);
-    }
-    else if (table_name == 'locations') {
-      updateInfoWindow('location', id);
-    }
-    else if (table_name == 'footprints') {
-      updateInfoWindow('footprint', id);
-    }
-    else if (table_name == 'suppliers') {
-      updateInfoWindow('supplier', id);
-    }
-    else if (table_name == 'boms') {
-      updateInfoWindow('bom', id);
-    }
-    else if (table_name == 'part_categories') {
-      $('#categories_list_table').treegrid({
-        treeColumn: 1
-      });
-    }
-
-  });
-}
-
-/**
- * Inline table cell editing of a category cell in the parts table
- * @param {jQuery} cell The cell being edited
- * @param {string} originalValue The original value of the cell before editing
- */
-function editCategoryCell(cell, originalValue) {
-  // Changed flag
-  var valueChanged = false;
-  // Get list of available categories and populate dropdown
-  var categories = $.ajax({
-    type: 'GET',
-    url: '/categories.get',
-    dataType: 'JSON',
-    success: function (response) {
-      categories = response;
-
-      // Create select element
-      var select = createInlineCategorySelect(categories, originalValue);
-
-      // Append, selectize category dropdown
-      appendInlineCategorySelect(cell, select);
-
-      // Need to focus the selectize control
-      var selectizeControl = select[0].selectize;
-      selectizeControl.focus();
-
-      // Select element change event handler and callback function to set flag
-      // Selective does not support listening to both events at the same time unfortunately
-      selectizeControl.on('change', function () {
-        inlineCategorySelectEventHandler(select, cell, categories, function changeFlagCallback() {
-          valueChanged = true;
-        })
-      });
-
-      selectizeControl.on('dropdown_close', function () {
-        inlineCategorySelectEventHandler(select, cell, categories, function changeFlagCallback() {
-          valueChanged = true;
-        })
-      });
-
-      // Listen for the blur event on the selectize control
-      selectizeControl.on('blur', function () {
-        // Remove the select element when the selectize dropdown loses focus
-        select.remove();
-        // Change cell text back if value was not changed
-        if (!valueChanged) {
-          cell.text(originalValue);
-        }
-        cell.removeClass('editing');
-      });
-
-      // Listen for the Escape keydown event on the document level because selectized element is eating my events
-      $(document).on('keydown', function (event) {
-        if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('category') && cell.hasClass('editing')) {
-          select.remove();
-          // Change cell text back if value was not changed
-          if (!valueChanged) {
-            cell.text(originalValue);
-          }
-          cell.removeClass('editing');
-          // Remove the event handler once it has done its job
-          $(document).off('keydown');
-        }
-      });
-    }
-  });
-}
-
-/**
- * Inline table cell editing of a footprint cell in the parts table
- * @param {jQuery} cell The cell being edited
- * @param {string} originalValue The original value of the cell before editing
- */
-function editFootprintCell(cell, originalValue) {
-  // Changed flag
-  var valueChanged = false;
-  // Get list of available footprints and populate dropdown
-  var footprints = $.ajax({
-    type: 'GET',
-    url: '/footprints.get',
-    dataType: 'JSON',
-    success: function (response) {
-      footprints = response;
-
-      // Create select element
-      var select = createInlineFootprintSelect(footprints, originalValue);
-
-      // Append, selectize footprint dropdown
-      appendInlineFootprintSelect(cell, select);
-
-      // Need to focus the selectize control
-      var selectizeControl = select[0].selectize;
-      selectizeControl.focus();
-
-      // Select element change event handler and callback function to set flag
-      // Selective does not support listening to both events at the same time unfortunately
-      selectizeControl.on('change', function () {
-        inlineFootprintSelectEventHandler(select, cell, footprints, function changeFlagCallback() {
-          valueChanged = true;
-        })
-      });
-
-      selectizeControl.on('dropdown_close', function () {
-        inlineFootprintSelectEventHandler(select, cell, footprints, function changeFlagCallback() {
-          valueChanged = true;
-        })
-      });
-
-      // Listen for the blur event on the selectize control
-      selectizeControl.on('blur', function () {
-        // Remove the select element when the selectize dropdown loses focus
-        select.remove();
-        // Change cell text back if value was not changed
-        if (!valueChanged) {
-          cell.text(originalValue);
-        }
-        cell.removeClass('editing');
-      });
-
-      // Listen for the Escape keydown event on the document level because selectized element is eating my events
-      $(document).on('keydown', function (event) {
-        if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('footprint') && cell.hasClass('editing')) {
-          select.remove();
-          // Change cell text back if value was not changed
-          if (!valueChanged) {
-            cell.text(originalValue);
-          }
-          cell.removeClass('editing');
-          // Remove the event handler once it has done its job
-          $(document).off('keydown');
-        }
-      });
-    }
-  });
-}
-
-/**
- * Inline table cell editing of a supplier cell in the parts table
- * @param {jQuery} cell The cell being edited
- * @param {string} originalValue The original value of the cell before editing
- */
-function editSupplierCell(cell, originalValue) {
-  // Changed flag
-  var valueChanged = false;
-  // Get list of available suppliers and populate dropdown
-  var suppliers = $.ajax({
-    type: 'GET',
-    url: '/suppliers.get',
-    dataType: 'JSON',
-    success: function (response) {
-      suppliers = response;
-
-      // Create select element
-      var select = createInlineSupplierSelect(suppliers, originalValue);
-
-      // Append, selectize supplier dropdown
-      appendInlineSupplierSelect(cell, select);
-
-      // Need to focus the selectize control
-      var selectizeControl = select[0].selectize;
-      selectizeControl.focus();
-
-      // Select element change event handler and callback function to set flag
-      // Selective does not support listening to both events at the same time unfortunately
-      selectizeControl.on('change', function () {
-        inlineSupplierSelectEventHandler(select, cell, suppliers, function changeFlagCallback() {
-          valueChanged = true;
-        })
-      });
-
-      selectizeControl.on('dropdown_close', function () {
-        inlineSupplierSelectEventHandler(select, cell, suppliers, function changeFlagCallback() {
-          valueChanged = true;
-        })
-      });
-
-      // Listen for the blur event on the selectize control
-      selectizeControl.on('blur', function () {
-        // Remove the select element when the selectize dropdown loses focus
-        select.remove();
-        // Change cell text back if value was not changed
-        if (!valueChanged) {
-          cell.text(originalValue);
-        }
-        cell.removeClass('editing');
-      });
-
-      // Listen for the Escape keydown event on the document level because selectized element is eating my events
-      $(document).on('keydown', function (event) {
-        if (event.key === "Escape" && cell.hasClass('editable') && cell.hasClass('supplier') && cell.hasClass('editing')) {
-          select.remove();
-          // Change cell text back if value was not changed
-          if (!valueChanged) {
-            cell.text(originalValue);
-          }
-          cell.removeClass('editing');
-          // Remove the event handler once it has done its job
-          $(document).off('keydown');
-        }
-      });
-    }
-  });
-}
-
-/**
  * Inline table cell manipulation of bootstrapped tables
  */
-export function inlineProcessing() {
+export function enableInlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
     var cell = $(this);
 
@@ -985,177 +621,43 @@ export function inlineProcessing() {
 
     // * Dropdown cells
     if (cell.hasClass('category')) {
-      editCategoryCell(cell, originalValue);
+      const editor = new InlineTableCellEditor({
+        type: 'category',
+        endpoint: 'categories',
+        $cell: cell,
+        originalValue: originalValue
+
+      }).editCell();
     }
     else if (cell.hasClass('footprint')) {
-      editFootprintCell(cell, originalValue);
+      const editor = new InlineTableCellEditor({
+        type: 'footprint',
+        endpoint: 'footprints',
+        $cell: cell,
+        originalValue: originalValue
+
+      }).editCell();
     }
     else if (cell.hasClass('supplier')) {
-      editSupplierCell(cell, originalValue);
+      const editor = new InlineTableCellEditor({
+        type: 'supplier',
+        endpoint: 'suppliers',
+        $cell: cell,
+        originalValue: originalValue
+
+      }).editCell();
     }
     //* It's a text cell
     else {
-      editTextCell(cell, originalValue);
+      // editTextCell(cell, originalValue);
+      const editor = new InlineTableCellEditor({
+        type: 'text',
+        $cell: cell,
+        originalValue: originalValue
+      }).editCell();
     }
   });
 };
-
-/**
- * Updates a cell value in the database using AJAX.
- * @param {number} id - The ID of the row containing the cell to be updated.
- * @param {string} column - The name of the column containing the cell to be updated.
- * @param {string} table_name - The name of the database table containing the cell to be updated.
- * @param {string} new_value - The new value to be assigned to the cell.
- * @param {string} id_field - The name of the primary key field in the database table.
- * @returns {object} - A jQuery AJAX object that can be used to handle the success and error events of the request.
- */
-function updateCell(id, column, table_name, new_value, id_field) {
-
-  var token = $('input[name="_token"]').attr('value');
-  return $.ajax({
-    url: '/updateRow',
-    type: 'POST',
-    data: {
-      id: id,
-      column: column,
-      table_name: table_name,
-      new_value: new_value,
-      id_field: id_field
-    },
-    headers: {
-      'X-CSRF-TOKEN': token
-    },
-    success: function (data) {
-      // console.log('Data updated successfully');
-    },
-    error: function (xhr) {
-      // Handle the error
-      if (xhr.status === 419) {
-        // Token mismatch error
-        alert('CSRF token mismatch. Please refresh the page and try again.');
-      } else {
-        // Other errors
-        alert('Error updating data');
-      }
-    }
-  });
-}
-
-function appendInlineCategorySelect(cell, select) {
-  cell.empty().append(select);
-  select.selectize();
-}
-
-function appendInlineFootprintSelect(cell, select) {
-  cell.empty().append(select);
-  select.selectize();
-}
-
-function appendInlineSupplierSelect(cell, select) {
-  cell.empty().append(select);
-  select.selectize();
-}
-
-function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCallback) {
-  var selectedValue = select.val(); // Get new selected value
-
-  // Get cell part_id, column name and database table
-  // These are encoded in the table data cells
-  var id = cell.closest('td').data('id');
-  var column = 'part_category_fk';
-  var table_name = cell.closest('td').data('table_name');
-  var id_field = cell.closest('td').data('id_field');
-
-  // Call the database table updating function
-  $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
-
-    // Find category name for a given category ID
-    var newValue = categories.find(function (item) {
-      return item.category_id === parseInt(selectedValue); // Return true if the item's categry_id matches selectedValue
-    });
-
-    // Check if newValue is found and update HTML cell
-    if (newValue) {
-      newValue = newValue.category_name; // Get the category_name from the found item
-      cell.text(newValue);
-    } else {
-      // console.log("No matching category found for category_id:", selectedValue);
-      // Handle the case when no matching category is found
-    }
-
-    // Editing aftermath
-    select.remove();
-    cell.removeClass('editing');
-    changeFlagCallback(); // Callback function to set change flag
-    $(document).off('keydown'); // Removing the escape handler because it's on document level
-  })
-}
-
-function inlineFootprintSelectEventHandler(select, cell, footprints, changeFlagCallback) {
-  var selectedValue = select.val(); // Get new selected value
-
-  // Get cell part_id, column name and database table
-  // These are encoded in the table data cells
-  var id = cell.closest('td').data('id');
-  var column = 'part_footprint_fk';
-  var table_name = cell.closest('td').data('table_name');
-  var id_field = cell.closest('td').data('id_field');
-
-  // Call the database table updating function
-  $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
-    // Find footprint name for a given footprint ID
-    var newValue = footprints.find(function (item) {
-      return item.footprint_id === parseInt(selectedValue); // Return true if the item's footprint_id matches selectedValue
-    });
-
-    // Check if newValue is found and update HTML table
-    if (newValue) {
-      newValue = newValue.footprint_name; // Get the footprint_name from the found item
-      cell.text(newValue);
-    } else {
-      console.log("No matching footprint found for footprint_id:", selectedValue);
-    }
-
-    // Editing aftermath
-    select.remove();
-    cell.removeClass('editing');
-    changeFlagCallback(); // Callback function to set change flag
-    $(document).off('keydown'); // Removing the escape handler because it's on document level
-  });
-}
-
-function inlineSupplierSelectEventHandler(select, cell, suppliers, changeFlagCallback) {
-  var selectedValue = select.val(); // Get new selected value
-
-  // Get cell part_id, column name and database table
-  // These are encoded in the table data cells
-  var id = cell.closest('td').data('id');
-  var column = 'part_supplier_fk';
-  var table_name = cell.closest('td').data('table_name');
-  var id_field = cell.closest('td').data('id_field');
-
-  // Call the database table updating function
-  $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
-    // Find supplier name for a given supplier ID
-    var newValue = suppliers.find(function (item) {
-      return item.supplier_id === parseInt(selectedValue); // Return true if the item's supplier_id matches selectedValue
-    });
-
-    // Check if newValue is found and update HTML table
-    if (newValue) {
-      newValue = newValue.supplier_name; // Get the supplier_name from the found item
-      cell.text(newValue);
-    } else {
-      console.log("No matching supplier found for supplier_id:", selectedValue);
-    }
-
-    // Editing aftermath
-    select.remove();
-    cell.removeClass('editing');
-    changeFlagCallback(); // Callback function to set change flag
-    $(document).off('keydown'); // Removing the escape handler because it's on document level
-  });
-}
 
 /**
 * Displays a modal for assembling one or more BOMs and sends an AJAX request to the server to assemble the BOMs.
