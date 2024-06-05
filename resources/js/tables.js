@@ -126,7 +126,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = $row.data('id');
-      
+
         // Find child categories recursively and return an array of category IDs
         var categoryIds = findChildCategoriesFromCategoryTable(categoryId);
         deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
@@ -786,8 +786,17 @@ function editCategoryCell(cell, originalValue) {
       selectizeControl.focus();
 
       // Select element change event handler and callback function to set flag
-      inlineCategorySelectEventHandler(select, cell, categories, function changeFlagCallback() {
-        valueChanged = true;
+      // Selective does not support listening to both events at the same time unfortunately
+      selectizeControl.on('change', function () {
+        inlineCategorySelectEventHandler(select, cell, categories, function changeFlagCallback() {
+          valueChanged = true;
+        })
+      });
+
+      selectizeControl.on('dropdown_close', function () {
+        inlineCategorySelectEventHandler(select, cell, categories, function changeFlagCallback() {
+          valueChanged = true;
+        })
       });
 
       // Listen for the blur event on the selectize control
@@ -845,8 +854,17 @@ function editFootprintCell(cell, originalValue) {
       selectizeControl.focus();
 
       // Select element change event handler and callback function to set flag
-      inlineFootprintSelectEventHandler(select, cell, footprints, function changeFlagCallback() {
-        valueChanged = true;
+      // Selective does not support listening to both events at the same time unfortunately
+      selectizeControl.on('change', function () {
+        inlineFootprintSelectEventHandler(select, cell, footprints, function changeFlagCallback() {
+          valueChanged = true;
+        })
+      });
+
+      selectizeControl.on('dropdown_close', function () {
+        inlineFootprintSelectEventHandler(select, cell, footprints, function changeFlagCallback() {
+          valueChanged = true;
+        })
       });
 
       // Listen for the blur event on the selectize control
@@ -904,8 +922,17 @@ function editSupplierCell(cell, originalValue) {
       selectizeControl.focus();
 
       // Select element change event handler and callback function to set flag
-      inlineSupplierSelectEventHandler(select, cell, suppliers, function changeFlagCallback() {
-        valueChanged = true;
+      // Selective does not support listening to both events at the same time unfortunately
+      selectizeControl.on('change', function () {
+        inlineSupplierSelectEventHandler(select, cell, suppliers, function changeFlagCallback() {
+          valueChanged = true;
+        })
+      });
+
+      selectizeControl.on('dropdown_close', function () {
+        inlineSupplierSelectEventHandler(select, cell, suppliers, function changeFlagCallback() {
+          valueChanged = true;
+        })
       });
 
       // Listen for the blur event on the selectize control
@@ -954,6 +981,7 @@ export function inlineProcessing() {
 
     // Get current value
     var originalValue = cell.text();
+    console.log("original Value: ", originalValue);
 
     // * Dropdown cells
     if (cell.hasClass('category')) {
@@ -1029,111 +1057,103 @@ function appendInlineSupplierSelect(cell, select) {
 }
 
 function inlineCategorySelectEventHandler(select, cell, categories, changeFlagCallback) {
-  select.on('change', function () {
-    var selectedValue = $(this).val(); // Get new selected value
+  var selectedValue = select.val(); // Get new selected value
 
-    // Get cell part_id, column name and database table
-    // These are encoded in the table data cells
-    var id = cell.closest('td').data('id');
-    var column = 'part_category_fk';
-    var table_name = cell.closest('td').data('table_name');
-    var id_field = cell.closest('td').data('id_field');
+  // Get cell part_id, column name and database table
+  // These are encoded in the table data cells
+  var id = cell.closest('td').data('id');
+  var column = 'part_category_fk';
+  var table_name = cell.closest('td').data('table_name');
+  var id_field = cell.closest('td').data('id_field');
 
-    // Call the database table updating function
-    $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
+  // Call the database table updating function
+  $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
 
-      // Find category name for a given category ID
-      var newValue = categories.find(function (item) {
-        return item.category_id === parseInt(selectedValue); // Return true if the item's categry_id matches selectedValue
-      });
+    // Find category name for a given category ID
+    var newValue = categories.find(function (item) {
+      return item.category_id === parseInt(selectedValue); // Return true if the item's categry_id matches selectedValue
+    });
 
-      // Check if newValue is found and update HTML cell
-      if (newValue) {
-        newValue = newValue.category_name; // Get the category_name from the found item
-        cell.text(newValue);
-      } else {
-        // console.log("No matching category found for category_id:", selectedValue);
-        // Handle the case when no matching category is found
-      }
+    // Check if newValue is found and update HTML cell
+    if (newValue) {
+      newValue = newValue.category_name; // Get the category_name from the found item
+      cell.text(newValue);
+    } else {
+      // console.log("No matching category found for category_id:", selectedValue);
+      // Handle the case when no matching category is found
+    }
 
-      // Editing aftermath
-      select.remove();
-      cell.removeClass('editing');
-      changeFlagCallback(); // Callback function to set change flag
-      $(document).off('keydown'); // Removing the escape handler because it's on document level
-    })
-
-
-  });
+    // Editing aftermath
+    select.remove();
+    cell.removeClass('editing');
+    changeFlagCallback(); // Callback function to set change flag
+    $(document).off('keydown'); // Removing the escape handler because it's on document level
+  })
 }
 
 function inlineFootprintSelectEventHandler(select, cell, footprints, changeFlagCallback) {
-  select.on('change', function () {
-    var selectedValue = $(this).val(); // Get new selected value
+  var selectedValue = select.val(); // Get new selected value
 
-    // Get cell part_id, column name and database table
-    // These are encoded in the table data cells
-    var id = cell.closest('td').data('id');
-    var column = 'part_footprint_fk';
-    var table_name = cell.closest('td').data('table_name');
-    var id_field = cell.closest('td').data('id_field');
+  // Get cell part_id, column name and database table
+  // These are encoded in the table data cells
+  var id = cell.closest('td').data('id');
+  var column = 'part_footprint_fk';
+  var table_name = cell.closest('td').data('table_name');
+  var id_field = cell.closest('td').data('id_field');
 
-    // Call the database table updating function
-    $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
-      // Find footprint name for a given footprint ID
-      var newValue = footprints.find(function (item) {
-        return item.footprint_id === parseInt(selectedValue); // Return true if the item's footprint_id matches selectedValue
-      });
-
-      // Check if newValue is found and update HTML table
-      if (newValue) {
-        newValue = newValue.footprint_name; // Get the footprint_name from the found item
-        cell.text(newValue);
-      } else {
-        console.log("No matching footprint found for footprint_id:", selectedValue);
-      }
-
-      // Editing aftermath
-      select.remove();
-      cell.removeClass('editing');
-      changeFlagCallback(); // Callback function to set change flag
-      $(document).off('keydown'); // Removing the escape handler because it's on document level
+  // Call the database table updating function
+  $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
+    // Find footprint name for a given footprint ID
+    var newValue = footprints.find(function (item) {
+      return item.footprint_id === parseInt(selectedValue); // Return true if the item's footprint_id matches selectedValue
     });
+
+    // Check if newValue is found and update HTML table
+    if (newValue) {
+      newValue = newValue.footprint_name; // Get the footprint_name from the found item
+      cell.text(newValue);
+    } else {
+      console.log("No matching footprint found for footprint_id:", selectedValue);
+    }
+
+    // Editing aftermath
+    select.remove();
+    cell.removeClass('editing');
+    changeFlagCallback(); // Callback function to set change flag
+    $(document).off('keydown'); // Removing the escape handler because it's on document level
   });
 }
 
 function inlineSupplierSelectEventHandler(select, cell, suppliers, changeFlagCallback) {
-  select.on('change', function () {
-    var selectedValue = $(this).val(); // Get new selected value
+  var selectedValue = select.val(); // Get new selected value
 
-    // Get cell part_id, column name and database table
-    // These are encoded in the table data cells
-    var id = cell.closest('td').data('id');
-    var column = 'part_supplier_fk';
-    var table_name = cell.closest('td').data('table_name');
-    var id_field = cell.closest('td').data('id_field');
+  // Get cell part_id, column name and database table
+  // These are encoded in the table data cells
+  var id = cell.closest('td').data('id');
+  var column = 'part_supplier_fk';
+  var table_name = cell.closest('td').data('table_name');
+  var id_field = cell.closest('td').data('id_field');
 
-    // Call the database table updating function
-    $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
-      // Find supplier name for a given supplier ID
-      var newValue = suppliers.find(function (item) {
-        return item.supplier_id === parseInt(selectedValue); // Return true if the item's supplier_id matches selectedValue
-      });
-
-      // Check if newValue is found and update HTML table
-      if (newValue) {
-        newValue = newValue.supplier_name; // Get the supplier_name from the found item
-        cell.text(newValue);
-      } else {
-        console.log("No matching supplier found for supplier_id:", selectedValue);
-      }
-
-      // Editing aftermath
-      select.remove();
-      cell.removeClass('editing');
-      changeFlagCallback(); // Callback function to set change flag
-      $(document).off('keydown'); // Removing the escape handler because it's on document level
+  // Call the database table updating function
+  $.when(updateCell(id, column, table_name, selectedValue, id_field)).done(function () {
+    // Find supplier name for a given supplier ID
+    var newValue = suppliers.find(function (item) {
+      return item.supplier_id === parseInt(selectedValue); // Return true if the item's supplier_id matches selectedValue
     });
+
+    // Check if newValue is found and update HTML table
+    if (newValue) {
+      newValue = newValue.supplier_name; // Get the supplier_name from the found item
+      cell.text(newValue);
+    } else {
+      console.log("No matching supplier found for supplier_id:", selectedValue);
+    }
+
+    // Editing aftermath
+    select.remove();
+    cell.removeClass('editing');
+    changeFlagCallback(); // Callback function to set change flag
+    $(document).off('keydown'); // Removing the escape handler because it's on document level
   });
 }
 
