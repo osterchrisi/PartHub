@@ -121,16 +121,15 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       });
 
-
       //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
       $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
-        var categoryId = [$row.data('id')];
-
-        // Find child categories recursively
-        findChildCategoriesFromCategoryTable(categoryId[0], categoryId);
-        deleteSelectedRows(categoryId, 'part_categories', 'category_id', rebuildCategoriesTable);
+        var categoryId = $row.data('id');
+      
+        // Find child categories recursively and return an array of category IDs
+        var categoryIds = findChildCategoriesFromCategoryTable(categoryId);
+        deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
       });
 
       //* Add Category
@@ -620,21 +619,28 @@ function getChildCategoriesNames(categories, categoryId) {
 }
 
 /**
- * Recursively find child categories in case a user wants to delete a category and it has child categories
- * @param {string} parentId Category ID of the clicked category and first entry in the categoryId array
- * @param {Array} categoryId Array to store clicked category and recursive child categories
+ * Recursively find child categories in case a user wants to delete a category and it has child categories.
+ * @param {string} parentId Category ID of the clicked category.
+ * @returns {Array} Array of category IDs including the clicked category and its recursive child categories.
  */
-function findChildCategoriesFromCategoryTable(parentId, categoryId) {
-  $('#categories_list_table tbody tr').each(function () {
-    var $currentRow = $(this);
-    var currentParentId = $currentRow.data('parent-id');
-    if (currentParentId === parentId) {
-      var childCategoryId = $currentRow.data('id');
-      categoryId.push(childCategoryId);
-      // Recursively find child categories of this child category
-      findChildCategoriesFromCategoryTable(childCategoryId, categoryId);
-    }
-  });
+function findChildCategoriesFromCategoryTable(parentId) {
+  var categoryIds = [parentId];
+
+  function findChildren(parentId) {
+    $('#categories_list_table tbody tr').each(function () {
+      var $currentRow = $(this);
+      var currentParentId = $currentRow.data('parent-id');
+      if (currentParentId === parentId) {
+        var childCategoryId = $currentRow.data('id');
+        categoryIds.push(childCategoryId);
+        // Recursively find child categories of this child category
+        findChildren(childCategoryId);
+      }
+    });
+  }
+
+  findChildren(parentId);
+  return categoryIds;
 }
 
 export function defineSuppliersListTableActions($table, $menu) {
