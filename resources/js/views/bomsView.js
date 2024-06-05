@@ -1,8 +1,6 @@
 import {
     bootstrapBomListTable,
     defineBomListTableActions,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     rebuildBomListTable
 } from '../tables';
 
@@ -11,8 +9,6 @@ import {
 } from '../stockChanges';
 
 import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
-
-import { makeTableWindowResizable } from '../custom';
 
 export function initializeBomsView() {
     bootstrapBomListTable();

@@ -1,13 +1,10 @@
 import {
     bootstrapSuppliersListTable,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     defineSuppliersListTableActions,
     rebuildSuppliersTable
 } from "../tables";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { makeTableWindowResizable } from '../custom';
 
 import { ResourceCreator } from "../resourceCreator";
 

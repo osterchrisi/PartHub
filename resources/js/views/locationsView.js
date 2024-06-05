@@ -1,13 +1,10 @@
 import {
     bootstrapLocationsListTable,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     defineLocationsListTableActions,
     rebuildLocationsTable
 } from "../tables";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { makeTableWindowResizable } from '../custom';
 import { ResourceCreator } from "../resourceCreator";
 
 

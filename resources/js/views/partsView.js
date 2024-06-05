@@ -3,7 +3,6 @@ import {
     bootstrapCategoriesListTable,
     definePartsTableActions,
     defineCategoriesListInPartsViewTableActions,
-    enableInlineProcessing,
     bootstrapTableSmallify,
     rebuildPartsTable,
     attachShowCategoriesButtonClickListener
@@ -14,7 +13,6 @@ import {
     focusNewPartName,
     initializePopovers,
     initializeMultiSelect,
-    makeTableWindowResizable
 } from "../custom";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";

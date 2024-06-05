@@ -1,10 +1,7 @@
 import {
     bootstrapCategoriesListTable,
-    bootstrapTableSmallify,
     defineCategoriesListTableActions
 } from "../tables";
-
-import { makeTableWindowResizable } from '../custom.js';
 
 export function initializeCategoriesView() {
     bootstrapCategoriesListTable();

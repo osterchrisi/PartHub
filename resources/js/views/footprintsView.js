@@ -1,13 +1,10 @@
 import {
     bootstrapFootprintsListTable,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     defineFootprintsListTableActions,
     rebuildFootprintsTable
 } from "../tables";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { makeTableWindowResizable } from '../custom';
 import { ResourceCreator } from "../resourceCreator";
 
 export function initializeFootprintsView() {
