@@ -360,7 +360,7 @@ export function rebuildPartsTable(queryString) {
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
       definePartsTableActions($table, $menu);         // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -381,7 +381,7 @@ export function rebuildLocationsTable(queryString) {
       var $table = $('#locations_list_table');
       var $menu = $('#parts_table_menu');
       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -405,7 +405,7 @@ export function rebuildCategoriesTable() {
 
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
 
@@ -436,7 +436,7 @@ export function rebuildFootprintsTable(queryString) {
       var $table = $('#footprints_list_table');
       var $menu = $('#parts_table_menu');
       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -457,7 +457,7 @@ export function rebuildSuppliersTable(queryString) {
       var $table = $('#suppliers_list_table');
       var $menu = $('#parts_table_menu');
       defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -480,7 +480,7 @@ export function rebuildBomListTable(queryString) {
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
-      inlineProcessing();
+      enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -966,7 +966,7 @@ function editSupplierCell(cell, originalValue) {
 /**
  * Inline table cell manipulation of bootstrapped tables
  */
-export function inlineProcessing() {
+export function enableInlineProcessing() {
   $('.bootstrap-table').on('dblclick', '.editable', function (e) {
     var cell = $(this);
 

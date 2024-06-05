@@ -1,6 +1,6 @@
 import {
     bootstrapSuppliersListTable,
-    inlineProcessing,
+    enableInlineProcessing,
     bootstrapTableSmallify,
     defineSuppliersListTableActions,
     rebuildSuppliersTable
@@ -16,7 +16,7 @@ export function initializeSuppliersView() {
 
     var $table = $('#suppliers_list_table');
     var $menu = $('#bom_list_table_menu');
-    inlineProcessing();
+    enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();
     defineSuppliersListTableActions($table, $menu);

@@ -26,7 +26,7 @@ class InlineTableCellEditor {
      *   editTextCell(cell, originalValue);
      * }
      */
-    inlineProcessing() {
+    enableInlineProcessing() {
         $('.bootstrap-table').on('dblclick', '.editable', function (e) { });
     };
     // Chooses between:

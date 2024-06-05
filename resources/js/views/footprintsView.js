@@ -1,6 +1,6 @@
 import {
     bootstrapFootprintsListTable,
-    inlineProcessing,
+    enableInlineProcessing,
     bootstrapTableSmallify,
     defineFootprintsListTableActions,
     rebuildFootprintsTable
@@ -15,7 +15,7 @@ export function initializeFootprintsView() {
 
     var $table = $('#footprints_list_table');
     var $menu = $('#bom_list_table_menu');
-    inlineProcessing();
+    enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();
     defineFootprintsListTableActions($table, $menu)

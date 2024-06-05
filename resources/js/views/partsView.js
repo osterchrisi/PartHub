@@ -3,7 +3,7 @@ import {
     bootstrapCategoriesListTable,
     definePartsTableActions,
     defineCategoriesListInPartsViewTableActions,
-    inlineProcessing,
+    enableInlineProcessing,
     bootstrapTableSmallify,
     rebuildPartsTable,
     attachShowCategoriesButtonClickListener
@@ -33,7 +33,7 @@ export function initializePartsView() {
     //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
     $('#category-window').width($('#category-window').width() + 1);
 
-    inlineProcessing();
+    enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();
 
