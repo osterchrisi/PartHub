@@ -1,4 +1,3 @@
-@vite(['resources/js/views/partsView.js'])
 <?php
 use App\Models\User;
 use App\Models\Part;
