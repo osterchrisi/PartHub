@@ -1,13 +1,10 @@
 import {
     bootstrapLocationsListTable,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     defineLocationsListTableActions,
     rebuildLocationsTable
 } from "../tables";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { makeTableWindowResizable } from '../custom';
 import { ResourceCreator } from "../resourceCreator";
 
 
@@ -17,10 +14,8 @@ export function initializeLocationsView() {
 
     var $table = $('#locations_list_table');
     var $menu = $('#bom_list_table_menu');
-    enableInlineProcessing();
-    bootstrapTableSmallify();
+
     defineLocationsListTableActions($table, $menu)
-    makeTableWindowResizable();
 
     const newLocationCreator = new ResourceCreator({
         type: 'location',

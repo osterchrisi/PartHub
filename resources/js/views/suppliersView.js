@@ -1,13 +1,10 @@
 import {
     bootstrapSuppliersListTable,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     defineSuppliersListTableActions,
     rebuildSuppliersTable
 } from "../tables";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { makeTableWindowResizable } from '../custom';
 
 import { ResourceCreator } from "../resourceCreator";
 
@@ -16,9 +13,7 @@ export function initializeSuppliersView() {
 
     var $table = $('#suppliers_list_table');
     var $menu = $('#bom_list_table_menu');
-    enableInlineProcessing();
-    bootstrapTableSmallify();
-    makeTableWindowResizable();
+
     defineSuppliersListTableActions($table, $menu);
 
     const newSupplierCreator = new ResourceCreator({

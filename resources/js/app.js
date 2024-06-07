@@ -6,6 +6,12 @@ import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
 import { initializeMultiView } from './multiView';
+import {
+    enableInlineProcessing,
+    bootstrapTableSmallify
+} from "./tables";
+import { makeTableWindowResizable } from './custom';
+
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
@@ -37,6 +43,12 @@ $(document).ready(function () {
         initializeMultiView();
     }
 
+    // Common to all view
+    enableInlineProcessing();
+    bootstrapTableSmallify();
+    makeTableWindowResizable();
+
+    // To track down weird selectize behaviour
     $(document).on('keydown', function(event) {
         if (event.key === 'Enter') {
             console.log('Enter key pressed:', event);

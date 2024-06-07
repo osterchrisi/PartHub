@@ -1,8 +1,6 @@
 import {
     bootstrapBomListTable,
     defineBomListTableActions,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     rebuildBomListTable
 } from '../tables';
 
@@ -12,17 +10,12 @@ import {
 
 import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
 
-import { makeTableWindowResizable } from '../custom';
-
 export function initializeBomsView() {
     bootstrapBomListTable();
 
     var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
     defineBomListTableActions($table, $menu);
-    enableInlineProcessing();
-    bootstrapTableSmallify();
-    makeTableWindowResizable();
 
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
     attachAssembleBomHandler('bom_list_table');

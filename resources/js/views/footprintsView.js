@@ -1,13 +1,10 @@
 import {
     bootstrapFootprintsListTable,
-    enableInlineProcessing,
-    bootstrapTableSmallify,
     defineFootprintsListTableActions,
     rebuildFootprintsTable
 } from "../tables";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { makeTableWindowResizable } from '../custom';
 import { ResourceCreator } from "../resourceCreator";
 
 export function initializeFootprintsView() {
@@ -15,9 +12,7 @@ export function initializeFootprintsView() {
 
     var $table = $('#footprints_list_table');
     var $menu = $('#bom_list_table_menu');
-    enableInlineProcessing();
-    bootstrapTableSmallify();
-    makeTableWindowResizable();
+
     defineFootprintsListTableActions($table, $menu)
 
     const newFootprintCreator = new ResourceCreator({
