@@ -1,7 +1,7 @@
 import './bootstrap';
 import { initializePartsView } from './views/partsView';
 import { initializeBomsView } from './views/bomsView';
-import { initializeCategoriesView} from './views/categoriesView';
+import { initializeCategoriesView } from './views/categoriesView';
 import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
@@ -10,7 +10,11 @@ import {
     enableInlineProcessing,
     bootstrapTableSmallify
 } from "./tables";
-import { makeTableWindowResizable } from './custom';
+import {
+    makeTableWindowResizable,
+    clearModalOnHiding,
+    focusFirstInputInModals
+} from './custom';
 
 import Alpine from 'alpinejs';
 
@@ -47,13 +51,15 @@ $(document).ready(function () {
     enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();
+    clearModalOnHiding();
+    focusFirstInputInModals();
 
     // To track down weird selectize behaviour
-    $(document).on('keydown', function(event) {
+    $(document).on('keydown', function (event) {
         if (event.key === 'Enter') {
             console.log('Enter key pressed:', event);
             console.log('Enter key pressed while focused on:', document.activeElement);
         }
     });
-    
+
 });
