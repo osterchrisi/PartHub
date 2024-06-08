@@ -361,3 +361,21 @@ export function updateImages(response) {
 
 }
 
+/**
+ * Clears any input fields of any modal upon hiding (Cancel and/or submitting)
+ */
+export function clearModalOnHiding() {
+    $(document).on('hidden.bs.modal', '.modal', function () {
+        $(this).find('input').val('');
+    });
+}
+
+/**
+ * Focus the first input field in any modal after showing
+ * @return void
+ */
+export function focusFirstInputInModals() {
+    $(document).on('shown.bs.modal', '.modal', function () {
+        $(this).find('input:visible:first').focus();
+    });
+}
