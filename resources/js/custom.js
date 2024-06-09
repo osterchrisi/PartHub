@@ -179,7 +179,7 @@ export function validateAndSubmitForm(formId, button, submitCallback, submitArgs
         submitFormIfValid();
     });
 
-    $(form).on('keydown', function(event) {
+    $(form).on('keydown', function (event) {
         // Check if the Enter key is pressed and the active element is not the selectized input
         if (event.key === 'Enter' && !document.activeElement.id.includes('selectized')) {
             event.preventDefault(); // Prevent default form submission
@@ -321,14 +321,25 @@ export function updateInfoWindow(type, id) {
             }
         },
         error: function (xhr) {
+            let errorMessage;
             if (xhr.status === 401) {
-                $('#info-window').html('Your session expired. Please login again.')
+                errorMessage = 'Your session expired. Please login again.';
+            } else if (xhr.status === 503) {
+                errorMessage = 'Application in maintenance mode, please try again in a few seconds';
             } else {
-                $('#info-window').html(`Failed to load additional ${type} data.`);
+                errorMessage = `Failed to load additional ${type} data.`;
             }
+            
+            const errorHTML = `
+                <div class="alert alert-dark align-self-start" role="alert">
+                    <p class="text-center">${errorMessage}</p>
+                </div>`;
+            
+            $('#info-window').html(errorHTML);
         }
     });
 }
+
 
 export function fetchImages(type, id) {
     $.ajax({
