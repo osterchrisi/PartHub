@@ -16,7 +16,7 @@
                                         Currently PartHub is in beta<br>
                                         and it's a really good time to snatch afree
                                         early-bird account!</p>
-                                        <p> There will always be a free tier for the enthusiasts, don't worry :)</p>
+                                        <p class="lead fw-bold"> There will always be a free tier for the enthusiasts!</p>
                                 </td>
                             </tr>
                         </table>
