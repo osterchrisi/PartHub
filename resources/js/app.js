@@ -51,7 +51,7 @@ $(document).ready(function () {
         initializeMultiView();
     }
 
-    // Common to all view
+    // Common to all views
     enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();

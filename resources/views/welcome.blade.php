@@ -21,7 +21,7 @@
                         account</a>.<br><br>
 
                     If you just want to hang around and explore the app, click some stuff, that is fine with us too!<br>
-                    Go ahead and explore by logging in as the demo user below!<br>
+                    Go ahead and explore by trying the demo!<br>
                     (As a heads up, the demo database will reset every once in a while.)<br><br>
                 @endunless
             </td>
@@ -48,7 +48,7 @@
                     <h1><i class="bi bi-outlet"></i></h1>Footprints
                 </a></td>
         </tr>
-        @unless (auth()->check())
+        {{-- @unless (auth()->check())
             <tr>
                 <td colspan="3">
                     <table class="table table-borderless">
@@ -69,7 +69,7 @@
                     </table>
                 </td>
             </tr>
-        @endunless
+        @endunless --}}
     </table>
     <!-- Google tag (gtag.js) event -->
     <script>

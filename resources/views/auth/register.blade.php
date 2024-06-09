@@ -16,6 +16,7 @@
                                         Currently PartHub is in beta<br>
                                         and it's a really good time to snatch afree
                                         early-bird account!</p>
+                                        <p> There will always be a free tier for the enthusiasts, don't worry :)</p>
                                 </td>
                             </tr>
                         </table>
@@ -27,7 +28,7 @@
                             <tr>
                                 <th>
                                     <h4 class="alert alert-info" role="alert">Now accepting sign ups for beta usage</h4>
-                                    <h2>Sign up for a free PartHub account</h2>
+                                    <h2>Create your free PartHub account</h2>
                                     @php
                                         if (isset($_GET['cnv'])) {
                                             echo '<div class="alert alert-dark" role="alert">reCAPTCHA was not verified</div>';
@@ -70,8 +71,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <button type="submit" class="btn btn-primary" id="signupBtn" disabled>Sign
-                                            up</button>
+                                        <button type="submit" class="btn btn-primary" id="signupBtn" disabled>Create Account</button>
                                     </td>
                                 </tr>
                                 <tr>

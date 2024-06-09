@@ -54,7 +54,7 @@
                         @endif
                     </td>
                 </tr>
-                @unless (auth()->check())
+                {{-- @unless (auth()->check())
                     <tr>
                         <td colspan="3">
                             <table class="table table-borderless">
@@ -71,7 +71,7 @@
                             </table>
                         </td>
                     </tr>
-                @endunless
+                @endunless --}}
 
             <tbody>
         </table>

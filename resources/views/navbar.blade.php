@@ -5,8 +5,7 @@ $user_name = $user ? $user->name : '';
 ?>
 
 <div class="container-fluid px-0">
-    <nav class="navbar navbar-expand-lg bg-gradient"
-        style="background-color: rgba(32,62,105, 1);">
+    <nav class="navbar navbar-expand-lg bg-gradient" style="background-color: rgba(32,62,105, 1);">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">PartHub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -27,10 +26,6 @@ $user_name = $user ? $user->name : '';
                         <a class="nav-link {{ request()->routeIs('locations') ? 'active' : '' }}"
                             href="{{ route('locations') }}">Storage Locations</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('categories') ? 'active' : '' }}"
-                            href="{{ route('categories') }}">Categories</a>
-                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('suppliers') ? 'active' : '' }}"
                             href="{{ route('suppliers') }}">Suppliers</a>
@@ -46,27 +41,23 @@ $user_name = $user ? $user->name : '';
                             <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                 href="{{ route('whatis') }}">What is PartHub?</a>
                         </li>
-                        {{-- <li>
-                            <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
-                                href="{{ route('pricing') }}">Pricing</a>
-                        </li> --}}
                         {{-- Don't show Sign Up Link / Demo button if you're authorized (signed in) --}}
                         @unless (Auth::check())
-                            <li>
-                                <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
-                                    href="{{ route('signup') }}">Sign up</a>
+                            <li class="me-2">
+                                <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
+                                    href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
                             <li>
                                 <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
-                                    @csrf<button type="submit" class="btn btn-warning" id="continueDemo">Continue as demo
-                                        user</button></form>
+                                    @csrf<button type="submit" class="btn btn-warning" id="continueDemo">Try Demo</button>
+                                </form>
                             </li>
                         @endunless
                         {{-- Don't show Sign Up Link if you're demo user (signed in) --}}
                         @if ($user_id == 1)
                             <li>
-                                <a class="nav-link {{ request()->routeIs('signup') ? 'active' : '' }}"
-                                    href="{{ route('signup') }}">Sign up</a>
+                                <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
+                                    href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
                         @endif
                         <li>
