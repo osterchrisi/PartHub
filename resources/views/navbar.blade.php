@@ -46,10 +46,10 @@ $user_name = $user ? $user->name : '';
                             <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                 href="{{ route('whatis') }}">What is PartHub?</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}"
                                 href="{{ route('pricing') }}">Pricing</a>
-                        </li>
+                        </li> --}}
                         {{-- Don't show Sign Up Link / Demo button if you're authorized (signed in) --}}
                         @unless (Auth::check())
                             <li>
