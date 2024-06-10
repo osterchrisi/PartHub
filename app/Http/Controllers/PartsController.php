@@ -14,6 +14,8 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PartsController extends Controller
 {
@@ -90,7 +92,7 @@ class PartsController extends Controller
     public function create(Request $request)
     {
         $part_name = $request->input('part_name');
-        $quantity = $request->input('quantity');
+        $quantity = $request->input('quantity', 0);
         $to_location = $request->input('to_location');
         $comment = $request->input('comment', NULL);
         $description = $request->input('description', NULL);
@@ -99,20 +101,41 @@ class PartsController extends Controller
         $supplier = $request->input('supplier', NULL);
         $user_id = Auth::user()->id;
 
-        // Insert new part 
-        $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier);
-        // Create a stock level entry
-        $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
-        // Create a stock level history entry (from_location is NULL)
-        $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
+        try {
 
-        echo json_encode(
-            array(
-                'Part ID' => $new_part_id,
-                'Stock Entry ID' => $new_stock_entry_id,
-                'Stock Level History ID' => $new_stock_level_id
-            )
-        );
+            // Begin SQL transaction
+            DB::beginTransaction();
+
+            // Insert new part
+            $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier);
+            // Create a stock level entry
+            $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
+            // Create a stock level history entry (from_location is NULL)
+            $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
+
+            echo json_encode(
+                array(
+                    'Part ID' => $new_part_id,
+                    'Stock Entry ID' => $new_stock_entry_id,
+                    'Stock Level History ID' => $new_stock_level_id
+                )
+            );
+
+            // Persist database changes and set success flash message
+            DB::commit();
+            //TODO: Should I flash something here?
+            // Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
+
+        } catch (\Exception $e) {
+            // Roll back database changes made so far
+            DB::rollback();
+
+            // Set error flash message
+            //TODO: Should I flash something here?
+            // Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
+        }
+
+
     }
 
     /**
