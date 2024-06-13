@@ -12,12 +12,13 @@ export function initializeSignupView() {
             cb();
         }
     }
-
-    // This function defined as callback on the recaptcha
-    function processChallenge() {
-        document.getElementById('signupBtn').disabled = false; // Enable Signup Button after challenge is completed
-        response = grecaptcha.getResponse(); // Get challenge response
-        document.getElementById('recaptchaResponse').value = response; // Send challenge response with the form
-    }
-
 };
+
+// This function defined as callback on the recaptcha
+export function processChallenge() {
+    document.getElementById('signupBtn').disabled = false; // Enable Signup Button after challenge is completed
+    response = grecaptcha.getResponse(); // Get challenge response
+    document.getElementById('recaptchaResponse').value = response; // Send challenge response with the form
+}
+
+window.processChallenge = processChallenge;

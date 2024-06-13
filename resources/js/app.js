@@ -5,7 +5,7 @@ import { initializeCategoriesView } from './views/categoriesView';
 import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
-import { initializeSignupView } from './views/signupView';
+import { initializeSignupView, processChallenge } from './views/signupView';
 import { initializeMultiView } from './multiView';
 import {
     enableInlineProcessing,
