@@ -42,25 +42,25 @@
                                 <label for="name" class="form-label">User Name</label>
                                 <input class="form-control" id="name" type="text" name="name" required autofocus
                                     autocomplete="name">
-                                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('name')"/>
 
                                 {{-- Email Address --}}
                                 <label for="email" class="form-label">Email</label>
                                 <input id="email" type="email" class="form-control" type="email" name="email"
                                     required autocomplete="username">
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('email')"/>
 
                                 {{-- Password --}}
                                 <label for="password" class="form-label">Password</label>
                                 <input id="password" type="password" name="password" required autocomplete="new-password"
                                     class="form-control">
-                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('password')"/>
 
                                 {{-- Confirm Password --}}
                                 <label for="password_confirmation" class="form-label">Confirm Password</label>
                                 <input id="password_confirmation" type="password" name="password_confirmation" required
                                     autocomplete="new-password" class="form-control">
-                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('password_confirmation')"/>
 
 
                             </td>
