@@ -92,7 +92,6 @@ $user_name = $user ? $user->name : '';
                         </li>
                     </ul>
                 </div>
-                </form>
             </div>
         </div>
     </nav>
