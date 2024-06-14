@@ -94,14 +94,6 @@
 
         gtag('config', gtagTag);
     </script>
-    {{-- Google ReCaptcha (Signup) --}}
-    <style>
-        .g-recaptcha {
-            display: inline-block;
-        }
-    </style>
-    
-    <script async src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 
 

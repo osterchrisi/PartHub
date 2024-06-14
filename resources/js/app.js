@@ -44,9 +44,9 @@ $(document).ready(function () {
     else if (currentView === 'suppliers') {
         initializeSuppliersView();
     }
-    else if (currentView === 'signup') {
-        initializeSignupView();
-    }
+    // else if (currentView === 'signup') {
+    //     initializeSignupView();
+    // }
     else if (currentView === 'multi') {
         initializeMultiView();
     }
