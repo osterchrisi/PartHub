@@ -34,7 +34,9 @@
         <div class="row justify-content-center text-end bg-secondary bg-gradient text-white rounded p-5 mb-5">
             <div class="col-md-8 text-right">
                 <h1 class="display-1 mb-4" id="whatis-headline">Who is behind PartHub?</h1>
-                <p class="lead">PartHub was created by Christian Zollner, the founder of KOMA Elektronik. He needed a
+                <p class="lead">PartHub was created by <a href="https://christianzollner.com" target="_blank" style="color: white; font-weight: bold;">Christian
+                        Zollner</a>, the founder of <a href="https://koma-elektronik.com" target="_blank" style="color: white; font-weight: bold;">KOMA
+                        Elektronik</a>. He needed a
                     software to help him keep production and development smooth but nothing
                     suited his needs - so he programmed the software himself!</p>
                 <img src="app-related\Chrisi_und_Kaja_square.webp" class="img_fluid w-50" alt="Christian and his dog Kaja">
