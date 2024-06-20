@@ -1,4 +1,4 @@
-<div class="modal fade" id="mPartEntry" tabindex="-1">
+<div class="modal modal-lg fade" id="mPartEntry" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
