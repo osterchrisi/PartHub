@@ -117,13 +117,15 @@ class ResourceCreator {
       submitFormIfValid();
     });
 
-    $form.on('keydown', (event) => {
-      // Check if the Enter key is pressed and the active element is not the selectized input
-      if (event.key === 'Enter' && !$(document.activeElement).is('.selectized')) {
-        event.preventDefault(); // Prevent default form submission
-        submitFormIfValid();
-      }
-    });
+    // Currently don't like it anymore, so uncommented the submission upon pressing Enter...
+    // Submit form on Enter keypress, unless you're on a selectized dropdown
+    // $form.on('keydown', (event) => {
+    //   // Check if the Enter key is pressed and the active element is not the selectized input
+    //   if (event.key === 'Enter' && !$(document.activeElement).is('.selectized')) {
+    //     event.preventDefault(); // Prevent default form submission
+    //     submitFormIfValid();
+    //   }
+    // });
 
     // Function to submit the form if it's valid
     const submitFormIfValid = () => {
@@ -250,8 +252,8 @@ class ResourceCreator {
   
     var $select = $("#addPartSupplierSelect").selectize({
       create: (input, callback) => {
-        console.log("creating");
-        // Use a flag to prevent double execution
+
+        // Need to use a flag to prevent double execution (can't tell why it happens - maybe selectize?)
         if ($select.data('creating')) {
           return;
         }
@@ -269,13 +271,12 @@ class ResourceCreator {
           },
           success: function (response) {
             response = JSON.parse(response);
-  
+
+            // Create array for new supplier option
             var newSupplier = {
               supplier_id: response['Supplier ID'],
               supplier_name: input
             }
-  
-            console.log(newSupplier);
   
             // Fetch the updated list of suppliers and update the dropdown
             self.getSuppliers().done((newSupplierList) => {
@@ -290,12 +291,12 @@ class ResourceCreator {
               selectize.addItem(newSupplier.supplier_id);
             });
   
-            // Reset the flag
+            // Reset 'creating' flag
             $select.data('creating', false);
           },
           error: function () {
             callback();
-            // Reset the flag on error
+            // Reset 'creating' flag on error
             $select.data('creating', false);
           }
         });
