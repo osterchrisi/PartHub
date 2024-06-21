@@ -278,7 +278,7 @@ class ResourceCreator {
 
 
   /**
-   * Creates a new entry of the specified type, updates the corresponding dropdown, selectize and selects the new entry.
+   * Creates a new entry of the specified type, updates the corresponding dropdown, selectizes and selects the new entry.
    * 
    * @param {string} input - The name of the new entry to be created.
    * @param {string} type - The type of entry to be created ('location', 'footprint', or 'supplier').
