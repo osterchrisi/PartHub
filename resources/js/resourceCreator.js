@@ -3,7 +3,7 @@ import { updateInfoWindow } from "./custom";
 import { rebuildCategoriesTable } from "./tables";
 
 class ResourceCreator {
-  constructor(options,  tableRebuildFunctions = [], categoryId = null) {
+  constructor(options, tableRebuildFunctions = [], categoryId = null) {
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -253,7 +253,35 @@ class ResourceCreator {
     selectHTML += "</select>";
     selectHTML += "<label for='addPartSupplierSelect'>Supplier</label>";
     div.innerHTML = selectHTML;
-    $("#addPartSupplierSelect").selectize();
+    $("#addPartSupplierSelect").selectize({
+      create: function (input) {
+        $.ajax({
+          url: '/supplier.create',
+          type: 'POST',
+          data: {
+            supplier_name: input,
+            _token: $('input[name="_token"]').attr('value')
+          },
+          success: function (response) {
+            response = JSON.parse(response);
+
+            var newSupplier = {
+              supplier_id: response['Supplier ID'],
+              supplier_name: input
+            }
+            
+            console.log(newSupplier);
+
+            // Add the new supplier to the dropdown list
+            selectize.addOption(newSupplier);
+            selectize.addItem(newSupplier.supplier_id);
+          },
+          error: function () {
+            callback();
+          }
+        });
+      }
+    });
   }
 
   /**
