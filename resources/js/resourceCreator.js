@@ -296,7 +296,7 @@ class ResourceCreator {
    */
   createNewEntry(input, type) {
     const token = $('input[name="_token"]').attr('value');
-    let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId;
+    let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId, $select;
 
     switch (type) {
       case 'location':
@@ -328,6 +328,12 @@ class ResourceCreator {
         return;
     }
 
+    $select = $(`#${dropdownId}`).selectize();
+    if ($select.data('creating')) {
+      return;
+    }
+    $select.data('creating', true);
+
     $.ajax({
       url: endpoint,
       type: 'POST',
@@ -345,11 +351,14 @@ class ResourceCreator {
           dropdownFunction(newList);
           var selectize = $(`#${dropdownId}`)[0].selectize;
           selectize.addItem(newEntry[`${type}_id`]);
+          $select.data('creating', false);
         });
       },
       error: function () {
         console.error('Error creating new entry');
+        $select.data('creating', false);
       }
     });
   }
+
 }
