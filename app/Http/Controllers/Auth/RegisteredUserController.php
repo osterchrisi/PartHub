@@ -18,7 +18,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
-
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class RegisteredUserController extends Controller
 {
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
 
         $siteVerify = Http::asForm()
             ->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret' =>  config('services.recaptcha.secretKey'),
+                'secret' => config('services.recaptcha.secretKey'),
                 'response' => $recaptcha_response,
             ]);
 
@@ -83,7 +83,17 @@ class RegisteredUserController extends Controller
 
 
         // Send welcome e-mail
-        Mail::to($request->user())->bcc(env('MAIL_FROM_ADDRESS'))->send(new WelcomeEmail($user));
+        try {
+            // Send welcome email
+            Mail::to($request->email)->send(new WelcomeEmail($user));
+
+            // Redirect to success page or show success message
+            // return redirect()->route('success')->with('message', 'Registration successful! Check your email for further instructions.');
+        } catch (TransportExceptionInterface $e) {
+            //! Log the exception or handle it appropriately
+            // Redirect back with an error message
+            return back()->withErrors(['email' => 'Failed to send welcome email. Please check your email address.']);
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }

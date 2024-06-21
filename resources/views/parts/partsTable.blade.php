@@ -2,6 +2,33 @@
 echo("<pre>");
 print_r($parts);
 @endphp --}}
+
+{{-- Styling for the edit pens --}}
+{{-- Uncomment the ".editable-text-cell:hover .edit-pen" part to magically make the edit pens appear --}}
+<style>
+    .editable-text-cell {
+        position: relative;
+    }
+
+    /* .editable-text-cell:hover .edit-pen {
+        display: block;
+    } */
+
+    .edit-pen {
+        padding-top: 4px;
+        padding-right: 2px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: none;
+    }
+
+    .edit-pen a {
+        color: var(--bs-gray-500);
+    }
+</style>
+
+{{-- Parts Table --}}
 <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="parts_table"
     data-resizable="true" data-search="true" data-search-time-out="" data-search-selector="#filter" data-search-align="left"
     data-pagination="true" data-show-columns="true" {{-- data-reorderable-columns="true"  --}} data-cookie="true"
@@ -10,7 +37,7 @@ print_r($parts);
 
     <thead>
         <tr>
-            {{-- This column is for Bootstrap Table Click-To-Select to work --}}
+            {{-- This first column is for Bootstrap Table Click-To-Select to work --}}
             <th data-field="state" data-checkbox="true"></th>
             @foreach ($nice_columns as $column_header)
                 @if ($column_header == 'Total Stock')
@@ -65,9 +92,11 @@ print_r($parts);
                             {{ $part[$column_data] }}</td>
                         {{-- 'Simple' (text-only) Fields --}}
                     @else
-                        <td data-editable="true" class="editable" data-id="{{ $part_id }}"
+                        <td data-editable="true" class="editable editable-text-cell" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}</td>
+                            data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}<div class="edit-pen">
+                                <a href="#"><i class="fas fa-pen fa-lg"></i></a></div>
+                        </td>
                     @endif
                 @endforeach
             </tr>

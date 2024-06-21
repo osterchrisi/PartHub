@@ -3,7 +3,7 @@ import { updateInfoWindow } from "./custom";
 import { rebuildCategoriesTable } from "./tables";
 
 class ResourceCreator {
-  constructor(options,  tableRebuildFunctions = [], categoryId = null) {
+  constructor(options, tableRebuildFunctions = [], categoryId = null) {
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -62,8 +62,6 @@ class ResourceCreator {
     });
   }
 
-
-
   showModal() {
     this.inputModal.modal('show');
   }
@@ -107,7 +105,6 @@ class ResourceCreator {
         });
     }
   }
-
 
   removeAddButtonClickListener() {
     this.addButton.off('click');
@@ -158,7 +155,7 @@ class ResourceCreator {
       error: function (error) {
         console.log(error);
       }
-    })
+    });
   }
 
   getCategories() {
@@ -168,7 +165,7 @@ class ResourceCreator {
       error: function (error) {
         console.log(error);
       }
-    })
+    });
   }
 
   getFootprints() {
@@ -178,7 +175,7 @@ class ResourceCreator {
       error: function (error) {
         console.log(error);
       }
-    })
+    });
   }
 
   getLocations() {
@@ -188,11 +185,10 @@ class ResourceCreator {
       error: function (error) {
         console.log(error);
       }
-    })
+    });
   }
 
   /**
-  * 
   * Creates and adds a dropdown list of locations to the part entry modal and 'selectizes' it.
   * @param {Array} locations - An array of objects representing locations to be displayed in the dropdown list.
   * Each location object must have a "location_id" and a "location_name" property.
@@ -219,7 +215,6 @@ class ResourceCreator {
   }
 
   /**
-  * 
   * Creates and adds a dropdown list of footprints to the part entry modal and 'selectizes' it.
   * @param {Array} footprints - An array of objects representing footprints to be displayed in the dropdown list.
   * Each footprint object must have a "footprint_id" and a "footprint_name" property.
@@ -238,7 +233,6 @@ class ResourceCreator {
   }
 
   /**
-  * 
   * Creates and adds a dropdown list of suppliers to the part entry modal and 'selectizes' it.
   * @param {Array} suppliers - An array of objects representing suppliers to be displayed in the dropdown list.
   * Each supplier object must have a "supplier_id" and a "supplier_name" property.
@@ -253,11 +247,64 @@ class ResourceCreator {
     selectHTML += "</select>";
     selectHTML += "<label for='addPartSupplierSelect'>Supplier</label>";
     div.innerHTML = selectHTML;
-    $("#addPartSupplierSelect").selectize();
+  
+    var $select = $("#addPartSupplierSelect").selectize({
+      create: (input, callback) => {
+        console.log("creating");
+        // Use a flag to prevent double execution
+        if ($select.data('creating')) {
+          return;
+        }
+        $select.data('creating', true);
+  
+        // Need to pass 'this'
+        const self = this;
+  
+        $.ajax({
+          url: '/supplier.create',
+          type: 'POST',
+          data: {
+            supplier_name: input,
+            _token: $('input[name="_token"]').attr('value')
+          },
+          success: function (response) {
+            response = JSON.parse(response);
+  
+            var newSupplier = {
+              supplier_id: response['Supplier ID'],
+              supplier_name: input
+            }
+  
+            console.log(newSupplier);
+  
+            // Fetch the updated list of suppliers and update the dropdown
+            self.getSuppliers().done((newSupplierList) => {
+              // Re-initialize the dropdown with the updated supplier list
+              self.addPartSupplierDropdown(newSupplierList);
+  
+              // Get the new selectize instance
+              var selectize = $("#addPartSupplierSelect")[0].selectize;
+  
+              // Add the new supplier to the dropdown and select it
+              // selectize.addOption({ value: newSupplier.supplier_id, text: newSupplier.supplier_name }); // Had this line in before, don't think I need it. 21.06.2024
+              selectize.addItem(newSupplier.supplier_id);
+            });
+  
+            // Reset the flag
+            $select.data('creating', false);
+          },
+          error: function () {
+            callback();
+            // Reset the flag on error
+            $select.data('creating', false);
+          }
+        });
+      }
+    });
   }
+  
 
   /**
-  * 
   * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
   * @param {Array} categories - An array of objects representing categories to be displayed in the dropdown list.
   * Each category object must have a "category_id" and a "category_name" property.
@@ -274,5 +321,4 @@ class ResourceCreator {
     div.innerHTML = selectHTML;
     $("#addPartCategorySelect").selectize();
   }
-
 }
