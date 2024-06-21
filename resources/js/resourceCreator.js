@@ -205,7 +205,11 @@ class ResourceCreator {
     selectHTML += "</select>";
     div.innerHTML = selectHTML;
 
-    var $select = $("#addPartLocSelect").selectize();
+    var $select = $("#addPartLocSelect").selectize({
+      create: (input) => {
+        this.createNewEntry(input, 'location');
+      }
+    });
 
     // Get the Selectize instance
     var selectizeInstance = $select[0].selectize;
@@ -231,7 +235,11 @@ class ResourceCreator {
     selectHTML += "</select>";
     selectHTML += "<label for='addPartFootprintSelect'>Footprint</label>";
     div.innerHTML = selectHTML;
-    $("#addPartFootprintSelect").selectize();
+    $("#addPartFootprintSelect").selectize({
+      create: (input) => {
+        this.createNewEntry(input, 'footprint');
+      }
+    });
   }
 
   /**
@@ -249,61 +257,14 @@ class ResourceCreator {
     selectHTML += "</select>";
     selectHTML += "<label for='addPartSupplierSelect'>Supplier</label>";
     div.innerHTML = selectHTML;
-  
+
     var $select = $("#addPartSupplierSelect").selectize({
-      create: (input, callback) => {
-
-        // Need to use a flag to prevent double execution (can't tell why it happens - maybe selectize?)
-        if ($select.data('creating')) {
-          return;
-        }
-        $select.data('creating', true);
-  
-        // Need to pass 'this'
-        const self = this;
-  
-        $.ajax({
-          url: '/supplier.create',
-          type: 'POST',
-          data: {
-            supplier_name: input,
-            _token: $('input[name="_token"]').attr('value')
-          },
-          success: function (response) {
-            response = JSON.parse(response);
-
-            // Create array for new supplier option
-            var newSupplier = {
-              supplier_id: response['Supplier ID'],
-              supplier_name: input
-            }
-  
-            // Fetch the updated list of suppliers and update the dropdown
-            self.getSuppliers().done((newSupplierList) => {
-              // Re-initialize the dropdown with the updated supplier list
-              self.addPartSupplierDropdown(newSupplierList);
-  
-              // Get the new selectize instance
-              var selectize = $("#addPartSupplierSelect")[0].selectize;
-  
-              // Add the new supplier to the dropdown and select it
-              // selectize.addOption({ value: newSupplier.supplier_id, text: newSupplier.supplier_name }); // Had this line in before, don't think I need it. 21.06.2024
-              selectize.addItem(newSupplier.supplier_id);
-            });
-  
-            // Reset 'creating' flag
-            $select.data('creating', false);
-          },
-          error: function () {
-            callback();
-            // Reset 'creating' flag on error
-            $select.data('creating', false);
-          }
-        });
+      create: (input) => {
+        this.createNewEntry(input, 'supplier');
       }
     });
   }
-  
+
 
   /**
   * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
@@ -321,5 +282,82 @@ class ResourceCreator {
     selectHTML += "<label for='addPartCategorySelect'>Category</label>";
     div.innerHTML = selectHTML;
     $("#addPartCategorySelect").selectize();
+  }
+
+
+  /**
+   * Creates a new entry of the specified type, updates the corresponding dropdown, selectize and selects the new entry.
+   * 
+   * @param {string} input - The name of the new entry to be created.
+   * @param {string} type - The type of entry to be created ('location', 'footprint', or 'supplier').
+   * 
+   * The type determines the endpoint, the field names in the response, and the functions used to fetch and update
+   * the relevant dropdown.
+   * 
+   * The function performs the following steps:
+   * 1. Sends an AJAX POST request to create the new entry.
+   * 2. On success, fetches the updated list of entries of the specified type.
+   * 3. Updates the relevant dropdown with the new list and selects the newly created entry.
+   * 
+   * @throws {Error} If the type is unknown.
+   * @returns {void}
+   */
+  createNewEntry(input, type) {
+    const token = $('input[name="_token"]').attr('value');
+    let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId;
+
+    switch (type) {
+      case 'location':
+        endpoint = '/location.create';
+        newIdName = 'Location ID';
+        nameField = 'location_name';
+        getFunction = this.getLocations.bind(this);
+        dropdownFunction = this.addPartLocationDropdown.bind(this);
+        dropdownId = 'addPartLocSelect';
+        break;
+      case 'footprint':
+        endpoint = '/footprint.create';
+        newIdName = 'Footprint ID';
+        nameField = 'footprint_name';
+        getFunction = this.getFootprints.bind(this);
+        dropdownFunction = this.addPartFootprintDropdown.bind(this);
+        dropdownId = 'addPartFootprintSelect';
+        break;
+      case 'supplier':
+        endpoint = '/supplier.create';
+        newIdName = 'Supplier ID';
+        nameField = 'supplier_name';
+        getFunction = this.getSuppliers.bind(this);
+        dropdownFunction = this.addPartSupplierDropdown.bind(this);
+        dropdownId = 'addPartSupplierSelect';
+        break;
+      default:
+        console.error('Unknown type:', type);
+        return;
+    }
+
+    $.ajax({
+      url: endpoint,
+      type: 'POST',
+      data: {
+        [nameField]: input,
+        _token: token
+      },
+      success: (response) => {
+        response = JSON.parse(response);
+        const newEntry = {
+          [`${type}_id`]: response[newIdName],
+          [`${type}_name`]: input
+        };
+        getFunction().done((newList) => {
+          dropdownFunction(newList);
+          var selectize = $(`#${dropdownId}`)[0].selectize;
+          selectize.addItem(newEntry[`${type}_id`]);
+        });
+      },
+      error: function () {
+        console.error('Error creating new entry');
+      }
+    });
   }
 }
