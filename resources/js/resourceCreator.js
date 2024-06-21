@@ -210,14 +210,6 @@ class ResourceCreator {
         this.createNewEntry(input, 'location');
       }
     });
-
-    // Get the Selectize instance
-    var selectizeInstance = $select[0].selectize;
-
-    // Prevent form submission when Enter is pressed while the dropdown is active
-    selectizeInstance.on('change', function (event) {
-      console.log("item selected");
-    });
   }
 
   /**
