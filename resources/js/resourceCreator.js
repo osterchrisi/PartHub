@@ -1,6 +1,5 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
-import { rebuildCategoriesTable } from "./tables";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = [], categoryId = null) {
@@ -207,7 +206,7 @@ class ResourceCreator {
 
     var $select = $("#addPartLocSelect").selectize({
       create: (input) => {
-        this.createNewEntry(input, 'location');
+        this.createNewSelectizeDropdownEntry(input, 'location');
       }
     });
   }
@@ -229,7 +228,7 @@ class ResourceCreator {
     div.innerHTML = selectHTML;
     $("#addPartFootprintSelect").selectize({
       create: (input) => {
-        this.createNewEntry(input, 'footprint');
+        this.createNewSelectizeDropdownEntry(input, 'footprint');
       }
     });
   }
@@ -252,7 +251,7 @@ class ResourceCreator {
 
     var $select = $("#addPartSupplierSelect").selectize({
       create: (input) => {
-        this.createNewEntry(input, 'supplier');
+        this.createNewSelectizeDropdownEntry(input, 'supplier');
       }
     });
   }
@@ -294,7 +293,7 @@ class ResourceCreator {
    * @throws {Error} If the type is unknown.
    * @returns {void}
    */
-  createNewEntry(input, type) {
+  createNewSelectizeDropdownEntry(input, type) {
     const token = $('input[name="_token"]').attr('value');
     let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId, $select;
 

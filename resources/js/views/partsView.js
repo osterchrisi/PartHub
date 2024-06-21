@@ -9,8 +9,6 @@ import {
 } from "../tables";
 
 import {
-    focusStockChangeQuantity,
-    focusNewPartName,
     initializePopovers,
     initializeMultiSelect,
 } from "../custom";
