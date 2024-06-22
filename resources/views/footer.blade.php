@@ -3,17 +3,17 @@
         <tr>
             <td>
                 <div>
-                    <span class="fs-6 fw-light">&copy; 2024 PartHub. All rights reserved.</span>
+                    <p class="fs-6 lead">&copy; 2024 PartHub. All rights reserved.</p>
                 </div>
             </td>
             <td>
                 <div>
-                    <span class="fs-6 fw-light"><a href="{{ route('TOS') }}">Terms of Service</a></span>
+                    <p class="fs-6 lead"><a href="{{ route('TOS') }}">Terms of Service</a></p>
                 </div>
             </td>
             <td>
                 <div>
-                    <span class="fs-6 fw-light"><a href="{{ route('imprint') }}">Imprint</a></span>
+                    <p class="fs-6 lead"><a href="{{ route('imprint') }}">Imprint</a></p>
                 </div>
             </td>
         </tr>
