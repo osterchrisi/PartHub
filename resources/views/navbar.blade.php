@@ -43,7 +43,7 @@ $user_name = $user ? $user->name : '';
                         </li>
                         {{-- Don't show Sign Up Link / Demo button if you're authorized (signed in) --}}
                         @unless (Auth::check())
-                            <li class="me-2">
+                            <li class="me-2 mb-2">
                                 <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
