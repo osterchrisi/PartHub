@@ -67,8 +67,8 @@ Route::controller(BomController::class)->group(function () {
     Route::get('/bom/{id}', 'show')->middleware(['auth', 'verified']);
     Route::post('/bom.assemble', 'prepareBomForAssembly')->middleware(['auth', 'verified']);
     Route::post('/bom.import', 'importBom')->name('bom.import');
-    Route::post('/bom.import-test', function () {
-        return view('boms.import', ['title' => 'Import BOM']);
+    Route::get('/bom.import-form', function () {
+        return view('boms.import-form', ['title' => 'Import BOM']);
     })->middleware(['auth', 'verified'])->name('bom import');
 
 });

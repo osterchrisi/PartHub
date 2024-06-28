@@ -58,6 +58,6 @@ export function assembleBomsFromToolbar(table_id) {
 
 export function attachAddBomHandler() {
     $('#toolbarAddButton').click(function () {
-        $('#info-window').load('/bom.import-test');
+        $('#info-window').load('/bom.import-form');
     });
 }
