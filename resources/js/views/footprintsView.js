@@ -18,6 +18,7 @@ export function initializeFootprintsView() {
     const newFootprintCreator = new ResourceCreator({
         type: 'footprint',
         endpoint: '/footprint.create',
+        table_name: '#footprints_list_table',
         newIdName: 'Footprint ID',
         inputForm: '#footprintEntryForm',
         inputFields: [

@@ -19,6 +19,7 @@ export function initializeSuppliersView() {
     const newSupplierCreator = new ResourceCreator({
         type: 'supplier',
         endpoint: '/supplier.create',
+        table_name: '#suppliers_list_table',
         newIdName: 'Supplier ID',
         inputForm: '#supplierEntryForm',
         inputFields: [
