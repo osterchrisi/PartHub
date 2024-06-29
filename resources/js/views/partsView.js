@@ -62,6 +62,7 @@ export function initializePartsView() {
     const newPartCreator = new ResourceCreator({
         type: 'part',
         endpoint: '/part.create',
+        table_name: '#parts_table',
         newIdName: 'Part ID',
         inputForm: '#partEntryForm',
         inputFields: [

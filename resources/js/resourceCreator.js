@@ -6,6 +6,7 @@ class ResourceCreator {
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
+    this.table = options.table_name;
     this.newIdName = options.newIdName;
     this.inputForm = $(options.inputForm);
     this.inputFields = options.inputFields;
@@ -39,15 +40,27 @@ class ResourceCreator {
       type: 'POST',
       data: Object.assign({ _token: token }, data),
       success: (response) => {
-        const id = JSON.parse(response)[this.newIdName];  // Get new ID
+        const id = JSON.parse(response)[this.newIdName];    // Get new ID
         if (this.type != 'category') {
           updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
         }
         this.hideModal();                                   // Hide Modal
         this.removeAddButtonClickListener();                // Remove Click Listener
         const queryString = window.location.search;
-        // Call each tableRebuildFunction in the array
-        this.tableRebuildFunctions.forEach(fn => fn(queryString, id));
+
+        // Need to use map to create an array of promises, when.done() didn't work correctly
+        const promises = this.tableRebuildFunctions.map(fn => {
+          return fn(queryString, id); //fn(queryString, id) must return promise (usually AJAX call)
+        });
+
+        $.when.apply($, promises)
+          .done(() => {
+            // console.log("All table rebuild functions completed");
+            this.selectNewRow(id);
+          })
+          .fail(() => {
+            // console.error("Error in one or more table rebuild functions");
+          });
       },
       error: (xhr) => {
         if (xhr.status === 419) {
@@ -60,6 +73,42 @@ class ResourceCreator {
       }
     });
   }
+
+  selectNewRow(id) {
+    // Get the table data after bootstrapping
+    let tableData =$(this.table).bootstrapTable('getData');
+
+    // Find the position of the new part in the data array
+    let newRowPosition = tableData.findIndex(row => row['_ID_data'].id == id);
+
+    if (newRowPosition !== -1) {
+      // Get current page size
+      let pageSize = $(this.table).bootstrapTable('getOptions').pageSize;
+
+      // Calculate the page number where the new part will be displayed
+      let pageNumber = Math.floor(newRowPosition / pageSize) + 1;
+
+      // Switch to the appropriate page
+      $(this.table).bootstrapTable('selectPage', pageNumber);
+
+      // Highlight the new row after changing the page
+      setTimeout(() => {
+        let $newRow = $(`tr[data-id="${id}"]`);
+        if ($newRow.length > 0) {
+          $newRow.addClass('highlight-new selected selected-last');
+          setTimeout(() => {
+            $newRow.addClass('fade-out');
+            setTimeout(() => {
+              $newRow.removeClass('highlight-new fade-out');
+            }, 1000);       // Remove highlight and fade-out class 
+          }, 1000);         // Keep the highlight for 2 seconds
+        }
+      }, 500);              // Small delay to ensure the page switch happens
+    } else {
+      console.warn('New row position not found for id:', id);
+    }
+  }
+
 
   showModal() {
     this.inputModal.modal('show');

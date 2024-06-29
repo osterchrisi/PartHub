@@ -20,6 +20,7 @@ export function initializeLocationsView() {
     const newLocationCreator = new ResourceCreator({
         type: 'location',
         endpoint: '/location.create',
+        table_name: '#locations_list_table',
         newIdName: 'Location ID',
         inputForm: '#locationEntryForm',
         inputFields: [
