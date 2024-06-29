@@ -39,15 +39,15 @@ class ResourceCreator {
       type: 'POST',
       data: Object.assign({ _token: token }, data),
       success: (response) => {
+        const id = JSON.parse(response)[this.newIdName];  // Get new ID
         if (this.type != 'category') {
-          const id = JSON.parse(response)[this.newIdName];  // Get new ID
           updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
         }
         this.hideModal();                                   // Hide Modal
         this.removeAddButtonClickListener();                // Remove Click Listener
         const queryString = window.location.search;
         // Call each tableRebuildFunction in the array
-        this.tableRebuildFunctions.forEach(fn => fn(queryString));
+        this.tableRebuildFunctions.forEach(fn => fn(queryString, id));
       },
       error: (xhr) => {
         if (xhr.status === 419) {

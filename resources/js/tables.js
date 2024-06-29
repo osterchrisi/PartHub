@@ -275,7 +275,7 @@ function onTableCellContextMenu($table, $menu, actions) {
  * Rebuild the parts table after adding or deleting parts
  * @param {string} queryString 
  */
-export function rebuildPartsTable(queryString) {
+export function rebuildPartsTable(queryString, newPartId = null) {
   return $.ajax({
     url: '/parts.partsTable' + queryString,
     success: function (data) {
@@ -288,9 +288,43 @@ export function rebuildPartsTable(queryString) {
       enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
+
+      if (newPartId) {
+        // Get the table data after bootstrapping
+        let tableData = $table.bootstrapTable('getData');
+
+        // Find the position of the new part in the data array
+        let newRowPosition = tableData.findIndex(row => row['_ID_data'].id == newPartId);
+
+        if (newRowPosition !== -1) {
+          // Get current page size
+          let pageSize = $table.bootstrapTable('getOptions').pageSize;
+
+          // Calculate the page number where the new part will be displayed
+          let pageNumber = Math.floor(newRowPosition / pageSize) + 1;
+
+          // Switch to the appropriate page
+          $table.bootstrapTable('selectPage', pageNumber);
+
+          // Highlight the new row after changing the page
+          setTimeout(() => {
+            let $newRow = $(`tr[data-id="${newPartId}"]`);
+            if ($newRow.length > 0) {
+              $newRow.addClass('highlight-new');
+              setTimeout(() => {
+                $newRow.addClass('fade-out');
+                setTimeout(() => {
+                  $newRow.removeClass('highlight-new fade-out');
+                }, 1000);       // Remove highlight and fade-out class 
+              }, 1000);         // Keep the highlight for 2 seconds
+            }
+          }, 500);              // Small delay to ensure the page switch happens
+        }
+      }
     }
   });
 }
+
 
 /**
  * Rebuild the locations table after adding or deleting locations

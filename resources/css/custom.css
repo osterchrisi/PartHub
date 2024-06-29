@@ -85,6 +85,15 @@ ul.dropdown-menu a {
     color: rgb(0, 0, 0);
 }
 
+/* For highlighting new table rows */
+.highlight-new {
+    background-color: yellow;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.fade-out {
+    background-color: transparent;
+}
 
 /* These are for the resizable divs - these are just decorators, no functionality  */
 .ui-resizable-e {
