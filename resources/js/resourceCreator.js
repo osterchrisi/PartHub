@@ -25,6 +25,16 @@ class ResourceCreator {
     }
   }
 
+
+  /**
+  * Handles the creation of a new resource via an AJAX request.
+  *
+  * This method collects data from input fields, sends an AJAX POST request to create the resource,
+  * and handles the response. If successful, it updates the InfoWindow, hides the modal,
+  * removes the click listener, rebuilds the table, and selects the newly created row.
+  *
+  * @method requestCreation
+  */
   requestCreation() {
     const data = {};
     this.inputFields.forEach(field => {
@@ -74,9 +84,18 @@ class ResourceCreator {
     });
   }
 
+  /**
+ * Highlights and selects a newly added row in a Bootstrap table.
+ *
+ * This method finds the newly added row in the table data using the provided ID,
+ * determines the appropriate page where the new row should be displayed, switches to that page,
+ * and highlights the new row with visual effects.
+ *
+ * @param {number} id - The ID of the newly added row to be selected and highlighted.
+ */
   selectNewRow(id) {
     // Get the table data after bootstrapping
-    let tableData =$(this.table).bootstrapTable('getData');
+    let tableData = $(this.table).bootstrapTable('getData');
 
     // Find the position of the new part in the data array
     let newRowPosition = tableData.findIndex(row => row['_ID_data'].id == id);
