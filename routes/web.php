@@ -32,7 +32,7 @@ require __DIR__ . '/auth.php';
 //* Landing Page
 Route::get('/', function () {
     return view('welcome', ['title' => 'Open Source Inventory and BOM Management', 'view' => 'welcome']);
-})->name('welcome');
+})->name('welcome')->middleware('redirect.if.not.authenticated');
 
 //* User Stuff
 Route::get('/dashboard', function () {
@@ -50,15 +50,18 @@ Route::post('/updateRow', [DatabaseService::class, 'updateCell'])->middleware(['
 Route::post('/deleteRow', [DatabaseServiceController::class, 'deleteRow'])->middleware(['auth', 'verified']);
 
 //* Part Routes
-Route::controller(PartsController::class)->group(function () {
-    Route::get('/parts', 'index')->middleware(['auth', 'verified'])->name('parts');
-    Route::get('/part/{id}', 'show')->middleware(['auth', 'verified']);
-    Route::get('/part.getName', 'getName')->middleware(['auth', 'verified']);
-    Route::post('/part.delete', 'destroy')->middleware(['auth', 'verified']);
-    Route::post('/parts.prepareStockChanges', 'prepareStockChanges')->middleware(['auth', 'verified']);
-    Route::post('/part.create', 'create')->middleware(['auth', 'verified']);
-    Route::get('/parts.partsTable', 'index')->middleware(['auth', 'verified'])->name('parts.partsTable');
+Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(function () {
+    Route::controller(PartsController::class)->group(function () {
+        Route::get('/parts', 'index')->name('parts');
+        Route::get('/part/{id}', 'show');
+        Route::get('/part.getName', 'getName');
+        Route::post('/part.delete', 'destroy');
+        Route::post('/parts.prepareStockChanges', 'prepareStockChanges');
+        Route::post('/part.create', 'create');
+        Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
+    });
 });
+
 
 //* BOM Routes
 Route::controller(BomController::class)->group(function () {
