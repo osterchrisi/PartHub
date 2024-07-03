@@ -28,7 +28,6 @@ tr.selected-last td {
     border: var(--bs-primary-border-subtle) solid 2px;
 }
 
-
 /* Prohibit selecting text when pressing shift (selecting multiple rows in table) */
 .table-no-select tbody tr td {
     user-select: none;
@@ -73,7 +72,6 @@ tr.selected-last td {
 ul.dropdown-menu a {
    color: black;
 }
-
 
 .navbar-nav .nav-link.active {
     /* This overrides --bs-navbar-active-color */
@@ -199,8 +197,50 @@ body {
     color: #007bff;
 }
 
-/* CTA Button */
-.cta-btn {
-    font-size: 1.5rem;
-    padding: 1rem 2rem;
+/* Enhanced Navbar */
+.navbar, .toolbar-top {
+    background-color: rgba(32, 62, 105, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffcc00;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    color: #ffffff;
+}
+
+.navbar-toggler {
+    border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+    color: #ffffff;
+}
+
+.p-hero {
+    background-color: rgba(255, 0, 0, 0.5); /* Red background with 50% opacity */
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: white; /* Adjust text color for better contrast */
 }

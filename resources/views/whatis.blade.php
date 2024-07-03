@@ -8,7 +8,7 @@
             style="background-image: url('app-related/hero-background.webp'); background-size: cover; background-position: center;">
             <div class="col-md-8">
                 <h1 class="display-1 mb-4">Welcome to PartHub</h1>
-                <p class="lead mb-4">Your Ultimate Inventory and BOM Management Solution</p>
+                <p class="lead mb-4 p-hero d-inline-block">Your Ultimate Inventory and BOM Management Solution</p><br>
                 <a href="#features" class="btn btn-lg btn-light">Explore Features</a>
                 <a href="{{ route('signup') }}" class="btn btn-lg btn-outline-light ml-2">Sign Up Now</a>
             </div>
