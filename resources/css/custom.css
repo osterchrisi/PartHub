@@ -130,67 +130,6 @@ ul.dropdown-menu a {
     background-color: var(--bs-primary-border-subtle);
 }
 
-/* Custom Styles */
-body {
-    background-color: #f8f9fa;
-}
-
-/* Hero Section */
-.hero-section {
-    background-image: url('/path/to/hero-background.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 5rem 0;
-}
-
-.hero-section h1 {
-    font-size: 4rem;
-    font-weight: bold;
-}
-
-.hero-section p {
-    font-size: 1.5rem;
-}
-
-.hero-section .btn {
-    font-size: 1.25rem;
-    padding: 0.75rem 1.5rem;
-}
-
-/* Card Styles */
-.card {
-    border: none;
-    margin-bottom: 2rem;
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-}
-
-.card-body {
-    padding: 2rem;
-}
-
-.card img {
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-/* Features Section */
-.features-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.features-section li {
-    display: flex;
-    align-items: center;
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-}
-
 .features-section li i {
     font-size: 2rem;
     margin-right: 1rem;
@@ -203,10 +142,10 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-brand {
+/* .navbar-brand {
     font-weight: bold;
     color: #ffffff;
-}
+} */
 
 .navbar-nav .nav-link {
     color: #ffffff;
@@ -238,9 +177,8 @@ body {
     color: #ffffff;
 }
 
-.p-hero {
-    background-color: rgba(255, 0, 0, 0.5); /* Red background with 50% opacity */
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: white; /* Adjust text color for better contrast */
+#welcome-headline::after {
+    content: 'BETA';
+    font-size: 12px;
+    vertical-align: top;
 }

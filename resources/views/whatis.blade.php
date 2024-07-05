@@ -4,11 +4,11 @@
 @section('content')
     <div class="container my-5">
         <!-- Hero Section -->
-        <div class="row justify-content-center text-center hero-section"
-            style="background-image: url('app-related/hero-background.webp'); background-size: cover; background-position: center;">
+        <div class="row justify-content-center text-center hero-section">
             <div class="col-md-8">
                 <h1 class="display-1 mb-4">Welcome to PartHub</h1>
-                <p class="lead mb-4 p-hero d-inline-block">Your Ultimate Inventory and BOM Management Solution</p><br>
+                <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Your Ultimate Inventory and BOM
+                    Management Solution</p><br>
                 <a href="#features" class="btn btn-lg btn-light">Explore Features</a>
                 <a href="{{ route('signup') }}" class="btn btn-lg btn-outline-light ml-2">Sign Up Now</a>
             </div>
@@ -22,8 +22,8 @@
                         <h2 class="display-4 mb-4">What is PartHub?</h2>
                         <img src="app-related/image1.webp" class="img-fluid mb-4"
                             alt="Person organizing parts in a workshop">
-                        <p class="lead">PartHub is an Inventory and BOM management software designed to keep your
-                            workplace tidy and let you focus on the creative parts of your work.</p>
+                        <p class="lead">PartHub is designed to keep your workplace tidy and let you focus on the creative
+                            parts of your work. It is an Inventory and BOM management software.</p>
                     </div>
                 </div>
             </div>
@@ -37,6 +37,7 @@
                         <h2 class="display-4 mb-4">How Can PartHub Help You?</h2>
                         <img src="app-related/image2.webp" class="img-fluid mb-4" alt="Person using a barcode scanner">
                         <p class="lead">Track stock like a pro. It's fun and efficient, with or without a barcode scanner.
+                            Always know what you have and where it is.
                         </p>
                     </div>
                 </div>
@@ -66,7 +67,8 @@
                         <p class="lead">Created by <a href="https://christianzollner.com" target="_blank"
                                 class="text-white font-weight-bold">Christian Zollner</a>, founder of <a
                                 href="https://koma-elektronik.com" target="_blank" class="text-white font-weight-bold">KOMA
-                                Elektronik</a>.</p>
+                                Elektronik</a>. Christian programmed this software because no inventory tracking software of
+                            this kind existed for his company.</p>
                         <img src="app-related/Chrisi_und_Kaja_square.webp" class="img-fluid rounded-circle w-25 mb-3"
                             alt="Christian and his dog Kaja">
                         <p class="lead">Christian and his dog Kaja</p>
