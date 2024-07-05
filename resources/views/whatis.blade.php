@@ -4,7 +4,7 @@
 @section('content')
     <div class="container my-5">
         <!-- Hero Section -->
-        <div class="row justify-content-center text-center hero-section">
+        <div class="row justify-content-center text-center hero-section rounded-3 mb-5" style="background-image: url('app-related/hero-background.webp'); background-size: cover; background-position: center;">
             <div class="col-md-8">
                 <h1 class="display-1 mb-4">Welcome to PartHub</h1>
                 <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Your Ultimate Inventory and BOM
