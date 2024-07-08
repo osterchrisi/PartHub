@@ -8,7 +8,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/custom.css',
-                'resources/css/whatis.css' //! Not sure this is how it's done?
+                'resources/css/whatis.css',
+                'resources/css/tos.css'
             ],
             refresh: true,
         }),
