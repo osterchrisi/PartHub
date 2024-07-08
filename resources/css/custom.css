@@ -135,9 +135,13 @@ ul.dropdown-menu a {
     margin-right: 1rem;
     color: #007bff;
 }
+.toolbar-top {
+    background-color: rgba(0, 75, 145, 0.85);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 /* Enhanced Navbar */
-.navbar, .toolbar-top {
+.navbar {
     background-color: rgba(32, 62, 105, 1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
