@@ -1,7 +1,7 @@
 @include('header')
 @include('navbar')
 
-<div class="d-flex flex-grow-1 justify-content-center align-items-center">
+<div class="d-flex flex-grow-1 justify-content-center align-items-center {{ $view == 'whatis' || 'signup' ? 'landing-page' : '' }}">
     <div class="greeting d-flex align-items-center">
         @yield('content')
     </div>
@@ -13,17 +13,3 @@
 
 </body>
 </html>
-
-<style>
-    #welcome-headline::after {
-        content: 'BETA';
-        font-size: 12px;
-        vertical-align: top;
-    }
-
-    #BigCorp::after {
-        content: 'TM';
-        font-size: 12px;
-        vertical-align: top;
-    }
-</style>

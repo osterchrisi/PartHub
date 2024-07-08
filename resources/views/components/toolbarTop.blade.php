@@ -1,5 +1,5 @@
 <div class="container-fluid px-0 sticky-top" style="z-index: 2;">
-    <div class="bg-gradient d-flex align-items-center" style="background-color: rgba(0, 75, 145, 0.85)">
+    <div class="bg-gradient d-flex align-items-center toolbar-top" style="background-color: rgba(0, 75, 145, 0.85)">
         <div class="pb-0 mb-0 pt-2 ps-3">
             <h4 class="toolbar-title">{{ $title }}</h4>
         </div>

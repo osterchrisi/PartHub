@@ -18,7 +18,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col bg-light">
+        <div class="col bg-light pt-2">
             <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
                 <thead>
                     <tr>

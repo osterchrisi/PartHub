@@ -3,78 +3,134 @@
 
 @section('content')
     <div class="container my-5">
-        <div class="row justify-content-center text-center bg-light bg-gradient rounded p-5 mb-5">
-            <div class="col-md-8 text-left">
-                <h1 class="display-1 mb-4" id="whatis-headline">What is PartHub?</h1>
-                <h4 class="mb-3"></h4>
-                <h1 class="mb-4">TLDR; I organize parts</h1>
-                <p class="lead">I am an Inventory and BOM management software. I am here to help you keep your workplace
-                    tidy. I take care of the boring stock keeping and you can focus on the creative part of your work.</p>
+        <!-- Hero Section -->
+        <div class="row justify-content-center text-center hero-section rounded-3 mb-5" style="background-image: url('app-related/hero-background.webp'); background-size: cover; background-position: center;">
+            <div class="col-md-8">
+                <h1 class="display-1 mb-4">Welcome to PartHub</h1>
+                <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Your Ultimate Inventory and BOM
+                    Management Solution</p><br>
+                <a href="#features" class="btn btn-lg btn-light">Explore Features</a>
+                <a href="{{ route('signup') }}" class="btn btn-lg btn-outline-light ml-2">Sign Up Now</a>
             </div>
         </div>
 
-        <div class="row justify-content-center text-end bg-secondary bg-gradient text-white rounded p-5 mb-5">
-            <div class="col-md-8 text-right">
-                <h1 class="display-1 mb-4" id="whatis-headline">How can PartHub help me?</h1>
-                <p class="lead">I make tracking stock fun. It's like a zombie shooter video game. Only that you use a
-                    barcode scanner as a gun and shoot labels instead of zombies. (Also works without a barcode scanner)</p>
+        <!-- What is PartHub -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center">
+                        <h2 class="display-4 mb-4">What is PartHub?</h2>
+                        <img src="app-related/image1.webp" class="img-fluid mb-4"
+                            alt="Person organizing parts in a workshop">
+                        <p class="lead">PartHub is designed to keep your workplace tidy and let you focus on the creative
+                            parts of your work. It is an Inventory and BOM management software.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row justify-content-center text-start bg-light bg-gradient rounded p-5 mb-5">
-            <div class="col-md-8 text-left">
-                <h1 class="display-1 mb-4" id="whatis-headline">Is PartHub for me?</h1>
-                <p class="lead">Yes! If you buy parts for your projects and they come in small baggies, I am here to make
-                    your life significantly easier!</p>
-                <p class="lead">I currently work best with electronic parts but nothing keeps you from tracking any type
-                    of parts. You can personalize me to work best for your needs.</p>
+        <!-- How Can PartHub Help -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center bg-gradient text-white" style="background-color: #6c757d;">
+                        <h2 class="display-4 mb-4">How Can PartHub Help You?</h2>
+                        <img src="app-related/image2.webp" class="img-fluid mb-4" alt="Person using a barcode scanner">
+                        <p class="lead">Track stock like a pro. It's fun and efficient, with or without a barcode scanner.
+                            Always know what you have and where it is.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row justify-content-center text-end bg-secondary bg-gradient text-white rounded p-5 mb-5">
-            <div class="col-md-8 text-right">
-                <h1 class="display-1 mb-4" id="whatis-headline">Who is behind PartHub?</h1>
-                <p class="lead">PartHub was created by <a href="https://christianzollner.com" target="_blank" style="color: white; font-weight: bold;">Christian
-                        Zollner</a>, the founder of <a href="https://koma-elektronik.com" target="_blank" style="color: white; font-weight: bold;">KOMA
-                        Elektronik</a>. He needed a
-                    software to help him keep production and development smooth but nothing
-                    suited his needs - so he programmed the software himself!</p>
-                <img src="app-related\Chrisi_und_Kaja_square.webp" class="img_fluid w-50" alt="Christian and his dog Kaja">
-                <p class="lead">Christian and his dog Kaja</p>
+        <!-- Is PartHub For You? -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center">
+                        <h2 class="display-4 mb-4">Is PartHub For You?</h2>
+                        <img src="app-related/image3.webp" class="img-fluid mb-4" alt="Close-up of electronic components">
+                        <p class="lead">If you handle small parts for your projects, PartHub is here to simplify your
+                            life. Ideal for electronic parts but customizable for any type of parts.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row justify-content-center text-start bg-light bg-gradient rounded p-5 mb-5">
-            <div class="col-md-8 text-left">
-                <h1 class="display-1 mb-4" id="whatis-headline">Features</h1>
-                <p class="lead">
-                <ul>
-                    <li class="lead"> Keep an up-to-date inventory of your parts easily
-                    <li class="lead"> Multiple storage locations per part, move stock between locations
-                    <li class="lead"> Manage suppliers, footprints, units and BOMs
-                    <li class="lead"> Automatic part history - so you know where your stock went
-                    <li class="lead"> <em>Assemble</em> BOMs when you build projects and stock gets deducted automagically
-                    <li class="lead"> Set notification thresholds for stock levels per part
-                    <li class="lead"> Upload images for each part
-                </ul>
-                </p>
+        <!-- Who is Behind PartHub -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center bg-gradient text-white" style="background-color: #6c757d;">
+                        <h2 class="display-4 mb-4">Who is Behind PartHub?</h2>
+                        <p class="lead">Created by <a href="https://christianzollner.com" target="_blank"
+                                class="text-white font-weight-bold">Christian Zollner</a>, founder of <a
+                                href="https://koma-elektronik.com" target="_blank" class="text-white font-weight-bold">KOMA
+                                Elektronik</a>. Christian programmed this software because no inventory tracking software of
+                            this kind existed for his company.</p>
+                        <img src="app-related/Chrisi_und_Kaja_square.webp" class="img-fluid rounded-circle w-25 mb-3"
+                            alt="Christian and his dog Kaja">
+                        <p class="lead">Christian and his dog Kaja</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row justify-content-center text-start bg-secondary bg-gradient text-white rounded p-5 mb-5">
-            <div class="col-md-8 text-left">
-                <h1 class="display-1 mb-4" id="whatis-headline">Future development</h1>
-                <p class="lead">PartHub is constantly being improved, so if you get an account today you will
-                    automatically benefit from these future developments.
-                <ul>
-                    <li class="lead"> Barcode scanner functionality
-                    <li class="lead"> Add prices per supplier
-                    <li class="lead"> Image grid part overview
-                    <li class="lead"> Modify BOMs online
-                    <li class="lead"> Price lookup via distributor API access
-                    <li class="lead"> Automatic fillout of part details via distributor API access
-                    <li class="lead"> Teams / Multi user support
-                </ul>
-                </p>
+
+        <!-- Features -->
+        <div class="row justify-content-center mb-5" id="features">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-light rounded">
+                    <div class="card-body text-center">
+                        <h2 class="display-4 mb-4">Features</h2>
+                        <ul class="list-unstyled lead">
+                            <li>📦 Keep an up-to-date inventory easily</li>
+                            <li>🏷️ Manage multiple storage locations</li>
+                            <li>📋 Handle suppliers, footprints, units, and BOMs</li>
+                            <li>📝 Automatic part history tracking</li>
+                            <li>⚙️ Assemble BOMs with automatic stock deduction</li>
+                            <li>🔔 Set notification thresholds</li>
+                            <li>📷 Upload images for each part</li>
+                        </ul>
+                        <a href="{{ route('signup') }}" class="btn btn-lg btn-primary mt-3">Get Started Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Future Development -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center bg-gradient text-white" style="background-color: #6c757d;">
+                        <h2 class="display-4 mb-4">Future Development</h2>
+                        <p class="lead">Get an account today and benefit from continuous improvements:</p>
+                        <ul class="list-unstyled lead">
+                            <li>🔍 Barcode scanner functionality</li>
+                            <li>💲 Add prices per supplier</li>
+                            <li>🖼️ Image grid part overview</li>
+                            <li>🔧 Modify BOMs online</li>
+                            <li>📦 Price lookup via distributor API</li>
+                            <li>🔍 Automatic part details via API</li>
+                            <li>👥 Teams/Multi-user support</li>
+                        </ul>
+                        <a href="{{ route('signup') }}" class="btn btn-lg btn-light mt-3 cta-btn">Join Us Today</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="row justify-content-center mb-5" id="sign-up">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center bg-primary bg-gradient text-white">
+                        <h2 class="display-4 mb-4">Ready to Get Started?</h2>
+                        <p class="lead">Sign up today and start organizing your parts like never before!</p>
+                        <a href="{{ route('signup') }}" class="btn btn-lg btn-light cta-btn">Sign Up Now</a>
+                        <a href="{{ route('demo.login') }}" class="btn btn-lg btn-outline-light ml-2 cta-btn">Try Demo</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

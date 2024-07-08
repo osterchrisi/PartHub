@@ -28,7 +28,6 @@ tr.selected-last td {
     border: var(--bs-primary-border-subtle) solid 2px;
 }
 
-
 /* Prohibit selecting text when pressing shift (selecting multiple rows in table) */
 .table-no-select tbody tr td {
     user-select: none;
@@ -73,7 +72,6 @@ tr.selected-last td {
 ul.dropdown-menu a {
    color: black;
 }
-
 
 .navbar-nav .nav-link.active {
     /* This overrides --bs-navbar-active-color */
@@ -130,4 +128,57 @@ ul.dropdown-menu a {
     /* margin-top: -4px; */
     /* margin-left: -1px; */
     background-color: var(--bs-primary-border-subtle);
+}
+
+.features-section li i {
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: #007bff;
+}
+
+/* Enhanced Navbar */
+.navbar, .toolbar-top {
+    background-color: rgba(32, 62, 105, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* .navbar-brand {
+    font-weight: bold;
+    color: #ffffff;
+} */
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffcc00;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    color: #ffffff;
+}
+
+.navbar-toggler {
+    border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+    color: #ffffff;
+}
+
+#welcome-headline::after {
+    content: 'BETA';
+    font-size: 12px;
+    vertical-align: top;
 }
