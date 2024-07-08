@@ -75,7 +75,7 @@ body {
     background-position: center;
     background-attachment: fixed;
     color: #333;
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
     padding: 0;
     margin: 0;
 }
