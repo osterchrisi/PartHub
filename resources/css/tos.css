@@ -1,0 +1,42 @@
+.tos-container {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.tos-container h1,
+.tos-container h2,
+.tos-container h3,
+.tos-container h4 {
+    color: #333;
+}
+
+.tos-container p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.tos-container ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.tos-container ul li::before {
+    content: "•";
+    color: #007bff;
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+}
+
+.tos-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.tos-container a:hover {
+    text-decoration: underline;
+}
