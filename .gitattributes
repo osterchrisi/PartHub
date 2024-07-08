@@ -9,3 +9,10 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+*.jpg -diff
+*.jpeg -diff
+*.png -diff
+*.gif -diff
+*.bmp -diff
+*.webp -diff
