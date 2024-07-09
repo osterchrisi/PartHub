@@ -65,8 +65,9 @@ class ResourceCreator {
 
         $.when.apply($, promises)
           .done(() => {
-            // console.log("All table rebuild functions completed");
-            this.selectNewRow(id);
+            if (this.type != 'category') {
+              this.selectNewRow(id);
+            }
           })
           .fail(() => {
             // console.error("Error in one or more table rebuild functions");

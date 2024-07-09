@@ -90,12 +90,13 @@ class CategoryController extends Controller
             $categoryId = $category->category_id;
 
             // Construct JSON response
-            $response = [
-                'category_id' => $categoryId,
-                'status' => 'success'
-            ];
+            echo json_encode(
+                array(
+                    'Category ID' => $categoryId,
+                    'status' => 'success'
+                )
+            );
 
-            return response()->json($response);
         }
         else {
             $errorResponse = [

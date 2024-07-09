@@ -77,7 +77,7 @@ class LocationController extends Controller
         );
     }
 
-     /**
+    /**
      * Create a new location in the database
      */
     public function create(Request $request)
@@ -95,7 +95,7 @@ class LocationController extends Controller
         );
     }
 
-        /**
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)
