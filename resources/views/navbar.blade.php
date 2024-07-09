@@ -54,10 +54,10 @@ $user_name = $user ? $user->name : '';
                         @endif
                         <li>
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="fas fa-user"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2" style="min-width: 0;">
+                            <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2 navbar-dropdown-colored">
                                 @if (Auth::check())
                                     <!-- Logged in -->
-                                    <li>{{ $user_name }}</li>
+                                    <li class="navbar-user">{{ $user_name }}</li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -68,7 +68,7 @@ $user_name = $user ? $user->name : '';
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <div class="d-grid justify-content-md-end">
-                                                <button type="submit" class="nav-link" style="background: none; border: none; color: black">Log Out</button>
+                                                <button type="submit" class="nav-link nav-link-button">Log Out</button>
                                             </div>
                                         </form>
                                     </li>
