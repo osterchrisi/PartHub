@@ -88,11 +88,8 @@ class LocationController extends Controller
         // Insert new part 
         $new_location_id = Location::createLocation($location_name, $location_description);
 
-        echo json_encode(
-            array(
-                'Location ID' => $new_location_id,
-            )
-        );
+        $response = ['Location ID' => $new_location_id];
+        return response()->json($response);
     }
 
     /**

@@ -86,10 +86,7 @@ class SupplierController extends Controller
         // Insert new part 
         $new_supplier_id = Supplier::createSupplier($supplier_name);
 
-        echo json_encode(
-            array(
-                'Supplier ID' => $new_supplier_id,
-            )
-        );
+        $response = ['Supplier ID' => $new_supplier_id];
+        return response()->json($response);
     }
 }

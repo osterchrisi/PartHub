@@ -50,7 +50,8 @@ class ResourceCreator {
       type: 'POST',
       data: Object.assign({ _token: token }, data),
       success: (response) => {
-        const id = JSON.parse(response)[this.newIdName];    // Get new ID
+        const id = response[this.newIdName];                // Get new ID
+        console.log(this.type, id);
         if (this.type != 'category') {
           updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
         }

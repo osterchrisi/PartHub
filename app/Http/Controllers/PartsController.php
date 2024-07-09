@@ -113,18 +113,17 @@ class PartsController extends Controller
             // Create a stock level history entry (from_location is NULL)
             $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
 
-            echo json_encode(
-                array(
-                    'Part ID' => $new_part_id,
-                    'Stock Entry ID' => $new_stock_entry_id,
-                    'Stock Level History ID' => $new_stock_level_id
-                )
-            );
-
             // Persist database changes and set success flash message
             DB::commit();
             //TODO: Should I flash something here?
             // Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
+
+            $response = [
+                'Part ID' => $new_part_id,
+                'Stock Entry ID' => $new_stock_entry_id,
+                'Stock Level History ID' => $new_stock_level_id
+            ];
+            return response()->json($response);
 
         } catch (\Exception $e) {
             // Roll back database changes made so far

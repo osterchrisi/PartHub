@@ -87,10 +87,7 @@ class FootprintController extends Controller
         // Insert new part 
         $new_footprint_id = Footprint::createFootprint($footprint_name, $footprint_alias);
 
-        echo json_encode(
-            array(
-                'Footprint ID' => $new_footprint_id,
-            )
-        );
+        $response = ['Footprint ID' => $new_footprint_id];
+        return response()->json($response);
     }
 }
