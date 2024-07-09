@@ -57,8 +57,6 @@
     </script>
     <!-- Bootstrap Table Reorder Columns -->
     <link href="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/dragtable.css" rel="stylesheet">
-    {{-- @vite('resources/js/dragtable/dragtable.css') --}}
-    {{-- @vite('resources/js/dragtable/jquery.dragtable.js') --}}
     <script src="https://cdn.jsdelivr.net/gh/akottr/dragtable@master/jquery.dragtable.js"></script>
     <script
         src="https://unpkg.com/bootstrap-table@1.21.3/dist/extensions/reorder-columns/bootstrap-table-reorder-columns.js">
