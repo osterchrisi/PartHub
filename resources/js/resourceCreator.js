@@ -186,15 +186,16 @@ class ResourceCreator {
       submitFormIfValid();
     });
 
-    // Currently don't like it anymore, so uncommented the submission upon pressing Enter...
+    // Currently don't like it anymore, so uncommented the submission upon pressing Enter
+    // Still keeping the preventDefault in, so I don't get the bug where it reloads the page without proper submission
     // Submit form on Enter keypress, unless you're on a selectized dropdown
-    // $form.on('keydown', (event) => {
-    //   // Check if the Enter key is pressed and the active element is not the selectized input
-    //   if (event.key === 'Enter' && !$(document.activeElement).is('.selectized')) {
-    //     event.preventDefault(); // Prevent default form submission
-    //     submitFormIfValid();
-    //   }
-    // });
+    $form.on('keydown', (event) => {
+      // Check if the Enter key is pressed and the active element is not the selectized input
+      if (event.key === 'Enter' && !$(document.activeElement).is('.selectized')) {
+        event.preventDefault(); // Prevent default form submission
+        // submitFormIfValid();
+      }
+    });
 
     // Function to submit the form if it's valid
     const submitFormIfValid = () => {
