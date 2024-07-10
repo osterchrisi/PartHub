@@ -156,16 +156,8 @@ function callStockChangingScript(stockChanges, pid) {
                 var new_stock_level = r.result[r.result.length -1].new_total_stock;
                 var $cell = $('tr.selected-last td[data-column="total_stock"]');
                 $cell.text(new_stock_level);
+                $('#mAddStock').modal('hide');
 
-                // Reset modal and hide it
-                $('#mAddStock').on('hidden.bs.modal', function (e) {
-                    $('#FromStockLocationDiv-row').show();
-                    $('#ToStockLocationDiv-row').show();
-                    $('#stockChangingForm')[0].reset();
-                    $('#mStockModalInfo').empty();
-                    $('#AddStock').attr('disabled', false);
-                    $(this).modal('dispose');
-                }).modal('hide');
             }
             else {
                 //* User permission required
@@ -224,16 +216,8 @@ function changeStockAnywayClickListener(r, pid, token) {
                 'X-CSRF-TOKEN': token
             },
             success: function (response) {
-                // console.log(response);
-                // Reset modal and hide it
-                $('#mAddStock').on('hidden.bs.modal', function (e) {
-                    $('#FromStockLocationDiv-row').show();
-                    $('#ToStockLocationDiv-row').show();
-                    $('#stockChangingForm')[0].reset();
-                    $('#mStockModalInfo').empty();
-                    $('#AddStock').attr('disabled', false);
-                    $(this).modal('dispose');
-                }).modal('hide');
+                $('#mAddStock').modal('hide');
+
                 //TODO: This can't work here (not giving any ids yet like in BOMs)
                 // updatePartsInfo(ids[ids.length - 1]); // Update BOM info with last BOM ID in array
                 updateInfoWindow('part', pid)

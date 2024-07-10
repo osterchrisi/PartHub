@@ -330,12 +330,12 @@ export function updateInfoWindow(type, id) {
             } else {
                 errorMessage = `Failed to load additional ${type} data.`;
             }
-            
+
             const errorHTML = `
                 <div class="alert alert-dark align-self-start" role="alert">
                     <p class="text-center">${errorMessage}</p>
                 </div>`;
-            
+
             $('#info-window').html(errorHTML);
         }
     });
@@ -379,6 +379,16 @@ export function updateImages(response) {
 export function clearModalOnHiding() {
     $(document).on('hidden.bs.modal', '.modal', function () {
         $(this).find('input').val('');
+    });
+
+    // Stock changing modal with its "Continue Anyway" message
+    $('#mAddStock').on('hidden.bs.modal', function (e) {
+        $('#FromStockLocationDiv-row').show();
+        $('#ToStockLocationDiv-row').show();
+        $('#stockChangingForm')[0].reset();
+        $('#mStockModalInfo').empty();
+        $('#AddStock').attr('disabled', false);
+        $(this).modal('dispose');
     });
 }
 
