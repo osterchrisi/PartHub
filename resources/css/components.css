@@ -1,0 +1,108 @@
+/* components.css */
+
+/* Navbar Links */
+.nav-link {
+    /* This overrides --bs-nav-link-color */
+    color: white;
+}
+
+.nav-link.tab-link {
+    color: var(--bs-nav-link-color);
+}
+
+.nav-link-button {
+    background: none;
+    border: none;
+    color: black
+}
+
+/* Navbar Links active state */
+.navbar-nav .nav-link.active {
+    /* This overrides --bs-navbar-active-color */
+    color: greenyellow;
+}
+
+/* Navbar Links hover and active states */
+.navbar-nav .nav-link {
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffcc00;
+}
+
+/* Navbar user */
+.navbar-user {
+    color: white;
+}
+
+/* Highlight new table rows */
+.highlight-new {
+    background-color: yellow;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.fade-out {
+    background-color: transparent;
+}
+
+/* Selected row in parts table */
+tr.selected {
+    background-color: rgba(var(--bs-info-rgb), 0.5);
+    border: var(--bs-primary-border-subtle) solid 2px;
+}
+
+tr.selected-last {
+    background-color: rgba(var(--bs-primary-rgb), 0.5);
+    border: var(--bs-primary-border-subtle) solid 2px;
+}
+
+tr.selected-last td {
+    border: var(--bs-primary-border-subtle) solid 2px;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    margin-bottom: 2rem;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card img {
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Features Section */
+.features-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features-section li {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.features-section li i {
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: #007bff;
+}
+
+/* Info window tab links */
+.nav-link.tab-link {
+    color: var(--bs-nav-link-color);
+}

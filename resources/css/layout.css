@@ -1,0 +1,118 @@
+/* layout.css */
+
+/* Info window */
+.info-window {
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.1);
+    overflow: auto;
+    z-index: 1;
+    /* Otherwise overlaps with other elements */
+}
+
+/* Navbar and toolbar titles */
+.navbar-brand,
+.toolbar-title {
+    color: rgb(0, 0, 0);
+}
+
+/* Enhanced Navbar */
+.navbar {
+    background-color: rgba(32, 62, 105, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-dropdown-colored {
+    background-color: rgba(32, 62, 105, 1);
+    min-width: 0;
+}
+
+.navbar-toggler {
+    border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+    color: #ffffff;
+}
+
+.toolbar-top {
+    background-color: rgba(0, 75, 145, 0.85);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero Section */
+.hero-section {
+    background-image: url('/path/to/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 5rem 0;
+}
+
+.hero-section h1 {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.hero-section p {
+    font-size: 1.5rem;
+}
+
+.hero-section .btn {
+    font-size: 1.25rem;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Landing Page */
+.landing-page {
+    background-image: url('/public/app-related/landing-background.webp');
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+    padding: 0;
+    margin: 0;
+}
+
+/* ToS Container */
+.tos-container {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.tos-container h1,
+.tos-container h2,
+.tos-container h3,
+.tos-container h4 {
+    color: #333;
+}
+
+.tos-container p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.tos-container ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.tos-container ul li::before {
+    content: "•";
+    color: #007bff;
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+}
+
+.tos-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.tos-container a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,49 @@
+/* base.css */
+
+/* For index, login and signup */
+.greeting {
+    min-height: 90vh;
+}
+
+/* I don't like underscores in links */
+a {
+    text-decoration: none;
+}
+
+/* Prohibit selecting text when pressing shift (selecting multiple rows in table) */
+.table-no-select tbody tr td {
+    user-select: none;
+}
+
+/* Custom Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Welcome headline */
+#welcome-headline::after {
+    content: 'BETA';
+    font-size: 12px;
+    vertical-align: top;
+}
+
+/* Links in the user dropdown */
+ul.dropdown-menu a {
+    color: black;
+}
+
+/* Action Buttons */
+.btn-label {
+    position: relative;
+    left: -8px;
+    display: inline-block;
+    padding: 4px 12px 3px;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px 0 0 3px;
+}
+
+.btn-labeled {
+    padding-top: 0;
+    padding-bottom: 0;
+}
