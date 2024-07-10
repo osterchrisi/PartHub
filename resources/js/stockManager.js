@@ -15,7 +15,7 @@ class StockManager {
     }
 
     /**
-     * Create a dropdown element
+     * Create a dropdown element and initialize Selectize
      * 
      * @param {string} divId The div element in which the element will be created
      * @param {Array} locations An array of associative arrays containing locations
@@ -32,6 +32,7 @@ class StockManager {
         });
         selectHTML += '</select>';
         div.innerHTML = selectHTML;
+        $(`#${selectId}`).selectize();
     }
 
     /**
@@ -68,30 +69,32 @@ class StockManager {
      * @param {number} pid - The part ID for which to call the stock modal for
      */
     callStockModal(change, locations, pid) {
+        let modalTitle = '';
+        let changeText = '';
+        
         switch (change) {
             case 1:
-                document.getElementById('stockModalTitle').textContent = 'Add Stock';
-                document.getElementById('stockChangeText').textContent = 'Add stock to ';
+                modalTitle = 'Add Stock';
+                changeText = 'Add stock to ';
                 $('#FromStockLocationDiv-row').hide();
                 this.toStockLocationDropdown("ToStockLocationDiv", locations);
-                $("#toStockLocation").selectize();
                 break;
             case -1:
-                document.getElementById('stockModalTitle').textContent = 'Reduce Stock';
-                document.getElementById('stockChangeText').textContent = 'Reduce stock of ';
+                modalTitle = 'Reduce Stock';
+                changeText = 'Reduce stock of ';
                 $('#ToStockLocationDiv-row').hide();
                 this.fromStockLocationDropdown("FromStockLocationDiv", locations);
-                $("#fromStockLocation").selectize();
                 break;
             case 0:
-                document.getElementById('stockModalTitle').textContent = 'Move Stock';
-                document.getElementById('stockChangeText').textContent = 'Move stock of ';
+                modalTitle = 'Move Stock';
+                changeText = 'Move stock of ';
                 this.toStockLocationDropdown("ToStockLocationDiv", locations);
                 this.fromStockLocationDropdown("FromStockLocationDiv", locations);
-                $("#toStockLocation").selectize();
-                $("#fromStockLocation").selectize();
                 break;
         }
+
+        document.getElementById('stockModalTitle').textContent = modalTitle;
+        document.getElementById('stockChangeText').textContent = changeText;
 
         $('#mAddStock').modal('show'); // Show modal
         removeClickListeners('#AddStock'); // Remove previously added click listener
