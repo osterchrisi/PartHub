@@ -24,8 +24,6 @@ export function initializeBomsView() {
     attachAssembleBomHandler('bom_list_table');
     attachAddBomHandler();
 
-    //! Change for stockManager class
-
     const stockManager = new StockManager();
 
     $.ajax({
