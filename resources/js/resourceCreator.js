@@ -1,5 +1,6 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
+import { bootstrapTableSmallify } from "./tables";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = [], categoryId = null) {
@@ -68,6 +69,8 @@ class ResourceCreator {
           .done(() => {
             if (this.type != 'category') {
               this.selectNewRow(id);
+              //!TODO Okay, boostrapTableSmallify is redundant but there might be a race condition. Need to do it a second time, otherwise it first smallifies, then gets bigger again
+              bootstrapTableSmallify();
             }
           })
           .fail(() => {

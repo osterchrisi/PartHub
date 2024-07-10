@@ -181,6 +181,7 @@ export function attachShowCategoriesButtonClickListener() {
  * Makes the button and pagination elements in a Bootstrap Table smaller
  */
 export function bootstrapTableSmallify() {
+  console.log("smallifying");
   $('.bootstrap-table .btn').addClass('btn-sm');
   $('.bootstrap-table .pagination').addClass('pagination-sm');
   $('.bootstrap-table .form-control').addClass('form-control-sm');
