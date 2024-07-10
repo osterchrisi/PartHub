@@ -44,6 +44,7 @@ export function initializeShowPart(part_id) {
         }
     })
 
+    // Image stuff
     var currentPartType = "part"; // Change this to the appropriate type
     var currentPartId = part_id;
     fetchImages(currentPartType, currentPartId);

@@ -108,7 +108,6 @@
             </p>
         </div>
         <div class="footer">
-            <p>PS: This message will look nicer in the future :)</p>
             <p>&copy; {{ date('Y') }} PartHub. All rights reserved.</p>
             <p><a href="https://parthub.online">Visit our website</a></p>
         </div>
