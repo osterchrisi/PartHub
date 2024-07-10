@@ -6,3 +6,4 @@ $user = Auth::user();
 @include('header')
 @include('navbar')
 @include('profile.edit')
+@include('footer')
