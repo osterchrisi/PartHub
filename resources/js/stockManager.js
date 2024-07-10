@@ -1,4 +1,4 @@
-export { StockManager};
+export { StockManager };
 
 import {
     removeClickListeners,
@@ -15,104 +15,15 @@ class StockManager {
     }
 
     /**
-     * Create a dropdown element and initialize Selectize
-     * 
-     * @param {string} divId The div element in which the element will be created
-     * @param {Array} locations An array of associative arrays containing locations
-     * @param {string} label The label for the dropdown
-     * @param {string} selectId The id for the select element
-     * 
-     * @return void
-     */
-    createDropdown(divId, locations, label, selectId) {
-        const div = document.getElementById(divId);
-        let selectHTML = `<label class='input-group-text' for='${selectId}'>${label}</label><select class='form-select' id='${selectId}'>`;
-        locations.forEach(location => {
-            selectHTML += `<option value='${location.location_id}'>${location.location_name}</option>`;
-        });
-        selectHTML += '</select>';
-        div.innerHTML = selectHTML;
-        $(`#${selectId}`).selectize();
-    }
-
-    /**
-     * Create the "To Location" dropdown
-     * 
-     * @param {string} divId The div element in which the element will be created
-     * @param {Array} locations An array of associative arrays containing locations
-     * 
-     * @return void
-     */
-    toStockLocationDropdown(divId, locations) {
-        this.createDropdown(divId, locations, 'To', 'toStockLocation');
-    }
-
-    /**
-     * Create the "From Location" dropdown
-     * 
-     * @param {string} divId The div element in which the element will be created
-     * @param {Array} locations An array of associative arrays containing locations
-     * 
-     * @return void
-     */
-    fromStockLocationDropdown(divId, locations) {
-        this.createDropdown(divId, locations, 'From', 'fromStockLocation');
-    }
-
-    /**
-     * Show the stock modal and change text according to type of change.
-     * Then generate location dropdown menus and selectize them.
-     * Finally remove old click listener and attach new one to the 'Save Changes' button
-     * 
-     * @param {number} change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
-     * @param {Array} locations - An array of objects containing location information
-     * @param {number} pid - The part ID for which to call the stock modal for
-     */
-    callStockModal(change, locations, pid) {
-        let modalTitle = '';
-        let changeText = '';
-        
-        switch (change) {
-            case 1:
-                modalTitle = 'Add Stock';
-                changeText = 'Add stock to ';
-                $('#FromStockLocationDiv-row').hide();
-                this.toStockLocationDropdown("ToStockLocationDiv", locations);
-                break;
-            case -1:
-                modalTitle = 'Reduce Stock';
-                changeText = 'Reduce stock of ';
-                $('#ToStockLocationDiv-row').hide();
-                this.fromStockLocationDropdown("FromStockLocationDiv", locations);
-                break;
-            case 0:
-                modalTitle = 'Move Stock';
-                changeText = 'Move stock of ';
-                this.toStockLocationDropdown("ToStockLocationDiv", locations);
-                this.fromStockLocationDropdown("FromStockLocationDiv", locations);
-                break;
-        }
-
-        document.getElementById('stockModalTitle').textContent = modalTitle;
-        document.getElementById('stockChangeText').textContent = changeText;
-
-        $('#mAddStock').modal('show'); // Show modal
-        removeClickListeners('#AddStock'); // Remove previously added click listener
-        validateAndSubmitForm('stockChangingForm', 'AddStock', this.stockChangingFormExecution.bind(this), [change, pid]); // Attach validate form 
-    }
-
-    /**
-     * Gets the variables to prepare the stock changing array and sends it to the stock changing script via an AJAX call
+     * Gets the variables to prepare the stock changing array and sends it to the Parts Controller
      * @param change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
      * @param {number} pid - The part ID for the stock change
      */
-    stockChangingFormExecution(change, pid) {
+    prepareStockChange(change, pid) {
         const q = $("#addStockQuantity").val();       // Quantity
         const c = $("#addStockDescription").val();    // Comment
         let tl = null;
         let fl = null;
-
-        console.log(change);
 
         // Get required locations
         if (change == '1') {
@@ -144,7 +55,7 @@ class StockManager {
         }
 
         // Call the stock changing script
-        this.callStockChangingScript(stockChanges, pid);
+        this.requestStockChange(stockChanges, pid);
     }
 
     /**
@@ -155,7 +66,7 @@ class StockManager {
      * @param {number} pid - The part ID for which the stock is changes and later the info window updated
      * @return void
      */
-    callStockChangingScript(stockChanges, pid) {
+    requestStockChange(stockChanges, pid) {
         $.ajax({
             url: '/parts.prepareStockChanges',
             type: 'POST',
@@ -202,7 +113,7 @@ class StockManager {
 
     /**
      * Changes the status of all requested changes to 'gtg' (good to go).
-     * Attaches a click listener to the 'Do It Anyway' button and makes an AJAX call to the stock changing script (again) with the
+     * Attaches a click listener to the 'Do It Anyway' button and makes an AJAX call to the Parts Controller (again) with the
      * requested stock changes now all set to 'gtg'.
      * 
      * @param {Array} r - The response of the stock changing script containing the initially requested changes with one of two statuses:
@@ -217,7 +128,7 @@ class StockManager {
                 change.status = 'gtg';
             }
 
-            // Call the stock changing script with the already prepared stock changes
+            // Request stock changes from Parts Controller
             $.ajax({
                 url: '/parts.prepareStockChanges',
                 type: 'POST',
@@ -244,13 +155,90 @@ class StockManager {
     }
 
     /**
-     * Empties a div from all its HTML elements by its element ID
-     * @param {string} id - The div ID 
+    * Show the stock modal and change text according to type of change.
+    * Then generate location dropdown menus and selectize them.
+    * Finally remove old click listener and attach new one to the 'Save Changes' button
+    * 
+    * @param {number} change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
+    * @param {Array} locations - An array of objects containing location information
+    * @param {number} pid - The part ID for which to call the stock modal for
+    */
+    showStockChangeModal(change, locations, pid) {
+        let modalTitle = '';
+        let changeText = '';
+
+        switch (change) {
+            case 1:
+                modalTitle = 'Add Stock';
+                changeText = 'Add stock to ';
+                $('#FromStockLocationDiv-row').hide();
+                this.toStockLocationDropdown("ToStockLocationDiv", locations);
+                break;
+            case -1:
+                modalTitle = 'Reduce Stock';
+                changeText = 'Reduce stock of ';
+                $('#ToStockLocationDiv-row').hide();
+                this.fromStockLocationDropdown("FromStockLocationDiv", locations);
+                break;
+            case 0:
+                modalTitle = 'Move Stock';
+                changeText = 'Move stock of ';
+                this.toStockLocationDropdown("ToStockLocationDiv", locations);
+                this.fromStockLocationDropdown("FromStockLocationDiv", locations);
+                break;
+        }
+
+        document.getElementById('stockModalTitle').textContent = modalTitle;
+        document.getElementById('stockChangeText').textContent = changeText;
+
+        $('#mAddStock').modal('show'); // Show modal
+        removeClickListeners('#AddStock'); // Remove previously added click listener
+        validateAndSubmitForm('stockChangingForm', 'AddStock', this.prepareStockChange.bind(this), [change, pid]); // Attach validate form 
+    }
+
+    /**
+     * Create a dropdown element and selectize it
+     * 
+     * @param {string} divId The div element in which the element will be created
+     * @param {Array} locations An array of associative arrays containing locations
+     * @param {string} label The label for the dropdown
+     * @param {string} selectId The id for the select element
+     * 
      * @return void
      */
-    emptyDivFromHTML(id) {
-        const div = document.getElementById(id);
-        div.innerHTML = '';
+    createDropdown(divId, locations, label, selectId) {
+        const div = document.getElementById(divId);
+        let selectHTML = `<label class='input-group-text' for='${selectId}'>${label}</label><select class='form-select' id='${selectId}'>`;
+        locations.forEach(location => {
+            selectHTML += `<option value='${location.location_id}'>${location.location_name}</option>`;
+        });
+        selectHTML += '</select>';
+        div.innerHTML = selectHTML;
+        $(`#${selectId}`).selectize();
+    }
+
+    /**
+     * Create the "To Location" dropdown
+     * 
+     * @param {string} divId The div element in which the element will be created
+     * @param {Array} locations An array of associative arrays containing locations
+     * 
+     * @return void
+     */
+    toStockLocationDropdown(divId, locations) {
+        this.createDropdown(divId, locations, 'To', 'toStockLocation');
+    }
+
+    /**
+     * Create the "From Location" dropdown
+     * 
+     * @param {string} divId The div element in which the element will be created
+     * @param {Array} locations An array of associative arrays containing locations
+     * 
+     * @return void
+     */
+    fromStockLocationDropdown(divId, locations) {
+        this.createDropdown(divId, locations, 'From', 'fromStockLocation');
     }
 
     /**
@@ -262,5 +250,15 @@ class StockManager {
             this.emptyDivFromHTML("FromStockLocationDiv");
             this.emptyDivFromHTML("ToStockLocationDiv");
         });
+    }
+
+    /**
+     * Empties a div from all its HTML elements by its element ID
+     * @param {string} id - The div ID 
+     * @return void
+     */
+    emptyDivFromHTML(id) {
+        const div = document.getElementById(id);
+        div.innerHTML = '';
     }
 }

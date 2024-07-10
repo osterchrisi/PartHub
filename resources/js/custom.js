@@ -291,7 +291,6 @@ function showDeletionConfirmationToast(numElements) {
  * @return {void}
  */
 export function updateInfoWindow(type, id) {
-    console.log(type, id);
     $.ajax({
         url: `/${type}/${id}`,
         type: 'GET',

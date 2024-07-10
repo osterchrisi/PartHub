@@ -10,9 +10,7 @@ import {
     bootstrapTableSmallify
 } from './tables';
 
-// import { callStockModal } from './stockChanges';
 import { StockManager } from './stockManager';
-
 
 export function initializeShowPart(part_id) {
     bootstrapPartInBomsTable();
@@ -33,15 +31,15 @@ export function initializeShowPart(part_id) {
         success: function (locations) {
             // Add Stock Button
             $('#addStockButton').click(function () {
-                stockManager.callStockModal(1, locations, part_id);
+                stockManager.showStockChangeModal(1, locations, part_id);
             });
             // Move Stock Button
             $('#moveStockButton').click(function () {
-                stockManager.callStockModal(0, locations, part_id);
+                stockManager.showStockChangeModal(0, locations, part_id);
             });
             // Reduce Stock Button
             $('#reduceStockButton').click(function () {
-                stockManager.callStockModal(-1, locations, part_id);
+                stockManager.showStockChangeModal(-1, locations, part_id);
             });
         },
         error: function (error) {
