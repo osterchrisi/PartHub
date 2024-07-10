@@ -10,7 +10,9 @@ import {
     bootstrapTableSmallify
 } from './tables';
 
-import { callStockModal } from './stockChanges';
+// import { callStockModal } from './stockChanges';
+import { StockManager } from './stockManager';
+
 
 export function initializeShowPart(part_id) {
     bootstrapPartInBomsTable();
@@ -22,27 +24,30 @@ export function initializeShowPart(part_id) {
     loadActiveTab('parts', defaultTab);
     addActiveTabEventListeners('parts');
 
+    const stockManager = new StockManager();
+    stockManager.attachModalHideListener();
+
     $.ajax({
         url: '/locations.get',
         dataType: 'json',
         success: function (locations) {
             // Add Stock Button
             $('#addStockButton').click(function () {
-                callStockModal("1", locations, part_id);
+                stockManager.callStockModal(1, locations, part_id);
             });
             // Move Stock Button
             $('#moveStockButton').click(function () {
-                callStockModal("0", locations, part_id);
+                stockManager.callStockModal(0, locations, part_id);
             });
             // Reduce Stock Button
             $('#reduceStockButton').click(function () {
-                callStockModal("-1", locations, part_id);
+                stockManager.callStockModal(-1, locations, part_id);
             });
         },
         error: function (error) {
             // console.log(error);
         }
-    })
+    });
 
     // Image stuff
     var currentPartType = "part"; // Change this to the appropriate type

@@ -4,9 +4,12 @@ import {
     rebuildBomListTable
 } from '../tables';
 
-import {
-    fromStockLocationDropdown
-} from '../stockChanges';
+// import {
+//     fromStockLocationDropdown
+// } from '../stockManager';
+
+import { StockManager } from '../stockManager';
+
 
 import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
 
@@ -21,11 +24,17 @@ export function initializeBomsView() {
     attachAssembleBomHandler('bom_list_table');
     attachAddBomHandler();
 
+    //! Change for stockManager class
+
+    const stockManager = new StockManager();
+
     $.ajax({
         url: '/locations.get',
         dataType: 'json',
         success: function (locations) {
-            fromStockLocationDropdown('bomAssembleLocationDiv', locations);
+            // fromStockLocationDropdown('bomAssembleLocationDiv', locations);
+            stockManager.fromStockLocationDropdown('bomAssembleLocationDiv', locations);
+
         },
         error: function (error) {
             console.log(error);

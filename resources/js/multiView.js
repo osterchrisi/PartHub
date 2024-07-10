@@ -19,13 +19,8 @@ import {
     rebuildBomListTable,
 } from './tables';
 
-import {
-    fromStockLocationDropdown
-} from './stockChanges';
-
 import { initializeShowBom } from "./showBom";
 
-import { attachDeleteRowsHandler } from "./toolbar/toolbar";
 
 function rebuildBomListTable2(queryString) {
     return $.ajax({
