@@ -4,6 +4,9 @@ import {
     rebuildFootprintsTable
 } from "../tables";
 
+import { loadSelectedRow } from '../custom';
+
+
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
 
@@ -13,7 +16,8 @@ export function initializeFootprintsView() {
     var $table = $('#footprints_list_table');
     var $menu = $('#bom_list_table_menu');
 
-    defineFootprintsListTableActions($table, $menu)
+    defineFootprintsListTableActions($table, $menu);
+    loadSelectedRow('footprint', 'footprints_list_table');
 
     const newFootprintCreator = new ResourceCreator({
         type: 'footprint',

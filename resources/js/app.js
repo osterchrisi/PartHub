@@ -47,9 +47,9 @@ $(document).ready(function () {
     // else if (currentView === 'signup') {
     //     initializeSignupView();
     // }
-    else if (currentView === 'multi') {
-        initializeMultiView();
-    }
+    // else if (currentView === 'multi') {
+    //     initializeMultiView();
+    // }
 
     // Common to all views
     enableInlineProcessing();

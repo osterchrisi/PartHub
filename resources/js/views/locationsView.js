@@ -4,6 +4,9 @@ import {
     rebuildLocationsTable
 } from "../tables";
 
+import { loadSelectedRow } from '../custom';
+
+
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
 
@@ -15,7 +18,8 @@ export function initializeLocationsView() {
     var $table = $('#locations_list_table');
     var $menu = $('#bom_list_table_menu');
 
-    defineLocationsListTableActions($table, $menu)
+    defineLocationsListTableActions($table, $menu);
+    loadSelectedRow('location', 'locations_list_table');
 
     const newLocationCreator = new ResourceCreator({
         type: 'location',

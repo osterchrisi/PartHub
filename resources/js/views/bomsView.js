@@ -4,14 +4,11 @@ import {
     rebuildBomListTable
 } from '../tables';
 
-// import {
-//     fromStockLocationDropdown
-// } from '../stockManager';
-
 import { StockManager } from '../stockManager';
 
-
 import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
+
+import { loadSelectedRow } from '../custom';
 
 export function initializeBomsView() {
     bootstrapBomListTable();
@@ -23,6 +20,7 @@ export function initializeBomsView() {
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
     attachAssembleBomHandler('bom_list_table');
     attachAddBomHandler();
+    loadSelectedRow('bom', 'bom_list_table');
 
     const stockManager = new StockManager();
 

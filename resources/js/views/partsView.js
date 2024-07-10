@@ -11,6 +11,8 @@ import {
 import {
     initializePopovers,
     initializeMultiSelect,
+    loadSelectedRow,
+    updateInfoWindow
 } from "../custom";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
@@ -34,6 +36,7 @@ export function initializePartsView() {
         bootstrapTableSmallify();
     });
 
+    loadSelectedRow('part', 'parts_table');
     // Experimental ajax search{
     $('#search').on("keyup", function () {
         // Get input value on change

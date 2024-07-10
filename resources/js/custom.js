@@ -4,6 +4,7 @@ import { initializeShowFootprint } from "./showFootprint";
 import { initializeShowLocation } from "./showLocation";
 import { initializeShowCategory } from "./showCategory";
 import { initializeShowSupplier } from "./showSupplier";
+import { ResourceCreator } from "./resourceCreator";
 
 /**
  * Focus the Part Name field in the part entry modal after showing
@@ -253,6 +254,40 @@ export function addActiveTabEventListeners(page) {
     tabs.forEach((tab) => {
         tab.addEventListener('shown.bs.tab', (event) => saveActiveTab(page, event));
     });
+}
+
+/**
+ * Saves the selected row ID for a specific table in local storage.
+ * @param {string} tableId - The identifier of the table.
+ * @param {string} rowId - The ID of the selected row.
+ * @returns {void}
+ */
+export function saveSelectedRow(tableId, rowId) {
+    if (rowId) {
+        localStorage.setItem('lastSelectedRow_' + tableId, rowId);
+    }
+}
+
+/**
+ * Loads the selected row for a specific table from local storage and marks it as selected.
+ * @param {string} type - The type of data to update ('part', 'bom', 'location', 'footprint', 'supplier', 'category'). 
+ * @param {string} tableId - The identifier of the table.
+ * @param {function} onSelect - The function to call with the selected row ID.
+ * @returns {void}
+ */
+export function loadSelectedRow(type, tableId) {
+    var savedRowId = localStorage.getItem('lastSelectedRow_' + tableId);
+    if (savedRowId) {
+        const table = document.querySelector(`#${tableId}`);
+        if (table) {
+            console.log("found table");
+            const currentTable = new ResourceCreator({
+                table_name: table
+            });
+            currentTable.selectNewRow(savedRowId);
+            updateInfoWindow(type, savedRowId);
+        }
+    }
 }
 
 

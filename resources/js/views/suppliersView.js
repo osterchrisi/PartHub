@@ -4,6 +4,9 @@ import {
     rebuildSuppliersTable
 } from "../tables";
 
+import { loadSelectedRow } from '../custom';
+
+
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 import { ResourceCreator } from "../resourceCreator";
@@ -15,6 +18,7 @@ export function initializeSuppliersView() {
     var $menu = $('#bom_list_table_menu');
 
     defineSuppliersListTableActions($table, $menu);
+    loadSelectedRow('supplier', 'suppliers_list_table');
 
     const newSupplierCreator = new ResourceCreator({
         type: 'supplier',

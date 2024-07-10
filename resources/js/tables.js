@@ -3,7 +3,9 @@ import {
   updateStockModal,
   deleteSelectedRows,
   removeClickListeners,
-  updateInfoWindow
+  updateInfoWindow,
+  saveSelectedRow,
+  loadSelectedRow
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
@@ -205,13 +207,16 @@ function NumberURLSorter(a, b) {
  * @param {function} onSelect - A callback function to call when a row is selected
  */
 export function defineTableRowClickActions($table, onSelect) {
+  const tableId = $table.attr('id');
+
   $table.on('click', 'tbody tr', function () {
     if ($table.find('tr.selected-last').length > 0) {
       $table.find('tr.selected-last').removeClass('selected-last');
     }
     $(this).toggleClass('selected-last');
-    var id = $(this).data('id'); // get ID from the selected row
-    onSelect(id);
+    var id = $(this).data('id');            // get ID from the selected row
+    onSelect(id);                           // Callback Function
+    saveSelectedRow(tableId, id);           // Save the selected row ID in local storage
   });
 
   // Prevent text selection on pressing shift for selecting multiple rows
