@@ -412,7 +412,6 @@ class ResourceCreator {
         _token: token
       },
       success: (response) => {
-        response = JSON.parse(response);
         const newEntry = {
           [`${type}_id`]: response[newIdName],
           [`${type}_name`]: input

@@ -17,11 +17,11 @@ import {
     focusFirstInputInModals
 } from './custom';
 
-import Alpine from 'alpinejs';
+// import Alpine from 'alpinejs';
 
-window.Alpine = Alpine;
+// window.Alpine = Alpine;
 
-Alpine.start();
+// Alpine.start();
 
 const currentView = document.body.getAttribute('data-view');
 
