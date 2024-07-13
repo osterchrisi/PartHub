@@ -329,25 +329,27 @@ export function updateInfoWindow(type, id) {
         data: {},
         success: function (data) {
             $('#info-window').html(data);
-            const iw = new infoWindow(type);
+            const iw = new infoWindow(type, id);
             switch (type) {
                 case 'part':
-                    initializeShowPart(id);
+                    // initializeShowPart(id);
+                    iw.initialize();
+                    iw.setupTabs();
                     break;
                 case 'bom':
                     initializeShowBom();
                     break;
                 case 'location':
-                    iw.initializeTabs();
+                    iw.setupTabs();
                     break;
                 case 'footprint':
-                    iw.initializeTabs();
+                    iw.setupTabs();
                     break;
                 case 'supplier':
-                    iw.initializeTabs();
+                    iw.setupTabs();
                     break;
                 case 'category':
-                    iw.initializeTabs();
+                    iw.setupTabs();
                     break;
                 default:
                     break;
