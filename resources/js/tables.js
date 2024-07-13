@@ -4,8 +4,7 @@ import {
   deleteSelectedRows,
   removeClickListeners,
   updateInfoWindow,
-  saveSelectedRow,
-  loadSelectedRow
+  saveSelectedRow
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
