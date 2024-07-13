@@ -188,16 +188,6 @@ export function bootstrapTableSmallify() {
 }
 
 /**
- * Custom Sorter for my stock URLs
- * Remove the href tag and return only the string values
- * Otherwise cells get sorted by the URL which contains part_id
- * @returns void
- */
-function NumberURLSorter(a, b) {
-  return $(a).text() - $(b).text();
-};
-
-/**
  * Defines the actions to perform when a table row is clicked.
  * Attaches a click event listener to the specified table rows and calls the
  * provided callback function with the extracted ID when a row is selected.
