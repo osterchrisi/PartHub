@@ -19,13 +19,13 @@
     </h5>
 
     <!-- Parts Tabs -->
-    <x-tablist id="partsTabs" tabId1="{{ $tabId1 }}">
+    <x-tablist id="partTabs" tabId1="{{ $tabId1 }}">
         <x-tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
     </x-tablist>
 
     <!-- Tabs Content -->
-    <div class="tab-content" id="partsTabsContent">
+    <div class="tab-content" id="partTabsContent">
         {{-- Info Tab --}}
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>

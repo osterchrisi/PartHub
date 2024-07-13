@@ -7,7 +7,7 @@ import {
 
 
 export function initializeShowCategory() {
-    const defaultTab = document.getElementById('categoriesTabs').dataset.defaultTab; // data-default-tab attribute
+    const defaultTab = document.getElementById('categoryTabs').dataset.defaultTab; // data-default-tab attribute
 
     loadActiveTab('categories', defaultTab);
     addActiveTabEventListeners('categories');

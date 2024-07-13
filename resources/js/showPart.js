@@ -17,7 +17,7 @@ export function initializeShowPart(part_id) {
     bootstrapHistTable();
     bootstrapTableSmallify();
 
-    const defaultTab = document.getElementById('partsTabs').dataset.defaultTab; // data-default-tab attribute
+    const defaultTab = document.getElementById('partTabs').dataset.defaultTab; // data-default-tab attribute
 
     loadActiveTab('parts', defaultTab);
     addActiveTabEventListeners('parts');

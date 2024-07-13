@@ -8,7 +8,7 @@
     </h5>
 
     <!-- Parts Tabs -->
-    <ul class="nav nav-tabs" id="suppliersTabs" role="tablist">
+    <ul class="nav nav-tabs" id="supplierTabs" role="tablist">
         <x-tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
     </ul>
@@ -17,7 +17,7 @@
     @php
     // print_r($parts_from_supplier);
     @endphp
-    <div class="tab-content" id="bomsTabsContent">
+    <div class="tab-content" id="bomTabsContent">
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
             <h5>Parts from this Supplier</h5>

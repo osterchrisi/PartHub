@@ -7,7 +7,7 @@ import {
 
 
 export function initializeShowLocation() {
-    const defaultTab = document.getElementById('locationsTabs').dataset.defaultTab; // data-default-tab attribute
+    const defaultTab = document.getElementById('locationTabs').dataset.defaultTab; // data-default-tab attribute
 
     loadActiveTab('locations', defaultTab);
     addActiveTabEventListeners('locations');
