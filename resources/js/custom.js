@@ -1,10 +1,7 @@
 import { initializeShowBom } from "./showBom";
 import { initializeShowPart } from "./showPart";
-import { initializeShowFootprint } from "./showFootprint";
-import { initializeShowLocation } from "./showLocation";
-import { initializeShowCategory } from "./showCategory";
-import { initializeShowSupplier } from "./showSupplier";
 import { ResourceCreator } from "./resourceCreator";
+import { infoWindow } from "./infoWindow";
 
 /**
  * Focus the Part Name field in the part entry modal after showing
@@ -332,6 +329,7 @@ export function updateInfoWindow(type, id) {
         data: {},
         success: function (data) {
             $('#info-window').html(data);
+            const iw = new infoWindow(type);
             switch (type) {
                 case 'part':
                     initializeShowPart(id);
@@ -340,16 +338,16 @@ export function updateInfoWindow(type, id) {
                     initializeShowBom();
                     break;
                 case 'location':
-                    initializeShowLocation();
+                    iw.initializeTabs();
                     break;
                 case 'footprint':
-                    initializeShowFootprint();
+                    iw.initializeTabs();
                     break;
                 case 'supplier':
-                    initializeShowSupplier();
+                    iw.initializeTabs();
                     break;
                 case 'category':
-                    initializeShowCategory();
+                    iw.initializeTabs();
                     break;
                 default:
                     break;

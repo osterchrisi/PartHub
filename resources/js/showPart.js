@@ -19,8 +19,8 @@ export function initializeShowPart(part_id) {
 
     const defaultTab = document.getElementById('partTabs').dataset.defaultTab; // data-default-tab attribute
 
-    loadActiveTab('parts', defaultTab);
-    addActiveTabEventListeners('parts');
+    loadActiveTab('part', defaultTab);
+    addActiveTabEventListeners('part');
 
     const stockManager = new StockManager();
     stockManager.attachModalHideListener();

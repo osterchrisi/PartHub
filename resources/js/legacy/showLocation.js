@@ -9,6 +9,6 @@ import {
 export function initializeShowLocation() {
     const defaultTab = document.getElementById('locationTabs').dataset.defaultTab; // data-default-tab attribute
 
-    loadActiveTab('locations', defaultTab);
-    addActiveTabEventListeners('locations');
+    loadActiveTab('location', defaultTab);
+    addActiveTabEventListeners('location');
 };

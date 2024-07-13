@@ -9,6 +9,6 @@ import {
 export function initializeShowSupplier() {
     const defaultTab = document.getElementById('supplierTabs').dataset.defaultTab; // data-default-tab attribute
 
-    loadActiveTab('suppliers', defaultTab);
-    addActiveTabEventListeners('suppliers');
+    loadActiveTab('supplier', defaultTab);
+    addActiveTabEventListeners('supplier');
 };

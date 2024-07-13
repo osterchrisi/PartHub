@@ -9,6 +9,6 @@ import {
 export function initializeShowFootprint() {
     const defaultTab = document.getElementById('footprintTabs').dataset.defaultTab; // data-default-tab attribute
 
-    loadActiveTab('footprints', defaultTab);
-    addActiveTabEventListeners('footprints');
+    loadActiveTab('footprint', defaultTab);
+    addActiveTabEventListeners('footprint');
 };

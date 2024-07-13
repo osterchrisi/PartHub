@@ -27,8 +27,8 @@ function allowHtmlTableElementsInPopover() {
 export function initializeShowBom() {
     const defaultTab = document.getElementById('bomTabs').dataset.defaultTab; // data-default-tab attribute
 
-    loadActiveTab('boms', defaultTab);
-    addActiveTabEventListeners('boms');
+    loadActiveTab('bom', defaultTab);
+    addActiveTabEventListeners('bom');
 
     bootstrapBomDetailsTable();
     enableInlineProcessing();
