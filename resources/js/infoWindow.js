@@ -5,6 +5,7 @@ import { StockManager } from "./stockManager";
 import {
     bootstrapPartInBomsTable,
     bootstrapHistTable,
+    bootstrapBomDetailsTable,
     bootstrapTableSmallify
 } from './tables';
 
@@ -49,18 +50,18 @@ class infoWindow {
                 this.imageStuff(this.id);
                 break;
             case 'bom':
-                this.defaultTab = 'bomTabs'
+                bootstrapBomDetailsTable();
+                this.allowHtmlTableElementsInPopover();
+                this.initializePopovers();
                 break;
             default:
                 break;
         }
-
+        this.setupTabs();
     }
 
     setupTabs() {
         const defaultTab = document.getElementById(this.defaultTab).dataset.defaultTab; // data-default-tab attribute
-        console.log(defaultTab);
-
         this.loadActiveTab(this.type, defaultTab);
         this.setupTabListeners(this.type);
     }
@@ -166,6 +167,38 @@ class infoWindow {
                     // Handle any errors that occur during the upload process
                     console.error(error);
                 }
+            });
+        });
+    }
+
+    allowHtmlTableElementsInPopover() {
+        // Allow extra HTML elements for the popover mini stock table
+        var myDefaultAllowList = bootstrap.Tooltip.Default.allowList
+
+        // Allow table elements
+        myDefaultAllowList.table = []
+        myDefaultAllowList.thead = []
+        myDefaultAllowList.tr = []
+        myDefaultAllowList.td = []
+        myDefaultAllowList.tbody = []
+
+        // Allow td elements and data-bs-option attributes on td elements
+        myDefaultAllowList.td = ['data-bs-option']
+
+    }
+
+    initializePopovers() {
+        // Initialize all popovers
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+        // Re-initialize the popovers after toggling a column
+        //* This should be possible via the 'column-switch.bs.table' but it never fires...
+        $(function () {
+            $('#BomDetailsTable').on('post-body.bs.table', function () {
+                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap
+                    .Popover(popoverTriggerEl));
             });
         });
     }

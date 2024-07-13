@@ -5,7 +5,6 @@ import {
 
 import {
     bootstrapBomDetailsTable,
-    enableInlineProcessing
 } from './tables';
 
 function allowHtmlTableElementsInPopover() {
@@ -31,8 +30,6 @@ export function initializeShowBom() {
     addActiveTabEventListeners('bom');
 
     bootstrapBomDetailsTable();
-    enableInlineProcessing();
-
     allowHtmlTableElementsInPopover();
 
     // Initialize all popovers

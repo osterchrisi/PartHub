@@ -6,7 +6,7 @@ import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
 // import { initializeSignupView, processChallenge } from './views/signupView';
-import { initializeMultiView } from './multiView';
+// import { initializeMultiView } from './multiView';
 import {
     enableInlineProcessing,
     bootstrapTableSmallify

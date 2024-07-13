@@ -1,5 +1,3 @@
-import { initializeShowBom } from "./showBom";
-import { initializeShowPart } from "./showPart";
 import { ResourceCreator } from "./resourceCreator";
 import { infoWindow } from "./infoWindow";
 
@@ -277,7 +275,6 @@ export function loadSelectedRow(type, tableId) {
     if (savedRowId) {
         const table = document.querySelector(`#${tableId}`);
         if (table) {
-            console.log("found table");
             const currentTable = new ResourceCreator({
                 table_name: table
             });
@@ -330,30 +327,7 @@ export function updateInfoWindow(type, id) {
         success: function (data) {
             $('#info-window').html(data);
             const iw = new infoWindow(type, id);
-            switch (type) {
-                case 'part':
-                    // initializeShowPart(id);
-                    iw.initialize();
-                    iw.setupTabs();
-                    break;
-                case 'bom':
-                    initializeShowBom();
-                    break;
-                case 'location':
-                    iw.setupTabs();
-                    break;
-                case 'footprint':
-                    iw.setupTabs();
-                    break;
-                case 'supplier':
-                    iw.setupTabs();
-                    break;
-                case 'category':
-                    iw.setupTabs();
-                    break;
-                default:
-                    break;
-            }
+            iw.initialize();
         },
         error: function (xhr) {
             let errorMessage;
