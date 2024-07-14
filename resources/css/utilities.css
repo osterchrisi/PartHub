@@ -60,13 +60,3 @@
     color: white;
     padding: 5rem 0;
 }
-
-/* Highlight new table rows */
-.highlight-new {
-    background-color: yellow;
-    transition: background-color 0.5s ease-in-out;
-}
-
-.fade-out {
-    background-color: transparent;
-}

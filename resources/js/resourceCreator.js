@@ -116,23 +116,30 @@ class ResourceCreator {
       $(this.table).bootstrapTable('selectPage', pageNumber);
 
       // Highlight the new row after changing the page
-      setTimeout(() => {
-        let $newRow = $(`tr[data-id="${id}"]`);
-        if ($newRow.length > 0) {
-          $newRow.addClass('highlight-new selected selected-last');
-          setTimeout(() => {
-            $newRow.addClass('fade-out');
-            setTimeout(() => {
-              $newRow.removeClass('highlight-new fade-out');
-            }, 1000);       // Remove highlight and fade-out class 
-          }, 1000);         // Keep the highlight for 2 seconds
-        }
-      }, 500);              // Small delay to ensure the page switch happens
+      this.highlightAndSelectRow(id, 1000, 10);
     } else {
       console.warn('New row position not found for id:', id);
     }
   }
 
+  /**
+ * Highlights and selects a table row by ID.
+ *
+ * @param {string} id - The ID of the row to highlight and select.
+ * @param {number} [highlightDuration=1000] - Duration (ms) to keep the row highlighted.
+ * @param {number} [initialDelay=0] - Delay (ms) before starting the highlight.
+ */
+  highlightAndSelectRow(id, highlightDuration = 1000, initialDelay = 0) {
+    setTimeout(() => {
+      let $newRow = $(`tr[data-id="${id}"]`);
+      if ($newRow.length > 0) {
+        $newRow.addClass('highlight-new selected selected-last');
+        setTimeout(() => {
+          $newRow.removeClass('highlight-new');
+        }, highlightDuration); // Keep the highlight for the specified duration
+      }
+    }, initialDelay); // Initial delay to wait until page change happens but seems it's never needed
+  }
 
   showModal() {
     this.inputModal.modal('show');

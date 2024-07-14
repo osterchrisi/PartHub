@@ -40,12 +40,7 @@
 
 /* Highlight new table rows */
 .highlight-new {
-    background-color: yellow;
-    transition: background-color 0.5s ease-in-out;
-}
-
-.fade-out {
-    background-color: transparent;
+    transition: background-color 0.25s ease-in-out;
 }
 
 /* Selected row in parts table */
