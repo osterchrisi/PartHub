@@ -9,7 +9,7 @@ import {
     bootstrapTableSmallify
 } from './tables';
 
-import { fetchImages } from "./custom";
+// import { fetchImages } from "./custom";
 
 class infoWindow {
     constructor(type, id = null) {
@@ -47,7 +47,7 @@ class infoWindow {
                 const stockManager = new StockManager();
                 stockManager.attachModalHideListener();
                 this.setupStockChangeButtons(stockManager, this.id);
-                this.imageStuff(this.id);
+                this.setupImageContainer(this.id);
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();
@@ -139,14 +139,14 @@ class infoWindow {
         });
     }
 
-    imageStuff(part_id) {
+    setupImageContainer(id) {
         // Image stuff
-        var currentPartType = "part"; // Change this to the appropriate type
-        var currentPartId = part_id;
-        fetchImages(currentPartType, currentPartId);
+        var imageType = this.type; // Change this to the appropriate type
+        var currentPartId = id;
+        this.fetchImages(imageType, currentPartId);
 
         // Handle form submission
-        $('#imageUploadForm').submit(function (event) {
+        $('#imageUploadForm').submit((event) => {
             // Prevent the default form submission
             event.preventDefault();
 
@@ -160,8 +160,8 @@ class infoWindow {
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    fetchImages(currentPartType, currentPartId);
+                success: (response) => {
+                    this.fetchImages(imageType, currentPartId);
                 },
                 error: function (xhr, status, error) {
                     // Handle any errors that occur during the upload process
@@ -169,6 +169,37 @@ class infoWindow {
                 }
             });
         });
+    }
+
+    fetchImages(type, id) {
+        $.ajax({
+            url: `/images/${type}/${id}`,
+            type: 'GET',
+            success: (response) => {
+                // Check if images exist
+                if (response.length > 0) {
+                    this.updateImages(response);
+                }
+            }
+        });
+    }
+
+    updateImages(response) {
+        $('#imageContainer').empty();
+        response.forEach(function (image) {
+            // Extract the file name from the full path
+            var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+
+            // Construct the thumbnail path by replacing the file name and swapping extension to .webp
+            var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
+
+            // Append a link to the real image
+            $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox" data-gallery="1"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>&nbsp;');
+
+            // Initialize Bootstrap 5 Lightbox on all thumbnails
+            document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
+        });
+
     }
 
     allowHtmlTableElementsInPopover() {

@@ -6,9 +6,6 @@ import {
     updateInfoWindow
 } from './custom';
 
-/**
- * Class to manage stock operations
- */
 class StockManager {
     constructor() {
         this.token = $('input[name="_token"]').attr('value');
