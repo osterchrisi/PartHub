@@ -119,10 +119,9 @@ Route::get('/stocklevels', function () {
     ->middleware(['auth', 'verified']);
 
 //* Image Controller
-//! Wut? FootprintController?
-Route::controller(FootprintController::class)->group(function () {
-    Route::post('/upload-image/{type}/{id}', [ImageController::class, 'upload'])->name('upload-image');
-    Route::get('/images/{type}/{id}', [ImageController::class, 'getImagesByTypeAndId'])->name('part.images');
+Route::controller(ImageController::class)->group(function () {
+    Route::post('/upload-image/{type}/{id}', 'upload')->middleware(['auth', 'verified'])->name('upload-image');
+    Route::get('/images/{type}/{id}', 'getImagesByTypeAndId')->middleware(['auth', 'verified'])->name('part.images');
 });
 
 //* Standalone Pages Routes

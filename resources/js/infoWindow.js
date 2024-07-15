@@ -140,9 +140,10 @@ class infoWindow {
     }
 
     setupImageContainer(id) {
-        // Image stuff
-        var imageType = this.type; // Change this to the appropriate type
+        // Image handling
+        var imageType = this.type;
         var currentPartId = id;
+
         this.fetchImages(imageType, currentPartId);
 
         // Handle form submission
@@ -151,11 +152,11 @@ class infoWindow {
             event.preventDefault();
 
             // Serialize the form data
-            var formData = new FormData(this);
+            var formData = new FormData(event.target);
 
             // Submit the form data via AJAX
             $.ajax({
-                url: $(this).attr('action'),
+                url: `/upload-image/${imageType}/${currentPartId}`, // Construct the URL dynamically
                 type: 'POST',
                 data: formData,
                 processData: false,
