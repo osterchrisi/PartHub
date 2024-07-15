@@ -101,3 +101,11 @@ tr.selected-last td {
 .nav-link.tab-link {
     color: var(--bs-nav-link-color);
 }
+
+.delete-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    color: white; /* Optional: to make the icon red */
+}

@@ -1,4 +1,4 @@
-export { ImageManager}
+export { ImageManager }
 
 class ImageManager {
     constructor(type, id) {
@@ -51,18 +51,58 @@ class ImageManager {
 
     updateImages(response) {
         $('#imageContainer').empty();
-        response.forEach(function (image) {
+        response.forEach((image) => {
             // Extract the file name from the full path
             var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
             // Construct the thumbnail path by replacing the file name and swapping extension to .webp
             var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
 
-            // Append a link to the real image
-            $('#imageContainer').append('<a href="' + image.filename + '" data-toggle="lightbox" data-gallery="1"><img src="' + thumbnailPath + '" alt="Thumbnail"></a>&nbsp;');
+            // Create the image container
+            var imageElement = $(`
+            <div class="image-wrapper" style="position: relative; display: inline-block;">
+                <a href="${image.filename}" data-toggle="lightbox" data-gallery="1">
+                    <img src="${thumbnailPath}" alt="Thumbnail">
+                </a>
+                <i class="bi bi-x-circle delete-image" data-type="${this.type}" data-id="${image.id}" style="position: absolute; top: 5px; right: 5px; cursor: pointer;"></i>
+            </div>
+            `);
+
+            $('#imageContainer').append(imageElement);
 
             // Initialize Bootstrap 5 Lightbox on all thumbnails
             document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
         });
+
+        // Attach event listener for delete buttons
+        $('.delete-image').click((event) => {
+            const imageId = $(event.target).data('id');
+            const imageType = $(event.target).data('type');
+            this.deleteImage(imageType, imageId);
+        });
     }
+
+    deleteImage(type, id) {
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: `/delete-image/${type}/${id}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: (response) => {
+                if (response.success) {
+                    this.fetchImages(type, this.id); // Refresh images after deletion
+                }
+            },
+            error: (xhr, status, error) => {
+                // Handle any errors that occur during the delete process
+                console.error(error);
+            }
+        });
+    }
+
+
+
 }
