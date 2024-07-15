@@ -83,26 +83,28 @@ class ImageManager {
     }
 
     deleteImage(type, id) {
-        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // Ask the user for confirmation before deleting the image
+        if (confirm('Are you sure you want to delete this image?')) {
+            // Get the CSRF token from the form
+            var csrfToken = $('input[name="_token"]').val();
 
-        $.ajax({
-            url: `/delete-image/${type}/${id}`,
-            type: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            success: (response) => {
-                if (response.success) {
-                    this.fetchImages(type, this.id); // Refresh images after deletion
+            $.ajax({
+                url: `/delete-image/${type}/${id}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: (response) => {
+                    if (response.success) {
+                        this.fetchImages(type, this.id); // Refresh images after deletion
+                    }
+                },
+                error: (xhr, status, error) => {
+                    // Handle any errors that occur during the delete process
+                    console.error(error);
                 }
-            },
-            error: (xhr, status, error) => {
-                // Handle any errors that occur during the delete process
-                console.error(error);
-            }
-        });
+            });
+        }
     }
-
-
 
 }
