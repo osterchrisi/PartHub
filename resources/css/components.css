@@ -105,7 +105,13 @@ tr.selected-last td {
 .delete-image {
     position: absolute;
     top: 5px;
-    right: 5px;
+    right: 8px;
     cursor: pointer;
-    color: white; /* Optional: to make the icon red */
+    color: white;
+    /* Optional: to make the icon red */
+}
+
+.delete-image:hover {
+    color: #ffcc00;
+    /* Color when hovered */
 }

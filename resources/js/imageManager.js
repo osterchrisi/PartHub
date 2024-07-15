@@ -1,5 +1,7 @@
 export { ImageManager }
 
+import { showDeletionConfirmationToast } from "./custom";
+
 class ImageManager {
     constructor(type, id) {
         this.type = type;
@@ -42,9 +44,9 @@ class ImageManager {
             type: 'GET',
             success: (response) => {
                 // Check if images exist
-                if (response.length > 0) {
+                // if (response.length > 0) {
                     this.updateImages(response);
-                }
+                // }
             }
         });
     }
@@ -64,7 +66,7 @@ class ImageManager {
                 <a href="${image.filename}" data-toggle="lightbox" data-gallery="1">
                     <img src="${thumbnailPath}" alt="Thumbnail">
                 </a>
-                <i class="bi bi-x-circle delete-image" data-type="${this.type}" data-id="${image.id}" style="position: absolute; top: 5px; right: 5px; cursor: pointer;"></i>
+                <i class="bi bi-x-circle delete-image" data-type="${this.type}" data-id="${image.id}"></i>
             </div>
             `);
 
@@ -96,6 +98,7 @@ class ImageManager {
                 },
                 success: (response) => {
                     if (response.success) {
+                        showDeletionConfirmationToast(1, 'image');
                         this.fetchImages(type, this.id); // Refresh images after deletion
                     }
                 },

@@ -137,7 +137,7 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             'X-CSRF-TOKEN': token
         },
         success: function (response) {
-            showDeletionConfirmationToast(ids.length);
+            showDeletionConfirmationToast(ids.length, model);
             var queryString = window.location.search;
             successCallback(queryString);
 
@@ -260,10 +260,27 @@ function initializeToasts() {
     const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
 }
 
-function showDeletionConfirmationToast(numElements) {
+export function showDeletionConfirmationToast(numElements, type) {
     const deleteToast = document.getElementById('tConfirmDelete');
+
+    if (type == 'parts') {
+        type = 'part';
+    }
+    else if (type == 'boms') {
+        type = 'BOM';
+    }
+    else if (type == 'part_categories') { 
+        type = 'categories';
+    }
+    else if (type == 'image') {
+        type = 'image';
+    }
+
     const numDeletedItemsSpan = document.getElementById('numDeletedItems');
     numDeletedItemsSpan.textContent = numElements.toString();
+
+    const typeSpan = document.getElementById('typeSpan');
+    typeSpan.textContent = type.toString();
 
     const toast = bootstrap.Toast.getOrCreateInstance(deleteToast);
     toast.show();
