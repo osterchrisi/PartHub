@@ -20,6 +20,12 @@ class ImageManager {
             // Serialize the form data
             var formData = new FormData(event.target);
 
+            // Disable the upload button and show loading animation
+            var uploadButton = $(event.target).find('button[type="submit"]');
+            var loadingAnimationContainer = $('#loadingAnimationContainer');
+            uploadButton.prop('disabled', true);
+            loadingAnimationContainer.show();
+
             // Submit the form data via AJAX
             $.ajax({
                 url: `/upload-image/${this.type}/${this.id}`, // Construct the URL dynamically
@@ -29,10 +35,22 @@ class ImageManager {
                 contentType: false,
                 success: (response) => {
                     this.fetchImages(this.type, this.id);
+
+                    // Remove loading animation
+                    loadingAnimationContainer.hide();
+
+                    // Re-enable the upload button after a short delay
+                    setTimeout(() => {
+                        uploadButton.prop('disabled', false);
+                    }, 1000); // 1 second delay
                 },
                 error: (xhr, status, error) => {
                     // Handle any errors that occur during the upload process
                     console.error(error);
+
+                    // Remove loading animation and re-enable the upload button in case of error
+                    loadingAnimationContainer.hide();
+                    uploadButton.prop('disabled', false);
                 }
             });
         });
@@ -84,11 +102,11 @@ class ImageManager {
 
     deleteImage(type, id) {
         $('#deleteConfirmationModal').modal('show');
-    
+
         // Set up the click handler for the confirmation button
-        $('#confirmDeleteButton').off('click').on('click', function() {
+        $('#confirmDeleteButton').off('click').on('click', () => {
             var csrfToken = $('input[name="_token"]').val();
-    
+
             $.ajax({
                 url: `/delete-image/${type}/${id}`,
                 type: 'DELETE',
@@ -105,11 +123,11 @@ class ImageManager {
                     console.error(error);
                 }
             });
-    
+
             // Hide the modal after confirmation
             $('#deleteConfirmationModal').modal('hide');
         });
     }
-    
+
 
 }
