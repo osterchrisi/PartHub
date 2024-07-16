@@ -1,24 +1,27 @@
-import { deleteSelectedRows } from "../custom";
+import { deleteSelectedRows, showDeleteConfirmation } from "../custom";
 import { assembleBoms } from "../tables";
 
 export function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
-
     // Get selected table rows
     var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
 
     // Check if rows have been selected
     if (selectedRows.length === 0) {
-        // console.log("Nothing selected")
         alert("Please select row(s) to be deleted.\nYou can use Ctrl and/or Shift to select multiple rows");
-    }
-    else {
+    } else {
         // Extract IDs
         var ids = selectedRows.map(obj => obj._data.id);
 
-        // Show confirmation alert and proceed to delete selected rows
-        if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
-            deleteSelectedRows(ids, model, id_column, successCallback);
+        // Construct the question
+        let question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?';
+        if (model === 'parts') {
+            question += '\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.';
         }
+
+        // Show confirmation dialog and proceed to delete selected rows
+        showDeleteConfirmation(question, () => {
+            deleteSelectedRows(ids, model, id_column, successCallback);
+        });
     }
 }
 

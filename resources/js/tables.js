@@ -4,7 +4,8 @@ import {
   deleteSelectedRows,
   removeClickListeners,
   updateInfoWindow,
-  saveSelectedRow
+  saveSelectedRow,
+  showDeleteConfirmation
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
@@ -415,7 +416,7 @@ export function rebuildBomListTable(queryString) {
 export function definePartsTableActions($table, $menu) {
   // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('part', id)
+    updateInfoWindow('part', id);
     updateStockModal(id);
   });
 
@@ -423,9 +424,10 @@ export function definePartsTableActions($table, $menu) {
   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
-      if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, storage locations and stock history.')) {
+      const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, locations, suppliers and stock history.';
+      showDeleteConfirmation(question, () => {
         deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
-      }
+      });
     },
     edit: function (selectedRows) {
       editSelectedRows(selectedRows);
@@ -451,9 +453,10 @@ export function defineBomListTableActions($table, $menu) {
   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
   onTableCellContextMenu($table, $menu, {
     delete: function (selectedRows, ids) {
-      if (confirm('Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?')) {
+      const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?';
+      showDeleteConfirmation(question, () => {
         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
-      }
+      });
     },
     assemble: function (selectedRows, ids) {
       assembleBoms(selectedRows, ids);

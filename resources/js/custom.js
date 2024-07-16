@@ -368,7 +368,13 @@ export function focusFirstInputInModals() {
     });
 }
 
-
+/**
+ * Displays a delete confirmation modal with a custom question.
+ * Executes a callback function if the user confirms the deletion.
+ *
+ * @param {string} question - The question to display in the modal.
+ * @param {function} confirmCallback - The callback function to execute upon confirmation.
+ */
 export function showDeleteConfirmation(question, confirmCallback) {
     // Set the delete question
     $('#deleteQuestion').text(question);
