@@ -264,16 +264,32 @@ export function showDeletionConfirmationToast(numElements, type) {
     const deleteToast = document.getElementById('tConfirmDelete');
 
     if (type == 'parts') {
-        type = 'part';
+        if (numElements > 1) {
+            type = 'parts';
+        } else {
+            type = 'part';
+        }
     }
     else if (type == 'boms') {
-        type = 'BOM';
+        if (numElements > 1) {
+            type = 'BOMs';
+        } else {
+            type = 'BOM';
+        }
     }
-    else if (type == 'part_categories') { 
-        type = 'categories';
+    else if (type == 'part_categories') {
+        if (numElements > 1) {
+            type = 'categories';
+        } else {
+            type = 'category';
+        }
     }
     else if (type == 'image') {
-        type = 'image';
+        if (numElements > 1) {
+            type = 'images';
+        } else {
+            type = 'image';
+        }
     }
 
     const numDeletedItemsSpan = document.getElementById('numDeletedItems');
