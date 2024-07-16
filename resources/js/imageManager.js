@@ -1,6 +1,6 @@
 export { ImageManager }
 
-import { showDeletionConfirmationToast } from "./custom";
+import { showDeletionConfirmationToast, showDeleteConfirmation } from "./custom";
 
 class ImageManager {
     constructor(type, id) {
@@ -9,12 +9,10 @@ class ImageManager {
     }
 
     setupImageContainer() {
-        // Image handling
         this.fetchImages(this.type, this.id);
 
         // Handle form submission
         $('#imageUploadForm').submit((event) => {
-            // Prevent the default form submission
             event.preventDefault();
 
             // Serialize the form data
@@ -35,8 +33,6 @@ class ImageManager {
                 contentType: false,
                 success: (response) => {
                     this.fetchImages(this.type, this.id);
-
-                    // Remove loading animation
                     loadingAnimationContainer.hide();
 
                     // Re-enable the upload button after a short delay
@@ -45,10 +41,7 @@ class ImageManager {
                     }, 1000); // 1 second delay
                 },
                 error: (xhr, status, error) => {
-                    // Handle any errors that occur during the upload process
                     console.error(error);
-
-                    // Remove loading animation and re-enable the upload button in case of error
                     loadingAnimationContainer.hide();
                     uploadButton.prop('disabled', false);
                 }
@@ -101,10 +94,7 @@ class ImageManager {
     }
 
     deleteImage(type, id) {
-        $('#deleteConfirmationModal').modal('show');
-
-        // Set up the click handler for the confirmation button
-        $('#confirmDeleteButton').off('click').on('click', () => {
+        showDeleteConfirmation('Are you sure you want to delete this image?', () => {
             var csrfToken = $('input[name="_token"]').val();
 
             $.ajax({
@@ -123,9 +113,6 @@ class ImageManager {
                     console.error(error);
                 }
             });
-
-            // Hide the modal after confirmation
-            $('#deleteConfirmationModal').modal('hide');
         });
     }
 

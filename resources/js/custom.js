@@ -367,3 +367,18 @@ export function focusFirstInputInModals() {
         $(this).find('input:visible:first').focus();
     });
 }
+
+
+export function showDeleteConfirmation(question, confirmCallback) {
+    // Set the delete question
+    $('#deleteQuestion').text(question);
+
+    // Show the modal
+    $('#deleteConfirmationModal').modal('show');
+
+    // Set up the click handler for the confirmation button
+    $('#confirmDeleteButton').off('click').on('click', () => {
+        confirmCallback();
+        $('#deleteConfirmationModal').modal('hide');
+    });
+}
