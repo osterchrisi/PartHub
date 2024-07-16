@@ -5,7 +5,7 @@ import { showDeletionConfirmationToast } from "./custom";
 class ImageManager {
     constructor(type, id) {
         this.type = type;
-        this.id = id;
+        this.id = id; // This ID is the Part, BOM, Location, ... id
     }
 
     setupImageContainer() {
@@ -43,10 +43,7 @@ class ImageManager {
             url: `/images/${type}/${id}`,
             type: 'GET',
             success: (response) => {
-                // Check if images exist
-                // if (response.length > 0) {
-                    this.updateImages(response);
-                // }
+                this.updateImages(response);
             }
         });
     }
@@ -61,6 +58,7 @@ class ImageManager {
             var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
 
             // Create the image container
+            // Here the image.id is the ID of the image in the DB, not the resource ID (Part, BOM, ...)
             var imageElement = $(`
             <div class="image-wrapper" style="position: relative; display: inline-block;">
                 <a href="${image.filename}" data-toggle="lightbox" data-gallery="1">
@@ -78,18 +76,19 @@ class ImageManager {
 
         // Attach event listener for delete buttons
         $('.delete-image').click((event) => {
-            const imageId = $(event.target).data('id');
+            const imageId = $(event.target).data('id'); // Image ID
             const imageType = $(event.target).data('type');
             this.deleteImage(imageType, imageId);
         });
     }
 
     deleteImage(type, id) {
-        // Ask the user for confirmation before deleting the image
-        if (confirm('Are you sure you want to delete this image?')) {
-            // Get the CSRF token from the form
+        $('#deleteConfirmationModal').modal('show');
+    
+        // Set up the click handler for the confirmation button
+        $('#confirmDeleteButton').off('click').on('click', function() {
             var csrfToken = $('input[name="_token"]').val();
-
+    
             $.ajax({
                 url: `/delete-image/${type}/${id}`,
                 type: 'DELETE',
@@ -99,15 +98,18 @@ class ImageManager {
                 success: (response) => {
                     if (response.success) {
                         showDeletionConfirmationToast(1, 'image');
-                        this.fetchImages(type, this.id); // Refresh images after deletion
+                        this.fetchImages(this.type, this.id);
                     }
                 },
                 error: (xhr, status, error) => {
-                    // Handle any errors that occur during the delete process
                     console.error(error);
                 }
             });
-        }
+    
+            // Hide the modal after confirmation
+            $('#deleteConfirmationModal').modal('hide');
+        });
     }
+    
 
 }

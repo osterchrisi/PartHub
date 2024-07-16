@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Image;
 use App\Services\ImageService;
+use Illuminate\Support\Facades\DB;
 
 class ImageController extends Controller
 {
@@ -78,33 +79,35 @@ class ImageController extends Controller
     }
 
     public function delete($type, $id)
-{
-    // Find the image by ID and type
-    $image = Image::where('id', $id)
-        ->where('type', $type)
-        ->where('image_owner_u_id', auth()->id())
-        ->first();
+    {
+        // Find the image by ID and type
+        $image = Image::where('id', $id)
+            ->where('type', $type)
+            ->where('image_owner_u_id', auth()->id())
+            ->first();
 
-    if (!$image) {
-        return response()->json(['error' => 'Image not found or not authorized'], 404);
+        if (!$image) {
+            return response()->json(['error' => 'Image not found or not authorized'], 404);
+        }
+
+        DB::beginTransaction();
+        // Delete the image file
+        if (file_exists(public_path($image->filename))) {
+            unlink(public_path($image->filename));
+        }
+
+        // Delete the thumbnail file if it exists
+        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp', $image->filename);
+        if (file_exists(public_path($thumbnailPath))) {
+            unlink(public_path($thumbnailPath));
+        }
+
+        // Delete the image record from the database
+        $image->delete();
+        DB::commit();
+
+        return response()->json(['success' => 'Image deleted successfully']);
     }
-
-    // Delete the image file
-    if (file_exists(public_path($image->filename))) {
-        unlink(public_path($image->filename));
-    }
-
-    // Delete the thumbnail file if it exists
-    $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp', $image->filename);
-    if (file_exists(public_path($thumbnailPath))) {
-        unlink(public_path($thumbnailPath));
-    }
-
-    // Delete the image record from the database
-    $image->delete();
-
-    return response()->json(['success' => 'Image deleted successfully']);
-}
 
 
 }
