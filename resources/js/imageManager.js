@@ -2,12 +2,28 @@ export { ImageManager }
 
 import { showDeletionConfirmationToast, showDeleteConfirmation } from "./custom";
 
+/**
+ * Class to manage image-related operations such as uploading, displaying, and deleting images.
+ *
+ * @class ImageManager
+ */
 class ImageManager {
+    /**
+    * Creates an instance of ImageManager.
+    *
+    * @param {string} type - The type of the entity (e.g., 'part', 'bom', 'location').
+    * @param {number} id - The ID of the entity (e.g., Part ID, BOM ID, Location ID).
+    */
     constructor(type, id) {
         this.type = type;
         this.id = id; // This ID is the Part, BOM, Location, ... id
     }
 
+    /**
+     * Sets up the image container by fetching images and handling form submission for image upload.
+     *
+     * @returns {void}
+     */
     setupImageContainer() {
         this.fetchImages(this.type, this.id);
 
@@ -49,6 +65,13 @@ class ImageManager {
         });
     }
 
+    /**
+    * Fetches images for the specified type and ID and updates the image container.
+    *
+    * @param {string} type - The type of the entity.
+    * @param {number} id - The ID of the entity.
+    * @returns {void}
+    */
     fetchImages(type, id) {
         $.ajax({
             url: `/images/${type}/${id}`,
@@ -59,6 +82,12 @@ class ImageManager {
         });
     }
 
+    /**
+    * Updates the image container with the fetched images and sets up delete event listeners.
+    *
+    * @param {Array} response - The array of image objects.
+    * @returns {void}
+    */
     updateImages(response) {
         $('#imageContainer').empty();
         response.forEach((image) => {
@@ -93,6 +122,13 @@ class ImageManager {
         });
     }
 
+    /**
+    * Deletes an image after confirming with the user.
+    *
+    * @param {string} type - The type of the entity.
+    * @param {number} id - The ID of the image.
+    * @returns {void}
+    */
     deleteImage(type, id) {
         showDeleteConfirmation('Are you sure you want to delete this image?', () => {
             var csrfToken = $('input[name="_token"]').val();
