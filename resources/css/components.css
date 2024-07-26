@@ -115,3 +115,8 @@ tr.selected-last td {
     color: #ffcc00;
     /* Color when hovered */
 }
+
+/* Footer Table */
+.footer-table td{
+    padding-bottom: 0;
+}
