@@ -169,6 +169,7 @@ class ResourceCreator {
       Promise.all(dataFetchPromises)
         .then(data => {
           const [locations, footprints, categories, suppliers] = data;
+          console.log(categories);
 
           if (this.type === 'part') {
             // Populate dropdowns
@@ -342,21 +343,66 @@ class ResourceCreator {
 
 
   /**
-  * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
-  * @param {Array} categories - An array of objects representing categories to be displayed in the dropdown list.
-  * Each category object must have a "category_id" and a "category_name" property.
-  * @return {void}
-  */
+     * Organizes categories into a nested structure.
+     * @param {Array} categories - An array of category objects.
+     * @return {Array} - Nested categories.
+     */
+  organizeCategories(categories) {
+    let categoryMap = {};
+    categories.forEach(category => {
+      categoryMap[category.category_id] = { ...category, children: [] };
+    });
+
+    let nestedCategories = [];
+    categories.forEach(category => {
+      if (category.parent_category === 0) {
+        nestedCategories.push(categoryMap[category.category_id]);
+      } else {
+        categoryMap[category.parent_category].children.push(categoryMap[category.category_id]);
+      }
+    });
+
+    return nestedCategories;
+  }
+
+  /**
+   * Generates HTML options for categories with nesting.
+   * @param {Array} categories - Nested categories.
+   * @param {number} level - Current nesting level.
+   * @return {string} - HTML string of options.
+   */
+  addCategoryOptions(categories, level = 0) {
+    let optionsHTML = '';
+    categories.forEach(category => {
+      let indent = '&nbsp;'.repeat(level * 4); // Indentation for nesting
+      optionsHTML += "<option value='" + category.category_id + "'>" + indent + category.category_name + "</option>";
+      if (category.children.length > 0) {
+        optionsHTML += this.addCategoryOptions(category.children, level + 1);
+      }
+    });
+    return optionsHTML;
+  }
+
+  /**
+   * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
+   * @param {Array} categories - An array of objects representing categories to be displayed in the dropdown list.
+   * Each category object must have a "category_id" and a "category_name" property.
+   * @return {void}
+   */
   addPartCategoryDropdown(categories) {
     var div = document.getElementById("addPartCategoryDropdown");
+    var nestedCategories = this.organizeCategories(categories);
     var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Category' id='addPartCategorySelect'>";
-    for (var i = 0; i < categories.length; i++) {
-      selectHTML += "<option value='" + categories[i]['category_id'] + "'>" + categories[i]['category_name'] + "</option>";
-    }
+    selectHTML += this.addCategoryOptions(nestedCategories);
     selectHTML += "</select>";
     selectHTML += "<label for='addPartCategorySelect'>Category</label>";
     div.innerHTML = selectHTML;
-    $("#addPartCategorySelect").selectize();
+
+    var $select = $("#addPartCategorySelect").selectize({
+      create: (input) => {
+        this.createNewSelectizeDropdownEntry(input, 'category');
+      }
+    });
   }
 
 
