@@ -19,6 +19,7 @@ If the right-click menu is not on top, it won't show --}}
     @include('components.modals.stockModal')
     @include('components.modals.categoryEntryModal')
     @include('components.modals.partEntryModal', ['part_name' => ''])
+    @include('components.modals.categoryCreationModal')
 @endsection
 
 {{-- Filter form --}}
@@ -47,6 +48,8 @@ If the right-click menu is not on top, it won't show --}}
 @section('info-window')
     {{-- <h6><br>Click a row in the table to see part details</h6><br><br> --}}
     <div class="alert alert-dark align-self-start mt-3" role="alert">
-        <p class="text-center"><h6>Click a row in the table to see part details</h6></p>
+        <p class="text-center">
+        <h6>Click a row in the table to see part details</h6>
+        </p>
     </div>
 @endsection

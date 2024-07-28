@@ -452,6 +452,10 @@ class ResourceCreator {
         dropdownFunction = this.addPartSupplierDropdown.bind(this);
         dropdownId = 'addPartSupplierSelect';
         break;
+      case 'category':
+        this.showCategoryCreationModal(input);
+        this.initializeSaveCategoryButton();
+        return;
       default:
         console.error('Unknown type:', type);
         return;
@@ -532,5 +536,54 @@ class ResourceCreator {
 
     // Initialize the button text
     $toggleButton.text('Aa');
+  }
+
+  showCategoryCreationModal(input) {
+    // Populate parent category dropdown
+    this.getCategories().done((categories) => {
+      const nestedCategories = this.organizeCategories(categories);
+      const optionsHTML = this.addCategoryOptions(nestedCategories);
+      $('#parentCategory').html(optionsHTML);
+      $('#categoryName').val(input);
+      $('#categoryCreationModal').modal('show');
+    });
+  }
+
+  saveNewCategory() {
+    const categoryName = $('#categoryName').val();
+    const parentCategory = $('#parentCategory').val();
+    const token = $('input[name="_token"]').attr('value');
+
+    $.ajax({
+      url: '/category.create',
+      type: 'POST',
+      data: {
+        category_name: categoryName,
+        parent_category: parentCategory,
+        _token: token
+      },
+      success: (response) => {
+        const newEntry = {
+          category_id: response['Category ID'],
+          category_name: categoryName
+        };
+        this.getCategories().done((newList) => {
+          this.addPartCategoryDropdown(newList);
+          var selectize = $('#addPartCategorySelect')[0].selectize;
+          selectize.addItem(newEntry['category_id']);
+          $('#categoryCreationModal').modal('hide');
+        });
+      },
+      error: function () {
+        console.error('Error creating new category');
+      }
+    });
+  }
+
+  // Call this method to set up the event listener for the save button
+  initializeSaveCategoryButton() {
+    $('#saveCategoryButton').off('click').click(() => {
+      this.saveNewCategory();
+    });
   }
 }
