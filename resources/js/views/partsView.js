@@ -92,11 +92,11 @@ export function initializePartsView() {
         url: '/categories.get',
         dataType: 'json',
         error: function (error) {
-          console.log(error);
+            console.log(error);
         }
-      }).done(categories => {
+    }).done(categories => {
         defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
-      });
+    });
 
     /**
      * Show location divs after potentially

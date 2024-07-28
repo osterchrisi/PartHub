@@ -15,6 +15,9 @@ class ResourceCreator {
     this.addButton = $(options.addButton);
     this.tableRebuildFunctions = tableRebuildFunctions;
 
+    // Initialize upper case toggle functionality for part input
+    this.initializeUppercaseToggle();
+
     // Handle cancellation of the submit form modal, prevent multiple click listeners
     this.clickListenerAttached = false;
     this.inputModal.on('hidden.bs.modal', () => {
@@ -440,4 +443,48 @@ class ResourceCreator {
     });
   }
 
+  /**
+ * Initializes the uppercase toggle functionality for the part name input field.
+ *
+ * Sets up an event listener on the toggle button to transform the input text to
+ * uppercase when enabled, and restore the original text when disabled.
+ *
+ * @method initializeUppercaseToggle
+ */
+  initializeUppercaseToggle() {
+    const $toggleButton = $('#toggle-uppercase-button');
+    const $addPartName = $('#addPartName');
+    let isUppercase = false;
+    let originalValue = '';
+
+    const toggleUppercase = () => {
+      isUppercase = !isUppercase;
+      if (isUppercase) {
+        originalValue = $addPartName.val(); // Store the original value
+        $addPartName.on('input.uppercase', function () {
+          const uppercased = $(this).val().toUpperCase();
+          $(this).val(uppercased);
+        });
+        $addPartName.val($addPartName.val().toUpperCase());
+        $toggleButton.addClass('active'); // Add active state class
+        $toggleButton.text('AA');
+      } else {
+        $addPartName.off('input.uppercase');
+        $addPartName.val(originalValue); // Restore the original value
+        $toggleButton.removeClass('active'); // Remove active state class
+        $toggleButton.text('Aa');
+      }
+    };
+
+    // Remove any existing click event listeners to prevent duplicate handling
+    $toggleButton.off('click');
+
+    // Event listener for the toggle button
+    $toggleButton.click(() => {
+      toggleUppercase();
+    });
+
+    // Initialize the button text
+    $toggleButton.text('Aa');
+  }
 }

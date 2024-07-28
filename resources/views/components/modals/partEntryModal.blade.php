@@ -14,11 +14,16 @@
                 <form id="partEntryForm">
                     @csrf
                     {{-- Name --}}
-                    <input class="form-control form-control-sm" placeholder="Part Name" id="addPartName" required><br>
+                    {{-- <input class="form-control form-control-sm" placeholder="Part Name" id="addPartName" required><br> --}}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="addPartName" placeholder="Part Name">
+                        <button class="btn btn-outline-secondary" type="button" id="toggle-uppercase-button">AA</button>
+                      </div>
+                      
                     <div class="row">
                         {{-- Quantity --}}
                         <div class="col-3">
-                            <input class="form-control form-control-sm" placeholder="Quantity" id="addPartQuantity"
+                            <input class="form-control form-control-md" placeholder="Quantity" id="addPartQuantity"
                                 required>
                         </div>
                         {{-- Location --}}
