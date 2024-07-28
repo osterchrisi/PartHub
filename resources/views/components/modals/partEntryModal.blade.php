@@ -41,8 +41,10 @@
                             {{-- Minimum Quantity --}}
                             <div>
                                 <br>
-                                <input class="form-control form-control-sm not-required"
-                                    id="addPartMinQuantity"placeholder="Minimum Quantity">
+                                <input class="form-control form-control-sm not-required" id="addPartMinQuantity"
+                                    placeholder="Minimum Quantity" data-bs-toggle="tooltip"
+                                    data-bs-title="Notification threshold for all locations combined"
+                                    data-bs-placement="right">
                             </div>
                             {{-- Category --}}
                             <div class="col">
@@ -63,8 +65,8 @@
                                 {{-- Description --}}
                                 <div class="col">
                                     <br>
-                                    <input class="form-control form-control-sm not-required"
-                                        id="addPartDescription"placeholder="Description">
+                                    <input class="form-control form-control-sm not-required" id="addPartDescription"
+                                        placeholder="Description">
                                 </div>
                             </div>
                             <div class="row">
