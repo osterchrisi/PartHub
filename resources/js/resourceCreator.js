@@ -453,7 +453,7 @@ class ResourceCreator {
  */
   initializeUppercaseToggle() {
     const $toggleButton = $('#toggle-uppercase-button');
-    const $addPartName = $('#addPartName');
+    const $addPartName = $('#addPartName'); //! Is hardcoded...
     let isUppercase = false;
     let originalValue = '';
 
