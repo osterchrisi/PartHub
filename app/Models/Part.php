@@ -53,7 +53,7 @@ class Part extends Model
         'part_unit_fk',
         'part_owner_u_fk',
         'part_owner_g_fk',
-        'stocklevel_notification_threshold'
+        'stocklevel_notification_threshold' // Total Stock Minimum Quantity
     );
 
     public static function getColumnNames()
@@ -110,7 +110,7 @@ class Part extends Model
         return $bom_list;
     }
 
-    public static function createPart($part_name, $comment, $description, $footprint, $category, $supplier)
+    public static function createPart($part_name, $comment, $description, $footprint, $category, $supplier, $min_quantity)
     {
         $user_id = Auth::user()->id;
 
@@ -121,6 +121,7 @@ class Part extends Model
         $part->part_category_fk = $category;
         $part->part_footprint_fk = $footprint;
         $part->part_supplier_fk = $supplier;
+        $part->stocklevel_notification_threshold = $min_quantity;   // Total Stock Minimum Quantity
         $part->part_unit_fk = null;
         $part->part_owner_u_fk = $user_id;
         $part->part_owner_g_fk = null;

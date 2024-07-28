@@ -77,6 +77,7 @@ export function initializePartsView() {
             { name: 'footprint', selector: '#addPartFootprintSelect' },
             { name: 'supplier', selector: '#addPartSupplierSelect' },
             { name: 'category', selector: '#addPartCategorySelect' },
+            { name: 'min_quantity', selector: '#addPartMinQuantity'},
         ],
         inputModal: '#mPartEntry',
         addButton: '#addPart'

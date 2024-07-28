@@ -17,9 +17,10 @@
                     {{-- <input class="form-control form-control-sm" placeholder="Part Name" id="addPartName" required><br> --}}
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="addPartName" placeholder="Part Name">
-                        <button class="btn btn-outline-secondary" type="button" id="toggle-uppercase-button">AA</button>
-                      </div>
-                      
+                        <button class="btn btn-outline-secondary" type="button"
+                            id="toggle-uppercase-button">AA</button>
+                    </div>
+
                     <div class="row">
                         {{-- Quantity --}}
                         <div class="col-3">
@@ -34,40 +35,47 @@
                     <br>
                     <button class="btn btn-sm btn-light" id="showAdvanced" type="button" data-bs-toggle="collapse"
                         data-bs-target="#advancedOptions">Show Advanced</button>
+                    {{-- Advanced Options --}}
                     <div class="collapse mb-4" id="advancedOptions">
                         <div class="row">
+                            {{-- Minimum Quantity --}}
+                            <div>
+                                <br>
+                                <input class="form-control form-control-sm not-required"
+                                    id="addPartMinQuantity"placeholder="Minimum Quantity">
+                            </div>
                             {{-- Category --}}
                             <div class="col">
                                 <div class="form-floating" id="addPartCategoryDropdown">
-                            </div>
-                            {{-- Footprint --}}
-                            <div class="col">
-                                <div class="form-floating" id="addPartFootprintDropdown">
+                                </div>
+                                {{-- Footprint --}}
+                                <div class="col">
+                                    <div class="form-floating" id="addPartFootprintDropdown">
+                                    </div>
+                                </div>
+                                {{-- Supplier --}}
+                                <div class="col">
+                                    <div class="form-floating" id="addPartSupplierDropdown">
+                                    </div>
                                 </div>
                             </div>
-                            {{-- Supplier --}}
-                            <div class="col">
-                                <div class="form-floating" id="addPartSupplierDropdown">
+                            <div class="row">
+                                {{-- Description --}}
+                                <div class="col">
+                                    <br>
+                                    <input class="form-control form-control-sm not-required"
+                                        id="addPartDescription"placeholder="Description">
+                                </div>
+                            </div>
+                            <div class="row">
+                                {{-- Comment --}}
+                                <div class="col">
+                                    <br>
+                                    <input class="form-control form-control-sm not-required" id="addPartComment"
+                                        placeholder="Comment">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            {{-- Description --}}
-                            <div class="col">
-                                <br>
-                                <input class="form-control form-control-sm not-required"
-                                    id="addPartDescription"placeholder="Description">
-                            </div>
-                        </div>
-                        <div class="row">
-                            {{-- Comment --}}
-                            <div class="col">
-                                <br>
-                                <input class="form-control form-control-sm not-required" id="addPartComment"
-                                    placeholder="Comment">
-                            </div>
-                        </div>
-                    </div>
                 </form>
             </div>
 

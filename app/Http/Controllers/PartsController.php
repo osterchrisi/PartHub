@@ -99,6 +99,7 @@ class PartsController extends Controller
         $footprint = $request->input('footprint', NULL);
         $category = $request->input('category', NULL);
         $supplier = $request->input('supplier', NULL);
+        $min_quantity = $request->input('min_quantity', 0);     // Total Stock Minimum Quantity
         $user_id = Auth::user()->id;
 
         try {
@@ -107,7 +108,7 @@ class PartsController extends Controller
             DB::beginTransaction();
 
             // Insert new part
-            $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier);
+            $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier, $min_quantity);
             // Create a stock level entry
             $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
             // Create a stock level history entry (from_location is NULL)
@@ -117,6 +118,10 @@ class PartsController extends Controller
             DB::commit();
             //TODO: Should I flash something here?
             // Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
+
+            $user = Auth::user();
+            $stock_level = [$new_part_id, $quantity, $to_location];
+            event(new StockMovementOccured($stock_level, $user));
 
             $response = [
                 'Part ID' => $new_part_id,
