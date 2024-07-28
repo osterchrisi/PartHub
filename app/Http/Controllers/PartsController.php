@@ -99,7 +99,7 @@ class PartsController extends Controller
         $footprint = $request->input('footprint', NULL);
         $category = $request->input('category', NULL);
         $supplier = $request->input('supplier', NULL);
-        $min_quantity = $request->input('min_quantity', 0);     // Total Stock Minimum Quantity
+        $min_quantity = $request->input('min_quantity') ?? 0;       // Total Stock Minimum Quantity
         $user_id = Auth::user()->id;
 
         try {
