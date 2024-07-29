@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="categoryCreationModalLabel">Create New Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" id="closeCategoryModalButton1" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form id="categoryCreationForm">
@@ -22,7 +22,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" id="closeCategoryModalButton2" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveCategoryButton">Save Category</button>
             </div>
         </div>

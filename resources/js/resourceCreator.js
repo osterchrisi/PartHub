@@ -28,6 +28,9 @@ class ResourceCreator {
       }
     });
 
+    // Attach listeners to the category modal close buttons
+    this.attachCategoryModalCloseListeners();
+
     if (categoryId) {
       this.categoryId = categoryId.categoryId;
     }
@@ -550,6 +553,8 @@ class ResourceCreator {
       $('#parentCategory').html(optionsHTML);
       $('#categoryName').val(input);
       $('#categoryCreationModal').modal('show');
+
+
     });
   }
 
@@ -588,6 +593,18 @@ class ResourceCreator {
   initializeSaveCategoryButton() {
     $('#saveCategoryButton').off('click').click(() => {
       this.saveNewCategory();
+    });
+  }
+
+  attachCategoryModalCloseListeners() {
+    $('#closeCategoryModalButton1, #closeCategoryModalButton2').on('click', () => {
+      this.reinitializeCategoryDropdown();
+    });
+  }
+
+  reinitializeCategoryDropdown() {
+    this.getCategories().done(newList => {
+      this.addPartCategoryDropdown(newList);
     });
   }
 }
