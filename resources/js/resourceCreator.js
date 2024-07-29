@@ -545,6 +545,11 @@ class ResourceCreator {
     $toggleButton.text('Aa');
   }
 
+  /**
+ * Shows the category creation modal and populates the parent category dropdown.
+ *
+ * @param {string} input - The initial input value for the category name.
+ */
   showCategoryCreationModal(input) {
     // Populate parent category dropdown
     this.getCategories().done((categories) => {
@@ -558,6 +563,9 @@ class ResourceCreator {
     });
   }
 
+  /**
+ * Saves a new category via AJAX and updates the category dropdown in the part entry modal
+ */
   saveNewCategory() {
     const categoryName = $('#categoryName').val();
     const parentCategory = $('#parentCategory').val();
@@ -589,19 +597,27 @@ class ResourceCreator {
     });
   }
 
-  // Call this method to set up the event listener for the save button
+  /**
+ * Initializes the save button for the category modal.
+ */
   initializeSaveCategoryButton() {
     $('#saveCategoryButton').off('click').click(() => {
       this.saveNewCategory();
     });
   }
 
+  /**
+ * Attaches click listeners to the close buttons of the category modal.
+ */
   attachCategoryModalCloseListeners() {
     $('#closeCategoryModalButton1, #closeCategoryModalButton2').on('click', () => {
       this.reinitializeCategoryDropdown();
     });
   }
 
+  /**
+ * Reinitializes the category dropdown in the part entry modal in case the modal was closed without creating a new category
+ */
   reinitializeCategoryDropdown() {
     this.getCategories().done(newList => {
       this.addPartCategoryDropdown(newList);
