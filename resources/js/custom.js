@@ -344,9 +344,8 @@ export function updateInfoWindow(type, id) {
  */
 export function clearModalOnHiding() {
     $(document).on('hidden.bs.modal', '.modal', function (event) {
+        // Don't do it if the modal was hidden due to creating a new category
         const targetModalId = event.target.id;
-        console.log(targetModalId);
-
         if (targetModalId !== 'categoryCreationModal') {
             $(this).find('input').val('');
         }
