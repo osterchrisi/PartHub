@@ -19,11 +19,15 @@ class ResourceCreator {
     this.initializeUppercaseToggle();
 
     // Handle cancellation of the submit form modal, prevent multiple click listeners
+    // Filtering for event.target, so the hiding of the category creation modal is not firing here
     this.clickListenerAttached = false;
-    this.inputModal.on('hidden.bs.modal', () => {
-      this.removeAddButtonClickListener()
-      this.clickListenerAttached = false;
+    this.inputModal.on('hidden.bs.modal', (event) => {
+      if (event.target === this.inputModal[0]) {
+        this.removeAddButtonClickListener()
+        this.clickListenerAttached = false;
+      }
     });
+
     if (categoryId) {
       this.categoryId = categoryId.categoryId;
     }
