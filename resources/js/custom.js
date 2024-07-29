@@ -343,8 +343,13 @@ export function updateInfoWindow(type, id) {
  * Clears any input fields of any modal upon hiding (Cancel and/or submitting)
  */
 export function clearModalOnHiding() {
-    $(document).on('hidden.bs.modal', '.modal', function () {
-        $(this).find('input').val('');
+    $(document).on('hidden.bs.modal', '.modal', function (event) {
+        const targetModalId = event.target.id;
+        console.log(targetModalId);
+
+        if (targetModalId !== 'categoryCreationModal') {
+            $(this).find('input').val('');
+        }
     });
 
     // Stock changing modal with its "Continue Anyway" message
