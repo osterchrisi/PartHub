@@ -100,14 +100,14 @@ class ResourceCreator {
   }
 
   /**
- * Highlights and selects a newly added row in a Bootstrap table.
- *
- * This method finds the newly added row in the table data using the provided ID,
- * determines the appropriate page where the new row should be displayed, switches to that page,
- * and highlights the new row with visual effects.
- *
- * @param {number} id - The ID of the newly added row to be selected and highlighted.
- */
+  * Highlights and selects a newly added row in a Bootstrap table.
+  *
+  * This method finds the newly added row in the table data using the provided ID,
+  * determines the appropriate page where the new row should be displayed, switches to that page,
+  * and highlights the new row with visual effects.
+  *
+  * @param {number} id - The ID of the newly added row to be selected and highlighted.
+  */
   selectNewRow(id) {
     // Get the table data after bootstrapping
     let tableData = $(this.table).bootstrapTable('getData');
@@ -133,12 +133,12 @@ class ResourceCreator {
   }
 
   /**
- * Highlights and selects a table row by ID.
- *
- * @param {string} id - The ID of the row to highlight and select.
- * @param {number} [highlightDuration=1000] - Duration (ms) to keep the row highlighted.
- * @param {number} [initialDelay=0] - Delay (ms) before starting the highlight.
- */
+  * Highlights and selects a table row by ID.
+  *
+  * @param {string} id - The ID of the row to highlight and select.
+  * @param {number} [highlightDuration=1000] - Duration (ms) to keep the row highlighted.
+  * @param {number} [initialDelay=0] - Delay (ms) before starting the highlight.
+  */
   highlightAndSelectRow(id, highlightDuration = 1000, initialDelay = 0) {
     setTimeout(() => {
       let $newRow = $(`tr[data-id="${id}"]`);
@@ -350,10 +350,10 @@ class ResourceCreator {
 
 
   /**
-     * Organizes categories into a nested structure.
-     * @param {Array} categories - An array of category objects.
-     * @return {Array} - Nested categories.
-     */
+  * Organizes categories into a nested structure.
+  * @param {Array} categories - An array of category objects.
+  * @return {Array} - Nested categories.
+  */
   organizeCategories(categories) {
     let categoryMap = {};
     categories.forEach(category => {
@@ -501,13 +501,13 @@ class ResourceCreator {
   }
 
   /**
- * Initializes the uppercase toggle functionality for the part name input field.
- *
- * Sets up an event listener on the toggle button to transform the input text to
- * uppercase when enabled, and restore the original text when disabled.
- *
- * @method initializeUppercaseToggle
- */
+  * Initializes the uppercase toggle functionality for the part name input field.
+  *
+  * Sets up an event listener on the toggle button to transform the input text to
+  * uppercase when enabled, and restore the original text when disabled.
+  *
+  * @method initializeUppercaseToggle
+  */
   initializeUppercaseToggle() {
     const $toggleButton = $('#toggle-uppercase-button');
     const $addPartName = $('#addPartName'); //! Is hardcoded...
@@ -546,10 +546,10 @@ class ResourceCreator {
   }
 
   /**
- * Shows the category creation modal and populates the parent category dropdown.
- *
- * @param {string} input - The initial input value for the category name.
- */
+  * Shows the category creation modal and populates the parent category dropdown.
+  *
+  * @param {string} input - The initial input value for the category name.
+  */
   showCategoryCreationModal(input) {
     // Populate parent category dropdown
     this.getCategories().done((categories) => {
@@ -564,8 +564,8 @@ class ResourceCreator {
   }
 
   /**
- * Saves a new category via AJAX and updates the category dropdown in the part entry modal
- */
+  * Saves a new category via AJAX and updates the category dropdown in the part entry modal
+  */
   saveNewCategory() {
     const categoryName = $('#categoryName').val();
     const parentCategory = $('#parentCategory').val();
@@ -598,8 +598,8 @@ class ResourceCreator {
   }
 
   /**
- * Initializes the save button for the category modal.
- */
+  * Initializes the save button for the category modal.
+  */
   initializeSaveCategoryButton() {
     $('#saveCategoryButton').off('click').click(() => {
       this.saveNewCategory();
@@ -607,8 +607,8 @@ class ResourceCreator {
   }
 
   /**
- * Attaches click listeners to the close buttons of the category modal.
- */
+  * Attaches click listeners to the close buttons of the category modal.
+  */
   attachCategoryModalCloseListeners() {
     $('#closeCategoryModalButton1, #closeCategoryModalButton2').on('click', () => {
       this.reinitializeCategoryDropdown();
@@ -616,8 +616,8 @@ class ResourceCreator {
   }
 
   /**
- * Reinitializes the category dropdown in the part entry modal in case the modal was closed without creating a new category
- */
+  * Reinitializes the category dropdown in the part entry modal in case the modal was closed without creating a new category
+  */
   reinitializeCategoryDropdown() {
     this.getCategories().done(newList => {
       this.addPartCategoryDropdown(newList);
