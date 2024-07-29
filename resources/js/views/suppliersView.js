@@ -35,7 +35,6 @@ export function initializeSuppliersView() {
 
     $('#toolbarAddButton').click(function () {
         newSupplierCreator.showModal();
-        newSupplierCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('suppliers_list_table', 'suppliers', 'supplier_id', rebuildSuppliersTable);

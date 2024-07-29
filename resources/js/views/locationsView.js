@@ -37,7 +37,6 @@ export function initializeLocationsView() {
 
     $('#toolbarAddButton').click(function () {
         newLocationCreator.showModal();
-        newLocationCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);

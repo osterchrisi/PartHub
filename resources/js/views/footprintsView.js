@@ -35,7 +35,6 @@ export function initializeFootprintsView() {
 
     $('#toolbarAddButton').click(function () {
         newFootprintCreator.showModal();
-        newFootprintCreator.attachAddButtonClickListener();
     });
 
     attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', rebuildFootprintsTable);

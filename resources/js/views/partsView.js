@@ -85,7 +85,6 @@ export function initializePartsView() {
 
 
     $('#toolbarAddButton').click(function () {
-        newPartCreator.attachAddButtonClickListener();
         newPartCreator.showModal();
     });
 

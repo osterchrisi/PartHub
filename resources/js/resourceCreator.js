@@ -28,6 +28,10 @@ class ResourceCreator {
       }
     });
 
+    this.inputModal.on('shown.bs.modal', () => {
+      this.attachAddButtonClickListener();
+    });
+
     // Attach listeners to the category modal close buttons
     this.attachCategoryModalCloseListeners();
 
@@ -557,9 +561,8 @@ class ResourceCreator {
       const optionsHTML = this.addCategoryOptions(nestedCategories);
       $('#parentCategory').html(optionsHTML);
       $('#categoryName').val(input);
-      $('#categoryCreationModal').modal('show');
-
-
+      $('#categoryCreationModal').modal('toggle');
+      this.inputModal.modal('toggle');
     });
   }
 
@@ -588,7 +591,8 @@ class ResourceCreator {
           this.addPartCategoryDropdown(newList);
           var selectize = $('#addPartCategorySelect')[0].selectize;
           selectize.addItem(newEntry['category_id']);
-          $('#categoryCreationModal').modal('hide');
+          $('#categoryCreationModal').modal('toggle');
+          this.inputModal.modal('toggle');
         });
       },
       error: function () {
@@ -611,6 +615,7 @@ class ResourceCreator {
   */
   attachCategoryModalCloseListeners() {
     $('#closeCategoryModalButton1, #closeCategoryModalButton2').on('click', () => {
+      this.inputModal.modal('toggle');
       this.reinitializeCategoryDropdown();
     });
   }

@@ -1,9 +1,9 @@
 <!-- Category Creation Modal -->
-<div class="modal fade" id="categoryCreationModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="categoryCreationModal" tabindex="-1">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="categoryCreationModalLabel">Create New Category</h5>
+                <h1 class="modal-title fs-5" id="partEntryModalTitle">Create New Category</h1>
                 <button type="button" class="btn-close" id="closeCategoryModalButton1" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
