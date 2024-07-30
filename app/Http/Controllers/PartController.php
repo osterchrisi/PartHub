@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Events\StockMovementOccured;
 use App\Models\Category;
-use App\Models\Location;
 use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
-use App\Models\BomRun;
 use App\Models\Footprint;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -17,7 +15,6 @@ use App\Services\DatabaseService;
 use App\Services\CategoryService;
 use App\Services\StockService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class PartController extends Controller
 {
