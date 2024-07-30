@@ -1,5 +1,5 @@
 <!-- Category Creation Modal -->
-<div class="modal fade" id="categoryCreationModal" tabindex="-1">
+<div class="modal fade" id="categoryCreationModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

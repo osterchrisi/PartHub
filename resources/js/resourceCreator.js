@@ -33,7 +33,7 @@ class ResourceCreator {
         this.attachAddButtonClickListener();  
     });
 
-    // Attach listeners to the category modal close buttons
+    // Attach listeners to the category creation modal close buttons
     this.attachCategoryModalCloseListeners();
 
     if (categoryId) {
@@ -617,6 +617,8 @@ class ResourceCreator {
 
   /**
   * Attaches click listeners to the close buttons of the category modal.
+  * Ensures that the category dropdown gets reinitialized if no new category has been created.
+  * Otherwise the dropdown becomes unresponsive
   */
   attachCategoryModalCloseListeners() {
     $('#closeCategoryModalButton1, #closeCategoryModalButton2').on('click', () => {
