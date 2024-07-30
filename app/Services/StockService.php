@@ -43,7 +43,7 @@ class StockService
     /**
      * Process stock changes once they've been approved or no approval was necessary
      */
-    public function processApprovedChanges($changes)
+    public function processStockChanges($changes)
     {
         $user = Auth::user();
         $user_id = $user->id;
@@ -117,7 +117,7 @@ class StockService
         $unique_processed_boms = [];
         $unique_bom_ids = [];
 
-        //* Extract processed BOM ID(s)
+        // Extract processed BOM ID(s)
         foreach ($processed_boms as $processed_bom) {
             $bomId = $processed_bom["bom_id"];
             if (!in_array($bomId, $unique_bom_ids)) {

@@ -226,13 +226,8 @@ class PartController extends Controller
      */
     public function getName(Request $request)
     {
-        // Get part ID
         $part_id = request()->input('part_id');
-
-        // Fetch the part 
         $part = Part::find($part_id)->toArray();
-
-        // Return part name only
         return $part['part_name'];
     }
 
@@ -285,7 +280,7 @@ class PartController extends Controller
 
         //* No user permission necessary
         else {
-            $result = $this->stockService->processApprovedChanges($changes);
+            $result = $this->stockService->processStockChanges($changes);
             return response()->json($result);
         }
     }

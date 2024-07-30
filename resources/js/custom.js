@@ -251,15 +251,6 @@ export function initializePopovers() {
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 }
 
-/**
- * Initializes Bootstrap toasts on all elements with the 'toast' class.
- * @returns {void}
- */
-function initializeToasts() {
-    const toastElList = document.querySelectorAll('.toast')
-    const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
-}
-
 export function showDeletionConfirmationToast(numElements, type) {
     const deleteToast = document.getElementById('tConfirmDelete');
 

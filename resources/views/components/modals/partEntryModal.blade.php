@@ -14,7 +14,6 @@
                 <form id="partEntryForm">
                     @csrf
                     {{-- Name --}}
-                    {{-- <input class="form-control form-control-sm" placeholder="Part Name" id="addPartName" required><br> --}}
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="addPartName" placeholder="Part Name">
                         <button class="btn btn-outline-secondary" type="button"

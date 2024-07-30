@@ -17,12 +17,6 @@ import {
     focusFirstInputInModals
 } from './custom';
 
-// import Alpine from 'alpinejs';
-
-// window.Alpine = Alpine;
-
-// Alpine.start();
-
 const currentView = document.body.getAttribute('data-view');
 
 $(document).ready(function () {
@@ -66,6 +60,7 @@ $(document).ready(function () {
         }
     });
 
+    // Initialize Tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
         animation: true,
