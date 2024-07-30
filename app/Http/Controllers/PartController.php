@@ -281,7 +281,7 @@ class PartController extends Controller
         // }
         //* No user permission necessary
         else {
-            $this->processApprovedChanges($changes);
+            $this->stockService->processApprovedChanges($changes);
         }
     }
 
@@ -433,118 +433,6 @@ class PartController extends Controller
                 'negative_stock' => $negative_stock,
                 'negative_stock_table' => $negative_stock_table,
                 'status' => 'permission_requested'
-            )
-        );
-    }
-
-    /**
-     * Process the stock changes once they've been approved or no approval was necessary
-     *
-     * @param [type] $changes
-     * @return void
-     */
-    private function processApprovedChanges($changes)
-    {
-        // Get current authenticated user
-        $user = Auth::user();
-        $user_id = $user->id;
-
-        foreach ($changes as $approved_change) {
-            // First extract variables
-            $part_id = $approved_change['part_id'];
-            $bom_id = $approved_change['bom_id'];
-            $change = $approved_change['change'];
-
-            $quantity = $approved_change['quantity'];
-
-            // Need to check these three because depending on stock change type (1, -1, 0)
-            // they might be present or not. If not, set them to NULL so the database doesn't complain
-            $to_quantity = $approved_change['to_quantity'] ?? NULL;
-            $from_quantity = $approved_change['from_quantity'] ?? NULL;
-            $new_quantity = $approved_change['new_quantity'] ?? NULL;
-
-            $to_location = $approved_change['to_location'];
-            $from_location = $approved_change['from_location'];
-            $comment = $approved_change['comment'];
-
-            //* Make records in Stock Level model
-            // Add Stock
-            if ($change == 1) {
-                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $to_location);
-                $stock_level = [$part_id, $new_quantity, $to_location];
-            }
-            // Reduce Stock
-            elseif ($change == -1) {
-                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $new_quantity, $from_location);
-                $stock_level = [$part_id, $new_quantity, $from_location];
-                event(new StockMovementOccured($stock_level, $user));
-            }
-            // Move Stock (need to create or update two entries)
-            elseif ($change == 0) {
-                // First add stock in 'to location'
-                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $to_quantity, $to_location);
-                $stock_level = [$part_id, $to_quantity, $to_location];
-
-                // Then reduce stock in 'from location'
-                $stock_level_id = StockLevel::updateOrCreateStockLevelRecord($part_id, $from_quantity, $from_location);
-                $stock_level = [$part_id, $from_quantity, $from_location];
-                event(new StockMovementOccured($stock_level, $user));
-            }
-
-
-
-            //* Make record in Stock Level History model
-            $hist_id = StockLevelHistory::createStockLevelHistoryRecord($part_id, $from_location, $to_location, $quantity, $comment, $user_id);
-
-            // Calculate new stock for updating the origin table in browser
-            $stock = StockLevel::getStockLevelsByPartID($part_id);
-            $total_stock = $this->stockService->calculateTotalStock($stock);
-
-            //! Check what this is used for and if - in the case of moving stock - both stock_level_ids are needed
-            // Add entries to the result array
-            $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
-
-            // If stock changes came from BOM changes, prepare array of BOM ID and assemble quantity
-            //! Bit of a hick-hack right now - could be written better?
-            if ($bom_id != null) {
-                $processed_boms[] = array(
-                    'bom_id' => $bom_id,
-                    'assemble_quantity' => $approved_change['assemble_quantity']
-                );
-            }
-            else {
-                $processed_boms = array();
-            }
-        }
-        //TODO: Extract this function
-        //! Bit hacky - could be written better?
-
-        // If BOMs were assembled, extract single BOM IDs and quantities
-        if (!empty($processed_boms)) {
-            $unique_processed_boms = [];
-            $unique_bom_ids = [];
-
-            foreach ($processed_boms as $processed_bom) {
-                $bomId = $processed_bom["bom_id"];
-                if (!in_array($bomId, $unique_bom_ids)) {
-                    $unique_processed_boms[] = $processed_bom;
-                    $unique_bom_ids[] = $bomId;
-                }
-            }
-
-            //* Create BOM Run entries
-            foreach ($unique_processed_boms as $unique_processed_bom) {
-                $processed_bom = $unique_processed_bom['bom_id'];
-                $quantity = $unique_processed_bom['assemble_quantity'];
-                BomRun::createBomRun($processed_bom, $quantity, $user_id);
-            }
-        }
-
-        // Report all the goodies back for updating tables
-        echo json_encode(
-            array(
-                'status' => 'success',
-                'result' => $result
             )
         );
     }

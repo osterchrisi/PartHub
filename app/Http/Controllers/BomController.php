@@ -144,8 +144,8 @@ class BomController extends Controller
         $request->merge(['stock_changes' => $all_stock_changes]);
 
         // Make new PartController and let it do its thing
-        $partController = new PartController();
-        $partController->prepareStockChanges($request);
+        $partController = app(PartController::class);
+        return $partController->prepareStockChanges($request);
     }
 
     public function importBom(Request $request)
