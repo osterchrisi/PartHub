@@ -255,13 +255,13 @@ class PartController extends Controller
         foreach ($requested_changes as $requested_change) {
 
             // Extract variables from request
-            $requested_change_details = $this->parseRequestedChangeDetails($requested_change);
+            $requested_change_details = $this->stockService->parseRequestedChangeDetails($requested_change);
 
             // Get relevant stock levels for currently iterated part
-            $requested_change_stock_levels = $this->getRelevantStockLevelsForChange($requested_change_details);
+            $requested_change_stock_levels = $this->stockService->getRelevantStockLevelsForChange($requested_change_details);
 
             // Collect changes to be made
-            $result = $this->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock);
+            $result = $this->stockService->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock);
 
             // Append array of collected changes to the main arrays
             $changes[] = $result['changes'];
@@ -272,7 +272,7 @@ class PartController extends Controller
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and exit
         if (!empty($negative_stock)) {
-            $this->generateStockShortageResponse($negative_stock, $changes, $change);
+            $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
         }
         //* To location and From location are the same - not using it right now as I take care of it directly in the front end
@@ -282,6 +282,7 @@ class PartController extends Controller
         //* No user permission necessary
         else {
             $this->stockService->processApprovedChanges($changes);
+            echo json_encode(['status' => 'success', 'result' => $result]);
         }
     }
 
