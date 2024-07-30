@@ -215,35 +215,6 @@ class PartsController extends Controller
     }
 
     /**
-     * Extracts category IDs from a JSON-encoded array and returns a simple array of digits.
-     *
-     * The input array is expected to be in the format [[3], [5]] due to the limitations of selectizing
-     * the multi-select input field. This function decodes the JSON-encoded array and extracts the
-     * numeric values, returning a simplified array of category IDs.
-     *
-     * @param array $searchCategory The array containing the JSON-encoded category IDs.
-     * @return array The simplified array of category IDs as digits.
-     */
-    public static function extractCategoryIds($search_category)
-    {
-        if (!in_array('all', $search_category)) {
-            $cat_ids = [];
-
-            foreach ($search_category as $cat_array) {
-                $decoded_array = json_decode($cat_array);
-
-                foreach ($decoded_array as $element) {
-                    $cat_ids[] = $element[0];
-                }
-            }
-
-            return $cat_ids;
-        }
-
-        return $search_category;
-    }
-
-    /**
      * Get the part name for a given part ID
      *
      * @param Request $request
