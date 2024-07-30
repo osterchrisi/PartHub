@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BomController;
-use App\Http\Controllers\PartsController;
+use App\Http\Controllers\PartController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\FootprintController;
 use App\Http\Controllers\StockLevelController;
@@ -51,7 +51,7 @@ Route::post('/deleteRow', [DatabaseServiceController::class, 'deleteRow'])->midd
 
 //* Part Routes
 Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(function () {
-    Route::controller(PartsController::class)->group(function () {
+    Route::controller(PartController::class)->group(function () {
         Route::get('/parts', 'index')->name('parts');
         Route::get('/part/{id}', 'show');
         Route::get('/part.getName', 'getName');

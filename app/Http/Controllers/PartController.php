@@ -18,7 +18,7 @@ use App\Services\CategoryService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class PartsController extends Controller
+class PartController extends Controller
 {
     private static $table_name = 'parts';
     private static $id_field = 'part_id';
@@ -215,7 +215,8 @@ class PartsController extends Controller
     }
 
     /**
-     * Get the part name for a given part ID
+     * Get the part name for a given part ID.
+     * Used in the stock changing modal.
      *
      * @param Request $request
      * @return string
