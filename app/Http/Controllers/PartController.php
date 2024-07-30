@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
 use App\Services\CategoryService;
+use App\Services\StockService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -28,11 +29,14 @@ class PartController extends Controller
 
     protected $categoryService;
     protected $databaseService;
+    protected $stockService;
+    
 
-    public function __construct(CategoryService $categoryService, DatabaseService $databaseService)
+    public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService)
     {
         $this->categoryService = $categoryService;
         $this->databaseService = $databaseService;
+        $this->stockService = $stockService;
     }
 
     /**
@@ -60,7 +64,7 @@ class PartController extends Controller
         / the corresponding element in the original $parts array.
         */
         foreach ($parts as &$part) {
-            $totalStock = \calculateTotalStock($part['stock_levels']);
+            $totalStock = $this->stockService->calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
         }
 
@@ -162,7 +166,7 @@ class PartController extends Controller
         // Check if request is authorized
         if (Auth::user()->id === $part['part_owner_u_fk']) {
             // Calculate total stock level
-            $total_stock = \calculateTotalStock($part['stock_levels']);
+            $total_stock = $this->stockService->calculateTotalStock($part['stock_levels']);
 
             // Return view
             return view(
@@ -494,7 +498,7 @@ class PartController extends Controller
 
             // Calculate new stock for updating the origin table in browser
             $stock = StockLevel::getStockLevelsByPartID($part_id);
-            $total_stock = \calculateTotalStock($stock);
+            $total_stock = $this->stockService->calculateTotalStock($stock);
 
             //! Check what this is used for and if - in the case of moving stock - both stock_level_ids are needed
             // Add entries to the result array
