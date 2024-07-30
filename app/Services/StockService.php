@@ -16,11 +16,11 @@ class StockService
     public function calculateTotalStock($stockLevels)
     {
         $total_stock = 0;
-    
+
         foreach ($stockLevels as $stockLevel) {
             $total_stock += $stockLevel['stock_level_quantity'];
         }
-    
+
         return $total_stock;
     }
 
@@ -42,9 +42,6 @@ class StockService
 
     /**
      * Process stock changes once they've been approved or no approval was necessary
-     *
-     * @param [type] $changes
-     * @return void
      */
     public function processApprovedChanges($changes)
     {
@@ -95,7 +92,8 @@ class StockService
                     'bom_id' => $bom_id,
                     'assemble_quantity' => $approved_change['assemble_quantity']
                 ];
-            } else {
+            }
+            else {
                 $processed_boms = [];
             }
         }
@@ -130,5 +128,118 @@ class StockService
             $quantity = $unique_processed_bom['assemble_quantity'];
             BomRun::createBomRun($processed_bom, $quantity, $user_id);
         }
+    }
+
+    public function parseRequestedChangeDetails($requested_change)
+    {
+        $change = $requested_change['change'];
+        $part_id = $requested_change['part_id'];
+        $quantity = $requested_change['quantity'];
+        $comment = $requested_change['comment'];
+        $to_location = $requested_change['to_location'];
+        $from_location = $requested_change['from_location'];
+        $status = $requested_change['status'] ?? NULL;
+        $bom_id = $requested_change['bom_id'] ?? NULL;
+        $assemble_quantity = $requested_change['assemble_quantity'] ?? NULL;
+
+        return [
+            'change' => $change,
+            'bom_id' => $bom_id,
+            'assemble_quantity' => $assemble_quantity,
+            'part_id' => $part_id,
+            'quantity' => $quantity,
+            'to_location' => $to_location,
+            'from_location' => $from_location,
+            'comment' => $comment,
+            'status' => $status
+        ];
+    }
+
+    public function getRelevantStockLevelsForChange($requested_change_details)
+    {
+        $stock_levels = StockLevel::getStockLevelsByPartID($requested_change_details['part_id']);
+        $current_stock_level_to = StockLevel::getStockInLocation($stock_levels, $requested_change_details['to_location']);
+        $current_stock_level_from = StockLevel::getStockInLocation($stock_levels, $requested_change_details['from_location']);
+
+        return [
+            'current_stock_level_to' => $current_stock_level_to,
+            'current_stock_level_from' => $current_stock_level_from
+        ];
+    }
+
+    public function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock)
+    {
+        $changes = $requested_change_details;
+        $change = $requested_change_details['change'];
+
+        if ($change == 1) {
+            $new_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
+            $changes['new_quantity'] = $new_quantity;
+            $status = 'gtg';
+        }
+        elseif ($change == -1) {
+            $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
+            $changes['new_quantity'] = $new_quantity;
+
+            if ($new_quantity < 0 && $requested_change_details['status'] != 'gtg') {
+                $status = 'permission_required';
+            }
+            else {
+                $status = 'gtg';
+            }
+        }
+        elseif ($change == 0) {
+            $to_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
+            $from_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
+
+            if ($from_quantity < 0 && $requested_change_details['status'] != 'gtg') {
+                $status = 'permission_required';
+            }
+            else {
+                $status = 'gtg';
+            }
+
+            $changes['to_quantity'] = $to_quantity;
+            $changes['from_quantity'] = $from_quantity;
+        }
+
+        $changes['status'] = $status;
+        $assemble_quantity = $requested_change_details['assemble_quantity'];
+        $changes['assemble_quantity'] = $assemble_quantity;
+
+        $result = ['changes' => $changes];
+
+        if ($status == 'permission_required') {
+            $negative_stock = $changes;
+            $result['negative_stock'] = $negative_stock;
+        }
+
+        return $result;
+    }
+
+    public function generateStockShortageResponse($negative_stock, $changes, $change)
+    {
+        if (!is_null($changes[0]['bom_id'])) {
+            $column_names = ['bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity'];
+            $nice_columns = ['BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity'];
+        }
+        else {
+            if ($change == 0) {
+                $column_names = ['part_id', 'quantity', 'from_location', 'from_quantity'];
+            }
+            else {
+                $column_names = ['part_id', 'quantity', 'from_location', 'new_quantity'];
+            }
+
+            $nice_columns = ['Part ID', 'Quantity needed', 'Location', 'Resulting Quantity'];
+        }
+
+        $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
+        echo json_encode([
+            'changes' => $changes,
+            'negative_stock' => $negative_stock,
+            'negative_stock_table' => $negative_stock_table,
+            'status' => 'permission_requested'
+        ]);
     }
 }
