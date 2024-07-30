@@ -72,7 +72,12 @@ class StockManager {
                 'X-CSRF-TOKEN': this.token
             },
             success: (response) => {
-                const r = JSON.parse(response);
+                const r = response;
+                console.log(r);
+                // console.log(r.status);
+                // console.log(r.changes);
+                // console.log(r.negative_stock);
+                // console.log(r.negative_stock.length);
 
                 if (r.status === 'success') {
                     //* Do the normal thing here, all requested stock available

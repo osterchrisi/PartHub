@@ -238,11 +238,12 @@ class StockService
         }
 
         $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
-        echo json_encode([
+
+        return [
             'changes' => $changes,
             'negative_stock' => $negative_stock,
             'negative_stock_table' => $negative_stock_table,
             'status' => 'permission_requested'
-        ]);
+        ];
     }
 }
