@@ -1,9 +1,9 @@
 <select multiple size="10" class="form-select form-select-sm" id="cat-select">
-    <option value="all" {{ (!$sc or $sc == "all" OR in_array("all", $sc)) ? "selected" : "" }}>All Categories</option>
+    <option value="all" {{ (!$search_category or $search_category == "all" OR in_array("all", $search_category)) ? "selected" : "" }}>All Categories</option>
     @foreach ($categories as $category)
         @php
             $selected = '';
-            if ($sc && is_array($sc) && in_array($category['category_id'], $sc)) {
+            if ($search_category && is_array($search_category) && in_array($category['category_id'], $search_category)) {
                 $selected = 'selected';
             }
         @endphp

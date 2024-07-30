@@ -1,13 +1,3 @@
-<?php
-use App\Models\User;
-use App\Models\Part;
-use App\Http\Controllers\PartsController;
-
-// For categories dropdown
-$search_category = isset($_GET['cat']) ? $_GET['cat'] : ['all'];
-$sc = PartsController::extractCategoryIds($search_category);
-?>
-
 {{-- Parent Template --}}
 @extends('app')
 

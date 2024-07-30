@@ -14,6 +14,7 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
+use App\Services\CategoryService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -24,6 +25,13 @@ class PartsController extends Controller
     private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'supplier_name', 'unit_name', 'part_id');
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
     private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', "ID");
+
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -36,7 +44,7 @@ class PartsController extends Controller
         $user_id = Auth::user()->id;
 
         $search_category = request()->has('cat') ? request()->input('cat') : ['all'];
-        $search_category = $this->extractCategoryIds($search_category);
+        $search_category = $this->categoryService->extractCategoryIds($search_category);
 
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
@@ -67,6 +75,7 @@ class PartsController extends Controller
                 'id_field' => self::$id_field,
                 'search_term' => $search_term,
                 'search_column' => $search_column,
+                'search_category' => $search_category,
                 'categoriesForCategoriesTable' => $categoriesForCategoriesTable,
                 // These are sent to extract clear names from foreign keys for the dropdown menus in the table
                 'categories' => $categories,
@@ -112,7 +121,7 @@ class PartsController extends Controller
             // Create a stock level entry
             $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
             // Create a stock level history entry (from_location is NULL)
-            $new_stock_level_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
+            $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
 
             // Persist database changes and set success flash message
             DB::commit();
@@ -126,7 +135,7 @@ class PartsController extends Controller
             $response = [
                 'Part ID' => $new_part_id,
                 'Stock Entry ID' => $new_stock_entry_id,
-                'Stock Level History ID' => $new_stock_level_id
+                'Stock Level History ID' => $new_stock_level_hist_id
             ];
             return response()->json($response);
 
