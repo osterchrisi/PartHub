@@ -102,7 +102,10 @@ class StockService
             $this->processBomRuns($processed_boms, $user_id);
         }
 
-        return $result;
+        return [
+            'status' => 'success',
+            'result' => $result
+        ];
     }
 
     /**

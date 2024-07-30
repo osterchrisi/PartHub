@@ -274,6 +274,7 @@ class PartController extends Controller
         if (!empty($negative_stock)) {
             $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
             exit;
+            // return response()->json($response);
         }
         //* To location and From location are the same - not using it right now as I take care of it directly in the front end
         // else if ($requested_change['to_location'] == $requested_change['from_location']) {
@@ -281,8 +282,9 @@ class PartController extends Controller
         // }
         //* No user permission necessary
         else {
-            $this->stockService->processApprovedChanges($changes);
-            echo json_encode(['status' => 'success', 'result' => $result]);
+            $result = $this->stockService->processApprovedChanges($changes);
+            return response()->json($result);
+            // echo json_encode(['status' => 'success', 'result' => $result]);
         }
     }
 
