@@ -21,6 +21,7 @@ class ResourceCreator {
     // Handle cancellation of the submit form modal, prevent multiple click listeners
     // Filtering for event.target, so the hiding of the category creation modal is not firing here
     this.clickListenerAttached = false;
+    this.categoryCreated = false;
     this.inputModal.on('hidden.bs.modal', (event) => {
       if (event.target === this.inputModal[0]) {
         this.removeAddButtonClickListener()
@@ -28,8 +29,8 @@ class ResourceCreator {
       }
     });
 
-    this.inputModal.on('shown.bs.modal', () => {
-      this.attachAddButtonClickListener();
+    this.inputModal.on('show.bs.modal', () => {
+        this.attachAddButtonClickListener();  
     });
 
     // Attach listeners to the category modal close buttons
@@ -186,8 +187,11 @@ class ResourceCreator {
             // Populate dropdowns
             this.addPartLocationDropdown(locations);
             this.addPartFootprintDropdown(footprints);
-            this.addPartCategoryDropdown(categories);
             this.addPartSupplierDropdown(suppliers);
+            if (this.categoryCreated == false) {
+              this.addPartCategoryDropdown(categories);
+            }
+            this.categoryCreated = false;
           }
 
           // Attach click listener and proceed
@@ -591,6 +595,7 @@ class ResourceCreator {
           this.addPartCategoryDropdown(newList);
           var selectize = $('#addPartCategorySelect')[0].selectize;
           selectize.addItem(newEntry['category_id']);
+          this.categoryCreated = true;
           $('#categoryCreationModal').modal('toggle');
           this.inputModal.modal('toggle');
         });
