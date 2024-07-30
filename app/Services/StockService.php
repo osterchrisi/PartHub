@@ -117,6 +117,7 @@ class StockService
         $unique_processed_boms = [];
         $unique_bom_ids = [];
 
+        //* Extract processed BOM ID(s)
         foreach ($processed_boms as $processed_bom) {
             $bomId = $processed_bom["bom_id"];
             if (!in_array($bomId, $unique_bom_ids)) {
@@ -133,6 +134,12 @@ class StockService
         }
     }
 
+    /**
+    * Parse and return details from the requested stock change.
+    *
+    * @param array $requested_change The stock change request data.
+    * @return array Parsed stock change details.
+    */
     public function parseRequestedChangeDetails($requested_change)
     {
         $change = $requested_change['change'];
@@ -158,6 +165,12 @@ class StockService
         ];
     }
 
+    /**
+    * Retrieve current stock levels for the specified part and locations.
+    *
+    * @param array $requested_change_details The parsed stock change details.
+    * @return array Current stock levels at specified locations.
+    */
     public function getRelevantStockLevelsForChange($requested_change_details)
     {
         $stock_levels = StockLevel::getStockLevelsByPartID($requested_change_details['part_id']);
@@ -170,7 +183,15 @@ class StockService
         ];
     }
 
-    public function prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock)
+    /**
+    * Collect and prepare details for stock changes, including handling potential shortages.
+    *
+    * @param array $requested_change_details The parsed stock change details.
+    * @param array $requested_change_stock_levels Current stock levels for the change.
+    * @param array $negative_stock Reference array for tracking negative stock.
+    * @return array Prepared stock change details, including any negative stock.
+    */
+    public function collectStockChangeDetails($requested_change_details, $requested_change_stock_levels, $negative_stock)
     {
         $changes = $requested_change_details;
         $change = $requested_change_details['change'];
@@ -220,6 +241,14 @@ class StockService
         return $result;
     }
 
+    /**
+    * Generate a response indicating stock shortage and request user permission to proceed.
+    *
+    * @param array $negative_stock Details of parts with insufficient stock.
+    * @param array $changes All prepared stock change details.
+    * @param int $change Type of stock change requested.
+    * @return array Response data for stock shortage scenario.
+    */
     public function generateStockShortageResponse($negative_stock, $changes, $change)
     {
         if (!is_null($changes[0]['bom_id'])) {

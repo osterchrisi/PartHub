@@ -56,7 +56,7 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::get('/part/{id}', 'show');
         Route::get('/part.getName', 'getName');
         Route::post('/part.delete', 'destroy');
-        Route::post('/parts.prepareStockChanges', 'prepareStockChanges');
+        Route::post('/parts.requestStockChange', 'handleStockRequests');
         Route::post('/part.create', 'create');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
     });

@@ -100,6 +100,11 @@ class BomController extends Controller
         }
     }
 
+    /**
+     * Takes BOM(s), retrieves the BOM Elements (parts) and creates an array of changes to be requested
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
     public static function prepareBomForAssembly(Request $request)
     {
         // Get the input values from the request
@@ -145,7 +150,7 @@ class BomController extends Controller
 
         // Make new PartController and let it do its thing
         $partController = app(PartController::class);
-        return $partController->prepareStockChanges($request);
+        return $partController->handleStockRequests($request);
     }
 
     public function importBom(Request $request)

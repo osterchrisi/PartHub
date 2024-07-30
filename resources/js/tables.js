@@ -694,10 +694,9 @@ export function assembleBoms(selectedRows, ids) {
       },
       success: function (response) {
 
-        var r = JSON.parse(response);
+        var r = response;
         if (r.status === 'success') {
           //* Do the normal thing here, all requested stock available
-          // console.log(r);
 
           $('#mBomAssembly').modal('hide');     // Hide Modal
           updateInfoWindow('bom', ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
@@ -705,7 +704,6 @@ export function assembleBoms(selectedRows, ids) {
         }
         else if (r.status === 'permission_requested') {
           //* User permission required
-          // console.log(r);
 
           // Display warning and missing stock table
           $('#btnAssembleBOMs').attr('disabled', true);  // Disable main "Assemble" button of modal
@@ -780,7 +778,7 @@ function continueAnyway(r, ids, token) {
 
   // Call the stock changing script with the already prepared stock changes
   $.ajax({
-    url: '/parts.prepareStockChanges',
+    url: '/parts.requestStockChange',
     type: 'POST',
     data: { stock_changes: r.changes },
     headers: {

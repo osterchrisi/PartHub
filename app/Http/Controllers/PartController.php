@@ -237,9 +237,16 @@ class PartController extends Controller
     }
 
     /**
-     * Not yet documented after huge refactoring...
+     * Handle and process stock change requests.
+     *
+     * Processes an array of stock change requests, determining the type of change (add, reduce, or move stock) 
+     * and updating stock levels accordingly. If changes result in negative stock levels, generates a response 
+     * requesting user permission; otherwise, processes the changes directly.
+     *
+     * @param Request $request The HTTP request containing stock change data.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating success or requesting user action.
      */
-    public function prepareStockChanges(Request $request)
+    public function handleStockRequests(Request $request)
     {
         // Access stock changes to prepare
         $requested_changes = $request->all()['stock_changes'];
@@ -254,14 +261,14 @@ class PartController extends Controller
         //* Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
         foreach ($requested_changes as $requested_change) {
 
-            // Extract variables from request
+            // Extract change details from request
             $requested_change_details = $this->stockService->parseRequestedChangeDetails($requested_change);
 
             // Get relevant stock levels for currently iterated part
             $requested_change_stock_levels = $this->stockService->getRelevantStockLevelsForChange($requested_change_details);
 
             // Collect changes to be made
-            $result = $this->stockService->prepareStockChangesArrays($requested_change_details, $requested_change_stock_levels, $negative_stock);
+            $result = $this->stockService->collectStockChangeDetails($requested_change_details, $requested_change_stock_levels, $negative_stock);
 
             // Append array of collected changes to the main arrays
             $changes[] = $result['changes'];
@@ -270,7 +277,7 @@ class PartController extends Controller
             }
         }
 
-        //* Stock shortage (i.e. entries in the negative_stock array), inform user and exit
+        //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
         if (!empty($negative_stock)) {
             $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
             return response()->json($response);
@@ -280,7 +287,6 @@ class PartController extends Controller
         else {
             $result = $this->stockService->processApprovedChanges($changes);
             return response()->json($result);
-            // echo json_encode(['status' => 'success', 'result' => $result]);
         }
     }
 }

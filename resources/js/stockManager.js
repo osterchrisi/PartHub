@@ -65,7 +65,7 @@ class StockManager {
      */
     requestStockChange(stockChanges, pid) {
         $.ajax({
-            url: '/parts.prepareStockChanges',
+            url: '/parts.requestStockChange',
             type: 'POST',
             data: { stock_changes: stockChanges },
             headers: {
@@ -132,7 +132,7 @@ class StockManager {
 
             // Request stock changes from Parts Controller
             $.ajax({
-                url: '/parts.prepareStockChanges',
+                url: '/parts.requestStockChange',
                 type: 'POST',
                 data: { stock_changes: r.changes },
                 headers: {
