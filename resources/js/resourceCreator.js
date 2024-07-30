@@ -21,7 +21,6 @@ class ResourceCreator {
     // Handle cancellation of the submit form modal, prevent multiple click listeners
     // Filtering for event.target, so the hiding of the category creation modal is not firing here
     this.clickListenerAttached = false;
-    this.categoryCreated = false;
     this.inputModal.on('hidden.bs.modal', (event) => {
       if (event.target === this.inputModal[0]) {
         this.removeAddButtonClickListener()
@@ -39,6 +38,9 @@ class ResourceCreator {
     if (categoryId) {
       this.categoryId = categoryId.categoryId;
     }
+
+    // Category creation flag to ensure proper category dropdown behaviour
+    this.categoryCreated = false;
   }
 
 
