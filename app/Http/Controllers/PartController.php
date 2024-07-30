@@ -22,15 +22,17 @@ class PartController extends Controller
 {
     private static $table_name = 'parts';
     private static $id_field = 'part_id';
-    private static $db_columns = array('state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'supplier_name', 'unit_name', 'part_id');
+    private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'supplier_name', 'unit_name', 'part_id'];
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
-    private static $nice_columns = array('Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', "ID");
+    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', "ID"];
 
     protected $categoryService;
+    protected $databaseService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CategoryService $categoryService, DatabaseService $databaseService)
     {
         $this->categoryService = $categoryService;
+        $this->databaseService = $databaseService;
     }
 
     /**
@@ -147,8 +149,6 @@ class PartController extends Controller
             //TODO: Should I flash something here?
             // Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
         }
-
-
     }
 
     /**
@@ -208,10 +208,9 @@ class PartController extends Controller
         $ids = $request->input('ids');
 
         foreach ($ids as $id) {
-            DatabaseService::deleteRow($table, $column, $id);
+            $this->databaseService->deleteRow($table, $column, $id);
             echo json_encode(array($ids, $table, $column));
         }
-
     }
 
     /**
@@ -241,13 +240,12 @@ class PartController extends Controller
         // Access stock changes to prepare
         $requested_changes = $request->all()['stock_changes'];
 
-        // Extracting the type of change from the first entry in the array (all entries have same type)
+        // Extract type of change from the first entry in the array (all entries have same type)
         $change = $requested_changes[0]['change'];
 
-
-        // Initialize the changes array and negative stock array
-        $changes = array();
-        $negative_stock = array();
+        // Initialize arrays
+        $changes = [];
+        $negative_stock = [];
 
         //* Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
         foreach ($requested_changes as $requested_change) {
@@ -266,7 +264,6 @@ class PartController extends Controller
             if (array_key_exists('negative_stock', $result)) {
                 $negative_stock[] = $result['negative_stock'];
             }
-
         }
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and exit
