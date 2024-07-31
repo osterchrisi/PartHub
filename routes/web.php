@@ -107,12 +107,14 @@ Route::controller(SupplierController::class)->group(function () {
 });
 
 //* Footprint Routes
-Route::controller(FootprintController::class)->group(function () {
+Route::middleware(['auth', 'verified', 'subscription'])->group(function () {
+    Route::controller(FootprintController::class)->group(function(){
     Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
     Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
     Route::post('/footprint.create', 'create')->middleware(['auth', 'verified']);
     Route::get('/footprints.get', 'getFootprints')->middleware(['auth', 'verified']);
     Route::get('/footprint/{id}', 'show')->middleware(['auth', 'verified']);
+    });
 });
 
 //* StockLevel Routes
@@ -186,4 +188,4 @@ Route::get('/image-testing', function () {
 });
 
 // Cashier / Subscriptions
-Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout']);
+Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);

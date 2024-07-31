@@ -43,4 +43,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Method to check if the user has no subscription
+    public function hasNoSubscription()
+    {
+        return $this->subscriptions->isEmpty();
+    }
+
+    // Method to assign a free subscription
+    public function assignFreeSubscription()
+    {
+        if ($this->hasNoSubscription()) {
+            $this->newSubscription('free_plan', 'price_1PiiQPEb2UyIF2sh3pqjBR75')->create(); // 'free-plan' is the ID of your free plan in Stripe
+        }
+    }
+
 }

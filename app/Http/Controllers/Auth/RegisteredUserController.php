@@ -72,6 +72,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $user->assignFreeSubscription();
+
         // Onboarding message
         Session::put('firstLogin', true);
 
@@ -94,6 +96,8 @@ class RegisteredUserController extends Controller
             // Redirect back with an error message
             return back()->withErrors(['email' => 'Failed to send welcome email. Please check your email address.']);
         }
+
+
 
         return redirect(RouteServiceProvider::HOME);
     }
