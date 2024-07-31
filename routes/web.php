@@ -185,18 +185,5 @@ Route::get('/image-testing', function () {
     return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });
 
-// For testing Cashier
-Route::get('/cashier-testing', function () {
-    return view('cz-cashier-test', ['title' => 'Cashier Test', 'view' => 'cz-cashier-test']);
-});
-Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
-Route::get('/subscription-checkout', function (Request $request) {
-    return $request->user()
-        ->newSubscription('default', 'price_1Onp7rEb2UyIF2shJJVhIDcL')
-        ->trialDays(30)
-        ->allowPromotionCodes()
-        ->checkout([
-            'success_url' => route('welcome'),
-            'cancel_url' => route('welcome'),
-        ]);
-});
+// Cashier / Subscriptions
+Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout']);
