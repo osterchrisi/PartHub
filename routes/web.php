@@ -15,6 +15,8 @@ use App\Http\Controllers\Auth\DemoLoginController;
 use App\Http\Controllers\SubscriptionController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 
 require __DIR__ . '/auth.php';
 
@@ -188,3 +190,13 @@ Route::get('/cashier-testing', function () {
     return view('cz-cashier-test', ['title' => 'Cashier Test', 'view' => 'cz-cashier-test']);
 });
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+Route::get('/subscription-checkout', function (Request $request) {
+    return $request->user()
+        ->newSubscription('default', 'price_1Onp7rEb2UyIF2shJJVhIDcL')
+        ->trialDays(30)
+        ->allowPromotionCodes()
+        ->checkout([
+            'success_url' => route('welcome'),
+            'cancel_url' => route('welcome'),
+        ]);
+});
