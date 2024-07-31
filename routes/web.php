@@ -12,6 +12,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ImageController;
 use App\Services\DatabaseService;
 use App\Http\Controllers\Auth\DemoLoginController;
+use App\Http\Controllers\SubscriptionController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -181,3 +182,9 @@ Route::get('/preview-email', function () {
 Route::get('/image-testing', function () {
     return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });
+
+// For testing Cashier
+Route::get('/cashier-testing', function () {
+    return view('cz-cashier-test', ['title' => 'Cashier Test', 'view' => 'cz-cashier-test']);
+});
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
