@@ -16,12 +16,12 @@ class BomController extends Controller
 {
     private static $table_name = 'boms';
     private static $id_field = 'bom_id';
-    private static $bom_list_table_headers = array('state', 'bom_name', 'bom_description', 'bom_id');
-    private static $nice_bom_list_table_headers = array("BOM Name", 'Description', 'ID');
-    private static $bom_detail_table_headers = array('part_name', 'element_quantity', 'stock_available', 'can_build');
-    private static $nice_bom_detail_table_headers = array('Part Name', 'Quantity needed', 'Total stock available', 'Can build');
-    private static $bomRunsTableHeaders = array('bom_run_datetime', 'bom_run_quantity', 'name');
-    private static $nice_bomRunsTableHeaders = array('Build Time', 'Build Quantity', 'User');
+    private static $bom_list_table_headers = ['state', 'bom_name', 'bom_description', 'bom_id'];
+    private static $nice_bom_list_table_headers = ["BOM Name", 'Description', 'ID'];
+    private static $bom_detail_table_headers = ['part_name', 'element_quantity', 'stock_available', 'can_build'];
+    private static $nice_bom_detail_table_headers = ['Part Name', 'Quantity needed', 'Total stock available', 'Can build'];
+    private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'name'];
+    private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'User'];
 
     /**
      * Display a listing of the resource.
