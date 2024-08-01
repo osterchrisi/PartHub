@@ -1,7 +1,8 @@
 @include('header')
 @include('navbar')
 
-<div class="d-flex flex-grow-1 justify-content-center align-items-center {{ $view == 'whatis' || 'signup' ? 'landing-page' : '' }}">
+<div
+    class="d-flex flex-grow-1 justify-content-center align-items-center {{ in_array($view, ['whatis', 'signup', 'verify-mail', 'Forgot Password']) ? 'landing-page' : '' }}">
     <div class="greeting d-flex align-items-center">
         @yield('content')
     </div>
@@ -12,4 +13,5 @@
 @yield('modals and menus')
 
 </body>
+
 </html>
