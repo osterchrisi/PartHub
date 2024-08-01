@@ -1,3 +1,7 @@
+{{-- @php
+    $view = isset($view) ? $view : 'none';
+@endphp --}}
+
 @include('header')
 @include('navbar')
 
