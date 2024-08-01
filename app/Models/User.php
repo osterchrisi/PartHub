@@ -8,9 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
+use App\Notifications\CustomVerifyEmail;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, Billable;
 
@@ -56,6 +57,16 @@ class User extends Authenticatable
         if ($this->hasNoSubscription()) {
             $this->newSubscription('free_plan', 'price_1PiiQPEb2UyIF2sh3pqjBR75')->create(); // 'free-plan' is the ID of your free plan in Stripe
         }
+    }
+
+    /**
+     * Send customized email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail);
     }
 
 }
