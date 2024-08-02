@@ -55,15 +55,12 @@ class CustomVerifyEmailMailable extends Mailable
     public function build()
     {
         return $this->subject(__('Verify Email Address'))
-                    ->view('components.email.layout')
+                    ->view('mail.VerifyEmail')
                     ->with([
-                        'url' => $this->verificationUrl,
-                        'greeting' => __('Hellllo!'),
-                        'introLines' => [__('Please click the button below to verify your email address.')],
-                        'actionText' => __('Verify Email Address'),
                         'actionUrl' => $this->verificationUrl,
+                        'actionText' => __('Verify Email Address'),
                         'outroLines' => [__('If you did not create an account, no further action is required.')],
-                        'salutation' => __('Regards,') . '<br>' . config('app.name'),
+                        // 'salutation' => '',
                     ]);
     }
      // public function content()
