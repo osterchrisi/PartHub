@@ -1,12 +1,8 @@
-{{-- @php
-    $view = isset($view) ? $view : 'none';
-@endphp --}}
-
 @include('header')
 @include('navbar')
 
 <div
-    class="d-flex flex-grow-1 justify-content-center align-items-center {{ in_array($view, ['whatis', 'signup', 'verify-mail', 'Forgot Password']) ? 'landing-page' : '' }}">
+    class="d-flex flex-grow-1 justify-content-center align-items-center {{ isset($view) && in_array($view, ['whatis', 'signup', 'verify-mail', 'Forgot Password']) ? 'landing-page' : '' }}">
     <div class="greeting d-flex align-items-center">
         @yield('content')
     </div>

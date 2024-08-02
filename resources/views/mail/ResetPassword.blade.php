@@ -11,5 +11,6 @@
 
     <p class="lead">If you did not request a password reset, no further action is required.</p>
 
-    <p class="lead">Regards,<br>{{ config('app.name') }}</p>
+    <p class="lead">All the best from Berlin,<br>
+        The PartHub Team</p>
 </x-email.layout>

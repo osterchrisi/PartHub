@@ -1,8 +1,6 @@
-@include('header')
-@include('navbar')
+@extends('centered-layout')
 
-<div class="d-flex flex-grow-1 justify-content-center align-items-center">
-    <div class="greeting d-flex align-items-center">
+@section('content')
         <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
             <thead>
                 <tr>
@@ -75,5 +73,4 @@
 
             <tbody>
         </table>
-    </div>
-</div>
+@endsection

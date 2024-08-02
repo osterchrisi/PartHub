@@ -1,3 +1,7 @@
+@php
+    $view = isset($view) ? $view : 'none';
+    $title = isset($title) ? $title : '';
+@endphp
 <!doctype html>
 <html lang="en">
 
@@ -84,9 +88,5 @@
 
 
 <!-- Setting height to full viewport for themes to work properly -->
-
-@php
-    $view = isset($view) ? $view : 'none';
-@endphp
 
 <body data-view="{{ $view }}" style="min-height: 100vh;">
