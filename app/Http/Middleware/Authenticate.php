@@ -14,7 +14,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        Log::info('Executing Authenticate Middleware');
+        // Log::info('Executing Authenticate Middleware');
         return $request->expectsJson() ? null : route('login');
     }
 }

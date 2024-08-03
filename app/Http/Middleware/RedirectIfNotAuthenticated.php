@@ -21,15 +21,15 @@ class RedirectIfNotAuthenticated
      */
     public function handle(Request $request, Closure $next): Response
     {
-        Log::info('Executing RedirectIfNotAuthenticated Middleware');
+        // Log::info('Executing RedirectIfNotAuthenticated Middleware');
         // Check if the user is not authenticated
         if (!Auth::check()) {
-            Log::info('User not authenticated. Redirecting to whatis.');
+            // Log::info('User not authenticated. Redirecting to whatis.');
             // Redirect to /whatis route
             return redirect()->route('whatis');
         }
 
-        Log::info('User authenticated. Proceeding with request.');
+        // Log::info('User authenticated. Proceeding with request.');
         // If authenticated, allow request to proceed
         return $next($request);
     }
