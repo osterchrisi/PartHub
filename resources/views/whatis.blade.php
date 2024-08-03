@@ -19,10 +19,10 @@
             <div class="col-md-8">
                 <div class="card shadow-sm rounded">
                     <div class="card-body text-center">
-                        <h2 class="display-4 mb-4">What is PartHub?</h2>
+                        <h2 class="display-4 mb-4">Start with a clean slate</h2>
                         <img src="app-related/image1.webp" class="img-fluid mb-4"
                             alt="Person organizing parts in a workshop">
-                        <p class="lead">PartHub is designed to keep your workplace tidy and let you focus on the creative
+                        <p class="lead">You work best in a tidy environment. PartHub is designed to let you focus on the creative
                             parts of your work. It is an Inventory and BOM management software.</p>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
             <div class="col-md-8">
                 <div class="card shadow-sm rounded">
                     <div class="card-body text-center bg-gradient text-white" style="background-color: #6c757d;">
-                        <h2 class="display-4 mb-4">How Can PartHub Help You?</h2>
+                        <h2 class="display-4 mb-4">Work better</h2>
                         <img src="app-related/image2.webp" class="img-fluid mb-4" alt="Person using a barcode scanner">
                         <p class="lead">Track stock like a pro. It's fun and efficient, with or without a barcode scanner.
                             Always know what you have and where it is.
