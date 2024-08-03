@@ -9,8 +9,8 @@
                 <h1 class="display-1 mb-4">Welcome to PartHub</h1>
                 <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Your Ultimate Inventory and BOM
                     Management Solution</p><br>
-                <a href="#features" class="btn btn-lg btn-light">Explore Features</a>
-                <a href="{{ route('signup') }}" class="btn btn-lg btn-outline-light ml-2">Sign Up Now</a>
+                <a href="#features" class="btn btn-lg btn-light">Explore Demo</a>
+                <a href="{{ route('signup') }}" class="btn btn-lg btn-light ml-2">Sign Up Now</a>
             </div>
         </div>
 
@@ -99,7 +99,7 @@
         </div>
 
         <!-- Future Development -->
-        <div class="row justify-content-center mb-5">
+        {{-- <div class="row justify-content-center mb-5">
             <div class="col-md-8">
                 <div class="card shadow-sm rounded">
                     <div class="card-body text-center bg-gradient text-white" style="background-color: #6c757d;">
@@ -118,7 +118,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Call to Action -->
         <div class="row justify-content-center mb-5" id="sign-up">

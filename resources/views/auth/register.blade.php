@@ -1,28 +1,23 @@
 @extends('centered-layout')
 @section('content')
     <div class="row">
-        <div class="col">
-            <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
-                <tr>
-                    <td colspan="4">
-                        <h1 class="display-1" id="welcome-headline">PartHub</h1><br>
-                        <h1>Pricing</h1><br>
+        {{-- <div class="col-3"></div> --}}
+        <div class="col text-center">
+            <h1 class="display-1" id="welcome-headline">PartHub</h1><br>
+            <h1>Pricing</h1><br>
 
-                        <p style="line-height: 1.5;">PartHub helps you focus on the fun part of making things<br>
-                            by taking care of the annoying tasks of stock keeping for you!<br><br>
-                            Currently PartHub is in beta<br>
-                            and it's a really good time to snatch afree
-                            early-bird account!</p>
-                        <p class="lead fw-bold"> There will always be a free tier for the enthusiasts!</p>
-                    </td>
-                </tr>
-            </table>
+            <p style="line-height: 1.5;">Focus on the fun part of making things<br>
+                Let PartHub tak care of the annoying tasks of stock keeping for you!<br><br>
+                Currently PartHub is in beta<br>
+                and it's a really good time to snatch afree
+                early-bird account!</p>
+            <p class="lead fw-bold"> There will always be a free tier for the enthusiasts!</p>
         </div>
         <div class="col bg-light pt-2">
-            <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
+            {{-- <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
                 <thead>
                     <tr>
-                        <th>
+                        <th> --}}
                             <h4 class="alert alert-info" role="alert">Now accepting sign ups for beta usage</h4>
                             <h2>Create your free PartHub account</h2>
                             @php
@@ -30,10 +25,10 @@
                                     echo '<div class="alert alert-dark" role="alert">reCAPTCHA was not verified</div>';
                                 }
                             @endphp
-                        </th>
+                        {{-- </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> --}}
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <tr>
@@ -65,7 +60,8 @@
                                 <br>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" required>
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">I agree to the <a href="{{ route('TOS') }}" target="_blank">Terms of Service</a></label>
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">I agree to the <a
+                                            href="{{ route('TOS') }}" target="_blank">Terms of Service</a></label>
                                 </div>
 
 
@@ -84,12 +80,13 @@
                                     <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
                                 </div>
                                 <input type="hidden" id="recaptchaResponse" name="recaptcha_response">
-                            </td>
+                            {{-- </td>
                         </tr>
                     </form>
                 </tbody>
-            </table>
+            </table> --}}
         </div>
+        {{-- <div class="col-3"></div> --}}
     </div>
 @endsection
 
