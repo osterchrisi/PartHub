@@ -86,7 +86,6 @@ return new class extends Migration
             $table->string('part_name')->index('part_name');
             $table->string('part_description')->nullable();
             $table->string('part_comment')->nullable();
-            $table->timestamp('created_at')->useCurrent();
             $table->integer('part_category_fk')->nullable()->default(1)->index('part_category_fk');
             $table->integer('part_footprint_fk')->nullable()->default(1)->index('part_footprint_fk');
             $table->integer('part_unit_fk')->nullable()->default(1)->index('part_unit_fk');
