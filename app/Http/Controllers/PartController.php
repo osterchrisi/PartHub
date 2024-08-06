@@ -52,7 +52,7 @@ class PartController extends Controller
         $parts = Part::queryParts($search_column, $search_term, $column_names, $search_category, $user_id);
 
         $categories = Category::availableCategories('array'); // Request as array of arrays - these are used for displaying / chosing in the parts table
-        $categoriesForCategoriesTable = Category::where('part_category_owner_u_fk', $user_id)->with('children')->get(); // These are used for the categories tree table in the left side of parts view
+        $categoriesForCategoriesTable = Category::where('part_category_owner_u_fk', $user_id)->with('children')->orderBy('category_name', 'asc')->get(); // These are used for the categories tree table in the left side of parts view
         $footprints = Footprint::availableFootprints();
         $suppliers = Supplier::availableSuppliers();
 

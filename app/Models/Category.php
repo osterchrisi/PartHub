@@ -44,7 +44,8 @@ class Category extends Model
 
         // Find the category with the given id and user_id
         $categories = Category::where('part_category_owner_u_fk', $user->id)
-            ->get();
+                          ->orderBy('category_name', 'asc')
+                          ->get();
 
         // Return the category as JSON response (for JS)
         if ($format === 'json') {
