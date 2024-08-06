@@ -13,8 +13,8 @@ class LocationController extends Controller
 
     private static $table_name = 'locations';
     private static $id_field = 'location_id';
-    private static $location_list_table_headers = array('state', 'location_name', 'location_description', 'location_id');
-    private static $nice_location_list_table_headers = array("Location", 'Description', 'ID');
+    private static $location_list_table_headers = ['state', 'location_name', 'location_description', 'location_id'];
+    private static $nice_location_list_table_headers = ["Location", 'Description', 'ID'];
     public static function getLocations()
     {
         return Location::availableLocations();
