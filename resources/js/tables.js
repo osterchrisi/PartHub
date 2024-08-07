@@ -11,7 +11,6 @@ import {
 import { makeTableWindowResizable } from './custom.js';
 import { ResourceCreator } from "./resourceCreator.js";
 import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
-import { isAxiosError } from "axios";
 
 /**
  * Bootstrap the parts table
@@ -155,7 +154,6 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
         newCategoryCreator.showModal();
         newCategoryCreator.attachAddButtonClickListener(); //! Not necessary anymore
       });
-      // callCategoryEntryModal(categoryId);
     }
   });
 };

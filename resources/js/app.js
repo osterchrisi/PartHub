@@ -52,14 +52,6 @@ $(document).ready(function () {
     clearModalOnHiding();
     focusFirstInputInModals();
 
-    // To track down weird selectize behaviour
-    $(document).on('keydown', function (event) {
-        if (event.key === 'Enter') {
-            console.log('Enter key pressed:', event);
-            console.log('Enter key pressed while focused on:', document.activeElement);
-        }
-    });
-
     // Initialize Tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
