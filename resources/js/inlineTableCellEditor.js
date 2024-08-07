@@ -23,7 +23,7 @@ class InlineTableCellEditor {
 
     editTextCell() {
         // Create input field
-        const input = $('<textarea class="form-control">').val(this.originalValue);
+        const input = $('<textarea class="form-control">').val(this.originalValue.trim());
         this.$cell.empty().append(input);
         input.focus();
 
