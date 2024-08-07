@@ -31,24 +31,14 @@ class InlineTableCellEditor {
         const label = $('<small class="text-muted">Enter: Confirm</small>');
         this.$cell.append(label);
 
-        // Confirm upon pressing Enter key
+        // Update database value on pressing Enter key
         input.keypress((event) => {
             if (event.keyCode === 13) {
                 input.blur();
             }
         });
 
-        // Close input on "Escape" key press
-        input.on('keydown', (event) => {
-            if (event.key === "Escape") {
-                input.remove();
-                this.$cell.text(this.originalValue);
-                this.$cell.removeClass('editing');
-                return;
-            }
-        });
-
-        // Enter new value
+        // Update database value on blur event (clicking outside the input field)
         input.blur(() => {
             // Get newly entered value
             const new_value = input.val();
@@ -56,14 +46,13 @@ class InlineTableCellEditor {
             // Update cell with new value
             this.$cell.text(new_value);
 
-            // Get cell id, column name and database table
+            // Get database row id, id column name, currently edited column name and database table
             // These are encoded in the table data cells and look like this, e.g.:
-            // 337 'part_id' 'part_description' 'parts' 'Decade Counter/Divider with 10 Decoded Outputs'
+            // 337 'part_id' 'part_description' 'parts'
             const id = this.$cell.closest('td').data('id');
             const column = this.$cell.closest('td').data('column');
             const table_name = this.$cell.closest('td').data('table_name');
             const id_field = this.$cell.closest('td').data('id_field');
-            // console.log(id, id_field, column, table_name, new_value);
 
             // Call the updating function
             this.updateCell(id, column, table_name, new_value, id_field);
@@ -83,6 +72,16 @@ class InlineTableCellEditor {
             } else if (table_name == 'part_categories') {
                 rebuildCategoriesTable();
                 rebuildPartsTable('');
+            }
+        });
+
+        // Close input on "Escape" key press (don't update)
+        input.on('keydown', (event) => {
+            if (event.key === "Escape") {
+                input.remove();
+                this.$cell.text(this.originalValue);
+                this.$cell.removeClass('editing');
+                return;
             }
         });
     }
