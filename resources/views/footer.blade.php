@@ -1,5 +1,5 @@
 <?php
-$version = file_get_contents('VERSION');
+$version = file_get_contents('../VERSION');
 ?>
 
 
