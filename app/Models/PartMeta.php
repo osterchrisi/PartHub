@@ -17,9 +17,14 @@ class PartMeta extends Model
     
     {
         //TODO: Too tired to figure if this makes sense? Still a copy of footprint Model
-        // return $this->belongsTo(Part::class, 'part_footprint_fk', 'part_id');
+        return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
     }
 
+    /**
+     * Returns all available Metas, so they can be selected
+     * @param mixed $format
+     * @return array|string
+     */
     public static function availablePartMetas($format = 'json')
     {
 
@@ -45,15 +50,11 @@ class PartMeta extends Model
         return self::find($meta_id);
     }
 
-    public static function getPartsByPartMeta($meta_id)
-    {
-        //TODO: Too tired to figure if this makes sense? Still a copy of footprint Model
-        // return Part::where('part_footprint_fk', $footprint_id)->get();
-    }
+    //TODO Code function to return array / json with key, value pairs for a given meta
 
 
     public static function createPartMeta($footprint_name, $footprint_alias)
-    //TODO: Too tired to figure if this makes sense? Still a copy of footprint Model
+    //TODO: Code this
     {
         // $user_id = Auth::user()->id;
 
