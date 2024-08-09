@@ -14,9 +14,7 @@ class PartMeta extends Model
     protected $primaryKey = 'meta_id';
 
     public function part()
-    
     {
-        //TODO: Too tired to figure if this makes sense? Still a copy of footprint Model
         return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
     }
 
@@ -68,6 +66,6 @@ class PartMeta extends Model
         // $new_footprint_id = $footprint->footprint_id;
 
         // return $new_footprint_id;
-        
+
     }
 }

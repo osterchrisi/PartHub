@@ -7,13 +7,14 @@
     @include('components.menus.bomsTableRightClickMenu')
 @endsection
 
-{{-- Extra Toolbar Buttons --}}
-@section('page specific buttons')
-    <li class="nav-item p-1">
-        <button type="button" class="btn btn-sm btn-primary btn-labeled" id="toolbarAssembleBomButton"><span class="btn-label">
-                <i class="fas fa-lg fa-wrench"></i></span>Assemble</button>
-    </li>
-@endsection
+{{-- Toolbar Buttons --}}
+@php
+$showAddButton = true;
+$showDeleteButton = true;
+$showEditButton = true;
+$showFilterButton = true;
+$showAssembleButton = true;
+@endphp
 
 {{-- Filter Form --}}
 @section('filter-form')

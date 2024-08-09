@@ -120,3 +120,17 @@ tr.selected-last td {
 .footer-table td{
     padding-bottom: 0;
 }
+
+/* Toolbar Buttons */
+/* resources/css/components.css */
+
+.toolbar-button {
+    background-color: rgb(43, 87, 153);
+    border-color: rgb(43, 87, 153);
+    color: white;
+}
+
+
+.toolbar-button .btn-label i {
+    margin-right: 4px;
+}

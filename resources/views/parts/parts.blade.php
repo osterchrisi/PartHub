@@ -1,6 +1,14 @@
 {{-- Parent Template --}}
 @extends('app')
 
+{{-- Toolbar Buttons --}}
+@php
+$showAddButton = true;
+$showDeleteButton = true;
+$showEditButton = true;
+$showFilterButton = true;
+@endphp
+
 {{-- Need to figure out why the order of these modals matters.
 If the right-click menu is not on top, it won't show --}}
 {{-- Modals and Menus --}}

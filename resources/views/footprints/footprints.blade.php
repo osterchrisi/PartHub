@@ -1,6 +1,14 @@
 {{-- Parent Template --}}
 @extends('app')
 
+{{-- Toolbar Buttons --}}
+@php
+$showAddButton = true;
+$showDeleteButton = true;
+$showEditButton = true;
+$showFilterButton = true;
+@endphp
+
 {{-- Modals and Menus --}}
 @section('modals and menus')
     @include('components.modals.footprintEntryModal', ['footprint_name' => ''])
