@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
@@ -16,13 +17,13 @@ class SocialiteController extends Controller
 {
     public function redirectToGoogle()
     {
-        return Socialite::driver('google_oauth')->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google_oauth')->user();
+            $googleUser = Socialite::driver('google')->user();
 
             // Check if the user already exists in your database
             $user = User::where('email', $googleUser->getEmail())->first();

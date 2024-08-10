@@ -58,6 +58,14 @@
                     @endif
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <hr> OR <hr>
+                    <a href="{{ route('google.login') }}" class="btn btn-primary">
+                        Continue with Google account
+                    </a>
+                </td>
+            </tr>
             {{-- @unless (auth()->check())
                     <tr>
                         <td colspan="3">
