@@ -16,6 +16,8 @@ use App\Http\Controllers\SubscriptionController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\SocialiteController;
+
 
 
 require __DIR__ . '/auth.php';
@@ -131,10 +133,10 @@ Route::controller(ImageController::class)->group(function () {
 });
 
 //* Standalone Pages Routes
-Route::get('/pricing', function () {
-    return view('pricing', ['title' => 'Pricing', 'view' => 'pricing']);
-})
-    ->name('pricing');
+// Route::get('/pricing', function () {
+//     return view('pricing', ['title' => 'Pricing', 'view' => 'pricing']);
+// })
+//     ->name('pricing');
 
 // Sign Up for new users
 Route::get('/signup', function () {
@@ -189,3 +191,7 @@ Route::get('/image-testing', function () {
 
 // Cashier / Subscriptions
 Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);
+
+// Socialite / Google OAuth login
+Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);

@@ -39,4 +39,11 @@ return [
     'gtag' => [
         'tag' => env('VITE_GTAG'),
     ],
+
+    'google_oauth' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
 ];
