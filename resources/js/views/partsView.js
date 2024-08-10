@@ -9,7 +9,6 @@ import {
 } from "../tables";
 
 import {
-    initializePopovers,
     initializeMultiSelect,
     loadSelectedRow,
     updateInfoWindow
@@ -59,7 +58,6 @@ export function initializePartsView() {
         rebuildPartsTable(modifiedQueryString);
     });
 
-    initializePopovers();
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
 
     const newPartCreator = new ResourceCreator({

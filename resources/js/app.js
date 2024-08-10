@@ -14,7 +14,8 @@ import {
 import {
     makeTableWindowResizable,
     clearModalOnHiding,
-    focusFirstInputInModals
+    focusFirstInputInModals,
+    initializePopovers
 } from './custom';
 
 const currentView = document.body.getAttribute('data-view');
@@ -51,6 +52,7 @@ $(document).ready(function () {
     makeTableWindowResizable();
     clearModalOnHiding();
     focusFirstInputInModals();
+    initializePopovers();
 
     // Initialize Tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

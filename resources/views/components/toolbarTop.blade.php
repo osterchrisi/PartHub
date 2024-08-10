@@ -1,6 +1,6 @@
 <div class="container-fluid px-0 sticky-top" style="z-index: 2;">
     <div class="bg-gradient d-flex align-items-center toolbar-top">
-        <div class="pb-0 mb-0 pt-2 ps-3">
+        <div class="pt-2 ps-3">
             <h4 class="toolbar-title">{{ $title }}</h4>
         </div>
         <ul class="nav px-2">
