@@ -110,12 +110,12 @@ Route::controller(SupplierController::class)->group(function () {
 
 //* Footprint Routes
 Route::middleware(['auth', 'verified', 'subscription'])->group(function () {
-    Route::controller(FootprintController::class)->group(function(){
-    Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
-    Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
-    Route::post('/footprint.create', 'create')->middleware(['auth', 'verified']);
-    Route::get('/footprints.get', 'getFootprints')->middleware(['auth', 'verified']);
-    Route::get('/footprint/{id}', 'show')->middleware(['auth', 'verified']);
+    Route::controller(FootprintController::class)->group(function () {
+        Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
+        Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
+        Route::post('/footprint.create', 'create')->middleware(['auth', 'verified']);
+        Route::get('/footprints.get', 'getFootprints')->middleware(['auth', 'verified']);
+        Route::get('/footprint/{id}', 'show')->middleware(['auth', 'verified']);
     });
 });
 
@@ -163,6 +163,12 @@ Route::get('/TOS', function () {
     return view('TOS', ['title' => 'Terms of Service', 'view' => 'TOS']);
 })
     ->name('TOS');
+
+// Privacy Policy
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy', ['title' => 'Privacy Policy', 'view' => 'privacy-policy']);
+})
+    ->name('privacy-policy');
 
 // Imprint
 Route::get('/imprint', function () {

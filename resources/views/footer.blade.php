@@ -18,6 +18,11 @@ $version = file_get_contents('../VERSION');
             </td>
             <td>
                 <div>
+                    <span class="fs-6 lead"><a href="{{ route('privacy-policy') }}">Privacy Policy</a></p>
+                </div>
+            </td>
+            <td>
+                <div>
                     <span class="fs-6 lead"><a href="{{ route('imprint') }}">Imprint</a></p>
                 </div>
             </td>
