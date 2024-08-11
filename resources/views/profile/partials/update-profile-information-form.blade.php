@@ -32,7 +32,7 @@
                 <x-text-input id="email" name="email" type="email" class="form-control form-control-sm"
                     :value="old('email', $user->email)" required autocomplete="username" />
                 <x-input-error class="alert" :messages="$errors->get('email')" />
-
+                    
                 @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                     <div>
                         <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
@@ -61,6 +61,13 @@
                 @if (session('status') === 'profile-updated')
                     <div x-data="{ show: true }" class="alert alert-success mt-3 p-2 pe-0">{{ __('Saved!') }}</div>
                 @endif
+
+                @if (session('status') === 'email-updated')
+                    <div x-data="{ show: true }" class="alert alert-success mt-3 p-2 pe-0">{{ __('Your email address has been successfully changed.') }}</div>
+                @endif
+                @if (session('status') === 'email-changed')
+                <div x-data="{ show: true }" class="alert alert-success mt-3 p-2 pe-0">{{ __('A verification link has been sent to your new email address.') }}</div>
+            @endif
             </div>
         </div>
     </form>

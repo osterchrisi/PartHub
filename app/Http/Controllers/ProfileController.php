@@ -31,40 +31,57 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        
-        $user = $request->user();
-        $user->fill($request->validated());
-        Log::info('Update request', [$request]);
-        
-    
-        if ($request->user()->isDirty('email')) {
-            Log::info('Email is diry');
-            // Generate a verification token
-            $verificationToken = Str::random(32);
-      
-            // Option 2: Store the pending email and token in the `email_changes` table
-            DB::table('email_changes')->insert([
-                'user_id' => $user->id,
-                'new_email' => $request->input('email'),
-                'verification_token' => $verificationToken,
-                'expires_at' => now()->addHours(24),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-    
+{
+    $user = $request->user();
+    $user->fill($request->validated());
+
+    if ($request->user()->isDirty('email')) {
+        Log::info('Email is dirty');
+        // Generate a verification token
+        $verificationToken = Str::random(32);
+
+        // Construct the verification URL
+        $verificationUrl = route('email.verify', ['token' => $verificationToken]);
+
+        // Store the pending email and token in the `email_changes` table
+        DB::table('email_changes')->insert([
+            'user_id' => $user->id,
+            'new_email' => $request->input('email'),
+            'verification_token' => $verificationToken,
+            'expires_at' => now()->addHours(24),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        try {
             // Send the verification email to the new email address
-            Mail::to($request->input('email'))->send(new EmailChangeVerification($user, $verificationToken));
-    
-            return Redirect::route('dashboard')->with('status', 'email-verification-sent');
+            Mail::to($request->input('email'))->send(new EmailChangeVerification($verificationUrl, $user->name));
+
+            return Redirect::route('dashboard')->with('status', 'email-changed');
+        } catch (\Exception $e) {
+            // Log the error for debugging purposes
+            Log::error('Email could not be sent: ' . $e->getMessage());
+
+            // Optionally, remove the pending email change record to prevent issues
+            DB::table('email_changes')
+                ->where('user_id', $user->id)
+                ->where('new_email', $request->input('email'))
+                ->delete();
+
+            // Inform the user that the email verification failed
+            return Redirect::route('dashboard')->withErrors([
+                'email' => 'The email verification could not be sent. Please check the email address and try again.',
+            ]);
         }
-    
-        // If email isn't being changed, just save the other profile data
-        
-        $user->save();
-    
-        return Redirect::route('dashboard')->with('status', 'profile-updated');
     }
+
+    // If email isn't being changed, just save the other profile data
+    $user->save();
+
+    return Redirect::route('dashboard')->with('status', 'profile-updated');
+}
+
+
 
     /**
      * Delete the user's account.

@@ -12,7 +12,6 @@ class EmailChangeController extends Controller
 {
     public function verify($token)
     {
-        // Option 2: Using the `email_changes` table
         $emailChange = DB::table('email_changes')
             ->where('verification_token', $token)
             ->where('expires_at', '>', now())
@@ -26,12 +25,11 @@ class EmailChangeController extends Controller
 
             // Clean up the email_changes table
             DB::table('email_changes')->where('id', $emailChange->id)->delete();
+            return Redirect::route('dashboard')->with('status', 'email-updated');
         }
         else {
             abort(404);
         }
-
-        return Redirect::route('dashboard')->with('status', 'email-verified');
     }
 
 }
