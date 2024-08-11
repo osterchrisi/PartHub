@@ -7,12 +7,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 
 class DemoLoginController extends Controller
 {
     public function login(Request $request)
     {
+        Log::info(env('APP_ENV'));
         // Live environment
         if (env('APP_ENV') == 'live') {
             // $redirectUrl = $request->getScheme() . '://demo.parthub.online';
