@@ -49,7 +49,8 @@
                 <div class="form-check form-switch mb-3">
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" required>
                     <label class="form-check-label" for="flexSwitchCheckDefault">I agree to the <a
-                            href="{{ route('TOS') }}" target="_blank">Terms of Service</a></label>
+                            href="{{ route('TOS') }}" target="_blank">Terms of Service</a> and <a
+                            href="{{ route('privacy-policy') }}" target="_blank">Privacy Policy</a></label>
                 </div>
                 <div class="my-2 text-center">
                     <button type="submit" class="btn btn-lg btn-primary" id="signupBtn" disabled>Create account</button>
