@@ -11,7 +11,9 @@
                     <div class="alert alert-info" role="alert">Nice to have you back, {{ optional(Auth::user())->name }}! 🚀
                     </div>
                 @elseif (session('firstLogin'))
-                    <div class="alert alert-info" role="alert">Glad to have you onboard, {{ optional(Auth::user())->name }}!
+                    <div class="alert alert-info" role="alert">Glad to have you onboard,
+                        {{ optional(Auth::user())->name }}!<br>Your registration was successful! Please check your email for
+                        further instructions.
                         🚀</div>
                 @endif
 

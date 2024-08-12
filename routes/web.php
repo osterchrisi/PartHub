@@ -17,6 +17,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Providers\RouteServiceProvider;
+
 
 
 
@@ -193,6 +195,10 @@ Route::get('/preview-email', function () {
 // For testing views
 Route::get('/image-testing', function () {
     return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
+});
+
+Route::get('/test-flash', function () {
+    return redirect()->route('welcome')->with('firstLogin', true);
 });
 
 // Cashier / Subscriptions

@@ -47,16 +47,12 @@ class RegisteredUserController extends Controller
 
         // Recaptcha processing
         $recaptcha_response = $request->input('recaptcha_response');
-
         $siteVerify = Http::asForm()
             ->post('https://www.google.com/recaptcha/api/siteverify', [
                 'secret' => config('services.recaptcha.secretKey'),
                 'response' => $recaptcha_response,
             ]);
-
-
         $recaptcha = $siteVerify->json();
-
         if (!$recaptcha['success']) {
             return redirect()->route('register')->withErrors(['recaptcha' => 'reCAPTCHA validation failed.'])->withInput();
         }
@@ -69,13 +65,8 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-
         Auth::login($user);
-
         $user->assignFreeSubscription();
-
-        // Onboarding message
-        Session::put('firstLogin', true);
 
         // Create a default location, so user can start adding parts immediately
         Location::createLocation("Default Location", "Feel free to change the description");
@@ -83,22 +74,15 @@ class RegisteredUserController extends Controller
         // Create a root category
         Category::createNewRootCategory();
 
-
         // Send welcome e-mail
         try {
-            // Send welcome email
             Mail::to($request->email)->send(new WelcomeEmail($user));
-
-            // Redirect to success page or show success message
-            // return redirect()->route('success')->with('message', 'Registration successful! Check your email for further instructions.');
         } catch (TransportExceptionInterface $e) {
             //! Log the exception or handle it appropriately
             // Redirect back with an error message
             return back()->withErrors(['email' => 'Failed to send welcome email. Please check your email address.']);
         }
-
-
-
-        return redirect(RouteServiceProvider::HOME);
+        // With onboarding message
+        return redirect(RouteServiceProvider::HOME)->with('firstLogin', true);
     }
 }
