@@ -5,6 +5,9 @@
         <thead>
             <tr>
                 <th>
+                    @if (session('loggedOut'))
+                        <div class="alert alert-success">You've been successfully logged out</div>
+                    @endif
                     <h4>Log in to your PartHub account</h4>
                 </th>
             </tr>
@@ -60,7 +63,8 @@
             </tr>
             <tr>
                 <td>
-                    <hr> OR <hr>
+                    <hr> OR
+                    <hr>
                     <a href="{{ route('google.login') }}" class="btn btn-primary">
                         Continue with Google account
                     </a>
