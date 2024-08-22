@@ -7,14 +7,14 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Log;
-
-
+use App\Traits\RegistersUsers;
 
 class SocialiteController extends Controller
 {
+    use RegistersUsers;
+
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
@@ -31,11 +31,9 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            }
-            else {
+            } else {
                 // Use the existing registration logic to register the user
-                $registeredUserController = new RegisteredUserController();
-                $registeredUserController->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
+                $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
             }
 
             // Redirect to home or intended route
