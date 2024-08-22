@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Log;
+
 
 
 class SocialiteController extends Controller
@@ -39,7 +41,7 @@ class SocialiteController extends Controller
             // Redirect to home or intended route
             return redirect()->intended(RouteServiceProvider::HOME)->with('loggedIn', true);
         } catch (\Exception $e) {
-            // Handle error
+            Log::error('Google login failed', ['exception' => $e]);
             return Redirect::route('login')->with('error', 'Login failed.');
         }
     }
