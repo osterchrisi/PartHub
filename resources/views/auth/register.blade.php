@@ -18,7 +18,11 @@
             <div class="text-center mb-3">
                 <h2>Create your free account</h2>
             </div>
-
+            <div class="text-center mb-3">
+                <a href="{{ route('google.login') }}" class="btn btn-primary">
+                    Sign up with Google account
+                </a>
+            </div>
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 {{-- User Name --}}

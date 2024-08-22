@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Providers\RouteServiceProvider;
 
 
 class SocialiteController extends Controller
@@ -25,22 +23,24 @@ class SocialiteController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // Check if the user already exists in your database
+            // Check if the user already exists
             $user = User::where('email', $googleUser->getEmail())->first();
 
             if ($user) {
-                // If user exists, log them in
+                // Log the user in if they already exist
                 Auth::login($user);
             }
             else {
-                return Redirect::route('login')->with('error', 'No such user');
+                // Use the existing registration logic to register the user
+                $registeredUserController = new RegisteredUserController();
+                $registeredUserController->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
             }
 
-            // Redirect to the checkout screen
-            return Redirect::route('home');
+            // Redirect to home or intended route
+            return redirect()->intended(RouteServiceProvider::HOME)->with('loggedIn', true);
         } catch (\Exception $e) {
-            // Handle errors here
-            return Redirect::route('login')->withErrors('Login failed.');
+            // Handle error
+            return Redirect::route('login')->with('error', 'Login failed.');
         }
     }
 }
