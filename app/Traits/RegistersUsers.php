@@ -16,11 +16,22 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 trait RegistersUsers
 {
     /**
-     * Centralized registration logic.
+     * Register a new user, create related resources, and log them in.
+     *
+     * This method handles the entire user registration process, including
+     * email validation, user creation, firing the registration event, logging 
+     * the user in, and creating default locations and categories.
+     *
+     * @param string $name The name of the user.
+     * @param string $email The email address of the user.
+     * @param string|null $password The password of the user, or null to generate one.
+     * @return \App\Models\User The newly registered user.
+     * @throws \Illuminate\Validation\ValidationException If email validation fails.
      */
     protected function registerUser(string $name, string $email, string $password = null): User
     {
         // Try to send the welcome email before creating the user
+        //TODO: Use something better than sending a mail to verify... Laravel supports MX record validation, e.g. $request->validate(['email' => 'required|email|dns']);
         $this->validateEmailCanReceiveMail($email);
 
         // If email validation succeeds, create the user

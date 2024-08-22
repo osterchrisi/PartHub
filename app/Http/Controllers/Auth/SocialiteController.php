@@ -15,11 +15,21 @@ class SocialiteController extends Controller
 {
     use RegistersUsers;
 
+    /**
+     * Redirect the user to the Google authentication page.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
+    /**
+     * Handle the callback from Google after authentication.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function handleGoogleCallback()
     {
         try {
@@ -31,7 +41,8 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            } else {
+            }
+            else {
                 // Use the existing registration logic to register the user
                 $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
             }
