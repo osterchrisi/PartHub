@@ -8,6 +8,12 @@
                     @if (session('loggedOut'))
                         <div class="alert alert-success">You've been successfully logged out</div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ session('error') }}</p>
+                        </div>
+                    @endif
+
                     <h4>Log in to your PartHub account</h4>
                 </th>
             </tr>

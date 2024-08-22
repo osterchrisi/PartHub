@@ -33,20 +33,11 @@ class SocialiteController extends Controller
                 Auth::login($user);
             }
             else {
-                // If user does not exist, create a new user
-                $user = User::create([
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                    'password' => Hash::make(Str::random(16)), // Generate random password
-                ]);
-
-                Auth::login($user);
+                return Redirect::route('login')->with('error', 'No such user');
             }
 
             // Redirect to the checkout screen
-            return Redirect::route('checkout');
+            return Redirect::route('home');
         } catch (\Exception $e) {
             // Handle errors here
             return Redirect::route('login')->withErrors('Login failed.');
