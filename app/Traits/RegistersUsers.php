@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Illuminate\Auth\Events\Registered;
 
 trait RegistersUsers
 {
@@ -34,7 +35,7 @@ trait RegistersUsers
         //TODO: Use something better than sending a mail to verify... Laravel supports MX record validation, e.g. $request->validate(['email' => 'required|email|dns']);
         $this->validateEmailCanReceiveMail($email);
 
-        // If email validation succeeds, create the user
+        // If email validation succeeds, create the user,  create password if google Oauth
         $user = User::create([
             'name' => $name,
             'email' => $email,
@@ -42,7 +43,7 @@ trait RegistersUsers
         ]);
 
         // Fire registration event
-        event(new \Illuminate\Auth\Events\Registered($user));
+        event(new Registered($user));
 
         // Log the user in
         Auth::login($user);
