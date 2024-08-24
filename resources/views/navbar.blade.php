@@ -28,6 +28,9 @@ $user_name = $user ? $user->name : '';
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('footprints') ? 'active' : '' }}" href="{{ route('footprints') }}">Footprints</a>
                     </li>
+                    @subscribed('maker')
+                    maker
+                    @endsubscribed
                 </ul>
                 <div class="d-flex">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">

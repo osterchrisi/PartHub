@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
+use Illuminate\Support\Facades\Blade;
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -22,5 +24,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Cashier::calculateTaxes();
+
+        Blade::if('subscribed', function ($plan) {
+            return auth()->check() && auth()->user()->subscribed($plan);
+        });
+        
     }
 }
