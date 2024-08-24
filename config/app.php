@@ -171,6 +171,7 @@ return [
         App\Providers\CategoryServiceProvider::class,
         App\Providers\DatabaseServiceProvider::class,
         App\Providers\StockServiceProvider::class,
+        App\Providers\BladeServiceProvider::class,
     ])->toArray(),
 
     /*

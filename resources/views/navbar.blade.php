@@ -34,6 +34,9 @@ $user_name = $user ? $user->name : '';
                         <a class="nav-link {{ request()->routeIs('footprints') ? 'active' : '' }}"
                             href="{{ route('footprints') }}">Footprints</a>
                     </li>
+                    @subscribed('nonsense')
+                    Maker
+                    @endsubscribed
                 </ul>
                 <div class="d-flex">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -75,10 +78,14 @@ $user_name = $user ? $user->name : '';
                             </li>
                         @endif
                         <li>
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown"><i class="fas fa-user"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end text-end w-auto px-2 navbar-dropdown-colored">
-                                @if (Auth::check())
+                            @if (Auth::check())
+                                <!-- Show dropdown with user icon if logged in -->
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown">
+                                    <i class="fas fa-user"></i>
+                                </a>
+                                <ul
+                                    class="dropdown-menu dropdown-menu-end text-end w-auto px-2 navbar-dropdown-colored">
                                     <!-- Logged in -->
                                     <li class="navbar-user">{{ $user_name }}</li>
                                     <li>
@@ -95,12 +102,13 @@ $user_name = $user ? $user->name : '';
                                             </div>
                                         </form>
                                     </li>
-                                @else
-                                    <!-- Not logged in -->
-                                    <li><a class="nav-link" href="/login">Log In</a></li>
-                                @endif
-                            </ul>
+                                </ul>
+                            @else
+                                <!-- Show login button if not logged in -->
+                                <a class="btn btn-primary ms-2" href="{{ route('login') }}">Log In</a>
+                            @endif
                         </li>
+
                     </ul>
                 </div>
             </div>
