@@ -12,5 +12,5 @@
     <hr>
     <p class="lead">Thanks again and all the best,<br>
         The PartHub Team from Berlin</p>
-    <img src="{{ env('APP_FAVICON') }}" alt="PartHub Logo" style="width: 50px; height: 50px;">
+    <img src="{{ asset(config('app.logo')) }}" alt="PartHub Logo" style="width: 50px; height: 50px;">
 </x-email.layout>
