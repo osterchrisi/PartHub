@@ -27,6 +27,12 @@ class SubscriptionController extends Controller
             ->checkout([
                 'success_url' => route('welcome'),
                 'cancel_url' => route('welcome'),
+                'billing_address_collection' => 'required',
             ]);
+    }
+
+    public function manage()
+    {
+        return redirect('https://billing.stripe.com/p/login/fZeg229Aa2T5aSAcMM');
     }
 }

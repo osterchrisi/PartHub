@@ -203,6 +203,7 @@ Route::get('/test-flash', function () {
 
 // Cashier / Subscriptions
 Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);
+Route::get('/subscription-manage', [SubscriptionController::class, 'manage'])->middleware(['auth', 'verified'])->name('subscription.manage');
 
 // Socialite / Google OAuth login
 Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.login');
