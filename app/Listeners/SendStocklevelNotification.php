@@ -36,7 +36,7 @@ class SendStocklevelNotification
         // Check if the stock quantity is below the threshold
         if ($stock_quantity < $notification_threshold) {
             // Send Stock Level Notification Mail
-            Mail::to($event->user)->bcc(env('MAIL_FROM_ADDRESS'))->send(new StocklevelNotification($event->user, $event->stock_levels));
+            Mail::to($event->user)->bcc(config('mail.from.address'))->send(new StocklevelNotification($event->user, $event->stock_levels));
         }
     }
 

@@ -145,7 +145,7 @@ Route::get('/signup', function () {
     //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
     //! Passwort darf keine Leerzeichen enthalten
     //TODO: Das geht wahrscheinlich sauberer...
-    if (env('APP_ENV') == 'demo') {
+    if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
     }
     else {

@@ -33,7 +33,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
-        if (env('APP_ENV') == 'demo') {
+        if (config('app.env') == 'demo') {
             return Redirect::route('dashboard')->with('status', 'profile-demo-change');
         }
 

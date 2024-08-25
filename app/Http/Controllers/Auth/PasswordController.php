@@ -16,7 +16,7 @@ class PasswordController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        if (env('APP_ENV') == 'demo') {
+        if (config('app.env') == 'demo') {
             return Redirect::route('dashboard')->with('status', 'password-demo-change');
         }
         $validated = $request->validateWithBag('updatePassword', [
