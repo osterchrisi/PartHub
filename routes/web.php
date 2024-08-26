@@ -134,11 +134,15 @@ Route::controller(ImageController::class)->group(function () {
     Route::delete('/delete-image/{type}/{id}', [ImageController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete-image');
 });
 
+//* Cashier / Subscriptions
+Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);
+Route::get('/subscription-manage', [SubscriptionController::class, 'manage'])->middleware(['auth', 'verified'])->name('subscription.manage');
+
+//* Socialite / Google OAuth login
+Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+
 //* Standalone Pages Routes
-// Route::get('/pricing', function () {
-//     return view('pricing', ['title' => 'Pricing', 'view' => 'pricing']);
-// })
-//     ->name('pricing');
 
 // Sign Up for new users
 Route::get('/signup', function () {
@@ -186,13 +190,7 @@ Route::get('/multi', function () {
 // Demo User Login
 Route::get('/demo-login', [DemoLoginController::class, 'login'])->name('demo.login');
 
-// E-Mail Preview
-Route::get('/preview-email', function () {
-    $user = User::first();
-    return new App\Mail\WelcomeEmail($user);
-});
-
-// For testing views
+//* For testing
 Route::get('/image-testing', function () {
     return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });
@@ -201,10 +199,8 @@ Route::get('/test-flash', function () {
     return redirect()->route('welcome')->with('firstLogin', true);
 });
 
-// Cashier / Subscriptions
-Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);
-Route::get('/subscription-manage', [SubscriptionController::class, 'manage'])->middleware(['auth', 'verified'])->name('subscription.manage');
-
-// Socialite / Google OAuth login
-Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.login');
-Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+// E-Mail Preview
+Route::get('/preview-email', function () {
+    $user = User::first();
+    return new App\Mail\WelcomeEmail($user);
+});
