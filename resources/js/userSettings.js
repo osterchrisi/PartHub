@@ -6,23 +6,25 @@ class UserSettings {
         this.init();
     }
 
-    // Initialize the component
     init() {
         this.fetchAllSettings();
         this.setupEventListeners();
     }
 
-    // Fetch all settings that are represented by switch elements on the page
     fetchAllSettings() {
+        this.fetchSwitchSettings();
+    }
+
+    fetchSwitchSettings() {
         // Loop through all elements with the class 'user-setting-switch'
         $('.user-setting-switch').each((index, element) => {
             const settingName = $(element).data('setting-name');
-            this.fetchSetting(settingName, element);
+            this.fetchBooleanSetting(settingName, element);
         });
     }
 
     // Fetch an individual setting from the server
-    fetchSetting(settingName, element) {
+    fetchBooleanSetting(settingName, element) {
         $.ajax({
             url: `settings/${settingName}`,
             method: 'GET',
@@ -39,7 +41,7 @@ class UserSettings {
     }
 
     // Update a setting on the server
-    updateSetting(settingName, isEnabled) {
+    updateBooleanSetting(settingName, isEnabled) {
         const token = $('input[name="_token"]').attr('value');
         $.ajax({
             url: `settings/${settingName}`,
@@ -60,14 +62,18 @@ class UserSettings {
         });
     }
 
-        // Set up event listeners for toggling user setting switch elements
-        setupEventListeners() {
-            // Add an event listener for all switches
-            $('.user-setting-switch').on('change', (event) => {
-                const element = event.target;
-                const settingName = $(element).data('setting-name');
-                const isEnabled = $(element).is(':checked');
-                this.updateSetting(settingName, isEnabled);
-            });
-        }
+    // Set up event listeners for toggling user setting switch elements
+    setupEventListeners() {
+        this.setupSwitchEventListeners();
+    }
+
+    setupSwitchEventListeners() {
+        // Add an event listener for all switches
+        $('.user-setting-switch').on('change', (event) => {
+            const element = event.target;
+            const settingName = $(element).data('setting-name');
+            const isEnabled = $(element).is(':checked');
+            this.updateBooleanSetting(settingName, isEnabled);
+        });
+    }
 }
