@@ -1,3 +1,6 @@
+export { UserSettings }
+
+
 class UserSettings {
     constructor() {
         this.init();
@@ -21,7 +24,7 @@ class UserSettings {
     // Fetch an individual setting from the server
     fetchSetting(settingName, element) {
         $.ajax({
-            url: '/settings/${settingName}',
+            url: `settings/${settingName}`,
             method: 'GET',
             success: (response) => {
                 // Set the switch state based on the fetched setting
@@ -48,12 +51,13 @@ class UserSettings {
 
     // Update a setting on the server
     updateSetting(settingName, isEnabled) {
+        const token = $('input[name="_token"]').attr('value');
         $.ajax({
-            url: 'settings/${settingName}',
+            url: `settings/${settingName}`,
             method: 'POST',
             data: {
                 value: isEnabled ? 'true' : 'false',
-                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for Laravel
+                _token: token
             },
             success: (response) => {
                 console.log(`${settingName} setting updated successfully:`, response);
@@ -67,9 +71,3 @@ class UserSettings {
         });
     }
 }
-
-// Usage Example
-// Initialize the class, passing the API URL and the authenticated user's ID
-$(document).ready(() => {
-    const userSettings = new UserSettings(apiUrl, userId);
-});
