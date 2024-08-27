@@ -6,17 +6,25 @@ use App\Mail\StocklevelNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
+use App\Services\UserSettingService;
+
 use App\Models\Part;
 
 
 class SendStocklevelNotification
 {
+
+    protected $userSettingService;
+
+
+
+
     /**
-     * Create the event listener.
+     * Inject the UserSettingService into the listener
      */
-    public function __construct()
+    public function __construct(UserSettingService $userSettingService)
     {
-        //
+        $this->userSettingService = $userSettingService;
     }
 
     /**
@@ -31,12 +39,17 @@ class SendStocklevelNotification
         // Get the part's notification threshold
         $part = Part::find($part_id);
         $notification_threshold = $part->stocklevel_notification_threshold;
-        
+
 
         // Check if the stock quantity is below the threshold
         if ($stock_quantity < $notification_threshold) {
-            // Send Stock Level Notification Mail
-            Mail::to($event->user)->bcc(config('mail.from.address'))->send(new StocklevelNotification($event->user, $event->stock_levels));
+            // Check if the user wants a notification
+            if ($this->userSettingService->shouldNotify($event->user->id)) {
+                // Send Stock Level Notification Mail
+                Mail::to($event->user)
+                    ->bcc(config('mail.from.address'))
+                    ->send(new StocklevelNotification($event->user, $event->stock_levels));
+            }
         }
     }
 
