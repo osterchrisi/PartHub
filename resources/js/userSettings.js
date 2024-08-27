@@ -32,20 +32,9 @@ class UserSettings {
                 $(element).prop('checked', isEnabled);
             },
             error: (xhr, status, error) => {
-                console.error(`Failed to fetch the ${settingName} setting:`, error);
-                alert(`Failed to load the ${settingName} setting. Please try again.`);
+                // console.error(`Failed to fetch the ${settingName} setting:`, error);
+                // alert(`Failed to load the ${settingName} setting. Please try again.`);
             }
-        });
-    }
-
-    // Set up the event listeners for toggling any switch element
-    setupEventListeners() {
-        // Add an event listener for all switches
-        $('.user-setting-switch').on('change', (event) => {
-            const element = event.target;
-            const settingName = $(element).data('setting-name');
-            const isEnabled = $(element).is(':checked');
-            this.updateSetting(settingName, isEnabled);
         });
     }
 
@@ -60,14 +49,25 @@ class UserSettings {
                 _token: token
             },
             success: (response) => {
-                console.log(`${settingName} setting updated successfully:`, response);
+                // console.log(`${settingName} setting updated successfully:`, response);
             },
             error: (xhr, status, error) => {
-                console.error(`Failed to update the ${settingName} setting:`, error);
-                alert(`Failed to update the ${settingName} setting. Please try again.`);
+                // console.error(`Failed to update the ${settingName} setting:`, error);
+                // alert(`Failed to update the ${settingName} setting. Please try again.`);
                 // Revert the switch state in case of error
                 $(element).prop('checked', !isEnabled);
             }
         });
     }
+
+        // Set up event listeners for toggling user setting switch elements
+        setupEventListeners() {
+            // Add an event listener for all switches
+            $('.user-setting-switch').on('change', (event) => {
+                const element = event.target;
+                const settingName = $(element).data('setting-name');
+                const isEnabled = $(element).is(':checked');
+                this.updateSetting(settingName, isEnabled);
+            });
+        }
 }
