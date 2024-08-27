@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserSettingService;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserSettingController extends Controller
 {
@@ -14,12 +16,33 @@ class UserSettingController extends Controller
         $this->userSettingService = $userSettingService;
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
+        $userId = Auth::id();
+        $userTimezone = $this->userSettingService->getUserTimezone($userId);
 
         return view('profile.user-settings', [
             'title' => 'User Settings',
             'view' => 'user-settings',
+            'userTimezone' => $userTimezone,
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        $userId = Auth::id();
+
+        // Validate the timezone input
+        $validated = $request->validate([
+            'timezone' => 'required|timezone', // Ensure the submitted timezone is valid
+        ]);
+
+        // Update or create the user's timezone setting
+        $this->userSettingService->updateOrCreateSetting($userId, 'timezone', $validated['timezone']);
+
+        // Redirect back with a success message
+        //TODO: Not shown yet
+        return redirect()->back()->with('success', 'Settings updated successfully!');
     }
 
     // Get a user setting dynamically by setting name

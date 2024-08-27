@@ -23,6 +23,10 @@ class StockLevelHistory extends Model
         'stock_lvl_chng_user_fk',
     ];
 
+    protected $casts = [
+        'stock_lvl_chng_timestamp' => 'datetime',
+    ];
+
 
     public function part()
     {
@@ -51,7 +55,7 @@ class StockLevelHistory extends Model
             'from_location_fk' => $from_location,
             'to_location_fk' => $to_location,
             'stock_lvl_chng_quantity' => $quantity,
-            'stock_lvl_chng_timestamp' => now(),
+            'stock_lvl_chng_timestamp' => now()->timezone('UTC'),
             'stock_lvl_chng_comment' => $comment,
             'stock_lvl_chng_user_fk' => $user_id,
         ]);
@@ -70,8 +74,8 @@ class StockLevelHistory extends Model
             ->leftJoin('locations AS to_loc', 'stock_level_change_history.to_location_fk', '=', 'to_loc.location_id')
             ->join('users', 'stock_level_change_history.stock_lvl_chng_user_fk', '=', 'users.id')
             ->where('part_id_fk', $part_id)
-            ->get()
-            ->toArray();
+            ->get();
+            // ->toArray();
 
         return $history;
     }

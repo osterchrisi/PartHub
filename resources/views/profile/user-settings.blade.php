@@ -17,4 +17,23 @@
         <label class="form-check-label" for="theme_preference">Dark Theme</label>
     </div> --}}
 </div>
-@include('footer')
+
+<div>
+    <form method="POST" action="{{ route('user.settings.update') }}">
+        @csrf
+
+        <div class="form-group">
+            <label for="timezone">Timezone</label>
+            <select name="timezone" id="timezone" class="form-control">
+                @foreach (timezone_identifiers_list() as $timezone)
+                    <option value="{{ $timezone }}" {{ $userTimezone == $timezone ? 'selected' : '' }}>
+                        {{ $timezone }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+    </form>
+    <div>
+        @include('footer')

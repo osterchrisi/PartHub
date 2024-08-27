@@ -25,10 +25,16 @@
                     @endphp
                     <tr data-id="{{ $row['part_id_fk'] }}">
                         @foreach ($stockHistoryTableHeaders as $column_data)
-                            <td data-editable="true" class="editable" data-id="{{ $hist_id }}" data-column="{{ $column_data }}">
-                                {{ $column_data === 'stock_lvl_chng_comment' ? $row[$column_data] : $row[$column_data] }}
-                            </td>
-                        @endforeach
+                        <td data-editable="true" class="editable" data-id="{{ $hist_id }}" data-column="{{ $column_data }}">
+                            @if ($column_data === 'stock_lvl_chng_timestamp')
+                                {{-- Assuming it's a Carbon instance --}}
+                                {{ $row->$column_data->format('Y-m-d H:i:s') }}
+                            @else
+                                {{ $row->$column_data }}
+                            @endif
+                        </td>
+                    @endforeach
+                    
                     </tr>
                 @endforeach
             </tbody>

@@ -15,6 +15,10 @@ use App\Services\DatabaseService;
 use App\Services\CategoryService;
 use App\Services\StockService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
+
 
 class PartController extends Controller
 {
@@ -160,6 +164,21 @@ class PartController extends Controller
         // Fetch the part with its related stock levels
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
 
+        $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
+
+        // Need to jump through a few hoops for proper time-zoning
+        // TODO: Investigate this
+        foreach ($stockHistory as $historyItem) {
+            // Parse the timestamp as UTC without altering the time itself
+            $utcTimestamp = Carbon::createFromFormat('Y-m-d H:i:s', $historyItem->stock_lvl_chng_timestamp, 'UTC');
+
+            // Now convert to the user's timezone
+            $localizedTimestamp = $utcTimestamp->setTimezone(config('app.timezone'));
+
+            // Assign the localized timestamp back to the history item
+            $historyItem->stock_lvl_chng_timestamp = $localizedTimestamp;
+        }
+
         // Check if request is authorized
         if (Auth::user()->id === $part['part_owner_u_fk']) {
             // Calculate total stock level
@@ -172,17 +191,17 @@ class PartController extends Controller
                     'part' => $part,
                     // Stock Table
                     'total_stock' => $total_stock,
-                    'column_names' => array('location_name', 'stock_level_quantity'),
-                    'nice_columns' => array('Location', 'Quantity'),
+                    'column_names' => ['location_name', 'stock_level_quantity'],
+                    'nice_columns' => ['Location', 'Quantity'],
                     'stock_levels' => $part['stock_levels'],
                     //Bom Table
-                    'bomTableHeaders' => array('bom_name', 'element_quantity', 'bom_description'),
-                    'nice_bomTableHeaders' => array('BOM', 'Quantity', 'BOM Description'),
+                    'bomTableHeaders' => ['bom_name', 'element_quantity', 'bom_description'],
+                    'nice_bomTableHeaders' => ['BOM', 'Quantity', 'BOM Description'],
                     'bom_list' => Part::getBomsContainingPart($part_id),
                     // Stock History Table
-                    'stockHistoryTableHeaders' => array('stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'),
-                    'nice_stockHistoryTableHeaders' => array('Date', 'Quantity', 'From', 'To', 'Comment', 'User'),
-                    'stock_history' => StockLevelHistory::getPartStockHistory($part_id),
+                    'stockHistoryTableHeaders' => ['stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'],
+                    'nice_stockHistoryTableHeaders' => ['Date', 'Quantity', 'From', 'To', 'Comment', 'User'],
+                    'stock_history' => $stockHistory,
                     // Tabs Settings
                     'tabId1' => 'info',
                     'tabText1' => 'Info',
