@@ -145,9 +145,10 @@ Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCal
 
 //* User Settings
 Route::middleware('auth')->group(function () {
-    Route::get('/settings/{setting_name}', [UserSettingController::class, 'getUserSetting']);
-    Route::post('/settings/{setting_name}', [UserSettingController::class, 'updateUserSetting']);
+    Route::get('/settings/{setting_name}', [UserSettingController::class, 'getUserSetting'])->middleware(['auth', 'verified']);
+    Route::post('/settings/{setting_name}', [UserSettingController::class, 'updateUserSetting'])->middleware(['auth', 'verified']);
 });
+Route::get('/user-settigs', [UserSettingController::class, 'index'])->middleware(['auth', 'verified'])->name('user-settings');
 
 //* Standalone Pages Routes
 
