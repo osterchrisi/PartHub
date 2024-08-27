@@ -13,6 +13,7 @@ use App\Http\Controllers\ImageController;
 use App\Services\DatabaseService;
 use App\Http\Controllers\Auth\DemoLoginController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserSettingController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -141,6 +142,12 @@ Route::get('/subscription-manage', [SubscriptionController::class, 'manage'])->m
 //* Socialite / Google OAuth login
 Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+
+//* User Settings
+Route::middleware('auth')->group(function () {
+    Route::get('/settings/{setting_name}', [UserSettingController::class, 'getUserSetting']);
+    Route::post('/settings/{setting_name}', [UserSettingController::class, 'updateUserSetting']);
+});
 
 //* Standalone Pages Routes
 
