@@ -65,7 +65,7 @@ tr.selected-last td {
     transition: transform 0.3s;
 }
 
-.card:hover {
+.card-whatis:hover {
     transform: translateY(-10px);
 }
 

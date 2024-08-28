@@ -75,8 +75,7 @@ class StockLevelHistory extends Model
             ->join('users', 'stock_level_change_history.stock_lvl_chng_user_fk', '=', 'users.id')
             ->where('part_id_fk', $part_id)
             ->get();
-            // ->toArray();
-
+            
         return $history;
     }
 

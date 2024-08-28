@@ -18,7 +18,7 @@
         <!-- What is PartHub -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <div class="card shadow-sm rounded">
+                <div class="card card-whatis shadow-sm rounded">
                     <div class="card-body text-center">
                         {{-- <div class="card-body text-center bg-primary bg-gradient text-white"> --}}
 
@@ -36,7 +36,7 @@
         <!-- How Can PartHub Help -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <div class="card shadow-sm rounded">
+                <div class="card card-whatis shadow-sm rounded">
                     <div class="card-body text-center bg-primary bg-gradient text-white rounded">
                         <h2 class="display-4 mb-4">Work better</h2>
                         <img src="app-related/image2.webp" class="img-fluid mb-4" alt="Person using a barcode scanner">
@@ -51,7 +51,7 @@
         <!-- Is PartHub For You? -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <div class="card shadow-sm rounded">
+                <div class="card card-whatis shadow-sm rounded">
                     <div class="card-body text-center">
                         <h2 class="display-4 mb-4">Creativity starts here</h2>
                         <img src="app-related/image3.webp" class="img-fluid mb-4" alt="Close-up of electronic components">
@@ -65,7 +65,7 @@
         <!-- Features -->
         <div class="row justify-content-center mb-5" id="features">
             <div class="col-md-8">
-                <div class="card-body text-center bg-primary bg-gradient text-white rounded">
+                <div class="card card-whatis text-center bg-primary bg-gradient text-white shadow-sm rounded">
                     <div class="card-body text-center">
                         <h2 class="display-4 mb-4">Features</h2>
                         {{-- <ul class="list-unstyled lead"> --}}
@@ -87,7 +87,7 @@
         <!-- Who is Behind PartHub -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <div class="card shadow-sm rounded">
+                <div class="card card-whatis shadow-sm rounded">
                     <div class="card-body text-center bg-gradient text-white" style="background-color: #6c757d;">
                         <h2 class="display-4 mb-4">Who is Behind PartHub?</h2>
                         <p class="lead">PartHub was created by <a href="https://christianzollner.com" target="_blank"
@@ -128,7 +128,7 @@
         <!-- Call to Action -->
         <div class="row justify-content-center mb-5" id="sign-up">
             <div class="col-md-8">
-                <div class="card shadow-sm rounded">
+                <div class="card card-whatis shadow-sm rounded">
                     <div class="card-body text-center bg-primary bg-gradient text-white">
                         <h2 class="display-4 mb-4">Ready to Get Started?</h2>
                         <p class="lead">Sign up today and start organizing your parts like never before!</p>
