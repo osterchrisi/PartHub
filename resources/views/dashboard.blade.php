@@ -16,9 +16,9 @@ $user = Auth::user();
                             {{ __('Profile Information') }}
                         </h2>
 
-                        <p>
+                        <small class="d-block text-muted text-center mb-3">
                             {{ __("Update your account's profile information and email address.") }}
-                        </p>
+                        </small>
                     </header>
 
                     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -96,12 +96,12 @@ $user = Auth::user();
             </div>
             <div class="card shadow-sm mt-4 mb-4">
                 <div class="card-body">
-                    <h2>
+                    <h2 class="card-title text-center">
                         {{ __('Update Password') }}
                     </h2>
-                    <p>
+                    <small class="d-block text-muted text-center mb-3">
                         {{ __('Ensure your account is using a long, random password to stay secure.') }}
-                    </p>
+                    </small>
                     <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
                         @csrf
                         @method('put')
@@ -137,7 +137,7 @@ $user = Auth::user();
             </div>
             <div class="card shadow-sm mt-4 mb-4">
                 <div class="card-body">
-                    <h2>
+                    <h2 class="card-title text-center">
                         {{ __('Delete Account') }}
                     </h2>
                     <p>
