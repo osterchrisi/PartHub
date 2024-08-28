@@ -22,7 +22,6 @@ class BomImport implements ToModel, WithHeadingRow
     }
     public function model(array $row)
     {
-        // dd($row);
         // Column names get formatted like this by Excel plugin
         $part_name = $row['part_name'];
         $part_id = $row['part_id'];
