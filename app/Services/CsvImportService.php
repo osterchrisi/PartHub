@@ -2,13 +2,9 @@
 
 namespace App\Services;
 
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Collection;
-use App\Services\Imports\CsvCollectionImporter;
-use App\Models\BomElements;
-
 
 class CsvImportService
 {
@@ -56,51 +52,11 @@ class CsvImportService
     }
 
     /**
-     * Processes a row specific to a BOM import.
+     * Resolves a foreign key based on specified conditions and ownership.
      *
-     * @param array $row The BOM row data to process.
-     * @param int $bom_id The BOM ID to associate with.
-     * @return bool True on success, false on failure.
-     */
-    protected function processBomRow(array $row, int $bom_id): bool
-    {
-        // Process the row and create BOM elements
-        $conditions = [
-            'part_id' => $row['part_id'] ?? null,
-            'part_name' => $row['part_name'] ?? null,
-        ];
-
-        $part_id = $this->resolveForeignKey('parts', $conditions, 'part_owner_u_fk', 'part_id');
-
-        if (!$part_id) {
-            $this->flashErrors();
-            return false;
-        }
-
-        BomElements::create([
-            'bom_id_fk' => $bom_id,
-            'part_id_fk' => $part_id,
-            'element_quantity' => $row['quantity'],
-        ]);
-
-        return true;
-    }
-
-
-    /**
-     * Processes a row specific to a Part import.
-     *
-     * @param array $row The Part row data to process.
-     * @return bool True on success, false on failure.
-     */
-    protected function processPartRow(array $row): bool
-    {
-        // Logic for processing a Part row
-        return true;
-    }
-
-    /**
-     * Resolves a foreign key based on conditions and ownership.
+     * Queries the specified table to find a record that matches the provided conditions
+     * and is owned by the authenticated user. Returns the primary key of the matched
+     * record or `null` if no match is found.
      *
      * @param string $table The name of the table to query.
      * @param array $conditions The conditions to match against.
@@ -108,27 +64,49 @@ class CsvImportService
      * @param string $primaryKey The primary key column to return.
      * @return int|null The ID of the matched record, or null if no match.
      */
+
     public function resolveForeignKey(string $table, array $conditions, string $ownerColumn, string $primaryKey): ?int
     {
         $query = DB::table($table);
 
+        // Add each non-null condition to the query
         foreach ($conditions as $column => $value) {
             if (!is_null($value)) {
                 $query->where($column, $value);
             }
         }
 
+        // Ensure the record belongs to the authenticated user
         $user_id = auth()->user()->id;
         $query->where($ownerColumn, $user_id);
 
+        // Fetch the first matching record
         $record = $query->first();
 
-        if (!$record) {
+        // If no record is found or multiple conditions are provided and don't match, return null
+        if (!$record || count(array_filter($conditions)) > 1 && !$this->conditionsMatch($conditions, $record)) {
             $this->errors->add('foreign_key', "No matching record found in {$table} with given conditions: " . json_encode($conditions));
             return null;
         }
 
         return $record->$primaryKey;
+    }
+
+    /**
+     * Checks if all provided conditions match the found record.
+     *
+     * @param array $conditions The conditions used in the query.
+     * @param object $record The database record found.
+     * @return bool True if all conditions match, false otherwise.
+     */
+    protected function conditionsMatch(array $conditions, $record): bool
+    {
+        foreach ($conditions as $column => $value) {
+            if (!is_null($value) && $record->$column !== $value) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -188,30 +166,4 @@ class CsvImportService
             return [$expected => $row->get($csvHeader)];
         });
     }
-
-    /**
-     * Handles the import process of a CSV file for BOM.
-     *
-     * @param Collection $collection The collection of rows from the CSV file.
-     * @param int $bom_id The BOM ID to associate with.
-     * @throws \Exception If headers are invalid or row processing fails.
-     */
-    public function importBom(Collection $collection, int $bom_id)
-    {
-        $headers = $collection->first()->keys()->toArray();
-
-        if (!$this->validateHeaders($headers, $this->getExpectedHeaders('bom'))) {
-            throw new \Exception('Invalid headers');
-        }
-
-        $mappingResult = $this->mapHeaders($headers, $this->getExpectedHeaders('bom'));
-
-        foreach ($collection as $row) {
-            $rowData = $this->mapRowData($row, $mappingResult['mapping']);
-            if (!$this->processBomRow($rowData->toArray(), $bom_id)) {
-                throw new \Exception('Row processing and BOM element creation failed');
-            }
-        }
-    }
-
 }
