@@ -191,9 +191,8 @@ class BomController extends Controller
             // Persist database changes and set success flash message
             DB::commit();
             Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
-            Session::flash('new_bom_id', $bom_id);  // Flash the new BOM ID
+            Session::flash('new_bom_id', $bom_id);
 
-            // Redirect to the previous page
             return redirect()->back();
 
         } catch (\Exception $e) {
