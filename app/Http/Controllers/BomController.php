@@ -11,6 +11,8 @@ use App\Imports\BomImport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\CsvImportService;
+
 
 class BomController extends Controller
 {
@@ -153,6 +155,12 @@ class BomController extends Controller
         return $partController->handleStockRequests($request);
     }
 
+    /**
+     * Handles the import of a BOM from an uploaded CSV file.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function importBom(Request $request)
     {
         // Form data
@@ -160,18 +168,25 @@ class BomController extends Controller
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
 
+        if (!$file) {
+            Session::flash('error', 'No file uploaded');
+            return redirect()->back();
+        }
+
         //! Either validate file here or in middleware
 
         try {
-
             // Begin SQL transaction
             DB::beginTransaction();
 
             // Create new BOM
             $bom_id = Bom::createBom($bom_name, $bom_description);
 
-            // Process the uploaded file
-            Excel::import(new BomImport($bom_id), $file);
+            // Instantiate the CsvImportService
+            $csvImportService = new CsvImportService();
+
+            // Process the uploaded file using BomImport
+            Excel::import(new BomImport($bom_id, $csvImportService), $file);
 
             // Persist database changes and set success flash message
             DB::commit();
@@ -185,12 +200,14 @@ class BomController extends Controller
             // Roll back database changes made so far
             DB::rollback();
 
+            \Log::error('Error during BOM import: ' . $e->getMessage());
+
             // Set error flash message
             Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
 
             // Redirect to the previous page with error status
             return redirect()->back()->withErrors(['import_error' => 'Failed to import BOMs.']);
         }
-    }
 
+    }
 }

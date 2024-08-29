@@ -2,70 +2,101 @@
 
 namespace App\Imports;
 
-use App\Models\Bom;
 use App\Models\BomElements;
-use App\Models\Part;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Services\CsvImportService;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Facades\DB;
 
-class BomImport implements ToModel, WithHeadingRow
+class BomImport implements ToCollection, WithHeadingRow
 {
     protected $bom_id;
+    protected $csvImportService;
 
-    public function __construct($bom_id)
+    public function __construct($bom_id, CsvImportService $csvImportService)
     {
         $this->bom_id = $bom_id;
+        $this->csvImportService = $csvImportService;
     }
-    public function headingRow(): int
-    {
-        return 1; // Set the heading row index (1 for Excel files with headers)
-    }
-    public function model(array $row)
-    {
-        // Column names get formatted like this by Excel plugin
-        $part_name = $row['part_name'];
-        $part_id = $row['part_id'];
-        $quantity = $row['quantity'];
-        $user_id = auth()->user()->id;
 
-        // Check if both part number and part ID are provided
-        if (!empty($part_name) && !empty($part_id)) {
-            // Perform query to verify if the part number and part ID match
-            $part = Part::where('part_name', $part_name)
-                ->where('part_id', $part_id)
-                ->where('part_owner_u_fk', $user_id)
-                ->first();
+    /**
+     * Handles the collection of data from the imported CSV file.
+     *
+     * @param \Illuminate\Support\Collection $collection The collection of rows from the CSV file.
+     * @throws \Exception If headers are invalid or row processing fails.
+     */
+    public function collection(Collection $collection)
+    {
+        // Get headers from the first row of the collection
+        $headers = $collection->first()->keys()->toArray();
 
-            if (!$part) {
-                // Part number and part ID do not match,
-                throw new \Exception('Part number and part ID do not match for row: ' . print_r($row, true));
+        \Log::error($headers);
+
+        // Validate headers
+        if (!$this->csvImportService->validateHeaders($headers, $this->getExpectedHeaders())) {
+            throw new \Exception('Invalid headers');
+        }
+
+        // Optional: Map headers if necessary
+        $mappingResult = $this->csvImportService->mapHeaders($headers, $this->getExpectedHeaders());
+
+        // Process each row
+        foreach ($collection as $row) {
+            $rowData = $this->csvImportService->mapRowData($row, $mappingResult['mapping']);
+            if (!$this->processRowAndCreateBomElement($rowData)) {
+                throw new \Exception('Row processing and BOM element creation failed');
             }
         }
-        else if (empty($part_name) && empty($part_id)) {
-            // Both part number and part ID are empty
-            throw new \Exception('Both part number and part ID are missing for row: ' . print_r($row, true));
-        }
-        else {
-            // Either part number or part ID is provided, handle accordingly
-            $part = $part_name
-                ? Part::where('part_name', $part_name)
-                    ->where('part_owner_u_fk', $user_id)
-                    ->first()
-                : Part::where('part_id', $part_id)
-                    ->where('part_owner_u_fk', $user_id)
-                    ->first();
+    }
 
-            if (!$part) {
-                // Part number or part ID does not exist
-                throw new \Exception('Invalid part number or part ID for row: ' . print_r($row, true));
-            }
+    /**
+     * Defines the expected headers for a BOM import.
+     *
+     * @return array An array of expected header strings.
+     */
+    protected function getExpectedHeaders(): array
+    {
+        // Define the expected headers for BOM import
+        return ['part_id', 'part_name', 'quantity'];// 'denominators'];
+    }
+
+    /**
+     * Processes a single row of data and creates a BOM element.
+     *
+     * @param \Illuminate\Support\Collection $rowData The data for a single row, mapped by headers.
+     * @return bool True on success, false on failure.
+     */
+    protected function processRowAndCreateBomElement(Collection $rowData): bool
+    {
+        // Prepare conditions for resolving the foreign key
+        $conditions = [
+            'part_id' => $rowData->get('part_id'),
+            'part_name' => $rowData->get('part_name'),
+        ];
+
+        // Explicitly specify the owner column and primary key
+        $ownerColumn = 'part_owner_u_fk';
+        $primaryKey = 'part_id';
+
+        // Attempt to resolve the part using either part_id or part_name
+        $part_id = $this->csvImportService->resolveForeignKey('parts', $conditions, $ownerColumn, $primaryKey);
+
+        if (!$part_id) {
+            // Foreign key resolution failed, log the error and return false
+            $this->csvImportService->flashErrors();
+            return false;
         }
 
-        $bom = new BomElements([
+        // Create the BOM element using the resolved part_id
+        BomElements::create([
             'bom_id_fk' => $this->bom_id,
-            'part_id_fk' => $part->part_id,
-            'element_quantity' => $quantity
+            'part_id_fk' => $part_id,
+            'element_quantity' => $rowData->get('quantity'),
         ]);
-        return $bom;
+
+        return true;
     }
+
+
 }

@@ -18,6 +18,13 @@ class CsvImportService
         $this->errors = new MessageBag();
     }
 
+    /**
+     * Validates that the provided headers match the expected headers.
+     *
+     * @param array $headers The headers from the CSV file.
+     * @param array $expectedHeaders The expected headers.
+     * @return bool True if headers are valid, false otherwise.
+     */
     public function validateHeaders(array $headers, array $expectedHeaders): bool
     {
         foreach ($expectedHeaders as $expected) {
@@ -29,6 +36,13 @@ class CsvImportService
         return $this->errors->isEmpty();
     }
 
+    /**
+     * Processes a single row of data based on the import type.
+     *
+     * @param array $row The row of data to process.
+     * @param string $importType The type of import (e.g., 'bom', 'part').
+     * @return bool True on success, false on failure.
+     */
     public function processRow(array $row, string $importType): bool
     {
         // Example: Handle specific import type (BOMs, Parts, etc.)
@@ -43,6 +57,12 @@ class CsvImportService
         }
     }
 
+    /**
+     * Processes a row specific to a BOM import.
+     *
+     * @param array $row The BOM row data to process.
+     * @return bool True on success, false on failure.
+     */
     protected function processBomRow(array $row): bool
     {
         // Logic for processing a BOM row
@@ -52,6 +72,12 @@ class CsvImportService
         return true; // Return true if successful, otherwise false
     }
 
+    /**
+     * Processes a row specific to a Part import.
+     *
+     * @param array $row The Part row data to process.
+     * @return bool True on success, false on failure.
+     */
     protected function processPartRow(array $row): bool
     {
         // Logic for processing a Part row
@@ -60,6 +86,13 @@ class CsvImportService
         return true;
     }
 
+    /**
+     * Handles the full import process of a CSV file.
+     *
+     * @param mixed $file The file to be imported.
+     * @param string $importType The type of import (e.g., 'bom', 'part').
+     * @return bool True on success, false on failure.
+     */
     public function importFile($file, string $importType): bool
     {
         DB::beginTransaction();
@@ -88,6 +121,12 @@ class CsvImportService
         }
     }
 
+    /**
+     * Retrieves the expected headers based on the import type.
+     *
+     * @param string $importType The type of import (e.g., 'bom', 'part').
+     * @return array The array of expected headers.
+     */
     protected function getExpectedHeaders(string $importType): array
     {
         // Define expected headers for each import type
@@ -101,30 +140,54 @@ class CsvImportService
         }
     }
 
-    protected function resolveForeignKey(string $table, string $column, string $value): ?int
+    /**
+     * Resolves a foreign key based on conditions and ownership.
+     *
+     * @param string $table The name of the table to query.
+     * @param array $conditions The conditions to match against.
+     * @param string $ownerColumn The column indicating ownership.
+     * @param string $primaryKey The primary key column to return.
+     * @return int|null The ID of the matched record, or null if no match.
+     */
+    public function resolveForeignKey(string $table, array $conditions, string $ownerColumn, string $primaryKey): ?int
     {
-        $user_id = auth()->user()->id;
-        $owner_column = "{$table}_owner_u_fk";
+        $query = DB::table($table);
 
-        $record = DB::table($table)
-            ->where($column, $value)
-            ->where($owner_column, $user_id)
-            ->first();
+        foreach ($conditions as $column => $value) {
+            if (!is_null($value)) {
+                $query->where($column, $value);
+            }
+        }
+
+        $user_id = auth()->user()->id;
+        $query->where($ownerColumn, $user_id);
+
+        $record = $query->first();
 
         if (!$record) {
-            $this->errors->add('foreign_key', "No matching record found in {$table} for {$column}: {$value}");
+            $this->errors->add('foreign_key', "No matching record found in {$table} with given conditions: " . json_encode($conditions));
             return null;
         }
 
-        return $record->id;
+        return $record->$primaryKey;
     }
 
+    /**
+     * Flashes the accumulated errors to the session for later display.
+     */
     public function flashErrors(): void
     {
         session()->flash('errors', $this->errors);
     }
 
-    protected function mapHeaders(array $csvHeaders, array $expectedHeaders): array
+    /**
+     * Maps the headers from the CSV file to the expected headers.
+     *
+     * @param array $csvHeaders The headers from the CSV file.
+     * @param array $expectedHeaders The expected headers.
+     * @return array An array containing the header mapping and unmatched headers.
+     */
+    public function mapHeaders(array $csvHeaders, array $expectedHeaders): array
     {
         $headerMapping = [];
         $unmatchedHeaders = [];
@@ -152,6 +215,23 @@ class CsvImportService
 
         return ['mapping' => $headerMapping, 'unmatched' => $unmatchedHeaders];
     }
+
+    /**
+     * Maps a single row of CSV data to the expected headers.
+     *
+     * @param \Illuminate\Support\Collection $row The row of data to map.
+     * @param array $headerMapping The mapping of expected headers to CSV headers.
+     * @return \Illuminate\Support\Collection The mapped row data.
+     */
+    public function mapRowData(Collection $row, array $headerMapping): Collection
+    {
+        // Create a new Collection where keys are the expected headers
+        return collect($headerMapping)->mapWithKeys(function ($csvHeader, $expected) use ($row) {
+            return [$expected => $row->get($csvHeader)];
+        });
+    }
+
+
 
 }
 
