@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class BomImport implements ToCollection, WithHeadingRow
 {
     protected $bom_id;
+
     protected $csvImportService;
 
     public function __construct($bom_id, CsvImportService $csvImportService)
@@ -22,7 +23,8 @@ class BomImport implements ToCollection, WithHeadingRow
     /**
      * Handles the collection of data from the imported CSV file.
      *
-     * @param \Illuminate\Support\Collection $collection The collection of rows from the CSV file.
+     * @param  \Illuminate\Support\Collection  $collection  The collection of rows from the CSV file.
+     *
      * @throws \Exception If headers are invalid or row processing fails.
      */
     public function collection(Collection $collection)
@@ -33,7 +35,8 @@ class BomImport implements ToCollection, WithHeadingRow
     /**
      * Handles the import process of a CSV file for BOM.
      *
-     * @param Collection $collection The collection of rows from the CSV file.
+     * @param  Collection  $collection  The collection of rows from the CSV file.
+     *
      * @throws \Exception If headers are invalid or row processing fails.
      */
     public function importBom(Collection $collection)
@@ -45,14 +48,14 @@ class BomImport implements ToCollection, WithHeadingRow
         $mappingResult = $this->csvImportService->mapHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'), 3);
 
         // Validate if all expected headers have been successfully mapped
-        if (!empty($mappingResult['unmatched'])) {
-            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found or too different.');
+        if (! empty($mappingResult['unmatched'])) {
+            throw new \Exception('Invalid headers: '.implode(', ', $mappingResult['unmatched']).' not found or too different.');
         }
 
         // Process BOM row by row
         foreach ($collection as $row) {
             $rowData = $this->csvImportService->mapRowData($row, $mappingResult['mapping']);
-            if (!$this->processBomRow($rowData->toArray())) {
+            if (! $this->processBomRow($rowData->toArray())) {
                 throw new \Exception('Row processing and BOM element creation failed');
             }
         }
@@ -61,7 +64,7 @@ class BomImport implements ToCollection, WithHeadingRow
     /**
      * Processes a row specific to a BOM import.
      *
-     * @param array $row The BOM row data to process.
+     * @param  array  $row  The BOM row data to process.
      * @return bool True on success, false on failure.
      */
     protected function processBomRow(array $row): bool
@@ -74,8 +77,9 @@ class BomImport implements ToCollection, WithHeadingRow
 
         $part_id = $this->csvImportService->resolveForeignKey('parts', $conditions, 'part_owner_u_fk', 'part_id');
 
-        if (!$part_id) {
+        if (! $part_id) {
             $this->csvImportService->flashErrors();
+
             return false;
         }
 

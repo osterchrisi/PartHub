@@ -4,8 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-
+return new class extends Migration
+{
     protected $tables = [
         'boms',
         'bom_elements',
@@ -19,7 +19,7 @@ return new class extends Migration {
         'stock_levels',
         'stock_level_change_history',
         'user_groups',
-        'user_settings'
+        'user_settings',
     ];
 
     /**
@@ -29,7 +29,7 @@ return new class extends Migration {
     {
         Schema::table('all_tables', function (Blueprint $table) {
             foreach ($this->tables as $table) {
-                if (!Schema::hasColumn($table, 'created_at')) {
+                if (! Schema::hasColumn($table, 'created_at')) {
                     Schema::table($table, function (Blueprint $table) {
                         $table->timestamps();
                     });

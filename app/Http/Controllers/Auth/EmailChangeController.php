@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Redirect;
 
 class EmailChangeController extends Controller
 {
@@ -25,11 +24,10 @@ class EmailChangeController extends Controller
 
             // Clean up the email_changes table
             DB::table('email_changes')->where('id', $emailChange->id)->delete();
+
             return Redirect::route('dashboard')->with('status', 'email-updated');
-        }
-        else {
+        } else {
             abort(404);
         }
     }
-
 }

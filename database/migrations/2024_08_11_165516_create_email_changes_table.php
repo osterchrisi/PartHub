@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('verification_token');
             $table->timestamp('expires_at');
             $table->timestamps();
-        });        
+        });
     }
 
     /**

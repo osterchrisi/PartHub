@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class StockLevel extends Model
 {
     use HasFactory;
-    protected $table = 'stock_levels';
-    protected $primaryKey = 'stock_level_id';
-    protected $fillable = ['stock_level_quantity'];
 
+    protected $table = 'stock_levels';
+
+    protected $primaryKey = 'stock_level_id';
+
+    protected $fillable = ['stock_level_quantity'];
 
     public function part()
     {
@@ -32,7 +34,6 @@ class StockLevel extends Model
             ->get();
     }
 
-
     public static function getStockInLocation($stock_levels, $location)
     {
 
@@ -41,6 +42,7 @@ class StockLevel extends Model
         foreach ($stock_levels as $entry) {
             if (isset($entry['location_id']) && $entry['location_id'] == $location) {
                 $stock_level = $entry['stock_level_quantity'];
+
                 return $stock_level;
             }
         }
@@ -79,6 +81,4 @@ class StockLevel extends Model
 
         return $stockLevel->stock_level_id;
     }
-
-
 }

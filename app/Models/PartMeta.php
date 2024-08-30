@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-
 class PartMeta extends Model
 {
     use HasFactory;
+
     protected $table = 'part_meta';
+
     protected $primaryKey = 'meta_id';
 
     public function part()
@@ -20,7 +21,8 @@ class PartMeta extends Model
 
     /**
      * Returns all available Metas, so they can be selected
-     * @param mixed $format
+     *
+     * @param  mixed  $format
      * @return array|string
      */
     public static function availablePartMetas($format = 'json')
@@ -49,7 +51,6 @@ class PartMeta extends Model
     }
 
     //TODO Code function to return array / json with key, value pairs for a given meta
-
 
     public static function createPartMeta($footprint_name, $footprint_alias)
     //TODO: Code this

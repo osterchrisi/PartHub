@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Log;
 use App\Traits\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
@@ -41,8 +41,7 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            }
-            else {
+            } else {
                 // Use the existing registration logic to register the user
                 $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
             }
@@ -51,6 +50,7 @@ class SocialiteController extends Controller
             return redirect()->intended(RouteServiceProvider::HOME)->with('loggedIn', true);
         } catch (\Exception $e) {
             Log::error('Google login failed', ['exception' => $e]);
+
             return Redirect::route('login')->with('error', 'Login failed.');
         }
     }

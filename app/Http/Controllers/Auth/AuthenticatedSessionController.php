@@ -21,11 +21,10 @@ class AuthenticatedSessionController extends Controller
         //TODO: Das geht wahrscheinlich sauberer...
         if (config('app.env') == 'demo') {
             return redirect('https://parthub.online/login');
-        }
-        else {
+        } else {
             return view('auth.login', ['title' => 'Login', 'view' => 'login']);
         }
-        
+
     }
 
     /**

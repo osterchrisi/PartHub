@@ -4,34 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Events\StockMovementOccured;
 use App\Models\Category;
+use App\Models\Footprint;
 use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
-use App\Models\Footprint;
 use App\Models\Supplier;
+use App\Services\CategoryService;
+use App\Services\DatabaseService;
+use App\Services\StockService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\DatabaseService;
-use App\Services\CategoryService;
-use App\Services\StockService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
-
-
 
 class PartController extends Controller
 {
     private static $table_name = 'parts';
+
     private static $id_field = 'part_id';
+
     private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'supplier_name', 'unit_name', 'part_id'];
+
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
-    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', "ID"];
+    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', 'ID'];
 
     protected $categoryService;
-    protected $databaseService;
-    protected $stockService;
 
+    protected $databaseService;
+
+    protected $stockService;
 
     public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService)
     {
@@ -61,7 +62,7 @@ class PartController extends Controller
         $suppliers = Supplier::availableSuppliers();
 
         /* Calculate and append each part's total stock
-        / Passing a reference, so modifications made to $part directly affect 
+        / Passing a reference, so modifications made to $part directly affect
         / the corresponding element in the original $parts array.
         */
         foreach ($parts as &$part) {
@@ -87,17 +88,16 @@ class PartController extends Controller
                 // These are sent to extract clear names from foreign keys for the dropdown menus in the table
                 'categories' => $categories,
                 'footprints' => $footprints,
-                'suppliers' => $suppliers
+                'suppliers' => $suppliers,
             ]);
-        }
-        elseif ($route == 'parts.partsTable') {
+        } elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
                 'nice_columns' => self::$nice_columns,
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
-                'categories' => $categories
+                'categories' => $categories,
             ]);
         }
     }
@@ -110,11 +110,11 @@ class PartController extends Controller
         $part_name = $request->input('part_name');
         $quantity = $request->input('quantity', 0);
         $to_location = $request->input('to_location');
-        $comment = $request->input('comment', NULL);
-        $description = $request->input('description', NULL);
-        $footprint = $request->input('footprint', NULL);
-        $category = $request->input('category', NULL);
-        $supplier = $request->input('supplier', NULL);
+        $comment = $request->input('comment', null);
+        $description = $request->input('description', null);
+        $footprint = $request->input('footprint', null);
+        $category = $request->input('category', null);
+        $supplier = $request->input('supplier', null);
         $min_quantity = $request->input('min_quantity') ?? 0;       // Total Stock Minimum Quantity
         $user_id = Auth::user()->id;
 
@@ -128,7 +128,7 @@ class PartController extends Controller
             // Create a stock level entry
             $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
             // Create a stock level history entry (from_location is NULL)
-            $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, NULL, $to_location, $quantity, $comment, $user_id);
+            $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, null, $to_location, $quantity, $comment, $user_id);
 
             // Persist database changes and set success flash message
             DB::commit();
@@ -142,8 +142,9 @@ class PartController extends Controller
             $response = [
                 'Part ID' => $new_part_id,
                 'Stock Entry ID' => $new_stock_entry_id,
-                'Stock Level History ID' => $new_stock_level_hist_id
+                'Stock Level History ID' => $new_stock_level_hist_id,
             ];
+
             return response()->json($response);
 
         } catch (\Exception $e) {
@@ -208,15 +209,13 @@ class PartController extends Controller
                     'tabToggleId1' => 'partInfo',
                     'tabId2' => 'history',
                     'tabText2' => 'Stock History',
-                    'tabToggleId2' => 'partHistory'
+                    'tabToggleId2' => 'partHistory',
                 ]
             );
-        }
-        else {
+        } else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -229,7 +228,7 @@ class PartController extends Controller
 
         foreach ($ids as $id) {
             $this->databaseService->deleteRow($table, $column, $id);
-            echo json_encode(array($ids, $table, $column));
+            echo json_encode([$ids, $table, $column]);
         }
     }
 
@@ -237,24 +236,24 @@ class PartController extends Controller
      * Get the part name for a given part ID.
      * Used in the stock changing modal.
      *
-     * @param Request $request
      * @return string
      */
     public function getName(Request $request)
     {
         $part_id = request()->input('part_id');
         $part = Part::find($part_id)->toArray();
+
         return $part['part_name'];
     }
 
     /**
      * Handle and process stock change requests.
      *
-     * Processes an array of stock change requests, determining the type of change (add, reduce, or move stock) 
-     * and updating stock levels accordingly. If changes result in negative stock levels, generates a response 
+     * Processes an array of stock change requests, determining the type of change (add, reduce, or move stock)
+     * and updating stock levels accordingly. If changes result in negative stock levels, generates a response
      * requesting user permission; otherwise, processes the changes directly.
      *
-     * @param Request $request The HTTP request containing stock change data.
+     * @param  Request  $request  The HTTP request containing stock change data.
      * @return \Illuminate\Http\JsonResponse A JSON response indicating success or requesting user action.
      */
     public function handleStockRequests(Request $request)
@@ -289,14 +288,16 @@ class PartController extends Controller
         }
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (!empty($negative_stock)) {
+        if (! empty($negative_stock)) {
             $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
+
             return response()->json($response);
         }
 
         //* No user permission necessary
         else {
             $result = $this->stockService->processStockChanges($changes);
+
             return response()->json($result);
         }
     }

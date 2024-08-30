@@ -3,18 +3,17 @@
 namespace App\Models;
 
 use App\Notifications\CustomResetPasswordNotification;
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
-use App\Notifications\CustomVerifyEmail;
-
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, Billable;
+    use Billable, HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -74,5 +73,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomResetPasswordNotification($token));
     }
-
 }

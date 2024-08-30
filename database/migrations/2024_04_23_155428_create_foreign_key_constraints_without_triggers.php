@@ -14,7 +14,7 @@ return new class extends Migration
 
         Schema::table('bom_elements', function (Blueprint $table) {
             $table->foreign(['part_id_fk'], 'FK_BOM_Elements_Part_ID_To_Parts_Part_ID')->references(['part_id'])->on('parts')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign(['bom_id_fk'], 'FK_BOM_Elements_BOM_ID_To_BOMs_BOM_ID')->references(['bom_id'])->on('boms')->onDelete('cascade')->onUpdate('cascade');            
+            $table->foreign(['bom_id_fk'], 'FK_BOM_Elements_BOM_ID_To_BOMs_BOM_ID')->references(['bom_id'])->on('boms')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::table('bom_runs', function (Blueprint $table) {
@@ -73,20 +73,20 @@ return new class extends Migration
             $table->dropForeign('FK_BOM_Elements_Part_ID_To_Parts_Part_ID');
             $table->dropForeign('FK_BOM_Elements_BOM_ID_To_BOMs_BOM_ID');
         });
-    
+
         Schema::table('bom_runs', function (Blueprint $table) {
             $table->dropForeign('FK_BOM_Runs_BOM_ID_FK_To_BOMs_BOM_ID');
         });
-    
+
         Schema::table('locations', function (Blueprint $table) {
             $table->dropForeign('FK_Locations_Location_Owner_G_FK_To_User_Groups_Group_ID');
         });
-    
+
         Schema::table('minstock_levels', function (Blueprint $table) {
             $table->dropForeign('FK_Minstock_Levels_Part_ID_FK_To_Parts_Part_ID');
             $table->dropForeign('FK_Minstock_Levels_Location_ID_FK_To_Locations_Location_ID');
         });
-    
+
         Schema::table('parts', function (Blueprint $table) {
             $table->dropForeign('FK_Parts_Part_Footprint_FK_To_Footprints_Footprint_ID');
             $table->dropForeign('FK_Parts_Part_Unit_FK_To_Part_Units_Unit_ID');
@@ -94,30 +94,29 @@ return new class extends Migration
             $table->dropForeign('FK_Parts_Part_Category_FK_To_Part_Categories_Category_ID');
             $table->dropForeign('FK_Parts_Part_Supplier_FK_To_Suppliers_Supplier_ID');
         });
-    
+
         Schema::table('stock_level_change_history', function (Blueprint $table) {
             $table->dropForeign('FK_StckLvlChng_Hst_To_Location_FK_To_Locations_Location_ID');
             $table->dropForeign('FK_StckLvlChng_Hst_From_Location_FK_To_Locations_Location_ID');
             $table->dropForeign('FK_StckLvlChng_Hst_Part_ID_FK_To_Parts_Part_ID');
         });
-    
+
         Schema::table('stock_levels', function (Blueprint $table) {
             $table->dropForeign('FK_Stock_Levels_Location_ID_FK_To_Locations_Location_ID');
             $table->dropForeign('FK_Stock_Levels_Part_ID_FK_To_Parts_Part_ID');
         });
-    
+
         Schema::table('suppliers', function (Blueprint $table) {
             $table->dropForeign('FK_Suppliers_Supplier_Owner_U_FK_To_Users_ID');
         });
-    
+
         Schema::table('part_meta', function (Blueprint $table) {
             $table->dropForeign('FK_Part_Meta_Part_ID_FK_To_Parts_Part_ID');
             $table->dropForeign('FK_Part_Meta_Meta_Owner_U_FK_To_Users_ID');
         });
-    
+
         Schema::table('images', function (Blueprint $table) {
             $table->dropForeign('FK_Images_Image_Owner_U_ID_To_Users_ID');
         });
     }
-    
 };

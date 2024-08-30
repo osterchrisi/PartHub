@@ -1,10 +1,9 @@
-<?php 
+<?php
 
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
@@ -13,13 +12,14 @@ class EmailChangeVerification extends Mailable
     use Queueable, SerializesModels;
 
     public $verificationUrl;
+
     public $userName;
 
     /**
      * Create a new message instance.
      *
-     * @param string $verificationUrl
-     * @param string $userName
+     * @param  string  $verificationUrl
+     * @param  string  $userName
      */
     public function __construct($verificationUrl, $userName)
     {

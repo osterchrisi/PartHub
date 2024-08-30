@@ -18,29 +18,29 @@ class BladeServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * This method registers the custom Blade directive '@subscribed', 
+     * This method registers the custom Blade directive '@subscribed',
      * which checks if the authenticated user is subscribed to one or more plans.
      *
      * Usage in Blade template:
      *
      * @subscribed('plan1')
      *     <p>Content visible to users subscribed to plan1.</p>
+     *
      * @endsubscribed
      *
      * @subscribed(['plan1', 'plan2'])
      *     <p>Content visible to users subscribed to either plan1 or plan2.</p>
-     * @endsubscribed
      *
-     * @return void
+     * @endsubscribed
      */
     public function boot(): void
     {
         Blade::if('subscribed', function ($plans) {
-            if (!auth()->check()) {
+            if (! auth()->check()) {
                 return false;
             }
 
-            if (!is_array($plans)) {
+            if (! is_array($plans)) {
                 $plans = [$plans];
             }
 

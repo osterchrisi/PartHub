@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-
 class Category extends Model
 {
     use HasFactory;
 
     protected $table = 'part_categories';
+
     protected $primaryKey = 'category_id';
 
     protected $fillable = ['category_name', 'parent_category'];
@@ -20,7 +20,6 @@ class Category extends Model
     {
         return $this->belongsTo(Part::class, 'part_category_fk', 'part_id');
     }
-
 
     public function parent()
     {
@@ -44,8 +43,8 @@ class Category extends Model
 
         // Find the category with the given id and user_id
         $categories = Category::where('part_category_owner_u_fk', $user->id)
-                          ->orderBy('category_name', 'asc')
-                          ->get();
+            ->orderBy('category_name', 'asc')
+            ->get();
 
         // Return the category as JSON response (for JS)
         if ($format === 'json') {
@@ -85,7 +84,6 @@ class Category extends Model
         $new_category_id = $category->category_id;
 
         return $new_category_id;
-        
-    }
 
+    }
 }

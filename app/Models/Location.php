@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-
 
 class Location extends Model
 {
     use HasFactory;
+
     protected $table = 'locations';
+
     protected $primaryKey = 'location_id';
 
     public function stockLevelEntries()
@@ -68,6 +68,6 @@ class Location extends Model
         $new_location_id = $location->location_id;
 
         return $new_location_id;
-        
+
     }
 }

@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BomImport;
+use App\Models\Bom;
 use App\Models\BomElements;
 use App\Models\BomRun;
+use App\Services\CsvImportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Bom;
-use App\Imports\BomImport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Services\CsvImportService;
-
 
 class BomController extends Controller
 {
     private static $table_name = 'boms';
+
     private static $id_field = 'bom_id';
+
     private static $bom_list_table_headers = ['state', 'bom_name', 'bom_description', 'bom_id'];
-    private static $nice_bom_list_table_headers = ["BOM Name", 'Description', 'ID'];
+
+    private static $nice_bom_list_table_headers = ['BOM Name', 'Description', 'ID'];
+
     private static $bom_detail_table_headers = ['part_name', 'element_quantity', 'stock_available', 'can_build'];
+
     private static $nice_bom_detail_table_headers = ['Part Name', 'Quantity needed', 'Total stock available', 'Can build'];
+
     private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'name'];
+
     private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'User'];
 
     /**
@@ -45,14 +51,13 @@ class BomController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'boms.bomsTable') {
+        } elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
                 'nice_columns' => self::$nice_bom_list_table_headers,
                 'table_name' => self::$table_name,
-                'id_field' => self::$id_field
+                'id_field' => self::$id_field,
             ]);
         }
     }
@@ -93,18 +98,17 @@ class BomController extends Controller
                     'tabToggleId1' => 'bomInfo',
                     'tabId2' => 'history',
                     'tabText2' => 'Build History',
-                    'tabToggleId2' => 'bomHistory'
+                    'tabToggleId2' => 'bomHistory',
                 ]
             );
-        }
-        else {
+        } else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
 
     /**
      * Takes BOM(s), retrieves the BOM Elements (parts) and creates an array of changes to be requested
-     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public static function prepareBomForAssembly(Request $request)
@@ -138,9 +142,9 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
+                    'comment' => 'BOM build of BOM with ID '.$bom_id,
                     'status' => 'BOM build request',
-                    'assemble_quantity' => $assemble_quantity
+                    'assemble_quantity' => $assemble_quantity,
                 ];
 
                 $all_stock_changes[] = $stock_change;
@@ -152,13 +156,13 @@ class BomController extends Controller
 
         // Make new PartController and let it do its thing
         $partController = app(PartController::class);
+
         return $partController->handleStockRequests($request);
     }
 
     /**
      * Handles the import of a BOM from an uploaded CSV file.
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function importBom(Request $request)
@@ -168,8 +172,9 @@ class BomController extends Controller
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
 
-        if (!$file) {
+        if (! $file) {
             Session::flash('error', 'No file uploaded');
+
             return redirect()->back();
         }
 
@@ -190,7 +195,7 @@ class BomController extends Controller
 
             // Persist database changes and set success flash message
             DB::commit();
-            Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
+            Session::flash('success', 'BOM "'.$bom_name.'" imported successfully.');
             Session::flash('new_bom_id', $bom_id);
 
             return redirect()->back();
@@ -199,10 +204,10 @@ class BomController extends Controller
             // Roll back database changes made so far
             DB::rollback();
 
-            \Log::error('Error during BOM import: ' . $e->getMessage());
+            \Log::error('Error during BOM import: '.$e->getMessage());
 
             // Set error flash message
-            Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
+            Session::flash('error', 'Error importing BOM: '.$e->getMessage());
 
             // Redirect to the previous page with error status
             return redirect()->back()->withErrors(['import_error' => 'Failed to import BOMs.']);

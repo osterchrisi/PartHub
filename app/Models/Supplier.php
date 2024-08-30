@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-
 class Supplier extends Model
 {
     use HasFactory;
+
     protected $table = 'suppliers';
+
     protected $primaryKey = 'supplier_id';
 
     public function part()
@@ -61,6 +62,6 @@ class Supplier extends Model
         $new_supplier_id = $supplier->supplier_id;
 
         return $new_supplier_id;
-        
+
     }
 }

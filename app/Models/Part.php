@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-
 class Part extends Model
 {
     protected $table = 'parts';
-    protected $primaryKey = 'part_id';
 
+    protected $primaryKey = 'part_id';
 
     public function category()
     {
@@ -42,7 +41,7 @@ class Part extends Model
         return $this->hasMany(BomElements::class, 'part_id_fk');
     }
 
-    private static $column_names = array(
+    private static $column_names = [
         'part_id',
         'part_name',
         'part_description',
@@ -53,14 +52,13 @@ class Part extends Model
         'part_unit_fk',
         'part_owner_u_fk',
         'part_owner_g_fk',
-        'stocklevel_notification_threshold' // Total Stock Minimum Quantity
-    );
+        'stocklevel_notification_threshold', // Total Stock Minimum Quantity
+    ];
 
     public static function getColumnNames()
     {
         return self::$column_names;
     }
-
 
     public static function queryParts($search_column, $search_term, $column_names, $search_category, $user_id)
     {
@@ -74,16 +72,13 @@ class Part extends Model
                     $query->orWhere($column, 'like', "%$search_term%");
                 }
             });
-        }
-        else {
+        } else {
             // Only in specified colum (single)
             $query->where($search_column, 'like', "%$search_term%");
         }
 
-
-
         // Filter for categories
-        if (!in_array('all', $search_category)) {
+        if (! in_array('all', $search_category)) {
             $query->whereHas('category', function ($query) use ($search_category) {
                 $query->whereIn('category_id', $search_category)
                     ->orWhereIn('parent_category', $search_category);
@@ -91,6 +86,7 @@ class Part extends Model
         }
 
         $parts = $query->with('category', 'unit', 'stockLevels', 'footprint', 'supplier')->get()->toArray();
+
         // dd($parts);
         return $parts;
     }
@@ -98,7 +94,7 @@ class Part extends Model
     public static function getBomsContainingPart($part_id)
     {
         $part = Part::find($part_id);
-        if (!$part) {
+        if (! $part) {
             return [];
         }
 
@@ -132,5 +128,4 @@ class Part extends Model
         return $new_part_id;
 
     }
-
 }

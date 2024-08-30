@@ -1,12 +1,11 @@
-<?php 
+<?php
 
 namespace App\Notifications;
 
-use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Carbon;
 use App\Mail\CustomVerifyEmailMailable;
+use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 
 class CustomVerifyEmail extends VerifyEmailNotification
 {
@@ -33,6 +32,7 @@ class CustomVerifyEmail extends VerifyEmailNotification
     public function toMail($notifiable)
     {
         $verificationUrl = $this->verificationUrl($notifiable);
+
         return (new CustomVerifyEmailMailable($verificationUrl))->to($notifiable->email);
     }
 }

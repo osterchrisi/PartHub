@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-
 class Footprint extends Model
 {
     use HasFactory;
+
     protected $table = 'footprints';
+
     protected $primaryKey = 'footprint_id';
 
     public function part()
@@ -62,6 +63,6 @@ class Footprint extends Model
         $new_footprint_id = $footprint->footprint_id;
 
         return $new_footprint_id;
-        
+
     }
 }

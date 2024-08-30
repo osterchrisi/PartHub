@@ -59,7 +59,7 @@ class CsvImportService
      * record or `null` if no match is found.
      *
      * @param  string  $table  The name of the table to query.
-     * @param  array   $conditions  The conditions to match against.
+     * @param  array  $conditions  The conditions to match against.
      * @param  string  $ownerColumn  The column indicating ownership.
      * @param  string  $primaryKey  The primary key column to return.
      * @return int|null The ID of the matched record, or null if no match.
@@ -95,7 +95,7 @@ class CsvImportService
     /**
      * Checks if all provided conditions match the found record.
      *
-     * @param  array   $conditions  The conditions used in the query.
+     * @param  array  $conditions  The conditions used in the query.
      * @param  object  $record  The database record found.
      * @return bool True if all conditions match, false otherwise.
      */

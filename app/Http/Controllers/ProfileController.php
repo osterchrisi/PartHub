@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Mail\EmailChangeVerification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use App\Mail\EmailChangeVerification;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -23,7 +22,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         return view('profile.edit', [
-            'user' => $request->user()
+            'user' => $request->user(),
         ]);
     }
 
@@ -65,7 +64,7 @@ class ProfileController extends Controller
                 return Redirect::route('dashboard')->with('status', 'email-changed');
             } catch (\Exception $e) {
                 // Log the error for debugging purposes
-                Log::error('Email could not be sent: ' . $e->getMessage());
+                Log::error('Email could not be sent: '.$e->getMessage());
 
                 // Optionally, remove the pending email change record to prevent issues
                 DB::table('email_changes')
@@ -85,8 +84,6 @@ class ProfileController extends Controller
 
         return Redirect::route('dashboard')->with('status', 'profile-updated');
     }
-
-
 
     /**
      * Delete the user's account.

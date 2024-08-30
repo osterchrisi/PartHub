@@ -3,25 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\WelcomeEmail;
-use App\Models\User;
-use App\Models\Location;
-use App\Models\Category;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
+use App\Traits\RegistersUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Http;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use App\Traits\RegistersUsers;
 
 class RegisteredUserController extends Controller
 {
@@ -71,7 +60,7 @@ class RegisteredUserController extends Controller
             ]);
         $recaptcha = $siteVerify->json();
 
-        if (!$recaptcha['success']) {
+        if (! $recaptcha['success']) {
             throw ValidationException::withMessages(['recaptcha' => 'reCAPTCHA validation failed.']);
         }
     }

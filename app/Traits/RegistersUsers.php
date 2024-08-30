@@ -2,17 +2,17 @@
 
 namespace App\Traits;
 
-use App\Models\User;
 use App\Mail\WelcomeEmail;
-use App\Models\Location;
 use App\Models\Category;
+use App\Models\Location;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Illuminate\Auth\Events\Registered;
 
 trait RegistersUsers
 {
@@ -20,16 +20,17 @@ trait RegistersUsers
      * Register a new user, create related resources, and log them in.
      *
      * This method handles the entire user registration process, including
-     * email validation, user creation, firing the registration event, logging 
+     * email validation, user creation, firing the registration event, logging
      * the user in, and creating default locations and categories.
      *
-     * @param string $name The name of the user.
-     * @param string $email The email address of the user.
-     * @param string|null $password The password of the user, or null to generate one.
+     * @param  string  $name  The name of the user.
+     * @param  string  $email  The email address of the user.
+     * @param  string|null  $password  The password of the user, or null to generate one.
      * @return \App\Models\User The newly registered user.
+     *
      * @throws \Illuminate\Validation\ValidationException If email validation fails.
      */
-    protected function registerUser(string $name, string $email, string $password = null): User
+    protected function registerUser(string $name, string $email, ?string $password = null): User
     {
         // Try to send the welcome email before creating the user
         //TODO: Use something better than sending a mail to verify... Laravel supports MX record validation, e.g. $request->validate(['email' => 'required|email|dns']);
@@ -50,7 +51,7 @@ trait RegistersUsers
 
         // Assign free subscription and create default location and category
         // $user->assignFreeSubscription(); //! Not doing it right now. Stripe fails because doesn't know address and maybe not such a great idea anyway...
-        Location::createLocation("Default Location", "Feel free to change the description");
+        Location::createLocation('Default Location', 'Feel free to change the description');
         Category::createNewRootCategory();
 
         return $user;

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Location;
-use Illuminate\Support\Facades\Auth;
 use App\Services\DatabaseService;
-
+use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-
     private static $table_name = 'locations';
+
     private static $id_field = 'location_id';
+
     private static $location_list_table_headers = ['state', 'location_name', 'location_description', 'location_id'];
-    private static $nice_location_list_table_headers = ["Location", 'Description', 'ID'];
+
+    private static $nice_location_list_table_headers = ['Location', 'Description', 'ID'];
+
     public static function getLocations()
     {
         return Location::availableLocations();
@@ -37,8 +38,7 @@ class LocationController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'locations.locationsTable') {
+        } elseif ($route == 'locations.locationsTable') {
             return view('locations.locationsTable', [
                 'locations_list' => $locations_list,
                 'db_columns' => self::$location_list_table_headers,
@@ -57,6 +57,7 @@ class LocationController extends Controller
         foreach ($stock_levels as $stock_level) {
             $stock_in_location[] = ['part_name' => $stock_level->part->part_name, 'stock_level' => $stock_level->stock_level_quantity];
         }
+
         return view(
             'locations.showLocation',
             [
@@ -72,7 +73,7 @@ class LocationController extends Controller
                 // Stock in Location table
                 'stock_in_location' => $stock_in_location,
                 'db_columns' => ['part_name', 'stock_level'],
-                'nice_columns' => ['Part', 'Quantity']
+                'nice_columns' => ['Part', 'Quantity'],
             ]
         );
     }
@@ -85,10 +86,11 @@ class LocationController extends Controller
         $location_name = $request->input('location_name');
         $location_description = $request->input('location_description');
 
-        // Insert new part 
+        // Insert new part
         $new_location_id = Location::createLocation($location_name, $location_description);
 
         $response = ['Location ID' => $new_location_id];
+
         return response()->json($response);
     }
 
@@ -103,7 +105,7 @@ class LocationController extends Controller
 
         foreach ($ids as $id) {
             DatabaseService::deleteRow($table, $column, $id);
-            echo json_encode(array($ids, $table, $column));
+            echo json_encode([$ids, $table, $column]);
         }
 
     }

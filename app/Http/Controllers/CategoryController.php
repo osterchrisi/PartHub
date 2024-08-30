@@ -23,11 +23,10 @@ class CategoryController extends Controller
                 [
                     'categoriesForCategoriesTable' => $categories,
                     'title' => 'Categories',
-                    'view' => 'categories'
+                    'view' => 'categories',
                 ]
             );
-        }
-        elseif ($route == 'categories.categoriesTable') {
+        } elseif ($route == 'categories.categoriesTable') {
             return view(
                 'categories.categoriesTable',
                 [
@@ -50,9 +49,10 @@ class CategoryController extends Controller
         foreach ($parts as $part) {
             $parts_with_category[] = [
                 'part_name' => $part->part_name,
-                'part_id' => $part->part_id
+                'part_id' => $part->part_id,
             ];
         }
+
         // $parts_with_category[] = ['id' => $category_id];
         return view(
             'categories.showCategory',
@@ -69,7 +69,7 @@ class CategoryController extends Controller
                 // 'Parts with Category' table
                 'parts_with_category' => $parts_with_category,
                 'db_columns' => ['part_name', 'part_id'],
-                'nice_columns' => ['Part', 'ID']
+                'nice_columns' => ['Part', 'ID'],
             ]
         );
     }
@@ -92,20 +92,18 @@ class CategoryController extends Controller
             // Construct JSON response
             $response = [
                 'Category ID' => $categoryId,
-                'status' => 'success'
+                'status' => 'success',
             ];
 
             return response()->json($response);
 
-        }
-        else {
+        } else {
             $errorResponse = [
-                'status' => 'error'
+                'status' => 'error',
             ];
 
             // Return error JSON response with HTTP status code 500 (Internal Server Error)
             return response()->json($errorResponse, 500);
         }
     }
-
 }

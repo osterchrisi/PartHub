@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Image;
 use App\Services\ImageService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ImageController extends Controller
@@ -12,9 +12,9 @@ class ImageController extends Controller
     /**
      * Uploads an image file and stores it on the server.
      *
-     * @param \Illuminate\Http\Request $request The HTTP request object.
-     * @param string $type The type of entity the image belongs to (e.g., 'part', 'location', etc.).
-     * @param int $id The ID of the entity the image belongs to.
+     * @param  \Illuminate\Http\Request  $request  The HTTP request object.
+     * @param  string  $type  The type of entity the image belongs to (e.g., 'part', 'location', etc.).
+     * @param  int  $id  The ID of the entity the image belongs to.
      * @return \Illuminate\Http\JsonResponse A JSON response indicating the success of the upload.
      *
      * @throws \Illuminate\Validation\ValidationException If validation fails for the image upload.
@@ -36,18 +36,18 @@ class ImageController extends Controller
         $filenameWithoutExtension = pathinfo($originalFilename, PATHINFO_FILENAME);
 
         // Sanitize the filename to remove special characters
-        $sanitizedFilename = preg_replace("/[^a-zA-Z0-9_.]/", "", $filenameWithoutExtension);
+        $sanitizedFilename = preg_replace('/[^a-zA-Z0-9_.]/', '', $filenameWithoutExtension);
 
         // Generate a unique filename using the sanitized original filename and current timestamp
-        $imageNameWithoutExtension = $sanitizedFilename . '_' . time();
-        $imageName = $imageNameWithoutExtension . '.' . $image->extension();
+        $imageNameWithoutExtension = $sanitizedFilename.'_'.time();
+        $imageName = $imageNameWithoutExtension.'.'.$image->extension();
         $user_id = auth()->id();
 
         // Define the directory path based on the type of entity
-        $directory = 'storage/images/' . $type . '/' . $user_id . '/' . $id; // Ends up e.g. /stoarge/images/part/355/filename.jpg
+        $directory = 'storage/images/'.$type.'/'.$user_id.'/'.$id; // Ends up e.g. /stoarge/images/part/355/filename.jpg
 
         // Create the directory if it doesn't exist
-        if (!file_exists(public_path($directory))) {
+        if (! file_exists(public_path($directory))) {
             mkdir(public_path($directory), 0755, true);
         }
 
@@ -56,7 +56,7 @@ class ImageController extends Controller
 
         // Save image details to database
         $imageModel = new Image();
-        $imageModel->filename = $directory . '/' . $imageName;
+        $imageModel->filename = $directory.'/'.$imageName;
         $imageModel->image_owner_u_id = $user_id;   // User that owns this image / uploaded it
         $imageModel->type = $type;                  // Type = part, location, ...
         $imageModel->associated_id = $id;           // ID of the entity
@@ -86,7 +86,7 @@ class ImageController extends Controller
             ->where('image_owner_u_id', auth()->id())
             ->first();
 
-        if (!$image) {
+        if (! $image) {
             return response()->json(['error' => 'Image not found or not authorized'], 404);
         }
 
@@ -97,7 +97,7 @@ class ImageController extends Controller
         }
 
         // Delete the thumbnail file if it exists
-        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp', $image->filename);
+        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
         if (file_exists(public_path($thumbnailPath))) {
             unlink(public_path($thumbnailPath));
         }
@@ -108,6 +108,4 @@ class ImageController extends Controller
 
         return response()->json(['success' => 'Image deleted successfully']);
     }
-
-
 }

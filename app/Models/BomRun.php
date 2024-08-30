@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\DB;
 class BomRun extends Model
 {
     use HasFactory;
+
     protected $table = 'bom_runs';
+
     protected $primaryKey = 'bom_run_id';
 
     protected $fillable = [
         'bom_id_fk',
-        'bom_run_quantity'
+        'bom_run_quantity',
     ];
 
     public function bom()

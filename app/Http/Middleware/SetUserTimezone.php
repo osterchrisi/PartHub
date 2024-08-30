@@ -2,13 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Services\UserSettingService;
+use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 
 class SetUserTimezone
 {
@@ -23,7 +22,6 @@ class SetUserTimezone
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next): Response

@@ -1,30 +1,25 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\DemoLoginController;
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BomController;
-use App\Http\Controllers\PartController;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\FootprintController;
-use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatabaseServiceController;
-use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\FootprintController;
 use App\Http\Controllers\ImageController;
-use App\Services\DatabaseService;
-use App\Http\Controllers\Auth\DemoLoginController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\PartController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserSettingController;
 use App\Models\User;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Auth\SocialiteController;
 use App\Providers\RouteServiceProvider;
+use App\Services\DatabaseService;
+use Illuminate\Support\Facades\Route;
 
-
-
-
-require __DIR__ . '/auth.php';
-
+require __DIR__.'/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +64,6 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
     });
 });
-
 
 //* BOM Routes
 Route::controller(BomController::class)->group(function () {
@@ -151,7 +145,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/user-settigs', [UserSettingController::class, 'index'])->middleware(['auth', 'verified'])->name('user-settings');
 Route::post('/user/settings', [UserSettingController::class, 'update'])->name('user.settings.update')->middleware('auth');
 
-
 //* Standalone Pages Routes
 
 // Sign Up for new users
@@ -161,8 +154,7 @@ Route::get('/signup', function () {
     //TODO: Das geht wahrscheinlich sauberer...
     if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
-    }
-    else {
+    } else {
         return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 })
@@ -212,5 +204,6 @@ Route::get('/test-flash', function () {
 // E-Mail Preview
 Route::get('/preview-email', function () {
     $user = User::first();
+
     return new App\Mail\WelcomeEmail($user);
 });

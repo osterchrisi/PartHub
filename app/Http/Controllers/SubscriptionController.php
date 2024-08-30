@@ -13,9 +13,9 @@ class SubscriptionController extends Controller
      * and Stripe price ID. It includes a 30-day trial period and allows promotion codes.
      * The user is redirected to Stripe's hosted checkout page.
      *
-     * @param \Illuminate\Http\Request $request The current request instance.
-     * @param string $type The type of the subscription, used as the name of the subscription.
-     * @param string $priceId The Stripe price ID for the subscription plan.
+     * @param  \Illuminate\Http\Request  $request  The current request instance.
+     * @param  string  $type  The type of the subscription, used as the name of the subscription.
+     * @param  string  $priceId  The Stripe price ID for the subscription plan.
      * @return \Illuminate\Http\Response The response containing the redirect to Stripe's checkout page.
      */
     public function checkout(Request $request, $type, $priceId)

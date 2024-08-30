@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DatabaseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\DatabaseService;
 
 class DatabaseServiceController extends Controller
 {
-
-
     public function deleteRow(Request $request)
     {
         $table = $request->input('table');
@@ -23,7 +21,7 @@ class DatabaseServiceController extends Controller
             'parts' => 'part_owner_u_fk',
             'part_categories' => 'part_category_owner_u_fk',
             'stock_level_change_history' => 'stock_lvl_chng_user_fk',
-            'suppliers' => 'supplier_owner_u_fk'
+            'suppliers' => 'supplier_owner_u_fk',
         ];
 
         $owner_column = $owner_columns[$table];
@@ -32,9 +30,8 @@ class DatabaseServiceController extends Controller
         foreach ($ids as $id) {
             //! Add try / catch here in case user is not authorized
             DatabaseService::deleteRow($table, $column, $id, $owner_column, $user_id);
-            echo json_encode(array($ids, $table, $column));
+            echo json_encode([$ids, $table, $column]);
         }
 
     }
-
 }

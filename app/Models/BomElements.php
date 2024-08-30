@@ -11,11 +11,13 @@ class BomElements extends Model
     use HasFactory;
 
     protected $table = 'bom_elements';
+
     protected $primaryKey = 'bom_elements_id';
+
     protected $fillable = [
         'bom_id_fk',
         'part_id_fk',
-        'element_quantity'
+        'element_quantity',
     ];
 
     public function part()
@@ -23,7 +25,8 @@ class BomElements extends Model
         return $this->belongsTo(Part::class, 'part_id_fk');
     }
 
-    public function bom(){
+    public function bom()
+    {
         return $this->belongsTo(Bom::class, 'bom_id_fk');
     }
 
@@ -38,5 +41,4 @@ class BomElements extends Model
 
         return $elements;
     }
-
 }

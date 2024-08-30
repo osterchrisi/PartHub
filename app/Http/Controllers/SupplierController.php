@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Supplier;
+use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-
     private static $table_name = 'suppliers';
+
     private static $id_field = 'supplier_id';
-    private static $supplier_list_table_headers = array('state', 'supplier_name', 'supplier_id');
-    private static $nice_supplier_list_table_headers = array("Supplier", 'ID');
-    
+
+    private static $supplier_list_table_headers = ['state', 'supplier_name', 'supplier_id'];
+
+    private static $nice_supplier_list_table_headers = ['Supplier', 'ID'];
+
     public static function getSuppliers()
     {
         return Supplier::availableSuppliers();
@@ -35,8 +37,7 @@ class SupplierController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'suppliers.suppliersTable') {
+        } elseif ($route == 'suppliers.suppliersTable') {
             return view('suppliers.suppliersTable', [
                 'suppliers_list' => $suppliers_list,
                 'db_columns' => self::$supplier_list_table_headers,
@@ -54,8 +55,9 @@ class SupplierController extends Controller
         $parts_from_supplier = [];
         foreach ($parts as $part) {
             $parts_from_supplier[] = ['part_name' => $part->part_name,
-                                       'part_id' => $part->part_id];
+                'part_id' => $part->part_id];
         }
+
         return view(
             'suppliers.showSupplier',
             [
@@ -71,22 +73,23 @@ class SupplierController extends Controller
                 // 'Parts with Supplier' table
                 'parts_from_supplier' => $parts_from_supplier,
                 'db_columns' => ['part_name', 'part_id'],
-                'nice_columns' => ['Part', 'ID']
+                'nice_columns' => ['Part', 'ID'],
             ]
         );
     }
 
-     /**
+    /**
      * Create a new supplier in the database
      */
     public function create(Request $request)
     {
         $supplier_name = $request->input('supplier_name');
 
-        // Insert new part 
+        // Insert new part
         $new_supplier_id = Supplier::createSupplier($supplier_name);
 
         $response = ['Supplier ID' => $new_supplier_id];
+
         return response()->json($response);
     }
 }

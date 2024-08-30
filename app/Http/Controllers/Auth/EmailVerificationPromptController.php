@@ -21,7 +21,7 @@ class EmailVerificationPromptController extends Controller
                 'auth.verify-email',
                 [
                     'title' => 'Verify E-Mail',
-                    'view' => 'verify-mail'
+                    'view' => 'verify-mail',
                 ]
             );
     }

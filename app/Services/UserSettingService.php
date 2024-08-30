@@ -6,7 +6,6 @@ use App\Models\UserSetting;
 
 class UserSettingService
 {
-
     // Class property holding default values for settings
     protected $defaultSettings = [
         'stocklevel_notification' => 'true',

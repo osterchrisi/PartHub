@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-
 class StockLevelHistory extends Model
 {
     use HasFactory;
 
     protected $table = 'stock_level_change_history';
+
     protected $primaryKey = 'stock_lvl_chng_id';
+
     protected $fillable = [
         'part_id_fk',
         'from_location_fk',
@@ -26,7 +27,6 @@ class StockLevelHistory extends Model
     protected $casts = [
         'stock_lvl_chng_timestamp' => 'datetime',
     ];
-
 
     public function part()
     {
@@ -62,6 +62,7 @@ class StockLevelHistory extends Model
 
         return $newId;
     }
+
     public static function getPartStockHistory($part_id)
     {
         $history = self::select(
@@ -75,9 +76,7 @@ class StockLevelHistory extends Model
             ->join('users', 'stock_level_change_history.stock_lvl_chng_user_fk', '=', 'users.id')
             ->where('part_id_fk', $part_id)
             ->get();
-            
+
         return $history;
     }
-
-
 }

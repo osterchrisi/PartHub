@@ -10,8 +10,8 @@ class UserSetting extends Model
     use HasFactory;
 
     protected $table = 'user_settings';
-    protected $primaryKey = 'user_settings_id';
 
+    protected $primaryKey = 'user_settings_id';
 
     protected $fillable = ['user_id_fk', 'setting_name', 'setting_value'];
 

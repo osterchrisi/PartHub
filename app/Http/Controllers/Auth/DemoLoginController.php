@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-
 
 class DemoLoginController extends Controller
 {
@@ -21,6 +19,7 @@ class DemoLoginController extends Controller
         else {
             $demoUser = User::find(1);
             Auth::login($demoUser);
+
             return redirect('/')->with('loggedIn', true); // With welcome message
         }
     }

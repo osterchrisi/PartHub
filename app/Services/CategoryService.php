@@ -13,12 +13,12 @@ class CategoryService
      * the multi-select input field. This function decodes the JSON-encoded array and extracts the
      * numeric values, returning a simplified array of category IDs.
      *
-     * @param array $searchCategory The array containing the JSON-encoded category IDs.
+     * @param  array  $searchCategory  The array containing the JSON-encoded category IDs.
      * @return array The simplified array of category IDs as digits.
      */
     public function extractCategoryIds($searchCategory)
     {
-        if (!in_array('all', $searchCategory)) {
+        if (! in_array('all', $searchCategory)) {
             $catIds = [];
 
             foreach ($searchCategory as $catArray) {
@@ -34,5 +34,4 @@ class CategoryService
 
         return $searchCategory;
     }
-
 }

@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Events\StockMovementOccured;
+use App\Models\BomRun;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
-use App\Models\BomRun;
-use App\Events\StockMovementOccured;
 use Illuminate\Support\Facades\Auth;
 
 class StockService
@@ -90,26 +90,26 @@ class StockService
             if ($bom_id != null) {
                 $processed_boms[] = [
                     'bom_id' => $bom_id,
-                    'assemble_quantity' => $approved_change['assemble_quantity']
+                    'assemble_quantity' => $approved_change['assemble_quantity'],
                 ];
-            }
-            else {
+            } else {
                 $processed_boms = [];
             }
         }
 
-        if (!empty($processed_boms)) {
+        if (! empty($processed_boms)) {
             $this->processBomRuns($processed_boms, $user_id);
         }
 
         return [
             'status' => 'success',
-            'result' => $result
+            'result' => $result,
         ];
     }
 
     /**
      * Extract BOM IDs and processed quantities for creating Bom Run entries
+     *
      * @return void
      */
     private function processBomRuns($processed_boms, $user_id)
@@ -119,8 +119,8 @@ class StockService
 
         // Extract processed BOM ID(s)
         foreach ($processed_boms as $processed_bom) {
-            $bomId = $processed_bom["bom_id"];
-            if (!in_array($bomId, $unique_bom_ids)) {
+            $bomId = $processed_bom['bom_id'];
+            if (! in_array($bomId, $unique_bom_ids)) {
                 $unique_processed_boms[] = $processed_bom;
                 $unique_bom_ids[] = $bomId;
             }
@@ -135,11 +135,11 @@ class StockService
     }
 
     /**
-    * Parse and return details from the requested stock change.
-    *
-    * @param array $requested_change The stock change request data.
-    * @return array Parsed stock change details.
-    */
+     * Parse and return details from the requested stock change.
+     *
+     * @param  array  $requested_change  The stock change request data.
+     * @return array Parsed stock change details.
+     */
     public function parseRequestedChangeDetails($requested_change)
     {
         $change = $requested_change['change'];
@@ -148,9 +148,9 @@ class StockService
         $comment = $requested_change['comment'];
         $to_location = $requested_change['to_location'];
         $from_location = $requested_change['from_location'];
-        $status = $requested_change['status'] ?? NULL;
-        $bom_id = $requested_change['bom_id'] ?? NULL;
-        $assemble_quantity = $requested_change['assemble_quantity'] ?? NULL;
+        $status = $requested_change['status'] ?? null;
+        $bom_id = $requested_change['bom_id'] ?? null;
+        $assemble_quantity = $requested_change['assemble_quantity'] ?? null;
 
         return [
             'change' => $change,
@@ -161,16 +161,16 @@ class StockService
             'to_location' => $to_location,
             'from_location' => $from_location,
             'comment' => $comment,
-            'status' => $status
+            'status' => $status,
         ];
     }
 
     /**
-    * Retrieve current stock levels for the specified part and locations.
-    *
-    * @param array $requested_change_details The parsed stock change details.
-    * @return array Current stock levels at specified locations.
-    */
+     * Retrieve current stock levels for the specified part and locations.
+     *
+     * @param  array  $requested_change_details  The parsed stock change details.
+     * @return array Current stock levels at specified locations.
+     */
     public function getRelevantStockLevelsForChange($requested_change_details)
     {
         $stock_levels = StockLevel::getStockLevelsByPartID($requested_change_details['part_id']);
@@ -179,18 +179,18 @@ class StockService
 
         return [
             'current_stock_level_to' => $current_stock_level_to,
-            'current_stock_level_from' => $current_stock_level_from
+            'current_stock_level_from' => $current_stock_level_from,
         ];
     }
 
     /**
-    * Collect and prepare details for stock changes, including handling potential shortages.
-    *
-    * @param array $requested_change_details The parsed stock change details.
-    * @param array $requested_change_stock_levels Current stock levels for the change.
-    * @param array $negative_stock Reference array for tracking negative stock.
-    * @return array Prepared stock change details, including any negative stock.
-    */
+     * Collect and prepare details for stock changes, including handling potential shortages.
+     *
+     * @param  array  $requested_change_details  The parsed stock change details.
+     * @param  array  $requested_change_stock_levels  Current stock levels for the change.
+     * @param  array  $negative_stock  Reference array for tracking negative stock.
+     * @return array Prepared stock change details, including any negative stock.
+     */
     public function collectStockChangeDetails($requested_change_details, $requested_change_stock_levels, $negative_stock)
     {
         $changes = $requested_change_details;
@@ -200,26 +200,22 @@ class StockService
             $new_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
             $status = 'gtg';
-        }
-        elseif ($change == -1) {
+        } elseif ($change == -1) {
             $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
 
             if ($new_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-            }
-            else {
+            } else {
                 $status = 'gtg';
             }
-        }
-        elseif ($change == 0) {
+        } elseif ($change == 0) {
             $to_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $from_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
 
             if ($from_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-            }
-            else {
+            } else {
                 $status = 'gtg';
             }
 
@@ -242,24 +238,22 @@ class StockService
     }
 
     /**
-    * Generate a response indicating stock shortage and request user permission to proceed.
-    *
-    * @param array $negative_stock Details of parts with insufficient stock.
-    * @param array $changes All prepared stock change details.
-    * @param int $change Type of stock change requested.
-    * @return array Response data for stock shortage scenario.
-    */
+     * Generate a response indicating stock shortage and request user permission to proceed.
+     *
+     * @param  array  $negative_stock  Details of parts with insufficient stock.
+     * @param  array  $changes  All prepared stock change details.
+     * @param  int  $change  Type of stock change requested.
+     * @return array Response data for stock shortage scenario.
+     */
     public function generateStockShortageResponse($negative_stock, $changes, $change)
     {
-        if (!is_null($changes[0]['bom_id'])) {
+        if (! is_null($changes[0]['bom_id'])) {
             $column_names = ['bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity'];
             $nice_columns = ['BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity'];
-        }
-        else {
+        } else {
             if ($change == 0) {
                 $column_names = ['part_id', 'quantity', 'from_location', 'from_quantity'];
-            }
-            else {
+            } else {
                 $column_names = ['part_id', 'quantity', 'from_location', 'new_quantity'];
             }
 
@@ -272,7 +266,7 @@ class StockService
             'changes' => $changes,
             'negative_stock' => $negative_stock,
             'negative_stock_table' => $negative_stock_table,
-            'status' => 'permission_requested'
+            'status' => 'permission_requested',
         ];
     }
 }

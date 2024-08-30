@@ -67,7 +67,6 @@ return [
     */
     'logo' => env('APP_LOGO', 'app-related/logo.png'),
 
-
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

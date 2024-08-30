@@ -13,8 +13,7 @@ class tabButton extends Component
      */
     public function __construct(
         public string $id
-    )
-    {
+    ) {
         //
     }
 

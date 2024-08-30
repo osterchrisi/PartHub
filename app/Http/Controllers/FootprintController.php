@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Footprint;
+use Illuminate\Http\Request;
 
 class FootprintController extends Controller
 {
-
     private static $table_name = 'footprints';
+
     private static $id_field = 'footprint_id';
-    private static $footprint_list_table_headers = array('state', 'footprint_name', 'footprint_alias', 'footprint_id');
-    private static $nice_footprint_list_table_headers = array("Footprint", 'Alias', 'ID');
-    
+
+    private static $footprint_list_table_headers = ['state', 'footprint_name', 'footprint_alias', 'footprint_id'];
+
+    private static $nice_footprint_list_table_headers = ['Footprint', 'Alias', 'ID'];
+
     public static function getFootprints()
     {
         return Footprint::availableFootprints();
@@ -35,8 +37,7 @@ class FootprintController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'footprints.footprintsTable') {
+        } elseif ($route == 'footprints.footprintsTable') {
             return view('footprints.footprintsTable', [
                 'footprints_list' => $footprints_list,
                 'db_columns' => self::$footprint_list_table_headers,
@@ -54,8 +55,9 @@ class FootprintController extends Controller
         $parts_with_footprint = [];
         foreach ($parts as $part) {
             $parts_with_footprint[] = ['part_name' => $part->part_name,
-                                       'part_id' => $part->part_id];
+                'part_id' => $part->part_id];
         }
+
         return view(
             'footprints.showFootprint',
             [
@@ -71,12 +73,12 @@ class FootprintController extends Controller
                 // 'Parts with Footprint' table
                 'parts_with_footprint' => $parts_with_footprint,
                 'db_columns' => ['part_name', 'part_id'],
-                'nice_columns' => ['Part', 'ID']
+                'nice_columns' => ['Part', 'ID'],
             ]
         );
     }
 
-     /**
+    /**
      * Create a new footprint in the database
      */
     public function create(Request $request)
@@ -84,10 +86,11 @@ class FootprintController extends Controller
         $footprint_name = $request->input('footprint_name');
         $footprint_alias = $request->input('footprint_alias');
 
-        // Insert new part 
+        // Insert new part
         $new_footprint_id = Footprint::createFootprint($footprint_name, $footprint_alias);
 
         $response = ['Footprint ID' => $new_footprint_id];
+
         return response()->json($response);
     }
 }

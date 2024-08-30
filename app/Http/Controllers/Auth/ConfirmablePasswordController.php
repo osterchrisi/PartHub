@@ -21,7 +21,7 @@ class ConfirmablePasswordController extends Controller
             'auth.confirm-password',
             [
                 'title' => 'Confirm Password',
-                'view' => 'confirm-password'
+                'view' => 'confirm-password',
             ]
         );
     }
@@ -32,7 +32,7 @@ class ConfirmablePasswordController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (
-            !Auth::guard('web')->validate([
+            ! Auth::guard('web')->validate([
                 'email' => $request->user()->email,
                 'password' => $request->password,
             ])
