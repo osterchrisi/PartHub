@@ -38,14 +38,18 @@ class BomImport implements ToCollection, WithHeadingRow
      */
     public function importBom(Collection $collection)
     {
+        // Collect headers
         $headers = $collection->first()->keys()->toArray();
 
-        if (!$this->csvImportService->validateHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'))) {
-            throw new \Exception('Invalid headers');
+        // Map CSV headers to expected headers using Levenshtein distance
+        $mappingResult = $this->csvImportService->mapHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'), 3);
+
+        // Validate if all expected headers have been successfully mapped
+        if (!empty($mappingResult['unmatched'])) {
+            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found or too different.');
         }
 
-        $mappingResult = $this->csvImportService->mapHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'));
-
+        // Process BOM row by row
         foreach ($collection as $row) {
             $rowData = $this->csvImportService->mapRowData($row, $mappingResult['mapping']);
             if (!$this->processBomRow($rowData->toArray())) {
