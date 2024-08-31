@@ -75,7 +75,6 @@ class BomImport implements ToCollection, WithHeadingRow
             'part_name' => $row['part_name'] ?? null,
         ];
 
-        // Use the entityName parameter to customize the error message
         $part_id = $this->csvImportService->resolveForeignKey('parts', $conditions, 'part_owner_u_fk', 'part_id', 'Part');
 
         if (!$part_id) {

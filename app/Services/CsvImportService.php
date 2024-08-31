@@ -164,9 +164,12 @@ class CsvImportService
         return $this->errors->toArray();
     }
 
+    // Currently omits the friendly key name actually...
     public function formatErrorsForDisplay(): string
     {
         $errorMessages = [];
+
+        // \Log::info($this->errors);
 
         foreach ($this->errors->toArray() as $key => $messages) {
             foreach ($messages as $message) {
