@@ -80,7 +80,7 @@ class CsvImportService
 
         // If no record is found or multiple conditions are provided and don't match, return null
         if (!$record || (count(array_filter($conditions)) > 1 && !$this->conditionsMatch($conditions, $record))) {
-            $this->addCustomError('foreign_key', "No matching record found for {$entityName} with " . $this->formatConditionsForError($conditions));
+            $this->addCustomError("Reference Error", "No matching record found for {$entityName} with " . $this->formatConditionsForError($conditions));
             return null;
         }
 
