@@ -79,7 +79,7 @@ class BomImport implements ToCollection, WithHeadingRow
 
         if (!$part_id) {
             // Get errors as a formatted string
-            $formattedErrors = $this->csvImportService->formatErrors()->withKey();
+            $formattedErrors = $this->csvImportService->formatErrors()->withoutKey();
             throw new \Exception($formattedErrors);  //Ignore yellow squiggly line in VSC
         }
 

@@ -33,8 +33,7 @@ trait UserFriendlySqlErrors
      */
     public function addCustomError(string $key, string $message): void
     {
-        $friendlyKey = $this->getFriendlyKeyName($key);
-        $this->errors->add($friendlyKey, $message);
+        $this->errors->add($key, $message);
     }
 
     /**
