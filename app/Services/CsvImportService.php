@@ -1,18 +1,14 @@
 <?php
 namespace App\Services;
 
+use App\Traits\UserFriendlySqlErrors;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\MessageBag;
 
 class CsvImportService
 {
+    use UserFriendlySqlErrors;
     protected $errors;
-
-    public function __construct()
-    {
-        $this->errors = new MessageBag();
-    }
 
     /**
      * Retrieves the expected headers based on the import type.
@@ -91,24 +87,6 @@ class CsvImportService
         return $record->$primaryKey;
     }
 
-    /**
-     * Formats the conditions array into a user-friendly string for error messages.
-     *
-     * @param array $conditions The conditions used in the query.
-     * @return string A formatted string describing the conditions.
-     */
-    protected function formatConditionsForError(array $conditions): string
-    {
-        $formattedConditions = [];
-
-        foreach ($conditions as $key => $value) {
-            if ($value !== null) {
-                $formattedConditions[] = "{$key}: {$value}";
-            }
-        }
-
-        return implode(', ', $formattedConditions);
-    }
 
     /**
      * Checks if all provided conditions match the found record.
@@ -126,60 +104,6 @@ class CsvImportService
         }
 
         return true;
-    }
-
-    /**
-     * Adds a custom error message to the errors collection.
-     *
-     * @param string $key The error key.
-     * @param string $message The error message.
-     */
-    public function addCustomError(string $key, string $message): void
-    {
-        // Use a more user-friendly key instead of "foreign_key"
-        $friendlyKey = $this->getFriendlyKeyName($key);
-
-        // Add the user-friendly error message
-        $this->errors->add($friendlyKey, $message);
-    }
-
-    /**
-     * Converts a technical key into a more user-friendly name.
-     *
-     * @param string $key The technical key.
-     * @return string The user-friendly key name.
-     */
-    protected function getFriendlyKeyName(string $key): string
-    {
-        $keyMap = [
-            'foreign_key' => 'Reference Error',
-            // Add more key mappings as needed
-        ];
-
-        return $keyMap[$key] ?? ucfirst(str_replace('_', ' ', $key));
-    }
-
-    public function getErrors(): array
-    {
-        return $this->errors->toArray();
-    }
-
-    // Currently omits the friendly key name actually...
-    public function formatErrorsForDisplay(): string
-    {
-        $errorMessages = [];
-
-        // \Log::info($this->errors);
-
-        foreach ($this->errors->toArray() as $key => $messages) {
-            foreach ($messages as $message) {
-                // Remove JSON brackets and other technical syntax
-                $errorMessages[] = $message;
-            }
-        }
-
-        // Join the error messages into a single string with line breaks or commas
-        return implode('. ', $errorMessages) . '.';
     }
 
     /**
