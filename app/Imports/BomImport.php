@@ -29,6 +29,10 @@ class BomImport implements ToCollection, WithHeadingRow
      */
     public function collection(Collection $collection)
     {
+
+        // Log the raw collection data immediately after import
+        foreach ($collection as $row) {
+        }
         $this->importBom($collection);
     }
 
@@ -48,14 +52,14 @@ class BomImport implements ToCollection, WithHeadingRow
         $mappingResult = $this->csvImportService->mapHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'), 3);
 
         // Validate if all expected headers have been successfully mapped
-        if (! empty($mappingResult['unmatched'])) {
-            throw new \Exception('Invalid headers: '.implode(', ', $mappingResult['unmatched']).' not found or too different.');
+        if (!empty($mappingResult['unmatched'])) {
+            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found or too different.');
         }
 
         // Process BOM row by row
         foreach ($collection as $row) {
             $rowData = $this->csvImportService->mapRowData($row, $mappingResult['mapping']);
-            if (! $this->processBomRow($rowData->toArray())) {
+            if (!$this->processBomRow($rowData->toArray())) {
                 throw new \Exception('Row processing and BOM element creation failed');
             }
         }
@@ -77,7 +81,7 @@ class BomImport implements ToCollection, WithHeadingRow
 
         $part_id = $this->csvImportService->resolveForeignKey('parts', $conditions, 'part_owner_u_fk', 'part_id');
 
-        if (! $part_id) {
+        if (!$part_id) {
             $this->csvImportService->flashErrors();
 
             return false;

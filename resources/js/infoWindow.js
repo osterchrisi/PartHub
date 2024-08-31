@@ -144,7 +144,7 @@ class infoWindow {
     }
 
     allowHtmlTableElementsInPopover() {
-        // Allow extra HTML elements for the popover mini stock table
+        // Allow extra HTML elements for the BOM popover mini stock table
         var myDefaultAllowList = bootstrap.Tooltip.Default.allowList
 
         // Allow table elements

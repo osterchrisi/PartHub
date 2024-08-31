@@ -61,6 +61,43 @@ export function assembleBomsFromToolbar(table_id) {
 
 export function attachAddBomHandler() {
     $('#toolbarAddButton').click(function () {
-        $('#info-window').load('/bom.import-form');
+        // Load the form into the #info-window element
+        $('#info-window').load('/bom.import-form', function() {
+            $('#bomImportForm').on('submit', function (event) {
+                event.preventDefault();
+
+                var formData = new FormData(this); // Get the form data
+                var formObject = {};
+
+                // Convert FormData to a plain object
+                formData.forEach(function (value, key) {
+                    formObject[key] = value;
+                });
+
+                $.ajax({
+                    url: '/bom.import', 
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#response-message').html('<div class="alert alert-success">' + response.success + '</div>');
+                        } else if (response.error) {
+                            $('#response-message').html('<div class="alert alert-danger">' + response.error + '</div>');
+                        }
+
+                        // Optionally reload parts of the UI or table, depending on your application
+                        // loadSelectedRow('bom', 'bom_list_table'); // Example of reloading content
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        console.log(xhr.responseJSON);
+                        var errorMessage = xhr.responseJSON?.error || 'An error occurred during the import.';
+                        $('#response-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                    }
+                });
+            });
+        });
     });
 }

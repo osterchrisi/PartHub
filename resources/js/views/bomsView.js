@@ -28,9 +28,7 @@ export function initializeBomsView() {
         url: '/locations.get',
         dataType: 'json',
         success: function (locations) {
-            // fromStockLocationDropdown('bomAssembleLocationDiv', locations);
             stockManager.fromStockLocationDropdown('bomAssembleLocationDiv', locations);
-
         },
         error: function (error) {
             console.log(error);

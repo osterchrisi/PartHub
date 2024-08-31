@@ -149,7 +149,7 @@ class CsvImportService
                 $unmatchedHeaders[] = $expected;
             }
         }
-
+        
         return ['mapping' => $headerMapping, 'unmatched' => $unmatchedHeaders];
     }
 

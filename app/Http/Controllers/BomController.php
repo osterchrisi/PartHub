@@ -51,7 +51,8 @@ class BomController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        } elseif ($route == 'boms.bomsTable') {
+        }
+        elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
@@ -101,7 +102,8 @@ class BomController extends Controller
                     'tabToggleId2' => 'bomHistory',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -142,7 +144,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID '.$bom_id,
+                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
@@ -160,11 +162,6 @@ class BomController extends Controller
         return $partController->handleStockRequests($request);
     }
 
-    /**
-     * Handles the import of a BOM from an uploaded CSV file.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function importBom(Request $request)
     {
         // Form data
@@ -172,13 +169,9 @@ class BomController extends Controller
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
 
-        if (! $file) {
-            Session::flash('error', 'No file uploaded');
-
-            return redirect()->back();
+        if (!$file) {
+            return response()->json(['error' => 'No file uploaded'], 400);
         }
-
-        //! Either validate file here or in middleware
 
         try {
             // Begin SQL transaction
@@ -195,23 +188,15 @@ class BomController extends Controller
 
             // Persist database changes and set success flash message
             DB::commit();
-            Session::flash('success', 'BOM "'.$bom_name.'" imported successfully.');
-            Session::flash('new_bom_id', $bom_id);
-
-            return redirect()->back();
+            return response()->json(['success' => 'BOM "' . $bom_name . '" imported successfully.', 'new_bom_id' => $bom_id]);
 
         } catch (\Exception $e) {
             // Roll back database changes made so far
             DB::rollback();
 
-            \Log::error('Error during BOM import: '.$e->getMessage());
-
             // Set error flash message
-            Session::flash('error', 'Error importing BOM: '.$e->getMessage());
-
-            // Redirect to the previous page with error status
-            return redirect()->back()->withErrors(['import_error' => 'Failed to import BOMs.']);
+            return response()->json(['error' => 'Error importing BOM: ' . $e->getMessage()], 500);
         }
-
     }
+
 }
