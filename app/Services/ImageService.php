@@ -29,21 +29,19 @@ class ImageService
     //     return $thumbnail_filepath;
     // }
 
-
-
     public static function createThumbnail($directory, $imageName, $imageNameWithoutExtension)
     {
         // Open and scale image
-        $filepath = storage_path('app/' . $directory . '/' . $imageName);
+        $filepath = storage_path('app/'.$directory.'/'.$imageName);
         $manager = new ImageManager(new Driver());
         $image = $manager->read($filepath)->coverDown(100, 100);
 
         // Saving location
-        $thumbnail_directory = storage_path('app/' . $directory . '/thumbnails');
-        $thumbnail_filepath = $thumbnail_directory . '/' . $imageNameWithoutExtension . '.webp';
+        $thumbnail_directory = storage_path('app/'.$directory.'/thumbnails');
+        $thumbnail_filepath = $thumbnail_directory.'/'.$imageNameWithoutExtension.'.webp';
 
         // Create the directory if it doesn't exist
-        if (!file_exists($thumbnail_directory)) {
+        if (! file_exists($thumbnail_directory)) {
             mkdir($thumbnail_directory, 0755, true);
         }
 
@@ -53,4 +51,3 @@ class ImageService
         return $thumbnail_filepath;
     }
 }
-

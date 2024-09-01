@@ -17,9 +17,8 @@ trait UserFriendlySqlErrors
 
     public function hasErrors(): bool
     {
-        return !$this->errors->isEmpty();
+        return ! $this->errors->isEmpty();
     }
-
 
     /**
      * Prepares the error messages for formatting.
@@ -108,14 +107,13 @@ trait UserFriendlySqlErrors
             foreach ($messages as $message) {
                 if ($this->includeKey) {
                     $errorMessages[] = "{$friendlyKey}: {$message}";
-                }
-                else {
+                } else {
                     $errorMessages[] = $message;
                 }
             }
         }
 
-        return implode("<br>", $errorMessages);
+        return implode('<br>', $errorMessages);
     }
 
     /**
@@ -130,11 +128,10 @@ trait UserFriendlySqlErrors
 
         foreach ($conditions as $key => $value) {
             if ($value !== null) {
-                if ($key == "part_id") {
-                    $key = "ID";
-                }
-                else if ($key == "part_name") {
-                    $key = "Part Name";
+                if ($key == 'part_id') {
+                    $key = 'ID';
+                } elseif ($key == 'part_name') {
+                    $key = 'Part Name';
                 }
                 $formattedConditions[] = "{$key}: {$value}";
             }

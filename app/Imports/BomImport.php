@@ -48,8 +48,8 @@ class BomImport implements ToCollection, WithHeadingRow
         $mappingResult = $this->csvImportService->mapHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'), 3);
 
         // Validate if all expected headers have been successfully mapped
-        if (!empty($mappingResult['unmatched'])) {
-            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found.');
+        if (! empty($mappingResult['unmatched'])) {
+            throw new \Exception('Invalid headers: '.implode(', ', $mappingResult['unmatched']).' not found.');
         }
 
         // Process BOM row by row
@@ -62,7 +62,7 @@ class BomImport implements ToCollection, WithHeadingRow
         if ($this->csvImportService->hasErrors()) {
             // Throw an exception with the accumulated errors
             $formattedErrors = $this->csvImportService->formatErrors()->withoutKey();
-            throw new \Exception('BOM import failed with the following errors:<br>' . $formattedErrors);
+            throw new \Exception('BOM import failed with the following errors:<br>'.$formattedErrors);
         }
     }
 
@@ -82,9 +82,10 @@ class BomImport implements ToCollection, WithHeadingRow
 
         $part_id = $this->csvImportService->resolveForeignKey('parts', $conditions, 'part_owner_u_fk', 'part_id');
 
-        if (!$part_id) {
+        if (! $part_id) {
             // Add the error to the service (but don't throw an exception yet)
-            $this->csvImportService->addCustomError('foreign_key', "No matching record found for part with " . $this->csvImportService->formatConditionsForError($conditions));
+            $this->csvImportService->addCustomError('foreign_key', 'No matching record found for part with '.$this->csvImportService->formatConditionsForError($conditions));
+
             return;
         }
 

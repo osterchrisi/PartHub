@@ -22,7 +22,7 @@ class Document extends Model
     ];
 
     public function users()
-{
-    return $this->belongsTo(User::class, 'document_owner_u_id');
-}
+    {
+        return $this->belongsTo(User::class, 'document_owner_u_id');
+    }
 }

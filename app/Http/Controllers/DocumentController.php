@@ -24,7 +24,7 @@ class DocumentController extends Controller
     public function upload(Request $request, $type, $id)
     {
         $validationRules = ['required', 'mimes:pdf', 'max:2048'];
-        $filePath = $this->uploadFile($request, 'document', 'document',  $type, $id, $validationRules);
+        $filePath = $this->uploadFile($request, 'document', 'document', $type, $id, $validationRules);
 
         // Save document details to database
         $documentModel = new Document();

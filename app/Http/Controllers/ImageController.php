@@ -71,7 +71,6 @@ class ImageController extends Controller
         $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
         $this->deleteFile($thumbnailPath);
 
-
         // Delete the image record from the database
         $image->delete();
         DB::commit();
