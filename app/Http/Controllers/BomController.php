@@ -10,7 +10,6 @@ use App\Services\CsvImportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BomController extends Controller
@@ -51,8 +50,7 @@ class BomController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'boms.bomsTable') {
+        } elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
@@ -102,8 +100,7 @@ class BomController extends Controller
                     'tabToggleId2' => 'bomHistory',
                 ]
             );
-        }
-        else {
+        } else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -144,7 +141,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
+                    'comment' => 'BOM build of BOM with ID '.$bom_id,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
@@ -169,7 +166,7 @@ class BomController extends Controller
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
 
-        if (!$file) {
+        if (! $file) {
             return response()->json(['error' => 'No file uploaded'], 400);
         }
 
@@ -188,15 +185,15 @@ class BomController extends Controller
 
             // Persist database changes and set success flash message
             DB::commit();
-            return response()->json(['success' => 'BOM "' . $bom_name . '" imported successfully.', 'new_bom_id' => $bom_id]);
+
+            return response()->json(['success' => 'BOM "'.$bom_name.'" imported successfully.', 'new_bom_id' => $bom_id]);
 
         } catch (\Exception $e) {
             // Roll back database changes made so far
             DB::rollback();
 
             // Set error flash message
-            return response()->json(['error' => 'Error importing BOM: ' . $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 }

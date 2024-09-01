@@ -7,12 +7,19 @@ use Illuminate\Support\MessageBag;
 trait UserFriendlySqlErrors
 {
     protected $errors;
+
     protected $includeKey = false;
 
     public function __construct()
     {
         $this->errors = new MessageBag();
     }
+
+    public function hasErrors(): bool
+    {
+        return !$this->errors->isEmpty();
+    }
+
 
     /**
      * Prepares the error messages for formatting.
@@ -28,8 +35,8 @@ trait UserFriendlySqlErrors
     /**
      * Adds a custom error message to the errors collection.
      *
-     * @param string $key The error key.
-     * @param string $message The error message.
+     * @param  string  $key  The error key.
+     * @param  string  $message  The error message.
      */
     public function addCustomError(string $key, string $message): void
     {
@@ -39,7 +46,7 @@ trait UserFriendlySqlErrors
     /**
      * Converts a technical key into a more user-friendly name for displaying an error message to a user.
      *
-     * @param string $key The technical key.
+     * @param  string  $key  The technical key.
      * @return string The user-friendly key name.
      */
     protected function getFriendlyKeyName(string $key): string
@@ -70,6 +77,7 @@ trait UserFriendlySqlErrors
     public function withKey(): string
     {
         $this->includeKey = true;
+
         return $this->formatErrorsForDisplay();
     }
 
@@ -81,6 +89,7 @@ trait UserFriendlySqlErrors
     public function withoutKey(): string
     {
         $this->includeKey = false;
+
         return $this->formatErrorsForDisplay();
     }
 
@@ -106,16 +115,16 @@ trait UserFriendlySqlErrors
             }
         }
 
-        return implode('. ', $errorMessages) . '.';
+        return implode("<br>", $errorMessages);
     }
 
     /**
      * Formats the conditions array into a user-friendly string for error messages.
      *
-     * @param array $conditions The conditions used in the query.
+     * @param  array  $conditions  The conditions used in the query.
      * @return string A formatted string describing the conditions.
      */
-    protected function formatConditionsForError(array $conditions): string
+    public function formatConditionsForError(array $conditions): string
     {
         $formattedConditions = [];
 

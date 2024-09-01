@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Traits\UserFriendlySqlErrors;
@@ -8,12 +9,13 @@ use Illuminate\Support\Facades\DB;
 class CsvImportService
 {
     use UserFriendlySqlErrors;
+
     protected $errors;
 
     /**
      * Retrieves the expected headers based on the import type.
      *
-     * @param string $importType The type of import (e.g., 'bom', 'part').
+     * @param  string  $importType  The type of import (e.g., 'bom', 'part').
      * @return array The array of expected headers.
      */
     public function getExpectedHeaders(string $importType): array
@@ -31,14 +33,14 @@ class CsvImportService
     /**
      * Validates that the provided headers match the expected headers.
      *
-     * @param array $headers The headers from the CSV file.
-     * @param array $expectedHeaders The expected headers.
+     * @param  array  $headers  The headers from the CSV file.
+     * @param  array  $expectedHeaders  The expected headers.
      * @return bool True if headers are valid, false otherwise.
      */
     public function validateHeaders(array $headers, array $expectedHeaders): bool
     {
         foreach ($expectedHeaders as $expected) {
-            if (!in_array($expected, $headers)) {
+            if (! in_array($expected, $headers)) {
                 $this->errors->add('header', "Missing expected header: {$expected}");
             }
         }
@@ -53,11 +55,11 @@ class CsvImportService
      * and is owned by the authenticated user. Returns the primary key of the matched
      * record or `null` if no match is found. Generates a user-friendly error message.
      *
-     * @param string $table The name of the table to query.
-     * @param array $conditions The conditions to match against.
-     * @param string $ownerColumn The column indicating ownership.
-     * @param string $primaryKey The primary key column to return.
-     * @param string $entityName A friendly name for the entity being queried (e.g., 'Part').
+     * @param  string  $table  The name of the table to query.
+     * @param  array  $conditions  The conditions to match against.
+     * @param  string  $ownerColumn  The column indicating ownership.
+     * @param  string  $primaryKey  The primary key column to return.
+     * @param  string  $entityName  A friendly name for the entity being queried (e.g., 'Part').
      * @return int|null The ID of the matched record, or null if no match.
      */
     public function resolveForeignKey(string $table, array $conditions, string $ownerColumn, string $primaryKey, string $entityName): ?int
@@ -66,7 +68,7 @@ class CsvImportService
 
         // Add each non-null condition to the query
         foreach ($conditions as $column => $value) {
-            if (!is_null($value)) {
+            if (! is_null($value)) {
                 $query->where($column, $value);
             }
         }
@@ -79,26 +81,25 @@ class CsvImportService
         $record = $query->first();
 
         // If no record is found or multiple conditions are provided and don't match, return null
-        if (!$record || (count(array_filter($conditions)) > 1 && !$this->conditionsMatch($conditions, $record))) {
-            $this->addCustomError("Reference Error", "No matching record found for {$entityName} with " . $this->formatConditionsForError($conditions));
+        if (! $record || (count(array_filter($conditions)) > 1 && ! $this->conditionsMatch($conditions, $record))) {
+
             return null;
         }
 
         return $record->$primaryKey;
     }
 
-
     /**
      * Checks if all provided conditions match the found record.
      *
-     * @param array $conditions The conditions used in the query.
-     * @param object $record The database record found.
+     * @param  array  $conditions  The conditions used in the query.
+     * @param  object  $record  The database record found.
      * @return bool True if all conditions match, false otherwise.
      */
     protected function conditionsMatch(array $conditions, $record): bool
     {
         foreach ($conditions as $column => $value) {
-            if (!is_null($value) && $value !== $record->$column) {
+            if (! is_null($value) && $value !== $record->$column) {
                 return false;
             }
         }
@@ -109,8 +110,8 @@ class CsvImportService
     /**
      * Maps the headers from the CSV file to the expected headers.
      *
-     * @param array $csvHeaders The headers from the CSV file.
-     * @param array $expectedHeaders The expected headers.
+     * @param  array  $csvHeaders  The headers from the CSV file.
+     * @param  array  $expectedHeaders  The expected headers.
      * @return array An array containing the header mapping and unmatched headers.
      */
     public function mapHeaders(array $csvHeaders, array $expectedHeaders, int $distanceThreshold): array
@@ -133,8 +134,7 @@ class CsvImportService
 
             if ($smallestDistance < $distanceThreshold) {
                 $headerMapping[$expected] = $bestMatch;
-            }
-            else {
+            } else {
                 $unmatchedHeaders[] = $expected;
             }
         }
@@ -145,8 +145,8 @@ class CsvImportService
     /**
      * Maps a single row of CSV data to the expected headers.
      *
-     * @param \Illuminate\Support\Collection $row The row of data to map.
-     * @param array $headerMapping The mapping of expected headers to CSV headers.
+     * @param  \Illuminate\Support\Collection  $row  The row of data to map.
+     * @param  array  $headerMapping  The mapping of expected headers to CSV headers.
      * @return \Illuminate\Support\Collection The mapped row data.
      */
     public function mapRowData(Collection $row, array $headerMapping): Collection
