@@ -47,38 +47,21 @@
             @include('parts.bomTable')
 
             <br>
+            {{-- Datasheets --}}
             <h5>Datasheet:</h5>
+            <x-upload-form containerId="documentContainer" formId="documentUploadForm" inputId="document"
+                inputName="document" labelText="Select Document" buttonText="Upload PDF"
+                loadingId="documentLoadingContainer" headerText="Upload Datasheet / Document" acceptType=".pdf" />
+
+
             <br>
+            {{-- Images --}}
             <h5>Images:</h5>
-            <div id="imageContainer"></div>
-            <br>
-            <div class="container px-0">
-                <div class="row ">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">Upload Images</div>
-                            <div class="card-body">
-                                <form method="POST" enctype="multipart/form-data" id="imageUploadForm">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="image" class="form-label form-label-sm">Select Image</label>
-                                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <button type="submit" class="btn btn-sm btn-primary">Upload</button>
-                                        <div id="loadingAnimationContainer" class="ms-2" style="display: none;">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <x-upload-form containerId="imageContainer" formId="imageUploadForm" inputId="image" inputName="image"
+                labelText="Select Image" buttonText="Upload" loadingId="imageLoadingContainer"
+                headerText="Upload Images" acceptType="image/*" />
+
+
 
         </div>
         {{-- Stock History Tab --}}

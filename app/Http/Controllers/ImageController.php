@@ -25,7 +25,7 @@ class ImageController extends Controller
     public function upload(Request $request, $type, $id)
     {
         $validationRules = ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
-        $filePath = $this->uploadFile($request, 'image', $type, $id, $validationRules);
+        $filePath = $this->uploadFile($request, 'image', 'image', $type, $id, $validationRules);
 
         // Save image details to database
         $imageModel = new Image();

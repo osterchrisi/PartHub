@@ -11,13 +11,14 @@ trait UploadsFiles
      * Handle file upload and storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param string $inputName
-     * @param string $type
-     * @param int $id
-     * @param array $validationRules
-     * @return string $filePath
+     * @param string $inputName The name of the file input field.
+     * @param string $fileType The type of the file being uploaded (e.g., 'image', 'document').
+     * @param string $type The type of resource the file is associated with (e.g., 'part', 'location').
+     * @param int $id The ID of the resource the file is associated with.
+     * @param array $validationRules The validation rules to apply to the file upload.
+     * @return string $filePath The path where the file was stored.
      */
-    protected function uploadFile(Request $request, $inputName, $type, $id, array $validationRules)
+    protected function uploadFile(Request $request, $inputName, $fileType, $type, $id, array $validationRules)
     {
         // Validate the request
         $request->validate([
@@ -34,8 +35,19 @@ trait UploadsFiles
         $fileName = $sanitizedFilename . '_' . time() . '.' . $file->extension();
         $userId = auth()->id();
 
-        // Define the directory path based on the type of entity
-        $directory = 'files/images/' . $type . '/' . $userId . '/' . $id;
+        // Determine the base directory based on the file type
+        switch ($fileType) {
+            case 'document':
+                $baseDirectory = 'files/documents';
+                break;
+            case 'image':
+            default:
+                $baseDirectory = 'files/images';
+                break;
+        }
+
+        // Define the full directory path based on the file type, resource type, and resource ID
+        $directory = $baseDirectory . '/' . $type . '/' . $userId . '/' . $id;
 
         // Store the file in the storage/app/files/ directory
         $filePath = $file->storeAs($directory, $fileName, 'local');

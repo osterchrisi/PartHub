@@ -94,7 +94,7 @@ class ImageManager {
             // Extract the file name from the full path
             var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
-            // Construct the thumbnail path using the new route
+            // Construct image and thumbnail path, file gets served by FileController via associated route
             var thumbnailPath = `/files/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
             var imagePath = `/files/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
 
