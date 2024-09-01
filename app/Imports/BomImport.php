@@ -49,7 +49,7 @@ class BomImport implements ToCollection, WithHeadingRow
 
         // Validate if all expected headers have been successfully mapped
         if (!empty($mappingResult['unmatched'])) {
-            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found or too different.');
+            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found.');
         }
 
         // Process BOM row by row
