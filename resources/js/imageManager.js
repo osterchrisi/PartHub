@@ -94,14 +94,15 @@ class ImageManager {
             // Extract the file name from the full path
             var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
-            // Construct the thumbnail path by replacing the file name and swapping extension to .webp
-            var thumbnailPath = image.filename.replace(fileName, 'thumbnails/' + fileName.replace(/\.[^.]+$/, '') + '.webp');
+            // Construct the thumbnail path using the new route
+            var thumbnailPath = `/files/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
+            var imagePath = `/files/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
 
             // Create the image container
             // Here the image.id is the ID of the image in the DB, not the resource ID (Part, BOM, ...)
             var imageElement = $(`
             <div class="image-wrapper" style="position: relative; display: inline-block;">
-                <a href="${image.filename}" data-toggle="lightbox" data-gallery="1">
+                <a href="${imagePath}" data-toggle="lightbox" data-gallery="1">
                     <img src="${thumbnailPath}" alt="Thumbnail">
                 </a>
                 <i class="bi bi-x-circle delete-image" data-type="${this.type}" data-id="${image.id}"></i>
@@ -121,6 +122,7 @@ class ImageManager {
             this.deleteImage(imageType, imageId);
         });
     }
+
 
     /**
     * Deletes an image after confirming with the user.

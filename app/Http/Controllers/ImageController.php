@@ -35,7 +35,7 @@ class ImageController extends Controller
         $imageModel->associated_id = $id;               // ID of the entity
         $imageModel->save();
 
-        ImageService::createThumbnail($directory = dirname($filePath), basename($filePath), pathinfo($filePath, PATHINFO_FILENAME));
+        ImageService::createThumbnail(dirname($filePath), basename($filePath), pathinfo($filePath, PATHINFO_FILENAME));
 
         return response()->json(['success' => 'Image uploaded successfully']);
     }
@@ -69,9 +69,8 @@ class ImageController extends Controller
 
         // Delete the thumbnail file if it exists
         $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
-        if (file_exists(public_path($thumbnailPath))) {
-            unlink(public_path($thumbnailPath));
-        }
+        $this->deleteFile($thumbnailPath);
+
 
         // Delete the image record from the database
         $image->delete();

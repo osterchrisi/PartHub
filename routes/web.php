@@ -14,6 +14,7 @@ use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\FileController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Services\DatabaseService;
@@ -128,6 +129,10 @@ Route::controller(ImageController::class)->group(function () {
     Route::get('/images/{type}/{id}', 'getImagesByTypeAndId')->middleware(['auth', 'verified'])->name('part.images');
     Route::delete('/delete-image/{type}/{id}', [ImageController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete-image');
 });
+
+//* File Controller
+Route::get('/files/{type}/{userId}/{id}/{filename}', [FileController::class, 'serveFile']);
+Route::get('/files/{type}/{userId}/{id}/thumbnails/{filename}', [FileController::class, 'serveThumbnail']);
 
 //* Cashier / Subscriptions
 Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);

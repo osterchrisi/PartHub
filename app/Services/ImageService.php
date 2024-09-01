@@ -7,25 +7,50 @@ use Intervention\Image\ImageManager;
 
 class ImageService
 {
+    // public static function createThumbnail($directory, $imageName, $imageNameWithoutExtension)
+    // {
+    //     // Open and scale image
+    //     $filepath = $directory.'/'.$imageName;
+    //     $manager = new ImageManager(new Driver());
+    //     $image = $manager->read($filepath);
+    //     $image->coverDown(100, 100);
+
+    //     // Saving location
+    //     $thumbnail_directory = $directory.'/thumbnails';
+    //     $thumbnail_filepath = $thumbnail_directory.'/'.$imageNameWithoutExtension;
+    //     // Create the directory if it doesn't exist
+    //     if (! file_exists(public_path($thumbnail_directory))) {
+    //         mkdir(public_path($thumbnail_directory), 0755, true);
+    //     }
+
+    //     // Save and return
+    //     $image->save($thumbnail_filepath.'.'.'webp');
+
+    //     return $thumbnail_filepath;
+    // }
+
+
+
     public static function createThumbnail($directory, $imageName, $imageNameWithoutExtension)
     {
         // Open and scale image
-        $filepath = $directory.'/'.$imageName;
+        $filepath = storage_path('app/' . $directory . '/' . $imageName);
         $manager = new ImageManager(new Driver());
-        $image = $manager->read($filepath);
-        $image->coverDown(100, 100);
+        $image = $manager->read($filepath)->coverDown(100, 100);
 
         // Saving location
-        $thumbnail_directory = $directory.'/thumbnails';
-        $thumbnail_filepath = $thumbnail_directory.'/'.$imageNameWithoutExtension;
+        $thumbnail_directory = storage_path('app/' . $directory . '/thumbnails');
+        $thumbnail_filepath = $thumbnail_directory . '/' . $imageNameWithoutExtension . '.webp';
+
         // Create the directory if it doesn't exist
-        if (! file_exists(public_path($thumbnail_directory))) {
-            mkdir(public_path($thumbnail_directory), 0755, true);
+        if (!file_exists($thumbnail_directory)) {
+            mkdir($thumbnail_directory, 0755, true);
         }
 
         // Save and return
-        $image->save($thumbnail_filepath.'.'.'webp');
+        $image->save($thumbnail_filepath);
 
         return $thumbnail_filepath;
     }
 }
+

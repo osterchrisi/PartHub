@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 trait UploadsFiles
 {
@@ -34,16 +35,10 @@ trait UploadsFiles
         $userId = auth()->id();
 
         // Define the directory path based on the type of entity
-        $directory = 'storage/images/' . $type . '/' . $userId . '/' . $id;
+        $directory = 'files/images/' . $type . '/' . $userId . '/' . $id;
 
-        // Ensure the directory exists
-        if (!file_exists(public_path($directory))) {
-            mkdir(public_path($directory), 0755, true);
-        }
-
-        // Move the file to the public storage directory
-        $filePath = $directory . '/' . $fileName;
-        $file->move(public_path($directory), $fileName);
+        // Store the file in the storage/app/files/ directory
+        $filePath = $file->storeAs($directory, $fileName, 'local');
 
         return $filePath; // Return the relative path as it is stored in the database
     }
@@ -56,10 +51,8 @@ trait UploadsFiles
      */
     protected function deleteFile($filePath)
     {
-        $fullPath = public_path($filePath);
-
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
+        if (Storage::disk('local')->exists($filePath)) {
+            Storage::disk('local')->delete($filePath);
         }
     }
 }
