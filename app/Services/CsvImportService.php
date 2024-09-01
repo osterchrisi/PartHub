@@ -62,7 +62,7 @@ class CsvImportService
      * @param  string  $entityName  A friendly name for the entity being queried (e.g., 'Part').
      * @return int|null The ID of the matched record, or null if no match.
      */
-    public function resolveForeignKey(string $table, array $conditions, string $ownerColumn, string $primaryKey, string $entityName): ?int
+    public function resolveForeignKey(string $table, array $conditions, string $ownerColumn, string $primaryKey): ?int
     {
         $query = DB::table($table);
 

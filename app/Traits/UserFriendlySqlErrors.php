@@ -130,6 +130,12 @@ trait UserFriendlySqlErrors
 
         foreach ($conditions as $key => $value) {
             if ($value !== null) {
+                if ($key == "part_id") {
+                    $key = "ID";
+                }
+                else if ($key == "part_name") {
+                    $key = "Part Name";
+                }
                 $formattedConditions[] = "{$key}: {$value}";
             }
         }
