@@ -162,7 +162,7 @@ Route::get('/signup', function () {
 
 // What is PartHub?
 Route::get('/whatis', function () {
-    return view('whatis', ['title' => 'What is PartHub, anyway?', 'view' => 'whatis']);
+    return view('whatis', ['title' => 'PartHub - Open-source inventory management', 'view' => 'whatis']);
 })
     ->name('whatis');
 
