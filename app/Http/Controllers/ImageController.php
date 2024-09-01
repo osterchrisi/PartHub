@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Services\ImageService;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ImageController extends Controller
 {
+    use UploadsFiles;
+
     /**
      * Uploads an image file and stores it on the server.
      *
@@ -21,48 +24,18 @@ class ImageController extends Controller
      */
     public function upload(Request $request, $type, $id)
     {
-        // Validate the request
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        // Retrieve image from request
-        $image = $request->file('image');
-
-        // Retrieve the original filename
-        $originalFilename = $image->getClientOriginalName();
-
-        // Extract the filename without extension
-        $filenameWithoutExtension = pathinfo($originalFilename, PATHINFO_FILENAME);
-
-        // Sanitize the filename to remove special characters
-        $sanitizedFilename = preg_replace('/[^a-zA-Z0-9_.]/', '', $filenameWithoutExtension);
-
-        // Generate a unique filename using the sanitized original filename and current timestamp
-        $imageNameWithoutExtension = $sanitizedFilename.'_'.time();
-        $imageName = $imageNameWithoutExtension.'.'.$image->extension();
-        $user_id = auth()->id();
-
-        // Define the directory path based on the type of entity
-        $directory = 'storage/images/'.$type.'/'.$user_id.'/'.$id; // Ends up e.g. /stoarge/images/part/355/filename.jpg
-
-        // Create the directory if it doesn't exist
-        if (! file_exists(public_path($directory))) {
-            mkdir(public_path($directory), 0755, true);
-        }
-
-        // Move the image to the directory
-        $image->move(public_path($directory), $imageName);
+        $validationRules = ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
+        $filePath = $this->uploadFile($request, 'image', $type, $id, $validationRules);
 
         // Save image details to database
         $imageModel = new Image();
-        $imageModel->filename = $directory.'/'.$imageName;
-        $imageModel->image_owner_u_id = $user_id;   // User that owns this image / uploaded it
-        $imageModel->type = $type;                  // Type = part, location, ...
-        $imageModel->associated_id = $id;           // ID of the entity
+        $imageModel->filename = $filePath;
+        $imageModel->image_owner_u_id = auth()->id();   // User that owns this image / uploaded it
+        $imageModel->type = $type;                      // Type = part, location, ...
+        $imageModel->associated_id = $id;               // ID of the entity
         $imageModel->save();
 
-        ImageService::createThumbnail($directory, $imageName, $imageNameWithoutExtension);
+        ImageService::createThumbnail($directory = dirname($filePath), basename($filePath), pathinfo($filePath, PATHINFO_FILENAME));
 
         return response()->json(['success' => 'Image uploaded successfully']);
     }
@@ -71,7 +44,7 @@ class ImageController extends Controller
     {
         // Retrieve images associated with the part ID
         $images = Image::where('associated_id', $id)
-            ->where('type', $type)
+            ->where('type', $type)                      //type = part, location, supplier, ...
             ->where('image_owner_u_id', auth()->id())
             ->get();
 
@@ -92,9 +65,7 @@ class ImageController extends Controller
 
         DB::beginTransaction();
         // Delete the image file
-        if (file_exists(public_path($image->filename))) {
-            unlink(public_path($image->filename));
-        }
+        $this->deleteFile($image->filename);
 
         // Delete the thumbnail file if it exists
         $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
