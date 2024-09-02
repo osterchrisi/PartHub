@@ -10,7 +10,7 @@
                     <form method="POST" enctype="multipart/form-data" id="{{ $formId }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="{{ $inputId }}" class="form-label form-label-sm">{{ $labelText }}</label>
+                            {{-- <label for="{{ $inputId }}" class="form-label form-label-sm">{{ $labelText }}</label> --}}
                             <input type="file" class="form-control" id="{{ $inputId }}" name="{{ $inputName }}" accept="{{ $acceptType }}" required>
                         </div>
                         <div class="d-flex align-items-center">
