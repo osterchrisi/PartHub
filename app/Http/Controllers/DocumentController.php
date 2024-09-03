@@ -59,7 +59,7 @@ class DocumentController extends Controller
             ->where('document_owner_u_id', auth()->id())
             ->first();
 
-        if (!$document) {
+        if (! $document) {
             return response()->json(['error' => 'Document not found or not authorized'], 404);
         }
 

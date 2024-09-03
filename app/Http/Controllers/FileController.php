@@ -20,7 +20,7 @@ class FileController extends Controller
     {
         $path = "files/{$fileType}/{$type}/{$userId}/{$id}/{$filename}";
 
-        if (!Storage::disk('local')->exists($path)) {
+        if (! Storage::disk('local')->exists($path)) {
             abort(404);
         }
 
@@ -40,7 +40,7 @@ class FileController extends Controller
     {
         $path = "files/images/{$type}/{$userId}/{$id}/thumbnails/{$filename}";
 
-        if (!Storage::disk('local')->exists($path)) {
+        if (! Storage::disk('local')->exists($path)) {
             abort(404);
         }
 
