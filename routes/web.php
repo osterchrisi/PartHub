@@ -8,6 +8,7 @@ use App\Http\Controllers\DatabaseServiceController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FootprintController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\ProfileController;
@@ -131,8 +132,13 @@ Route::controller(ImageController::class)->group(function () {
 });
 
 //* File Controller
-Route::get('/files/{type}/{userId}/{id}/{filename}', [FileController::class, 'serveFile']);
-Route::get('/files/{type}/{userId}/{id}/thumbnails/{filename}', [FileController::class, 'serveThumbnail']);
+Route::get('/files/{fileType}/{type}/{userId}/{id}/{filename}', [FileController::class, 'serveFile']);
+Route::get('/files/images/{type}/{userId}/{id}/thumbnails/{filename}', [FileController::class, 'serveThumbnail']);
+
+//* Document Controller
+Route::get('/documents/{type}/{id}', [DocumentController::class, 'getDocumentsByTypeAndId']);
+Route::post('/upload-document/{type}/{id}', [DocumentController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload-document');
+Route::delete('/delete-document/{type}/{id}', [DocumentController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete-document');
 
 //* Cashier / Subscriptions
 Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);

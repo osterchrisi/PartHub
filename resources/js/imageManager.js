@@ -95,8 +95,8 @@ class ImageManager {
             var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
             // Construct image and thumbnail path, file gets served by FileController via associated route
-            var thumbnailPath = `/files/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
-            var imagePath = `/files/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
+            var thumbnailPath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
+            var imagePath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
 
             // Create the image container
             // Here the image.id is the ID of the image in the DB, not the resource ID (Part, BOM, ...)

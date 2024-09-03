@@ -2,6 +2,7 @@ export { infoWindow }
 
 import { StockManager } from "./stockManager";
 import { ImageManager } from "./imageManager";
+import { DocumentManager } from "./DocumentManager";
 
 import {
     bootstrapPartInBomsTable,
@@ -47,6 +48,8 @@ class infoWindow {
                 stockManager.attachModalHideListener();
                 this.setupStockChangeButtons(stockManager, this.id);
                 this.setupImageManager();
+                this.setupDocumentManager();
+
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();
@@ -141,6 +144,11 @@ class infoWindow {
     setupImageManager() {
         this.imageManager = new ImageManager(this.type, this.id);
         this.imageManager.setupImageContainer();
+    }
+
+    setupDocumentManager() {
+        this.documentManager = new DocumentManager(this.type, this.id);
+        this.documentManager.setupDocumentContainer();
     }
 
     allowHtmlTableElementsInPopover() {
