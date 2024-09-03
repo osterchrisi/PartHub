@@ -25,7 +25,9 @@ class ImageController extends Controller
     public function upload(Request $request, $type, $id)
     {
         $validationRules = ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
-        $filePath = $this->uploadFile($request, 'image', 'image', $type, $id, $validationRules);
+        $uploadResult = $this->uploadFile($request, 'image', 'image', $type, $id, $validationRules);
+        $filePath = $uploadResult['filePath'];
+        $originalFilename = $uploadResult['originalFilename'];
 
         // Save image details to database
         $imageModel = new Image();
@@ -59,7 +61,7 @@ class ImageController extends Controller
             ->where('image_owner_u_id', auth()->id())
             ->first();
 
-        if (! $image) {
+        if (!$image) {
             return response()->json(['error' => 'Image not found or not authorized'], 404);
         }
 
@@ -68,7 +70,7 @@ class ImageController extends Controller
         $this->deleteFile($image->filename);
 
         // Delete the thumbnail file if it exists
-        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
+        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp', $image->filename);
         $this->deleteFile($thumbnailPath);
 
         // Delete the image record from the database

@@ -15,7 +15,7 @@ trait UploadsFiles
      * @param  string  $type  The type of resource the file is associated with (e.g., 'part', 'location').
      * @param  int  $id  The ID of the resource the file is associated with.
      * @param  array  $validationRules  The validation rules to apply to the file upload.
-     * @return string $filePath The path where the file was stored.
+     * @return array  Contains 'filePath' (the path where the file was stored) and 'originalFilename' (the original name of the uploaded file).
      */
     protected function uploadFile(Request $request, $inputName, $fileType, $type, $id, array $validationRules)
     {
@@ -31,7 +31,7 @@ trait UploadsFiles
         $originalFilename = $file->getClientOriginalName();
         $filenameWithoutExtension = pathinfo($originalFilename, PATHINFO_FILENAME);
         $sanitizedFilename = preg_replace('/[^a-zA-Z0-9_.]/', '', $filenameWithoutExtension);
-        $fileName = $sanitizedFilename.'_'.time().'.'.$file->extension();
+        $fileName = $sanitizedFilename . '_' . time() . '.' . $file->extension();
         $userId = auth()->id();
 
         // Determine the base directory based on the file type
@@ -46,12 +46,16 @@ trait UploadsFiles
         }
 
         // Define the full directory path based on the file type, resource type, and resource ID
-        $directory = $baseDirectory.'/'.$type.'/'.$userId.'/'.$id;
+        $directory = $baseDirectory . '/' . $type . '/' . $userId . '/' . $id;
 
         // Store the file in the storage/app/files/ directory
         $filePath = $file->storeAs($directory, $fileName, 'local');
 
-        return $filePath; // Return the relative path as it is stored in the database
+        // Return both the file path and the original filename
+        return [
+            'filePath' => $filePath,
+            'originalFilename' => $originalFilename
+        ];
     }
 
     /**

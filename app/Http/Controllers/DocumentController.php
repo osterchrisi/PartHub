@@ -24,7 +24,9 @@ class DocumentController extends Controller
     public function upload(Request $request, $type, $id)
     {
         $validationRules = ['required', 'mimes:pdf', 'max:2048'];
-        $filePath = $this->uploadFile($request, 'document', 'document', $type, $id, $validationRules);
+        $uploadResult = $this->uploadFile($request, 'document', 'document', $type, $id, $validationRules);
+        $filePath = $uploadResult['filePath'];
+        $originalFilename = $uploadResult['originalFilename'];
 
         // Save document details to database
         $documentModel = new Document();
@@ -56,7 +58,7 @@ class DocumentController extends Controller
             ->where('document_owner_u_id', auth()->id())
             ->first();
 
-        if (! $document) {
+        if (!$document) {
             return response()->json(['error' => 'Document not found or not authorized'], 404);
         }
 
