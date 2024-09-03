@@ -32,6 +32,7 @@ class ImageController extends Controller
         // Save image details to database
         $imageModel = new Image();
         $imageModel->filename = $filePath;
+        $imageModel->display_name = $originalFilename;
         $imageModel->image_owner_u_id = auth()->id();   // User that owns this image / uploaded it
         $imageModel->type = $type;                      // Type = part, location, ...
         $imageModel->associated_id = $id;               // ID of the entity

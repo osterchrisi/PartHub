@@ -31,6 +31,7 @@ class DocumentController extends Controller
         // Save document details to database
         $documentModel = new Document();
         $documentModel->filename = $filePath;
+        $documentModel->display_name = $originalFilename;
         $documentModel->document_owner_u_id = auth()->id(); // User that owns this document / uploaded it
         $documentModel->type = $type;                       // Type = part, location, ...
         $documentModel->associated_id = $id;                // ID of the entity

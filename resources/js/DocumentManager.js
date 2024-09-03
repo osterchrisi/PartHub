@@ -83,30 +83,29 @@ class DocumentManager {
     }
 
     /**
-    * Updates the document container with the fetched documents and sets up delete event listeners.
-    *
-    * @param {Array} response - The array of document objects.
-    * @returns {void}
-    */
+  * Updates the document container with the fetched documents and sets up delete event listeners.
+  *
+  * @param {Array} response - The array of document objects.
+  * @returns {void}
+  */
     updateDocuments(response) {
         $('#documentContainer').empty();
         response.forEach((document) => {
-            // Extract the file name from the full path
-            var fileName = document.filename.substring(document.filename.lastIndexOf('/') + 1);
+            // Use the display_name if available; otherwise, fall back to the filename
+            var displayName = document.display_name ? document.display_name : document.filename.substring(document.filename.lastIndexOf('/') + 1);
 
             // Construct document path
-            var documentPath = `/files/documents/${this.type}/${document.document_owner_u_id}/${document.associated_id}/` + fileName;
+            var documentPath = `/files/documents/${this.type}/${document.document_owner_u_id}/${document.associated_id}/` + document.filename.substring(document.filename.lastIndexOf('/') + 1);
 
             // Create the document container
-            // Here the document.id is the ID of the document in the DB, not the resource ID (Part, BOM, ...)
             var documentElement = $(`
-            <div class="document-wrapper" style="position: relative; display: inline-block;">
-                <a href="${documentPath}" target="_blank">
-                    <i class="bi bi-file-earmark-text"></i> ${fileName}
-                </a>
-                <i class="bi bi-x-circle delete-document" data-type="${this.type}" data-id="${document.id}"></i>
-            </div>
-            `);
+        <div class="document-wrapper" style="position: relative; display: inline-block;">
+            <a href="${documentPath}" target="_blank">
+                <i class="bi bi-file-earmark-text"></i> ${displayName}
+            </a>
+            <i class="bi bi-x-circle delete-document" data-type="${this.type}" data-id="${document.id}"></i>
+        </div>
+        `);
 
             $('#documentContainer').append(documentElement);
         });
