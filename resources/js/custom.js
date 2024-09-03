@@ -336,7 +336,6 @@ export function updateInfoWindow(type, id) {
 export function clearModalOnHiding() {
     $(document).on('hidden.bs.modal', '.modal', function (event) {
         // Don't do it if the modal was hidden due to creating a new category
-        console.log("hiding any modal");
         const targetModalId = event.target.id;
         if (targetModalId !== 'categoryCreationModal') {
             // Check if part entry modal is being hidden due to showing category modal
