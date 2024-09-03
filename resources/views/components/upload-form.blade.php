@@ -1,7 +1,7 @@
 <!-- resources/views/components/upload-form.blade.php -->
 <div id="{{ $containerId }}"></div>
 <br>
-<div class="container px-0">
+<div class="container px-0 collapse" id="{{ $uploadContainerId }}">
     <div class="row">
         <div class="col">
             <div class="card">

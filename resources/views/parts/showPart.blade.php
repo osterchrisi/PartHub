@@ -48,27 +48,41 @@
 
             <br>
             {{-- Datasheets --}}
-            <h5>Datasheet:</h5>
-            <x-upload-form containerId="documentContainer" formId="documentUploadForm" inputId="document"
-                inputName="document" labelText="Select Document" buttonText="Upload PDF"
-                loadingId="documentLoadingContainer" headerText="Upload Datasheet / Document" acceptType=".pdf" />
+            <div class="row justify-content-between pe-3">
+                <div class="col h5">Datasheet</div>
+                <div class="col-1"><button class="btn btn-sm btn-outline-primary" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#documentUploadContainer">
+                        +</button>
+                </div>
+            </div>
+            <x-upload-form containerId="documentContainer" uploadContainerId="documentUploadContainer"
+                formId="documentUploadForm" inputId="document" inputName="document" labelText="Select Document"
+                buttonText="Upload PDF" loadingId="documentLoadingContainer" headerText="Upload Datasheet / Document"
+                acceptType=".pdf" />
+
 
 
             <br>
             {{-- Images --}}
-            <h5>Images:</h5>
-            <x-upload-form containerId="imageContainer" formId="imageUploadForm" inputId="image" inputName="image"
-                labelText="Select Image" buttonText="Upload" loadingId="imageLoadingContainer"
-                headerText="Upload Images" acceptType="image/*" />
+            <div class="row justify-content-between pe-3">
+                <div class="col h5">Images</div>
+                <div class="col-1"><button class="btn btn-sm btn-outline-primary" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#imageUploadContainer">
+                        +</button>
+                </div>
+                <x-upload-form containerId="imageContainer" uploadContainerId="imageUploadContainer"
+                    formId="imageUploadForm" inputId="image" inputName="image" labelText="Select Image"
+                    buttonText="Upload" loadingId="imageLoadingContainer" headerText="Upload Images"
+                    acceptType="image/*" />
 
 
 
-        </div>
-        {{-- Stock History Tab --}}
-        <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
+            </div>
+            {{-- Stock History Tab --}}
+            <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
 
-            @include('parts.stockHistoryTable')
+                @include('parts.stockHistoryTable')
 
+            </div>
         </div>
     </div>
-</div>
