@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * FileController serves all files from storage
@@ -23,18 +23,18 @@ class FileController extends Controller
     public function serveFile($fileType, $type, $userId, $id, $filename)
     {
         // Ensure the authenticated user matches the file owner
-        if (Auth::id() !== (int)$userId) {
+        if (Auth::id() !== (int) $userId) {
             abort(403, 'Unauthorized access to this file.');
         }
-    
+
         // Construct the file path
         $path = "files/{$fileType}/{$type}/{$userId}/{$id}/{$filename}";
-    
+
         // Check if the file exists in storage
         if (! Storage::disk('local')->exists($path)) {
             abort(404);
         }
-    
+
         // Serve the file
         return response()->file(storage_path("app/{$path}"));
     }

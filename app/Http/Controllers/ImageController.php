@@ -63,7 +63,7 @@ class ImageController extends Controller
             ->where('image_owner_u_id', auth()->id())
             ->first();
 
-        if (!$image) {
+        if (! $image) {
             return response()->json(['error' => 'Image not found or not authorized'], 404);
         }
 
@@ -72,7 +72,7 @@ class ImageController extends Controller
         $this->deleteFile($image->filename);
 
         // Delete the thumbnail file if it exists
-        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp', $image->filename);
+        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
         $this->deleteFile($thumbnailPath);
 
         // Delete the image record from the database
@@ -103,5 +103,4 @@ class ImageController extends Controller
 
         return response()->json($mainImage);
     }
-
 }
