@@ -1,14 +1,3 @@
-<?php
-// Debug
-// echo '<pre>';
-// print_r($part);
-// print_r($total_stock);
-// print_r($bom_list);
-// print_r($bomTableHeaders);
-// print_r($stock_history);
-// echo '</pre>';
-?>
-
 <div class="container-fluid">
     <br>
     <div class="row justify-content-between pe-3">
