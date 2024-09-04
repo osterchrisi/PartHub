@@ -59,9 +59,6 @@
                 formId="documentUploadForm" inputId="document" inputName="document" labelText="Select Document"
                 buttonText="Upload PDF" loadingId="documentLoadingContainer" headerText="Upload Datasheet / Document"
                 acceptType=".pdf" />
-
-
-
             <br>
             {{-- Images --}}
             <div class="row justify-content-between pe-3">
@@ -74,9 +71,6 @@
                     formId="imageUploadForm" inputId="image" inputName="image" labelText="Select Image"
                     buttonText="Upload" loadingId="imageLoadingContainer" headerText="Upload Images"
                     acceptType="image/*" />
-
-
-
             </div>
             {{-- Stock History Tab --}}
             <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">

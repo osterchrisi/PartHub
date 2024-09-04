@@ -132,8 +132,8 @@ Route::controller(ImageController::class)->group(function () {
 });
 
 //* File Controller
-Route::get('/files/{fileType}/{type}/{userId}/{id}/{filename}', [FileController::class, 'serveFile']);
-Route::get('/files/images/{type}/{userId}/{id}/thumbnails/{filename}', [FileController::class, 'serveThumbnail']);
+Route::get('/files/{fileType}/{type}/{userId}/{id}/{filename}', [FileController::class, 'serveFile'])->middleware(['auth', 'verified']);
+Route::get('/files/images/{type}/{userId}/{id}/thumbnails/{filename}', [FileController::class, 'serveThumbnail'])->middleware(['auth', 'verified']);
 
 //* Document Controller
 Route::get('/documents/{type}/{id}', [DocumentController::class, 'getDocumentsByTypeAndId']);

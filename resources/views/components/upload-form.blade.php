@@ -20,14 +20,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center">
-                            {{-- <button type="submit" class="btn btn-sm btn-primary">{{ $buttonText }}</button>
-                            <div id="{{ $loadingId }}" class="ms-2" style="display: none;">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div> --}}
-                        </div>
                     </form>
                 </div>
             </div>
