@@ -206,8 +206,7 @@ class ImageManager {
         const thumbnailPath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
         const imagePath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
 
-        // Update the 'src' attribute of the main picture to the thumbnail
-        $('#mainPicture').attr('src', thumbnailPath);
+        $('#mainPicture').attr('src', thumbnailPath); // Update the 'src' attribute of the main picture either to thumbnailPath or imagePath here to chose how it looks. Currently like the original more
         $('#mainPicture').attr('alt', 'Main Picture');
 
         // Update the 'href' attribute of the main picture link to the full image

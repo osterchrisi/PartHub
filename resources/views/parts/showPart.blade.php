@@ -12,16 +12,18 @@
 <div class="container-fluid">
     <br>
     <div class="row justify-content-between pe-3">
-        <div class="col h4">{{ $part['part_name'] }}</div>
         <div class="col">
+            <h4>{{ $part['part_name'] }}</h4>
+            <h5>Total stock:
+                {{ $total_stock }}
+            </h5>
+        </div>
+        <div class="col d-flex justify-content-end">
             <a href="" id="mainPictureLink" data-toggle="lightbox" data-gallery="1">
-                <img id="mainPicture" src="" alt="">
+                <img id="mainPicture" src="" alt="" style="max-width: 100%; height: auto;">
             </a>
         </div>
     </div>
-    <h5>Total stock:
-        {{ $total_stock }}
-    </h5>
 
     <!-- Parts Tabs -->
     <x-tablist id="partTabs" tabId1="{{ $tabId1 }}">
