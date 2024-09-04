@@ -60,3 +60,10 @@
     color: white;
     padding: 5rem 0;
 }
+
+/* Sortable */
+.sortable-ghost {
+    opacity: 0.5;
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+}

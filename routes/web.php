@@ -129,6 +129,7 @@ Route::controller(ImageController::class)->group(function () {
     Route::post('/upload-image/{type}/{id}', 'upload')->middleware(['auth', 'verified'])->name('upload-image');
     Route::get('/images/{type}/{id}', 'getImagesByTypeAndId')->middleware(['auth', 'verified'])->name('part.images');
     Route::delete('/delete-image/{type}/{id}', [ImageController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete-image');
+    Route::post('/reorder-images/{type}/{id}', [ImageController::class, 'reorderImages']);
 });
 
 //* File Controller

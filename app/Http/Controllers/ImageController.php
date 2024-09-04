@@ -49,6 +49,7 @@ class ImageController extends Controller
         $images = Image::where('associated_id', $id)
             ->where('type', $type)                      //type = part, location, supplier, ...
             ->where('image_owner_u_id', auth()->id())
+            ->orderBy('order', 'asc')
             ->get();
 
         return response()->json($images);
@@ -62,7 +63,7 @@ class ImageController extends Controller
             ->where('image_owner_u_id', auth()->id())
             ->first();
 
-        if (! $image) {
+        if (!$image) {
             return response()->json(['error' => 'Image not found or not authorized'], 404);
         }
 
@@ -71,7 +72,7 @@ class ImageController extends Controller
         $this->deleteFile($image->filename);
 
         // Delete the thumbnail file if it exists
-        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp', $image->filename);
+        $thumbnailPath = str_replace(basename($image->filename), 'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp', $image->filename);
         $this->deleteFile($thumbnailPath);
 
         // Delete the image record from the database
@@ -80,4 +81,27 @@ class ImageController extends Controller
 
         return response()->json(['success' => 'Image deleted successfully']);
     }
+
+    public function reorderImages(Request $request, $type, $id)
+    {
+        $imageOrder = $request->input('imageOrder');
+
+        // Loop through the imageOrder array and update each image's order in the database
+        foreach ($imageOrder as $orderData) {
+            $imageId = $orderData['id'];
+            $newOrder = $orderData['order'];
+
+            // Update the image's order in the database
+            Image::where('id', $imageId)->update(['order' => $newOrder]);
+        }
+
+        // Fetch and return only the first image (lowest order)
+        $mainImage = Image::where('associated_id', $id)
+            ->where('type', $type)
+            ->orderBy('order', 'asc')
+            ->first();
+
+        return response()->json($mainImage);
+    }
+
 }

@@ -66,6 +66,10 @@
     <!-- Lightbox 2 for Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
 
+    <!-- Sortable JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+
     <!-- Custom JS and CSS -->
     @vite(['resources/js/app.js', 'resources/css/app.css'])
     <!-- Font Awesome -->

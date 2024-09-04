@@ -27,6 +27,17 @@ class ImageManager {
     setupImageContainer() {
         this.fetchImages(this.type, this.id);
 
+        // Initialize Sortable.js for the image container
+        const imageContainer = document.getElementById('imageContainer');
+
+        new Sortable(imageContainer, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',  // Class name for the ghost element
+            onEnd: (event) => {
+                this.handleImageReorder(event);
+            }
+        });
+
         // Handle form submission
         $('#imageUploadForm').submit((event) => {
             event.preventDefault();
@@ -78,6 +89,10 @@ class ImageManager {
             type: 'GET',
             success: (response) => {
                 this.updateImages(response);
+                // Set the main picture to the image with the lowest order
+                if (response.length > 0) {
+                    this.updateMainPicture(response[0]);  // Images are already sorted by order
+                }
             }
         });
     }
@@ -91,6 +106,7 @@ class ImageManager {
     updateImages(response) {
         $('#imageContainer').empty();
         response.forEach((image) => {
+            console.log(image);
             // Extract the file name from the full path
             var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
@@ -101,7 +117,7 @@ class ImageManager {
             // Create the image container
             // Here the image.id is the ID of the image in the DB, not the resource ID (Part, BOM, ...)
             var imageElement = $(`
-            <div class="image-wrapper" style="position: relative; display: inline-block;">
+            <div class="image-wrapper" style="position: relative; display: inline-block;" data-id="${image.id} data-order="${image.order}">
                 <a href="${imagePath}" data-toggle="lightbox" data-gallery="1">
                     <img src="${thumbnailPath}" alt="Thumbnail">
                 </a>
@@ -153,6 +169,50 @@ class ImageManager {
             });
         });
     }
+
+    handleImageReorder(event) {
+        // Get the new order of images from the image container
+        let imageOrder = [];
+        $('#imageContainer .image-wrapper').each((index, element) => {
+            let imageId = $(element).data('id'); // Get the image ID
+            imageOrder.push({
+                id: imageId,
+                order: index // The new position in the array will be the new order
+            });
+        });
+
+        // Send the new order to the server
+        $.ajax({
+            url: `/reorder-images/${this.type}/${this.id}`,
+            type: 'POST',
+            data: {
+                imageOrder: imageOrder,  // Send the array of image IDs with their new order
+                _token: $('input[name="_token"]').val()
+            },
+            success: (mainImage) => {
+                // Update the main picture after sorting
+                if (mainImage) {
+                    this.updateMainPicture(mainImage);
+                }
+            },
+            error: (xhr, status, error) => {
+                // console.error('Error updating image order:', error);
+            }
+        });
+    }
+
+    updateMainPicture(image) {
+        console.log(image);
+        const fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+        const imagePath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
+
+        // Update the 'src' attribute of the main picture
+        $('#mainPicture').attr('src', imagePath);
+        $('#mainPicture').attr('alt', 'Main Picture');
+    }
+
+
+
 
 
 }
