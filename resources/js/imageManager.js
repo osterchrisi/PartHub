@@ -106,7 +106,6 @@ class ImageManager {
     updateImages(response) {
         $('#imageContainer').empty();
         response.forEach((image) => {
-            console.log(image);
             // Extract the file name from the full path
             var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
 
@@ -202,13 +201,23 @@ class ImageManager {
     }
 
     updateMainPicture(image) {
-        console.log(image);
+        // Construct file paths for the thumbnail and the full image
         const fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+        const thumbnailPath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
         const imagePath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
 
-        // Update the 'src' attribute of the main picture
-        $('#mainPicture').attr('src', imagePath);
+        // Update the 'src' attribute of the main picture to the thumbnail
+        $('#mainPicture').attr('src', thumbnailPath);
         $('#mainPicture').attr('alt', 'Main Picture');
+
+        // Update the 'href' attribute of the main picture link to the full image
+        $('#mainPictureLink').attr('href', imagePath);
+
+        // Re-initialize the lightbox for the new main picture
+        $('#mainPictureLink').on('click', (e) => {
+            e.preventDefault(); // Prevent default anchor behavior
+            $(this).ekkoLightbox(); // Initialize the lightbox
+        });
     }
 
 
