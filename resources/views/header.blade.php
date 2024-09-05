@@ -89,8 +89,4 @@
         gtag('config', gtagTag);
     </script>
 </head>
-
-
-<!-- Setting height to full viewport for themes to work properly -->
-
-<body data-view="{{ $view }}" style="min-height: 100vh;">
+<body data-view="{{ $view }}">
