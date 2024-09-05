@@ -32,13 +32,8 @@ class BomElements extends Model
 
     public static function getBomElements($bom_id)
     {
-        $elements = DB::table('bom_elements')
-            ->join('parts', 'part_id_fk', '=', 'parts.part_id')
-            ->select('part_name', 'element_quantity', 'part_id', 'bom_elements_id')
+        return self::with('part')
             ->where('bom_id_fk', $bom_id)
-            ->get()
-            ->toArray();
-
-        return $elements;
+            ->get();
     }
 }

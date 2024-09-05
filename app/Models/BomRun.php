@@ -46,7 +46,6 @@ class BomRun extends Model
             ->select('bom_run_id', 'bom_run_datetime', 'bom_run_quantity', 'name')
             ->where('bom_id_fk', $bom_id)
             ->get();
-        // ->toArray();
 
         // Convert $bom_runs to an array of associative arrays
         $bom_runs = json_decode(json_encode($bom_runs), true);

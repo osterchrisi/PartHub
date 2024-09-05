@@ -25,14 +25,19 @@
         <tbody>
             @foreach ($bom_elements as $row)
                 @php
-                    $part_id = $row->part_id;
-                    $part_name = $row->part_name;
+                    $part_id = $row->part->part_id;
+                    $part_name = $row->part->part_name;
                     $bom_elements_id = $row->bom_elements_id;
                     $stock_levels = StockLevel::getStockLevelsByPartID($part_id);
                     $total_stock = \calculateTotalStock($stock_levels);
                 @endphp
-                <tr data-id="{{ $row->part_id }}">
+                <tr data-id="{{ $row->part->part_id }}">
                     @foreach ($db_columns as $column_data)
+                    @php
+                    // dump($db_columns);
+                    // echo $column_data;
+                    // echo $part_name;
+                    @endphp
                         @if ($column_data == 'stock_available')
                             <td style="text-align:right">
                                 {{-- This is the popover mini stock table --}}
@@ -60,9 +65,9 @@
                             @endphp
                             <td style="text-align:right" data-id="{{ $part_id }}"
                                 data-column="{{ $column_data }}">{{ $can_build }}</td>
-                        @else
+                        @elseif ($column_data == 'part_name')
                             <td data-id="{{ $part_id }}" data-column="{{ $column_data }}">
-                                {{ $row->$column_data }}</td>
+                                {{ $row->part->$column_data }}</td>
                         @endif
                     @endforeach
                 </tr>
