@@ -33,11 +33,6 @@
                 @endphp
                 <tr data-id="{{ $row->part->part_id }}">
                     @foreach ($db_columns as $column_data)
-                    @php
-                    // dump($db_columns);
-                    // echo $column_data;
-                    // echo $part_name;
-                    @endphp
                         @if ($column_data == 'stock_available')
                             <td style="text-align:right">
                                 {{-- This is the popover mini stock table --}}
