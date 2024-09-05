@@ -20,9 +20,19 @@
                         @foreach ($stockHistoryTableHeaders as $column_data)
                             <td data-editable="true" class="editable" data-id="{{ $hist_id }}"
                                 data-column="{{ $column_data }}">
+                                {{-- Date --}}
                                 @if ($column_data === 'stock_lvl_chng_timestamp')
-                                    {{-- Assuming it's a Carbon instance --}}
                                     {{ $row->$column_data->format('Y-m-d H:i:s') }}
+                                {{-- From Location --}}
+                                @elseif ($column_data === 'from_location_name')
+                                    {{ $row->fromLocation->location_name ?? '' }}
+                                {{-- To Location --}}
+                                @elseif ($column_data === 'to_location_name')
+                                    {{ $row->toLocation->location_name ?? '' }}
+                                {{-- User --}}
+                                @elseif ($column_data === 'user_name')
+                                    {{ $row->user->name ?? 'N/A' }}
+                                {{-- Quantity, Comment --}}
                                 @else
                                     {{ $row->$column_data }}
                                 @endif

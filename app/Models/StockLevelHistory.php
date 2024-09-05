@@ -33,14 +33,14 @@ class StockLevelHistory extends Model
         return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
     }
 
-    public function stockLevelsFrom()
+    public function fromLocation()
     {
-        return $this->hasMany(StockLevel::class, 'from_location_fk', 'location_id');
+        return $this->belongsTo(Location::class, 'from_location_fk', 'location_id');
     }
-
-    public function stockLevelsTo()
+    
+    public function toLocation()
     {
-        return $this->hasMany(StockLevel::class, 'to_location_fk', 'location_id');
+        return $this->belongsTo(Location::class, 'to_location_fk', 'location_id');
     }
 
     public function user()
@@ -65,18 +65,9 @@ class StockLevelHistory extends Model
 
     public static function getPartStockHistory($part_id)
     {
-        $history = self::select(
-            'stock_level_change_history.*',
-            'from_loc.location_name AS from_location_name',
-            'to_loc.location_name AS to_location_name',
-            'users.name AS user_name'
-        )
-            ->leftJoin('locations AS from_loc', 'stock_level_change_history.from_location_fk', '=', 'from_loc.location_id')
-            ->leftJoin('locations AS to_loc', 'stock_level_change_history.to_location_fk', '=', 'to_loc.location_id')
-            ->join('users', 'stock_level_change_history.stock_lvl_chng_user_fk', '=', 'users.id')
+        return self::with(['fromLocation', 'toLocation', 'user'])
             ->where('part_id_fk', $part_id)
             ->get();
-
-        return $history;
     }
+    
 }

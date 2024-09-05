@@ -71,7 +71,7 @@
         </div>
         {{-- Stock History Tab --}}
         <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
-            test
+            
             @include('parts.stockHistoryTable')
 
         </div>
