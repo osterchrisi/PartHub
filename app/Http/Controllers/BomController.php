@@ -63,10 +63,10 @@ class BomController extends Controller
 
     public static function show($bom_id)
     {
-        $bom_info = Bom::getBomById($bom_id);
-        $bom_name = $bom_info[0]->bom_name;
-        $bom_description = $bom_info[0]->bom_description;
-        $bom_owner = $bom_info[0]->bom_owner_u_fk;
+        $bom = Bom::find($bom_id);
+        $bom_name = $bom->bom_name;
+        $bom_description = $bom->bom_description;
+        $bom_owner = $bom->bom_owner_u_fk;
 
         if (Auth::user()->id === $bom_owner) {
 

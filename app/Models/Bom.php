@@ -36,7 +36,7 @@ class Bom extends Model
         $user_id = Auth::user()->id;
 
         $results = Bom::select('bom_id', 'bom_name', 'bom_description')
-            ->where('bom_name', 'LIKE', '%'.$search_term.'%')
+            ->where('bom_name', 'LIKE', '%' . $search_term . '%')
             ->where('bom_owner_u_fk', $user_id)
             ->get();
 
@@ -49,11 +49,9 @@ class Bom extends Model
      * @param  int  $bom_id  The ID of the BOM to retrieve.
      * @return \Illuminate\Support\Collection|static[] The BOM record matching the given ID.
      */
-    public static function getBomById($bom_id)
+    public function getBomById($bom_id)
     {
-        return DB::table('boms')
-            ->where('bom_id', $bom_id)
-            ->get();
+        return self::find($bom_id);
     }
 
     /**
