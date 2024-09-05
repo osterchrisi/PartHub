@@ -38,7 +38,7 @@ class BomController extends Controller
         $search_term = request()->has('search') ? request()->input('search') : '';
         $bom_list = Bom::searchBoms($search_term);
 
-        // Return full parts view or only parts table depending on route
+        // Return full BOM view or only BOM table depending on route
         $route = $request->route()->getName();
         if ($route == 'boms') {
             return view('boms.boms', [
@@ -70,13 +70,8 @@ class BomController extends Controller
 
         if (Auth::user()->id === $bom_owner) {
 
-            // Get BOM elements
             $bom_elements = BomElements::getBomElements($bom_id);
-
-            // Get BOM Run History
             $bom_runs = BomRun::getBomRunsByBomId($bom_id);
-
-            // dd($bom_runs);
 
             return view(
                 'boms.showBom',
@@ -84,13 +79,16 @@ class BomController extends Controller
                     'bom_name' => $bom_name,
                     'bom_description' => $bom_description,
                     'bom_elements' => $bom_elements,
+
                     // Bom Details Table
                     'db_columns' => self::$bom_detail_table_headers,
                     'nice_columns' => self::$nice_bom_detail_table_headers,
+
                     // Bom Runs Table
                     'nice_bomRunsTableHeaders' => self::$nice_bomRunsTableHeaders,
                     'bomRunsTableHeaders' => self::$bomRunsTableHeaders,
                     'bom_runs' => $bom_runs,
+
                     // Tabs Settings
                     'tabId1' => 'info',
                     'tabText1' => 'Info',
