@@ -18,13 +18,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($bom_runs as $row)
+            @foreach ($bom_runs as $run)
                 @php
-                    $bom_run_id = $row['bom_run_id'];
+                    $bom_run_id = $run['bom_run_id'];
                 @endphp
-                <tr data-id="{{ $row['bom_run_id'] }}">
+                <tr data-id="{{ $run['bom_run_id'] }}">
                     @foreach ($bomRunsTableHeaders as $column_data)
-                        <td data-editable="true" data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $row[$column_data] }}</td>
+                    @if ($column_data == 'name')
+                    <td data-editable="true" data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->user[$column_data] }}</td>
+                    @endif
+                        <td data-editable="true" data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run[$column_data] }}</td>
                     @endforeach
                 </tr>
             @endforeach

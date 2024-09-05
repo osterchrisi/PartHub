@@ -24,6 +24,11 @@ class BomRun extends Model
         return $this->belongsTo(BOM::class, 'bom_id_fk');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'bom_run_user_fk');
+    }
+
     public static function createBomRun($bom_id, $quantity, $user_id)
     {
         $bom_run = new BomRun([
@@ -40,16 +45,8 @@ class BomRun extends Model
 
     public static function getBomRunsByBomId($bom_id)
     {
-        $bom_runs = DB::table('bom_runs')
-            ->join('boms', 'bom_id_fk', '=', 'boms.bom_id')
-            ->join('users', 'bom_run_user_fk', '=', 'id')
-            ->select('bom_run_id', 'bom_run_datetime', 'bom_run_quantity', 'name')
+        return self::with('user') // Eager load the user relationship
             ->where('bom_id_fk', $bom_id)
             ->get();
-
-        // Convert $bom_runs to an array of associative arrays
-        $bom_runs = json_decode(json_encode($bom_runs), true);
-
-        return $bom_runs;
     }
 }

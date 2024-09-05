@@ -122,12 +122,12 @@ class BomController extends Controller
         foreach ($ids as $bom_id) {
 
             // Retrieve BOM elements (parts)
-            $elements = BomElements::getBomElements($bom_id);
+            $bom_elements = BomElements::getBomElements($bom_id);
 
             // Iterating over BOM elements (parts)
-            foreach ($elements as $element) {
+            foreach ($bom_elements as $element) {
                 $element_quantity = $element->element_quantity;
-                $part_id = $element->part_id;
+                $part_id = $element->part->part_id;
                 $reducing_quantity = $assemble_quantity * $element_quantity;
 
                 // Prepare stock change array, one array for each part in the BOM
