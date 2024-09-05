@@ -68,11 +68,13 @@
                     buttonText="Upload" loadingId="imageLoadingContainer" headerText="Upload Images"
                     acceptType="image/*" />
             </div>
-            {{-- Stock History Tab --}}
-            <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
+        </div>
+        {{-- Stock History Tab --}}
+        <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
 
-                @include('parts.stockHistoryTable')
+            test
+            @include('parts.stockHistoryTable')
 
-            </div>
         </div>
     </div>
+</div>
