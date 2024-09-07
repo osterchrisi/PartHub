@@ -1,4 +1,4 @@
-<div style="overflow-x:auto;">
+<div class="mt-3" style="overflow-x:auto;">
     <table class="table table-striped table-hover table-sm" style="font-size:12px">
         <thead>
             <tr>

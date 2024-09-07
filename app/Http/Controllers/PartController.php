@@ -210,6 +210,9 @@ class PartController extends Controller
                     'tabId2' => 'history',
                     'tabText2' => 'Stock History',
                     'tabToggleId2' => 'partHistory',
+                    'tabId3' => 'suppliers',
+                    'tabText3' => 'Suppliers',
+                    'tabToggleId3' => 'partSuppliers',
                 ]
             );
         } else {
