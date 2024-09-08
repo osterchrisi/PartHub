@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <button class="btn btn-sm btn-light" id="showSuppliers" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#addSuppliers">Add Suppliers</button>
+                    data-bs-target="#addSuppliers">Suppliers</button>
                     <button class="btn btn-sm btn-light" id="showAdvanced" type="button" data-bs-toggle="collapse"
                         data-bs-target="#advancedOptions">Additional Info</button>
                     {{-- Advanced Options --}}

@@ -62,7 +62,7 @@ $user_name = $user ? $user->name : '';
                                 <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
-                            <li>
+                            <li class="me-2 mb-2">
                                 <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
                                     @csrf
                                     <button type="submit" class="btn btn-warning" id="continueDemo">Try Demo</button>
@@ -105,7 +105,7 @@ $user_name = $user ? $user->name : '';
                                 </ul>
                             @else
                                 <!-- Show login button if not logged in -->
-                                <a class="btn btn-primary ms-2" href="{{ route('login') }}">Log In</a>
+                                <a class="btn btn-primary" href="{{ route('login') }}" id="loginButton">Log In</a>
                             @endif
                         </li>
 
