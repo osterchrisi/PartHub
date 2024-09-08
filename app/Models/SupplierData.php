@@ -9,7 +9,13 @@ class SupplierData extends Model
 {
     use HasFactory;
 
-    private static $table_name = 'supplier_data';
+    protected $fillable = [
+        'part_id_fk',
+        'supplier_id_fk',
+        'URL',
+        'SPN',
+        'price',
+    ];
 
     public function part()
     {

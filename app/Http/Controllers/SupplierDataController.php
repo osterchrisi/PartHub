@@ -1,23 +1,30 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
 
+use App\Models\SupplierData;
+use Illuminate\Http\Request;
 
 class SupplierDataController extends Controller
 {
-    protected static $table = 'supplier_data';
-
-    public function createEntry($part_id, $supplier_id, $URL = null, $SPN = null, $price = null)
+    public function createEntry(Request $request)
     {
-        $newId = DB::table(self::$table)->insertGetId([
-            'part_id_fk' => $part_id,
-            'supplier_id_fk' => $supplier_id,
-            'URL' => $URL,
-            'SPN' => $SPN,  // Supplier Part Number
-            'price' => $price,
+        $validated = $request->validate([
+            'part_id' => 'required|integer',
+            'supplier_id' => 'required|integer',
+            'URL' => 'nullable|url',
+            'SPN' => 'nullable|string|max:255',
+            'price' => 'nullable|numeric',
         ]);
 
-        return $newId;
+        $newSupplierData = SupplierData::create([
+            'part_id_fk' => $validated['part_id'],
+            'supplier_id_fk' => $validated['supplier_id'],
+            'URL' => $validated['URL'] ?? null,
+            'SPN' => $validated['SPN'] ?? null,
+            'price' => $validated['price'] ?? null,
+        ]);
+
+        return $newSupplierData->id; // Return the ID of the new entry
     }
 }
