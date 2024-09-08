@@ -646,7 +646,7 @@ class ResourceCreator {
   * Otherwise the dropdown becomes unresponsive
   */
   attachCategoryModalCloseListeners() {
-    $('#closeCategoryModalButton1, #closeCategoryModalButton2').on('click', () => {
+    $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
       this.inputModal.modal('toggle');
       this.reinitializeCategoryDropdown();
     });

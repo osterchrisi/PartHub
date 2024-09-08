@@ -125,7 +125,7 @@ class StockManager {
      * @return void
      */
     changeStockAnywayClickListener(r, pid) {
-        $('#btnChangeStockAnyway').on('click', () => {
+        $('#btnChangeStockAnyway').off('click').on('click', () => {
             for (const change of r.changes) {
                 change.status = 'gtg';
             }

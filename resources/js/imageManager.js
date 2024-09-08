@@ -213,7 +213,7 @@ class ImageManager {
         $('#mainPictureLink').attr('href', imagePath);
 
         // Re-initialize the lightbox for the new main picture
-        $('#mainPictureLink').on('click', (e) => {
+        $('#mainPictureLink').off('click').on('click', (e) => {
             e.preventDefault(); // Prevent default anchor behavior
             $(this).ekkoLightbox(); // Initialize the lightbox
         });

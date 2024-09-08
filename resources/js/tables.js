@@ -110,7 +110,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       //TODO: Use this structure to trigger Deletion / Adding of Categories
       // Attach click listeners to edit buttons
-      $('#categories_list_table').on('click', 'tbody .edit-button', function () {
+      $('#categories_list_table').off('click').on('click', 'tbody .edit-button', function () {
         // Get the parent <tr> element
         var $row = $(this).closest('tr');
         // Extract the data attributes from the <tr> element
@@ -123,7 +123,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
-      $('#categories_list_table').on('click', 'tbody .trash-button', function () {
+      $('#categories_list_table').off('click').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = $row.data('id');
 
@@ -133,7 +133,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
       });
 
       //* Add Category
-      $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
+      $('#categories_list_table').off('click').on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
 
@@ -162,7 +162,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
  * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories Edit column
  */
 function attachEditCategoriesButtonClickListener() {
-  $('#cat-edit-btn').on('click', function () {
+  $('#cat-edit-btn').off('click').on('click', function () {
     var columnIndex = 0;
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').toggle();
   });
@@ -172,7 +172,7 @@ function attachEditCategoriesButtonClickListener() {
  * Attach the click listener to the "Toggle Categories" button. The button toggles the visibility of the Categories div in the parts view
  */
 export function attachShowCategoriesButtonClickListener() {
-  $('#cat-show-btn').on('click', function () {
+  $('#cat-show-btn').off('click').on('click', function () {
     $('#category-window').toggle();
   });
 }
@@ -197,9 +197,10 @@ export function bootstrapTableSmallify() {
 export function defineTableRowClickActions($table, onSelect) {
   const tableId = $table.attr('id');
 
-  $table.on('click', 'tbody tr', function () {
-    if ($table.find('tr.selected-last').length > 0) {
-      $table.find('tr.selected-last').removeClass('selected-last');
+  $table.off('click').on('click', 'tbody tr', function () {
+    var selectedRow = $table.find('tr.selected-last');
+    if (selectedRow.length > 0) {
+      selectedRow.removeClass('selected-last');
     }
     $(this).toggleClass('selected-last');
     var id = $(this).data('id');            // get ID from the selected row
@@ -216,7 +217,7 @@ export function defineTableRowClickActions($table, onSelect) {
 * @param {jQuery} $menu - The context menu to hide
 */
 function hideMenuOnClickOutside($menu) {
-  $(document).on('click', function (event) {
+  $(document).off('click').on('click', function (event) {
     if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
       $menu.hide();
     }
@@ -669,7 +670,7 @@ export function assembleBoms(selectedRows, ids) {
   $('#mBomAssembly').modal('show');         // Show Modal
 
   // Attach click listener to the main "Cancel" button of the modal
-  $('#btnCancelAssembly').on('click', function () {
+  $('#btnCancelAssembly').off('click').on('click', function () {
     hideBOMAssemblyModalAndCleanup();
   });
 
@@ -711,13 +712,13 @@ export function assembleBoms(selectedRows, ids) {
           $('#mBomAssemblyInfo').html(message);
 
           // Attach click listener to "Do It Anyway" button
-          $('#btnAssembleBOMsAnyway').on('click', function () {
+          $('#btnAssembleBOMsAnyway').off('click').on('click', function () {
             //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
             continueAnyway(r, ids, token);
           });
 
           // Attach click listener to "Cancel" button next to the "Do It Anyway" button
-          $('#btnCancelAnywayAssembly').on('click', function () {
+          $('#btnCancelAnywayAssembly').off('click').on('click', function () {
             // Hide modal and perform cleanup operations
             hideBOMAssemblyModalAndCleanup();
           });
