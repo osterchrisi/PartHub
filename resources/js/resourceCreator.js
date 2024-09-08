@@ -195,6 +195,7 @@ class ResourceCreator {
             }
             this.categoryCreated = false;
             this.toggleStockForm();
+            // this.toggleSupplierForm();
 
           }
 
@@ -207,6 +208,7 @@ class ResourceCreator {
         });
     }
   }
+
   /**
    * Toggle the "Add Stock" functionality for a new part
    */
@@ -220,9 +222,9 @@ class ResourceCreator {
         selectizeControl.enable();
       } else {
         selectizeControl.disable();
+        $('#addPartQuantity').val('');
       }
     });
-
   }
 
   removeAddButtonClickListener() {
@@ -344,16 +346,23 @@ class ResourceCreator {
   */
   addPartFootprintDropdown(footprints) {
     var div = document.getElementById("addPartFootprintDropdown");
-    var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Footprint' id='addPartFootprintSelect'>";
+    var selectHTML = "<select class='form-select form-select-sm not-required' id='addPartFootprintSelect'>";
+    selectHTML += "<option value=''>No Footprint</option>";
+
     for (var i = 0; i < footprints.length; i++) {
       selectHTML += "<option value='" + footprints[i]['footprint_id'] + "'>" + footprints[i]['footprint_name'] + "</option>";
     }
     selectHTML += "</select>";
     selectHTML += "<label for='addPartFootprintSelect'>Footprint</label>";
     div.innerHTML = selectHTML;
+
     $("#addPartFootprintSelect").selectize({
       create: (input) => {
         this.createNewSelectizeDropdownEntry(input, 'footprint');
+      },
+      placeholder: 'Select Footprint',
+      onInitialize: function () {
+        this.setValue(''); // "No Footprint" is selected by default
       }
     });
   }
@@ -366,7 +375,9 @@ class ResourceCreator {
   */
   addPartSupplierDropdown(suppliers) {
     var div = document.getElementById("addPartSupplierDropdown");
-    var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Supplier' id='addPartSupplierSelect'>";
+    var selectHTML = "<select class='form-select form-select-sm not-required' id='addPartSupplierSelect'>";
+    selectHTML += "<option value=''>No Supplier</option>";
+
     for (var i = 0; i < suppliers.length; i++) {
       selectHTML += "<option value='" + suppliers[i]['supplier_id'] + "'>" + suppliers[i]['supplier_name'] + "</option>";
     }
@@ -374,9 +385,41 @@ class ResourceCreator {
     selectHTML += "<label for='addPartSupplierSelect'>Supplier</label>";
     div.innerHTML = selectHTML;
 
-    var $select = $("#addPartSupplierSelect").selectize({
+    $("#addPartSupplierSelect").selectize({
       create: (input) => {
         this.createNewSelectizeDropdownEntry(input, 'supplier');
+      },
+      placeholder: 'Select Supplier',
+      onInitialize: function () {
+        this.setValue(''); // "No Supplier" is selected by default
+      }
+    });
+  }
+
+
+  /**
+   * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
+   * @param {Array} categories - An array of objects representing categories to be displayed in the dropdown list.
+   * Each category object must have a "category_id" and a "category_name" property.
+   * @return {void}
+   */
+  addPartCategoryDropdown(categories) {
+    var div = document.getElementById("addPartCategoryDropdown");
+    var nestedCategories = this.organizeCategories(categories);
+
+    var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Category' id='addPartCategorySelect'>";
+    selectHTML += "<option value=''>No Category</option>";
+    selectHTML += this.addCategoryOptions(nestedCategories);
+    selectHTML += "</select>";
+    selectHTML += "<label for='addPartCategorySelect'>Category</label>";
+    div.innerHTML = selectHTML;
+
+    var $select = $("#addPartCategorySelect").selectize({
+      create: (input) => {
+        this.createNewSelectizeDropdownEntry(input, 'category');
+      },
+      onInitialize: function () {
+        this.setValue(''); // "No Category" is selected by default
       }
     });
   }
@@ -422,29 +465,6 @@ class ResourceCreator {
     });
     return optionsHTML;
   }
-
-  /**
-   * Creates and adds a dropdown list of categories to the part entry modal and 'selectizes' it.
-   * @param {Array} categories - An array of objects representing categories to be displayed in the dropdown list.
-   * Each category object must have a "category_id" and a "category_name" property.
-   * @return {void}
-   */
-  addPartCategoryDropdown(categories) {
-    var div = document.getElementById("addPartCategoryDropdown");
-    var nestedCategories = this.organizeCategories(categories);
-    var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Category' id='addPartCategorySelect'>";
-    selectHTML += this.addCategoryOptions(nestedCategories);
-    selectHTML += "</select>";
-    selectHTML += "<label for='addPartCategorySelect'>Category</label>";
-    div.innerHTML = selectHTML;
-
-    var $select = $("#addPartCategorySelect").selectize({
-      create: (input) => {
-        this.createNewSelectizeDropdownEntry(input, 'category');
-      }
-    });
-  }
-
 
   /**
    * Creates a new entry of the specified type, updates the corresponding dropdown, selectizes and selects the new entry.
