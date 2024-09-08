@@ -156,12 +156,11 @@ class PartController extends Controller
      */
     public function show(string $part_id)
     {
-        // Fetch the part with its related stock levels
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
 
         // Need to jump through a few hoops for proper time-zoning
-        // TODO: Investigate this
+        // TODO: Investigate this...?
         foreach ($stockHistory as $historyItem) {
             // Parse the timestamp as UTC without altering the time itself
             $utcTimestamp = Carbon::createFromFormat('Y-m-d H:i:s', $historyItem->stock_lvl_chng_timestamp, 'UTC');

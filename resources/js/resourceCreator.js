@@ -194,19 +194,8 @@ class ResourceCreator {
               this.addPartCategoryDropdown(categories);
             }
             this.categoryCreated = false;
+            this.toggleStockForm();
 
-            // The "Add Stock" switch
-            $('#addPartAddStockSwitch').on('change', function () {
-              $('#addPartQuantity').prop('disabled', !this.checked);
-
-              var selectizeControl = $('#addPartLocSelect')[0].selectize;
-
-              if (this.checked) {
-                selectizeControl.enable();
-              } else {
-                selectizeControl.disable();
-              }
-            });
           }
 
           // Attach click listener and proceed
@@ -217,6 +206,23 @@ class ResourceCreator {
           console.error('Error fetching data:', error);
         });
     }
+  }
+  /**
+   * Toggle the "Add Stock" functionality for a new part
+   */
+  toggleStockForm() {
+    $('#addPartAddStockSwitch').off('change').on('change', function () {
+      $('#addPartQuantity').prop('disabled', !this.checked);
+
+      var selectizeControl = $('#addPartLocSelect')[0].selectize;
+
+      if (this.checked) {
+        selectizeControl.enable();
+      } else {
+        selectizeControl.disable();
+      }
+    });
+
   }
 
   removeAddButtonClickListener() {
