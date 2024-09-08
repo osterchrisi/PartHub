@@ -26,5 +26,4 @@ class SupplierData extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id_fk', 'supplier_id');
     }
-
 }

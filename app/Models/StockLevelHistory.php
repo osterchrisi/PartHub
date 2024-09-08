@@ -37,7 +37,7 @@ class StockLevelHistory extends Model
     {
         return $this->belongsTo(Location::class, 'from_location_fk', 'location_id');
     }
-    
+
     public function toLocation()
     {
         return $this->belongsTo(Location::class, 'to_location_fk', 'location_id');
@@ -69,5 +69,4 @@ class StockLevelHistory extends Model
             ->where('part_id_fk', $part_id)
             ->get();
     }
-    
 }

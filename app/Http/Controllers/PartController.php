@@ -90,8 +90,7 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        }
-        elseif ($route == 'parts.partsTable') {
+        } elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -207,8 +206,7 @@ class PartController extends Controller
                     'tabToggleId3' => 'partSuppliers',
                 ]
             );
-        }
-        else {
+        } else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -284,7 +282,7 @@ class PartController extends Controller
         }
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (!empty($negative_stock)) {
+        if (! empty($negative_stock)) {
             $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);
