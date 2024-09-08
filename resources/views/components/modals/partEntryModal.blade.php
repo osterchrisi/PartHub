@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         {{-- Quantity --}}
                         <div class="col-3">
                             <input class="form-control form-control-md" placeholder="Quantity" id="addPartQuantity"
@@ -40,10 +40,18 @@
                             <div class="input-group" id="addPartLocDropdown"></div>
                         </div>
                     </div>
-                    <br>
+                    <button class="btn btn-sm btn-light" id="showSuppliers" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#addSuppliers">Add Suppliers</button>
                     <button class="btn btn-sm btn-light" id="showAdvanced" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#advancedOptions">Show Advanced</button>
+                        data-bs-target="#advancedOptions">Additional Info</button>
                     {{-- Advanced Options --}}
+                    <div class="collapse mb-4" id="addSuppliers">
+                        {{-- Supplier --}}
+                        <div class="col">
+                            <div class="form-floating" id="addPartSupplierDropdown">
+                            </div>
+                        </div>
+                    </div>
                     <div class="collapse mb-4" id="advancedOptions">
                         <div class="row">
                             {{-- Minimum Quantity --}}
@@ -60,11 +68,6 @@
                                 {{-- Footprint --}}
                                 <div class="col">
                                     <div class="form-floating" id="addPartFootprintDropdown">
-                                    </div>
-                                </div>
-                                {{-- Supplier --}}
-                                <div class="col">
-                                    <div class="form-floating" id="addPartSupplierDropdown">
                                     </div>
                                 </div>
                             </div>
