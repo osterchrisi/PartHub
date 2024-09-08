@@ -119,21 +119,13 @@ class PartController extends Controller
         $user_id = Auth::user()->id;
 
         try {
-
-            // Begin SQL transaction
             DB::beginTransaction();
 
-            // Insert new part
             $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier, $min_quantity);
-            // Create a stock level entry
             $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
-            // Create a stock level history entry (from_location is NULL)
             $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, null, $to_location, $quantity, $comment, $user_id);
 
-            // Persist database changes and set success flash message
             DB::commit();
-            //TODO: Should I flash something here?
-            // Session::flash('success', 'BOM "' . $bom_name . '" imported successfully.');
 
             $user = Auth::user();
             $stock_level = [$new_part_id, $quantity, $to_location];
@@ -148,10 +140,8 @@ class PartController extends Controller
             return response()->json($response);
 
         } catch (\Exception $e) {
-            // Roll back database changes made so far
             DB::rollback();
 
-            // Set error flash message
             //TODO: Should I flash something here?
             // Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
         }

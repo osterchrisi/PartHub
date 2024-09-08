@@ -38,8 +38,7 @@
                     <div class="collapse mb-4" id="advancedOptions">
                         <div class="row">
                             {{-- Minimum Quantity --}}
-                            <div>
-                                <br>
+                            <div class="mt-3">
                                 <input class="form-control form-control-sm not-required" id="addPartMinQuantity"
                                     placeholder="Minimum Quantity" data-bs-toggle="tooltip"
                                     data-bs-title="Notification threshold for all locations combined"
@@ -60,23 +59,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                {{-- Description --}}
-                                <div class="col">
-                                    <br>
-                                    <input class="form-control form-control-sm not-required" id="addPartDescription"
-                                        placeholder="Description">
-                                </div>
-                            </div>
-                            <div class="row">
-                                {{-- Comment --}}
-                                <div class="col">
-                                    <br>
-                                    <input class="form-control form-control-sm not-required" id="addPartComment"
-                                        placeholder="Comment">
-                                </div>
+                        </div>
+                        <div class="row">
+                            {{-- Description --}}
+                            <div class="col">
+                                <br>
+                                <input class="form-control form-control-sm not-required" id="addPartDescription"
+                                    placeholder="Description">
                             </div>
                         </div>
+                        <div class="row">
+                            {{-- Comment --}}
+                            <div class="col">
+                                <br>
+                                <input class="form-control form-control-sm not-required" id="addPartComment"
+                                    placeholder="Comment">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
 
