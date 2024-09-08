@@ -29,7 +29,7 @@ class ResourceCreator {
     });
 
     this.inputModal.on('show.bs.modal', () => {
-        this.attachAddButtonClickListener();  
+      this.attachAddButtonClickListener();
     });
 
     // Attach listeners to the category creation modal close buttons
@@ -194,6 +194,19 @@ class ResourceCreator {
               this.addPartCategoryDropdown(categories);
             }
             this.categoryCreated = false;
+
+            // The "Add Stock" switch
+            $('#addPartAddStockSwitch').on('change', function () {
+              $('#addPartQuantity').prop('disabled', !this.checked);
+
+              var selectizeControl = $('#addPartLocSelect')[0].selectize;
+
+              if (this.checked) {
+                selectizeControl.enable();
+              } else {
+                selectizeControl.disable();
+              }
+            });
           }
 
           // Attach click listener and proceed
@@ -311,6 +324,10 @@ class ResourceCreator {
         this.createNewSelectizeDropdownEntry(input, 'location');
       }
     });
+
+    // Disable the Selectize dropdown from the start
+    var selectizeControl = $select[0].selectize;
+    selectizeControl.disable();
   }
 
   /**

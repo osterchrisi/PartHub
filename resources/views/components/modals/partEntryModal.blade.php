@@ -21,10 +21,19 @@
                     </div>
 
                     <div class="row">
+                        <div class="col mb-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="addPartAddStockSwitch">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Add Stock</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         {{-- Quantity --}}
                         <div class="col-3">
                             <input class="form-control form-control-md" placeholder="Quantity" id="addPartQuantity"
-                                required>
+                                disabled>
                         </div>
                         {{-- Location --}}
                         <div class="col">
@@ -44,8 +53,8 @@
                                     data-bs-title="Notification threshold for all locations combined"
                                     data-bs-placement="right">
                             </div>
-                            {{-- Category --}}
                             <div class="col">
+                                {{-- Category --}}
                                 <div class="form-floating" id="addPartCategoryDropdown">
                                 </div>
                                 {{-- Footprint --}}

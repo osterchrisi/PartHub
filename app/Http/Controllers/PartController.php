@@ -90,7 +90,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -108,7 +109,7 @@ class PartController extends Controller
     public function create(Request $request)
     {
         $part_name = $request->input('part_name');
-        $quantity = $request->input('quantity', 0);
+        $quantity = $request->input('quantity');
         $to_location = $request->input('to_location');
         $comment = $request->input('comment', null);
         $description = $request->input('description', null);
@@ -117,13 +118,20 @@ class PartController extends Controller
         $supplier = $request->input('supplier', null);
         $min_quantity = $request->input('min_quantity') ?? 0;       // Total Stock Minimum Quantity
         $user_id = Auth::user()->id;
+        $response = [];
 
         try {
             DB::beginTransaction();
 
             $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier, $min_quantity);
-            $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
-            $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, null, $to_location, $quantity, $comment, $user_id);
+            if ($quantity && $to_location) {
+                $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
+                $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, null, $to_location, $quantity, $comment, $user_id);
+                $response = [
+                    'Stock Entry ID' => $new_stock_entry_id,
+                    'Stock Level History ID' => $new_stock_level_hist_id,
+                ];
+            }
 
             DB::commit();
 
@@ -131,11 +139,7 @@ class PartController extends Controller
             $stock_level = [$new_part_id, $quantity, $to_location];
             event(new StockMovementOccured($stock_level, $user));
 
-            $response = [
-                'Part ID' => $new_part_id,
-                'Stock Entry ID' => $new_stock_entry_id,
-                'Stock Level History ID' => $new_stock_level_hist_id,
-            ];
+            $response['Part ID'] = $new_part_id;
 
             return response()->json($response);
 
@@ -154,7 +158,6 @@ class PartController extends Controller
     {
         // Fetch the part with its related stock levels
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
-
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
 
         // Need to jump through a few hoops for proper time-zoning
@@ -205,7 +208,8 @@ class PartController extends Controller
                     'tabToggleId3' => 'partSuppliers',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -281,7 +285,7 @@ class PartController extends Controller
         }
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (! empty($negative_stock)) {
+        if (!empty($negative_stock)) {
             $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);

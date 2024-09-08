@@ -17,6 +17,10 @@ class StockService
     {
         $total_stock = 0;
 
+        if (empty($stockLevels) || !is_array($stockLevels)) {
+            return $total_stock; // Return 0 if no stock levels are present
+        }
+
         foreach ($stockLevels as $stockLevel) {
             $total_stock += $stockLevel['stock_level_quantity'];
         }
