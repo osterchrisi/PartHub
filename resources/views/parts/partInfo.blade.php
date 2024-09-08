@@ -1,15 +1,13 @@
 <!-- Location / Quantity Table -->
 @include('parts.stockTable')
 
-
 <!-- Stock movement buttons -->
-<div class="input-group">
+<div class="input-group mb-4">
     <input type="text" class="form-control form-control-sm" placeholder="Stock:" disabled readonly>
     <button type="button" class="btn btn-sm btn-outline-primary" id="addStockButton">Add</button>
     <button type="button" class="btn btn-sm btn-outline-primary" id="moveStockButton">Move</button>
     <button type="button" class="btn btn-sm btn-outline-primary" id="reduceStockButton">Reduce</button>
 </div>
-<br><br>
 
 <h5>Part of:</h5>
 
