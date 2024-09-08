@@ -69,7 +69,7 @@ class ResourceCreator {
       data: Object.assign({ _token: token }, data),
       success: (response) => {
         const id = response[this.newIdName];                // Get new ID
-        console.log(this.type, id);
+        // console.log(this.type, id);
         if (this.type != 'category') {
           updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
         }
@@ -183,7 +183,7 @@ class ResourceCreator {
       Promise.all(dataFetchPromises)
         .then(data => {
           const [locations, footprints, categories, suppliers] = data;
-          console.log(categories);
+          // console.log(categories);
 
           if (this.type === 'part') {
             // Populate dropdowns

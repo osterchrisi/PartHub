@@ -312,7 +312,6 @@ export function rebuildLocationsTable(queryString) {
  * Rebuild the categories table after adding or deleting categories
  */
 export function rebuildCategoriesTable() {
-  console.log("Rebuilding cat table");
   return $.ajax({
     url: '/categories.categoriesTable',
     success: function (data) {
