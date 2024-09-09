@@ -46,15 +46,11 @@ class ResourceCreator {
     //TODO: This seems strange
     // Bind functions to ensure correct `this` context
     this.addSupplierRow = this.addSupplierRow.bind(this);
-    this.initializeDropdowns = this.initializeDropdowns.bind(this);
+    // this.initializeDropdowns = this.initializeDropdowns.bind(this);
     this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
 
     // Call the removeRowButtonClickListener to make sure it listens from the start
     this.removeRowButtonClickListener();
-
-    $('#supplierDataTable').on('post-body.bs.table', () => {
-      this.initializeDropdowns();
-    });
   }
 
 
@@ -395,7 +391,7 @@ class ResourceCreator {
       selectHTML += `<option value='${suppliers[i]['supplier_id']}'>${suppliers[i]['supplier_name']}</option>`;
     }
     selectHTML += "</select>";
-    selectHTML += `<label for='${dropdownId}-select'>Supplier</label>`;
+    // selectHTML += `<label for='${dropdownId}-select'>Supplier</label>`;
     div.innerHTML = selectHTML;
 
     // Initialize Selectize on the new dropdown
@@ -697,16 +693,20 @@ class ResourceCreator {
   }
 
   // Function to add a new row to the supplier table
-  addSupplierRow(suppliers) {
+  addSupplierRow() {
     let $table = $('#supplierDataTable');
     let newRowIndex = $table.bootstrapTable('getData').length; // Get the current length to know the next index
 
+    // Create the dropdown HTML directly in the supplier field
+    let supplierDropdownHTML = `<div id='addPartSupplier-${newRowIndex}'>
+                                </div>`;
+
     let newRow = {
-        supplier: '',  // Placeholder, this will be replaced later with the dropdown
-        URL: '',
-        SPN: '',
-        price: '',
-        actions: '<button type="button" class="btn btn-sm btn-danger remove-row-btn">Remove</button>'
+      supplier: supplierDropdownHTML,  // HTML for the dropdown
+      URL: '',
+      SPN: '',
+      price: '',
+      actions: '<button type="button" class="btn btn-sm btn-danger remove-row-btn">Remove</button>'
     };
 
     // Append the new row to the table
@@ -717,13 +717,11 @@ class ResourceCreator {
     let $supplierCell = $(`#supplierDataTable tbody tr[data-index=${newRowIndex}] td:first-child`); // Get the supplier cell of the new row
     $supplierCell.html(`<div id="${dropdownId}"></div>`); // Insert a div with a unique ID
 
-    // Now call the function to create the dropdown in the cell
-    this.addPartSupplierDropdown(suppliers, dropdownId);
-
     // Initialize dropdowns after adding the row
-    this.initializeDropdowns(suppliers);
-}
-
+    this.getSuppliers().done((suppliers) => {
+      this.addPartSupplierDropdown(suppliers, dropdownId);
+    });
+  }
 
   // Event listener for adding rows
   addSupplierDataRowButtonClickListener() {
@@ -731,25 +729,6 @@ class ResourceCreator {
       this.addSupplierRow();
     });
   }
-
-
-  // Supplier dropdown formatter for the Bootstrap table
-  supplierDropdownFormatter(value, row, index) {
-    // Create a unique ID for each row's supplier dropdown
-    return `<div id="supplierDropdown-${index}"></div>`;
-  }
-
-
-  // Function to initialize Selectize.js dropdowns after row is added
-  initializeDropdowns(suppliers) {
-    $('#supplierDataTable tbody tr').each((index, row) => {
-        let dropdownId = `supplierDropdown-${index}`;
-        const suppliers = this.getSuppliers();
-        this.addPartSupplierDropdown(suppliers, dropdownId);  // Initialize dropdown for each supplier cell
-    });
-}
-
-
 
   // Event listener to remove row
   removeRowButtonClickListener() {

@@ -59,7 +59,7 @@
                                             data-click-to-select="true">
                                             <thead>
                                                 <tr>
-                                                    <th data-field="supplier">Supplier</th>
+                                                    <th data-field="supplier"></th>
                                                     <th data-field="URL">URL</th>
                                                     <th data-field="SPN">SPN</th>
                                                     <th data-field="price">Price</th>
