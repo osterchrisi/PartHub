@@ -11,20 +11,24 @@ class SupplierDataController extends Controller
     {
         $validated = $request->validate([
             'part_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
-            'URL' => 'nullable|url',
-            'SPN' => 'nullable|string|max:255',
-            'price' => 'nullable|numeric',
+            'suppliers' => 'required|array',
+            'suppliers.*.supplier_id' => 'required|integer',
+            'suppliers.*.URL' => 'nullable|url',
+            'suppliers.*.SPN' => 'nullable|string|max:255',
+            'suppliers.*.price' => 'nullable|numeric',
         ]);
 
-        $newSupplierData = SupplierData::create([
-            'part_id_fk' => $validated['part_id'],
-            'supplier_id_fk' => $validated['supplier_id'],
-            'URL' => $validated['URL'] ?? null,
-            'SPN' => $validated['SPN'] ?? null,
-            'price' => $validated['price'] ?? null,
-        ]);
+        foreach ($validated['suppliers'] as $supplierData) {
+            SupplierData::create([
+                'part_id_fk' => $validated['part_id'],
+                'supplier_id_fk' => $supplierData['supplier_id'],
+                'URL' => $supplierData['URL'] ?? null,
+                'SPN' => $supplierData['SPN'] ?? null,
+                'price' => $supplierData['price'] ?? null,
+            ]);
+        }
 
-        return $newSupplierData->id; // Return the ID of the new entry
+        return response()->json(['success' => true]);
     }
+
 }

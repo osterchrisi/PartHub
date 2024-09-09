@@ -41,6 +41,20 @@ class ResourceCreator {
 
     // Category creation flag to ensure proper category dropdown behaviour
     this.categoryCreated = false;
+
+    // Supplier Data
+    //TODO: This seems strange
+    // Bind functions to ensure correct `this` context
+    this.addSupplierRow = this.addSupplierRow.bind(this);
+    this.initializeDropdowns = this.initializeDropdowns.bind(this);
+    this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
+
+    // Call the removeRowButtonClickListener to make sure it listens from the start
+    this.removeRowButtonClickListener();
+
+    $('#supplierDataTable').on('post-body.bs.table', () => {
+      this.initializeDropdowns();
+    });
   }
 
 
@@ -189,14 +203,13 @@ class ResourceCreator {
             // Populate dropdowns
             this.addPartLocationDropdown(locations);
             this.addPartFootprintDropdown(footprints);
-            this.addPartSupplierDropdown(suppliers);
+            // this.addPartSupplierDropdown(suppliers);
             if (this.categoryCreated == false) {
               this.addPartCategoryDropdown(categories);
             }
             this.categoryCreated = false;
             this.toggleStockForm();
-            // this.toggleSupplierForm();
-
+            this.addSupplierDataRowButtonClickListener();
           }
 
           // Attach click listener and proceed
@@ -373,19 +386,20 @@ class ResourceCreator {
   * Each supplier object must have a "supplier_id" and a "supplier_name" property.
   * @return {void}
   */
-  addPartSupplierDropdown(suppliers) {
-    var div = document.getElementById("addPartSupplierDropdown");
-    var selectHTML = "<select class='form-select form-select-sm not-required' id='addPartSupplierSelect'>";
+  addPartSupplierDropdown(suppliers, dropdownId) {
+    var div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
+    var selectHTML = `<select class='form-select form-select-sm not-required' id='${dropdownId}-select'>`;
     selectHTML += "<option value=''>No Supplier</option>";
 
     for (var i = 0; i < suppliers.length; i++) {
-      selectHTML += "<option value='" + suppliers[i]['supplier_id'] + "'>" + suppliers[i]['supplier_name'] + "</option>";
+      selectHTML += `<option value='${suppliers[i]['supplier_id']}'>${suppliers[i]['supplier_name']}</option>`;
     }
     selectHTML += "</select>";
-    selectHTML += "<label for='addPartSupplierSelect'>Supplier</label>";
+    selectHTML += `<label for='${dropdownId}-select'>Supplier</label>`;
     div.innerHTML = selectHTML;
 
-    $("#addPartSupplierSelect").selectize({
+    // Initialize Selectize on the new dropdown
+    $(`#${dropdownId}-select`).selectize({
       create: (input) => {
         this.createNewSelectizeDropdownEntry(input, 'supplier');
       },
@@ -395,6 +409,7 @@ class ResourceCreator {
       }
     });
   }
+
 
 
   /**
@@ -680,4 +695,72 @@ class ResourceCreator {
       this.addPartCategoryDropdown(newList);
     });
   }
+
+  // Function to add a new row to the supplier table
+  addSupplierRow(suppliers) {
+    let $table = $('#supplierDataTable');
+    let newRowIndex = $table.bootstrapTable('getData').length; // Get the current length to know the next index
+
+    let newRow = {
+        supplier: '',  // Placeholder, this will be replaced later with the dropdown
+        URL: '',
+        SPN: '',
+        price: '',
+        actions: '<button type="button" class="btn btn-sm btn-danger remove-row-btn">Remove</button>'
+    };
+
+    // Append the new row to the table
+    $table.bootstrapTable('append', newRow);
+
+    // Now, dynamically insert the dropdown in the new row
+    let dropdownId = `supplierDropdown-${newRowIndex}`;
+    let $supplierCell = $(`#supplierDataTable tbody tr[data-index=${newRowIndex}] td:first-child`); // Get the supplier cell of the new row
+    $supplierCell.html(`<div id="${dropdownId}"></div>`); // Insert a div with a unique ID
+
+    // Now call the function to create the dropdown in the cell
+    this.addPartSupplierDropdown(suppliers, dropdownId);
+
+    // Initialize dropdowns after adding the row
+    this.initializeDropdowns(suppliers);
+}
+
+
+  // Event listener for adding rows
+  addSupplierDataRowButtonClickListener() {
+    $('#addRowBtn').off('click').on('click', () => {
+      this.addSupplierRow();
+    });
+  }
+
+
+  // Supplier dropdown formatter for the Bootstrap table
+  supplierDropdownFormatter(value, row, index) {
+    // Create a unique ID for each row's supplier dropdown
+    return `<div id="supplierDropdown-${index}"></div>`;
+  }
+
+
+  // Function to initialize Selectize.js dropdowns after row is added
+  initializeDropdowns(suppliers) {
+    $('#supplierDataTable tbody tr').each((index, row) => {
+        let dropdownId = `supplierDropdown-${index}`;
+        const suppliers = this.getSuppliers();
+        this.addPartSupplierDropdown(suppliers, dropdownId);  // Initialize dropdown for each supplier cell
+    });
+}
+
+
+
+  // Event listener to remove row
+  removeRowButtonClickListener() {
+    $(document).on('click', '.remove-row-btn', function () {
+      let rowIndex = $(this).closest('tr').data('index');
+      $('#supplierDataTable').bootstrapTable('remove', {
+        field: '$index',
+        values: [rowIndex]
+      });
+    });
+  }
+
+
 }
