@@ -51,6 +51,7 @@ class ResourceCreator {
 
     // Call the removeRowButtonClickListener to make sure it listens from the start
     this.removeRowButtonClickListener();
+    this.newRowIndex = 0;
   }
 
 
@@ -700,11 +701,11 @@ class ResourceCreator {
 
   // Function to add a new row to the supplier table
   addSupplierRow() {
-    let newRowIndex = $('#supplierDataTable tbody tr').length; // Get the current number of rows
+    let newRowIndex = this.newRowIndex++;
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
     // Create the new row with a unique dropdown ID for each row
-    let newRow = `<tr data-index="${newRowIndex}">
+    let newRow = `<tr data-supplier-index="${newRowIndex}">
                     <td>
                         <div id='${newDropdownDiv}'>
                                 </div>
@@ -735,20 +736,17 @@ class ResourceCreator {
   }
 
   // Event listener to remove row
+  // Doing this "outside" of Bootstrap-Table since the table itself is also manipulated in the DOM directly
   removeRowButtonClickListener() {
     $(document).on('click', '.remove-row-btn', function () {
-      console.log("delete");
+      // Get the unique data-id of the row
+      let rowId = $(this).closest('tr').data('supplier-index');
+      console.log('Deleting row with ID: ', rowId);
 
-      // Get the index of the row to delete
-      let rowIndex = $(this).closest('tr').data('index');
-      console.log('Deleting row with index: ', rowIndex);
-
-      // Remove the row using Bootstrap Table's 'remove' method
-      $('#supplierDataTable').bootstrapTable('remove', {
-        field: '$index',
-        values: [rowIndex]
-      });
+      // Remove the row with the specific data-id
+      $(`tr[data-supplier-index='${rowId}']`).remove();  // This targets the row with the exact unique ID
     });
   }
+
 
 }
