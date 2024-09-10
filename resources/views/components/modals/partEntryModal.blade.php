@@ -50,31 +50,28 @@
                         <div class="col">
                             {{-- <div class="form-floating" id="addPartSupplierDropdown">
                             </div> --}}
-                            <div class="collapse mb-4" id="addSuppliers">
-                                <div class="col">
-                                    <div id="supplierTableContainer">
-                                        <table id="supplierDataTable" data-toggle="table"
-                                            class="table table-bordered table-hover" data-show-header="true"
-                                            data-show-columns="true" data-toolbar="#toolbar"
-                                            data-click-to-select="true">
-                                            <thead>
-                                                <tr>
-                                                    <th data-field="supplier"></th>
-                                                    <th data-field="URL">URL</th>
-                                                    <th data-field="SPN">SPN</th>
-                                                    <th data-field="price">Price</th>
-                                                    <th data-field="actions">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Rows will be added dynamically here -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <button type="button" id="addRowBtn" class="btn btn-sm btn-secondary mt-2">Add
-                                        Supplier</button>
-                                </div>
+
+
+                            <div id="supplierTableContainer">
+                                <table id="supplierDataTable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="supplier">Supplier</th>
+                                            <th data-field="URL">URL</th>
+                                            <th data-field="SPN">SPN</th>
+                                            <th data-field="price">Price</th>
+                                            <th data-field="actions">Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Rows will be added dynamically here -->
+                                    </tbody>
+                                </table>
                             </div>
+                            <button type="button" id="addRowBtn" class="btn btn-sm btn-secondary mt-2">Add
+                                Supplier</button>
+
+
 
                         </div>
                     </div>

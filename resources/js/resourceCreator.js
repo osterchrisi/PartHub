@@ -384,7 +384,7 @@ class ResourceCreator {
   */
   addPartSupplierDropdown(suppliers, dropdownId) {
     var div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
-    var selectHTML = `<select class='form-select form-select-sm not-required' id='${dropdownId}-select'>`;
+    var selectHTML = `<select class='form-select form-select-ssm not-required' id='${dropdownId}-select'>`;
     selectHTML += "<option value=''>No Supplier</option>";
 
     for (var i = 0; i < suppliers.length; i++) {
@@ -694,33 +694,32 @@ class ResourceCreator {
 
   // Function to add a new row to the supplier table
   addSupplierRow() {
-    let $table = $('#supplierDataTable');
-    let newRowIndex = $table.bootstrapTable('getData').length; // Get the current length to know the next index
+    let newRowIndex = $('#supplierDataTable tbody tr').length; // Get the current number of rows
+    console.log("newrowindex = ", newRowIndex);
+    let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
-    // Create the dropdown HTML directly in the supplier field
-    let supplierDropdownHTML = `<div id='addPartSupplier-${newRowIndex}'>
-                                </div>`;
+    // Create the new row with a unique dropdown ID for each row
+    let newRow = `<tr>
+                    <td>
+                        <div id='${newDropdownDiv}'>
+                                </div>
+                    </td>
+                    <td><input type='text' class='form-control form-control-sm' placeholder='URL'></td>
+                    <td><input type='text' class='form-control form-control-sm' placeholder='SPN'></td>
+                    <td><input type='text' class='form-control form-control-sm' placeholder='Price'></td>
+                    <td><button type="button" class="btn btn-sm btn-danger remove-row-btn">Remove</button></td>
+                  </tr>`;
 
-    let newRow = {
-      supplier: supplierDropdownHTML,  // HTML for the dropdown
-      URL: '',
-      SPN: '',
-      price: '',
-      actions: '<button type="button" class="btn btn-sm btn-danger remove-row-btn">Remove</button>'
-    };
+    // Append the new row to the table body
+    $('#supplierDataTable tbody').append(newRow);
 
-    // Append the new row to the table
-    $table.bootstrapTable('append', newRow);
-
-    // Now, dynamically insert the dropdown in the new row
-    let dropdownId = `supplierDropdown-${newRowIndex}`;
-    let $supplierCell = $(`#supplierDataTable tbody tr[data-index=${newRowIndex}] td:first-child`); // Get the supplier cell of the new row
-    $supplierCell.html(`<div id="${dropdownId}"></div>`); // Insert a div with a unique ID
-
-    // Initialize dropdowns after adding the row
+    // Fetch suppliers and populate the dropdown
     this.getSuppliers().done((suppliers) => {
-      this.addPartSupplierDropdown(suppliers, dropdownId);
+      this.addPartSupplierDropdown(suppliers, newDropdownDiv);
     });
+
+    // Reinitialize the Bootstrap Table features (sorting, pagination, etc.)
+    bootstrapTableSmallify();
   }
 
   // Event listener for adding rows

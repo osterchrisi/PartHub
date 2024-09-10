@@ -75,7 +75,7 @@ export function initializePartsView() {
             { name: 'footprint', selector: '#addPartFootprintSelect' },
             { name: 'supplier', selector: '#addPartSupplierSelect' },
             { name: 'category', selector: '#addPartCategorySelect' },
-            { name: 'min_quantity', selector: '#addPartMinQuantity'},
+            { name: 'min_quantity', selector: '#addPartMinQuantity' },
         ],
         inputModal: '#mPartEntry',
         addButton: '#addPart'
@@ -104,5 +104,36 @@ export function initializePartsView() {
     $('#mAddStock').on('hidden.bs.modal', function () {
         $('#FromStockLocationDiv-row').show();
         $('#ToStockLocationDiv-row').show();
+    });
+
+    // Bootstrap the supplierDataTable only after it's been shown
+    // Otherwise resizable columns don't work (because height = 0)
+    $('#addSuppliers').on('shown.bs.collapse', event => {
+
+        // Resize partEntry modal upon hiding supplier data table
+        $('#mPartEntry').removeClass('modal-lg').addClass('modal-xl');
+
+        // Bootstrap the table only if it isn't bootstrapped yet
+        if ($('#supplierDataTable').data('bootstrap.table')) {
+            //
+        } else {
+            $('#supplierDataTable').bootstrapTable({
+                formatNoMatches: function () {
+                    return '';
+                },
+                resizable: true,
+            }
+            );
+        }
     })
+
+    $('#mPartEntry').on('hidden.bs.modal', function () {
+        $('#supplierDataTable').bootstrapTable('destroy');
+    });
+
+    // Resize partEntry modal upon hiding supplier data table
+    $('#addSuppliers').on('hidden.bs.collapse', event => {
+        $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
+    });
+
 }
