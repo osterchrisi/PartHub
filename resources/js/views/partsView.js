@@ -127,6 +127,7 @@ export function initializePartsView() {
         }
     })
 
+    // Essentially need to reset all the bootstrap-table and collapse shenanigans
     $('#mPartEntry').on('hidden.bs.modal', function () {
         $('#supplierDataTable').bootstrapTable('destroy');
         $('#addSuppliers').empty();  // Removes all content inside the div
@@ -150,6 +151,10 @@ export function initializePartsView() {
             <button type="button" id="addRowBtn" class="btn btn-sm btn-secondary mt-2">Add
             Supplier</button>
         `);
+        // Collapse the supplier data div
+        $('#addSuppliers').removeClass('show');
+        // Resize modal size
+        $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
     });
 
     // Resize partEntry modal upon hiding supplier data table
