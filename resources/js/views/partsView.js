@@ -117,13 +117,14 @@ export function initializePartsView() {
         if ($('#supplierDataTable').data('bootstrap.table')) {
             //
         } else {
-            $('#supplierDataTable').bootstrapTable({
-                formatNoMatches: function () {
-                    return '';
-                },
-                resizable: true,
-            }
-            );
+            setTimeout(function () {
+                $('#supplierDataTable').bootstrapTable({
+                    formatNoMatches: function () {
+                        return '';
+                    },
+                    resizable: true,
+                });
+            }, 200);
         }
     })
 

@@ -695,7 +695,6 @@ class ResourceCreator {
   // Function to add a new row to the supplier table
   addSupplierRow() {
     let newRowIndex = $('#supplierDataTable tbody tr').length; // Get the current number of rows
-    console.log("newrowindex = ", newRowIndex);
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
     // Create the new row with a unique dropdown ID for each row

@@ -136,6 +136,6 @@ tr.selected-last td {
 }
 
 /* Apply a smooth transition to the modal dialog */
-.modal-dialog {
-    transition: all 0.3s ease !important;  /* 0.5s transition for smooth effect */
+#mPartEntry .modal-dialog {
+    transition: all 0.3s ease;  /* More specific selector to target just this modal */
 }
