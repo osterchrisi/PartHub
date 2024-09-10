@@ -248,7 +248,7 @@ class ResourceCreator {
     });
 
     //* Currently don't like it anymore, so uncommented the submission upon pressing Enter
-    //* Still keeping the preventDefault in, so I don't get the bug where it reloads the page without proper submission
+    //* Still keeping the preventDefault in, so I don't get browser behaviour that submits forms upon pressing enter (leads to seemingly 'buggy' page reload)
     // Submit form on Enter keypress, unless you're on a selectized dropdown
     $form.on('keydown', (event) => {
       // Check if the Enter key is pressed and the active element is not the selectized input
@@ -704,7 +704,7 @@ class ResourceCreator {
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
     // Create the new row with a unique dropdown ID for each row
-    let newRow = `<tr>
+    let newRow = `<tr data-index="${newRowIndex}">
                     <td>
                         <div id='${newDropdownDiv}'>
                                 </div>
@@ -737,13 +737,18 @@ class ResourceCreator {
   // Event listener to remove row
   removeRowButtonClickListener() {
     $(document).on('click', '.remove-row-btn', function () {
+      console.log("delete");
+
+      // Get the index of the row to delete
       let rowIndex = $(this).closest('tr').data('index');
+      console.log('Deleting row with index: ', rowIndex);
+
+      // Remove the row using Bootstrap Table's 'remove' method
       $('#supplierDataTable').bootstrapTable('remove', {
         field: '$index',
         values: [rowIndex]
       });
     });
   }
-
 
 }
