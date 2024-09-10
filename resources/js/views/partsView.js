@@ -129,6 +129,27 @@ export function initializePartsView() {
 
     $('#mPartEntry').on('hidden.bs.modal', function () {
         $('#supplierDataTable').bootstrapTable('destroy');
+        $('#addSuppliers').empty();  // Removes all content inside the div
+        $('#addSuppliers').append(`
+            <div id="supplierTableContainer">
+                <table id="supplierDataTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th data-field="supplier">Supplier</th>
+                            <th data-field="URL">URL</th>
+                            <th data-field="SPN">SPN</th>
+                            <th data-field="price">Price</th>
+                            <th data-field="actions">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" id="addRowBtn" class="btn btn-sm btn-secondary mt-2">Add
+            Supplier</button>
+        `);
     });
 
     // Resize partEntry modal upon hiding supplier data table

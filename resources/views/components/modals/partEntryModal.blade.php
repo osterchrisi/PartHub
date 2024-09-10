@@ -48,10 +48,6 @@
                     <div class="collapse mb-4" id="addSuppliers">
                         {{-- Supplier --}}
                         <div class="col">
-                            {{-- <div class="form-floating" id="addPartSupplierDropdown">
-                            </div> --}}
-
-
                             <div id="supplierTableContainer">
                                 <table id="supplierDataTable" class="table table-bordered table-hover">
                                     <thead>
@@ -70,9 +66,6 @@
                             </div>
                             <button type="button" id="addRowBtn" class="btn btn-sm btn-secondary mt-2">Add
                                 Supplier</button>
-
-
-
                         </div>
                     </div>
                     <div class="collapse mb-4" id="advancedOptions">
