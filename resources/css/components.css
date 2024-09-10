@@ -117,7 +117,7 @@ tr.selected-last td {
 }
 
 /* Footer Table */
-.footer-table td{
+.footer-table td {
     padding-bottom: 0;
 }
 
@@ -137,5 +137,6 @@ tr.selected-last td {
 
 /* Apply a smooth transition to the modal dialog */
 #mPartEntry .modal-dialog {
-    transition: all 0.3s ease;  /* More specific selector to target just this modal */
+    transition: all 0.3s ease;
+    /* More specific selector to target just this modal */
 }

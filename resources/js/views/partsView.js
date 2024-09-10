@@ -124,7 +124,9 @@ export function initializePartsView() {
                     },
                     resizable: true,
                 });
-            }, 200);
+
+                newPartCreator.addSupplierRow();
+            }, 300);
         }
     })
 
@@ -134,14 +136,14 @@ export function initializePartsView() {
         $('#addSuppliers').empty();  // Removes all content inside the div
         $('#addSuppliers').append(`
             <div id="supplierTableContainer">
-                <table id="supplierDataTable" class="table table-bordered table-hover">
+                <table id="supplierDataTable" class="table table-sm table-bordered table-hover">
                     <thead>
                         <tr>
                             <th data-field="supplier">Supplier</th>
                             <th data-field="URL">URL</th>
                             <th data-field="SPN">SPN</th>
                             <th data-field="price">Price</th>
-                            <th data-field="actions">Remove</th>
+                            <th data-field="remove"></th>
                         </tr>
                     </thead>
                     <tbody>

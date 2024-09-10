@@ -384,7 +384,7 @@ class ResourceCreator {
   */
   addPartSupplierDropdown(suppliers, dropdownId) {
     var div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
-    var selectHTML = `<select class='form-select form-select-ssm not-required' id='${dropdownId}-select'>`;
+    var selectHTML = `<select class='form-select form-select-sm not-required' id='${dropdownId}-select'>`;
     selectHTML += "<option value=''>No Supplier</option>";
 
     for (var i = 0; i < suppliers.length; i++) {
@@ -706,7 +706,7 @@ class ResourceCreator {
                     <td><input type='text' class='form-control form-control-sm' placeholder='URL'></td>
                     <td><input type='text' class='form-control form-control-sm' placeholder='SPN'></td>
                     <td><input type='text' class='form-control form-control-sm' placeholder='Price'></td>
-                    <td><button type="button" class="btn btn-sm btn-danger remove-row-btn">Remove</button></td>
+                    <td><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-lg fa-trash"></i></button></td>
                   </tr>`;
 
     // Append the new row to the table body

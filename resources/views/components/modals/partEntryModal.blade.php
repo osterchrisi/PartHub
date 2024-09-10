@@ -49,14 +49,14 @@
                         {{-- Supplier --}}
                         <div class="col">
                             <div id="supplierTableContainer">
-                                <table id="supplierDataTable" class="table table-bordered table-hover">
+                                <table id="supplierDataTable" class="table table-sm table-bordered table-hover table-responsive">
                                     <thead>
                                         <tr>
                                             <th data-field="supplier">Supplier</th>
                                             <th data-field="URL">URL</th>
                                             <th data-field="SPN">SPN</th>
                                             <th data-field="price">Price</th>
-                                            <th data-field="actions">Remove</th>
+                                            <th data-field="remove"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
