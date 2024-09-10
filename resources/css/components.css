@@ -134,3 +134,8 @@ tr.selected-last td {
 .toolbar-button .btn-label i {
     margin-right: 4px;
 }
+
+/* Apply a smooth transition to the modal dialog */
+.modal-dialog {
+    transition: all 0.3s ease !important;  /* 0.5s transition for smooth effect */
+}
