@@ -402,7 +402,13 @@ class ResourceCreator {
       placeholder: 'Select Supplier',
       onInitialize: function () {
         this.setValue(''); // "No Supplier" is selected by default
-      }
+      },
+      onDropdownOpen: function () {
+        $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
+          'overflow-x': 'visible',
+          'overflow-y': 'visible'
+        });
+      },
     });
   }
 

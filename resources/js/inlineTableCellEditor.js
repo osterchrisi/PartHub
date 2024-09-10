@@ -99,7 +99,14 @@ class InlineTableCellEditor {
 
                 // Append, selectize category dropdown
                 this.$cell.empty().append(select);
-                select.selectize();
+                select.selectize({
+                    onDropdownOpen: function () {
+                        $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
+                            'overflow-x': 'visible',
+                            'overflow-y': 'visible'
+                        });
+                    },
+                });
 
                 // Need to focus the selectize control
                 const selectizeControl = select[0].selectize;

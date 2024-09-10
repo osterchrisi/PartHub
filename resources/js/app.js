@@ -63,6 +63,5 @@ $(document).ready(function () {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
         animation: true,
         delay: { "show": 500, "hide": 100 }
-    }))
-
+    }));
 });
