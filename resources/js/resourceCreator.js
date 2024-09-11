@@ -392,8 +392,6 @@ class ResourceCreator {
   */
   addPartSupplierDropdown(suppliers, dropdownId, newRowIndex) {
     const div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
-    console.log(newRowIndex);
-    // let newRowIndex = this.newRowIndex;  // Reference the current rowIndex
     let selectHTML = `<select class='form-select form-select-sm not-required' data-supplier-id='${newRowIndex}'>`;
     selectHTML += "<option value=''>No Supplier</option>";
 
@@ -413,6 +411,7 @@ class ResourceCreator {
         this.setValue(''); // "No Supplier" is selected by default
       },
       onDropdownOpen: function () {
+        // Adjust the overflow of the table when the dropdown opens
         $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
           'overflow-x': 'visible',
           'overflow-y': 'visible'
@@ -716,7 +715,6 @@ class ResourceCreator {
 
   // Function to add a new row to the supplier table
   addSupplierRow() {
-    console.log(this.newRowIndex);
     let newRowIndex = this.newRowIndex;
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
@@ -740,7 +738,6 @@ class ResourceCreator {
       this.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
     });
 
-    // Reinitialize the Bootstrap Table features (sorting, pagination, etc.)
     bootstrapTableSmallify();
     this.newRowIndex++;
   }
