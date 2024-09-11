@@ -66,8 +66,15 @@ class ResourceCreator {
   */
   requestCreation() {
     const data = {};
+    // Collect static and dynamic input fields
     this.inputFields.forEach(field => {
-      data[field.name] = $(field.selector).val();
+      if (typeof field.getValue === 'function') {
+        // If it's a function (like the suppliers), execute it
+        data[field.name] = field.getValue();
+      } else {
+        // Otherwise, collect the value from the selector
+        data[field.name] = $(field.selector).val();
+      }
     });
 
     if (this.categoryId) { data['parent_category'] = this.categoryId; }
@@ -383,20 +390,21 @@ class ResourceCreator {
   * Each supplier object must have a "supplier_id" and a "supplier_name" property.
   * @return {void}
   */
-  addPartSupplierDropdown(suppliers, dropdownId) {
-    var div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
-    var selectHTML = `<select class='form-select form-select-sm not-required' id='${dropdownId}-select'>`;
+  addPartSupplierDropdown(suppliers, dropdownId, newRowIndex) {
+    const div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
+    console.log(newRowIndex);
+    // let newRowIndex = this.newRowIndex;  // Reference the current rowIndex
+    let selectHTML = `<select class='form-select form-select-sm not-required' data-supplier-id='${newRowIndex}'>`;
     selectHTML += "<option value=''>No Supplier</option>";
 
-    for (var i = 0; i < suppliers.length; i++) {
+    for (let i = 0; i < suppliers.length; i++) {
       selectHTML += `<option value='${suppliers[i]['supplier_id']}'>${suppliers[i]['supplier_name']}</option>`;
     }
     selectHTML += "</select>";
-    // selectHTML += `<label for='${dropdownId}-select'>Supplier</label>`;
     div.innerHTML = selectHTML;
 
     // Initialize Selectize on the new dropdown
-    $(`#${dropdownId}-select`).selectize({
+    $(`[data-supplier-id="${newRowIndex}"]`).selectize({  // Change to `data-supplier-id`
       create: (input) => {
         this.createNewSelectizeDropdownEntry(input, 'supplier');
       },
@@ -410,6 +418,13 @@ class ResourceCreator {
           'overflow-y': 'visible'
         });
       },
+      onDropdownClose: function () {
+        // Reset the table overflow once the dropdown closes
+        $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
+          'overflow-x': 'auto',
+          'overflow-y': 'auto'
+        });
+      }
     });
   }
 
@@ -701,7 +716,8 @@ class ResourceCreator {
 
   // Function to add a new row to the supplier table
   addSupplierRow() {
-    let newRowIndex = this.newRowIndex++;
+    console.log(this.newRowIndex);
+    let newRowIndex = this.newRowIndex;
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
     // Create the new row with a unique dropdown ID for each row
@@ -710,9 +726,9 @@ class ResourceCreator {
                         <div id='${newDropdownDiv}'>
                                 </div>
                     </td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='URL'></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='SPN'></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='Price'></td>
+                    <td><input type='text' class='form-control form-control-sm' placeholder='URL' data-url-id="${newRowIndex}"></td>
+                    <td><input type='text' class='form-control form-control-sm' placeholder='SPN' data-spn-id="${newRowIndex}"></td>
+                    <td><input type='text' class='form-control form-control-sm' placeholder='Price' data-price-id="${newRowIndex}"></td>
                     <td><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-lg fa-trash"></i></button></td>
                   </tr>`;
 
@@ -721,11 +737,12 @@ class ResourceCreator {
 
     // Fetch suppliers and populate the dropdown
     this.getSuppliers().done((suppliers) => {
-      this.addPartSupplierDropdown(suppliers, newDropdownDiv);
+      this.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
     });
 
     // Reinitialize the Bootstrap Table features (sorting, pagination, etc.)
     bootstrapTableSmallify();
+    this.newRowIndex++;
   }
 
   // Event listener for adding rows

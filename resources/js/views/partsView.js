@@ -73,9 +73,25 @@ export function initializePartsView() {
             { name: 'comment', selector: '#addPartComment' },
             { name: 'description', selector: '#addPartDescription' },
             { name: 'footprint', selector: '#addPartFootprintSelect' },
-            { name: 'supplier', selector: '#addPartSupplierSelect' },
+            // { name: 'supplier', selector: '#addPartSupplierSelect' },
             { name: 'category', selector: '#addPartCategorySelect' },
             { name: 'min_quantity', selector: '#addPartMinQuantity' },
+            {
+                name: 'suppliers', getValue: function () {
+                    let suppliers = [];
+                    $('#supplierDataTable tbody tr').each(function () {
+                        let rowIndex = $(this).data('supplier-index');
+                        let supplierRow = {
+                            supplier_id: $(`[data-supplier-id="${rowIndex}"]`).val(),
+                            URL: $(`[data-url-id="${rowIndex}"]`).val(),
+                            SPN: $(`[data-spn-id="${rowIndex}"]`).val(),
+                            price: $(`[data-price-id="${rowIndex}"]`).val()
+                        };
+                        suppliers.push(supplierRow);
+                    });
+                    return suppliers;
+                }
+            }
         ],
         inputModal: '#mPartEntry',
         addButton: '#addPart'
