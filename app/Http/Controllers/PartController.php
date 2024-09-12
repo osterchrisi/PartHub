@@ -12,6 +12,7 @@ use App\Models\Supplier;
 use App\Services\CategoryService;
 use App\Services\DatabaseService;
 use App\Services\StockService;
+use App\Services\SupplierService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,12 +34,14 @@ class PartController extends Controller
     protected $databaseService;
 
     protected $stockService;
+    protected $supplierService;
 
-    public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService)
+    public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService)
     {
         $this->categoryService = $categoryService;
         $this->databaseService = $databaseService;
         $this->stockService = $stockService;
+        $this->supplierService = $supplierService;
     }
 
     /**
@@ -90,7 +93,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -107,46 +111,75 @@ class PartController extends Controller
      */
     public function create(Request $request)
     {
-        $part_name = $request->input('part_name');
-        $quantity = $request->input('quantity');
-        $to_location = $request->input('to_location');
-        $comment = $request->input('comment', null);
-        $description = $request->input('description', null);
-        $footprint = $request->input('footprint', null);
-        $category = $request->input('category', null);
-        $supplier = $request->input('supplier', null);
-        $min_quantity = $request->input('min_quantity') ?? 0;       // Total Stock Minimum Quantity
+        // Validate the part data (excluding suppliers for now)
+        $validated = $request->validate([
+            'part_name' => 'required|string|max:255',
+            'quantity' => 'nullable|integer',
+            'to_location' => 'nullable|integer',
+            'comment' => 'nullable|string',
+            'description' => 'nullable|string',
+            'footprint' => 'nullable|string',
+            'category' => 'nullable|integer',
+            'min_quantity' => 'nullable|integer',
+            'suppliers' => 'nullable|array',
+            'suppliers.*.supplier_id' => 'nullable|integer',
+            'suppliers.*.URL' => 'nullable|url',
+            'suppliers.*.SPN' => 'nullable|string|max:255',
+            'suppliers.*.price' => 'nullable|numeric',
+        ]);
+
         $user_id = Auth::user()->id;
         $response = [];
 
         try {
             DB::beginTransaction();
 
-            $new_part_id = Part::createPart($part_name, $comment, $description, $footprint, $category, $supplier, $min_quantity);
-            if ($quantity && $to_location) {
-                $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $to_location, $quantity);
-                $new_stock_level_hist_id = StockLevelHistory::createStockLevelHistoryRecord($new_part_id, null, $to_location, $quantity, $comment, $user_id);
-                $response = [
-                    'Stock Entry ID' => $new_stock_entry_id,
-                    'Stock Level History ID' => $new_stock_level_hist_id,
-                ];
+            // Create the part
+            $new_part_id = Part::createPart(
+                $validated['part_name'],
+                $validated['comment'] ?? null,
+                $validated['description'] ?? null,
+                $validated['footprint'] ?? null,
+                $validated['category'] ?? null,
+                null,  // Suppliers will be handled separately
+                $validated['min_quantity'] ?? 0
+            );
+
+            // Handle stock level if stock was added
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
+                $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
+                StockLevelHistory::createStockLevelHistoryRecord(
+                    $new_part_id,
+                    null,
+                    $validated['to_location'],
+                    $validated['quantity'],
+                    $validated['comment'] ?? null,
+                    $user_id
+                );
+                $response['Stock Entry ID'] = $new_stock_entry_id;
+            }
+
+            // Handle supplier data
+            if (!empty($validated['suppliers'])) {
+                $this->supplierService->createOrUpdateSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
-            $user = Auth::user();
-            $stock_level = [$new_part_id, $quantity, $to_location];
-            event(new StockMovementOccured($stock_level, $user));
+            // Trigger stock movement event
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
+                $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
+                event(new StockMovementOccured($stock_level, Auth::user()));
+            }
 
+            // Include the new part ID in the response
             $response['Part ID'] = $new_part_id;
 
             return response()->json($response);
 
         } catch (\Exception $e) {
             DB::rollback();
-
-            //TODO: Should I flash something here?
-            // Session::flash('error', 'Error importing BOM: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
 
@@ -206,7 +239,8 @@ class PartController extends Controller
                     'tabToggleId3' => 'partSuppliers',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -282,7 +316,7 @@ class PartController extends Controller
         }
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (! empty($negative_stock)) {
+        if (!empty($negative_stock)) {
             $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);

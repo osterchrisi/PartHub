@@ -3,58 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Models\SupplierData;
+use App\Services\SupplierService;
 use Illuminate\Http\Request;
 
 class SupplierDataController extends Controller
 {
+
+    protected $supplierService;
+
+    public function __construct(SupplierService $supplierService)
+    {
+        $this->supplierService = $supplierService;
+    }
     /**
      * Create or update supplier data for a given part.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createOrUpdateSupplierData(Request $request)
+    public function createOrUpdateSuppliers(Request $request)
     {
         // Validate the incoming request
         $validated = $request->validate([
             'part_id' => 'required|integer',
             'suppliers' => 'required|array',
-            'suppliers.*.supplier_id' => 'required|integer',   // Supplier ID is required for each row
+            'suppliers.*.supplier_id' => 'required|integer',
             'suppliers.*.URL' => 'nullable|url',
             'suppliers.*.SPN' => 'nullable|string|max:255',
             'suppliers.*.price' => 'nullable|numeric',
         ]);
 
-        // Loop through each supplier and either create or update the supplier data
-        foreach ($validated['suppliers'] as $supplierData) {
-            // Check if this supplier data already exists for the given part
-            $existingSupplierData = SupplierData::where('part_id_fk', $validated['part_id'])
-                ->where('supplier_id_fk', $supplierData['supplier_id'])
-                ->first();
-
-            if ($existingSupplierData) {
-                // Update the existing supplier data
-                $existingSupplierData->update([
-                    'URL' => $supplierData['URL'] ?? null,
-                    'SPN' => $supplierData['SPN'] ?? null,
-                    'price' => $supplierData['price'] ?? null,
-                ]);
-            }
-            else {
-                // Create new supplier data if it doesn't exist
-                SupplierData::create([
-                    'part_id_fk' => $validated['part_id'],
-                    'supplier_id_fk' => $supplierData['supplier_id'],
-                    'URL' => $supplierData['URL'] ?? null,
-                    'SPN' => $supplierData['SPN'] ?? null,
-                    'price' => $supplierData['price'] ?? null,
-                ]);
-            }
-        }
+        // Delegate supplier creation/update to the service
+        $this->supplierService->createOrUpdateSuppliers($validated['part_id'], $validated['suppliers']);
 
         return response()->json(['success' => true, 'message' => 'Suppliers added/updated successfully']);
     }
-
     /**
      * Get all suppliers for a given part.
      *
@@ -82,9 +65,8 @@ class SupplierDataController extends Controller
             'supplier_id' => 'required|integer',
         ]);
 
-        SupplierData::where('part_id_fk', $validated['part_id'])
-            ->where('supplier_id_fk', $validated['supplier_id'])
-            ->delete();
+        // Delegate supplier deletion to the service
+        $this->supplierService->deleteSupplierData($validated['part_id'], $validated['supplier_id']);
 
         return response()->json(['success' => true, 'message' => 'Supplier data deleted successfully']);
     }
