@@ -89,6 +89,7 @@ class PartController extends Controller
                 'search_category' => $search_category,
                 'categoriesForCategoriesTable' => $categoriesForCategoriesTable,
                 // These are sent to extract clear names from foreign keys for the dropdown menus in the table
+                //TODO Seems redundant, check this out
                 'categories' => $categories,
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
@@ -191,6 +192,7 @@ class PartController extends Controller
     {
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
+        $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
 
         // Need to jump through a few hoops for proper time-zoning
         // TODO: Investigate this...?
@@ -228,6 +230,10 @@ class PartController extends Controller
                     'stockHistoryTableHeaders' => ['stock_lvl_chng_timestamp', 'stock_lvl_chng_quantity', 'from_location_name', 'to_location_name', 'stock_lvl_chng_comment', 'user_name'],
                     'nice_stockHistoryTableHeaders' => ['Date', 'Quantity', 'From', 'To', 'Comment', 'User'],
                     'stock_history' => $stockHistory,
+                    // Supplier Data
+                    'supplierDataTableHeaders' => ['supplier_id_fk', 'URL', 'SPN', 'price'],
+                    'nice_supplierDataTableHeaders' => ['Supplier', 'URL', 'SPN', 'Price'],
+                    'supplierData' => $supplierData,
                     // Tabs Settings
                     'tabId1' => 'info',
                     'tabText1' => 'Info',

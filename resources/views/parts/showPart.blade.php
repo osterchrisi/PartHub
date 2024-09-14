@@ -39,7 +39,7 @@
         {{-- Suppliers Tab --}}
         <div class="tab-pane fade" id="{{ $tabToggleId3 }}" role="tabpanel" tabindex="0">
 
-            @include('parts.partSuppliers')
+            @include('parts.supplierDataTable')
 
         </div>
     </div>

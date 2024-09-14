@@ -60,7 +60,7 @@ class SupplierService
      */
     public function getSupplierDataForPart($part_id)
     {
-        return SupplierData::where('part_id_fk', $part_id)->get();
+        return SupplierData::where('part_id_fk', $part_id)->with('part')->get();
     }
 }
 
