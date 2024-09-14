@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -7,51 +7,60 @@ use App\Models\SupplierData;
 class SupplierService
 {
     /**
-     * Create or update supplier data for a part.
+     * Create supplier data for a part.
      *
      * @param int $part_id
      * @param array $suppliers
      * @return void
      */
-    public function createOrUpdateSuppliers($part_id, array $suppliers)
+    public function createSuppliers($part_id, array $suppliers)
     {
         foreach ($suppliers as $supplierData) {
-            // Check if supplier data already exists for the part
-            $existingSupplierData = SupplierData::where('part_id_fk', $part_id)
-                ->where('supplier_id_fk', $supplierData['supplier_id'])
-                ->first();
-
-            if ($existingSupplierData) {
-                // Update existing supplier data
-                $existingSupplierData->update([
-                    'URL' => $supplierData['URL'] ?? null,
-                    'SPN' => $supplierData['SPN'] ?? null,
-                    'price' => $supplierData['price'] ?? null,
-                ]);
-            } else {
-                // Create new supplier data
-                SupplierData::create([
-                    'part_id_fk' => $part_id,
-                    'supplier_id_fk' => $supplierData['supplier_id'],
-                    'URL' => $supplierData['URL'] ?? null,
-                    'SPN' => $supplierData['SPN'] ?? null,
-                    'price' => $supplierData['price'] ?? null,
-                ]);
-            }
+            // Simply create new supplier data without checking for uniqueness
+            SupplierData::create([
+                'part_id_fk' => $part_id,
+                'supplier_id_fk' => $supplierData['supplier_id'],
+                'SPN' => $supplierData['SPN'] ?? null,
+                'URL' => $supplierData['URL'] ?? null,
+                'price' => $supplierData['price'] ?? null,
+            ]);
         }
     }
 
     /**
-     * Delete supplier data for a part and supplier.
+     * Update specific supplier data row by ID.
      *
-     * @param int $part_id
-     * @param int $supplier_id
+     * @param int $id
+     * @param array $data
      * @return void
      */
-    public function deleteSupplierData($part_id, $supplier_id)
+    public function updateSupplierDataById($id, array $data)
     {
-        SupplierData::where('part_id_fk', $part_id)
-            ->where('supplier_id_fk', $supplier_id)
-            ->delete();
+        // Update a specific supplier data row by its unique ID
+        SupplierData::where('id', $id)->update($data);
+    }
+
+    /**
+     * Delete specific supplier data row by ID.
+     *
+     * @param int $id
+     * @return void
+     */
+    public function deleteSupplierDataById($id)
+    {
+        // Delete a specific supplier data row by its unique ID
+        SupplierData::where('id', $id)->delete();
+    }
+
+    /**
+     * Get all supplier data for a specific part.
+     *
+     * @param int $part_id
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getSupplierDataForPart($part_id)
+    {
+        return SupplierData::where('part_id_fk', $part_id)->get();
     }
 }
+

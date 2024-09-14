@@ -145,7 +145,7 @@ class PartController extends Controller
                 $validated['min_quantity'] ?? 0
             );
 
-            // Handle stock level if stock was added
+            // Handle stock level if quantity and location are provided
             if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
@@ -159,9 +159,9 @@ class PartController extends Controller
                 $response['Stock Entry ID'] = $new_stock_entry_id;
             }
 
-            // Handle supplier data
+            // Handle supplier data through SupplierService
             if (!empty($validated['suppliers'])) {
-                $this->supplierService->createOrUpdateSuppliers($new_part_id, $validated['suppliers']);
+                $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
@@ -182,6 +182,7 @@ class PartController extends Controller
             return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
 
     /**
      * Display part details and return the showPart view

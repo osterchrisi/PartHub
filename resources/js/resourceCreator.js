@@ -26,6 +26,7 @@ class ResourceCreator {
         this.removeAddButtonClickListener()
         this.clickListenerAttached = false;
       }
+      $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
     });
 
     this.inputModal.on('show.bs.modal', () => {
@@ -182,6 +183,8 @@ class ResourceCreator {
 
   hideModal() {
     this.inputModal.modal('hide');
+    console.log("boing");
+    $('#addPartAddStockSwitch').prop('checked', false);//.trigger('change');
   }
 
   attachAddButtonClickListener() {
