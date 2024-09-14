@@ -1,8 +1,3 @@
-{{-- @php
-echo("<pre>");
-print_r($parts);
-@endphp --}}
-
 {{-- Styling for the edit pens --}}
 {{-- Uncomment the ".editable-text-cell:hover .edit-pen" part to magically make the edit pens appear --}}
 <style>

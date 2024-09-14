@@ -8,7 +8,8 @@ import {
     bootstrapPartInBomsTable,
     bootstrapHistTable,
     bootstrapBomDetailsTable,
-    bootstrapTableSmallify
+    bootstrapTableSmallify,
+    enableInlineProcessing
 } from './tables';
 
 class infoWindow {
@@ -49,7 +50,9 @@ class infoWindow {
                 this.setupStockChangeButtons(stockManager, this.id);
                 this.setupImageManager();
                 this.setupDocumentManager();
-
+                $('#partSupplierDataTable').bootstrapTable({
+                });
+                enableInlineProcessing();
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();
