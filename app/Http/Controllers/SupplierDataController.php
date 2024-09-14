@@ -21,34 +21,32 @@ class SupplierDataController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createOrUpdateSuppliers(Request $request)
-    {
-        // Validate the incoming request
-        $validated = $request->validate([
-            'part_id' => 'required|integer',
-            'suppliers' => 'required|array',
-            'suppliers.*.supplier_id' => 'required|integer',
-            'suppliers.*.URL' => 'nullable|url',
-            'suppliers.*.SPN' => 'nullable|string|max:255',
-            'suppliers.*.price' => 'nullable|numeric',
-        ]);
+    // public function createOrUpdateSuppliers(Request $request)
+    // {
+    //     // Validate the incoming request
+    //     $validated = $request->validate([
+    //         'part_id' => 'required|integer',
+    //         'suppliers' => 'required|array',
+    //         'suppliers.*.supplier_id' => 'required|integer',
+    //         'suppliers.*.URL' => 'nullable|url',
+    //         'suppliers.*.SPN' => 'nullable|string|max:255',
+    //         'suppliers.*.price' => 'nullable|numeric',
+    //     ]);
 
-        // Delegate supplier creation/update to the service
-        $this->supplierService->createOrUpdateSuppliers($validated['part_id'], $validated['suppliers']);
+    //     // Delegate supplier creation/update to the service
+    //     $this->supplierService->createOrUpdateSuppliers($validated['part_id'], $validated['suppliers']);
 
-        return response()->json(['success' => true, 'message' => 'Suppliers added/updated successfully']);
-    }
+    //     return response()->json(['success' => true, 'message' => 'Suppliers added/updated successfully']);
+    // }
     /**
-     * Get all suppliers for a given part.
+     * Get supplier data for a given part.
      *
      * @param int $part_id
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSupplierDataForPart($part_id)
     {
-        // Fetch all suppliers related to the part
-        $suppliers = SupplierData::where('part_id_fk', $part_id)->get();
-
+        $suppliers = $this->supplierService->getSupplierDataForPart($part_id);
         return response()->json($suppliers);
     }
 
@@ -58,16 +56,16 @@ class SupplierDataController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteSupplierData(Request $request)
-    {
-        $validated = $request->validate([
-            'part_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
-        ]);
+    // public function deleteSupplierData(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'part_id' => 'required|integer',
+    //         'supplier_id' => 'required|integer',
+    //     ]);
 
-        // Delegate supplier deletion to the service
-        $this->supplierService->deleteSupplierData($validated['part_id'], $validated['supplier_id']);
+    //     // Delegate supplier deletion to the service
+    //     $this->supplierService->deleteSupplierData($validated['part_id'], $validated['supplier_id']);
 
-        return response()->json(['success' => true, 'message' => 'Supplier data deleted successfully']);
-    }
+    //     return response()->json(['success' => true, 'message' => 'Supplier data deleted successfully']);
+    // }
 }
