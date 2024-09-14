@@ -2,6 +2,19 @@ export { InlineTableCellEditor }
 import { updateInfoWindow } from "./custom";
 import { rebuildCategoriesTable, rebuildPartsTable } from "./tables";
 
+/**
+ * Class to edit table cells on the frontend and change database table data accordingly
+ * Example usage:
+ * const editor = new InlineTableCellEditor({
+        type: 'category',
+        endpoint: 'categories',
+        $cell: cell,
+        originalValue: originalValue
+
+      }).editCell();
+ * Example table row
+ * <td class="editable editable-text-cell" data-id_field="part_id" data-table_name="parts" data-column="part_name" data-id="100211" data-editable="true"></td>
+ */
 class InlineTableCellEditor {
     constructor(options) {
         // Options

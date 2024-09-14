@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 class PartController extends Controller
 {
     private static $table_name = 'parts';
+    private static $supplierDataTable = 'supplier_data';
 
     private static $id_field = 'part_id';
 
@@ -231,6 +232,8 @@ class PartController extends Controller
                     'nice_stockHistoryTableHeaders' => ['Date', 'Quantity', 'From', 'To', 'Comment', 'User'],
                     'stock_history' => $stockHistory,
                     // Supplier Data
+                    'supplierDataTableName' => self::$supplierDataTable,
+                    'supplierDataTableIdField' => 'id',
                     'supplierDataTableHeaders' => ['supplier_id_fk', 'URL', 'SPN', 'price'],
                     'nice_supplierDataTableHeaders' => ['Supplier', 'URL', 'SPN', 'Price'],
                     'supplierData' => $supplierData,
