@@ -106,7 +106,7 @@ class ResourceCreator {
             if (this.type != 'category') {
               this.selectNewRow(id);
               //!TODO Okay, boostrapTableSmallify is redundant but there might be a race condition. Need to do it a second time, otherwise it first smallifies, then gets bigger again
-              bootstrapTableSmallify();
+              // bootstrapTableSmallify();
             }
           })
           .fail(() => {
@@ -741,7 +741,7 @@ class ResourceCreator {
       this.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
     });
 
-    bootstrapTableSmallify();
+    // bootstrapTableSmallify();
     this.newRowIndex++;
   }
 

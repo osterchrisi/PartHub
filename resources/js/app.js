@@ -47,7 +47,7 @@ $(document).ready(function () {
     // Common to all views
     console.log("eip app.js");
     enableInlineProcessing();
-    bootstrapTableSmallify();
+    // bootstrapTableSmallify();
     makeTableWindowResizable();
     clearModalOnHiding();
     focusFirstInputInModals();

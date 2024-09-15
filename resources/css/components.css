@@ -140,3 +140,29 @@ tr.selected-last td {
     transition: all 0.3s ease;
     /* More specific selector to target just this modal */
 }
+
+.bootstrap-table .btn {
+    font-size: 0.875rem !important;
+    /* Forces small button size */
+    padding: 0.25rem 0.5rem !important;
+    /* Adjusts padding to match btn-sm */
+}
+
+.bootstrap-table .pagination {
+    font-size: 0.875rem !important;
+    /* Forces small pagination size */
+}
+
+.bootstrap-table .form-control {
+    font-size: 0.875rem !important;
+    /* Forces small input size */
+    padding: 0.25rem 0.5rem !important;
+    /* Adjusts padding to match form-control-sm */
+}
+
+.bootstrap-table .page-link {
+    font-size: 0.875rem !important;
+    /* Forces small button size */
+    padding: 0.25rem 0.5rem !important;
+    /* Adjusts padding to match btn-sm */
+}

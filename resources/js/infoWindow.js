@@ -117,7 +117,7 @@ class infoWindow {
     bootstrapPartTables() {
         bootstrapPartInBomsTable();
         bootstrapHistTable();
-        bootstrapTableSmallify();
+        // bootstrapTableSmallify();
     }
 
     setupStockChangeButtons(stockManager, id) {

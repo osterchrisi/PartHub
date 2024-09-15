@@ -32,7 +32,7 @@ export function initializePartsView() {
 
     // Need to re-smallify after hiding / showing columns
     $('.bootstrap-table').on('column-switch.bs.table page-change.bs.table', function () {
-        bootstrapTableSmallify();
+        // bootstrapTableSmallify();
     });
 
     loadSelectedRow('part', 'parts_table');
