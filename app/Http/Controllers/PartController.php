@@ -237,7 +237,7 @@ class PartController extends Controller
                     'supplierDataTableHeaders' => ['supplier_id_fk', 'URL', 'SPN', 'price'],
                     'nice_supplierDataTableHeaders' => ['Supplier', 'URL', 'SPN', 'Price'],
                     'supplierData' => $supplierData,
-                    // Tabs Settings
+                    // Tabs
                     'tabId1' => 'info',
                     'tabText1' => 'General',
                     'tabToggleId1' => 'partInfo',

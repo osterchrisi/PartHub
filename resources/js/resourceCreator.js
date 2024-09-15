@@ -513,6 +513,7 @@ class ResourceCreator {
    * @throws {Error} If the type is unknown.
    * @returns {void}
    */
+  //TODO: Don't like how 'complicated' suppliers are...
   createNewSelectizeDropdownEntry(input, type, supplier_dropdownId = null, newRowIndex = null) {
     const token = $('input[name="_token"]').attr('value');
     let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId, $select;
@@ -551,7 +552,12 @@ class ResourceCreator {
         return;
     }
 
-    $select = $(`#${dropdownId}`).selectize();
+    if (type === 'supplier') {
+      $select = $(`select[data-supplier-id="${newRowIndex}"]`).selectize();
+    }
+    else {
+      $select = $(`#${dropdownId}`).selectize();
+    }
     if ($select.data('creating')) {
       return;
     }
@@ -573,12 +579,10 @@ class ResourceCreator {
           if (type === 'supplier') {
             dropdownFunction(newList, supplier_dropdownId, newRowIndex);
             var selectize = $(`select[data-supplier-id="${newRowIndex}"]`)[0].selectize;
-            console.log($(`#${supplier_dropdownId}`));
           }
           else {
             dropdownFunction(newList);
             var selectize = $(`#${dropdownId}`)[0].selectize;
-            console.log($(`#${dropdownId}`));
           }
           selectize.addItem(newEntry[`${type}_id`]);
           $select.data('creating', false);
