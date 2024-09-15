@@ -43,14 +43,9 @@ $(document).ready(function () {
     else if (currentView === 'user-settings') {
         initializeUserSettingsView();
     }
-    // else if (currentView === 'signup') {
-    //     initializeSignupView();
-    // }
-    // else if (currentView === 'multi') {
-    //     initializeMultiView();
-    // }
 
     // Common to all views
+    console.log("eip app.js");
     enableInlineProcessing();
     bootstrapTableSmallify();
     makeTableWindowResizable();

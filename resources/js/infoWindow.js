@@ -50,9 +50,9 @@ class infoWindow {
                 this.setupStockChangeButtons(stockManager, this.id);
                 this.setupImageManager();
                 this.setupDocumentManager();
-                $('#partSupplierDataTable').bootstrapTable({
-                });
-                enableInlineProcessing();
+
+                $('#partSupplierDataTable').bootstrapTable({});
+
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();

@@ -22,6 +22,8 @@ class InlineTableCellEditor {
         this.endpoint = options.endpoint;
         this.$cell = options.$cell;
         this.originalValue = options.originalValue;
+        // Using this.table only to discern a supplier in the partsTable from a supplier in the Supplier Data table
+        this.table = options.table || 'partsTable';
         // Changed flag
         this.valueChanged = false;
     }
@@ -241,6 +243,11 @@ class InlineTableCellEditor {
      */
     updateCell(id, column, table_name, new_value, id_field) {
         const token = $('input[name="_token"]').attr('value');
+
+        if (this.table === 'supplier_data') {
+            column = 'supplier_id_fk';
+        }
+        console.log(id, column, table_name, new_value, id_field);
         return $.ajax({
             url: '/updateRow',
             type: 'POST',

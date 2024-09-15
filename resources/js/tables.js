@@ -279,7 +279,7 @@ export function rebuildPartsTable(queryString) {
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
       definePartsTableActions($table, $menu);         // Define table row actions and context menu
-      enableInlineProcessing();
+      // enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -301,7 +301,7 @@ export function rebuildLocationsTable(queryString) {
       var $table = $('#locations_list_table');
       var $menu = $('#parts_table_menu');
       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
-      enableInlineProcessing();
+      // enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -324,7 +324,7 @@ export function rebuildCategoriesTable() {
 
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
-      enableInlineProcessing();
+      // enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
 
@@ -355,7 +355,7 @@ export function rebuildFootprintsTable(queryString) {
       var $table = $('#footprints_list_table');
       var $menu = $('#parts_table_menu');
       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
-      enableInlineProcessing();
+      // enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -376,7 +376,7 @@ export function rebuildSuppliersTable(queryString) {
       var $table = $('#suppliers_list_table');
       var $menu = $('#parts_table_menu');
       defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
-      enableInlineProcessing();
+      // enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -399,7 +399,7 @@ export function rebuildBomListTable(queryString) {
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
-      enableInlineProcessing();
+      // enableInlineProcessing();
       bootstrapTableSmallify();
       makeTableWindowResizable();
     }
@@ -598,7 +598,7 @@ function hideContextMenu($menu) {
  * Inline table cell manipulation of bootstrapped tables
  */
 export function enableInlineProcessing() {
-  $('.bootstrap-table').on('dblclick', '.editable', function (e) {
+  $(document).on('dblclick', '.bootstrap-table .editable', function (e) {
     var cell = $(this);
     console.log("boing");
 
@@ -639,6 +639,16 @@ export function enableInlineProcessing() {
         endpoint: 'suppliers',
         $cell: cell,
         originalValue: originalValue
+
+      }).editCell();
+    }
+    else if (cell.hasClass('supplierData')) {
+      const editor = new InlineTableCellEditor({
+        type: 'supplier',
+        endpoint: 'suppliers',
+        $cell: cell,
+        originalValue: originalValue,
+        table: 'supplier_data',
 
       }).editCell();
     }

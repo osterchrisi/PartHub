@@ -301,6 +301,7 @@ export function showDeletionConfirmationToast(numElements, type) {
  * @return {void}
  */
 export function updateInfoWindow(type, id) {
+    console.log("updating iw");
     $.ajax({
         url: `/${type}/${id}`,
         type: 'GET',

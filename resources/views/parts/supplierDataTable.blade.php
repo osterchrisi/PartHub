@@ -1,5 +1,5 @@
 {{-- @dump($supplierData) --}}
-<div class="mt-3" style="overflow-x:auto;">
+<div class="mt-3">
     <table class="table table-striped table-hover table-sm" style="font-size:12px" id="partSupplierDataTable">
         <thead>
             <tr>
@@ -13,7 +13,7 @@
                 <tr>
                     @foreach ($supplierDataTableHeaders as $column_data)
                         @if ($column_data === 'supplier_id_fk')
-                            <td data-editable="true" class="editable supplier" data-id="{{ $row->id }}"
+                            <td data-editable="true" class="editable supplierData" data-id="{{ $row->id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $supplierDataTableName }}"
                                 data-id_field="{{ $supplierDataTableIdField }}">
 
