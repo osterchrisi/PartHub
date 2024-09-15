@@ -47,7 +47,6 @@ class ResourceCreator {
     //TODO: This seems strange
     // Bind functions to ensure correct `this` context
     this.addSupplierRow = this.addSupplierRow.bind(this);
-    // this.initializeDropdowns = this.initializeDropdowns.bind(this);
     this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
 
     // Call the removeRowButtonClickListener to make sure it listens from the start
@@ -88,7 +87,6 @@ class ResourceCreator {
       data: Object.assign({ _token: token }, data),
       success: (response) => {
         const id = response[this.newIdName];                // Get new ID
-        // console.log(this.type, id);
         if (this.type != 'category') {
           updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
         }
@@ -183,7 +181,7 @@ class ResourceCreator {
 
   hideModal() {
     this.inputModal.modal('hide');
-    $('#addPartAddStockSwitch').prop('checked', false);//.trigger('change');
+    $('#addPartAddStockSwitch').prop('checked', false);
   }
 
   attachAddButtonClickListener() {
@@ -191,7 +189,6 @@ class ResourceCreator {
     if (!this.clickListenerAttached) {
       // Fetch data asynchronously
       let dataFetchPromises = [];
-
       if (this.type === 'part') {
         dataFetchPromises.push(this.getLocations());
         dataFetchPromises.push(this.getFootprints());
@@ -203,13 +200,12 @@ class ResourceCreator {
       Promise.all(dataFetchPromises)
         .then(data => {
           const [locations, footprints, categories, suppliers] = data;
-          // console.log(categories);
 
           if (this.type === 'part') {
             // Populate dropdowns
             this.addPartLocationDropdown(locations);
             this.addPartFootprintDropdown(footprints);
-            // this.addPartSupplierDropdown(suppliers);
+            // this.addPartSupplierDropdown(suppliers); // Only for single supplier layout
             if (this.categoryCreated == false) {
               this.addPartCategoryDropdown(categories);
             }
@@ -406,7 +402,7 @@ class ResourceCreator {
     // Initialize Selectize on the new dropdown
     $(`[data-supplier-id="${newRowIndex}"]`).selectize({  // Change to `data-supplier-id`
       create: (input) => {
-        this.createNewSelectizeDropdownEntry(input, 'supplier');
+        this.createNewSelectizeDropdownEntry(input, 'supplier', dropdownId, newRowIndex);
       },
       placeholder: 'Select Supplier',
       onInitialize: function () {
@@ -517,7 +513,7 @@ class ResourceCreator {
    * @throws {Error} If the type is unknown.
    * @returns {void}
    */
-  createNewSelectizeDropdownEntry(input, type) {
+  createNewSelectizeDropdownEntry(input, type, supplier_dropdownId = null, newRowIndex = null) {
     const token = $('input[name="_token"]').attr('value');
     let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId, $select;
 
@@ -574,8 +570,16 @@ class ResourceCreator {
           [`${type}_name`]: input
         };
         getFunction().done((newList) => {
-          dropdownFunction(newList);
-          var selectize = $(`#${dropdownId}`)[0].selectize;
+          if (type === 'supplier') {
+            dropdownFunction(newList, supplier_dropdownId, newRowIndex);
+            var selectize = $(`select[data-supplier-id="${newRowIndex}"]`)[0].selectize;
+            console.log($(`#${supplier_dropdownId}`));
+          }
+          else {
+            dropdownFunction(newList);
+            var selectize = $(`#${dropdownId}`)[0].selectize;
+            console.log($(`#${dropdownId}`));
+          }
           selectize.addItem(newEntry[`${type}_id`]);
           $select.data('creating', false);
         });

@@ -44,12 +44,12 @@
                         data-bs-target="#addSuppliers">Suppliers</button>
                     <button class="btn btn-sm btn-light" id="showAdvanced" type="button" data-bs-toggle="collapse"
                         data-bs-target="#advancedOptions">Additional Info</button>
-                    {{-- Advanced Options --}}
+                    {{-- Supplier Data --}}
                     <div class="collapse mb-4" id="addSuppliers">
-                        {{-- Supplier --}}
                         <div class="col">
                             <div id="supplierTableContainer">
-                                <table id="supplierDataTable" class="table table-sm table-bordered table-hover table-responsive">
+                                <table id="supplierDataTable"
+                                    class="table table-sm table-bordered table-hover table-responsive">
                                     <thead>
                                         <tr>
                                             <th data-field="supplier">Supplier</th>
@@ -60,7 +60,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Rows will be added dynamically here -->
+                                        {{-- Rows will be added dynamically here --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -68,6 +68,7 @@
                                 Supplier</button>
                         </div>
                     </div>
+                    {{-- Advanced Options --}}
                     <div class="collapse mb-4" id="advancedOptions">
                         <div class="row">
                             {{-- Minimum Quantity --}}

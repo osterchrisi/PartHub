@@ -239,7 +239,7 @@ class PartController extends Controller
                     'supplierData' => $supplierData,
                     // Tabs Settings
                     'tabId1' => 'info',
-                    'tabText1' => 'Info',
+                    'tabText1' => 'General',
                     'tabToggleId1' => 'partInfo',
                     'tabId2' => 'history',
                     'tabText2' => 'Stock History',
