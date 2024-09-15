@@ -390,3 +390,12 @@ export function showDeleteConfirmation(question, confirmCallback) {
         $('#deleteConfirmationModal').modal('hide');
     });
 }
+
+// Initialize Tooltips
+export function initializeTooltips() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
+        animation: true,
+        delay: { "show": 500, "hide": 100 }
+    }));
+}

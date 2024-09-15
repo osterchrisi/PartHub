@@ -141,6 +141,8 @@ tr.selected-last td {
     /* More specific selector to target just this modal */
 }
 
+/* Bootstrap Table Smallify */
+
 .bootstrap-table .btn {
     font-size: 0.875rem !important;
     /* Forces small button size */

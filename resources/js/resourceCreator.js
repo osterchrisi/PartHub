@@ -183,7 +183,6 @@ class ResourceCreator {
 
   hideModal() {
     this.inputModal.modal('hide');
-    console.log("boing");
     $('#addPartAddStockSwitch').prop('checked', false);//.trigger('change');
   }
 

@@ -622,7 +622,6 @@ function hideContextMenu($menu) {
 export function enableInlineProcessing() {
   $(document).on('dblclick', '.bootstrap-table .editable', function (e) {
     var cell = $(this);
-    console.log("boing");
 
     // Check if the cell is already being edited
     if (cell.hasClass('editing')) {

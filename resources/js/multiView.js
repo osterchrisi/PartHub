@@ -64,7 +64,6 @@ function rebuildBomListTable2(queryString) {
         data: { id: id, hideNavbar: true },
         success: function (data) {
             // Replace the content of the info window with the loaded PHP page
-            console.log("blu");
             $('#info-window2').html(data);
             initializeShowBom();
         },

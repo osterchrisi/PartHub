@@ -16,7 +16,8 @@ import {
     makeTableWindowResizable,
     clearModalOnHiding,
     focusFirstInputInModals,
-    initializePopovers
+    initializePopovers,
+    initializeTooltips
 } from './custom';
 
 const currentView = document.body.getAttribute('data-view');
@@ -45,18 +46,13 @@ $(document).ready(function () {
     }
 
     // Common to all views
-    console.log("eip app.js");
     enableInlineProcessing();
     // bootstrapTableSmallify();
     makeTableWindowResizable();
     clearModalOnHiding();
     focusFirstInputInModals();
     initializePopovers();
+    initializeTooltips();
 
-    // Initialize Tooltips
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
-        animation: true,
-        delay: { "show": 500, "hide": 100 }
-    }));
+
 });
