@@ -53,6 +53,4 @@ $(document).ready(function () {
     focusFirstInputInModals();
     initializePopovers();
     initializeTooltips();
-
-
 });

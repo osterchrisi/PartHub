@@ -244,10 +244,18 @@ class InlineTableCellEditor {
     updateCell(id, column, table_name, new_value, id_field) {
         const token = $('input[name="_token"]').attr('value');
 
+        // Check if all required variables are present, mainly because of the two selectize events I'm listening for
+        // One is usually 'empty' and has no new_value -> that throws an error then
+        if (!id || !column || !table_name || !new_value || !id_field) {
+            console.error('Missing parameters for updateCell:', { id, column, table_name, new_value, id_field });
+            return $.Deferred().reject();  // Return a rejected promise
+        }
+
+        // Special case for supplier_data
         if (this.table === 'supplier_data') {
             column = 'supplier_id_fk';
         }
-        console.log(id, column, table_name, new_value, id_field);
+
         return $.ajax({
             url: '/updateRow',
             type: 'POST',
