@@ -50,8 +50,7 @@ class infoWindow {
                 this.setupStockChangeButtons(stockManager, this.id);
                 this.setupImageManager();
                 this.setupDocumentManager();
-
-                $('#partSupplierDataTable').bootstrapTable({});
+                $('#partSupplierDataTable').bootstrapTable();
 
                 break;
             case 'bom':

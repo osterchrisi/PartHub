@@ -136,11 +136,12 @@ class InlineTableCellEditor {
                     });
                 });
 
-                selectizeControl.on('dropdown_close', () => {
-                    this.selectEventHandler(select, this.$cell, data, () => {
-                        this.valueChanged = true;
-                    });
-                });
+                // Commenting out this section again because it ALWAYS selects something
+                // selectizeControl.on('dropdown_close', () => {
+                //     this.selectEventHandler(select, this.$cell, data, () => {
+                //         this.valueChanged = true;
+                //     });
+                // });
 
                 // When done selecting
                 selectizeControl.on('blur', () => {
@@ -244,7 +245,7 @@ class InlineTableCellEditor {
     updateCell(id, column, table_name, new_value, id_field) {
         const token = $('input[name="_token"]').attr('value');
 
-        // Check if all required variables are present, mainly because of the two selectize events I'm listening for
+        // Check if all required variables are present, because of the two selectize behaviour
         // One is usually 'empty' and has no new_value -> that throws an error then
         if (!id || !column || !table_name || !new_value || !id_field) {
             console.error('Missing parameters for updateCell:', { id, column, table_name, new_value, id_field });
