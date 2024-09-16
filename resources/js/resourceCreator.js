@@ -103,8 +103,6 @@ class ResourceCreator {
           .done(() => {
             if (this.type != 'category') {
               this.selectNewRow(id);
-              //!TODO Okay, boostrapTableSmallify is redundant but there might be a race condition. Need to do it a second time, otherwise it first smallifies, then gets bigger again
-              // bootstrapTableSmallify();
             }
           })
           .fail(() => {
@@ -193,7 +191,7 @@ class ResourceCreator {
         dataFetchPromises.push(this.getLocations());
         dataFetchPromises.push(this.getFootprints());
         dataFetchPromises.push(this.getCategories());
-        dataFetchPromises.push(this.getSuppliers());
+        // dataFetchPromises.push(this.getSuppliers()); // Only for single supplier layout
       }
 
       // Wait for all data promises to resolve
@@ -211,7 +209,7 @@ class ResourceCreator {
             }
             this.categoryCreated = false;
             this.toggleStockForm();
-            this.addSupplierDataRowButtonClickListener();
+            this.addSupplierDataRowButtonClickListener('#supplierDataTable');
           }
 
           // Attach click listener and proceed
@@ -557,7 +555,7 @@ class ResourceCreator {
     else {
       $select = $(`#${dropdownId}`).selectize();
     }
-    
+
     if ($select.data('creating')) {
       return;
     }
@@ -724,54 +722,47 @@ class ResourceCreator {
     });
   }
 
-  // Function to add a new row to the supplier table
-  addSupplierRow() {
+  // Function to add a new row to a specific table
+  addSupplierRow(tableId) {
     let newRowIndex = this.newRowIndex;
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
     // Create the new row with a unique dropdown ID for each row
     let newRow = `<tr data-supplier-index="${newRowIndex}">
-                    <td>
-                        <div id='${newDropdownDiv}'>
-                                </div>
-                    </td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='URL' data-url-id="${newRowIndex}"></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='SPN' data-spn-id="${newRowIndex}"></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='Price' data-price-id="${newRowIndex}"></td>
-                    <td><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-lg fa-trash"></i></button></td>
-                  </tr>`;
+                  <td>
+                      <div id='${newDropdownDiv}'></div>
+                  </td>
+                  <td><input type='text' class='form-control form-control-sm' placeholder='URL' data-url-id="${newRowIndex}"></td>
+                  <td><input type='text' class='form-control form-control-sm' placeholder='SPN' data-spn-id="${newRowIndex}"></td>
+                  <td><input type='text' class='form-control form-control-sm' placeholder='Price' data-price-id="${newRowIndex}"></td>
+                  <td><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-lg fa-trash"></i></button></td>
+                </tr>`;
 
-    // Append the new row to the table body
-    $('#supplierDataTable tbody').append(newRow);
+    // Append the new row to the specified table body
+    $(`${tableId} tbody`).append(newRow);
 
     // Fetch suppliers and populate the dropdown
     this.getSuppliers().done((suppliers) => {
       this.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
     });
 
-    // bootstrapTableSmallify();
     this.newRowIndex++;
   }
 
-  // Event listener for adding rows
-  addSupplierDataRowButtonClickListener() {
+
+  // Event listener for adding rows to a specific table
+  addSupplierDataRowButtonClickListener(tableId) {
     $('#addRowBtn').off('click').on('click', () => {
-      this.addSupplierRow();
+      this.addSupplierRow(tableId);
     });
   }
+
 
   // Event listener to remove row
   // Doing this "outside" of Bootstrap-Table since the table itself is also manipulated in the DOM directly
   removeRowButtonClickListener() {
     $(document).on('click', '.remove-row-btn', function () {
-      // Get the unique data-id of the row
-      let rowId = $(this).closest('tr').data('supplier-index');
-      console.log('Deleting row with ID: ', rowId);
-
-      // Remove the row with the specific data-id
-      $(`tr[data-supplier-index='${rowId}']`).remove();  // This targets the row with the exact unique ID
+      $(this).closest('tr').remove();
     });
   }
-
-
 }

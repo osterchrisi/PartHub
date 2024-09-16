@@ -133,6 +133,8 @@ export function initializePartsView() {
         if ($('#supplierDataTable').data('bootstrap.table')) {
             //
         } else {
+            // Timeout to wait for the size transformation to happen
+            // Otherwise the resizable column handles are not where the columns are
             setTimeout(function () {
                 $('#supplierDataTable').bootstrapTable({
                     formatNoMatches: function () {
@@ -141,7 +143,7 @@ export function initializePartsView() {
                     resizable: true,
                 });
 
-                newPartCreator.addSupplierRow();
+                newPartCreator.addSupplierRow('#supplierDataTable');
             }, 300);
         }
     })
