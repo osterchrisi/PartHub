@@ -348,9 +348,8 @@ class ResourceCreator {
       }
     });
 
-    // Disable the Selectize dropdown from the start
-    var selectizeControl = $select[0].selectize;
-    selectizeControl.disable();
+    // Disable dropdown (it's optional to add stock)
+    $select[0].selectize.disable();
   }
 
   /**
@@ -558,6 +557,7 @@ class ResourceCreator {
     else {
       $select = $(`#${dropdownId}`).selectize();
     }
+    
     if ($select.data('creating')) {
       return;
     }
@@ -583,6 +583,7 @@ class ResourceCreator {
           else {
             dropdownFunction(newList);
             var selectize = $(`#${dropdownId}`)[0].selectize;
+            selectize.enable(); // Needed for the normally disabled location selectize
           }
           selectize.addItem(newEntry[`${type}_id`]);
           $select.data('creating', false);
