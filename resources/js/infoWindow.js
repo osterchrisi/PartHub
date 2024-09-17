@@ -53,9 +53,7 @@ class infoWindow {
                 this.setupDocumentManager();
                 $('#partSupplierDataTable').bootstrapTable();
                 const supplierCreator = new ResourceCreator({ type: 'part' });
-                supplierCreator.addSupplierRow('#partSupplierDataTable');
-
-
+                supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info');
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();

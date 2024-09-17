@@ -209,7 +209,7 @@ class ResourceCreator {
             }
             this.categoryCreated = false;
             this.toggleStockForm();
-            this.addSupplierDataRowButtonClickListener('#supplierDataTable');
+            this.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
           }
 
           // Attach click listener and proceed
@@ -751,8 +751,8 @@ class ResourceCreator {
 
 
   // Event listener for adding rows to a specific table
-  addSupplierDataRowButtonClickListener(tableId) {
-    $('#addRowBtn').off('click').on('click', () => {
+  addSupplierDataRowButtonClickListener(tableId, buttonId) {
+    $(`#${buttonId}`).off('click').on('click', () => {
       this.addSupplierRow(tableId);
     });
   }

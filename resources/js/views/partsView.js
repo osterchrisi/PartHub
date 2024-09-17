@@ -169,7 +169,7 @@ export function initializePartsView() {
                     </tbody>
                 </table>
             </div>
-            <button type="button" id="addRowBtn" class="btn btn-sm btn-secondary mt-2">Add
+            <button type="button" id="addSupplierRowBtn-partEntry" class="btn btn-sm btn-secondary mt-2">Add
             Supplier</button>
         `);
         // Collapse the supplier data div

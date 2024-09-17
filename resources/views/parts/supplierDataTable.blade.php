@@ -28,4 +28,6 @@
             @endforeach
         </tbody>
     </table>
+    <button type="button" id="addSupplierRowBtn-info" class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add
+        Supplier</button>
 </div>
