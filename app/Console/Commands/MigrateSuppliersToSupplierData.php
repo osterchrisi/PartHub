@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Part;
 use App\Models\SupplierData;
-use Illuminate\Support\Facades\Auth;
 
 class MigrateSuppliersToSupplierData extends Command
 {
