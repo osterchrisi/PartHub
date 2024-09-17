@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\SupplierData;
+use Illuminate\Support\Facades\Auth;
+
 
 class SupplierService
 {
@@ -16,13 +18,13 @@ class SupplierService
     public function createSuppliers($part_id, array $suppliers)
     {
         foreach ($suppliers as $supplierData) {
-            // Simply create new supplier data without checking for uniqueness
             SupplierData::create([
                 'part_id_fk' => $part_id,
                 'supplier_id_fk' => $supplierData['supplier_id'],
                 'SPN' => $supplierData['SPN'] ?? null,
                 'URL' => $supplierData['URL'] ?? null,
                 'price' => $supplierData['price'] ?? null,
+                'supplier_data_owner_u_fk' => Auth::id(),
             ]);
         }
     }

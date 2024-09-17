@@ -22,7 +22,7 @@ class DatabaseServiceController extends Controller
             'part_categories' => 'part_category_owner_u_fk',
             'stock_level_change_history' => 'stock_lvl_chng_user_fk',
             'suppliers' => 'supplier_owner_u_fk',
-            'supplier_data' => NULL,
+            'supplier_data' => 'supplier_data_owner_u_fk',
         ];
 
         $owner_column = $owner_columns[$table];

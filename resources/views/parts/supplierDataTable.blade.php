@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             @foreach ($supplierData as $row)
-                <tr data-part-id="{{ $part['part_id'] }}">
+                <tr data-part-id="{{ $part['part_id'] }}" data-supplier-data-id="{{ $row->id }}">
                     @foreach ($supplierDataTableHeaders as $column_data)
                         @if ($column_data === 'supplier_id_fk')
                             <td data-editable="true" class="editable supplierData" data-id="{{ $row->id }}"
@@ -34,6 +34,7 @@
     </table>
     <button type="button" id="addSupplierRowBtn-info" class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add
         Supplier</button>
-    <button type="button" id="deleteSupplierRowBtn-info" class="btn btn-sm btn-secondary remove-supplier-data-btn mt-2 ms-2" disabled>Delete
+    <button type="button" id="deleteSupplierRowBtn-info"
+        class="btn btn-sm btn-secondary remove-supplier-data-btn mt-2 ms-2" disabled>Delete
         Supplier</button>
 </div>

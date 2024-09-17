@@ -140,7 +140,6 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             showDeletionConfirmationToast(ids.length, model);
             var queryString = window.location.search;
             successCallback(queryString);
-
         },
         error: function (xhr) {
             // Handle the error

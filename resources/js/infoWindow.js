@@ -64,9 +64,12 @@ class infoWindow {
                 const supplierCreator = new ResourceCreator({ type: 'part' });
                 supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
                 $('#deleteSupplierRowBtn-info').click(() => {
-                    let id = $('#partSupplierDataTable').bootstrapTable('getSelections');
-                    deleteSelectedRows(id, 'supplier_data', 'id', updateInfoWindow('part', this.id));
-                })
+                    let selection = $('#partSupplierDataTable').bootstrapTable('getSelections');
+                    let deleteRowId = [];
+                    deleteRowId.push(selection[0]._data['supplier-data-id']); // Correctly access the first row's _data field
+                    console.log("delete id = ", deleteRowId);
+                    deleteSelectedRows(deleteRowId, 'supplier_data', 'id', () => updateInfoWindow('part', this.id));
+                });
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();
