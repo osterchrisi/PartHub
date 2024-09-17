@@ -33,7 +33,6 @@ class SupplierDataController extends Controller
             'suppliers.*.price' => 'nullable|numeric',
         ]);
 
-        // Delegate supplier creation/update to the service
         $this->supplierService->createSuppliers($validated['part_id'], $validated['suppliers']);
 
         return response()->json(['success' => true, 'message' => 'Suppliers added/updated successfully']);

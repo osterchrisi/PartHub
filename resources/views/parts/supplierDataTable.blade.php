@@ -23,7 +23,7 @@
                         @elseif ($column_data == 'state')
                             <td></td>
                         @else
-                            <td data-id="{{ $row->id }}" data-column="{{ $column_data }}"
+                            <td data-editable="true" class="editable" data-id="{{ $row->id }}" data-column="{{ $column_data }}"
                                 data-table_name="{{ $supplierDataTableName }}"
                                 data-id_field="{{ $supplierDataTableIdField }}">{{ $row->$column_data }}</td>
                         @endif
