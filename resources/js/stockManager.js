@@ -77,11 +77,10 @@ class StockManager {
                     //* Do the normal thing here, all requested stock available
                     updateInfoWindow('part', pid);
                     // Update 'Total Stock' in parts table
-                    console.log(r);
                     const new_stock_level = r.result[r.result.length - 1].new_total_stock;
-                    console.log(new_stock_level);
                     const $cell = $('tr.selected-last td[data-column="total_stock"]');
                     $cell.text(new_stock_level);
+                    //TODO: Add a $table.bootstrapTable('updateCell', {index, field, value}) here to keep the data between pagination jumps
                     $('#mAddStock').modal('hide');
                 } else {
                     //* User permission required
