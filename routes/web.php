@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StockLevelController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SupplierDataController;
 use App\Http\Controllers\UserSettingController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -106,6 +107,7 @@ Route::controller(SupplierController::class)->group(function () {
     Route::get('/suppliers.get', 'getSuppliers')->middleware(['auth', 'verified']);
     Route::get('/supplier/{id}', 'show')->middleware(['auth', 'verified']);
 });
+Route::post('supplierData.create', [SupplierDataController::class, 'create'])->middleware(['auth', 'verified']);
 
 //* Footprint Routes
 Route::middleware(['auth', 'verified', 'subscription'])->group(function () {

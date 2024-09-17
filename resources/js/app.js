@@ -47,7 +47,6 @@ $(document).ready(function () {
 
     // Common to all views
     enableInlineProcessing();
-    // bootstrapTableSmallify();
     makeTableWindowResizable();
     clearModalOnHiding();
     focusFirstInputInModals();

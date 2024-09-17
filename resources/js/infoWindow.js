@@ -54,7 +54,7 @@ class infoWindow {
                 // Supplier Data Table
                 $('#partSupplierDataTable').bootstrapTable();
                 const supplierCreator = new ResourceCreator({ type: 'part' });
-                supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info');
+                supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();

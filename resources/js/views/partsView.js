@@ -122,7 +122,7 @@ export function initializePartsView() {
         $('#ToStockLocationDiv-row').show();
     });
 
-    // Bootstrap the supplierDataTable only after it's been shown
+    // Bootstrap the supplierDataTable in the part entry modal only after it's been shown
     // Otherwise resizable columns don't work (because height = 0)
     $('#addSuppliers').on('shown.bs.collapse', event => {
 
@@ -148,7 +148,8 @@ export function initializePartsView() {
         }
     })
 
-    // Essentially need to reset all the bootstrap-table and collapse shenanigans
+    // Reset all the bootstrap-table and collapse shenanigans in the Supplier Data section
+    // of the part entry modal
     $('#mPartEntry').on('hidden.bs.modal', function () {
         $('#supplierDataTable').bootstrapTable('destroy');
         $('#addSuppliers').empty();  // Removes all content inside the div

@@ -723,19 +723,28 @@ class ResourceCreator {
   }
 
   // Function to add a new supplier data row to a specific table
-  addSupplierRow(tableId) {
+  addSupplierRow(tableId, partId) {
     let newRowIndex = this.newRowIndex;
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
+    // Check if the table requires extra fields
+    let selectBox = '';
+    let createBox = '';
+    if (tableId === '#partSupplierDataTable') {
+      selectBox = '<td></td>'; // Add an empty <td> for bootstrap-table selection functionality
+      createBox = `<button type="button" class="btn btn-sm btn-success ms-1" id="create-${newRowIndex}"><i class="fas fa-check"></i></button>`
+    }
+
     // Create the new row with a unique dropdown ID for each row
-    let newRow = `<tr data-supplier-index="${newRowIndex}">
+    let newRow = `<tr data-supplier-index="${newRowIndex}" data-part-id="${partId}">
+                  ${selectBox}  <!-- Include the extra <td> if applicable -->
                   <td>
                       <div id='${newDropdownDiv}'></div>
                   </td>
                   <td><input type='text' class='form-control form-control-sm' placeholder='URL' data-url-id="${newRowIndex}"></td>
                   <td><input type='text' class='form-control form-control-sm' placeholder='SPN' data-spn-id="${newRowIndex}"></td>
                   <td><input type='text' class='form-control form-control-sm' placeholder='Price' data-price-id="${newRowIndex}"></td>
-                  <td><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-lg fa-trash"></i></button></td>
+                  <td><div class='d-flex'><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-trash"></i></button>${createBox}</div></td>
                 </tr>`;
 
     // Append the new row to the specified table body
@@ -746,14 +755,16 @@ class ResourceCreator {
       this.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
     });
 
+    // Attach a save Supplier Row handler
+    this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
     this.newRowIndex++;
   }
 
 
   // Event listener for adding rows to a specific table
-  addSupplierDataRowButtonClickListener(tableId, buttonId) {
+  addSupplierDataRowButtonClickListener(tableId, buttonId, partId = null) {
     $(`#${buttonId}`).off('click').on('click', () => {
-      this.addSupplierRow(tableId);
+      this.addSupplierRow(tableId, partId);
     });
   }
 
@@ -765,4 +776,76 @@ class ResourceCreator {
       $(this).closest('tr').remove();
     });
   }
+
+  saveSupplierDataRowButtonClickListener(buttonId) {
+    let $button = `#${buttonId}`;
+    $($button).off('click').on('click', () => {
+      this.saveSupplierDataRow($button);
+    });
+  }
+
+  saveSupplierDataRow(button) {
+    // Get the new supplier data for this row
+    let newSupplierData = this.getNewSupplierDataRowData(button);
+
+    // If there's supplier data
+    if (newSupplierData.length > 0) {
+      let part_id = newSupplierData[0].part_id; // Get the part_id from the first row (since all rows have the same part_id)
+
+      // Prepare the data to be sent to the server
+      let requestData = {
+        part_id: part_id,
+        suppliers: newSupplierData.map(supplierRow => {
+          // Remove part_id from supplierRow and keep only supplier-specific data
+          return {
+            supplier_id: supplierRow.supplier_id,
+            URL: supplierRow.URL,
+            SPN: supplierRow.SPN,
+            price: supplierRow.price
+          };
+        })
+      };
+
+      // Send the AJAX request
+      $.ajax({
+        url: '/supplierData.create',
+        type: 'POST',
+        data: requestData, // Send the correct structure
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+          console.log('Supplier data saved successfully:', response);
+        },
+        error: function (xhr) {
+          console.error('Error saving supplier data:', xhr);
+        }
+      });
+    } else {
+      console.log('No supplier data to save');
+    }
+  }
+
+
+  getNewSupplierDataRowData(button) {
+    let newSupplierData = [];
+    let $row = $(button).closest('tr'); // Find the closest row (tr) to the button clicked
+
+    // Get the supplier index from the current row
+    let rowIndex = $row.data('supplier-index');
+    if (typeof rowIndex !== 'undefined') {
+      // Collect the data for the current row
+      let supplierRow = {
+        part_id: $row.data('part-id'),
+        supplier_id: $row.find(`[data-supplier-id="${rowIndex}"]`).val(),
+        URL: $row.find(`[data-url-id="${rowIndex}"]`).val(),
+        SPN: $row.find(`[data-spn-id="${rowIndex}"]`).val(),
+        price: $row.find(`[data-price-id="${rowIndex}"]`).val()
+      };
+      newSupplierData.push(supplierRow);
+    }
+    console.log(newSupplierData);
+    return newSupplierData;
+  }
+
 }

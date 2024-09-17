@@ -234,7 +234,7 @@ class PartController extends Controller
                     // Supplier Data
                     'supplierDataTableName' => self::$supplierDataTable,
                     'supplierDataTableIdField' => 'id',
-                    'supplierDataTableHeaders' => ['supplier_id_fk', 'URL', 'SPN', 'price'],
+                    'supplierDataTableHeaders' => ['state', 'supplier_id_fk', 'URL', 'SPN', 'price'],
                     'nice_supplierDataTableHeaders' => ['Supplier', 'URL', 'SPN', 'Price'],
                     'supplierData' => $supplierData,
                     // Tabs
