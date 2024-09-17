@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\SupplierData;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -37,7 +38,8 @@ class SupplierController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        } elseif ($route == 'suppliers.suppliersTable') {
+        }
+        elseif ($route == 'suppliers.suppliersTable') {
             return view('suppliers.suppliersTable', [
                 'suppliers_list' => $suppliers_list,
                 'db_columns' => self::$supplier_list_table_headers,
@@ -50,32 +52,42 @@ class SupplierController extends Controller
 
     public function show($supplier_id)
     {
-        $supplier = Supplier::getSupplierById($supplier_id);
-        $parts = Supplier::getPartsBySupplier($supplier_id);
+        // Fetch supplier information
+        $supplier = Supplier::find($supplier_id);
+
+        // Fetch parts related to this supplier via the supplier_data table
+        $suppliedParts = SupplierData::with('part')
+            ->where('supplier_id_fk', $supplier_id)
+            ->get();
+
+        // Prepare data for view
         $parts_from_supplier = [];
-        foreach ($parts as $part) {
-            $parts_from_supplier[] = ['part_name' => $part->part_name,
-                'part_id' => $part->part_id];
+        foreach ($suppliedParts as $suppliedPart) {
+            $parts_from_supplier[] = [
+                'part_name' => $suppliedPart->part->part_name,
+                'part_id' => $suppliedPart->part->part_id,
+                'URL' => $suppliedPart->URL, // Include any additional data you need
+                'SPN' => $suppliedPart->SPN,
+                'price' => $suppliedPart->price,
+            ];
         }
 
-        return view(
-            'suppliers.showSupplier',
-            [
-                'supplier_name' => $supplier->supplier_name,
-                'supplier_alias' => $supplier->supplier_alias,
-                // Tabs Settings
-                'tabId1' => 'info',
-                'tabText1' => 'Info',
-                'tabToggleId1' => 'supplierInfo',
-                'tabId2' => 'history',
-                'tabText2' => 'Supplier History',
-                'tabToggleId2' => 'supplierHistory',
-                // 'Parts with Supplier' table
-                'parts_from_supplier' => $parts_from_supplier,
-                'db_columns' => ['part_name', 'part_id'],
-                'nice_columns' => ['Part', 'ID'],
-            ]
-        );
+        // Pass data to view
+        return view('suppliers.showSupplier', [
+            'supplier' => $supplier,
+            'suppliedParts' => $suppliedParts,
+            // Tabs Settings
+            'tabId1' => 'info',
+            'tabText1' => 'Info',
+            'tabToggleId1' => 'supplierInfo',
+            'tabId2' => 'history',
+            'tabText2' => 'Supplier History',
+            'tabToggleId2' => 'supplierHistory',
+            // Parts from Supplier table
+            'parts_from_supplier' => $parts_from_supplier,
+            'db_columns' => ['part_name', 'part_id', 'URL', 'SPN', 'price'], // Add additional columns as needed
+            'nice_columns' => ['Part', 'URL', 'SPN', 'Price', 'Part ID'], // These are the table headers
+        ]);
     }
 
     /**
@@ -85,7 +97,7 @@ class SupplierController extends Controller
     {
         $supplier_name = $request->input('supplier_name');
 
-        // Insert new part
+        // Insert new supplier
         $new_supplier_id = Supplier::createSupplier($supplier_name);
 
         $response = ['Supplier ID' => $new_supplier_id];

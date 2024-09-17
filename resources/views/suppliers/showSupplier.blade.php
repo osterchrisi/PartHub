@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <br>
     <h4>
-        {{ $supplier_name }}
+        {{ $supplier->supplier_name }}
     </h4>
     <h5>
-        {{ $supplier_alias }}
+        {{ $supplier->supplier_alias }}
     </h5>
 
     <!-- Parts Tabs -->
@@ -14,18 +14,11 @@
     </ul>
 
     <!-- Tabs Content -->
-    @php
-    // print_r($parts_from_supplier);
-    @endphp
     <div class="tab-content" id="bomTabsContent">
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
             <h5>Parts from this Supplier</h5>
-            {{-- @include('suppliers.supplierDetailsTable') --}}
-            @php
-            $table = \buildHTMLTable($db_columns, $nice_columns, $parts_from_supplier);
-            echo $table;
-            @endphp
+            @include('suppliers.supplierDetailsTable')
         </div>
 
         <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">

@@ -1,7 +1,3 @@
-@php
-// echo($user_id);
-// print_r($suppliers_list);
-@endphp
 <div>
     <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="suppliers_list_table"
         data-resizable="true" data-pagination="true" data-show-columns="true" 
