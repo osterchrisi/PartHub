@@ -790,13 +790,12 @@ class ResourceCreator {
 
     // If there's supplier data
     if (newSupplierData.length > 0) {
-      let part_id = newSupplierData[0].part_id; // Get the part_id from the first row (since all rows have the same part_id)
+      let part_id = newSupplierData[0].part_id;
 
       // Prepare the data to be sent to the server
       let requestData = {
         part_id: part_id,
         suppliers: newSupplierData.map(supplierRow => {
-          // Remove part_id from supplierRow and keep only supplier-specific data
           return {
             supplier_id: supplierRow.supplier_id,
             URL: supplierRow.URL,
@@ -806,16 +805,16 @@ class ResourceCreator {
         })
       };
 
-      // Send the AJAX request
       $.ajax({
         url: '/supplierData.create',
         type: 'POST',
-        data: requestData, // Send the correct structure
+        data: requestData,
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
           console.log('Supplier data saved successfully:', response);
+          updateInfoWindow('part', part_id); 
         },
         error: function (xhr) {
           console.error('Error saving supplier data:', xhr);

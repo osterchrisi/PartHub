@@ -28,7 +28,7 @@ class SupplierDataController extends Controller
             'part_id' => 'required|integer',
             'suppliers' => 'required|array',
             'suppliers.*.supplier_id' => 'required|integer',
-            'suppliers.*.URL' => 'nullable|url',
+            'suppliers.*.URL' => 'nullable|string', // Could also be URL for the validator but seems user-unfriendly
             'suppliers.*.SPN' => 'nullable|string|max:255',
             'suppliers.*.price' => 'nullable|numeric',
         ]);
