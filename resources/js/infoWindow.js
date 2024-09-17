@@ -45,12 +45,13 @@ class infoWindow {
     initialize() {
         switch (this.type) {
             case 'part':
-                this.bootstrapPartTables();
+                this.bootstrapShowPartTables();
                 const stockManager = new StockManager();
                 stockManager.attachModalHideListener();
                 this.setupStockChangeButtons(stockManager, this.id);
                 this.setupImageManager();
                 this.setupDocumentManager();
+                // Supplier Data Table
                 $('#partSupplierDataTable').bootstrapTable();
                 const supplierCreator = new ResourceCreator({ type: 'part' });
                 supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info');
@@ -58,7 +59,7 @@ class infoWindow {
             case 'bom':
                 bootstrapBomDetailsTable();
                 this.allowHtmlTableElementsInPopover();
-                this.initializePopovers();
+                this.initializeBomDetailPopover();
                 break;
             default:
                 break;
@@ -115,10 +116,9 @@ class infoWindow {
         });
     }
 
-    bootstrapPartTables() {
+    bootstrapShowPartTables() {
         bootstrapPartInBomsTable();
         bootstrapHistTable();
-        // bootstrapTableSmallify();
     }
 
     setupStockChangeButtons(stockManager, id) {
@@ -171,7 +171,7 @@ class infoWindow {
 
     }
 
-    initializePopovers() {
+    initializeBomDetailPopover() {
         // Initialize all popovers
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
         const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
