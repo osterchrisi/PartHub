@@ -73,17 +73,13 @@ class StockManager {
             },
             success: (response) => {
                 const r = response;
-                console.log(r);
-                // console.log(r.status);
-                // console.log(r.changes);
-                // console.log(r.negative_stock);
-                // console.log(r.negative_stock.length);
-
                 if (r.status === 'success') {
                     //* Do the normal thing here, all requested stock available
                     updateInfoWindow('part', pid);
                     // Update 'Total Stock' in parts table
+                    console.log(r);
                     const new_stock_level = r.result[r.result.length - 1].new_total_stock;
+                    console.log(new_stock_level);
                     const $cell = $('tr.selected-last td[data-column="total_stock"]');
                     $cell.text(new_stock_level);
                     $('#mAddStock').modal('hide');
