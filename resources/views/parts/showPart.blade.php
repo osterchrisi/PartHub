@@ -16,9 +16,9 @@
 
     <!-- Parts Tabs -->
     <x-tablist id="partTabs" tabId1="{{ $tabId1 }}">
-        <x-tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
-        <x-tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
-        <x-tab-button id="{{ $tabId3 }}" toggleTarget="{{ $tabToggleId3 }}" tabText="{{ $tabText3 }}" />
+        <x-buttons.tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
+        <x-buttons.tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
+        <x-buttons.tab-button id="{{ $tabId3 }}" toggleTarget="{{ $tabToggleId3 }}" tabText="{{ $tabText3 }}" />
     </x-tablist>
 
     <!-- Tabs Content -->

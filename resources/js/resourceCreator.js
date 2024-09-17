@@ -722,7 +722,7 @@ class ResourceCreator {
     });
   }
 
-  // Function to add a new row to a specific table
+  // Function to add a new supplier data row to a specific table
   addSupplierRow(tableId) {
     let newRowIndex = this.newRowIndex;
     let newDropdownDiv = `addPartSupplier-${newRowIndex}`;

@@ -70,7 +70,7 @@ $user = Auth::user();
 
                         <div class="row mt-3">
                             <div class="col">
-                                <x-primary-button>{{ __('Save') }}</x-primary-button>
+                                <x-buttons.primary-button>{{ __('Save') }}</x-buttons.primary-button>
 
                                 @if (session('status') === 'profile-updated')
                                     <div x-data="{ show: true }" class="alert alert-success mt-3 p-2 pe-0">
@@ -124,7 +124,7 @@ $user = Auth::user();
                             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
                         </div>
                         <div class="col mt-3">
-                            <x-primary-button>{{ __('Save') }}</x-primary-button>
+                            <x-buttons.primary-button>{{ __('Save') }}</x-buttons.primary-button>
                             @if (session('status') === 'password-updated')
                                 <div class="alert alert-success mt-3 p-2 pe-0">{{ __('Saved.') }}</div>
                             @endif
@@ -147,8 +147,8 @@ $user = Auth::user();
                                 __('Before deleting your account, please download any data or information that you wish to retain.'),
                         ) !!}
                     </p>
-                    <x-danger-button x-data=""
-                        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">{{ __('Delete Account') }}</x-danger-button>
+                    <x-buttons.danger-button x-data=""
+                        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">{{ __('Delete Account') }}</x-buttons.danger-button>
                     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
                         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
                             @csrf
@@ -166,12 +166,12 @@ $user = Auth::user();
                                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
                             </div>
                             <div class="mt-6 flex justify-end">
-                                <x-secondary-button x-on:click="$dispatch('close')">
+                                <x-buttons.secondary-button x-on:click="$dispatch('close')">
                                     {{ __('Cancel') }}
-                                </x-secondary-button>
-                                <x-danger-button class="ml-3">
+                                </x-buttons.secondary-button>
+                                <x-buttons.danger-button class="ml-3">
                                     {{ __('Delete Account') }}
-                                </x-danger-button>
+                                </x-buttons.danger-button>
                             </div>
                         </form>
                     </x-modal>
