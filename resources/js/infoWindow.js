@@ -76,6 +76,8 @@ class infoWindow {
                 this.allowHtmlTableElementsInPopover();
                 this.initializeBomDetailPopover();
                 break;
+            case 'supplier':
+                $('#supplierDetailsTable').bootstrapTable({});
             default:
                 break;
         }

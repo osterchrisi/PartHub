@@ -1,6 +1,7 @@
 <div class="mt-3">
     <table class="table table-striped table-hover table-sm" style="font-size:12px" id="supplierDetailsTable"
-        data-resizable="true">
+        data-resizable="true" data-show-columns="true" data-cookie="true"
+        data-cookie-id-table="supplierDetailsTableState" data-cookie-storage="localStorage">
         <thead>
             <tr>
                 @foreach ($nice_columns as $column_header)

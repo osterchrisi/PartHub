@@ -73,10 +73,10 @@
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['footprint'][$column_data] ?? '' }}</td>
                         {{-- Supplier --}}
-                    @elseif ($column_data == 'supplier_name')
+                    {{-- @elseif ($column_data == 'supplier_name')
                         <td data-editable="true" class="editable supplier" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['supplier'][$column_data] ?? '' }}</td>
+                            data-id_field="{{ $id_field }}">{{ $part['supplier'][$column_data] ?? '' }}</td> --}}
                         {{-- Selected / State  --}}
                     @elseif ($column_data == 'state')
                         <td></td>
