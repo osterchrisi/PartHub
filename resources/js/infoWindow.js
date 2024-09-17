@@ -9,9 +9,12 @@ import {
     bootstrapPartInBomsTable,
     bootstrapHistTable,
     bootstrapBomDetailsTable,
-    bootstrapTableSmallify,
-    enableInlineProcessing
 } from './tables';
+
+import {
+    updateInfoWindow,
+    deleteSelectedRows
+} from "./custom";
 
 class infoWindow {
     constructor(type, id = null) {
@@ -52,9 +55,18 @@ class infoWindow {
                 this.setupImageManager();
                 this.setupDocumentManager();
                 // Supplier Data Table
-                $('#partSupplierDataTable').bootstrapTable();
+                $('#partSupplierDataTable').bootstrapTable({});
+                $('#partSupplierDataTable').on('check.bs.table uncheck.bs.table ' +
+                    'check-all.bs.table uncheck-all.bs.table',
+                    function () {
+                        $('#deleteSupplierRowBtn-info').prop('disabled', !$('#partSupplierDataTable').bootstrapTable('getSelections').length);
+                    })
                 const supplierCreator = new ResourceCreator({ type: 'part' });
                 supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
+                $('#deleteSupplierRowBtn-info').click(() => {
+                    let id = $('#partSupplierDataTable').bootstrapTable('getSelections');
+                    deleteSelectedRows(id, 'supplier_data', 'id', updateInfoWindow('part', this.id));
+                })
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();

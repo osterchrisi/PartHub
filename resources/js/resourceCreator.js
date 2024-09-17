@@ -756,7 +756,9 @@ class ResourceCreator {
     });
 
     // Attach a save Supplier Row handler
-    this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
+    if (tableId === '#partSupplierDataTable') {
+      this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
+    }
     this.newRowIndex++;
   }
 
@@ -814,7 +816,7 @@ class ResourceCreator {
         },
         success: function (response) {
           console.log('Supplier data saved successfully:', response);
-          updateInfoWindow('part', part_id); 
+          updateInfoWindow('part', part_id);
         },
         error: function (xhr) {
           console.error('Error saving supplier data:', xhr);
