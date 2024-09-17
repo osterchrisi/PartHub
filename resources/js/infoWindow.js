@@ -3,6 +3,7 @@ export { infoWindow }
 import { StockManager } from "./stockManager";
 import { ImageManager } from "./imageManager";
 import { DocumentManager } from "./DocumentManager";
+import { ResourceCreator } from "./resourceCreator";
 
 import {
     bootstrapPartInBomsTable,
@@ -51,6 +52,9 @@ class infoWindow {
                 this.setupImageManager();
                 this.setupDocumentManager();
                 $('#partSupplierDataTable').bootstrapTable();
+                const supplierCreator = new ResourceCreator({ type: 'part' });
+                supplierCreator.addSupplierRow('#partSupplierDataTable');
+
 
                 break;
             case 'bom':
