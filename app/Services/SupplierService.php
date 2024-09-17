@@ -5,14 +5,12 @@ namespace App\Services;
 use App\Models\SupplierData;
 use Illuminate\Support\Facades\Auth;
 
-
 class SupplierService
 {
     /**
      * Create supplier data for a part.
      *
-     * @param int $part_id
-     * @param array $suppliers
+     * @param  int  $part_id
      * @return void
      */
     public function createSuppliers($part_id, array $suppliers)
@@ -32,8 +30,7 @@ class SupplierService
     /**
      * Update specific supplier data row by ID.
      *
-     * @param int $id
-     * @param array $data
+     * @param  int  $id
      * @return void
      */
     public function updateSupplierDataById($id, array $data)
@@ -45,7 +42,7 @@ class SupplierService
     /**
      * Delete specific supplier data row by ID.
      *
-     * @param int $id
+     * @param  int  $id
      * @return void
      */
     public function deleteSupplierDataById($id)
@@ -57,7 +54,7 @@ class SupplierService
     /**
      * Get all supplier data for a specific part.
      *
-     * @param int $part_id
+     * @param  int  $part_id
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getSupplierDataForPart($part_id)
@@ -65,4 +62,3 @@ class SupplierService
         return SupplierData::where('part_id_fk', $part_id)->with('supplier')->get();
     }
 }
-

@@ -16,7 +16,7 @@ class SupplierData extends Model
         'SPN',
         'price',
         'supplier_data_owner_u_fk',
-        'supplier_data_owner_g_fk'
+        'supplier_data_owner_g_fk',
     ];
 
     public function part()

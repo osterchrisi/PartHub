@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SupplierData;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
 
 class SupplierDataController extends Controller
 {
-
     protected $supplierService;
 
     public function __construct(SupplierService $supplierService)
     {
         $this->supplierService = $supplierService;
     }
+
     /**
      * Create supplier data for a given part.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request)
@@ -41,19 +39,20 @@ class SupplierDataController extends Controller
     /**
      * Get supplier data for a given part.
      *
-     * @param int $part_id
+     * @param  int  $part_id
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSupplierDataForPart($part_id)
     {
         $suppliers = $this->supplierService->getSupplierDataForPart($part_id);
+
         return response()->json($suppliers);
     }
 
     /**
      * Delete supplier data for a specific supplier and part.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     // public function deleteSupplierData(Request $request)
