@@ -41,12 +41,8 @@ class ResourceCreator {
     }
 
     // Supplier Data
-    //TODO: This seems strange
-    // Bind functions to ensure correct `this` context
     this.addSupplierRow = this.addSupplierRow.bind(this);
     this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
-
-    // Call the removeRowButtonClickListener to make sure it listens from the start
     this.removeRowButtonClickListener();
     this.newRowIndex = 0;
 
@@ -54,6 +50,14 @@ class ResourceCreator {
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
   }
 
+  showModal() {
+    this.inputModal.modal('show');
+  }
+
+  hideModal() {
+    this.inputModal.modal('hide');
+    $('#addPartAddStockSwitch').prop('checked', false);
+  }
 
   /**
   * Handles the creation of a new resource via an AJAX request.
@@ -171,15 +175,6 @@ class ResourceCreator {
         }, highlightDuration); // Keep the highlight for the specified duration
       }
     }, initialDelay); // Initial delay to wait until page change happens but seems it's never needed
-  }
-
-  showModal() {
-    this.inputModal.modal('show');
-  }
-
-  hideModal() {
-    this.inputModal.modal('hide');
-    $('#addPartAddStockSwitch').prop('checked', false);
   }
 
   attachAddButtonClickListener() {
