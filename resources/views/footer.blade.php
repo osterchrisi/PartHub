@@ -1,9 +1,8 @@
-<?php
+@php
 $version = file_get_contents('../VERSION');
-?>
+@endphp
 
-
-<div class="container-fluid px-0 bg-body-tertiary text-dark" style="z-index: 2;">
+<div class="container-fluid bg-light bg-gradient bg-opacity-10 text-dark pb-1" id="footer">
     <table class="table table-borderless text-center mx-auto w-auto footer-table">
         <tr>
             <td>

@@ -1,8 +1,8 @@
-<?php
+@php
 $user = optional(auth()->user());
 $user_id = $user ? $user->id : 0;
 $user_name = $user ? $user->name : '';
-?>
+@endphp
 
 <div class="container-fluid px-0">
     <nav class="navbar navbar-expand-lg bg-gradient">
