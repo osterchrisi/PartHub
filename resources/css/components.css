@@ -165,3 +165,15 @@ tr.selected-last {
     padding: 0.25rem 0.5rem !important;
     /* Adjusts padding to match btn-sm */
 }
+
+.btn-extra-sm {
+    padding: 0.2rem 0.2rem;     /* Minimal padding */
+    font-size: 0.5rem;          /* Smaller font size */
+    line-height: 1;             /* Tighten the line height */
+    border-radius: 0.2rem;      /* Adjust border radius */
+    height: auto;               /* Override Bootstrap height if necessary */
+}
+
+.icon-extra-small {
+    font-size: 0.5rem; /* Makes the icon smaller */
+}

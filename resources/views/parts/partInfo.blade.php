@@ -15,11 +15,11 @@
 
 <br>
 {{-- Datasheets --}}
-<div class="row justify-content-between pe-3">
+<div class="row justify-content-between pe-1">
     <div class="col h5">Datasheet</div>
-    <div class="col-1"><button class="btn btn-sm btn-outline-primary" type="button"
+    <div class="col-1 d-flex justify-content-end py-2"><button class="btn btn-extra-sm btn-outline-primary" type="button"
             data-bs-toggle="collapse" data-bs-target="#documentUploadContainer">
-            +</button>
+            <i class="fas fa-s fa-plus icon-extra-small"></i></button>
     </div>
 </div>
 <x-upload-form containerId="documentContainer" uploadContainerId="documentUploadContainer"
@@ -28,11 +28,11 @@
     acceptType=".pdf" />
 <br>
 {{-- Images --}}
-<div class="row justify-content-between pe-3">
+<div class="row justify-content-between pe-1">
     <div class="col h5">Images</div>
-    <div class="col-1"><button class="btn btn-sm btn-outline-primary" type="button"
+    <div class="col-1  d-flex justify-content-end py-2"><button class="btn btn-extra-sm btn-outline-primary" type="button"
             data-bs-toggle="collapse" data-bs-target="#imageUploadContainer">
-            +</button>
+            <i class="fas fa-s fa-plus icon-extra-small"></i></button>
     </div>
     <x-upload-form containerId="imageContainer" uploadContainerId="imageUploadContainer"
         formId="imageUploadForm" inputId="image" inputName="image" labelText="Select Image"
