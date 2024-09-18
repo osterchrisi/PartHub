@@ -285,46 +285,6 @@ class ResourceCreator {
     };
   }
 
-  getSuppliers() {
-    return $.ajax({
-      url: '/suppliers.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
-  }
-
-  getCategories() {
-    return $.ajax({
-      url: '/categories.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
-  }
-
-  getFootprints() {
-    return $.ajax({
-      url: '/footprints.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
-  }
-
-  getLocations() {
-    return $.ajax({
-      url: '/locations.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
-  }
-
   /**
   * Creates a new entry of the specified type, updates the corresponding dropdown, selectizes and selects the new entry.
   * 
@@ -617,6 +577,46 @@ class ResourceCreator {
     }
     console.log(newSupplierData);
     return newSupplierData;
+  }
+
+  getSuppliers() {
+    return $.ajax({
+      url: '/suppliers.get',
+      dataType: 'json',
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  getCategories() {
+    return $.ajax({
+      url: '/categories.get',
+      dataType: 'json',
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  getFootprints() {
+    return $.ajax({
+      url: '/footprints.get',
+      dataType: 'json',
+      error: function (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  getLocations() {
+    return $.ajax({
+      url: '/locations.get',
+      dataType: 'json',
+      error: function (error) {
+        console.log(error);
+      }
+    });
   }
 
 }
