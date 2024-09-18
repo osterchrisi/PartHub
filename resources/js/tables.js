@@ -632,8 +632,9 @@ export function enableInlineProcessing() {
       cell.addClass('editing');
     }
 
-    // Get current value
+    // Get current value and origin table
     var originalValue = cell.text();
+    var originTable = cell.closest('table').attr('id');
 
     // * Dropdown cells
     if (cell.hasClass('category')) {
@@ -641,7 +642,8 @@ export function enableInlineProcessing() {
         type: 'category',
         endpoint: 'categories',
         $cell: cell,
-        originalValue: originalValue
+        originalValue: originalValue,
+        originTable: originTable
 
       }).editCell();
     }
@@ -650,7 +652,8 @@ export function enableInlineProcessing() {
         type: 'footprint',
         endpoint: 'footprints',
         $cell: cell,
-        originalValue: originalValue
+        originalValue: originalValue,
+        originTable: originTable
 
       }).editCell();
     }
@@ -659,7 +662,8 @@ export function enableInlineProcessing() {
         type: 'supplier',
         endpoint: 'suppliers',
         $cell: cell,
-        originalValue: originalValue
+        originalValue: originalValue,
+        originTable: originTable
 
       }).editCell();
     }
@@ -669,6 +673,7 @@ export function enableInlineProcessing() {
         endpoint: 'suppliers',
         $cell: cell,
         originalValue: originalValue,
+        originTable: originTable,
         table: 'supplier_data',
 
       }).editCell();
@@ -679,7 +684,8 @@ export function enableInlineProcessing() {
       const editor = new InlineTableCellEditor({
         type: 'text',
         $cell: cell,
-        originalValue: originalValue
+        originalValue: originalValue,
+        originTable: originTable
       }).editCell();
     }
   });

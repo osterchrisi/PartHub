@@ -9,7 +9,8 @@ import { rebuildCategoriesTable, rebuildPartsTable } from "./tables";
         type: 'category',
         endpoint: 'categories',
         $cell: cell,
-        originalValue: originalValue
+        originalValue: originalValue,
+        originTable: originTable
 
       }).editCell();
  * Example table row
@@ -22,6 +23,7 @@ class InlineTableCellEditor {
         this.endpoint = options.endpoint;
         this.$cell = options.$cell;
         this.originalValue = options.originalValue;
+        this.originTable = options.originTable;
         // Using this.table only to discern a supplier in the partsTable from a supplier in the Supplier Data table
         this.table = options.table || 'partsTable';
         // Changed flag
@@ -270,14 +272,15 @@ class InlineTableCellEditor {
             headers: {
                 'X-CSRF-TOKEN': token
             },
-            success: function (data) {
+            success: (data) => {
                 // Successfully updated data
             },
-            error: function (xhr) {
+            error: (xhr) => {
                 if (xhr.status === 419) {
                     alert('CSRF token mismatch. Please refresh the page and try again.');
                 } else {
                     alert('Error updating data');
+                    this.$cell.text(this.originalValue);
                 }
             }
         });
