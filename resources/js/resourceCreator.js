@@ -3,7 +3,7 @@ import { updateInfoWindow } from "./custom";
 import { DropdownManager } from "./dropdownManager";
 
 class ResourceCreator {
-  constructor(options, tableRebuildFunctions = [], categoryId = null) {
+  constructor(options, tableRebuildFunctions = []) {
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -13,6 +13,7 @@ class ResourceCreator {
     this.inputFields = options.inputFields;
     this.inputModal = $(options.inputModal);
     this.addButton = $(options.addButton);
+    this.categoryId = options.categoryId || null;
     this.tableRebuildFunctions = tableRebuildFunctions;
 
     // Initialize upper case toggle functionality for part input
@@ -35,10 +36,6 @@ class ResourceCreator {
 
     // Attach listeners to the category creation modal close buttons
     this.attachCategoryModalCloseListeners();
-
-    if (categoryId) {
-      this.categoryId = categoryId.categoryId;
-    }
 
     // Supplier Data
     this.addSupplierRow = this.addSupplierRow.bind(this);
