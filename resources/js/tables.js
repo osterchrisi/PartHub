@@ -110,7 +110,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       //TODO: Use this structure to trigger Deletion / Adding of Categories
       // Attach click listeners to edit buttons
-      $('#categories_list_table').off('click').on('click', 'tbody .edit-button', function () {
+      $('#categories_list_table').on('click', 'tbody .edit-button', function () {
         // Get the parent <tr> element
         var $row = $(this).closest('tr');
         // Extract the data attributes from the <tr> element
@@ -123,7 +123,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
-      $('#categories_list_table').off('click').on('click', 'tbody .trash-button', function () {
+      $('#categories_list_table').on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = $row.data('id');
 
@@ -131,6 +131,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
         var categoryIds = findChildCategoriesFromCategoryTable(categoryId);
         deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
       });
+
 
       //* Add Category
       $('#categories_list_table').off('click').on('click', 'tbody .addcat-button', function () {
@@ -219,7 +220,7 @@ export function bootstrapTableSmallify() {
 export function defineTableRowClickActions($table, onSelect) {
   const tableId = $table.attr('id');
 
-  $table.off('click').on('click', 'tbody tr', function () {
+  $table.on('click', 'tbody tr', function () {
     var selectedRow = $table.find('tr.selected-last');
     if (selectedRow.length > 0) {
       selectedRow.removeClass('selected-last');
