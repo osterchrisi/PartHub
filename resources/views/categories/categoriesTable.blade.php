@@ -22,25 +22,20 @@
                 <td data-field="category_edit">
                     <div class="d-flex"><button type="button" class="btn btn-outline-secondary edit-button addcat-button"
                             id="cat-edit-btn" data-action="add"
-                            @if (config('app.env') === 'demo') data-bs-toggle="popover"
+                            {{-- @if (config('app.env') === 'demo') data-bs-toggle="popover"
                             data-bs-title="We're sowwy 😿"
-                            data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸" @endif><i
+                            data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸" @endif --}}
+                            ><i
                                 class="fas fa-s fa-plus icon-small"></i></button>
                         @unless ($category->parent_category == 0)
                             <button type="button" class="btn btn-outline-secondary edit-button trash-button"
                                 id="cat-edit-btn" data-action="remove"
-                                @if (config('app.env') === 'demo') data-bs-toggle="popover"
+                                {{-- @if (config('app.env') === 'demo') data-bs-toggle="popover"
                                     data-bs-title="We're sowwy 😿"
-                                    data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸" @endif><i
+                                    data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸" @endif --}}
+                                    ><i
                                     class="fas fa-s fa-trash icon-small" data-action="trash"></i></button>
                         @endunless
-                        {{-- <button type="button" class="btn btn-sm btn-outline-secondary edit-button"
-                        id="cat-edit-btn" data-action="edit"
-                        @if (config('app.env') === 'demo')
-                        data-bs-toggle="popover" data-bs-title="We're sowwy 😿"
-                        data-bs-content="We currently don't allow editing of categories in the demo :( Instead, please accept this flower 🌸"
-                        @endif><i
-                            class="fas fa-s fa-pen" data-action="edit"></i></button> --}}
                     </div>
                 </td>
                 <td data-editable="true" class="editable" data-id="{{ $category->category_id }}"
