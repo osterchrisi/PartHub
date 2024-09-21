@@ -27,12 +27,12 @@
             @endif
 
             {{-- Table Window --}}
-            <div class='col-9' id='table-window' style='max-width: 90%;'>
+            <div class='col-9 border rounded border-primary border-opacity-25 mx-3' id='table-window' style='max-width: 90%;'>
                 @yield('table-window')
             </div>
 
             {{-- Info Window --}}
-            <div class='col d-flex resizable sticky justify-content-center info-window pb-3' id='info-window'
+            <div class='col d-flex resizable sticky justify-content-center info-window pb-3 rounded border border-info border-opacity-25' id='info-window'
                 style="position: sticky; top: 50px; height: 89vh;">
                 @yield('info-window')
             </div>
