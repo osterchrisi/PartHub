@@ -134,7 +134,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
 
       //* Add Category
-      $('#categories_list_table').off('click').on('click', 'tbody .addcat-button', function () {
+      $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
 
@@ -271,7 +271,7 @@ function onTableCellContextMenu($table, $menu, actions) {
       showContextMenu($menu, event)
 
       // Event listeners for the menu items
-      $menu.find('.dropdown-item').off('click').on('click', function () {
+      $menu.find('.dropdown-item').on('click', function () {
         // Get action data attribute
         var action = $(this).data('action');
 
