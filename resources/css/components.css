@@ -177,3 +177,12 @@ tr.selected-last {
 .icon-extra-small {
     font-size: 0.5rem; /* Makes the icon smaller */
 }
+
+.edit-button {
+    line-height: 1.25;             /* Tighten the line height */
+    border-radius: 0.2rem;      /* Adjust border radius */
+}
+
+.icon-small {
+    font-size: 0.75rem; /* Makes the icon smaller */
+}
