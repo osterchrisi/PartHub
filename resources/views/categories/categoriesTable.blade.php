@@ -1,4 +1,4 @@
-<table class="table table-sm table-borderless table-responsive table-hover table-striped w-auto" style="font-size:12px"
+<table class="table table-sm table-borderless table-responsive table-hover table-striped w-auto mt-3 me-3 mb-3" style="font-size:12px"
     id="categories_list_table" data-resizable="true" {{-- data-reorderable-columns="true" --}} data-cookie="true"
     data-cookie-id-table="CategoriesListTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
     data-parent-id-field="parent_category" data-tree-show-field="category_name" data-id-field="category_id">

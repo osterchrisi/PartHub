@@ -116,7 +116,7 @@ class ImageManager {
             // Create the image container
             // Here the image.id is the ID of the image in the DB, not the resource ID (Part, BOM, ...)
             var imageElement = $(`
-            <div class="image-wrapper" style="position: relative; display: inline-block;" data-id="${image.id} data-order="${image.order}">
+            <div class="image-wrapper me-3 mb-3" style="position: relative; display: inline-block;" data-id="${image.id} data-order="${image.order}">
                 <a href="${imagePath}" data-toggle="lightbox" data-gallery="1">
                     <img src="${thumbnailPath}" alt="Thumbnail">
                 </a>

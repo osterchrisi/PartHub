@@ -18,16 +18,16 @@
         <div class='row'>
             {{-- Categories Window - only in Parts view --}}
             @if (isset($view) && $view === 'parts')
-                <div><button type="button" class="btn btn-sm btn-outline-secondary"
+                <div><button type="button" class="btn btn-sm btn-outline-secondary mb-1 ms-1"
                         style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
-                        id="cat-show-btn">Toggle Categories</button></div>
-                <div class='col-md-auto pe-0' id='category-window' style="display: none;">
+                        id="cat-show-btn">Categories</button></div>
+                <div class='col-md-auto ms-3 rounded border border-dark border-opacity-25' id='category-window' style="display: none;">
                     @include('categories.categoriesTable')
                 </div>
             @endif
 
             {{-- Table Window --}}
-            <div class='col-9 border rounded border-primary border-opacity-25 mx-3' id='table-window' style='max-width: 90%;'>
+            <div class='col-7 border rounded border-primary border-opacity-25 mx-3' id='table-window' style='max-width: 90%;'>
                 @yield('table-window')
             </div>
 
