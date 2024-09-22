@@ -4,9 +4,9 @@
 @section('content')
     <div class="container my-5">
         <!-- Hero Section -->
-        <x-hero-card backgroundImage="app-related/hero-background.webp" title="Welcome to PartHub"
-            subtitle="Your Ultimate Inventory and BOM Management Solution" demoRoute="{{ route('demo.login') }}"
-            signupRoute="{{ route('signup') }}" />
+        <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
+            title="Welcome to PartHub" subtitle="Your Ultimate Inventory and BOM Management Solution"
+            demoRoute="{{ route('demo.login') }}" signupRoute="{{ route('signup') }}" />
 
         <!-- What is PartHub -->
         <x-whatis-card title="Start with a clean slate" imageSrc="app-related/image1.webp"
@@ -23,7 +23,7 @@
         <x-whatis-card title="Creativity starts here" imageSrc="app-related/image3.webp"
             imageAlt="Close-up of electronic components"
             content="If you handle small parts for your projects, PartHub is here to simplify your life. Ideal for electronic parts but customizable for any type of parts."
-            bgClass="" imageExtraClass="w-50"  />
+            bgClass="" imageExtraClass="w-50" />
 
         <!-- Features -->
         <x-whatis-card title="Features" imageSrc="" imageAlt="" content=""
@@ -36,7 +36,7 @@
                 '🔔 Set notification thresholds',
                 '📷 Upload images for each part',
             ]" ctaText="Try It For Yourself"
-            ctaLink="{{ route('demo.login') }}"/>
+            ctaLink="{{ route('demo.login') }}" />
 
         <!-- Who is Behind PartHub -->
         <x-whatis-card title="Who is Behind PartHub?" imageSrc="app-related/Chrisi_und_Kaja_square.webp"

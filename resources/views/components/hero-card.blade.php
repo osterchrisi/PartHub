@@ -1,4 +1,4 @@
-<div class="row justify-content-center text-center hero-section rounded-3 mb-5"
+<div @class(['row hero-section rounded-3 mb-5', $divExtraClass ?? ''])
     style="background-image: url('{{ $backgroundImage }}'); background-size: cover; background-position: center;">
     <div class="col-md-8">
         <h1 class="display-1 mb-4">{{ $title }}</h1>

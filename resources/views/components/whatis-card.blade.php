@@ -1,5 +1,5 @@
 <div class="row justify-content-center mb-5">
-    <div class="col">
+    <div class="col ">
         <div class="card card-whatis shadow-sm rounded">
             <div class="card-body text-center {{ $bgClass }}"
                 @if (isset($opacity)) style="--bs-bg-opacity: .75;" @endif>
