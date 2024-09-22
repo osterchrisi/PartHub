@@ -18,20 +18,13 @@
         <div class="d-flex flex-nowrap w-100">
             {{-- Categories Section --}}
             @if (isset($view) && $view === 'parts')
-                <div class="d-flex flex-column">
-                    <div>
-                        <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1"
-                            id="cat-show-btn">Categories</button>
+                <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1"
+                    id="cat-show-btn">Categories</button>
+                <div class="flex-fill" id="category-window">
+                    <div class="col rounded border border-dark border-opacity-25 ms-1 me-3">
+                        @include('categories.categoriesTable')
                     </div>
-                    {{-- </div> --}}
-                    <div class="flex-fill" id="category-window">
-                        <div class="col-md-auto rounded border border-dark border-opacity-25 ms-1 me-3"
-                            istyle="display: none;">
-                            @include('categories.categoriesTable')
-                        </div>
-                        <div class="ui-resizable-handle ui-resizable-e bg-info "
-                            style="z-index: 90; --bs-bg-opacity: .15;">
-                        </div>
+                    <div class="ui-resizable-handle ui-resizable-e bg-info " style="z-index: 90; --bs-bg-opacity: .15;">
                     </div>
                 </div>
             @endif
