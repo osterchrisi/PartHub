@@ -167,22 +167,41 @@ tr.selected-last {
 }
 
 .btn-extra-sm {
-    padding: 0.2rem 0.2rem;     /* Minimal padding */
-    font-size: 0.5rem;          /* Smaller font size */
-    line-height: 1;             /* Tighten the line height */
-    border-radius: 0.2rem;      /* Adjust border radius */
-    height: auto;               /* Override Bootstrap height if necessary */
+    padding: 0.2rem 0.2rem;
+    /* Minimal padding */
+    font-size: 0.5rem;
+    /* Smaller font size */
+    line-height: 1;
+    /* Tighten the line height */
+    border-radius: 0.2rem;
+    /* Adjust border radius */
+    height: auto;
+    /* Override Bootstrap height if necessary */
 }
 
 .icon-extra-small {
-    font-size: 0.5rem; /* Makes the icon smaller */
+    font-size: 0.5rem;
+    /* Makes the icon smaller */
 }
 
 .edit-button {
-    line-height: 1.25;             /* Tighten the line height */
-    border-radius: 0.2rem;      /* Adjust border radius */
+    line-height: 1.25;
+    /* Tighten the line height */
+    border-radius: 0.2rem;
+    /* Adjust border radius */
 }
 
 .icon-small {
-    font-size: 0.75rem; /* Makes the icon smaller */
+    font-size: 0.75rem;
+    /* Makes the icon smaller */
+}
+
+.card-light-bg {
+    --bs-bg-opacity: 0.25;
+    background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.card-primary-bg {
+    --bs-bg-opacity: 0.5;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }
