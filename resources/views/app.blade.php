@@ -19,25 +19,23 @@
             {{-- Categories Section --}}
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
-                    <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1"
+                    <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1 me-3"
                         id="cat-show-btn">Categories</button>
                     <div class="flex-grow-0" id='category-window' style="display: none;">
                         <div class="rounded border border-dark border-opacity-25 ms-1 me-3">
                             @include('categories.categoriesTable')
                         </div>
-                        <div class="table-window-handle ui-resizable-handle ui-resizable-e bg-info"
-                            style="z-index: 90; --bs-bg-opacity: .15;"></div>
+                        <div class="ui-resizable-handle ui-resizable-e rounded-1"></div>
                     </div>
                 </div>
             @endif
 
             {{-- Table Window --}}
             <div class="col-10 flex-shrink-1" id="table-window" style="overflow-x: auto;">
-                <div class="border rounded border-primary border-opacity-25 pe-3 me-3">
+                <div class="border rounded border-primary border-opacity-25 px-3 me-3">
                     @yield('table-window')
                 </div>
-                <div class="table-window-handle ui-resizable-handle ui-resizable-e bg-info "
-                    style="z-index: 90; --bs-bg-opacity: .15;"></div>
+                <div class="ui-resizable-handle ui-resizable-e rounded"></div>
             </div>
 
             {{-- Info Window --}}

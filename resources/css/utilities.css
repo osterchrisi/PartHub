@@ -7,14 +7,23 @@
 
 /* These are for the resizable divs - these are just decorators, no functionality */
 .ui-resizable-e {
-    width: 1rem;
+    width: 0.9rem;
     height: 100%;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 0.05rem;
     cursor: col-resize;
     z-index: 9999;
+    background-color: rgba(var(--bs-info-rgb), 0.01);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effect */
 }
+
+/* Hover effect for the resizable handle */
+.ui-resizable-e:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1); /* Change to a new color on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional shadow for a more visible effect */
+}
+
 
 /* .ui-resizable-e:before,
 .ui-resizable-e:after {
