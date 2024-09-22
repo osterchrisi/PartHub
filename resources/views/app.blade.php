@@ -19,26 +19,35 @@
             {{-- Categories Section --}}
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
-                    <button type="button"
-                    class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1" id="cat-show-btn">Categories</button>
-                    <div
-                    class="col-md-auto rounded border border-dark border-opacity-25 ms-1" id='category-window' style="display: none;">
-                        @include('categories.categoriesTable')
+                    <div>
+                        <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1"
+                            id="cat-show-btn">Categories</button>
+                    </div>
+                    {{-- </div> --}}
+                    <div class="flex-fill" id="category-window">
+                        <div class="col-md-auto rounded border border-dark border-opacity-25 ms-1 me-3"
+                            istyle="display: none;">
+                            @include('categories.categoriesTable')
+                        </div>
+                        <div class="ui-resizable-handle ui-resizable-e bg-info "
+                            style="z-index: 90; --bs-bg-opacity: .15;">
+                        </div>
                     </div>
                 </div>
             @endif
 
             {{-- Table Window --}}
-            <div class="flex-grow-1 mx-2" id="table-window" style="max-width: 95%; overflow-x: auto; position: relative;">
-                <div class="border rounded border-primary border-opacity-25 px-3">
+            <div class="flex-fill" id="table-window">
+                <div class="border rounded border-primary border-opacity-25 px-3 me-3">
                     @yield('table-window')
                 </div>
-                <div class="table-window-handle ui-resizable-handle ui-resizable-e bg-info " style="z-index: 90; --bs-bg-opacity: .15;"></div>
+                <div class="ui-resizable-handle ui-resizable-e bg-info " style="z-index: 90; --bs-bg-opacity: .15;">
+                </div>
             </div>
 
             {{-- Info Window --}}
-            <div class='d-flex sticky justify-content-center info-window rounded border border-info border-opacity-25 pb-3' 
-                 id='info-window' style="position: sticky; top: 50px; height: 89vh; overflow-x: auto;">
+            <div class='flex-fill d-flex sticky justify-content-center info-window rounded border border-info border-opacity-25 pb-3'
+                id='info-window' style="position: sticky; top: 50px; height: 89vh; overflow-x: auto;">
                 @yield('info-window')
             </div>
         </div>
