@@ -22,6 +22,36 @@ import {
 
 const currentView = document.body.getAttribute('data-view');
 
+// Function to recall and apply saved settings from local storage
+function applyLayoutSettings() {
+    const layoutKey = `layoutSettings_${currentView}`; // Unique key for this page's layout
+    const savedLayout = localStorage.getItem(layoutKey);
+    
+    if (savedLayout) {
+        const layoutData = JSON.parse(savedLayout); // Parse the JSON string
+        
+        // Apply table and info window widths if present
+        if (layoutData.tableWidth) {
+            $('#table-window').width(layoutData.tableWidth);
+        }
+
+        if (layoutData.infoWidth) {
+            $('#info-window').width(layoutData.infoWidth);
+        }
+
+        // Apply visibility state to category-window
+        if (layoutData.categoryVisible !== undefined) {
+            if (layoutData.categoryVisible) {
+                $('#category-window').show();
+            } else {
+                $('#category-window').hide();
+            }
+        }
+    }
+}
+
+
+
 $(document).ready(function () {
     if (currentView === 'parts') {
         initializePartsView();
@@ -52,4 +82,5 @@ $(document).ready(function () {
     focusFirstInputInModals();
     initializePopovers();
     initializeTooltips();
+    applyLayoutSettings();
 });

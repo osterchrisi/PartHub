@@ -25,7 +25,7 @@
                         <div class="rounded border border-dark border-opacity-25 ms-1 me-3">
                             @include('categories.categoriesTable')
                         </div>
-                        <div class="ui-resizable-handle ui-resizable-e rounded-1"></div>
+                        <div class="category-resize-handle ui-resizable-handle ui-resizable-e rounded-1"></div>
                     </div>
                 </div>
             @endif
@@ -35,7 +35,7 @@
                 <div class="border rounded border-primary border-opacity-25 px-3 me-3">
                     @yield('table-window')
                 </div>
-                <div class="ui-resizable-handle ui-resizable-e rounded"></div>
+                <div class="table-resize-handle ui-resizable-handle ui-resizable-e rounded"></div>
             </div>
 
             {{-- Info Window --}}

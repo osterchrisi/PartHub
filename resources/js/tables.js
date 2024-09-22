@@ -5,7 +5,8 @@ import {
   removeClickListeners,
   updateInfoWindow,
   saveSelectedRow,
-  showDeleteConfirmation
+  showDeleteConfirmation,
+  saveLayoutSettings
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
@@ -174,9 +175,11 @@ function attachEditCategoriesButtonClickListener() {
  */
 export function attachShowCategoriesButtonClickListener() {
   $('#cat-show-btn').off('click').on('click', function () {
-    $('#category-window').toggle();
+      $('#category-window').toggle();
+      saveLayoutSettings(); // Save visibility after toggling
   });
 }
+
 
 /**
  * Makes the button and pagination elements in a Bootstrap Table smaller

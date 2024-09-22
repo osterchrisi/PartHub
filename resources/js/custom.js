@@ -74,6 +74,26 @@ export function updateStockModal(id) {
     });
 }
 
+// Function to save sizes and visibility state in local storage
+export function saveLayoutSettings() {
+    const tableWidth = $('#table-window').width();
+    const infoWidth = $('#info-window').width();
+    const categoryVisible = $('#category-window').is(':visible');
+    const currentView = document.body.getAttribute('data-view');
+    
+    const layoutKey = `layoutSettings_${currentView}`; // Create a unique key based on the page
+
+    // Save layout data as an object in local storage
+    const layoutData = {
+        tableWidth: tableWidth,
+        infoWidth: infoWidth,
+        categoryVisible: categoryVisible
+    };
+    
+    localStorage.setItem(layoutKey, JSON.stringify(layoutData)); // Store as a JSON string
+}
+
+
 
 /**
  * Make the table-window and the info-window resizable
@@ -81,12 +101,20 @@ export function updateStockModal(id) {
  */
 export function makeTableWindowResizable() {
     $('#table-window').resizable({
-        handles: 'e'
+        handles: {'e': '.table-resize-handle'},
+        stop: function() {
+            saveLayoutSettings(); // Save the layout settings after resize
+        }
     });
+    
     $('#category-window').resizable({
-        handles: 'e'
+        handles: {'e': '.category-resize-handle'},
+        stop: function() {
+            saveLayoutSettings(); // Save after resizing the category window
+        }
     });
-};
+}
+
 
 /**
  * 'Selectize' the category multi select, prepare values and append to the hidden input field
