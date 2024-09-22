@@ -205,3 +205,9 @@ tr.selected-last {
     --bs-bg-opacity: 0.5;
     background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }
+
+.categories-button {
+    --bs-btn-padding-y: .05rem;
+    --bs-btn-padding-x: .25rem;
+    --bs-btn-font-size: .75rem;
+}

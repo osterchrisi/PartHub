@@ -7,7 +7,7 @@
 
 /* These are for the resizable divs - these are just decorators, no functionality */
 .ui-resizable-e {
-    width: 10px;
+    width: 1rem;
     height: 100%;
     position: absolute;
     top: 0;
@@ -16,31 +16,28 @@
     z-index: 9999;
 }
 
-.ui-resizable-e:before,
+/* .ui-resizable-e:before,
 .ui-resizable-e:after {
     content: "";
     display: block;
     position: absolute;
     top: 50rem;
-    left: 1.2rem;
+    left: 0.25rem;
     background-color: #000;
-}
+} */
 
-.ui-resizable-e:before {
-    height: 10%;
+/* .ui-resizable-e:before {
+    height: 100rem;
     width: 1px;
-    /* margin-top: -3px; */
     margin-left: -2px;
     background-color: var(--bs-primary-border-subtle);
-}
+} */
 
-.ui-resizable-e:after {
-    height: 10%;
+/* .ui-resizable-e:after {
+    height: 100rem;
     width: 1px;
-    /* margin-top: -4px; */
-    /* margin-left: -1px; */
     background-color: var(--bs-primary-border-subtle);
-}
+} */
 
 /* Warning Button */
 .btn-warning {

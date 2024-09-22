@@ -18,22 +18,27 @@
         <div class='row'>
             {{-- Categories Window - only in Parts view --}}
             @if (isset($view) && $view === 'parts')
-                <div><button type="button" class="btn btn-sm btn-outline-secondary mb-1 ms-1"
-                        style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;"
+                <div><button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1"
                         id="cat-show-btn">Categories</button></div>
-                <div class='col-md-auto ms-3 rounded border border-dark border-opacity-25' id='category-window' style="display: none;">
+                <div class='col-md-auto rounded border border-dark border-opacity-25 ms-3 ' id='category-window'
+                    style="display: none;">
                     @include('categories.categoriesTable')
                 </div>
             @endif
 
             {{-- Table Window --}}
-            <div class='col-7 border rounded border-primary border-opacity-25 mx-3' id='table-window' style='max-width: 90%;'>
-                @yield('table-window')
+            <div class='col-7' id='table-window'
+                style='max-width: 90%;'>
+                <div class="border rounded border-primary border-opacity-25 px-3">
+                    @yield('table-window')
+                </div>
+                <div class="table-window-handle ui-resizable-handle ui-resizable-e bg-info" style="z-index: 90;">
+                </div>
             </div>
 
             {{-- Info Window --}}
-            <div class='col d-flex resizable sticky justify-content-center info-window pb-3 rounded border border-info border-opacity-25' id='info-window'
-                style="position: sticky; top: 50px; height: 89vh;">
+            <div class='col d-flex resizable sticky justify-content-center info-window rounded border border-info border-opacity-25 pb-3'
+                id='info-window' style="position: sticky; top: 50px; height: 89vh; min-size: 10%;">
                 @yield('info-window')
             </div>
         </div>
