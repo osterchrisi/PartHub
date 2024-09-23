@@ -33,7 +33,8 @@
             imageSrc="app-related/feature-images/KeepTrack.png" 
             imageAlt="Feature 1"
             tagline="📦 Keep an up-to-date inventory easily"
-            description="Effortlessly manage your inventory and always stay up to date with the latest stock levels." />
+            description="Effortlessly manage your inventory and always stay up to date with the latest stock levels."
+            bgClass="bg-gradient card-primary-bg text-white"/>
 
         <x-feature-right 
             imageSrc="app-related/feature-images/MultipleStorage.png" 
@@ -45,7 +46,8 @@
             imageSrc="app-related/feature-images/Suppliers.png" 
             imageAlt="Feature 3"
             tagline="📋 Handle suppliers, footprints, datasheets, and BOMs"
-            description="Comprehensive supplier, footprint, and BOM management to streamline your operations." />
+            description="Comprehensive supplier, footprint, and BOM management to streamline your operations."
+            bgClass="bg-gradient card-primary-bg text-white" />
 
         <x-feature-right 
             imageSrc="app-related/feature-images/StockHistory.png" 
@@ -57,7 +59,8 @@
             imageSrc="app-related/feature-images/AssembleBom.png" 
             imageAlt="Feature 5"
             tagline="⚙️ Assemble BOMs with automatic stock deduction"
-            description="Build and assemble BOMs quickly with automatic stock deductions for efficiency." />
+            description="Build and assemble BOMs quickly with automatic stock deductions for efficiency."
+            bgClass="bg-gradient card-primary-bg text-white" />
 
         <x-feature-right 
             imageSrc="app-related/feature-images/StockLevelNotification.png" 
@@ -69,7 +72,8 @@
             imageSrc="app-related/feature-images/Images.png" 
             imageAlt="Feature 7"
             tagline="📷 Upload images for each part"
-            description="Visualize your parts inventory with images for easy identification and management." />
+            description="Visualize your parts inventory with images for easy identification and management."
+            bgClass="bg-gradient card-primary-bg text-white" />
 
         <!-- About PartHub -->
         <x-right-div title="Who is Behind PartHub?"
