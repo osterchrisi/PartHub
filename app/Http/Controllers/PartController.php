@@ -130,7 +130,7 @@ class PartController extends Controller
         ]);
 
         $user_id = Auth::user()->id;
-        $root_category = 
+        $root_category = $this->categoryService->findRootCategory($user_id)->category_id ?? null;
         $response = [];
 
         try {
@@ -142,7 +142,7 @@ class PartController extends Controller
                 $validated['comment'] ?? null,
                 $validated['description'] ?? null,
                 $validated['footprint'] ?? null,
-                $validated['category'] ?? null,
+                $validated['category'] ?? $root_category,
                 null,  // Suppliers will be handled separately
                 $validated['min_quantity'] ?? 0
             );

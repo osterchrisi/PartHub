@@ -40,9 +40,9 @@ class CategoryService
     public function categoriesForCategoryTable($user_id)
     {
         $categories = Category::where('part_category_owner_u_fk', $user_id)
-        ->with('children')
-        ->orderBy('category_name', 'asc')
-        ->get();
+            ->with('children')
+            ->orderBy('category_name', 'asc')
+            ->get();
 
         return $categories;
     }
@@ -63,6 +63,14 @@ class CategoryService
         $new_category_id = $category->category_id;
 
         return $new_category_id;
+
+    }
+
+    public function findRootCategory($user_id)
+    {
+        return Category::where('part_category_owner_u_fk', $user_id)
+            ->where('parent_category', 0)
+            ->first();
 
     }
 }
