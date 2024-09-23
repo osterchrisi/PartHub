@@ -5,16 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\CategoryService;
+
 
 class CategoryController extends Controller
 {
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     public function index(Request $request)
     {
         $user = Auth::user();
 
-        $categories = Category::where('part_category_owner_u_fk', $user->id)
-            ->with('children')
-            ->get();
+        // $categories = Category::where('part_category_owner_u_fk', $user->id)
+        //     ->with('children')
+        //     ->get();
+        $categories = Category::where('part_category_owner_u_fk', $user->id)->with('children')->orderBy('category_name', 'asc')->get();
 
         $route = $request->route()->getName();
         if ($route == 'categories') {
@@ -26,7 +36,8 @@ class CategoryController extends Controller
                     'view' => 'categories',
                 ]
             );
-        } elseif ($route == 'categories.categoriesTable') {
+        }
+        elseif ($route == 'categories.categoriesTable') {
             return view(
                 'categories.categoriesTable',
                 [
@@ -97,7 +108,8 @@ class CategoryController extends Controller
 
             return response()->json($response);
 
-        } else {
+        }
+        else {
             $errorResponse = [
                 'status' => 'error',
             ];

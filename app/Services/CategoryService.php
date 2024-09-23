@@ -18,7 +18,7 @@ class CategoryService
      */
     public function extractCategoryIds($searchCategory)
     {
-        if (! in_array('all', $searchCategory)) {
+        if (!in_array('all', $searchCategory)) {
             $catIds = [];
 
             foreach ($searchCategory as $catArray) {
@@ -33,5 +33,15 @@ class CategoryService
         }
 
         return $searchCategory;
+    }
+
+    public function categoriesForCategoryTable($user_id)
+    {
+        $categories = Category::where('part_category_owner_u_fk', $user_id)
+        ->with('children')
+        ->orderBy('category_name', 'asc')
+        ->get();
+
+        return $categories;
     }
 }
