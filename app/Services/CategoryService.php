@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoryService
 {
@@ -43,5 +45,24 @@ class CategoryService
         ->get();
 
         return $categories;
+    }
+
+    public static function createNewRootCategory()
+    {
+        $user = Auth::user();
+
+        $category = new Category();
+
+        // Assign values to the category attributes
+        $category->category_name = 'All Parts';
+        $category->parent_category = '0';
+        $category->part_category_owner_u_fk = $user->id;
+
+        $category->save();
+
+        $new_category_id = $category->category_id;
+
+        return $new_category_id;
+
     }
 }

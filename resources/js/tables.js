@@ -148,13 +148,12 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
             { name: 'category_name', selector: '#addCategoryName' }
           ],
           inputModal: '#mCategoryEntry',
-          addButton: '#addCategory', //! Is not in use anymore
+          addButton: '#addCategory', //! Is not in use anymore, only Category view used it...
           categoryId: categoryId[0]
         },
           [rebuildPartsTable, rebuildCategoriesTable]);
 
         newCategoryCreator.showModal();
-        newCategoryCreator.attachAddButtonClickListener(); //! Not necessary anymore
       });
     }
   });
@@ -175,8 +174,8 @@ function attachEditCategoriesButtonClickListener() {
  */
 export function attachShowCategoriesButtonClickListener() {
   $('#cat-show-btn').off('click').on('click', function () {
-      $('#category-window').toggle();
-      saveLayoutSettings(); // Save visibility after toggling
+    $('#category-window').toggle();
+    saveLayoutSettings(); // Save visibility after toggling
   });
 }
 

@@ -26,19 +26,15 @@ class PartController extends Controller
 
     private static $id_field = 'part_id';
 
-    // private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'supplier_name', 'unit_name', 'part_id'];
     private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id'];
 
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
-    // private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Supplier', 'Unit', 'ID'];
     private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', 'ID'];
 
-
     protected $databaseService;
-
     protected $stockService;
-
     protected $supplierService;
+    protected $categoryService;
 
     public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService)
     {
@@ -134,6 +130,7 @@ class PartController extends Controller
         ]);
 
         $user_id = Auth::user()->id;
+        $root_category = 
         $response = [];
 
         try {

@@ -6,6 +6,7 @@ use App\Mail\WelcomeEmail;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
+use App\Services\CategoryService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,12 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 trait RegistersUsers
 {
+    protected $categoryService;
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Register a new user, create related resources, and log them in.
      *
@@ -49,10 +56,9 @@ trait RegistersUsers
         // Log the user in
         Auth::login($user);
 
-        // Assign free subscription and create default location and category
-        // $user->assignFreeSubscription(); //! Not doing it right now. Stripe fails because doesn't know address and maybe not such a great idea anyway...
+        // Create default location and root category
         Location::createLocation('Default Location', 'Feel free to change the description');
-        Category::createNewRootCategory();
+        $root_category = $this->categoryService->createNewRootCategory();
 
         return $user;
     }
