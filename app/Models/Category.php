@@ -66,5 +66,4 @@ class Category extends Model
     {
         return Part::where('part_category_fk', $category_id)->get();
     }
-
 }

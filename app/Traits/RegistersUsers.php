@@ -18,6 +18,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 trait RegistersUsers
 {
     protected $categoryService;
+
     public function __construct(CategoryService $categoryService)
     {
         $this->categoryService = $categoryService;

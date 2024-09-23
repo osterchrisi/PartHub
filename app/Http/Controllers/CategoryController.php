@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\CategoryService;
-
 
 class CategoryController extends Controller
 {
@@ -36,8 +35,7 @@ class CategoryController extends Controller
                     'view' => 'categories',
                 ]
             );
-        }
-        elseif ($route == 'categories.categoriesTable') {
+        } elseif ($route == 'categories.categoriesTable') {
             return view(
                 'categories.categoriesTable',
                 [
@@ -107,8 +105,7 @@ class CategoryController extends Controller
 
             return response()->json($response);
 
-        }
-        else {
+        } else {
             $errorResponse = [
                 'status' => 'error',
             ];

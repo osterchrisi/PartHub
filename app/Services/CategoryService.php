@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
-
 class CategoryService
 {
     /**
@@ -20,7 +19,7 @@ class CategoryService
      */
     public function extractCategoryIds($searchCategory)
     {
-        if (!in_array('all', $searchCategory)) {
+        if (! in_array('all', $searchCategory)) {
             $catIds = [];
 
             foreach ($searchCategory as $catArray) {
