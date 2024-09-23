@@ -14,10 +14,12 @@
         <div class="row collapse" id="parts-filter-form">
             @yield('filter-form')
         </div>
+        @if (isset($view) && $view === 'parts')
         <div class="ps-2">
             <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1 me-3"
                 id="cat-show-btn">Categories</button>
         </div>
+        @endif
 
         <div class="d-flex flex-nowrap w-100">
             {{-- Categories Section --}}
@@ -33,8 +35,8 @@
             @endif
 
             {{-- Table Window --}}
-            <div class="col-10 flex-shrink-1" id="table-window" style="overflow-x: auto;">
-                <div class="border rounded border-primary border-opacity-25 px-3 me-3">
+            <div class="col-10 flex-shrink-1" id="table-window-container" style="overflow-x: auto;">
+                <div class="border rounded border-primary border-opacity-25 px-3 me-3" id="table-window">
                     @yield('table-window')
                 </div>
                 <div class="table-resize-handle ui-resizable-handle ui-resizable-e rounded"></div>

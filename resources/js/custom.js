@@ -76,7 +76,7 @@ export function updateStockModal(id) {
 
 // Function to save sizes and visibility state in local storage
 export function saveLayoutSettings() {
-    const tableWidth = $('#table-window').width();
+    const tableWidth = $('#table-window-container').width();
     const infoWidth = $('#info-window').width();
     const categoryVisible = $('#category-window').is(':visible');
     const currentView = document.body.getAttribute('data-view');
@@ -100,7 +100,7 @@ export function saveLayoutSettings() {
  * @return void 
  */
 export function makeTableWindowResizable() {
-    $('#table-window').resizable({
+    $('#table-window-container').resizable({
         handles: {'e': '.table-resize-handle'},
         stop: function() {
             saveLayoutSettings(); // Save the layout settings after resize

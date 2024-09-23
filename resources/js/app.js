@@ -31,7 +31,7 @@ function applyLayoutSettings() {
         
         // Apply table and info window widths if present
         if (layoutData.tableWidth) {
-            $('#table-window').width(layoutData.tableWidth);
+            $('#table-window-container').width(layoutData.tableWidth);
         }
 
         if (layoutData.infoWidth) {
