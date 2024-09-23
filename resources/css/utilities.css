@@ -13,7 +13,7 @@
     top: 0;
     right: 0.05rem;
     cursor: col-resize;
-    z-index: 9999;
+    z-index: 1;
     background-color: rgba(var(--bs-info-rgb), 0.01);
     transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effect */
 }
