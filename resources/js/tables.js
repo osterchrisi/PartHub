@@ -111,7 +111,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       //TODO: Use this structure to trigger Deletion / Adding of Categories
       // Attach click listeners to edit buttons
-      $('#categories_list_table').on('click', 'tbody .edit-button', function () {
+      $table.on('click', 'tbody .edit-button', function () {
         // Get the parent <tr> element
         var $row = $(this).closest('tr');
         // Extract the data attributes from the <tr> element
@@ -124,7 +124,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
       //* Delete Category
       //TODO: This info should be encoded into the HTML table like with my other tables
-      $('#categories_list_table').on('click', 'tbody .trash-button', function () {
+      $table.on('click', 'tbody .trash-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = $row.data('id');
 
@@ -135,7 +135,7 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
 
 
       //* Add Category
-      $('#categories_list_table').on('click', 'tbody .addcat-button', function () {
+      $table.on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
 
@@ -154,6 +154,20 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
           [rebuildPartsTable, rebuildCategoriesTable]);
 
         newCategoryCreator.showModal();
+      });
+      // Initial state is collapsed
+      let isCollapsed = false;
+
+      // Toggle Expand/Collapse on button click
+      $('#category-toggle-collapse-expand').click(function () {
+        if (isCollapsed) {
+          $table.treegrid('expandAll');
+          $(this).text('Toggle');
+        } else {
+          $table.treegrid('collapseAll');
+          $(this).text('Toggle');
+        }
+        isCollapsed = !isCollapsed; // Toggle the state
       });
     }
   });
