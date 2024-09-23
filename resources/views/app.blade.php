@@ -14,13 +14,15 @@
         <div class="row collapse" id="parts-filter-form">
             @yield('filter-form')
         </div>
+        <div class="ps-2">
+            <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1 me-3"
+                id="cat-show-btn">Categories</button>
+        </div>
 
         <div class="d-flex flex-nowrap w-100">
             {{-- Categories Section --}}
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
-                    <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1 me-3"
-                        id="cat-show-btn">Categories</button>
                     <div class="flex-grow-0" id='category-window' style="display: none;">
                         <div class="rounded border border-dark border-opacity-25 ms-1 me-3">
                             @include('categories.categoriesTable')
