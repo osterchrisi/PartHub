@@ -30,43 +30,43 @@
 
         <!-- Feature List Section -->
         <x-feature-left 
-            imageSrc="placeholder-image1.webp" 
+            imageSrc="app-related/feature-images/KeepTrack.png" 
             imageAlt="Feature 1"
             tagline="📦 Keep an up-to-date inventory easily"
             description="Effortlessly manage your inventory and always stay up to date with the latest stock levels." />
 
         <x-feature-right 
-            imageSrc="placeholder-image2.webp" 
+            imageSrc="app-related/feature-images/MultipleStorage.png" 
             imageAlt="Feature 2"
             tagline="🏷️ Manage multiple storage locations"
             description="Track parts across different storage locations and keep everything organized with ease." />
 
         <x-feature-left 
-            imageSrc="placeholder-image3.webp" 
+            imageSrc="app-related/feature-images/Suppliers.png" 
             imageAlt="Feature 3"
-            tagline="📋 Handle suppliers, footprints, units, and BOMs"
+            tagline="📋 Handle suppliers, footprints, datasheets, and BOMs"
             description="Comprehensive supplier, footprint, and BOM management to streamline your operations." />
 
         <x-feature-right 
-            imageSrc="placeholder-image4.webp" 
+            imageSrc="app-related/feature-images/StockHistory.png" 
             imageAlt="Feature 4"
             tagline="📝 Automatic part history tracking"
             description="Track the history of each part automatically, giving you a complete audit trail." />
 
         <x-feature-left 
-            imageSrc="placeholder-image5.webp" 
+            imageSrc="app-related/feature-images/AssembleBom.png" 
             imageAlt="Feature 5"
             tagline="⚙️ Assemble BOMs with automatic stock deduction"
             description="Build and assemble BOMs quickly with automatic stock deductions for efficiency." />
 
         <x-feature-right 
-            imageSrc="placeholder-image6.webp" 
+            imageSrc="app-related/feature-images/StockLevelNotification.png" 
             imageAlt="Feature 6"
             tagline="🔔 Set notification thresholds"
             description="Set notification thresholds to stay informed about low stock and important updates." />
 
         <x-feature-left 
-            imageSrc="placeholder-image7.webp" 
+            imageSrc="app-related/feature-images/Images.png" 
             imageAlt="Feature 7"
             tagline="📷 Upload images for each part"
             description="Visualize your parts inventory with images for easy identification and management." />
