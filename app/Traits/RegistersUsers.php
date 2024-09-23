@@ -58,7 +58,7 @@ trait RegistersUsers
 
         // Create default location and root category
         Location::createLocation('Default Location', 'Feel free to change the description');
-        $root_category = $this->categoryService->createNewRootCategory();
+        $this->categoryService->createNewRootCategory();
 
         return $user;
     }
