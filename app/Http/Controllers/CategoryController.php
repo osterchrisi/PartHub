@@ -24,7 +24,7 @@ class CategoryController extends Controller
         // $categories = Category::where('part_category_owner_u_fk', $user->id)
         //     ->with('children')
         //     ->get();
-        $categories = Category::where('part_category_owner_u_fk', $user->id)->with('children')->orderBy('category_name', 'asc')->get();
+        $categories = $this->categoryService->categoriesForCategoryTable($user->id);
 
         $route = $request->route()->getName();
         if ($route == 'categories') {
@@ -100,7 +100,6 @@ class CategoryController extends Controller
         if ($category->save()) {
             $categoryId = $category->category_id;
 
-            // Construct JSON response
             $response = [
                 'Category ID' => $categoryId,
                 'status' => 'success',
@@ -114,7 +113,6 @@ class CategoryController extends Controller
                 'status' => 'error',
             ];
 
-            // Return error JSON response with HTTP status code 500 (Internal Server Error)
             return response()->json($errorResponse, 500);
         }
     }

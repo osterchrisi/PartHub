@@ -71,7 +71,6 @@ class Category extends Model
     {
         $user = Auth::user();
 
-        // Create a new category instance
         $category = new Category();
 
         // Assign values to the category attributes

@@ -182,37 +182,6 @@ export function attachShowCategoriesButtonClickListener() {
 
 
 /**
- * Makes the button and pagination elements in a Bootstrap Table smaller
- * //! Currently solving this via CSS!!
- */
-export function bootstrapTableSmallify() {
-  // // Apply the smallify class to existing tables
-  // function applySmallify() {
-  //   $('.bootstrap-table .btn').addClass('btn-sm');
-  //   $('.bootstrap-table .pagination').addClass('pagination-sm');
-  //   $('.bootstrap-table .form-control').addClass('form-control-sm');
-  // }
-
-  // // Apply it initially to existing tables
-  // applySmallify();
-
-  // // Set up a MutationObserver to watch for new .bootstrap-table elements being added
-  // const observer = new MutationObserver(mutations => {
-  //   mutations.forEach(mutation => {
-  //     mutation.addedNodes.forEach(node => {
-  //       if ($(node).find('.bootstrap-table').length > 0) {
-  //         applySmallify();  // Apply smallify to any new tables
-  //       }
-  //     });
-  //   });
-  // });
-
-  // // Start observing the document for new child nodes (new tables being added)
-  // observer.observe(document.body, { childList: true, subtree: true });
-}
-
-
-/**
  * Defines the actions to perform when a table row is clicked.
  * Attaches a click event listener to the specified table rows and calls the
  * provided callback function with the extracted ID when a row is selected.
@@ -305,8 +274,6 @@ export function rebuildPartsTable(queryString) {
       var $table = $('#parts_table');
       var $menu = $('#parts_table_menu');
       definePartsTableActions($table, $menu);         // Define table row actions and context menu
-      // enableInlineProcessing();
-      // bootstrapTableSmallify();
       makeTableWindowResizable();
     }
   });
@@ -327,8 +294,6 @@ export function rebuildLocationsTable(queryString) {
       var $table = $('#locations_list_table');
       var $menu = $('#parts_table_menu');
       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
-      // enableInlineProcessing();
-      // bootstrapTableSmallify();
       makeTableWindowResizable();
     }
   });
@@ -350,8 +315,6 @@ export function rebuildCategoriesTable() {
 
       // //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
       // $('#category-window').width($('#category-window').width()+1);
-      // enableInlineProcessing();
-      // bootstrapTableSmallify();
       makeTableWindowResizable();
 
       $.ajax({
@@ -381,8 +344,6 @@ export function rebuildFootprintsTable(queryString) {
       var $table = $('#footprints_list_table');
       var $menu = $('#parts_table_menu');
       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
-      // enableInlineProcessing();
-      // bootstrapTableSmallify();
       makeTableWindowResizable();
     }
   });
@@ -402,8 +363,6 @@ export function rebuildSuppliersTable(queryString) {
       var $table = $('#suppliers_list_table');
       var $menu = $('#parts_table_menu');
       defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
-      // enableInlineProcessing();
-      // bootstrapTableSmallify();
       makeTableWindowResizable();
     }
   });
@@ -425,8 +384,6 @@ export function rebuildBomListTable(queryString) {
       var $table = $('#bom_list_table');
       var $menu = $('#bom_list_table_menu');
       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
-      // enableInlineProcessing();
-      bootstrapTableSmallify();
       makeTableWindowResizable();
     }
   });

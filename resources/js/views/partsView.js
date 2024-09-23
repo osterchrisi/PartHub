@@ -3,7 +3,6 @@ import {
     bootstrapCategoriesListTable,
     definePartsTableActions,
     defineCategoriesListInPartsViewTableActions,
-    bootstrapTableSmallify,
     rebuildPartsTable,
     attachShowCategoriesButtonClickListener
 } from "../tables";
@@ -29,11 +28,6 @@ export function initializePartsView() {
     $('#category-window').width($('#category-window').width() + 1);
 
     attachShowCategoriesButtonClickListener();
-
-    // Need to re-smallify after hiding / showing columns
-    $('.bootstrap-table').on('column-switch.bs.table page-change.bs.table', function () {
-        // bootstrapTableSmallify();
-    });
 
     loadSelectedRow('part', 'parts_table');
     // Experimental ajax search{

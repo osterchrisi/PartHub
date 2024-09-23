@@ -10,7 +10,6 @@ import { initializeUserSettingsView } from './views/userSettingsView';
 // import { initializeMultiView } from './multiView';
 import {
     enableInlineProcessing,
-    bootstrapTableSmallify
 } from "./tables";
 import {
     makeTableWindowResizable,
