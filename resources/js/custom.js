@@ -78,7 +78,7 @@ export function updateStockModal(id) {
 export function saveLayoutSettings() {
     const tableWidth = $('#table-window-container').width();
     const infoWidth = $('#info-window').width();
-    const categoryVisible = $('#category-window').is(':visible');
+    const categoryVisible = $('#category-window-container').is(':visible');
     const currentView = document.body.getAttribute('data-view');
     
     const layoutKey = `layoutSettings_${currentView}`; // Create a unique key based on the page
@@ -107,7 +107,7 @@ export function makeTableWindowResizable() {
         }
     });
     
-    $('#category-window').resizable({
+    $('#category-window-container').resizable({
         handles: {'e': '.category-resize-handle'},
         stop: function() {
             saveLayoutSettings(); // Save after resizing the category window

@@ -41,9 +41,9 @@ function applyLayoutSettings() {
         // Apply visibility state to category-window
         if (layoutData.categoryVisible !== undefined) {
             if (layoutData.categoryVisible) {
-                $('#category-window').show();
+                $('#category-window-container').show();
             } else {
-                $('#category-window').hide();
+                $('#category-window-container').hide();
             }
         }
     }

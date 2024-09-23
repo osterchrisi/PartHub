@@ -25,8 +25,8 @@
             {{-- Categories Section --}}
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
-                    <div class="flex-grow-0" id='category-window' style="display: none;">
-                        <div class="rounded border border-dark border-opacity-25 ms-1 me-3">
+                    <div class="flex-grow-0" id='category-window-container' style="display: none;">
+                        <div class="rounded border border-dark border-opacity-25 ms-1 me-3 ps-3" id="category-window">
                             @include('categories.categoriesTable')
                         </div>
                         <div class="category-resize-handle ui-resizable-handle ui-resizable-e rounded-1"></div>

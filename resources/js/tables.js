@@ -174,7 +174,7 @@ function attachEditCategoriesButtonClickListener() {
  */
 export function attachShowCategoriesButtonClickListener() {
   $('#cat-show-btn').off('click').on('click', function () {
-    $('#category-window').toggle();
+    $('#category-window-container').toggle();
     saveLayoutSettings(); // Save visibility after toggling
   });
 }
