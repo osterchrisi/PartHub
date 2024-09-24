@@ -211,6 +211,10 @@ Route::get('/image-testing', function () {
     return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });
 
+Route::get('register-testing', function () {
+    return view('auth/register-testing', ['title' => 'Create Your Free Account', 'view' => 'register-testing']);
+});
+
 Route::get('/test-flash', function () {
     return redirect()->route('welcome')->with('firstLogin', true);
 });

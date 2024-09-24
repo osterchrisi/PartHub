@@ -211,3 +211,7 @@ tr.selected-last {
     --bs-btn-padding-x: .25rem;
     --bs-btn-font-size: .75rem;
 }
+
+.g-recaptcha {
+    display: inline-block;
+}
