@@ -6,7 +6,7 @@
             <tr>
                 <th>
                     @if (session('loggedOut'))
-                        <div class="alert alert-success">You've been successfully logged out</div>
+                        <div class="alert alert-success">You've been successfully logged out 👍</div>
                     @endif
                     @if (session('error'))
                         <div class="alert alert-danger">
