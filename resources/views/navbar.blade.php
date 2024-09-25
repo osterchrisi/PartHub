@@ -14,23 +14,23 @@ $user_name = $user ? $user->name : '';
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item rounded">
                         <a class="nav-link {{ request()->routeIs('parts') ? 'active' : '' }}"
                             href="{{ route('parts') }}">Parts</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item rounded">
                         <a class="nav-link {{ request()->routeIs('boms') ? 'active' : '' }}"
                             href="{{ route('boms') }}">BOMs</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item rounded">
                         <a class="nav-link {{ request()->routeIs('locations') ? 'active' : '' }}"
                             href="{{ route('locations') }}">Storage Locations</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item rounded">
                         <a class="nav-link {{ request()->routeIs('suppliers') ? 'active' : '' }}"
                             href="{{ route('suppliers') }}">Suppliers</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item rounded">
                         <a class="nav-link {{ request()->routeIs('footprints') ? 'active' : '' }}"
                             href="{{ route('footprints') }}">Footprints</a>
                     </li>
@@ -42,7 +42,7 @@ $user_name = $user ? $user->name : '';
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @unless (Auth::check())
                             {{-- Show "What is PartHub?" link for non-logged-in users --}}
-                            <li>
+                            <li class="nav-item rounded">
                                 <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                     href="{{ route('whatis') }}">What is PartHub?</a>
                             </li>
@@ -50,7 +50,7 @@ $user_name = $user ? $user->name : '';
 
                         @if ($user_id == 1)
                             {{-- Show "What is PartHub?" link for demo user --}}
-                            <li>
+                            <li class="nav-item rounded">
                                 <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                     href="{{ route('whatis') }}">What is PartHub?</a>
                             </li>

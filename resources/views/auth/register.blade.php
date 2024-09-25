@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <x-register-card bgClass="card-primary-bg text-white">
+        <x-register-card bgClass="text-white signup-gradient-background">
             <h4 class="alert alert-info mt-1 text-center" role="alert">Now accepting sign ups for beta usage</h4>
             <div class="text-center mb-4">
                 <h2 class="display-5">Create Your Free Account</h2>
@@ -84,7 +84,7 @@
         </x-register-card>
 
         <!-- Pricing Section -->
-        <x-register-card bgClass="bg-gradient shadow-sm">
+        <x-register-card bgClass="shadow-sm pricing-gradient-background text-white">
             <div class="text-center mb-4">
                 <h2 class="display-4 mb-4">Pricing Plans</h2>
                 <p class="lead">Pick the plan that best suits your needs.</p>
