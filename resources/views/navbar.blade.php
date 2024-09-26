@@ -63,11 +63,12 @@ $user_name = $user ? $user->name : '';
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
                             <li class="me-2 mb-2">
-                                <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET">
+                                <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-warning" id="continueDemo">Try Demo</button>
                                 </form>
                             </li>
+                            
                         @endunless
 
                         @if ($user_id == 1)
