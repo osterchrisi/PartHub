@@ -42,7 +42,7 @@ $user_name = $user ? $user->name : '';
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @unless (Auth::check())
                             {{-- Show "What is PartHub?" link for non-logged-in users --}}
-                            <li class="nav-item rounded">
+                            <li class="nav-item rounded me-2 pt-1">
                                 <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                     href="{{ route('whatis') }}">What is PartHub?</a>
                             </li>
@@ -50,7 +50,7 @@ $user_name = $user ? $user->name : '';
 
                         @if ($user_id == 1)
                             {{-- Show "What is PartHub?" link for demo user --}}
-                            <li class="nav-item rounded">
+                            <li class="nav-item rounded me-2 pt-1">
                                 <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                     href="{{ route('whatis') }}">What is PartHub?</a>
                             </li>
@@ -58,11 +58,11 @@ $user_name = $user ? $user->name : '';
 
                         @unless (Auth::check())
                             {{-- Show Sign Up Link / Demo button if not authorized (not signed in) --}}
-                            <li class="me-2 mb-2">
+                            <li class="me-2 mb-2 pt-1">
                                 <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
-                            <li class="me-2 mb-2">
+                            <li class="me-2 mb-2 pt-1">
                                 <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-warning" id="continueDemo">Try Demo</button>
@@ -73,12 +73,12 @@ $user_name = $user ? $user->name : '';
 
                         @if ($user_id == 1)
                             {{-- Show Sign Up Link if demo user --}}
-                            <li>
+                            <li class="pt-1">
                                 <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
                         @endif
-                        <li>
+                        <li class="pt-1">
                             @if (Auth::check())
                                 <!-- Show dropdown with user icon if logged in -->
                                 <a class="nav-link dropdown-toggle" href="#" role="button"
