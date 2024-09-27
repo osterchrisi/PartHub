@@ -234,3 +234,11 @@ tr.selected-last {
         linear-gradient(to bottom, rgba(255, 126, 95, 0.2), rgba(255, 255, 255, 0.4));
     padding: 2rem;
 }
+
+.welcome-items {
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.welcome-items:hover {
+    background-color: rgba(248, 249, 250, 0.5) !important; /* 0.5 alpha for the background color */
+}
