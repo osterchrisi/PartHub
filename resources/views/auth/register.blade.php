@@ -87,50 +87,19 @@
         <x-register-card bgClass="shadow-sm pricing-gradient-background text-white">
             <div class="text-center mb-4">
                 <h2 class="display-4 mb-4">Pricing Plans</h2>
-                <p class="lead">Pick the plan that best suits your needs.</p>
+                <p class="lead">Pick whatever floats your boat</p>
             </div>
 
             <!-- Pricing Table -->
             <div class="row justify-content-center text-black">
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center border-0 shadow-sm">
-                        <div class="card-body">
-                            <h3 class="card-title">Free</h3>
-                            <p class="lead text-muted">For small projects</p>
-                            <h4 class="pricing">$0/month</h4>
-                            <ul class="list-group my-4">
-                                <li class="list-group-item">✔️ 100 parts limit</li>
-                                <li class="list-group-item">✔️ 1 storage location</li>
-                                <li class="list-group-item">✔️ Community support</li>
-                            </ul>
-                            <a href="" class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-4 mb-4">
-                    <div class="card text-center border-0 shadow-sm">
-                        <div class="card-body">
-                            <h3 class="card-title">Pro</h3>
-                            <p class="lead text-muted">For growing businesses</p>
-                            <h4 class="pricing">$29/month</h4>
-                            <ul class="list-group my-4">
-                                <li class="list-group-item">✔️ Unlimited parts</li>
-                                <li class="list-group-item">✔️ Multiple storage locations</li>
-                                <li class="list-group-item">✔️ Supplier management</li>
-                                <li class="list-group-item">✔️ Premium support</li>
-                            </ul>
-                            <a href="" class="btn btn-primary btn-lg">Start Pro Trial</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4">
+                {{-- First Tier --}}
+                {{-- <div class="col-md-4 mb-4">
                     <div class="card text-center border-0 shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title">Enterprise</h3>
-                            <p class="lead text-muted">For large-scale businesses</p>
-                            <h4 class="pricing">Contact Us</h4>
+                            <p class="lead text-muted">For the Serious Player</p>
+                            <h4 class="pricing">€29/month</h4>
                             <ul class="list-group my-4">
                                 <li class="list-group-item">✔️ Customized solutions</li>
                                 <li class="list-group-item">✔️ Advanced BOM management</li>
@@ -139,8 +108,66 @@
                             <a href="" class="btn btn-outline-primary btn-lg">Contact Us</a>
                         </div>
                     </div>
+                </div> --}}
+
+
+
+                {{-- Pro --}}
+                <div class="col-md-auto mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title">Pro</h3>
+                            <p class="lead text-muted">For the Maker</p>
+                            <h4 class="pricing">€29/month</h4>
+                            <ul class="list-group my-4 list-group-item-action text-start">
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Unlimited Resources</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Multiple Storage Locations per Part
+                                </li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Multiple Suppliers per Part</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Stock Movement History</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Minimum Stock Notifications</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Images for Resources</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Documents for Resources</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Premium support</li>
+                            </ul>
+                            <a href="{{ route('register', ['plan' => 'pro']) }}"  class="disabled-link"><button class="btn btn-primary btn-lg"
+                                    disabled>Start Pro
+                                    Trial</button></a>
+                        </div>
+                    </div>
                 </div>
+
+                {{-- Free --}}
+                <div class="col-md-auto mb-4">
+                    <div class="card text-center border-0 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title">Free</h3>
+                            <p class="lead text-muted">For the Enthusiast</p>
+                            <h4 class="pricing">€0/month</h4>
+                            <ul class="list-group my-4 text-start">
+                                <li class="list-group-item"><i class="fas fa-check"></i> Limited Resources</li>
+                                <li class="list-group-item list-group-item-action"><i class="fas fa-check"></i> Stock
+                                    Movement History</li>
+                                <li class="list-group-item"><i class="fas fa-check"></i> Community support</li>
+                            </ul>
+                            <a href="" class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+            <div class="text-center mb-4">
+                <p class="lead">Resources are: Parts, BOMs, Locations, Categories, Suppliers</p>
+            </div>
+
         </x-register-card>
 
 

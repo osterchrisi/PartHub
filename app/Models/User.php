@@ -51,14 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->subscriptions->isEmpty();
     }
 
-    // Method to assign a free subscription
-    public function assignFreeSubscription()
-    {
-        if ($this->hasNoSubscription()) {
-            $this->newSubscription('free_plan', 'price_1PiiQPEb2UyIF2sh3pqjBR75')->create(); // 'free-plan' is the ID of your free plan in Stripe
-        }
-    }
-
     /**
      * Send customized email verification notification.
      *

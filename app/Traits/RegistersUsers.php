@@ -75,16 +75,4 @@ trait RegistersUsers
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
         }
     }
-
-    /**
-     * Send the welcome email to the user.
-     */
-    protected function sendWelcomeEmail(User $user): void
-    {
-        try {
-            Mail::to($user->email)->send(new WelcomeEmail($user));
-        } catch (TransportExceptionInterface $e) {
-            throw ValidationException::withMessages(['email' => 'Failed to send welcome email.']);
-        }
-    }
 }

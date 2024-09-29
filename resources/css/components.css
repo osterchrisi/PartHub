@@ -242,3 +242,12 @@ tr.selected-last {
 .welcome-items:hover {
     background-color: rgba(248, 249, 250, 0.5) !important; /* 0.5 alpha for the background color */
 }
+
+.pricing-tier-check {
+    color: var(--bs-success);
+}
+
+.disabled-link {
+    pointer-events: none; /* Prevents clicks on the link */
+    opacity: 0.5; /* Makes the link appear "disabled" */
+}
