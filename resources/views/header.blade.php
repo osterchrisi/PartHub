@@ -15,6 +15,9 @@
     <title>PartHub - {{ $title }}
     </title>
 
+    {{-- Cookie Consent --}}
+    <script type="text/javascript"
+        src="https://app.termly.io/resource-blocker/4134b801-03f7-4cab-85ea-c4ab4e329670?autoBlock=on"></script>
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- JQuery UI -->
@@ -92,4 +95,5 @@
         gtag('config', gtagTag);
     </script>
 </head>
+
 <body data-view="{{ $view }}">

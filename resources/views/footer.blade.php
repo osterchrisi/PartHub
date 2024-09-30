@@ -1,5 +1,5 @@
 @php
-$version = file_get_contents('../VERSION');
+    $version = file_get_contents('../VERSION');
 @endphp
 
 <div class="container-fluid bg-light bg-gradient bg-opacity-10 text-dark pb-1" id="footer">
@@ -7,7 +7,9 @@ $version = file_get_contents('../VERSION');
         <tr>
             <td>
                 <div>
-                    <span class="fs-6 lead">&copy; 2024 </span><span class="fs-6 lead" data-bs-toggle="tooltip" data-bs-title="{{ $version }}">PartHub</span><span class="fs-6 lead">. All rights reserved.</p>
+                    <span class="fs-6 lead">&copy; 2024 </span><span class="fs-6 lead" data-bs-toggle="tooltip"
+                        data-bs-title="{{ $version }}">PartHub</span><span class="fs-6 lead">. All rights reserved.
+                        </p>
                 </div>
             </td>
             <td>
@@ -20,6 +22,13 @@ $version = file_get_contents('../VERSION');
                     <span class="fs-6 lead"><a href="{{ route('privacy-policy') }}">Privacy Policy</a></p>
                 </div>
             </td>
+            <td>
+                <div>
+                    <span class="fs-6 lead"> <a href="#" class="termly-display-preferences">Consent
+                            Preferences</a></p>
+                </div>
+            </td>
+
             <td>
                 <div>
                     <span class="fs-6 lead"><a href="{{ route('imprint') }}">Imprint</a></p>
