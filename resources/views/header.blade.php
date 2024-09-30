@@ -84,7 +84,7 @@
     <!-- Google Tag (gtag.js) -->
     <script async src=https://www.googletagmanager.com/gtag/js?id={{ config('services.gtag.tag') }}"></script>
     <script>
-        var gtagTag = "{{ config('services.gtag.tag') }}";
+        const gtagTag = "{{ config('services.gtag.tag') }}";
         window.dataLayer = window.dataLayer || [];
 
         function gtag() {
@@ -97,6 +97,7 @@
 
     <!-- Google Tag Manager -->
     <script>
+        const gtagTagManager = "{{ config('services.gtag.tag-manager') }}";
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
             w[l].push({
@@ -110,7 +111,7 @@
             j.src =
                 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-5DKCXTZW');
+        })(window, document, 'script', 'dataLayer', gtagTagManager);
     </script>
     <!-- End Google Tag Manager -->
 </head>

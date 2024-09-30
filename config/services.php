@@ -38,6 +38,7 @@ return [
 
     'gtag' => [
         'tag' => env('VITE_GTAG'),
+        'tag-manager' => env('VITE_GTAG_MANAGER'),
     ],
 
     'google' => [
