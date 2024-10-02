@@ -236,11 +236,13 @@ tr.selected-last {
 }
 
 .welcome-items {
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    transition: background-color 0.3s ease;
+    /* Smooth transition for background color */
 }
 
 .welcome-items:hover {
-    background-color: rgba(248, 249, 250, 0.5) !important; /* 0.5 alpha for the background color */
+    background-color: rgba(248, 249, 250, 0.5) !important;
+    /* 0.5 alpha for the background color */
 }
 
 .pricing-tier-check {
@@ -248,6 +250,23 @@ tr.selected-last {
 }
 
 .disabled-link {
-    pointer-events: none; /* Prevents clicks on the link */
-    opacity: 0.5; /* Makes the link appear "disabled" */
+    pointer-events: none;
+    /* Prevents clicks on the link */
+    opacity: 0.5;
+    /* Makes the link appear "disabled" */
+}
+
+/* Pricing Table Ribbon */
+
+.ribbon {
+    --f: 15px;
+    position: absolute;
+    background: rgba(var(--bs-danger-rgb), 0.9);
+    /* the main color  */
+    border-bottom: var(--f) solid #0007;
+    clip-path: polygon(100% calc(100% - var(--f)), 100% 100%, calc(100% - var(--f)) calc(100% - var(--f)), var(--f) calc(100% - var(--f)), 0 100%, 0 calc(100% - var(--f)), 999px calc(100% - var(--f) - 999px), calc(100% - 999px) calc(100% - var(--f) - 999px));
+    padding: 0 50px;
+    right: 0;
+    transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+    transform-origin: 0% 100%;
 }

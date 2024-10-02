@@ -114,11 +114,14 @@
 
                 {{-- Pro --}}
                 <div class="col-md-auto mb-4">
-                    <div class="card border-0 shadow-sm">
+                    <div class="card border-0 shadow-sm position-relative">
+                        <!-- Ribbon Badge -->
+                        <div class="ribbon text-white">Kickoff Special</div>
                         <div class="card-body">
                             <h3 class="card-title">Pro</h3>
                             <p class="lead text-muted">For the Maker</p>
-                            <h4 class="pricing">€29/month</h4>
+                            <h4 class="pricing"><del>€29/month</del></h4>
+                            <h4 class="pricing text-danger">€9/month</h4>
                             <ul class="list-group my-4 list-group-item-action text-start">
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Unlimited Resources</li>
@@ -138,8 +141,8 @@
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                             </ul>
-                            <a href="{{ route('register', ['plan' => 'pro']) }}"  class="disabled-link"><button class="btn btn-primary btn-lg"
-                                    disabled>Start Pro
+                            <a href="{{ route('register', ['plan' => 'pro']) }}" class="disabled-link"><button
+                                    class="btn btn-primary btn-lg" disabled>Start Pro
                                     Trial</button></a>
                         </div>
                     </div>
