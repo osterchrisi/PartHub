@@ -116,7 +116,7 @@
                 <div class="col-md-auto mb-4">
                     <div class="card border-0 shadow-sm position-relative">
                         <!-- Ribbon Badge -->
-                        <div class="ribbon text-white">Kickoff Special</div>
+                        <div class="ribbon text-white">Early Access Special</div>
                         <div class="card-body">
                             <h3 class="card-title">Pro</h3>
                             <p class="lead text-muted">For the Maker</p>
@@ -141,9 +141,12 @@
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                             </ul>
+                            <div>
                             <a href="{{ route('register', ['plan' => 'pro']) }}" class="disabled-link"><button
                                     class="btn btn-primary btn-lg" disabled>Start Pro
                                     Trial</button></a>
+                            </div>
+                            <div class="text-muted fw-light">Coming soon!</div>
                         </div>
                     </div>
                 </div>
