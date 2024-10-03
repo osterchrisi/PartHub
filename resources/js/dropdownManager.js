@@ -80,7 +80,7 @@ class DropdownManager {
         div.innerHTML = selectHTML;
 
         // Initialize Selectize on the new dropdown
-        $(`[data-supplier-id="${newRowIndex}"]`).selectize({  // Change to `data-supplier-id`
+        $(`[data-supplier-id="${newRowIndex}"]`).selectize({
             create: (input) => {
                 this.createNewSelectizeDropdownEntry(input, 'supplier', dropdownId, newRowIndex);
             },
@@ -242,6 +242,7 @@ class DropdownManager {
         if ($select.data('creating')) {
             return;
         }
+
         $select.data('creating', true);
 
         $.ajax({
