@@ -1,5 +1,6 @@
-import { deleteSelectedRows, showDeleteConfirmation } from "../custom";
-import { assembleBoms } from "../tables";
+import { deleteSelectedRows, showDeleteConfirmation, updateInfoWindow } from "../custom";
+import { ResourceCreator } from "../resourceCreator";
+import { assembleBoms, rebuildBomListTable } from "../tables";
 
 export function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
     // Get selected table rows
@@ -62,7 +63,7 @@ export function assembleBomsFromToolbar(table_id) {
 export function attachAddBomHandler() {
     $('#toolbarAddButton').click(function () {
         // Load the form into the #info-window element
-        $('#info-window').load('/bom.import-form', function() {
+        $('#info-window').load('/bom.import-form', function () {
             $('#bomImportForm').on('submit', function (event) {
                 event.preventDefault();
 
@@ -75,7 +76,7 @@ export function attachAddBomHandler() {
                 });
 
                 $.ajax({
-                    url: '/bom.import', 
+                    url: '/bom.import',
                     method: "POST",
                     data: formData,
                     contentType: false,
@@ -87,8 +88,17 @@ export function attachAddBomHandler() {
                             $('#response-message').html('<div class="alert alert-danger">' + response.error + '</div>');
                         }
 
-                        // Optionally reload parts of the UI or table, depending on your application
-                        // loadSelectedRow('bom', 'bom_list_table'); // Example of reloading content
+                        //TODO: Not super nice but works quite alright
+                        const id = response.new_bom_id;
+                        rebuildBomListTable('').done(function () {
+                            const $table = $('#bom_list_table');
+                            const BomTable = new ResourceCreator({
+                                table_name: $table
+                            });
+                            BomTable.selectNewRow(id);
+                        });
+                        updateInfoWindow('bom', id);
+
                     },
                     error: function (xhr, status, error) {
                         // Handle error response
