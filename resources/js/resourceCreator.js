@@ -16,6 +16,8 @@ class ResourceCreator {
     this.categoryId = options.categoryId || null;
     this.tableRebuildFunctions = tableRebuildFunctions;
 
+    //TODO: Check for type, then do only necessary tasks
+
     // Initialize upper case toggle functionality for part input
     this.initializeUppercaseToggle();
 
@@ -150,6 +152,7 @@ class ResourceCreator {
 
       // Highlight the new row after changing the page
       this.highlightAndSelectRow(id, 1000, 10);
+
     } else {
       console.warn('New row position not found for id:', id);
     }
