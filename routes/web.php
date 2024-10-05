@@ -63,7 +63,7 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::get('/part.getName', 'getName');
         Route::post('/part.delete', 'destroy');
         Route::post('/parts.requestStockChange', 'handleStockRequests');
-        Route::post('/part.create', 'create');
+        Route::post('/part.create', 'create')->middleware('resource.limits');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
     });
 });
@@ -74,7 +74,7 @@ Route::controller(BomController::class)->group(function () {
     Route::get('/boms.bomsTable', 'index')->middleware(['auth', 'verified'])->name('boms.bomsTable');
     Route::get('/bom/{id}', 'show')->middleware(['auth', 'verified']);
     Route::post('/bom.assemble', 'prepareBomForAssembly')->middleware(['auth', 'verified']);
-    Route::post('/bom.import', 'importBom')->name('bom.import');
+    Route::post('/bom.import', 'importBom')->name('bom.import')->middleware('resource.limits');
     Route::get('/bom.import-form', function () {
         return view('boms.import-form', ['title' => 'Import BOM']);
     })->middleware(['auth', 'verified'])->name('bom import');
@@ -85,7 +85,7 @@ Route::controller(BomController::class)->group(function () {
 Route::controller(LocationController::class)->group(function () {
     Route::get('/locations', 'index')->middleware(['auth', 'verified'])->name('locations');
     Route::get('/locations.locationsTable', 'index')->middleware(['auth', 'verified'])->name('locations.locationsTable');
-    Route::post('/location.create', 'create')->middleware(['auth', 'verified']);
+    Route::post('/location.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
     Route::get('/locations.get', 'getLocations')->middleware(['auth', 'verified']);
     Route::get('/location/{id}', 'show')->middleware(['auth', 'verified']);
 });
@@ -96,25 +96,25 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories.categoriesTable', 'index')->middleware(['auth', 'verified'])->name('categories.categoriesTable');
     Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
     Route::get('/categories.get', 'list')->middleware(['auth', 'verified']);
-    Route::post('/category.create', 'create')->middleware(['auth', 'verified']);
+    Route::post('/category.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
 });
 
 //* Supplier Routes
 Route::controller(SupplierController::class)->group(function () {
     Route::get('/suppliers', 'index')->middleware(['auth', 'verified'])->name('suppliers');
     Route::get('/suppliers.suppliersTable', 'index')->middleware(['auth', 'verified'])->name('suppliers.suppliersTable');
-    Route::post('/supplier.create', 'create')->middleware(['auth', 'verified']);
+    Route::post('/supplier.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
     Route::get('/suppliers.get', 'getSuppliers')->middleware(['auth', 'verified']);
     Route::get('/supplier/{id}', 'show')->middleware(['auth', 'verified']);
 });
-Route::post('supplierData.create', [SupplierDataController::class, 'create'])->middleware(['auth', 'verified']);
+Route::post('supplierData.create', [SupplierDataController::class, 'create'])->middleware(['auth', 'verified', 'resource.limits']);
 
 //* Footprint Routes
 Route::middleware(['auth', 'verified', 'subscription'])->group(function () {
     Route::controller(FootprintController::class)->group(function () {
         Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
         Route::get('/footprints.footprintsTable', 'index')->middleware(['auth', 'verified'])->name('footprints.footprintsTable');
-        Route::post('/footprint.create', 'create')->middleware(['auth', 'verified']);
+        Route::post('/footprint.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
         Route::get('/footprints.get', 'getFootprints')->middleware(['auth', 'verified']);
         Route::get('/footprint/{id}', 'show')->middleware(['auth', 'verified']);
     });

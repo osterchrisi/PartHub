@@ -79,6 +79,7 @@ class ResourceCreator {
         data[field.name] = $(field.selector).val();
       }
     });
+    data['type'] = this.type;
 
     if (this.categoryId) { data['parent_category'] = this.categoryId; }
 
@@ -115,7 +116,12 @@ class ResourceCreator {
       error: (xhr) => {
         if (xhr.status === 419) {
           alert('CSRF token mismatch. Please refresh the page and try again.');
-        } else {
+        }
+        else if (xhr.status === 403) {
+          const response = JSON.parse(xhr.responseText);
+          alert(response.message);
+        }
+        else {
           alert('An error occurred. Please try again.');
           this.hideModal();                                 // Hide Modal
           this.removeAddButtonClickListener();              // Remove Click Listener

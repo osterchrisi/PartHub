@@ -75,6 +75,8 @@ export function attachAddBomHandler() {
                     formObject[key] = value;
                 });
 
+                formData.append('type', 'bom');
+
                 $.ajax({
                     url: '/bom.import',
                     method: "POST",
@@ -84,7 +86,8 @@ export function attachAddBomHandler() {
                     success: function (response) {
                         if (response.success) {
                             $('#response-message').html('<div class="alert alert-success">' + response.success + '</div>');
-                        } else if (response.error) {
+                        }
+                        else if (response.error) {
                             $('#response-message').html('<div class="alert alert-danger">' + response.error + '</div>');
                         }
 
@@ -101,10 +104,17 @@ export function attachAddBomHandler() {
 
                     },
                     error: function (xhr, status, error) {
-                        // Handle error response
-                        console.log(xhr.responseJSON);
-                        var errorMessage = xhr.responseJSON?.error || 'An error occurred during the import.';
-                        $('#response-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+
+                        if (xhr.status === 403) {
+                            const response = JSON.parse(xhr.responseText);
+                            alert(response.message)
+                        }
+                        else {
+                            // Handle error response
+                            console.log(xhr.responseJSON);
+                            var errorMessage = xhr.responseJSON?.error || 'An error occurred during the import.';
+                            $('#response-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                        }
                     }
                 });
             });

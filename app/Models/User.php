@@ -45,6 +45,39 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    //* Relationships
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class, 'part_owner_u_fk');
+    }
+
+    public function boms()
+    {
+        return $this->hasMany(Bom::class, 'bom_owner_u_fk');
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class, 'location_owner_u_fk');
+    }
+
+    public function suppliers()
+    {
+        return $this->hasMany(Supplier::class, 'supplier_owner_u_fk');
+    }
+
+    public function supplierData()
+    {
+        return $this->hasMany(SupplierData::class, 'supplier_data_owner_u_fk');
+    }
+
+    public function footprints()
+    {
+        return $this->hasMany(Footprint::class, 'footprint_owner_u_fk');
+    }
+
+
     // Method to check if the user has no subscription
     public function hasNoSubscription()
     {
@@ -64,5 +97,36 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new CustomResetPasswordNotification($token));
+    }
+
+    //* Limit Counters
+    public function getPartCount()
+    {
+        return $this->parts()->count();
+    }
+
+    public function getBomCount()
+    {
+        return $this->boms()->count();
+    }
+
+    public function getLocationCount()
+    {
+        return $this->locations()->count();
+    }
+
+    public function getSupplierCount()
+    {
+        return $this->suppliers()->count();
+    }
+
+    public function getSupplierDataCount($part_id)
+    {
+        //TODO: Needs to count per part I guess
+    }
+
+    public function getFootprintCount()
+    {
+        return $this->footprints()->count();
     }
 }
