@@ -8,33 +8,42 @@ use Illuminate\Support\Facades\Log;
 
 class SubscriptionLimitService
 {
-    public function hasReachedLimit($user, $resourceType)
+    public function hasReachedLimit($user, $resourceType, $part_id = null)
     {
         // Get the user's current subscription plan
         $subscription = $user->subscription('maker');
         if (!$subscription) {
-            $user->subscription = 'free';
+            $subscriptionType = 'free';
+        }
+        else {
+            $subscriptionType = $subscription->name;
         }
 
-        Log::info($subscription);
+        Log::info('User is on ' . $subscription->name . ' plan.');
 
         // Retrieve limits from the config file based on the subscription plan
-        $limits = config('subscription_limits.' . $subscription->name);
-        Log::info($limits);
+        $limits = config('subscription_limits.' . $subscriptionType);
 
         // Build dynamic method names based on the resource type
-        //TODO: Figure out if it's a supplier data and give part_id
-        $resourceCountMethod = 'get' . ucfirst($resourceType) . 'Count';
+        $resourceCountMethod = ($resourceType === 'supplier_data')
+            ? 'getSupplierDataCount'
+            : 'get' . ucfirst($resourceType) . 'Count';
 
         // Check if the limit is null (unlimited)
         $limit = $limits[$resourceType . '_limit'];
 
         if (is_null($limit)) {
-            // If the limit is null, it means "unlimited," so return false (not reached limit)
+            // If the limit is null, it means "unlimited," so return before even checking
             return false;
         }
 
-        // Otherwise, check if the user has reached the limit for the specified resource type
-        return $user->$resourceCountMethod() >= $limit;
+        // Call the appropriate method, passing $part_id for supplier_data or no argument for others
+        if ($resourceType === 'supplier_data') {
+            return $user->$resourceCountMethod($part_id) >= $limit;
+        }
+        else {
+            return $user->$resourceCountMethod() >= $limit;
+        }
     }
+
 }

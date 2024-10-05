@@ -528,6 +528,7 @@ class ResourceCreator {
       // Prepare the data to be sent to the server
       let requestData = {
         part_id: part_id,
+        type: 'supplier_data',
         suppliers: newSupplierData.map(supplierRow => {
           return {
             supplier_id: supplierRow.supplier_id,
@@ -550,7 +551,12 @@ class ResourceCreator {
           updateInfoWindow('part', part_id);
         },
         error: function (xhr) {
-          console.error('Error saving supplier data:', xhr);
+          if (xhr.status === 403) {
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message);
+          } else {
+            console.error('Error saving supplier data:', xhr);
+          }
         }
       });
     } else {

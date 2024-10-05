@@ -122,7 +122,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getSupplierDataCount($part_id)
     {
-        //TODO: Needs to count per part I guess
+        \Log::info('Checking supplier data count for ' . $part_id);
+        $number = $this->supplierData()
+            ->where('part_id_fk', $part_id)  // Filter by part ID
+            ->count();
+        \Log::info('This part has ' . $number . ' supplier_datas');
+        return $this->supplierData()
+            ->where('part_id_fk', $part_id)  // Filter by part ID
+            ->count();
     }
 
     public function getFootprintCount()

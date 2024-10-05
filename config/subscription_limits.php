@@ -6,7 +6,7 @@ return [
         'bom_limit' => 2,
         'location_limit' => 2,
         'supplier_limit' => 2,
-        // 'supplier_data_limit' => 1,
+        'supplier_data_limit' => 1,
         'footprint_limit' => 5,
     ],
     'maker' => [
@@ -14,7 +14,7 @@ return [
         'bom_limit' => null,
         'location_limit' => null,
         'supplier_limit' => null,
-        // 'supplier_data_limit' => null,
+        'supplier_data_limit' => 6,
         'footprint_limit' => null,
     ],
 ];
