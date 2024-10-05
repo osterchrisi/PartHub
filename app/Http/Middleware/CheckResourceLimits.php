@@ -23,6 +23,7 @@ class CheckResourceLimits
      */
     public function handle(Request $request, Closure $next): Response
     {
+        \Log::info($request);
         $user = $request->user();
         $type = $request->input('type');  // Get the resource type from the request
         $part_id = $request->input('part_id') ? $request->input('part_id') : '';

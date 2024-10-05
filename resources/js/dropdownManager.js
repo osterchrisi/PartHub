@@ -250,7 +250,8 @@ class DropdownManager {
             type: 'POST',
             data: {
                 [nameField]: input,
-                _token: token
+                _token: token,
+                type: type,
             },
             success: (response) => {
                 const newEntry = {
@@ -271,9 +272,14 @@ class DropdownManager {
                     $select.data('creating', false);
                 });
             },
-            error: function () {
-                console.error('Error creating new entry');
-                $select.data('creating', false);
+            error: function (xhr) {
+                if (xhr.status === 403) {
+                    const response = JSON.parse(xhr.responseText);
+                    alert(response.message);
+                } else {
+                    console.error('Error creating new entry');
+                    $select.data('creating', false);
+                }
             }
         });
     }

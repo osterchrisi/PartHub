@@ -2,7 +2,7 @@
 
 return [
     'free' => [
-        'part_limit' => 50,
+        'part_limit' => 5,
         'bom_limit' => 2,
         'location_limit' => 2,
         'supplier_limit' => 2,
@@ -14,7 +14,7 @@ return [
         'bom_limit' => null,
         'location_limit' => null,
         'supplier_limit' => null,
-        'supplier_data_limit' => 6,
+        'supplier_data_limit' => null,
         'footprint_limit' => null,
     ],
 ];

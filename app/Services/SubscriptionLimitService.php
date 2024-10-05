@@ -2,10 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
-
-
 class SubscriptionLimitService
 {
     public function hasReachedLimit($user, $resourceType, $part_id = null)
@@ -19,10 +15,9 @@ class SubscriptionLimitService
             $subscriptionType = $subscription->name;
         }
 
-        Log::info('User is on ' . $subscription->name . ' plan.');
 
         // Retrieve limits from the config file based on the subscription plan
-        $limits = config('subscription_limits.' . $subscriptionType);
+        $limits = config("subscription_limits.{$subscriptionType}");
 
         // Build dynamic method names based on the resource type
         $resourceCountMethod = ($resourceType === 'supplier_data')
@@ -30,7 +25,7 @@ class SubscriptionLimitService
             : 'get' . ucfirst($resourceType) . 'Count';
 
         // Check if the limit is null (unlimited)
-        $limit = $limits[$resourceType . '_limit'];
+        $limit = $limits["{$resourceType}_limit"];
 
         if (is_null($limit)) {
             // If the limit is null, it means "unlimited," so return before even checking
