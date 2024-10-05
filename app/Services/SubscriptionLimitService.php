@@ -26,7 +26,15 @@ class SubscriptionLimitService
         //TODO: Figure out if it's a supplier data and give part_id
         $resourceCountMethod = 'get' . ucfirst($resourceType) . 'Count';
 
-        // Check if the user has reached the limit for the specified resource type
-        return $user->$resourceCountMethod() >= $limits[$resourceType . '_limit'];
+        // Check if the limit is null (unlimited)
+        $limit = $limits[$resourceType . '_limit'];
+
+        if (is_null($limit)) {
+            // If the limit is null, it means "unlimited," so return false (not reached limit)
+            return false;
+        }
+
+        // Otherwise, check if the user has reached the limit for the specified resource type
+        return $user->$resourceCountMethod() >= $limit;
     }
 }
