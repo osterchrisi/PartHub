@@ -122,13 +122,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getSupplierDataCount($part_id)
     {
-        \Log::info('Checking supplier data count for ' . $part_id);
-        $number = $this->supplierData()
-            ->where('part_id_fk', $part_id)  // Filter by part ID
-            ->count();
-        \Log::info('This part has ' . $number . ' supplier_datas');
         return $this->supplierData()
-            ->where('part_id_fk', $part_id)  // Filter by part ID
+            ->where('part_id_fk', $part_id)
             ->count();
     }
 

@@ -2,12 +2,12 @@
 
 return [
     'free' => [
-        'part_limit' => 5,
-        'bom_limit' => 2,
-        'location_limit' => 2,
-        'supplier_limit' => 2,
+        'part_limit' => 100,
+        'bom_limit' => 5,
+        'location_limit' => 10,
+        'supplier_limit' => 10,
         'supplier_data_limit' => 1,
-        'footprint_limit' => 5,
+        'footprint_limit' => 0,
     ],
     'maker' => [
         'part_limit' => null,

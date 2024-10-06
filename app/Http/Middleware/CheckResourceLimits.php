@@ -23,12 +23,11 @@ class CheckResourceLimits
      */
     public function handle(Request $request, Closure $next): Response
     {
-        \Log::info($request);
         $user = $request->user();
         $type = $request->input('type');  // Get the resource type from the request
         $part_id = $request->input('part_id') ? $request->input('part_id') : '';
 
-        // Call the service to check the limit for the given resource type
+        //TODO: {$type} could be made to look nicer (upper case and case for 'supplier_data')
         if ($this->limitService->hasReachedLimit($user, $type, $part_id)) {
             return response()->json([
                 'message' => "You have reached your {$type} creation limit for your subscription plan."
