@@ -38,13 +38,13 @@ trait RegistersUsers
      *
      * @throws \Illuminate\Validation\ValidationException If email validation fails.
      */
-    protected function registerUser(string $name, string $email, ?string $password = null): User
+    protected function registerUser(string $name, string $email, ?string $password = null, string $selectedPlan = 'free', $priceId = ''): User
     {
         // Try to send the welcome email before creating the user
         //TODO: Use something better than sending a mail to verify... Laravel supports MX record validation, e.g. $request->validate(['email' => 'required|email|dns']);
         $this->validateEmailCanReceiveMail($email);
 
-        // If email validation succeeds, create the user,  create password if google Oauth
+        // If email validation succeeds, create the user, create password if Google Oauth
         $user = User::create([
             'name' => $name,
             'email' => $email,
@@ -52,7 +52,7 @@ trait RegistersUsers
         ]);
 
         // Fire registration event
-        event(new Registered($user));
+        event(new Registered($user, $selectedPlan, $priceId));
 
         // Log the user in
         Auth::login($user);

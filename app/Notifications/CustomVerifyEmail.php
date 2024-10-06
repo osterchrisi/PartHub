@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\URL;
 
 class CustomVerifyEmail extends VerifyEmailNotification
 {
+
+    protected $plan;
+    protected $priceId;
+
+    public function __construct($plan, $priceId)
+    {
+        $this->plan = $plan;
+        $this->priceId = $priceId;
+    }
+
     /**
      * Build the verification URL.
      *
@@ -20,7 +30,12 @@ class CustomVerifyEmail extends VerifyEmailNotification
         return URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes(60),
-            ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
+            [
+                'id' => $notifiable->getKey(),
+                'hash' => sha1($notifiable->getEmailForVerification()),
+                'plan' => $this->plan,
+                'priceId' => $this->priceId,
+            ]
         );
     }
 

@@ -40,8 +40,12 @@ class RegisteredUserController extends Controller
         // Recaptcha processing
         $this->validateRecaptcha($request);
 
+        // Selected plan
+        $selectedPlan = $request->input('plan', 'free');
+        $priceId = $request->input('priceId', '');
+
         // Use the centralized registration logic
-        $user = $this->registerUser($validated['name'], $validated['email'], $validated['password']);
+        $user = $this->registerUser($validated['name'], $validated['email'], $validated['password'], $selectedPlan, $priceId);
 
         // Redirect after registration
         return redirect(RouteServiceProvider::HOME)->with('firstLogin', true);

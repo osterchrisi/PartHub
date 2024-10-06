@@ -58,8 +58,10 @@
                         autocomplete="new-password" class="form-control">
                     <x-input-error :messages="$errors->get('password_confirmation')" />
 
-                    {{-- Hidden Input Field for Subscription --}}
+                    {{-- Hidden Input Fields for Subscription --}}
                     <input type="hidden" name="plan" value="{{ request('plan', 'free') }}">
+                    <input type="hidden" name="priceId" value="{{ request('priceId', '') }}">
+
                     <div class="form-check form-switch mb-3 mt-3">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" required>
                         <label class="form-check-label" for="flexSwitchCheckDefault">I agree to the <a
@@ -98,8 +100,8 @@
                         <!-- Ribbon Badge -->
                         <div class="ribbon text-white">Early Access Special</div>
                         <div class="card-body">
-                            <h3 class="card-title">Pro</h3>
-                            <p class="lead text-muted">For the Maker</p>
+                            <h3 class="card-title">Maker</h3>
+                            <p class="lead text-muted">Best for small-scale businesses</p>
                             <h4 class><del>€29/month</del></h4>
                             <h4 class="text-danger">€9/month</h4>
                             <ul class="list-group my-4 list-group-item-action text-start">
@@ -122,7 +124,7 @@
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                             </ul>
                             <div>
-                                <a href="{{ route('register', ['plan' => 'pro']) }}" class="disabled-link"><button
+                                <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}" class="disabled-link"><button
                                         class="btn btn-primary btn-lg" disabled>Start Pro
                                         Trial</button></a>
                             </div>
@@ -136,7 +138,7 @@
                     <div class="card text-center border-0 shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title">Free</h3>
-                            <p class="lead text-muted">For the Enthusiast</p>
+                            <p class="lead text-muted">Best for Enthusiasts and Tinkerers</p>
                             <h4 class>€0/month</h4>
                             <ul class="list-group my-4 text-start">
                                 <li class="list-group-item"><i class="fas fa-check"></i> Limited Resources</li>
