@@ -92,6 +92,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification($plan = 'free', $priceId = '')
     {
         $this->notify(new CustomVerifyEmail($plan = 'free', $priceId = ''));
+        \Log::info("Send custom thingie");
     }
 
     public function sendPasswordResetNotification($token)

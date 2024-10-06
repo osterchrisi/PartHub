@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use App\Events\UserRegisteredWithPlan;
 
 trait RegistersUsers
 {
@@ -52,7 +53,7 @@ trait RegistersUsers
         ]);
 
         // Fire registration event
-        event(new Registered($user, $selectedPlan, $priceId));
+        event(new UserRegisteredWithPlan($user, $selectedPlan, $priceId));
 
         // Log the user in
         Auth::login($user);
