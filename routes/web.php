@@ -144,7 +144,7 @@ Route::post('/upload-document/{type}/{id}', [DocumentController::class, 'upload'
 Route::delete('/delete-document/{type}/{id}', [DocumentController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete-document');
 
 //* Cashier / Subscriptions
-Route::get('/subscription-checkout/{type}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified']);
+Route::get('/subscription-checkout/{plan}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified'])->name('subscription.checkout');
 Route::get('/subscription-manage', [SubscriptionController::class, 'manage'])->middleware(['auth', 'verified'])->name('subscription.manage');
 
 //* Socialite / Google OAuth login

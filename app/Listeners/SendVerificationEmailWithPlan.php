@@ -22,5 +22,7 @@ class SendVerificationEmailWithPlan
     public function handle(UserRegisteredWithPlan $event)
     {
         $event->user->sendEmailVerificationNotification($event->plan, $event->priceId);
+        \Log::info("SEnding my custom thingie");
+        \Log::info($event->plan);
     }
 }

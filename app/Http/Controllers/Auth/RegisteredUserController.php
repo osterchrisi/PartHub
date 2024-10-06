@@ -29,6 +29,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        \Log::info($request);
         // Validate request
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -43,6 +44,8 @@ class RegisteredUserController extends Controller
         // Selected plan
         $selectedPlan = $request->input('plan', 'free');
         $priceId = $request->input('priceId', '');
+        \Log::info($selectedPlan);
+        \Log::info($priceId);
 
         // Use the centralized registration logic
         $user = $this->registerUser($validated['name'], $validated['email'], $validated['password'], $selectedPlan, $priceId);
