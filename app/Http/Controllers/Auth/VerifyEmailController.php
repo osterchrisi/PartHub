@@ -40,7 +40,6 @@ class VerifyEmailController extends Controller
 
         // Redirect based on the selected plan
         if ($selectedPlan === 'maker') {
-            \Log::info($selectedPlan);
             // Redirect to the subscription checkout page for paid plans
             return redirect()->route('subscription.checkout', ['plan' => $selectedPlan, 'priceId' => $priceId]);
         }

@@ -50,10 +50,12 @@ trait RegistersUsers
             'name' => $name,
             'email' => $email,
             'password' => $password ? Hash::make($password) : Hash::make(Str::random(16)),
+            'selected_plan' => $selectedPlan,
+            'price_id' => $priceId,
         ]);
 
         // Fire registration event
-        event(new UserRegisteredWithPlan($user, $selectedPlan, $priceId));
+        event(new Registered($user));
 
         // Log the user in
         Auth::login($user);

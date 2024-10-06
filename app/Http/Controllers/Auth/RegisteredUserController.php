@@ -44,8 +44,6 @@ class RegisteredUserController extends Controller
         // Selected plan
         $selectedPlan = $request->input('plan', 'free');
         $priceId = $request->input('priceId', '');
-        \Log::info($selectedPlan);
-        \Log::info($priceId);
 
         // Use the centralized registration logic
         $user = $this->registerUser($validated['name'], $validated['email'], $validated['password'], $selectedPlan, $priceId);

@@ -24,6 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'selected_plan',
+        'price_id',
     ];
 
     /**
@@ -91,8 +93,14 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification($plan = 'free', $priceId = '')
     {
-        $this->notify(new CustomVerifyEmail($plan, $priceId));
-        \Log::info("Send custom thingie");
+        // If no plan or priceId is set, send the default verification email
+        if (is_null($this->selected_plan) || is_null($this->price_id)) {
+            $this->notify(new CustomVerifyEmail(null, null));
+        }
+        else {
+            // Otherwise, send the verification with plan and priceId
+            $this->notify(new CustomVerifyEmail($this->selected_plan, $this->price_id));
+        }
     }
 
     public function sendPasswordResetNotification($token)

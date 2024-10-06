@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use App\Events\StockMovementOccured;
-use App\Events\UserRegisteredWithPlan;
 use App\Listeners\SendStocklevelNotification;
-use App\Listeners\SendVerificationEmailWithPlan;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,9 +19,6 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
-        ],
-        UserRegisteredWithPlan::class => [
-            SendVerificationEmailWithPlan::class,
         ],
         StockMovementOccured::class => [
             SendStocklevelNotification::class,
