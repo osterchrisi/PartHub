@@ -1,4 +1,4 @@
-<div class="row mb-5">
+<div class="row mb-5" id="{{ $id ?? '' }}">
     <div class="col-12 {{ $bgClass ?? 'bg-light' }}">
         <div class="col py-5 text-center align-items-center">
             {{ $slot }}

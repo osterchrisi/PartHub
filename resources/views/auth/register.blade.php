@@ -9,11 +9,11 @@
                 <h1 class="display-1 mb-4">Get Started with PartHub</h1>
                 <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Focus on the fun part of making
                     things!</p><br>
-                <a href="#pricing" class="btn btn-lg btn-light me-2">See Pricing</a>
+                <a href="#register-pricing" class="btn btn-lg btn-light me-2">See Pricing</a>
             </div>
         </div>
 
-        <x-register-card bgClass="text-white signup-gradient-background">
+        <x-register-card bgClass="text-white signup-gradient-background" id="register-free">
             <h4 class="alert alert-info mt-1 text-center" role="alert">Now accepting sign ups for beta usage</h4>
             <div class="text-center mb-4">
                 <h2 class="display-5">Create Your Free Account</h2>
@@ -31,57 +31,59 @@
                 <span class="mx-3 text-muted">OR</span>
                 <hr class="flex-grow-1">
             </div>
-            <div class="text-start">
-                <form method="POST" action="{{ route('register') }}">
-                    @csrf
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
+                <div class="text-start">
                     {{-- User Name --}}
-                    <label for="name" class="form-label">User Name</label>
+                    <label for="name" class="form-label mt-2">User Name</label>
                     <input class="form-control" id="name" type="text" name="name" required autofocus
                         autocomplete="name">
                     <x-input-error :messages="$errors->get('name')" />
 
                     {{-- Email Address --}}
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label mt-2">Email</label>
                     <input id="email" type="email" class="form-control" type="email" name="email" required
                         autocomplete="username">
                     <x-input-error :messages="$errors->get('email')" />
 
                     {{-- Password --}}
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label mt-2">Password</label>
                     <input id="password" type="password" name="password" required autocomplete="new-password"
                         class="form-control">
                     <x-input-error :messages="$errors->get('password')" />
 
                     {{-- Confirm Password --}}
-                    <label for="password_confirmation" class="form-label">Confirm Password</label>
+                    <label for="password_confirmation" class="form-label mt-2">Confirm Password</label>
                     <input id="password_confirmation" type="password" name="password_confirmation" required
                         autocomplete="new-password" class="form-control">
                     <x-input-error :messages="$errors->get('password_confirmation')" />
 
-                    <br>
-                    <div class="form-check form-switch mb-3">
+                    {{-- Hidden Input Field for Subscription --}}
+                    <input type="hidden" name="plan" value="{{ request('plan', 'free') }}">
+                    <div class="form-check form-switch mb-3 mt-3">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" required>
                         <label class="form-check-label" for="flexSwitchCheckDefault">I agree to the <a
                                 href="{{ route('TOS') }}" target="_blank">Terms of Service</a> and <a
                                 href="{{ route('privacy-policy') }}" target="_blank">Privacy Policy</a></label>
                     </div>
-            </div>
-            <div class="my-2 text-center">
-                <button type="submit" class="btn btn-lg btn-primary" id="signupBtn" disabled>Create account</button>
-            </div>
-
-            <div class="text-center mt-3">
-                <p class="fw-light">We don't tend lightly to bots around here</p>
-                <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.siteKey') }}"
-                    data-callback="processChallenge">
-                    <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
                 </div>
-                <input type="hidden" id="recaptchaResponse" name="recaptcha_response">
-            </div>
+                <div class="my-2 text-center">
+                    <button type="submit" class="btn btn-lg btn-primary" id="signupBtn" disabled>Create account</button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="fw-light">We don't tend lightly to bots around here</p>
+                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.siteKey') }}"
+                        data-callback="processChallenge">
+                        <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
+                    </div>
+                    <input type="hidden" id="recaptchaResponse" name="recaptcha_response">
+                </div>
+            </form>
         </x-register-card>
 
         <!-- Pricing Section -->
-        <x-register-card bgClass="shadow-sm pricing-gradient-background text-white">
+        <x-register-card bgClass="shadow-sm pricing-gradient-background text-white"  id="register-pricing">
             <div class="text-center mb-4">
                 <h2 class="display-4 mb-4">Pricing Plans</h2>
                 <p class="lead">Pick whatever floats your boat</p>
@@ -89,25 +91,6 @@
 
             <!-- Pricing Table -->
             <div class="row justify-content-center text-black">
-
-                {{-- First Tier --}}
-                {{-- <div class="col-md-4 mb-4">
-                    <div class="card text-center border-0 shadow-sm">
-                        <div class="card-body">
-                            <h3 class="card-title">Enterprise</h3>
-                            <p class="lead text-muted">For the Serious Player</p>
-                            <h4 class="pricing">€29/month</h4>
-                            <ul class="list-group my-4">
-                                <li class="list-group-item">✔️ Customized solutions</li>
-                                <li class="list-group-item">✔️ Advanced BOM management</li>
-                                <li class="list-group-item">✔️ Dedicated support team</li>
-                            </ul>
-                            <a href="" class="btn btn-outline-primary btn-lg">Contact Us</a>
-                        </div>
-                    </div>
-                </div> --}}
-
-
 
                 {{-- Pro --}}
                 <div class="col-md-auto mb-4">
@@ -117,8 +100,8 @@
                         <div class="card-body">
                             <h3 class="card-title">Pro</h3>
                             <p class="lead text-muted">For the Maker</p>
-                            <h4 class="pricing"><del>€29/month</del></h4>
-                            <h4 class="pricing text-danger">€9/month</h4>
+                            <h4 class><del>€29/month</del></h4>
+                            <h4 class="text-danger">€9/month</h4>
                             <ul class="list-group my-4 list-group-item-action text-start">
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Unlimited Resources</li>
@@ -139,9 +122,9 @@
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                             </ul>
                             <div>
-                            <a href="{{ route('register', ['plan' => 'pro']) }}" class="disabled-link"><button
-                                    class="btn btn-primary btn-lg" disabled>Start Pro
-                                    Trial</button></a>
+                                <a href="{{ route('register', ['plan' => 'pro']) }}" class="disabled-link"><button
+                                        class="btn btn-primary btn-lg" disabled>Start Pro
+                                        Trial</button></a>
                             </div>
                             <div class="text-muted fw-light">Coming soon!</div>
                         </div>
@@ -154,14 +137,15 @@
                         <div class="card-body">
                             <h3 class="card-title">Free</h3>
                             <p class="lead text-muted">For the Enthusiast</p>
-                            <h4 class="pricing">€0/month</h4>
+                            <h4 class>€0/month</h4>
                             <ul class="list-group my-4 text-start">
                                 <li class="list-group-item"><i class="fas fa-check"></i> Limited Resources</li>
                                 <li class="list-group-item list-group-item-action"><i class="fas fa-check"></i> Stock
                                     Movement History</li>
                                 <li class="list-group-item"><i class="fas fa-check"></i> Community support</li>
                             </ul>
-                            <a href="" class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
+                            <a href="#register-free"
+                                class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
                         </div>
                     </div>
                 </div>
