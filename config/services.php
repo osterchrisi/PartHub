@@ -37,6 +37,7 @@ return [
     ],
 
     'gtag' => [
+        // Not using "vanilla" gtag.js right now
         'tag' => env('VITE_GTAG'),
         'tag-manager' => env('VITE_GTAG_MANAGER'),
     ],

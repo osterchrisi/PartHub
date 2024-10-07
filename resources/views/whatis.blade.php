@@ -84,7 +84,7 @@
             bgClass="bg-secondary bg-gradient text-white" />
 
         <!-- Call to Action -->
-        <div class="row mb-5">
+        <div class="row mb-5" id="whatis-call-to-action-div">
             <div class="col-12 bg-primary bg-gradient text-white text-center p-5 rounded">
                 <h2 class="display-4 mb-4">Ready to Get Started?</h2>
                 <p class="lead">Sign up today and start organizing your parts like never before!</p>

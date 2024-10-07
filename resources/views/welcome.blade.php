@@ -69,12 +69,6 @@
         
         
     </table>
-    <!-- Google tag (gtag.js) event -->
-    <script>
-        gtag('event', 'manual_event_PAGE_VIEW', {
-            // <event_parameters>
-        });
-    </script>
 @endsection
 
 @section('modals and menus')
