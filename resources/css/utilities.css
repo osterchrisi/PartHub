@@ -61,12 +61,6 @@
     color: #ffffff;
 }
 
-/* Hero Section */
-.hero-section {
-    color: white;
-    padding: 5rem 0;
-}
-
 /* Sortable */
 .sortable-ghost {
     opacity: 0.5;

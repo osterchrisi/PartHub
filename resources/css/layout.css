@@ -40,7 +40,6 @@
 
 /* Hero Section */
 .hero-section {
-    background-image: url('/path/to/hero-background.jpg');
     background-size: cover;
     background-position: center;
     color: white;

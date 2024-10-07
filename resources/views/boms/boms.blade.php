@@ -28,15 +28,7 @@ $showAssembleButton = true;
 
 {{-- Info Window --}}
 @section('info-window')
-    <div class="alert alert-dark align-self-start mt-3" role="alert">
-        <p class="text-center">
-        <h6>Click a row in the table to see BOM details</h6>
-        </p>
-        <br>
-        @if (session('success'))
-            <div class="alert alert-success align-self-start mt-3">
-                {{ session('success') }}
-            </div>
-        @endif
-    </div>
+<x-info-window-info-div>
+    Click a row in the table to see BOM details
+</x-info-window-info-div>
 @endsection

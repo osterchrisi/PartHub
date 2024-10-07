@@ -44,8 +44,10 @@ If the right-click menu is not on top, it won't show --}}
 
 {{-- Info Window --}}
 @section('info-window')
-    {{-- <h6><br>Click a row in the table to see part details</h6><br><br> --}}
-    <div class="alert alert-dark align-self-start mt-3 mx-3" role="alert">
+    {{-- <div class="alert alert-dark align-self-start mt-3 mx-3" role="alert">
         <h6 class="text-center">Click a row in the table to see part details</h6>
-    </div>
+    </div> --}}
+    <x-info-window-info-div>
+        Click a row in the table to see part details
+    </x-info-window-info-div>
 @endsection

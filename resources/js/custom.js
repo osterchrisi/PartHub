@@ -348,8 +348,8 @@ export function updateInfoWindow(type, id) {
             }
 
             const errorHTML = `
-                <div class="alert alert-dark align-self-start" role="alert">
-                    <p class="text-center">${errorMessage}</p>
+            <div class="alert alert-dark align-self-start mt-3 mx-3" role="alert">
+            <h6 class="text-center">${errorMessage}</h6>
                 </div>`;
 
             $('#info-window').html(errorHTML);

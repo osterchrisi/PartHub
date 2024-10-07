@@ -25,5 +25,7 @@ Filter comming soon
 @endsection
 
 @section('info-window')
-<h6><br>Click a row in the table to see supplier details</h6>
+<x-info-window-info-div>
+    Click a row in the table to see supplier details
+</x-info-window-info-div>
 @endsection
