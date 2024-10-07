@@ -27,8 +27,8 @@ return new class extends Migration {
             $table->dropForeign('supplier_data_supplier_id_fk_foreign');
 
             // Now, recreate the foreign key constraint with 'onDelete' cascade
-            $table->foreign('part_id_fk')
-                ->references('part_id')->on('parts')
+            $table->foreign('supplier_id_fk')
+                ->references('supplier_id')->on('suppliers')
                 ->onDelete('cascade');
         });
     }
@@ -46,7 +46,7 @@ return new class extends Migration {
             // Recreate the original foreign key constraint
             $table->foreign('part_id_fk')
                 ->references('part_id')->on('parts')
-                ->onDelete('restrict'); // or 'no action', depending on the original setup
+                ->onDelete('restrict');
         });
 
         //* Supplier ID foreign key
@@ -55,9 +55,9 @@ return new class extends Migration {
             $table->dropForeign('supplier_data_supplier_id_fk_foreign');
 
             // Recreate the original foreign key constraint
-            $table->foreign('part_id_fk')
-                ->references('part_id')->on('parts')
-                ->onDelete('restrict'); // or 'no action', depending on the original setup
+            $table->foreign('supplier_id_fk')
+                ->references('supplier_id')->on('suppliers')
+                ->onDelete('restrict');
         });
     }
 };
