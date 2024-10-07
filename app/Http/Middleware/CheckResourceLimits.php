@@ -27,8 +27,11 @@ class CheckResourceLimits
         $type = $request->input('type');  // Get the resource type from the request
         $part_id = $request->input('part_id') ? $request->input('part_id') : '';
 
-        //TODO: {$type} could be made to look nicer (upper case and case for 'supplier_data')
         if ($this->limitService->hasReachedLimit($user, $type, $part_id)) {
+            if ($type === 'supplier_data'){
+                $type = 'supplier entries per Part';
+            }
+            $type = ucfirst($type);
             return response()->json([
                 'message' => "You have reached your {$type} creation limit for your subscription plan."
             ], 403);

@@ -4,7 +4,6 @@ namespace App\Events;
 
 use App\Models\Location;
 use App\Models\Part;
-use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -20,7 +19,7 @@ class StockMovementOccured
     /**
      * Create a new event instance.
      */
-    public function __construct(array $stock_level, User $user)
+    public function __construct(array $stock_level, $user)
     {
         $this->stock_levels = $stock_level;
         // Get human-readable part name
