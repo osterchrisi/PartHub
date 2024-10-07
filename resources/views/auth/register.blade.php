@@ -124,7 +124,7 @@
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                             </ul>
                             <div>
-                                <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"><button
+                                <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}" class="disabled-link"><button
                                         class="btn btn-primary btn-lg" disabled>Start Pro
                                         Trial</button></a>
                             </div>

@@ -81,20 +81,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Google Tag (gtag.js) -->
-    <script async src=https://www.googletagmanager.com/gtag/js?id={{ config('services.gtag.tag') }}"></script>
-    <script>
-        const gtagTag = "{{ config('services.gtag.tag') }}";
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', gtagTag);
-    </script>
-
     <!-- Google Tag Manager -->
     <script>
         const gtagTagManager = "{{ config('services.gtag.tag-manager') }}";
