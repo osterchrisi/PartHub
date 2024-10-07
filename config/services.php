@@ -47,5 +47,8 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+    'mouser' => [
+        'api_key' => env('MOUSER_API_KEY'),
+    ]
 
 ];

@@ -13,6 +13,7 @@ use App\Services\CategoryService;
 use App\Services\DatabaseService;
 use App\Services\StockService;
 use App\Services\SupplierService;
+use App\Services\MouserApiService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,13 +39,15 @@ class PartController extends Controller
     protected $supplierService;
 
     protected $categoryService;
+    protected $mouserApi;
 
-    public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService)
+    public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService, MouserApiService $mouserApi)
     {
         $this->categoryService = $categoryService;
         $this->databaseService = $databaseService;
         $this->stockService = $stockService;
         $this->supplierService = $supplierService;
+        $this->mouserApi = $mouserApi;
     }
 
     /**
@@ -97,7 +100,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -150,7 +154,7 @@ class PartController extends Controller
             );
 
             // Handle stock level if quantity and location are provided
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
                     $new_part_id,
@@ -164,14 +168,14 @@ class PartController extends Controller
             }
 
             // Handle supplier data through SupplierService
-            if (! empty($validated['suppliers'])) {
+            if (!empty($validated['suppliers'])) {
                 $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
             // Trigger stock movement event
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
                 event(new StockMovementOccured($stock_level, Auth::user()));
             }
@@ -184,7 +188,7 @@ class PartController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
 
@@ -251,7 +255,8 @@ class PartController extends Controller
                     'tabToggleId3' => 'partSuppliers',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -312,7 +317,7 @@ class PartController extends Controller
         }
 
         //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (! empty($negative_stock)) {
+        if (!empty($negative_stock)) {
             $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);
@@ -324,5 +329,12 @@ class PartController extends Controller
 
             return response()->json($result);
         }
+    }
+
+    public function searchMouserPartNumer($searchTerm)
+    {
+        $result = $this->mouserApi->searchPartNumber($searchTerm);
+        \Log::info($result);
+        // return view('parts.search-results', compact('result'));
     }
 }
