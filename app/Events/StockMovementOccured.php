@@ -14,6 +14,7 @@ class StockMovementOccured
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public array $stock_levels;
+
     public $user;
 
     /**

@@ -7,14 +7,14 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
 use App\Services\CategoryService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 trait RegistersUsers
@@ -82,7 +82,7 @@ trait RegistersUsers
             // Then, attempt to send the welcome email
             Mail::to($email)->send(new WelcomeEmail(new User(['email' => $email])));
 
-        } catch (ValidationException | TransportExceptionInterface $e) {
+        } catch (ValidationException|TransportExceptionInterface $e) {
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
         }
     }

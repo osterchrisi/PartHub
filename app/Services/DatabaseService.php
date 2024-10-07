@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseService
 {
@@ -27,7 +27,7 @@ class DatabaseService
     {
         // Get the owner column for the specified table
         $owner_column = self::$owner_columns[$table] ?? null;
-        if (!$owner_column) {
+        if (! $owner_column) {
             throw new Exception("No owner column found for table {$table}");
         }
 
@@ -40,8 +40,8 @@ class DatabaseService
             ->where($owner_column, $user_id)
             ->delete();
 
-        if (!$deleted) {
-            throw new Exception("Unauthorized or row not found for deletion");
+        if (! $deleted) {
+            throw new Exception('Unauthorized or row not found for deletion');
         }
     }
 
@@ -52,7 +52,7 @@ class DatabaseService
     {
         // Get the owner column for the specified table
         $owner_column = self::$owner_columns[$table_name] ?? null;
-        if (!$owner_column) {
+        if (! $owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
@@ -65,8 +65,8 @@ class DatabaseService
             ->where($owner_column, $user_id)
             ->update([$column => $new_value]);
 
-        if (!$updated) {
-            throw new Exception("Unauthorized or row not found for updating");
+        if (! $updated) {
+            throw new Exception('Unauthorized or row not found for updating');
         }
     }
 }

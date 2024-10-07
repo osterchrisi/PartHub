@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\SubscriptionLimitService;
 use Closure;
 use Illuminate\Http\Request;
-use App\Services\SubscriptionLimitService;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckResourceLimits
@@ -28,12 +28,13 @@ class CheckResourceLimits
         $part_id = $request->input('part_id') ? $request->input('part_id') : '';
 
         if ($this->limitService->hasReachedLimit($user, $type, $part_id)) {
-            if ($type === 'supplier_data'){
+            if ($type === 'supplier_data') {
                 $type = 'supplier entries per Part';
             }
             $type = ucfirst($type);
+
             return response()->json([
-                'message' => "You have reached your {$type} creation limit for your subscription plan."
+                'message' => "You have reached your {$type} creation limit for your subscription plan.",
             ], 403);
         }
 

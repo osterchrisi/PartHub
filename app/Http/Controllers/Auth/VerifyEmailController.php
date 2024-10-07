@@ -45,6 +45,6 @@ class VerifyEmailController extends Controller
         }
 
         // Redirect to home or dashboard for free plan users
-        return redirect()->intended(RouteServiceProvider::HOME . '?verified=1');
+        return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
     }
 }

@@ -79,7 +79,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Footprint::class, 'footprint_owner_u_fk');
     }
 
-
     // Method to check if the user has no subscription
     public function hasNoSubscription()
     {
@@ -96,8 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
         // If no plan or priceId is set, send the default verification email
         if (is_null($this->selected_plan) || is_null($this->price_id)) {
             $this->notify(new CustomVerifyEmail(null, null));
-        }
-        else {
+        } else {
             // Otherwise, send the verification with plan and priceId
             $this->notify(new CustomVerifyEmail($this->selected_plan, $this->price_id));
         }

@@ -8,13 +8,11 @@ class SubscriptionLimitService
     {
         // Get the user's current subscription plan
         $subscription = $user->subscription('maker');
-        if (!$subscription) {
+        if (! $subscription) {
             $subscriptionType = 'free';
-        }
-        else {
+        } else {
             $subscriptionType = $subscription->name;
         }
-
 
         // Retrieve limits from the config file based on the subscription plan
         $limits = config("subscription_limits.{$subscriptionType}");
@@ -22,7 +20,7 @@ class SubscriptionLimitService
         // Build dynamic method names based on the resource type
         $resourceCountMethod = ($resourceType === 'supplier_data')
             ? 'getSupplierDataCount'
-            : 'get' . ucfirst($resourceType) . 'Count';
+            : 'get'.ucfirst($resourceType).'Count';
 
         // Check if the limit is null (unlimited)
         $limit = $limits["{$resourceType}_limit"];
@@ -35,10 +33,8 @@ class SubscriptionLimitService
         // Call the appropriate method, passing $part_id for supplier_data or no argument for others
         if ($resourceType === 'supplier_data') {
             return $user->$resourceCountMethod($part_id) >= $limit;
-        }
-        else {
+        } else {
             return $user->$resourceCountMethod() >= $limit;
         }
     }
-
 }

@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\URL;
 
 class CustomVerifyEmail extends VerifyEmailNotification
 {
-
     protected $plan;
+
     protected $priceId;
 
     public function __construct($plan, $priceId)

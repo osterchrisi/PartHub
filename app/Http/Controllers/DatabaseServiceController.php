@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\DatabaseService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class DatabaseServiceController extends Controller
 {
@@ -26,6 +26,7 @@ class DatabaseServiceController extends Controller
             return response()->json(['message' => 'Rows deleted successfully'], 200);
         } catch (Exception $e) {
             Log::error($e->getMessage());
+
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
@@ -43,9 +44,11 @@ class DatabaseServiceController extends Controller
 
         try {
             DatabaseService::updateCell($table_name, $id_field, $id, $column, $new_value);
+
             return response()->json(['message' => 'Cell updated successfully'], 200);
         } catch (Exception $e) {
             Log::error($e->getMessage());
+
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
