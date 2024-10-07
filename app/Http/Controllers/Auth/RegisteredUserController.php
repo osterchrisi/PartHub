@@ -32,10 +32,11 @@ class RegisteredUserController extends Controller
         \Log::info($request);
         // Validate request
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'recaptcha_response' => ['required', 'string'],
+            'plan' => ['required', 'in:free,maker'],
         ]);
 
         // Recaptcha processing

@@ -29,13 +29,6 @@ class SubscriptionController extends Controller
                 'cancel_url' => route('welcome'),
                 'billing_address_collection' => 'required',
             ]);
-
-            //TODO: Uhm yeah...
-        // After successful subscription, clear the plan and priceId
-        $user->update([
-            'selected_plan' => null,
-            'price_id' => null,
-        ]);
     }
 
     public function manage()

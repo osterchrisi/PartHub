@@ -7,14 +7,15 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
 use App\Services\CategoryService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use App\Events\UserRegisteredWithPlan;
 
 trait RegistersUsers
 {
@@ -41,10 +42,9 @@ trait RegistersUsers
      */
     protected function registerUser(string $name, string $email, ?string $password = null, string $selectedPlan = 'free', $priceId = ''): User
     {
-        // Try to send the welcome email before creating the user
-        //TODO: Use something better than sending a mail to verify... Laravel supports MX record validation, e.g. $request->validate(['email' => 'required|email|dns']);
-        $this->validateEmailCanReceiveMail($email);
+        $this->validateEmail($email);
 
+        DB::beginTransaction();
         // If email validation succeeds, create the user, create password if Google Oauth
         $user = User::create([
             'name' => $name,
@@ -63,6 +63,7 @@ trait RegistersUsers
         // Create default location and root category
         Location::createLocation('Default Location', 'Feel free to change the description');
         $this->categoryService->createNewRootCategory();
+        DB::commit();
 
         return $user;
     }
@@ -70,11 +71,18 @@ trait RegistersUsers
     /**
      * Validate email by attempting to send the welcome email.
      */
-    protected function validateEmailCanReceiveMail(string $email): void
+    protected function validateEmail(string $email): void
     {
         try {
+            // First, validate the email with the DNS rule
+            Validator::make(['email' => $email], [
+                'email' => 'required|email|dns',
+            ])->validate();  // Throws ValidationException if it fails
+
+            // Then, attempt to send the welcome email
             Mail::to($email)->send(new WelcomeEmail(new User(['email' => $email])));
-        } catch (TransportExceptionInterface $e) {
+
+        } catch (ValidationException | TransportExceptionInterface $e) {
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
         }
     }
