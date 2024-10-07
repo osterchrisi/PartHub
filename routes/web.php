@@ -19,7 +19,6 @@ use App\Http\Controllers\SupplierDataController;
 use App\Http\Controllers\UserSettingController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use App\Services\DatabaseService;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -52,7 +51,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //* Database Service Routes
-Route::post('/updateRow', [DatabaseService::class, 'updateCell'])->middleware(['auth', 'verified']);
+Route::post('/updateCell', [DatabaseServiceController::class, 'updateCell'])->middleware(['auth', 'verified']);
 Route::post('/deleteRow', [DatabaseServiceController::class, 'deleteRow'])->middleware(['auth', 'verified']);
 
 //* Part Routes
@@ -61,7 +60,6 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::get('/parts', 'index')->name('parts');
         Route::get('/part/{id}', 'show');
         Route::get('/part.getName', 'getName');
-        Route::post('/part.delete', 'destroy');
         Route::post('/parts.requestStockChange', 'handleStockRequests');
         Route::post('/part.create', 'create')->middleware('resource.limits');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');

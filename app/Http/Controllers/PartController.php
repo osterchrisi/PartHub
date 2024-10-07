@@ -257,21 +257,6 @@ class PartController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
-    {
-        $table = $request->input('table');
-        $column = $request->input('column');
-        $ids = $request->input('ids');
-
-        foreach ($ids as $id) {
-            $this->databaseService->deleteRow($table, $column, $id);
-            echo json_encode([$ids, $table, $column]);
-        }
-    }
-
-    /**
      * Get the part name for a given part ID.
      * Used in the stock changing modal.
      *

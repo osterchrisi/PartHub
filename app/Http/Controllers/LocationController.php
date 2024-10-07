@@ -93,20 +93,4 @@ class LocationController extends Controller
 
         return response()->json($response);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
-    {
-        $table = $request->input('table');
-        $column = $request->input('column');
-        $ids = $request->input('ids');
-
-        foreach ($ids as $id) {
-            DatabaseService::deleteRow($table, $column, $id);
-            echo json_encode([$ids, $table, $column]);
-        }
-
-    }
 }

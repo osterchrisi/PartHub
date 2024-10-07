@@ -260,7 +260,7 @@ class InlineTableCellEditor {
         }
 
         return $.ajax({
-            url: '/updateRow',
+            url: '/updateCell',
             type: 'POST',
             data: {
                 id: id,
