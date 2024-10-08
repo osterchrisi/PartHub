@@ -15,10 +15,11 @@
     <title>PartHub - {{ $title }}
     </title>
 
-    {{-- Cookie Consent --}}
+    {{-- Cookie Consent, GDPR --}}
     <!-- Termly custom blocking map -->
     <script data-termly-config>
         window.TERMLY_CUSTOM_BLOCKING_MAP = {
+            "127.0.0.1": "essential",
             "unpkg.com": "essential",
             "parthub.online": "essential",
         }

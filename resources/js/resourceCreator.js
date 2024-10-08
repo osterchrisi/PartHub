@@ -1,6 +1,7 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
 import { DropdownManager } from "./dropdownManager";
+import { MouserPartSearch } from "./MouserPartSearch";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {

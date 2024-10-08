@@ -18,7 +18,14 @@
                         <input type="text" class="form-control" id="addPartName" placeholder="Part Name">
                         <button class="btn btn-outline-secondary" type="button"
                             id="toggle-uppercase-button">AA</button>
+                    </div><!-- Spinner container -->
+                    <div id="mouserLoadingSpinner" class="d-none text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div>
+
+                    <div id="mouserSearchResults" class="mt-4"></div>
 
                     <div class="row">
                         <div class="col mb-2">
@@ -64,7 +71,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button type="button" id="addSupplierRowBtn-partEntry" class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add
+                            <button type="button" id="addSupplierRowBtn-partEntry"
+                                class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add
                                 Supplier</button>
                         </div>
                     </div>

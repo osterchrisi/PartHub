@@ -333,8 +333,13 @@ class PartController extends Controller
 
     public function searchMouserPartNumber($searchTerm)
     {
+        // Call the Mouser API service to get part number details
         $result = $this->mouserApi->searchPartNumber($searchTerm);
+        
+        // Log the result for debugging
         \Log::info($result);
-        // return view('parts.search-results', compact('result'));
+
+        // Return the result as JSON for the front-end
+        return response()->json($result);
     }
 }

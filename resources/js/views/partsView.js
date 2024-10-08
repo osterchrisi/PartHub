@@ -15,6 +15,7 @@ import {
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
+import { MouserPartSearch } from "../MouserPartSearch";
 
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
@@ -53,6 +54,8 @@ export function initializePartsView() {
     });
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
+
+    const partSearch = new MouserPartSearch('addPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
 
     const newPartCreator = new ResourceCreator({
         type: 'part',

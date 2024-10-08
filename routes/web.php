@@ -63,6 +63,7 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::post('/parts.requestStockChange', 'handleStockRequests');
         Route::post('/part.create', 'create')->middleware('resource.limits');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
+        Route::get('/search-mouser-part/{searchTerm}', 'searchMouserPartNumber');
     });
 });
 
