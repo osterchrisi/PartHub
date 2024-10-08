@@ -27,6 +27,7 @@ class ResourceCreator {
     this.clickListenerAttached = false;
     this.inputModal.on('hidden.bs.modal', (event) => {
       if (event.target === this.inputModal[0]) {
+        $('#mouserSearchResults').empty();
         this.removeAddButtonClickListener()
         this.clickListenerAttached = false;
       }

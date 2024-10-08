@@ -13,19 +13,31 @@
                 <?php echo $part_name; ?><br><br>
                 <form id="partEntryForm">
                     @csrf
-                    {{-- Name --}}
-                    <div class="input-group mb-3">
+                    <!-- Toggle Buttons -->
+                    <button class="btn btn-sm btn-light mb-1" id="manualEntryButton" type="button">Manual
+                        Entry</button>
+                    <button class="btn btn-sm btn-light mb-1" id="mouserSearchButton" type="button">Mouser
+                        Search</button>
+
+                    <!-- Manual Entry Part Name Input -->
+                    <div class="input-group mb-3" id="manualEntrySection">
                         <input type="text" class="form-control" id="addPartName" placeholder="Part Name">
                         <button class="btn btn-outline-secondary" type="button"
                             id="toggle-uppercase-button">AA</button>
-                    </div><!-- Spinner container -->
-                    <div id="mouserLoadingSpinner" class="d-none text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
                     </div>
 
-                    <div id="mouserSearchResults" class="mt-4"></div>
+                    <!-- Mouser Search Section (Initially Hidden) -->
+                    <div id="mouserSearchSection">
+                        <input type="text" class="form-control" id="mouserPartName"
+                            placeholder="Search Part on Mouser">
+                        <!-- Spinner container -->
+                        <div id="mouserLoadingSpinner" class="d-none text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div id="mouserSearchResults" class="mt-4"></div>
+                    </div>
 
                     <div class="row">
                         <div class="col mb-2">

@@ -83,7 +83,7 @@ export class MouserPartSearch {
                 button.addEventListener('click', (event) => this.selectPart(event));
             });
         } else {
-            this.resultsContainer.innerHTML = '<p>No results found.</p>';
+            this.resultsContainer.innerHTML = '<p>No results found from Mouser.</p>';
         }
     }
 

@@ -1,4 +1,3 @@
-@include('parts.mouserSearch')
 <!-- Location / Quantity Table -->
 @include('parts.stockTable')
 
