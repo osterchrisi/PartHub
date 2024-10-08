@@ -16,6 +16,13 @@
     </title>
 
     {{-- Cookie Consent --}}
+    <!-- Termly custom blocking map -->
+    <script data-termly-config>
+        window.TERMLY_CUSTOM_BLOCKING_MAP = {
+            "unpkg.com": "essential",
+            "parthub.online": "essential",
+        }
+    </script>
     <script type="text/javascript"
         src="https://app.termly.io/resource-blocker/4134b801-03f7-4cab-85ea-c4ab4e329670?autoBlock=on"></script>
     <!-- JQuery -->

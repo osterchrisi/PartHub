@@ -22,9 +22,11 @@ class MouserApiService
         $response = Http::post($url, [
             'SearchByPartRequest' => [
                 'mouserPartNumber' => $searchTerm,
-                'partSearchOptions' => null
+                'partSearchOptions' => null //The following values are valid: None | Exact - can use string representations or integer IDs: 1[None] | 2[Exact]
             ]
         ]);
+
+        \Log::info($response->json());
 
         return $response->json();  // Return the response as a JSON array
     }

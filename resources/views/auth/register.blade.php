@@ -14,7 +14,7 @@
         </div>
 
         <x-register-card bgClass="text-white signup-gradient-background" id="register-free">
-            <h4 class="alert alert-info mt-1 text-center" role="alert">Now accepting sign ups for beta usage</h4>
+            {{-- <h4 class="alert alert-info mt-1 text-center" role="alert">Now accepting sign ups for beta usage</h4> --}}
             <div class="text-center mb-4">
                 <h2 class="display-5">Create Your Free Account</h2>
             </div>

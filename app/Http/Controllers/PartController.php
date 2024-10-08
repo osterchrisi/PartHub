@@ -331,7 +331,7 @@ class PartController extends Controller
         }
     }
 
-    public function searchMouserPartNumer($searchTerm)
+    public function searchMouserPartNumber($searchTerm)
     {
         $result = $this->mouserApi->searchPartNumber($searchTerm);
         \Log::info($result);

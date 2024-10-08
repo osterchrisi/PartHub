@@ -5,7 +5,7 @@
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
             <td colspan="3">
-                <h1 class="display-1" id="welcome-headline">PartHub</h1><br>
+                <h1 class="display-1">PartHub</h1><br>
                 <h1>Inventory and BOM management</h1><br>
                 @if (session('loggedIn'))
                     <div class="alert alert-info" role="alert">Nice to have you back, {{ optional(Auth::user())->name }}! 🚀
