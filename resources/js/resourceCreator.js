@@ -5,6 +5,7 @@ import { MouserPartSearch } from "./MouserPartSearch";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
+    console.log("being instantiated and type: ", options.type);
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -71,6 +72,7 @@ class ResourceCreator {
   */
   requestCreation() {
     const data = {};
+    console.log("data at start: ", data);
     // Collect static and dynamic input fields
     this.inputFields.forEach(field => {
       if (typeof field.getValue === 'function') {
@@ -81,12 +83,13 @@ class ResourceCreator {
         data[field.name] = $(field.selector).val();
       }
     });
+    console.log("data after loop: ", data);
     data['type'] = this.type;
 
     if (this.categoryId) { data['parent_category'] = this.categoryId; }
 
     const token = $('input[name="_token"]').attr('value');
-
+    console.log(Object.assign({ _token: token }, data));
     $.ajax({
       url: this.endpoint,
       type: 'POST',
