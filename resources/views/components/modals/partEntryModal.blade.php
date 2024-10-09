@@ -13,11 +13,11 @@
                 <?php echo $part_name; ?><br><br>
                 <form id="partEntryForm">
                     @csrf
-                    <!-- Toggle Buttons -->
+                    {{-- <!-- Toggle Buttons -->
                     <button class="btn btn-sm btn-light mb-1" id="manualEntryButton" type="button">Manual
                         Entry</button>
                     <button class="btn btn-sm btn-light mb-1" id="mouserSearchButton" type="button">Mouser
-                        Search</button>
+                        Search</button> --}}
 
                     <!-- Manual Entry Part Name Input -->
                     <div class="input-group mb-3" id="manualEntrySection">
@@ -26,7 +26,7 @@
                             id="toggle-uppercase-button">AA</button>
                     </div>
 
-                    <!-- Mouser Search Section (Initially Hidden) -->
+                    {{-- <!-- Mouser Search Section (Initially Hidden) -->
                     <div id="mouserSearchSection">
                         <input type="text" class="form-control" id="mouserPartName"
                             placeholder="Search Part on Mouser">
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div id="mouserSearchResults" class="mt-4"></div>
-                    </div>
+                    </div> --}}
 
                     <div class="row">
                         <div class="col mb-2">
