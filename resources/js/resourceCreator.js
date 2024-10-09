@@ -6,6 +6,7 @@ import { MouserPartSearch } from "./MouserPartSearch";
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
     console.log("being instantiated and type: ", options.type);
+    console.log("categoryId = ", options.categoryId);
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -629,6 +630,10 @@ class ResourceCreator {
         console.log(error);
       }
     });
+  }
+
+  setCategoryId(categoryId) {
+    this.categoryId = categoryId;
   }
 
 }

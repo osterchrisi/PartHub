@@ -133,26 +133,25 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
         deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
       });
 
+      const newCategoryCreator = new ResourceCreator({
+        type: 'category',
+        endpoint: '/category.create',
+        newIdName: 'Category ID',
+        inputForm: '#categoryEntryForm',
+        inputFields: [
+          { name: 'category_name', selector: '#addCategoryName' }
+        ],
+        inputModal: '#mCategoryEntry',
+        addButton: '#addCategory', //! Is not in use anymore, only Category view used it...
+        categoryId: null
+      },
+        [rebuildPartsTable, rebuildCategoriesTable]);
 
       //* Add Category
       $table.on('click', 'tbody .addcat-button', function () {
         var $row = $(this).closest('tr');
         var categoryId = [$row.data('id')];
-
-        const newCategoryCreator = new ResourceCreator({
-          type: 'category',
-          endpoint: '/category.create',
-          newIdName: 'Category ID',
-          inputForm: '#categoryEntryForm',
-          inputFields: [
-            { name: 'category_name', selector: '#addCategoryName' }
-          ],
-          inputModal: '#mCategoryEntry',
-          addButton: '#addCategory', //! Is not in use anymore, only Category view used it...
-          categoryId: categoryId[0]
-        },
-          [rebuildPartsTable, rebuildCategoriesTable]);
-
+        newCategoryCreator.setCategoryId(categoryId[0]);
         newCategoryCreator.showModal();
       });
       // Initial state is collapsed
