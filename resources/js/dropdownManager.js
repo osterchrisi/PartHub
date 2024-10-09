@@ -324,6 +324,7 @@ class DropdownManager {
             data: {
                 category_name: categoryName,
                 parent_category: parentCategory,
+                type: 'category',
                 _token: token
             },
             success: (response) => {

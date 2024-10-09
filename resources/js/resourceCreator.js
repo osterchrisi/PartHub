@@ -5,8 +5,6 @@ import { MouserPartSearch } from "./MouserPartSearch";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
-    console.log("being instantiated and type: ", options.type);
-    console.log("categoryId = ", options.categoryId);
     // Options
     this.type = options.type;
     this.endpoint = options.endpoint;
@@ -73,7 +71,6 @@ class ResourceCreator {
   */
   requestCreation() {
     const data = {};
-    console.log("data at start: ", data);
     // Collect static and dynamic input fields
     this.inputFields.forEach(field => {
       if (typeof field.getValue === 'function') {

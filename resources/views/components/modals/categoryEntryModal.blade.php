@@ -13,6 +13,7 @@
                 <form id="categoryEntryForm">
                     @csrf
                     <input class="form-control form-control-sm" placeholder="Category Name" id="addCategoryName" required><br>
+                    <input type="hidden" id="parentCategoryId" name="parent_category">
                 </form>
             </div>
 

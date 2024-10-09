@@ -133,27 +133,61 @@ export function bootstrapCategoriesListTable(treeColumn = 1) {
         deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
       });
 
-      const newCategoryCreator = new ResourceCreator({
-        type: 'category',
-        endpoint: '/category.create',
-        newIdName: 'Category ID',
-        inputForm: '#categoryEntryForm',
-        inputFields: [
-          { name: 'category_name', selector: '#addCategoryName' }
-        ],
-        inputModal: '#mCategoryEntry',
-        addButton: '#addCategory', //! Is not in use anymore, only Category view used it...
-        categoryId: null
-      },
-        [rebuildPartsTable, rebuildCategoriesTable]);
-
       //* Add Category
+      //! There used to be a resourceCreator here but I kept running into issues, so hardcoded it for now
       $table.on('click', 'tbody .addcat-button', function () {
-        var $row = $(this).closest('tr');
-        var categoryId = [$row.data('id')];
-        newCategoryCreator.setCategoryId(categoryId[0]);
-        newCategoryCreator.showModal();
+        const $row = $(this).closest('tr');
+        const parentCategoryId = $row.data('id'); // Get the parent category ID from the row
+
+        // Show modal for category entry
+        $('#mCategoryEntry').modal('show');
+
+        // Set the parent category ID in a hidden field in the modal
+        $('#parentCategoryId').val(parentCategoryId);
       });
+
+      $('#addCategory').off().on('click', function () {
+        const categoryName = $('#addCategoryName').val();
+        const parentCategoryId = $('#parentCategoryId').val();
+        const token = $('input[name="_token"]').attr('value'); // CSRF token
+
+        // Ensure that the category name is not empty
+        if (!categoryName) {
+          alert("Category name cannot be empty!");
+          return;
+        }
+
+        // Make AJAX request to create the new category
+        $.ajax({
+          url: '/category.create',
+          type: 'POST',
+          data: {
+            _token: token,
+            category_name: categoryName,
+            parent_category: parentCategoryId,
+            type: 'category'
+          },
+          success: function (response) {
+            // Close modal on success
+            $('#mCategoryEntry').modal('hide');
+
+            // Clear the input fields for next time
+            $('#addCategoryName').val('');
+            $('#parentCategoryId').val('');
+
+            // Rebuild the categories table after creation
+            rebuildCategoriesTable();
+            rebuildPartsTable('');
+          },
+          error: function (xhr) {
+            alert("Error creating category. Please try again.");
+          }
+        });
+      });
+
+
+
+
       // Initial state is collapsed
       let isCollapsed = false;
 
