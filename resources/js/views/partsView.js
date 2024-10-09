@@ -55,7 +55,7 @@ export function initializePartsView() {
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
 
-    const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
+    // const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
     togglePartInputs();
     togglePartEntryButtons();
 
