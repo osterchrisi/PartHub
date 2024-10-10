@@ -16,6 +16,7 @@ import {
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
 import { MouserPartSearch } from "../MouserPartSearch";
+import { SupplierRowManager } from "../SupplierRowManager";
 
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
@@ -121,67 +122,10 @@ export function initializePartsView() {
         $('#ToStockLocationDiv-row').show();
     });
 
-    // Bootstrap the supplierDataTable in the part entry modal only after it's been shown
-    // Otherwise resizable columns don't work (because height = 0)
-    $('#addSuppliers').on('shown.bs.collapse', event => {
-
-        // Resize partEntry modal upon hiding supplier data table
-        $('#mPartEntry').removeClass('modal-lg').addClass('modal-xl');
-
-        // Bootstrap the table only if it isn't bootstrapped yet
-        if ($('#supplierDataTable').data('bootstrap.table')) {
-            //
-        } else {
-            // Timeout to wait for the size transformation to happen
-            // Otherwise the resizable column handles are not where the columns are
-            setTimeout(function () {
-                $('#supplierDataTable').bootstrapTable({
-                    formatNoMatches: function () {
-                        return '';
-                    },
-                    resizable: true,
-                });
-
-                newPartCreator.addSupplierRow('#supplierDataTable');
-            }, 300);
-        }
-    })
-
-    // Reset all the bootstrap-table and collapse shenanigans in the Supplier Data section
-    // of the part entry modal
-    $('#mPartEntry').on('hidden.bs.modal', function () {
-        $('#supplierDataTable').bootstrapTable('destroy');
-        $('#addSuppliers').empty();  // Removes all content inside the div
-        $('#addSuppliers').append(`
-            <div id="supplierTableContainer">
-                <table id="supplierDataTable" class="table table-sm table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th data-field="supplier">Supplier</th>
-                            <th data-field="URL">URL</th>
-                            <th data-field="SPN">SPN</th>
-                            <th data-field="price">Price</th>
-                            <th data-field="remove"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows will be dynamically added here -->
-                    </tbody>
-                </table>
-            </div>
-            <button type="button" id="addSupplierRowBtn-partEntry" class="btn btn-sm btn-secondary mt-2">Add
-            Supplier</button>
-        `);
-        // Collapse the supplier data div
-        $('#addSuppliers').removeClass('show');
-        // Resize modal size
-        $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
-    });
-
-    // Resize partEntry modal upon hiding supplier data table
-    $('#addSuppliers').on('hidden.bs.collapse', event => {
-        $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
-    });
+    const supplierRowManager = new SupplierRowManager();
+    supplierRowManager.bootstrapSupplierDataTable();
+    supplierRowManager.resetSupplierDataTableOnModalHide();
+    supplierRowManager.resizeModalOnSupplierTableCollapse();
 
 }
 

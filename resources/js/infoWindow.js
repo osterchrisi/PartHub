@@ -4,6 +4,8 @@ import { StockManager } from "./stockManager";
 import { ImageManager } from "./imageManager";
 import { DocumentManager } from "./DocumentManager";
 import { ResourceCreator } from "./resourceCreator";
+import { SupplierRowManager } from "./SupplierRowManager";
+import { DropdownManager } from "./dropdownManager";
 
 import {
     bootstrapPartInBomsTable,
@@ -61,8 +63,12 @@ class infoWindow {
                     function () {
                         $('#deleteSupplierRowBtn-info').prop('disabled', !$('#partSupplierDataTable').bootstrapTable('getSelections').length);
                     })
-                const supplierCreator = new ResourceCreator({ type: 'part' });
-                supplierCreator.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
+
+
+                const supplierRowManager = new SupplierRowManager();
+                supplierRowManager.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
+
+
                 $('#deleteSupplierRowBtn-info').click(() => {
                     let selection = $('#partSupplierDataTable').bootstrapTable('getSelections');
                     let deleteRowId = [];

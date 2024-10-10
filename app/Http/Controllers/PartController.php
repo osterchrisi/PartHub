@@ -130,7 +130,7 @@ class PartController extends Controller
             'min_quantity' => 'nullable|integer',
             'suppliers' => 'nullable|array',
             'suppliers.*.supplier_id' => 'nullable|integer',
-            'suppliers.*.URL' => 'nullable|url',
+            'suppliers.*.URL' => 'nullable|string', // Could also be URL for the validator but seems user-unfriendly
             'suppliers.*.SPN' => 'nullable|string|max:255',
             'suppliers.*.price' => 'nullable|numeric',
         ]);

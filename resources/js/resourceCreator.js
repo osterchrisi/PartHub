@@ -2,6 +2,7 @@ export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
 import { DropdownManager } from "./dropdownManager";
 import { MouserPartSearch } from "./MouserPartSearch";
+import { SupplierRowManager } from "./SupplierRowManager";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
@@ -42,13 +43,15 @@ class ResourceCreator {
     this.attachCategoryModalCloseListeners();
 
     // Supplier Data
-    this.addSupplierRow = this.addSupplierRow.bind(this);
-    this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
-    this.removeRowButtonClickListener();
-    this.newRowIndex = 0;
+    // this.addSupplierRow = this.addSupplierRow.bind(this);
+    // this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
+    // this.removeRowButtonClickListener();
+    // this.newRowIndex = 0;
 
     // Instantiate DropdownManager
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
+    this.supplierRowManager = new SupplierRowManager();
+    this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
   }
 
   showModal() {
@@ -213,7 +216,7 @@ class ResourceCreator {
             }
             this.dropdownManager.categoryCreated = false;
             this.toggleStockForm();
-            this.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
+            this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
           }
 
           // Attach click listener and proceed
@@ -456,137 +459,11 @@ class ResourceCreator {
     });
   }
 
-  // Function to add a new supplier data row to a specific table
-  addSupplierRow(tableId, partId) {
-    let newRowIndex = this.newRowIndex;
-    let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
-
-    // Check if the table requires extra fields
-    let selectBox = '';
-    let createBox = '';
-    if (tableId === '#partSupplierDataTable') {
-      selectBox = '<td></td>'; // Add an empty <td> for bootstrap-table selection functionality
-      createBox = `<button type="button" class="btn btn-sm btn-success ms-1" id="create-${newRowIndex}"><i class="fas fa-check"></i></button>`
-    }
-
-    // Create the new row with a unique dropdown ID for each row
-    let newRow = `<tr data-supplier-index="${newRowIndex}" data-part-id="${partId}">
-                  ${selectBox}  <!-- Include the extra <td> if applicable -->
-                  <td>
-                      <div id='${newDropdownDiv}'></div>
-                  </td>
-                  <td><input type='text' class='form-control form-control-sm' placeholder='URL' data-url-id="${newRowIndex}"></td>
-                  <td><input type='text' class='form-control form-control-sm' placeholder='SPN' data-spn-id="${newRowIndex}"></td>
-                  <td><input type='text' class='form-control form-control-sm' placeholder='Price' data-price-id="${newRowIndex}"></td>
-                  <td><div class='d-flex'><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-trash"></i></button>${createBox}</div></td>
-                </tr>`;
-
-    // Append the new row to the specified table body
-    $(`${tableId} tbody`).append(newRow);
-
-    // Fetch suppliers and populate the dropdown
-    this.getSuppliers().done((suppliers) => {
-      this.dropdownManager.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
-    });
-
-    // Attach a save Supplier Row handler
-    if (tableId === '#partSupplierDataTable') {
-      this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
-    }
-    this.newRowIndex++;
-  }
-
-
-  // Event listener for adding rows to a specific table
+    // Event listener for adding rows to a specific table
   addSupplierDataRowButtonClickListener(tableId, buttonId, partId = null) {
     $(`#${buttonId}`).off('click').on('click', () => {
       this.addSupplierRow(tableId, partId);
     });
-  }
-
-
-  // Event listener to remove row
-  // Doing this "outside" of Bootstrap-Table since the table itself is also manipulated in the DOM directly
-  removeRowButtonClickListener() {
-    $(document).on('click', '.remove-row-btn', function () {
-      $(this).closest('tr').remove();
-    });
-  }
-
-  saveSupplierDataRowButtonClickListener(buttonId) {
-    let $button = `#${buttonId}`;
-    $($button).off('click').on('click', () => {
-      this.saveSupplierDataRow($button);
-    });
-  }
-
-  saveSupplierDataRow(button) {
-    // Get the new supplier data for this row
-    let newSupplierData = this.getNewSupplierDataRowData(button);
-
-    // If there's supplier data
-    if (newSupplierData.length > 0) {
-      let part_id = newSupplierData[0].part_id;
-
-      // Prepare the data to be sent to the server
-      let requestData = {
-        part_id: part_id,
-        type: 'supplier_data',
-        suppliers: newSupplierData.map(supplierRow => {
-          return {
-            supplier_id: supplierRow.supplier_id,
-            URL: supplierRow.URL,
-            SPN: supplierRow.SPN,
-            price: supplierRow.price
-          };
-        })
-      };
-
-      $.ajax({
-        url: '/supplierData.create',
-        type: 'POST',
-        data: requestData,
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function (response) {
-          console.log('Supplier data saved successfully:', response);
-          updateInfoWindow('part', part_id);
-        },
-        error: function (xhr) {
-          if (xhr.status === 403) {
-            const response = JSON.parse(xhr.responseText);
-            alert(response.message);
-          } else {
-            console.error('Error saving supplier data:', xhr);
-          }
-        }
-      });
-    } else {
-      console.log('No supplier data to save');
-    }
-  }
-
-
-  getNewSupplierDataRowData(button) {
-    let newSupplierData = [];
-    let $row = $(button).closest('tr'); // Find the closest row (tr) to the button clicked
-
-    // Get the supplier index from the current row
-    let rowIndex = $row.data('supplier-index');
-    if (typeof rowIndex !== 'undefined') {
-      // Collect the data for the current row
-      let supplierRow = {
-        part_id: $row.data('part-id'),
-        supplier_id: $row.find(`[data-supplier-id="${rowIndex}"]`).val(),
-        URL: $row.find(`[data-url-id="${rowIndex}"]`).val(),
-        SPN: $row.find(`[data-spn-id="${rowIndex}"]`).val(),
-        price: $row.find(`[data-price-id="${rowIndex}"]`).val()
-      };
-      newSupplierData.push(supplierRow);
-    }
-    console.log(newSupplierData);
-    return newSupplierData;
   }
 
   getSuppliers() {

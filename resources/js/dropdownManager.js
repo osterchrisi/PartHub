@@ -2,8 +2,8 @@ export { DropdownManager }
 import { ResourceCreator } from "./resourceCreator";
 
 class DropdownManager {
-    constructor(options) {
-        this.inputModal = $(options.inputModal);
+    constructor(options = {}) {
+        this.inputModal = options.inputModal || null;
         // Category creation flag to ensure proper category dropdown behaviour
         this.categoryCreated = false;
     }
