@@ -46,7 +46,6 @@ class ResourceCreator {
 
     // Instantiate Manager Classes
     console.log("this.table in rC = ", this.table);
-    this.tableRowManager = new TableRowManager(this.table);
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
     this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
@@ -110,6 +109,7 @@ class ResourceCreator {
         $.when.apply($, promises)
           .done(() => {
             if (this.type != 'category') {
+              this.tableRowManager = new TableRowManager(this.table);
               this.tableRowManager.selectNewRow(id);
             }
           })
@@ -238,107 +238,6 @@ class ResourceCreator {
   }
 
   /**
-  * Creates a new entry of the specified type, updates the corresponding dropdown, selectizes and selects the new entry.
-  * 
-  * @param {string} input - The name of the new entry to be created.
-  * @param {string} type - The type of entry to be created ('location', 'footprint', or 'supplier').
-  * 
-  * The type determines the endpoint, the field names in the response, and the functions used to fetch and update
-  * the relevant dropdown.
-  * 
-  * The function performs the following steps:
-  * 1. Sends an AJAX POST request to create the new entry.
-  * 2. On success, fetches the updated list of entries of the specified type.
-  * 3. Updates the relevant dropdown with the new list and selects the newly created entry.
-  * 
-  * @throws {Error} If the type is unknown.
-  * @returns {void}
-  */
-  //TODO: Don't like how 'complicated' suppliers are...
-  createNewSelectizeDropdownEntry(input, type, supplier_dropdownId = null, newRowIndex = null) {
-    const token = $('input[name="_token"]').attr('value');
-    let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId, $select;
-
-    switch (type) {
-      case 'location':
-        endpoint = '/location.create';
-        newIdName = 'Location ID';
-        nameField = 'location_name';
-        getFunction = this.getLocations.bind(this);
-        dropdownFunction = this.addPartLocationDropdown.bind(this);
-        dropdownId = 'addPartLocSelect';
-        break;
-      case 'footprint':
-        endpoint = '/footprint.create';
-        newIdName = 'Footprint ID';
-        nameField = 'footprint_name';
-        getFunction = this.getFootprints.bind(this);
-        dropdownFunction = this.addPartFootprintDropdown.bind(this);
-        dropdownId = 'addPartFootprintSelect';
-        break;
-      case 'supplier':
-        endpoint = '/supplier.create';
-        newIdName = 'Supplier ID';
-        nameField = 'supplier_name';
-        getFunction = this.getSuppliers.bind(this);
-        dropdownFunction = this.addPartSupplierDropdown.bind(this);
-        dropdownId = 'addPartSupplierSelect';
-        break;
-      case 'category':
-        this.showCategoryCreationModal(input);
-        this.initializeSaveCategoryButton();
-        return;
-      default:
-        console.error('Unknown type:', type);
-        return;
-    }
-
-    if (type === 'supplier') {
-      $select = $(`select[data-supplier-id="${newRowIndex}"]`).selectize();
-    }
-    else {
-      $select = $(`#${dropdownId}`).selectize();
-    }
-
-    if ($select.data('creating')) {
-      return;
-    }
-    $select.data('creating', true);
-
-    $.ajax({
-      url: endpoint,
-      type: 'POST',
-      data: {
-        [nameField]: input,
-        _token: token
-      },
-      success: (response) => {
-        const newEntry = {
-          [`${type}_id`]: response[newIdName],
-          [`${type}_name`]: input
-        };
-        getFunction().done((newList) => {
-          if (type === 'supplier') {
-            dropdownFunction(newList, supplier_dropdownId, newRowIndex);
-            var selectize = $(`select[data-supplier-id="${newRowIndex}"]`)[0].selectize;
-          }
-          else {
-            dropdownFunction(newList);
-            var selectize = $(`#${dropdownId}`)[0].selectize;
-            selectize.enable(); // Needed for the normally disabled location selectize
-          }
-          selectize.addItem(newEntry[`${type}_id`]);
-          $select.data('creating', false);
-        });
-      },
-      error: function () {
-        console.error('Error creating new entry');
-        $select.data('creating', false);
-      }
-    });
-  }
-
-  /**
   * Initializes the uppercase toggle functionality for the part name input field.
   *
   * Sets up an event listener on the toggle button to transform the input text to
@@ -450,9 +349,4 @@ class ResourceCreator {
       }
     });
   }
-
-  setCategoryId(categoryId) {
-    this.categoryId = categoryId;
-  }
-
 }
