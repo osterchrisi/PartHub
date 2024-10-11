@@ -17,12 +17,13 @@ import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
 import { MouserPartSearch } from "../MouserPartSearch";
 import { SupplierRowManager } from "../SupplierRowManager";
+import { TableRowManager } from "../TableRowManager";
 
 export function initializePartsView() {
     initializeMultiSelect('cat-select');
 
     bootstrapPartsTable();
-    definePartsTableActions($('#parts_table'), $('#parts_table_menu'));
+    
 
     bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
@@ -31,7 +32,10 @@ export function initializePartsView() {
 
     attachShowCategoriesButtonClickListener();
 
-    loadSelectedRow('part', 'parts_table');
+    const tableRowManager = new TableRowManager('#parts_table', 'part');
+    tableRowManager.loadSelectedRow();
+    definePartsTableActions($('#parts_table'), $('#parts_table_menu'), tableRowManager);
+    // loadSelectedRow
     // Experimental ajax search{
     $('#search').on("keyup", function () {
         // Get input value on change

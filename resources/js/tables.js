@@ -235,18 +235,18 @@ export function attachShowCategoriesButtonClickListener() {
  * @param {jQuery} $table - The jQuery object representing the table element
  * @param {function} onSelect - A callback function to call when a row is selected
  */
-export function defineTableRowClickActions($table, onSelect) {
+export function defineTableRowClickActions($table, onSelect, tableRowManager) {
   const tableId = $table.attr('id');
-
+  console.log(tableRowManager);
   $table.on('click', 'tbody tr', function () {
     var selectedRow = $table.find('tr.selected-last');
     if (selectedRow.length > 0) {
       selectedRow.removeClass('selected-last');
     }
     $(this).toggleClass('selected-last');
-    var id = $(this).data('id');            // get ID from the selected row
-    onSelect(id);                           // Callback Function
-    saveSelectedRow(tableId, id);           // Save the selected row ID in local storage
+    var id = $(this).data('id');                            // get ID from the selected row
+    onSelect(id);                                           // Callback Function
+    tableRowManager.saveSelectedRow(id);           // Save the selected row ID in local storage
   });
 
   // Prevent text selection on pressing shift for selecting multiple rows
@@ -440,12 +440,12 @@ export function rebuildBomListTable(queryString) {
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-export function definePartsTableActions($table, $menu) {
+export function definePartsTableActions($table, $menu, tableRowManager) {
   // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('part', id);
     updateStockModal(id);
-  });
+  }, tableRowManager);
 
   // Define context menu actions.
   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here

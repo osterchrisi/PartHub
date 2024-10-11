@@ -3,6 +3,8 @@ import { updateInfoWindow } from "./custom";
 import { DropdownManager } from "./dropdownManager";
 import { MouserPartSearch } from "./MouserPartSearch";
 import { SupplierRowManager } from "./SupplierRowManager";
+import { TableRowManager } from "./TableRowManager";
+
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
@@ -49,6 +51,7 @@ class ResourceCreator {
     // this.newRowIndex = 0;
 
     // Instantiate DropdownManager
+    this.tableRowManager = new TableRowManager(this.table);
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
     this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
@@ -112,7 +115,7 @@ class ResourceCreator {
         $.when.apply($, promises)
           .done(() => {
             if (this.type != 'category') {
-              this.selectNewRow(id);
+              this.tableRowManager.selectNewRow(id);
             }
           })
           .fail(() => {
