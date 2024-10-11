@@ -44,13 +44,8 @@ class ResourceCreator {
     // Attach listeners to the category creation modal close buttons
     this.attachCategoryModalCloseListeners();
 
-    // Supplier Data
-    // this.addSupplierRow = this.addSupplierRow.bind(this);
-    // this.removeRowButtonClickListener = this.removeRowButtonClickListener.bind(this);
-    // this.removeRowButtonClickListener();
-    // this.newRowIndex = 0;
-
-    // Instantiate DropdownManager
+    // Instantiate Manager Classes
+    console.log("this.table in rC = ", this.table);
     this.tableRowManager = new TableRowManager(this.table);
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
@@ -137,59 +132,6 @@ class ResourceCreator {
         }
       }
     });
-  }
-
-  /**
-  * Highlights and selects a newly added row in a Bootstrap table.
-  *
-  * This method finds the newly added row in the table data using the provided ID,
-  * determines the appropriate page where the new row should be displayed, switches to that page,
-  * and highlights the new row with visual effects.
-  *
-  * @param {number} id - The ID of the newly added row to be selected and highlighted.
-  */
-  selectNewRow(id) {
-    // Get the table data after bootstrapping
-    let tableData = $(this.table).bootstrapTable('getData');
-
-    // Find the position of the new part in the data array
-    let newRowPosition = tableData.findIndex(row => row['_ID_data'].id == id);
-
-    if (newRowPosition !== -1) {
-      // Get current page size
-      let pageSize = $(this.table).bootstrapTable('getOptions').pageSize;
-
-      // Calculate the page number where the new part will be displayed
-      let pageNumber = Math.floor(newRowPosition / pageSize) + 1;
-
-      // Switch to the appropriate page
-      $(this.table).bootstrapTable('selectPage', pageNumber);
-
-      // Highlight the new row after changing the page
-      this.highlightAndSelectRow(id, 1000, 10);
-
-    } else {
-      console.warn('New row position not found for id:', id);
-    }
-  }
-
-  /**
-  * Highlights and selects a table row by ID.
-  *
-  * @param {string} id - The ID of the row to highlight and select.
-  * @param {number} [highlightDuration=1000] - Duration (ms) to keep the row highlighted.
-  * @param {number} [initialDelay=0] - Delay (ms) before starting the highlight.
-  */
-  highlightAndSelectRow(id, highlightDuration = 1000, initialDelay = 0) {
-    setTimeout(() => {
-      let $newRow = $(`tr[data-id="${id}"]`);
-      if ($newRow.length > 0) {
-        $newRow.addClass('highlight-new selected selected-last');
-        setTimeout(() => {
-          $newRow.removeClass('highlight-new');
-        }, highlightDuration); // Keep the highlight for the specified duration
-      }
-    }, initialDelay); // Initial delay to wait until page change happens but seems it's never needed
   }
 
   attachAddButtonClickListener() {

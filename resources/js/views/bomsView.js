@@ -8,20 +8,22 @@ import { StockManager } from '../stockManager';
 
 import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
 
-import { loadSelectedRow } from '../custom';
+import { TableRowManager } from '../TableRowManager';
 
 export function initializeBomsView() {
     bootstrapBomListTable();
 
     var $table = $('#bom_list_table');
     var $menu = $('#bom_list_table_menu');
-    defineBomListTableActions($table, $menu);
+    
 
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
     attachAssembleBomHandler('bom_list_table');
     attachAddBomHandler();
-    loadSelectedRow('bom', 'bom_list_table');
 
+    const tableRowManager = new TableRowManager('#bom_list_table', 'bom');
+    defineBomListTableActions($table, $menu, tableRowManager);
+    tableRowManager.loadSelectedRow();
     const stockManager = new StockManager();
 
     $.ajax({

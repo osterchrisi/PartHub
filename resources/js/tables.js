@@ -4,7 +4,7 @@ import {
   deleteSelectedRows,
   removeClickListeners,
   updateInfoWindow,
-  saveSelectedRow,
+  // saveSelectedRow,
   showDeleteConfirmation,
   saveLayoutSettings
 } from "./custom";
@@ -237,7 +237,6 @@ export function attachShowCategoriesButtonClickListener() {
  */
 export function defineTableRowClickActions($table, onSelect, tableRowManager) {
   const tableId = $table.attr('id');
-  console.log(tableRowManager);
   $table.on('click', 'tbody tr', function () {
     var selectedRow = $table.find('tr.selected-last');
     if (selectedRow.length > 0) {
@@ -470,11 +469,11 @@ export function definePartsTableActions($table, $menu, tableRowManager) {
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-export function defineBomListTableActions($table, $menu) {
+export function defineBomListTableActions($table, $menu, tableRowManager) {
   // Define what happens when a row gets clicked
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('bom', id);
-  });
+  }, tableRowManager);
 
   // Define context menu actions
   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
@@ -491,22 +490,22 @@ export function defineBomListTableActions($table, $menu) {
   });
 };
 
-export function defineLocationsListTableActions($table, $menu) {
+export function defineLocationsListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('location', id);
-  });
+  }, tableRowManager);
 }
 
-export function defineFootprintsListTableActions($table, $menu) {
+export function defineFootprintsListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('footprint', id);
-  });
+  }, tableRowManager);
 }
 
-export function defineCategoriesListTableActions($table, $menu) {
+export function defineCategoriesListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('category', id);
-  });
+  }, tableRowManager);
 }
 
 /**
@@ -593,10 +592,10 @@ function findChildCategoriesFromCategoryTable(parentId) {
   return categoryIds;
 }
 
-export function defineSuppliersListTableActions($table, $menu) {
+export function defineSuppliersListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
     updateInfoWindow('supplier', id);
-  });
+  }, tableRowManager);
 }
 
 /**

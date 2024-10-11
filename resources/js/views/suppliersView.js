@@ -4,7 +4,7 @@ import {
     rebuildSuppliersTable
 } from "../tables";
 
-import { loadSelectedRow } from '../custom';
+import { TableRowManager } from "../TableRowManager";
 
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
@@ -17,8 +17,9 @@ export function initializeSuppliersView() {
     var $table = $('#suppliers_list_table');
     var $menu = $('#bom_list_table_menu');
 
-    defineSuppliersListTableActions($table, $menu);
-    loadSelectedRow('supplier', 'suppliers_list_table');
+    const tableRowManager = new TableRowManager('#suppliers_list_table', 'supplier');
+    tableRowManager.loadSelectedRow();
+    defineSuppliersListTableActions($table, $menu, tableRowManager);
 
     const newSupplierCreator = new ResourceCreator({
         type: 'supplier',

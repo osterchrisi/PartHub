@@ -9,8 +9,6 @@ import {
 
 import {
     initializeMultiSelect,
-    loadSelectedRow,
-    updateInfoWindow
 } from "../custom";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
@@ -31,11 +29,12 @@ export function initializePartsView() {
     $('#category-window-container').width($('#category-window-container').width() + 1);
 
     attachShowCategoriesButtonClickListener();
+    const table = '#parts_table'
 
-    const tableRowManager = new TableRowManager('#parts_table', 'part');
+    const tableRowManager = new TableRowManager(table, 'part');
     tableRowManager.loadSelectedRow();
-    definePartsTableActions($('#parts_table'), $('#parts_table_menu'), tableRowManager);
-    // loadSelectedRow
+    definePartsTableActions($(table), $('#parts_table_menu'), tableRowManager);
+
     // Experimental ajax search{
     $('#search').on("keyup", function () {
         // Get input value on change
@@ -98,7 +97,7 @@ export function initializePartsView() {
             }
         ],
         inputModal: '#mPartEntry',
-        addButton: '#addPart'
+        addButton: '#addPart',
     }, [rebuildPartsTable]);
 
 

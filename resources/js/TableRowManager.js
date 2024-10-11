@@ -8,7 +8,7 @@ class TableRowManager {
     constructor(table, type) {
         this.table = $(table);
         this.type = type;
-        console.log("this.table constr = ", this.table);
+        console.log("this.table in TRM = ", this.table);
     }
 
     /**
@@ -22,8 +22,9 @@ class TableRowManager {
      */
     selectNewRow(id) {
         // Get the table data after bootstrapping
-        console.log("this.table=", this.table);
         let tableData = this.table.bootstrapTable('getData');
+        console.log("this.table in selectnewrow = ", this.table);
+        console.log("tableData = ", tableData);
 
         // Find the position of the new part in the data array
         let newRowPosition = tableData.findIndex(row => row['_ID_data'].id == id);
@@ -72,9 +73,8 @@ class TableRowManager {
     * @param {string} rowId - The ID of the selected row.
     */
     saveSelectedRow(rowId) {
-        console.log(rowId);
         if (rowId) {
-            localStorage.setItem('lastSelectedRow_' + this.table, rowId);
+            localStorage.setItem('lastSelectedRow_' + this.table.attr('id'), rowId);
         }
     }
 
@@ -87,8 +87,7 @@ class TableRowManager {
      */
     loadSelectedRow(onSelect = null) {
 
-        let savedRowId = localStorage.getItem('lastSelectedRow_' + this.table);
-        console.log(savedRowId);
+        let savedRowId = localStorage.getItem('lastSelectedRow_' + this.table.attr('id'));
 
         if (savedRowId) {
             this.selectNewRow(savedRowId);
