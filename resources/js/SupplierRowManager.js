@@ -190,9 +190,11 @@ class SupplierRowManager {
 
     // Reset all the bootstrap-table and collapse shenanigans in the Supplier Data section of the part entry modal
     resetSupplierDataTableOnModalHide() {
+        const $supplierTable = $('#supplierDataTable');
+        const $addSuppliers = $('#addSuppliers');
         $('#mPartEntry').on('hidden.bs.modal', () => {
-            $('#supplierDataTable').bootstrapTable('destroy');  // Destroy bootstrap-table instance
-            $('#addSuppliers').empty();  // Clear the content inside the supplier div
+            $supplierTable.bootstrapTable('destroy');  // Destroy bootstrap-table instance
+            $addSuppliers.empty();  // Clear the content inside the supplier div
 
             // Rebuild the supplier data table structure
             $('#addSuppliers').append(`
