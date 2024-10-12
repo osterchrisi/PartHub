@@ -229,13 +229,13 @@ export function defineTableRowClickActions($table, onSelect, tableRowManager) {
 * Event listener for clicks outside the menu to hide it
 * @param {jQuery} $menu - The context menu to hide
 */
-function hideMenuOnClickOutside($menu) {
-  $(document).off('click').on('click', function (event) {
-    if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
-      $menu.hide();
-    }
-  });
-}
+// function hideMenuOnClickOutside($menu) {
+//   $(document).off('click').on('click', function (event) {
+//     if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
+//       $menu.hide();
+//     }
+//   });
+// }
 
 /**
  * Attach a context menu to a table row that is triggered by right-clicking on a cell
@@ -244,39 +244,39 @@ function hideMenuOnClickOutside($menu) {
  * @param {jQuery} $menu - The context menu to show when a cell is right-clicked
  * @param {Object} actions - An object containing action names as keys and action functions as values
  */
-function onTableCellContextMenu($table, $menu, actions) {
-  // Event listener for the right-click event on table cells
-  $table.on('contextmenu', 'td', function (event) {
-    if (event.which === 3) {  // Right-click
-      event.preventDefault(); // Inhibit browser context menu
+// function onTableCellContextMenu($table, $menu, actions) {
+//   // Event listener for the right-click event on table cells
+//   $table.on('contextmenu', 'td', function (event) {
+//     if (event.which === 3) {  // Right-click
+//       event.preventDefault(); // Inhibit browser context menu
 
-      // Get selected table rows
-      const selectedRows = $table.bootstrapTable('getSelections');
-      // Extract IDs
-      const ids = selectedRows.map(obj => obj._data.id);
-      // Extract Footprints - here for later worries
-      const footprints = selectedRows.map(obj => obj.Footprint);
+//       // Get selected table rows
+//       const selectedRows = $table.bootstrapTable('getSelections');
+//       // Extract IDs
+//       const ids = selectedRows.map(obj => obj._data.id);
+//       // Extract Footprints - here for later worries
+//       const footprints = selectedRows.map(obj => obj.Footprint);
 
-      // Show context menu
-      showContextMenu($menu, event)
+//       // Show context menu
+//       showContextMenu($menu, event)
 
-      // Event listeners for the menu items
-      $menu.find('.dropdown-item').on('click', function () {
-        // Get action data attribute
-        var action = $(this).data('action');
+//       // Event listeners for the menu items
+//       $menu.find('.dropdown-item').on('click', function () {
+//         // Get action data attribute
+//         var action = $(this).data('action');
 
-        // Call the appropriate action function based on the action parameter
-        actions[action](selectedRows, ids);
+//         // Call the appropriate action function based on the action parameter
+//         actions[action](selectedRows, ids);
 
-        // Hide menu again
-        hideContextMenu($menu)
-      });
-    }
-  });
+//         // Hide menu again
+//         hideContextMenu($menu)
+//       });
+//     }
+//   });
 
-  // Hide context menu upon clicking outside of it
-  hideMenuOnClickOutside($menu);
-}
+//   // Hide context menu upon clicking outside of it
+//   hideMenuOnClickOutside($menu);
+// }
 
 /**
  * Rebuild the locations table after adding or deleting locations
@@ -368,80 +368,60 @@ export function rebuildSuppliersTable(queryString) {
 
 
 /**
- * Rebuild the BOM list table after adding or deleting BOMs
- * @param {string} queryString - The query string to send with the AJAX request
- * @returns {Promise} - A promise that resolves when the table has been rebuilt
- */
-// export function rebuildBomListTable(queryString) {
-//   return $.ajax({
-//     url: '/boms.bomsTable' + queryString,
-//     success: function (data) {
-//       $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
-//       $('#table-window').html(data);                  // Update div with new table
-//       bootstrapBomListTable();                        // Bootstrap it
-//       var $table = $('#bom_list_table');
-//       var $menu = $('#bom_list_table_menu');
-//       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
-//       makeTableWindowResizable();
-//     }
-//   });
-// }
-
-/**
  * Defines row click actions and prepares / attaches a context menu for the parts table
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-export function definePartsTableActions($table, $menu, tableRowManager) {
-  // Define what happens when a row gets clicked
-  defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('part', id);
-    updateStockModal(id);
-  }, tableRowManager);
+// export function definePartsTableActions($table, $menu, tableRowManager) {
+//   // Define what happens when a row gets clicked
+//   defineTableRowClickActions($table, function (id) {
+//     updateInfoWindow('part', id);
+//     updateStockModal(id);
+//   }, tableRowManager);
 
-  // Define context menu actions.
-  //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
-  onTableCellContextMenu($table, $menu, {
-    delete: function (selectedRows, ids) {
-      const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, locations, suppliers and stock history.';
-      showDeleteConfirmation(question, () => {
-        deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
-      });
-    },
-    edit: function (selectedRows) {
-      editSelectedRows(selectedRows);
-    },
-    customAction1: function (selectedRows) {
-      customAction1(selectedRows);
-    }
-  });
-};
+//   // Define context menu actions.
+//   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
+//   onTableCellContextMenu($table, $menu, {
+//     delete: function (selectedRows, ids) {
+//       const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, locations, suppliers and stock history.';
+//       showDeleteConfirmation(question, () => {
+//         deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
+//       });
+//     },
+//     edit: function (selectedRows) {
+//       editSelectedRows(selectedRows);
+//     },
+//     customAction1: function (selectedRows) {
+//       customAction1(selectedRows);
+//     }
+//   });
+// };
 
 /**
  * Defines row click actions and prepares / attaches a context menu for the BOM list table
  * @param {jQuery} $table - The table element to work
  * @param {jQuery} $menu - The context menu to attach to that table
  */
-export function defineBomListTableActions($table, $menu, tableRowManager) {
-  // Define what happens when a row gets clicked
-  defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('bom', id);
-  }, tableRowManager);
+// export function defineBomListTableActions($table, $menu, tableRowManager) {
+//   // Define what happens when a row gets clicked
+//   defineTableRowClickActions($table, function (id) {
+//     updateInfoWindow('bom', id);
+//   }, tableRowManager);
 
-  // Define context menu actions
-  //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
-  onTableCellContextMenu($table, $menu, {
-    delete: function (selectedRows, ids) {
-      const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?';
-      showDeleteConfirmation(question, () => {
-        deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
-      });
-    },
-    assemble: function (selectedRows, ids) {
-      assembleBoms(selectedRows, ids);
-    }
-  });
-};
+//   // Define context menu actions
+//   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
+//   onTableCellContextMenu($table, $menu, {
+//     delete: function (selectedRows, ids) {
+//       const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?';
+//       showDeleteConfirmation(question, () => {
+//         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
+//       });
+//     },
+//     assemble: function (selectedRows, ids) {
+//       assembleBoms(selectedRows, ids);
+//     }
+//   });
+// };
 
 export function defineLocationsListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
