@@ -2,26 +2,6 @@ import { ResourceCreator } from "./resourceCreator";
 import { infoWindow } from "./infoWindow";
 
 /**
- * Focus the Part Name field in the part entry modal after showing
- * @return void
- */
-export function focusNewPartName() {
-    $('#mPartEntry').on('shown.bs.modal', function () {
-        $('#addPartName').focus();
-    });
-}
-
-/**
- * Focus the Quantity field in the stock changes modal after showing
- * @return void
- */
-export function focusStockChangeQuantity() {
-    $('#mAddStock').on('shown.bs.modal', function () {
-        $('#addStockQuantity').focus();
-    });
-}
-
-/**
  * Prevents text selection in the given table when the shift key is pressed (for selecting)
  * multiple rows at once).
  * @param {jQuery} $table - The table element to prevent text selection in.
@@ -50,28 +30,6 @@ export function preventTextSelectionOnShift($table) {
  */
 export function removeClickListeners(id) {
     $(id).off('click');
-}
-
-/**
- * Load the contents of stockModals page, pass the id and replace HTML in modal
- * upon clicking a row in the parts table
- * @param {int} id The part ID for which to update the stock modal content
- * @return void
- */
-export function updateStockModal(id) {
-    $.ajax({
-        url: '/part.getName',
-        type: 'GET',
-        data: { part_id: id },
-        success: function (name) {
-            // Fill the name into the stock modal
-            document.getElementById('partName').textContent = name;
-        },
-        error: function () {
-            // Display an error message if the PHP page failed to load
-            $('#mAddStock').html('Failed to load modal.');
-        }
-    });
 }
 
 // Function to save sizes and visibility state in local storage
@@ -247,6 +205,7 @@ export function initializePopovers() {
 export function showDeletionConfirmationToast(numElements, type) {
     const deleteToast = document.getElementById('tConfirmDelete');
 
+    // Correct singular / plural wording
     if (type == 'parts') {
         if (numElements > 1) {
             type = 'parts';

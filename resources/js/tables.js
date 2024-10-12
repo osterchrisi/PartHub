@@ -1,11 +1,8 @@
 import {
   preventTextSelectionOnShift,
-  updateStockModal,
   deleteSelectedRows,
   removeClickListeners,
   updateInfoWindow,
-  // saveSelectedRow,
-  showDeleteConfirmation,
   saveLayoutSettings
 } from "./custom";
 
