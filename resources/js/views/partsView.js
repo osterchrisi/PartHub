@@ -113,11 +113,11 @@ export function initializePartsView() {
         $('#ToStockLocationDiv-row').show();
     });
     initializeMultiSelect('cat-select');
-    experimentalAjaxSearch();
+    experimentalAjaxSearch(partsTableManager);
 
 }
 
-function experimentalAjaxSearch() {
+function experimentalAjaxSearch(partsTableManager) {
     $('#search').on("keyup", function () {
         // Get input value on change
         var inputVal = $(this).val();
@@ -136,8 +136,7 @@ function experimentalAjaxSearch() {
         // Query database and rebuild partstable with result
         modifiedQueryString = '?' + modifiedQueryString;
 
-        partsTableManager.rebuildPartsTable(modifiedQueryString);
-        // rebuildPartsTable(modifiedQueryString);
+        partsTableManager.rebuildTable(modifiedQueryString);
     });
 
 }
