@@ -14,40 +14,13 @@ import { ResourceCreator } from "./resourceCreator.js";
 import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
 
 /**
- * Bootstrap the parts table
- * @return void
- */
-// export function bootstrapPartsTable() {
-//   $('#parts_table').bootstrapTable({
-//   });
-// };
-
-/**
- * Bootstrap the part stock history table
- * @return void
- */
-export function bootstrapHistTable() {
-  $('#partStockHistoryTable').bootstrapTable({
-  });
-};
-
-/**
- * Bootstrap the part in BOMs table (part info window)
- * @return void
- */
-export function bootstrapPartInBomsTable() {
-  $('#partInBomsTable').bootstrapTable({
-  });
-};
-
-/**
  * Bootstrap the BOM list table
  * @return void
  */
-export function bootstrapBomListTable() {
-  $('#bom_list_table').bootstrapTable({
-  });
-};
+// export function bootstrapBomListTable() {
+//   $('#bom_list_table').bootstrapTable({
+//   });
+// };
 
 /**
  * Bootstrap the BOM details table
@@ -306,26 +279,6 @@ function onTableCellContextMenu($table, $menu, actions) {
 }
 
 /**
- * Rebuild the parts table after adding or deleting parts
- * @param {string} queryString 
- */
-// export function rebuildPartsTable(queryString) {
-//   return $.ajax({
-//     url: '/parts.partsTable' + queryString,
-//     success: function (data) {
-//       $('#parts_table').bootstrapTable('destroy');    // Destroy old parts table
-//       $('#table-window').html(data);                  // Update div with new table
-//       // bootstrapPartsTable();                          // Bootstrap it
-//       // var $table = $('#parts_table');
-//       var $menu = $('#parts_table_menu');
-//       definePartsTableActions($table, $menu);         // Define table row actions and context menu
-//       makeTableWindowResizable();
-//     }
-//   });
-// }
-
-
-/**
  * Rebuild the locations table after adding or deleting locations
  * @param {string} queryString 
  */
@@ -419,20 +372,20 @@ export function rebuildSuppliersTable(queryString) {
  * @param {string} queryString - The query string to send with the AJAX request
  * @returns {Promise} - A promise that resolves when the table has been rebuilt
  */
-export function rebuildBomListTable(queryString) {
-  return $.ajax({
-    url: '/boms.bomsTable' + queryString,
-    success: function (data) {
-      $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
-      $('#table-window').html(data);                  // Update div with new table
-      bootstrapBomListTable();                        // Bootstrap it
-      var $table = $('#bom_list_table');
-      var $menu = $('#bom_list_table_menu');
-      defineBomListTableActions($table, $menu);       // Define table row actions and context menu
-      makeTableWindowResizable();
-    }
-  });
-}
+// export function rebuildBomListTable(queryString) {
+//   return $.ajax({
+//     url: '/boms.bomsTable' + queryString,
+//     success: function (data) {
+//       $('#bom_list_table').bootstrapTable('destroy'); // Destroy old BOM list table
+//       $('#table-window').html(data);                  // Update div with new table
+//       bootstrapBomListTable();                        // Bootstrap it
+//       var $table = $('#bom_list_table');
+//       var $menu = $('#bom_list_table_menu');
+//       defineBomListTableActions($table, $menu);       // Define table row actions and context menu
+//       makeTableWindowResizable();
+//     }
+//   });
+// }
 
 /**
  * Defines row click actions and prepares / attaches a context menu for the parts table

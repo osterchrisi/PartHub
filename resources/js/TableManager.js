@@ -4,8 +4,10 @@ import {
     updateInfoWindow,
     showDeleteConfirmation,
     deleteSelectedRows,
-    makeTableWindowResizable
+    makeTableWindowResizable,
 } from "./custom";
+
+import { assembleBoms } from "./tables";
 
 class TableManager {
     /**
@@ -27,6 +29,18 @@ class TableManager {
                 this.tableId = 'parts_table';
                 this.menuId = 'parts_table_menu';
                 this.rebuildUrl = '/parts.partsTable';
+                break;
+            case 'partHistory':
+                this.tableId = 'partStockHistoryTable'
+                break;
+            case 'partInBoms':
+                this.tableId = 'partInBomsTable'
+                break;
+            case 'bom':
+                this.id_name = 'bom_id';
+                this.tableId = 'bom_list_table';
+                this.menuId = 'bom_list_table_menu';
+                this.rebuildUrl = '/boms.bomsTable';
                 break;
             default:
                 this.id_name = 'id';
@@ -51,14 +65,14 @@ class TableManager {
 
 
     /**
-* Instantiate the TableRowManager based on the type.
-*/
+    * Instantiate the TableRowManager based on the type.
+    */
     instantiateTableRowManager(type) {
         switch (type) {
             case 'part':
                 return new TableRowManager('#parts_table', 'part');
-            case 'supplier':
-                return new TableRowManager({ saveKey: 'suppliers_selected_row' });
+            case 'bom':
+                return new TableRowManager('#bom_list_table', 'bom');
             case 'footprint':
                 return new TableRowManager({ saveKey: 'footprints_selected_row' });
             default:
@@ -79,23 +93,9 @@ class TableManager {
                         this.tableRowManager.saveSelectedRow(id);
                     }
                 };
-            case 'supplier':
-                return (id) => {
-                    updateInfoWindow(this.type, id);
-                    if (this.tableRowManager) {
-                        this.tableRowManager.saveSelectedRow(id);
-                    }
-                };
-            case 'footprint':
-                return (id) => {
-                    updateInfoWindow(this.type, id);
-                    if (this.tableRowManager) {
-                        this.tableRowManager.saveSelectedRow(id);
-                    }
-                };
             default:
                 return (id) => {
-                    console.log(`Row clicked, ID: ${id}`);
+                    updateInfoWindow(this.type, id);
                     if (this.tableRowManager) {
                         this.tableRowManager.saveSelectedRow(id);
                     }
@@ -165,8 +165,8 @@ class TableManager {
             edit: (selectedRows) => {
                 editSelectedRows(selectedRows);
             },
-            customAction1: (selectedRows) => {
-                customAction1(selectedRows);
+            assemble: function (selectedRows, ids) {
+                assembleBoms(selectedRows, ids);
             }
         };
     }

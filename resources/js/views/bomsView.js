@@ -1,28 +1,23 @@
 import {
-    bootstrapBomListTable,
-    defineBomListTableActions,
-    rebuildBomListTable
-} from '../tables';
+    attachDeleteRowsHandler,
+    attachAssembleBomHandler,
+    attachAddBomHandler
+} from '../toolbar/toolbar';
 
 import { StockManager } from '../stockManager';
-
-import { attachDeleteRowsHandler, attachAssembleBomHandler, attachAddBomHandler } from '../toolbar/toolbar';
-
 import { TableRowManager } from '../TableRowManager';
+import { TableManager } from '../TableManager';
 
 export function initializeBomsView() {
-    bootstrapBomListTable();
+    const bomsTableManager = new TableManager({ type: 'bom' });
+    bomsTableManager.bootstrapTable();
+    bomsTableManager.defineActions();
 
-    var $table = $('#bom_list_table');
-    var $menu = $('#bom_list_table_menu');
-    
-
-    attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', rebuildBomListTable);
+    attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', () => bomsTableManager.rebuildTable());
     attachAssembleBomHandler('bom_list_table');
     attachAddBomHandler();
 
     const tableRowManager = new TableRowManager('#bom_list_table', 'bom');
-    defineBomListTableActions($table, $menu, tableRowManager);
     tableRowManager.loadSelectedRow();
     const stockManager = new StockManager();
 
@@ -47,7 +42,8 @@ export function initializeBomsView() {
             term: inputVal
         }).done(function (data) {
             var querystring = "?search=" + inputVal;
-            rebuildBomListTable(querystring);
+            bomsTableManager.rebuildTable(querystring);
+            // rebuildBomListTable(querystring);
         });
     });
 }

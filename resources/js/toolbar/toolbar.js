@@ -1,6 +1,8 @@
 import { deleteSelectedRows, showDeleteConfirmation, updateInfoWindow } from "../custom";
 import { ResourceCreator } from "../resourceCreator";
-import { assembleBoms, rebuildBomListTable } from "../tables";
+import { assembleBoms } from "../tables";
+
+import { TableManager } from "../TableManager";
 
 export function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
     // Get selected table rows
@@ -93,7 +95,8 @@ export function attachAddBomHandler() {
 
                         //TODO: Not super nice but works quite alright
                         const id = response.new_bom_id;
-                        rebuildBomListTable('').done(function () {
+                        const bomTable = new TableManager({ type: 'bom' });
+                        bomTable.rebuildTable().done(function () {
                             const $table = $('#bom_list_table');
                             const BomTable = new ResourceCreator({
                                 table_name: $table

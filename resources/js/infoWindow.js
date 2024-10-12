@@ -6,10 +6,9 @@ import { DocumentManager } from "./DocumentManager";
 import { ResourceCreator } from "./resourceCreator";
 import { SupplierRowManager } from "./SupplierRowManager";
 import { DropdownManager } from "./dropdownManager";
+import { TableManager } from "./TableManager";
 
 import {
-    bootstrapPartInBomsTable,
-    bootstrapHistTable,
     bootstrapBomDetailsTable,
 } from './tables';
 
@@ -140,8 +139,10 @@ class infoWindow {
     }
 
     bootstrapShowPartTables() {
-        bootstrapPartInBomsTable();
-        bootstrapHistTable();
+        const histTable = new TableManager({type: 'partHistory'});
+        const partInBomsTable = new TableManager({type: 'partInBoms'});
+        histTable.bootstrapTable();
+        partInBomsTable.bootstrapTable();
     }
 
     setupStockChangeButtons(stockManager, id) {
