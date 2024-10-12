@@ -8,7 +8,6 @@ class TableRowManager {
     constructor(table, type) {
         this.table = $(table);
         this.type = type;
-        console.log("this.table in TRM = ", this.table);
     }
 
     /**
@@ -23,8 +22,6 @@ class TableRowManager {
     selectNewRow(id) {
         // Get the table data after bootstrapping
         let tableData = this.table.bootstrapTable('getData');
-        console.log("this.table in selectnewrow = ", this.table);
-        console.log("tableData = ", tableData);
 
         // Find the position of the new part in the data array
         let newRowPosition = tableData.findIndex(row => row['_ID_data'].id == id);

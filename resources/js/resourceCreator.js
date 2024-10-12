@@ -45,7 +45,6 @@ class ResourceCreator {
     this.attachCategoryModalCloseListeners();
 
     // Instantiate Manager Classes
-    console.log("this.table in rC = ", this.table);
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
     this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
@@ -81,13 +80,11 @@ class ResourceCreator {
         data[field.name] = $(field.selector).val();
       }
     });
-    console.log("data after loop: ", data);
     data['type'] = this.type;
 
     if (this.categoryId) { data['parent_category'] = this.categoryId; }
 
     const token = $('input[name="_token"]').attr('value');
-    console.log(Object.assign({ _token: token }, data));
     $.ajax({
       url: this.endpoint,
       type: 'POST',

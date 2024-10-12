@@ -16,12 +16,20 @@ import { ResourceCreator } from "../resourceCreator";
 import { MouserPartSearch } from "../MouserPartSearch";
 import { SupplierRowManager } from "../SupplierRowManager";
 import { TableRowManager } from "../TableRowManager";
+import { TableManager } from "../TableManager";
 
 export function initializePartsView() {
-    initializeMultiSelect('cat-select');
 
-    bootstrapPartsTable();
+    const partsTableManager = new TableManager({
+        type: 'parts',
+        tableId: 'parts_table',
+        menuId: 'parts_table_menu',
+        rebuildUrl: '/parts.partsTable'
+    });
     
+    // bootstrapPartsTable();
+    // definePartsTableActions($(table), $('#parts_table_menu'), tableRowManager);
+
 
     bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
@@ -33,32 +41,8 @@ export function initializePartsView() {
 
     const tableRowManager = new TableRowManager(table, 'part');
     tableRowManager.loadSelectedRow();
-    definePartsTableActions($(table), $('#parts_table_menu'), tableRowManager);
 
-    // Experimental ajax search{
-    $('#search').on("keyup", function () {
-        // Get input value on change
-        var inputVal = $(this).val();
-
-        // Get query string from the URL and create a URLSearchParams object
-        const queryString = window.location.search;
-        const searchParams = new URLSearchParams(queryString);
-
-        // Manipulate the "search" value and update it in the URL
-        //! Doesn't actually update the URl and not sure if I want to
-        let searchValue = searchParams.get('search');
-        searchValue = inputVal;
-        searchParams.set('search', searchValue);
-        var modifiedQueryString = searchParams.toString();
-
-        // Query database and rebuild partstable with result
-        modifiedQueryString = '?' + modifiedQueryString;
-
-        rebuildPartsTable(modifiedQueryString);
-    });
-
-    attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
-
+    // Mouser API Search in part entry modal
     // const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
     togglePartInputs();
     togglePartEntryButtons();
@@ -115,20 +99,50 @@ export function initializePartsView() {
         defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
     });
 
-    /**
-     * Show location divs after potentially
-     * having hidden them in the stock modal when hiding the modal
-     * @return void
-     */
-    $('#mAddStock').on('hidden.bs.modal', function () {
-        $('#FromStockLocationDiv-row').show();
-        $('#ToStockLocationDiv-row').show();
-    });
+
 
     const supplierRowManager = new SupplierRowManager();
     supplierRowManager.bootstrapSupplierDataTable();
     supplierRowManager.resetSupplierDataTableOnModalHide();
     supplierRowManager.resizeModalOnSupplierTableCollapse();
+
+    attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
+
+    /**
+    * Show location divs after potentially
+    * having hidden them in the stock modal when hiding the modal
+    * @return void
+    */
+    $('#mAddStock').on('hidden.bs.modal', function () {
+        $('#FromStockLocationDiv-row').show();
+        $('#ToStockLocationDiv-row').show();
+    });
+    initializeMultiSelect('cat-select');
+    experimentalAjaxSearch();
+
+}
+
+function experimentalAjaxSearch() {
+    $('#search').on("keyup", function () {
+        // Get input value on change
+        var inputVal = $(this).val();
+
+        // Get query string from the URL and create a URLSearchParams object
+        const queryString = window.location.search;
+        const searchParams = new URLSearchParams(queryString);
+
+        // Manipulate the "search" value and update it in the URL
+        //! Doesn't actually update the URl and not sure if I want to
+        let searchValue = searchParams.get('search');
+        searchValue = inputVal;
+        searchParams.set('search', searchValue);
+        var modifiedQueryString = searchParams.toString();
+
+        // Query database and rebuild partstable with result
+        modifiedQueryString = '?' + modifiedQueryString;
+
+        rebuildPartsTable(modifiedQueryString);
+    });
 
 }
 
