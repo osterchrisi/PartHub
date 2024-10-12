@@ -50,9 +50,9 @@ class ResourceCreator {
     this.supplierRowManager = new SupplierRowManager();
     this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
 
-    this.tableManager = new TableManager({ type: this.type });
+    // this.tableManager = new TableManager({ type: this.type });
     // this.tableRebuildFunctions = [this.tableManager.rebuildTable()];
-    this.tableRebuildFunctions = [this.tableManager.rebuildTable.bind(this.tableManager)];
+    // this.tableRebuildFunctions = [this.tableManager.rebuildTable.bind(this.tableManager)];
   }
 
   showModal() {
@@ -104,15 +104,21 @@ class ResourceCreator {
         const queryString = window.location.search;
 
         // Need to use map to create an array of promises, when.done() didn't work correctly
-        const promises = this.tableRebuildFunctions.map(fn => {
-          return fn(queryString, id); //fn(queryString, id) must return promise (usually AJAX call)
-        });
+        // const promises = this.tableRebuildFunctions.map(fn => {
+        //   return fn(queryString, id); //fn(queryString, id) must return promise (usually AJAX call)
+        // });
+
+        const tableManager = new TableManager({ type: this.type });
+        const promises = [tableManager.rebuildTable()]
 
         $.when.apply($, promises)
           .done(() => {
             if (this.type != 'category') {
-              this.tableRowManager = new TableRowManager(this.table);
-              this.tableRowManager.selectNewRow(id);
+            
+              const tableRowManager = new TableRowManager(this.table);
+              console.log(tableRowManager);
+              tableRowManager.selectNewRow(id);
+              tableRowManager.saveSelectedRow(id);
             }
           })
           .fail(() => {

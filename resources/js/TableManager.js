@@ -24,20 +24,19 @@ class TableManager {
         let id_name, tableId, menuId, rebuildUrl;
         switch (this.type) {
             case 'part':
-                id_name = 'part_id';
-                tableId = 'parts_table';
-                menuId = 'parts_table_menu';
-                rebuildUrl = '/parts.partsTable';
+                this.id_name = 'part_id';
+                this.tableId = 'parts_table';
+                this.menuId = 'parts_table_menu';
+                this.rebuildUrl = '/parts.partsTable';
                 break;
             default:
                 this.id_name = 'id';
                 break;
         }
 
-        this.$table = $(`#${tableId}`);
-        this.$menu = $(`#${menuId}`);
-        this.id_name = id_name;
-        this.rebuildUrl = rebuildUrl;
+        this.$table = $(`#${this.tableId}`);
+        this.$menu = $(`#${this.menuId}`);
+        // this.id_name = id_name;
 
         // Set default callbacks, but allow customization
         this.bootstrapCallback = this.defaultBootstrapCallback();
@@ -61,7 +60,7 @@ class TableManager {
     instantiateTableRowManager(type) {
         switch (type) {
             case 'part':
-                return new TableRowManager({ table: '#parts_table', type: 'part' });
+                return new TableRowManager('#parts_table', 'part');
             case 'supplier':
                 return new TableRowManager({ saveKey: 'suppliers_selected_row' });
             case 'footprint':
@@ -81,7 +80,7 @@ class TableManager {
                     updateInfoWindow(this.type, id);
                     this.updateStockModal(id);
                     if (this.tableRowManager) {
-                        console.log("saving newly created part");
+                        console.log("saving  created part");
                         this.tableRowManager.saveSelectedRow(id);
                     }
                 };
@@ -114,12 +113,15 @@ class TableManager {
      */
     defaultBootstrapCallback() {
         return () => {
+            console.log("bootstrapping ", this.$table);
             this.$table.bootstrapTable({});
         };
     }
 
     bootstrapTable() {
-        this.bootstrapCallback();
+        console.log("bootstrappin");
+        this.$table.bootstrapTable({});
+        // this.bootstrapCallback();
     }
 
     /**
@@ -268,6 +270,7 @@ class TableManager {
             success: (data) => {
                 this.$table.bootstrapTable('destroy');
                 $('#table-window').html(data);
+                this.$table = $(`#${this.tableId}`);
                 this.bootstrapTable();
                 this.defineActions();
                 makeTableWindowResizable();
