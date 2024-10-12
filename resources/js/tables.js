@@ -38,31 +38,13 @@ export function bootstrapBomDetailsTable() {
 };
 
 /**
- * Bootstrap the Locations table
- * @return void
- */
-export function bootstrapLocationsListTable() {
-  $('#locations_list_table').bootstrapTable({
-  });
-};
-
-/**
- * Bootstrap the Footprints table
- * @return void
- */
-export function bootstrapFootprintsListTable() {
-  $('#footprints_list_table').bootstrapTable({
-  });
-};
-
-/**
  * Bootstrap the Suppliers table
  * @return void
  */
-export function bootstrapSuppliersListTable() {
-  $('#suppliers_list_table').bootstrapTable({
-  });
-};
+// export function bootstrapSuppliersListTable() {
+//   $('#suppliers_list_table').bootstrapTable({
+//   });
+// };
 
 //TODO: Extract functions -> Also at editTextCell()->else if->part_categories->treegrid
 /**
@@ -282,20 +264,20 @@ export function defineTableRowClickActions($table, onSelect, tableRowManager) {
  * Rebuild the locations table after adding or deleting locations
  * @param {string} queryString 
  */
-export function rebuildLocationsTable(queryString) {
-  return $.ajax({
-    url: '/locations.locationsTable' + queryString,
-    success: function (data) {
-      $('#locations_list_table').bootstrapTable('destroy');  // Destroy old parts table
-      $('#table-window').html(data);                    // Update div with new table
-      bootstrapLocationsListTable();                    // Bootstrap it
-      var $table = $('#locations_list_table');
-      var $menu = $('#parts_table_menu');
-      defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
-      makeTableWindowResizable();
-    }
-  });
-}
+// export function rebuildLocationsTable(queryString) {
+//   return $.ajax({
+//     url: '/locations.locationsTable' + queryString,
+//     success: function (data) {
+//       $('#locations_list_table').bootstrapTable('destroy');  // Destroy old parts table
+//       $('#table-window').html(data);                    // Update div with new table
+//       bootstrapLocationsListTable();                    // Bootstrap it
+//       var $table = $('#locations_list_table');
+//       var $menu = $('#parts_table_menu');
+//       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
+//       makeTableWindowResizable();
+//     }
+//   });
+// }
 
 /**
  * Rebuild the categories table after adding or deleting categories
@@ -351,20 +333,20 @@ export function rebuildCategoriesTable() {
  * Rebuild the suppliers table after adding or deleting suppliers
  * @param {string} queryString 
  */
-export function rebuildSuppliersTable(queryString) {
-  return $.ajax({
-    url: '/suppliers.suppliersTable' + queryString,
-    success: function (data) {
-      $('#suppliers_list_table').bootstrapTable('destroy');   // Destroy old parts table
-      $('#table-window').html(data);                          // Update div with new table
-      bootstrapSuppliersListTable();                          // Bootstrap it
-      var $table = $('#suppliers_list_table');
-      var $menu = $('#parts_table_menu');
-      defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
-      makeTableWindowResizable();
-    }
-  });
-}
+// export function rebuildSuppliersTable(queryString) {
+//   return $.ajax({
+//     url: '/suppliers.suppliersTable' + queryString,
+//     success: function (data) {
+//       $('#suppliers_list_table').bootstrapTable('destroy');   // Destroy old parts table
+//       $('#table-window').html(data);                          // Update div with new table
+//       bootstrapSuppliersListTable();                          // Bootstrap it
+//       var $table = $('#suppliers_list_table');
+//       var $menu = $('#parts_table_menu');
+//       defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
+//       makeTableWindowResizable();
+//     }
+//   });
+// }
 
 
 /**
@@ -423,17 +405,17 @@ export function rebuildSuppliersTable(queryString) {
 //   });
 // };
 
-export function defineLocationsListTableActions($table, $menu, tableRowManager) {
-  defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('location', id);
-  }, tableRowManager);
-}
+// export function defineLocationsListTableActions($table, $menu, tableRowManager) {
+//   defineTableRowClickActions($table, function (id) {
+//     updateInfoWindow('location', id);
+//   }, tableRowManager);
+// }
 
-export function defineFootprintsListTableActions($table, $menu, tableRowManager) {
-  defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('footprint', id);
-  }, tableRowManager);
-}
+// export function defineFootprintsListTableActions($table, $menu, tableRowManager) {
+//   defineTableRowClickActions($table, function (id) {
+//     updateInfoWindow('footprint', id);
+//   }, tableRowManager);
+// }
 
 export function defineCategoriesListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
@@ -539,21 +521,21 @@ export function defineSuppliersListTableActions($table, $menu, tableRowManager) 
  *                        including the mouse pointer's X and Y coordinates.
  *                        The X and Y coordinates are used to position the context menu.
  */
-function showContextMenu($menu, event) {
-  $menu.css({
-    left: event.pageX + 'px',
-    top: event.pageY + 'px',
-    display: 'block'
-  });
-}
+// function showContextMenu($menu, event) {
+//   $menu.css({
+//     left: event.pageX + 'px',
+//     top: event.pageY + 'px',
+//     display: 'block'
+//   });
+// }
 
-/**
- * Hides the context menu.
- * @param {jQuery} $menu - The jQuery object representing the context menu to hide.
- */
-function hideContextMenu($menu) {
-  $menu.hide();
-}
+// /**
+//  * Hides the context menu.
+//  * @param {jQuery} $menu - The jQuery object representing the context menu to hide.
+//  */
+// function hideContextMenu($menu) {
+//   $menu.hide();
+// }
 
 /**
  * Inline table cell manipulation of bootstrapped tables

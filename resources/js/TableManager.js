@@ -46,10 +46,17 @@ class TableManager {
                 this.id_name = 'footprint_id';
                 this.tableId = 'footprints_list_table';
                 this.rebuildUrl = '/footprints.footprintsTable';
+                break;
             case 'location':
                 this.id_name = 'location_id';
                 this.tableId = 'locations_list_table';
                 this.rebuildUrl = '/location.locationsTable';
+                break;
+            case 'supplier':
+                this.id_name = 'supplier_id';
+                this.tableId = 'suppliers_list_table';
+                this.rebuildUrl = '/suppliers.suppliersTable';
+                break;
             default:
                 this.id_name = 'id';
                 break;
@@ -86,6 +93,8 @@ class TableManager {
                 return new TableRowManager('#footprints_list_table', 'footprint');
             case 'location':
                 return new TableRowManager('#locations_list_table', 'location');
+            case 'supplier':
+                return new TableRowManager('#suppliers_list_table', 'supplier');
             default:
                 return new TableRowManager({ saveKey: 'default_selected_row' });
         }

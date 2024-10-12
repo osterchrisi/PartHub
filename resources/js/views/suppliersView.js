@@ -1,25 +1,17 @@
-import {
-    bootstrapSuppliersListTable,
-    defineSuppliersListTableActions,
-    rebuildSuppliersTable
-} from "../tables";
-
 import { TableRowManager } from "../TableRowManager";
-
-
+import { TableManager } from "../TableManager";
+import { ResourceCreator } from "../resourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
-import { ResourceCreator } from "../resourceCreator";
-
 export function initializeSuppliersView() {
-    bootstrapSuppliersListTable();
-
-    var $table = $('#suppliers_list_table');
-    var $menu = $('#bom_list_table_menu');
+    const suppliersTableManager = new TableManager({
+        type: 'supplier'
+    });
+    suppliersTableManager.bootstrapTable();
+    suppliersTableManager.defineActions();
 
     const tableRowManager = new TableRowManager('#suppliers_list_table', 'supplier');
     tableRowManager.loadSelectedRow();
-    defineSuppliersListTableActions($table, $menu, tableRowManager);
 
     const newSupplierCreator = new ResourceCreator({
         type: 'supplier',
@@ -32,11 +24,14 @@ export function initializeSuppliersView() {
         ],
         inputModal: '#mSupplierEntry',
         addButton: '#addSupplier'
-    }, [rebuildSuppliersTable]);
+    }, []);
 
     $('#toolbarAddButton').click(function () {
         newSupplierCreator.showModal();
     });
 
-    attachDeleteRowsHandler('suppliers_list_table', 'suppliers', 'supplier_id', rebuildSuppliersTable);
+    attachDeleteRowsHandler('suppliers_list_table', 'suppliers', 'supplier_id', () => suppliersTableManager.rebuildTable());
+
+
+
 };
