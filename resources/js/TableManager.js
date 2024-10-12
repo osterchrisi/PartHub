@@ -21,7 +21,6 @@ class TableManager {
     constructor({ type, contextActions = null }) {
 
         this.type = type;
-        let id_name, tableId, menuId, rebuildUrl;
         switch (this.type) {
             case 'part':
                 this.id_name = 'part_id';
@@ -43,9 +42,6 @@ class TableManager {
         this.rowClickCallback = this.instantiateRowClickCallback(type);
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(type);
-
-        // this.bootstrapTable();
-        // this.defineActions();
 
         this.hideMenuOnClickOutside();
         this.preventTextSelectionOnShift();
@@ -80,7 +76,6 @@ class TableManager {
                     updateInfoWindow(this.type, id);
                     this.updateStockModal(id);
                     if (this.tableRowManager) {
-                        console.log("saving  created part");
                         this.tableRowManager.saveSelectedRow(id);
                     }
                 };
@@ -113,15 +108,12 @@ class TableManager {
      */
     defaultBootstrapCallback() {
         return () => {
-            console.log("bootstrapping ", this.$table);
             this.$table.bootstrapTable({});
         };
     }
 
     bootstrapTable() {
-        console.log("bootstrappin");
         this.$table.bootstrapTable({});
-        // this.bootstrapCallback();
     }
 
     /**
@@ -167,7 +159,7 @@ class TableManager {
                     //TODO: This is OG code:
                     // deleteSelectedRows(ids, this.type, this.id_name, () => this.rebuildTable());
                     deleteSelectedRows(ids, `${this.type}s`, this.id_name, () => this.rebuildTable());
-                    
+
                 });
             },
             edit: (selectedRows) => {
@@ -238,11 +230,11 @@ class TableManager {
     }
 
     /**
- * Load the contents of stockModals page, pass the id and replace HTML in modal
- * upon clicking a row in the parts table
- * @param {int} id The part ID for which to update the stock modal content
- * @return void
- */
+    * Load the contents of stockModals page, pass the id and replace HTML in modal
+    * upon clicking a row in the parts table
+    * @param {int} id The part ID for which to update the stock modal content
+    * @return void
+    */
     updateStockModal(id) {
         $.ajax({
             url: '/part.getName',

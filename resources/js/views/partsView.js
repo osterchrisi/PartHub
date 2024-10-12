@@ -26,10 +26,6 @@ export function initializePartsView() {
     partsTableManager.bootstrapTable();
     partsTableManager.defineActions();
     
-    // bootstrapPartsTable();
-    // definePartsTableActions($(table), $('#parts_table_menu'), tableRowManager);
-
-
     bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
@@ -105,7 +101,7 @@ export function initializePartsView() {
     supplierRowManager.resetSupplierDataTableOnModalHide();
     supplierRowManager.resizeModalOnSupplierTableCollapse();
 
-    // attachDeleteRowsHandler('parts_table', 'parts', 'part_id', partsTableManager.rebuildPartsTable());
+    attachDeleteRowsHandler('parts_table', 'parts', 'part_id', () => partsTableManager.rebuildTable());
 
     /**
     * Show location divs after potentially

@@ -23,8 +23,6 @@ class TableRowManager {
         // Get the table data after bootstrapping
         let tableData = this.table.bootstrapTable('getData');
 
-        console.log("Table Data:", tableData); // Debugging output
-
         if (!Array.isArray(tableData)) {
             console.error("Expected an array but got:", tableData);
             return; // Exit early if the data is not as expected

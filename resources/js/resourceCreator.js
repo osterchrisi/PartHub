@@ -103,22 +103,18 @@ class ResourceCreator {
         this.removeAddButtonClickListener();                // Remove Click Listener
         const queryString = window.location.search;
 
-        // Need to use map to create an array of promises, when.done() didn't work correctly
-        // const promises = this.tableRebuildFunctions.map(fn => {
-        //   return fn(queryString, id); //fn(queryString, id) must return promise (usually AJAX call)
-        // });
-
         const tableManager = new TableManager({ type: this.type });
         const promises = [tableManager.rebuildTable()]
 
         $.when.apply($, promises)
           .done(() => {
             if (this.type != 'category') {
-            
               const tableRowManager = new TableRowManager(this.table);
-              console.log(tableRowManager);
               tableRowManager.selectNewRow(id);
               tableRowManager.saveSelectedRow(id);
+            }
+            if (this.type === 'part') {
+              tableManager.updateStockModal(id);
             }
           })
           .fail(() => {
