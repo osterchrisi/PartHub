@@ -1,9 +1,9 @@
 import {
-    bootstrapPartsTable,
+    // bootstrapPartsTable,
     bootstrapCategoriesListTable,
-    definePartsTableActions,
+    // definePartsTableActions,
     defineCategoriesListInPartsViewTableActions,
-    rebuildPartsTable,
+    // rebuildPartsTable,
     attachShowCategoriesButtonClickListener
 } from "../tables";
 
@@ -21,11 +21,10 @@ import { TableManager } from "../TableManager";
 export function initializePartsView() {
 
     const partsTableManager = new TableManager({
-        type: 'parts',
-        tableId: 'parts_table',
-        menuId: 'parts_table_menu',
-        rebuildUrl: '/parts.partsTable'
+        type: 'part'
     });
+    partsTableManager.bootstrapTable();
+    partsTableManager.defineActions();
     
     // bootstrapPartsTable();
     // definePartsTableActions($(table), $('#parts_table_menu'), tableRowManager);
@@ -82,7 +81,7 @@ export function initializePartsView() {
         ],
         inputModal: '#mPartEntry',
         addButton: '#addPart',
-    }, [rebuildPartsTable]);
+    }, []);
 
 
     $('#toolbarAddButton').click(function () {
@@ -106,7 +105,7 @@ export function initializePartsView() {
     supplierRowManager.resetSupplierDataTableOnModalHide();
     supplierRowManager.resizeModalOnSupplierTableCollapse();
 
-    attachDeleteRowsHandler('parts_table', 'parts', 'part_id', rebuildPartsTable);
+    // attachDeleteRowsHandler('parts_table', 'parts', 'part_id', partsTableManager.rebuildPartsTable());
 
     /**
     * Show location divs after potentially
@@ -141,7 +140,8 @@ function experimentalAjaxSearch() {
         // Query database and rebuild partstable with result
         modifiedQueryString = '?' + modifiedQueryString;
 
-        rebuildPartsTable(modifiedQueryString);
+        partsTableManager.rebuildPartsTable(modifiedQueryString);
+        // rebuildPartsTable(modifiedQueryString);
     });
 
 }

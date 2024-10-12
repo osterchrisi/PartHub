@@ -4,6 +4,7 @@ import { DropdownManager } from "./dropdownManager";
 import { MouserPartSearch } from "./MouserPartSearch";
 import { SupplierRowManager } from "./SupplierRowManager";
 import { TableRowManager } from "./TableRowManager";
+import { TableManager } from "./TableManager";
 
 
 class ResourceCreator {
@@ -18,7 +19,7 @@ class ResourceCreator {
     this.inputModal = $(options.inputModal);
     this.addButton = $(options.addButton);
     this.categoryId = options.categoryId || null;
-    this.tableRebuildFunctions = tableRebuildFunctions;
+    // this.tableRebuildFunctions = tableRebuildFunctions;
 
     //TODO: Check for type, then do only necessary tasks
 
@@ -48,6 +49,10 @@ class ResourceCreator {
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
     this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
+
+    this.tableManager = new TableManager({ type: this.type });
+    // this.tableRebuildFunctions = [this.tableManager.rebuildTable()];
+    this.tableRebuildFunctions = [this.tableManager.rebuildTable.bind(this.tableManager)];
   }
 
   showModal() {
@@ -300,7 +305,7 @@ class ResourceCreator {
     });
   }
 
-    // Event listener for adding rows to a specific table
+  // Event listener for adding rows to a specific table
   addSupplierDataRowButtonClickListener(tableId, buttonId, partId = null) {
     $(`#${buttonId}`).off('click').on('click', () => {
       this.addSupplierRow(tableId, partId);

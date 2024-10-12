@@ -17,10 +17,10 @@ import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
  * Bootstrap the parts table
  * @return void
  */
-export function bootstrapPartsTable() {
-  $('#parts_table').bootstrapTable({
-  });
-};
+// export function bootstrapPartsTable() {
+//   $('#parts_table').bootstrapTable({
+//   });
+// };
 
 /**
  * Bootstrap the part stock history table
@@ -309,20 +309,20 @@ function onTableCellContextMenu($table, $menu, actions) {
  * Rebuild the parts table after adding or deleting parts
  * @param {string} queryString 
  */
-export function rebuildPartsTable(queryString) {
-  return $.ajax({
-    url: '/parts.partsTable' + queryString,
-    success: function (data) {
-      $('#parts_table').bootstrapTable('destroy');    // Destroy old parts table
-      $('#table-window').html(data);                  // Update div with new table
-      bootstrapPartsTable();                          // Bootstrap it
-      var $table = $('#parts_table');
-      var $menu = $('#parts_table_menu');
-      definePartsTableActions($table, $menu);         // Define table row actions and context menu
-      makeTableWindowResizable();
-    }
-  });
-}
+// export function rebuildPartsTable(queryString) {
+//   return $.ajax({
+//     url: '/parts.partsTable' + queryString,
+//     success: function (data) {
+//       $('#parts_table').bootstrapTable('destroy');    // Destroy old parts table
+//       $('#table-window').html(data);                  // Update div with new table
+//       // bootstrapPartsTable();                          // Bootstrap it
+//       // var $table = $('#parts_table');
+//       var $menu = $('#parts_table_menu');
+//       definePartsTableActions($table, $menu);         // Define table row actions and context menu
+//       makeTableWindowResizable();
+//     }
+//   });
+// }
 
 
 /**

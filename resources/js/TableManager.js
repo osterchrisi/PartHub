@@ -1,6 +1,11 @@
 export { TableManager };
 import { TableRowManager } from "./TableRowManager";
-import { updateInfoWindow } from "./custom";
+import {
+    updateInfoWindow,
+    showDeleteConfirmation,
+    deleteSelectedRows,
+    makeTableWindowResizable
+} from "./custom";
 
 class TableManager {
     /**
@@ -13,12 +18,26 @@ class TableManager {
      * @param {Object} options.contextActions - Object containing action names as keys and action functions as values.
      * @param {string} options.rebuildUrl - URL to use when rebuilding the table.
      */
-    constructor({ type, id_name, tableId, menuId, rebuildUrl, contextActions = null }) {
+    constructor({ type, contextActions = null }) {
+
+        this.type = type;
+        let id_name, tableId, menuId, rebuildUrl;
+        switch (this.type) {
+            case 'part':
+                id_name = 'part_id';
+                tableId = 'parts_table';
+                menuId = 'parts_table_menu';
+                rebuildUrl = '/parts.partsTable';
+                break;
+            default:
+                this.id_name = 'id';
+                break;
+        }
+
         this.$table = $(`#${tableId}`);
         this.$menu = $(`#${menuId}`);
+        this.id_name = id_name;
         this.rebuildUrl = rebuildUrl;
-        this.type = type;
-
 
         // Set default callbacks, but allow customization
         this.bootstrapCallback = this.defaultBootstrapCallback();
@@ -26,30 +45,26 @@ class TableManager {
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(type);
 
-        this.bootstrapTable();
-        this.defineActions();
+        // this.bootstrapTable();
+        // this.defineActions();
 
         this.hideMenuOnClickOutside();
         this.preventTextSelectionOnShift();
-
-        switch (type) {
-            case 'parts':
-                this.id_name = 'part_id';
-            default:
-                this.id_name = 'id';
-        }
+        this.instantiateRowClickCallback();
     }
+
+
 
     /**
 * Instantiate the TableRowManager based on the type.
 */
     instantiateTableRowManager(type) {
         switch (type) {
-            case 'parts':
-                return new TableRowManager({ saveKey: 'parts_selected_row' });
-            case 'suppliers':
+            case 'part':
+                return new TableRowManager({ table: '#parts_table', type: 'part' });
+            case 'supplier':
                 return new TableRowManager({ saveKey: 'suppliers_selected_row' });
-            case 'footprints':
+            case 'footprint':
                 return new TableRowManager({ saveKey: 'footprints_selected_row' });
             default:
                 return new TableRowManager({ saveKey: 'default_selected_row' });
@@ -61,24 +76,25 @@ class TableManager {
      */
     instantiateRowClickCallback(type) {
         switch (type) {
-            case 'parts':
+            case 'part':
                 return (id) => {
-                    updateInfoWindow('part', id);
+                    updateInfoWindow(this.type, id);
                     this.updateStockModal(id);
                     if (this.tableRowManager) {
+                        console.log("saving newly created part");
                         this.tableRowManager.saveSelectedRow(id);
                     }
                 };
-            case 'suppliers':
+            case 'supplier':
                 return (id) => {
-                    updateInfoWindow('supplier', id);
+                    updateInfoWindow(this.type, id);
                     if (this.tableRowManager) {
                         this.tableRowManager.saveSelectedRow(id);
                     }
                 };
-            case 'footprints':
+            case 'footprint':
                 return (id) => {
-                    updateInfoWindow('footprint', id);
+                    updateInfoWindow(this.type, id);
                     if (this.tableRowManager) {
                         this.tableRowManager.saveSelectedRow(id);
                     }
@@ -145,7 +161,11 @@ class TableManager {
             delete: (selectedRows, ids) => {
                 const question = `Are you sure you want to delete ${selectedRows.length} selected row(s)?`;
                 showDeleteConfirmation(question, () => {
-                    deleteSelectedRows(ids, this.type, this.id_name, () => this.rebuildTable());
+                    //TODO: Code the difference between part/parts, bom/boms,...
+                    //TODO: This is OG code:
+                    // deleteSelectedRows(ids, this.type, this.id_name, () => this.rebuildTable());
+                    deleteSelectedRows(ids, `${this.type}s`, this.id_name, () => this.rebuildTable());
+                    
                 });
             },
             edit: (selectedRows) => {

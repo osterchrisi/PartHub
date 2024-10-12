@@ -1,6 +1,9 @@
 export { InlineTableCellEditor }
 import { updateInfoWindow } from "./custom";
-import { rebuildCategoriesTable, rebuildPartsTable } from "./tables";
+import {
+    rebuildCategoriesTable,
+    // rebuildPartsTable
+} from "./tables";
 
 /**
  * Class to edit table cells on the frontend and change database table data accordingly
@@ -88,7 +91,8 @@ class InlineTableCellEditor {
                 updateInfoWindow('bom', id);
             } else if (table_name == 'part_categories') {
                 rebuildCategoriesTable();
-                rebuildPartsTable('');
+                // Is here, just commenting to get TableManager to work
+                // rebuildPartsTable('');
             }
         });
 
