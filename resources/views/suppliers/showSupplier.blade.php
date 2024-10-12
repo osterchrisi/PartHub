@@ -7,11 +7,11 @@
         {{ $supplier->supplier_alias }}
     </h5>
 
-    <!-- Parts Tabs -->
-    <ul class="nav nav-tabs" id="supplierTabs" role="tablist">
+    <!-- Tabs -->
+    <x-tablist id="supplierTabs" defaultTab="{{ $tabId1 }}">
         <x-buttons.tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-buttons.tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
-    </ul>
+    </x-tablist>
 
     <!-- Tabs Content -->
     <div class="tab-content" id="bomTabsContent">

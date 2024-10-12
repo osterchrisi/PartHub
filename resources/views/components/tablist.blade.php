@@ -1,3 +1,3 @@
-<ul class="nav nav-tabs" role="tablist" id="{{ $id }}" data-default-tab="{{ $tabId1 }}">
+<nav class="nav nav-tabs flex-column flex-sm-row" role="tablist" id="{{ $id }}" data-default-tab="{{ $defaultTab }}">
     {{ $slot }}
-</ul>
+</nav>

@@ -7,11 +7,12 @@
         {{ $location_description }}
     </h5>
 
-    <!-- Location Tabs -->
-    <ul class="nav nav-tabs" id="locationTabs" role="tablist">
+    <!-- Tabs -->
+    <x-tablist id="locationTabs" defaultTab="{{ $tabId1 }}">
+        
         <x-buttons.tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-buttons.tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
-    </ul>
+    </x-tablist>
 
     <!-- Tabs Content -->
     {{-- @php

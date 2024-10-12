@@ -99,11 +99,6 @@ tr.selected-last {
     color: #007bff;
 }
 
-/* Info window tab links */
-.nav-link.tab-link {
-    color: var(--bs-nav-link-color);
-}
-
 .delete-image {
     position: absolute;
     top: 5px;

@@ -8,7 +8,7 @@
     </h5>
 
     <!-- Parts Tabs -->
-    <x-tablist id="bomTabs" tabId1="{{ $tabId1 }}">
+    <x-tablist id="bomTabs" defaultTab="{{ $tabId1 }}">
         <x-buttons.tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
         <x-buttons.tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
     </x-tablist>
