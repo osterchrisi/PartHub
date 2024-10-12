@@ -14,15 +14,6 @@ import { ResourceCreator } from "./resourceCreator.js";
 import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
 
 /**
- * Bootstrap the BOM list table
- * @return void
- */
-// export function bootstrapBomListTable() {
-//   $('#bom_list_table').bootstrapTable({
-//   });
-// };
-
-/**
  * Bootstrap the BOM details table
  * @return void
  */
@@ -36,15 +27,6 @@ export function bootstrapBomDetailsTable() {
   //* Tryout for a way to display storage places in the BOM details table
   $fixedTableToolbar.append('<div class="row"><div class="col"><div class="columns columns-right btn-group float-right"><div class="keep-open btn-group" title="Columns"><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="Columns" title="Columns" aria-expanded="false"><i class="bi bi-buildings"></i><span class="caret"></span></button><div class="dropdown-menu dropdown-menu-right" style=""><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Part Name" value="0" checked="checked"> <span>Storage 1</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Quantity needed" value="1" checked="checked"> <span>Storage 2</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Total stock available" value="2" checked="checked"> <span>Storage 3</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Can build" value="3" checked="checked"> <span>Storage 4</span></label></div></div></div></div></div>');
 };
-
-/**
- * Bootstrap the Suppliers table
- * @return void
- */
-// export function bootstrapSuppliersListTable() {
-//   $('#suppliers_list_table').bootstrapTable({
-//   });
-// };
 
 //TODO: Extract functions -> Also at editTextCell()->else if->part_categories->treegrid
 /**
@@ -207,77 +189,6 @@ export function defineTableRowClickActions($table, onSelect, tableRowManager) {
   preventTextSelectionOnShift($table);
 }
 
-/**
-* Event listener for clicks outside the menu to hide it
-* @param {jQuery} $menu - The context menu to hide
-*/
-// function hideMenuOnClickOutside($menu) {
-//   $(document).off('click').on('click', function (event) {
-//     if (!$menu.is(event.target) && $menu.has(event.target).length === 0) {
-//       $menu.hide();
-//     }
-//   });
-// }
-
-/**
- * Attach a context menu to a table row that is triggered by right-clicking on a cell
- *
- * @param {jQuery} $table - The table to attach the context menu to
- * @param {jQuery} $menu - The context menu to show when a cell is right-clicked
- * @param {Object} actions - An object containing action names as keys and action functions as values
- */
-// function onTableCellContextMenu($table, $menu, actions) {
-//   // Event listener for the right-click event on table cells
-//   $table.on('contextmenu', 'td', function (event) {
-//     if (event.which === 3) {  // Right-click
-//       event.preventDefault(); // Inhibit browser context menu
-
-//       // Get selected table rows
-//       const selectedRows = $table.bootstrapTable('getSelections');
-//       // Extract IDs
-//       const ids = selectedRows.map(obj => obj._data.id);
-//       // Extract Footprints - here for later worries
-//       const footprints = selectedRows.map(obj => obj.Footprint);
-
-//       // Show context menu
-//       showContextMenu($menu, event)
-
-//       // Event listeners for the menu items
-//       $menu.find('.dropdown-item').on('click', function () {
-//         // Get action data attribute
-//         var action = $(this).data('action');
-
-//         // Call the appropriate action function based on the action parameter
-//         actions[action](selectedRows, ids);
-
-//         // Hide menu again
-//         hideContextMenu($menu)
-//       });
-//     }
-//   });
-
-//   // Hide context menu upon clicking outside of it
-//   hideMenuOnClickOutside($menu);
-// }
-
-/**
- * Rebuild the locations table after adding or deleting locations
- * @param {string} queryString 
- */
-// export function rebuildLocationsTable(queryString) {
-//   return $.ajax({
-//     url: '/locations.locationsTable' + queryString,
-//     success: function (data) {
-//       $('#locations_list_table').bootstrapTable('destroy');  // Destroy old parts table
-//       $('#table-window').html(data);                    // Update div with new table
-//       bootstrapLocationsListTable();                    // Bootstrap it
-//       var $table = $('#locations_list_table');
-//       var $menu = $('#parts_table_menu');
-//       defineLocationsListTableActions($table, $menu);           // Define table row actions and context menu
-//       makeTableWindowResizable();
-//     }
-//   });
-// }
 
 /**
  * Rebuild the categories table after adding or deleting categories
@@ -310,112 +221,7 @@ export function rebuildCategoriesTable() {
   });
 }
 
-/**
- * Rebuild the footprints table after adding or deleting footprints
- * @param {string} queryString 
- */
-// export function rebuildFootprintsTable(queryString) {
-//   return $.ajax({
-//     url: '/footprints.footprintsTable' + queryString,
-//     success: function (data) {
-//       $('#footprints_list_table').bootstrapTable('destroy'); // Destroy old footprints table
-//       $('#table-window').html(data);                         // Update div with new table
-//       bootstrapFootprintsListTable();                        // Bootstrap it
-//       var $table = $('#footprints_list_table');
-//       var $menu = $('#parts_table_menu');
-//       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
-//       makeTableWindowResizable();
-//     }
-//   });
-// }
 
-/**
- * Rebuild the suppliers table after adding or deleting suppliers
- * @param {string} queryString 
- */
-// export function rebuildSuppliersTable(queryString) {
-//   return $.ajax({
-//     url: '/suppliers.suppliersTable' + queryString,
-//     success: function (data) {
-//       $('#suppliers_list_table').bootstrapTable('destroy');   // Destroy old parts table
-//       $('#table-window').html(data);                          // Update div with new table
-//       bootstrapSuppliersListTable();                          // Bootstrap it
-//       var $table = $('#suppliers_list_table');
-//       var $menu = $('#parts_table_menu');
-//       defineSuppliersListTableActions($table, $menu);         // Define table row actions and context menu
-//       makeTableWindowResizable();
-//     }
-//   });
-// }
-
-
-/**
- * Defines row click actions and prepares / attaches a context menu for the parts table
- * @param {jQuery} $table - The table element to work
- * @param {jQuery} $menu - The context menu to attach to that table
- */
-// export function definePartsTableActions($table, $menu, tableRowManager) {
-//   // Define what happens when a row gets clicked
-//   defineTableRowClickActions($table, function (id) {
-//     updateInfoWindow('part', id);
-//     updateStockModal(id);
-//   }, tableRowManager);
-
-//   // Define context menu actions.
-//   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
-//   onTableCellContextMenu($table, $menu, {
-//     delete: function (selectedRows, ids) {
-//       const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?\n\nThis will also delete the corresponding entries from BOMs, locations, suppliers and stock history.';
-//       showDeleteConfirmation(question, () => {
-//         deleteSelectedRows(ids, 'parts', 'part_id', rebuildPartsTable); // Also updates table
-//       });
-//     },
-//     edit: function (selectedRows) {
-//       editSelectedRows(selectedRows);
-//     },
-//     customAction1: function (selectedRows) {
-//       customAction1(selectedRows);
-//     }
-//   });
-// };
-
-/**
- * Defines row click actions and prepares / attaches a context menu for the BOM list table
- * @param {jQuery} $table - The table element to work
- * @param {jQuery} $menu - The context menu to attach to that table
- */
-// export function defineBomListTableActions($table, $menu, tableRowManager) {
-//   // Define what happens when a row gets clicked
-//   defineTableRowClickActions($table, function (id) {
-//     updateInfoWindow('bom', id);
-//   }, tableRowManager);
-
-//   // Define context menu actions
-//   //* Important: selectedRows and ids are extraced in function onTableCellContextMenu itself, not here
-//   onTableCellContextMenu($table, $menu, {
-//     delete: function (selectedRows, ids) {
-//       const question = 'Are you sure you want to delete ' + selectedRows.length + ' selected row(s)?';
-//       showDeleteConfirmation(question, () => {
-//         deleteSelectedRows(ids, 'boms', 'bom_id', rebuildBomListTable); // Also updates table
-//       });
-//     },
-//     assemble: function (selectedRows, ids) {
-//       assembleBoms(selectedRows, ids);
-//     }
-//   });
-// };
-
-// export function defineLocationsListTableActions($table, $menu, tableRowManager) {
-//   defineTableRowClickActions($table, function (id) {
-//     updateInfoWindow('location', id);
-//   }, tableRowManager);
-// }
-
-// export function defineFootprintsListTableActions($table, $menu, tableRowManager) {
-//   defineTableRowClickActions($table, function (id) {
-//     updateInfoWindow('footprint', id);
-//   }, tableRowManager);
-// }
 
 export function defineCategoriesListTableActions($table, $menu, tableRowManager) {
   defineTableRowClickActions($table, function (id) {
@@ -506,36 +312,6 @@ function findChildCategoriesFromCategoryTable(parentId) {
   findChildren(parentId);
   return categoryIds;
 }
-
-export function defineSuppliersListTableActions($table, $menu, tableRowManager) {
-  defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('supplier', id);
-  }, tableRowManager);
-}
-
-/**
- * Displays a context menu at the specified event location inside a table.
- * @param {jQuery} $menu - The context menu element.
- * @param {Event} event - The event that triggered the context menu display.
- *                        The event object contains information about the mouse click,
- *                        including the mouse pointer's X and Y coordinates.
- *                        The X and Y coordinates are used to position the context menu.
- */
-// function showContextMenu($menu, event) {
-//   $menu.css({
-//     left: event.pageX + 'px',
-//     top: event.pageY + 'px',
-//     display: 'block'
-//   });
-// }
-
-// /**
-//  * Hides the context menu.
-//  * @param {jQuery} $menu - The jQuery object representing the context menu to hide.
-//  */
-// function hideContextMenu($menu) {
-//   $menu.hide();
-// }
 
 /**
  * Inline table cell manipulation of bootstrapped tables
