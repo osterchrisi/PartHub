@@ -4,15 +4,18 @@ import { ResourceCreator } from "../resourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeFootprintsView() {
+    //* Table Manager
     const footprintsTableManager = new TableManager({
         type: 'footprint'
     });
     footprintsTableManager.bootstrapTable();
     footprintsTableManager.defineActions();
-    
+
+    //* Table Row Manager
     const tableRowManager = new TableRowManager('#footprints_list_table', 'footprint');
     tableRowManager.loadSelectedRow();
 
+    //* Resource Creator
     const newFootprintCreator = new ResourceCreator({
         type: 'footprint',
         endpoint: '/footprint.create',

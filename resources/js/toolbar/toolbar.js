@@ -1,10 +1,9 @@
 import { deleteSelectedRows, showDeleteConfirmation, updateInfoWindow } from "../custom";
-import { ResourceCreator } from "../resourceCreator";
 import { assembleBoms } from "../tables";
-
 import { TableManager } from "../TableManager";
+import { TableRowManager } from "../TableRowManager";
 
-export function deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback) {
+export function deleteRowsHandler(table_id, model, id_column, successCallback) {
     // Get selected table rows
     var selectedRows = $('#' + table_id).bootstrapTable('getSelections');
 
@@ -37,7 +36,7 @@ export function deleteSelectedRowsFromToolbar(table_id, model, id_column, succes
  */
 export function attachDeleteRowsHandler(table_id, model, id_column, successCallback) {
     $('#toolbarDeleteButton').click(function () {
-        deleteSelectedRowsFromToolbar(table_id, model, id_column, successCallback);
+        deleteRowsHandler(table_id, model, id_column, successCallback);
     });
 }
 
@@ -97,11 +96,8 @@ export function attachAddBomHandler() {
                         const id = response.new_bom_id;
                         const bomTable = new TableManager({ type: 'bom' });
                         bomTable.rebuildTable().done(function () {
-                            const $table = $('#bom_list_table');
-                            const BomTable = new ResourceCreator({
-                                table_name: $table
-                            });
-                            BomTable.selectNewRow(id);
+                            const bomListTable = new TableRowManager('#bom_list_table', 'bom');
+                            bomListTable.selectNewRow(id);
                         });
                         updateInfoWindow('bom', id);
 

@@ -31,7 +31,4 @@ export function initializeSuppliersView() {
     });
 
     attachDeleteRowsHandler('suppliers_list_table', 'suppliers', 'supplier_id', () => suppliersTableManager.rebuildTable());
-
-
-
 };

@@ -1,9 +1,6 @@
 import {
-    // bootstrapPartsTable,
     bootstrapCategoriesListTable,
-    // definePartsTableActions,
     defineCategoriesListInPartsViewTableActions,
-    // rebuildPartsTable,
     attachShowCategoriesButtonClickListener
 } from "../tables";
 
@@ -20,28 +17,38 @@ import { TableManager } from "../TableManager";
 
 export function initializePartsView() {
 
+    //* Table Manager for Parts Table
     const partsTableManager = new TableManager({
         type: 'part'
     });
     partsTableManager.bootstrapTable();
     partsTableManager.defineActions();
     
+    //* Table Manager for Categories TAble
     bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
-    //TODO: Seems hacky but works. Otherwise the edit buttons always jump line:
-    $('#category-window-container').width($('#category-window-container').width() + 1);
-
     attachShowCategoriesButtonClickListener();
-    const table = '#parts_table'
+    $.ajax({
+        url: '/categories.get',
+        dataType: 'json',
+        error: function (error) {
+            console.log(error);
+        }
+    }).done(categories => {
+        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
+    });
 
-    const tableRowManager = new TableRowManager(table, 'part');
+    //* Table Row Manager
+    const tableRowManager = new TableRowManager('#parts_table', 'part');
     tableRowManager.loadSelectedRow();
 
+    //* Mouser API Search
     // Mouser API Search in part entry modal
     // const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
     togglePartInputs();
     togglePartEntryButtons();
 
+    //* Resource Creator
     const newPartCreator = new ResourceCreator({
         type: 'part',
         endpoint: '/part.create',
@@ -84,18 +91,7 @@ export function initializePartsView() {
         newPartCreator.showModal();
     });
 
-    $.ajax({
-        url: '/categories.get',
-        dataType: 'json',
-        error: function (error) {
-            console.log(error);
-        }
-    }).done(categories => {
-        defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
-    });
-
-
-
+    //* Supplier Row Manager
     const supplierRowManager = new SupplierRowManager();
     supplierRowManager.bootstrapSupplierDataTable();
     supplierRowManager.resetSupplierDataTableOnModalHide();
