@@ -9,6 +9,7 @@ import { TableRowManager } from '../TableRowManager';
 import { TableManager } from '../TableManager';
 
 export function initializeBomsView() {
+    //* Table Manager
     const bomsTableManager = new TableManager({ type: 'bom' });
     bomsTableManager.bootstrapTable();
     bomsTableManager.defineActions();
@@ -17,10 +18,14 @@ export function initializeBomsView() {
     attachAssembleBomHandler('bom_list_table');
     attachAddBomHandler();
 
+    //* Table Row Manager
     const tableRowManager = new TableRowManager('#bom_list_table', 'bom');
     tableRowManager.loadSelectedRow();
-    const stockManager = new StockManager();
 
+
+    //* Stock Manager
+    //TODO: dropdownManager sollte so überarbeitet werden, dass er auch sowas hier handeln kann
+    const stockManager = new StockManager();
     $.ajax({
         url: '/locations.get',
         dataType: 'json',

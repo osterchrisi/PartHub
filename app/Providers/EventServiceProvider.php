@@ -6,10 +6,12 @@ use App\Events\StockMovementOccured;
 use App\Listeners\SendStocklevelNotification;
 use App\Listeners\StripeEventListener;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Laravel\Cashier\Events\WebhookReceived;
+use App\Listeners\UpdateLastLogin;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,9 @@ class EventServiceProvider extends ServiceProvider
         // Stripe Webhook
         WebhookReceived::class => [
             StripeEventListener::class,
+        ],
+        Login::class => [
+            UpdateLastLogin::class,
         ],
     ];
 
