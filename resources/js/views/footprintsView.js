@@ -1,24 +1,17 @@
-import {
-    bootstrapFootprintsListTable,
-    defineFootprintsListTableActions,
-    rebuildFootprintsTable
-} from "../tables";
-
 import { TableRowManager } from "../TableRowManager";
-
-
-import { attachDeleteRowsHandler } from "../toolbar/toolbar";
+import { TableManager } from "../TableManager";
 import { ResourceCreator } from "../resourceCreator";
+import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeFootprintsView() {
-    bootstrapFootprintsListTable();
-
-    var $table = $('#footprints_list_table');
-    var $menu = $('#bom_list_table_menu');
+    const footprintsTableManager = new TableManager({
+        type: 'footprint'
+    });
+    footprintsTableManager.bootstrapTable();
+    footprintsTableManager.defineActions();
     
     const tableRowManager = new TableRowManager('#footprints_list_table', 'footprint');
     tableRowManager.loadSelectedRow();
-    defineFootprintsListTableActions($table, $menu, tableRowManager);
 
     const newFootprintCreator = new ResourceCreator({
         type: 'footprint',
@@ -32,11 +25,11 @@ export function initializeFootprintsView() {
         ],
         inputModal: '#mFootprintEntry',
         addButton: '#addFootprint'
-    }, [rebuildFootprintsTable]);
+    }, []);
 
     $('#toolbarAddButton').click(function () {
         newFootprintCreator.showModal();
     });
 
-    attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', rebuildFootprintsTable);
+    attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', () => footprintsTableManager.rebuildTable());
 };

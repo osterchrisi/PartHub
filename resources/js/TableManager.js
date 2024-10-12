@@ -42,14 +42,24 @@ class TableManager {
                 this.menuId = 'bom_list_table_menu';
                 this.rebuildUrl = '/boms.bomsTable';
                 break;
+            case 'footprint':
+                this.id_name = 'footprint_id';
+                this.tableId = 'footprints_list_table';
+                this.rebuildUrl = '/footprints.footprintsTable';
+            case 'location':
+                this.id_name = 'location_id';
+                this.tableId = 'locations_list_table';
+                this.rebuildUrl = '/location.locationsTable';
             default:
                 this.id_name = 'id';
                 break;
         }
 
         this.$table = $(`#${this.tableId}`);
-        this.$menu = $(`#${this.menuId}`);
-        // this.id_name = id_name;
+        if (this.menuId) {
+            this.$menu = $(`#${this.menuId}`);
+            this.hideMenuOnClickOutside();
+        }
 
         // Set default callbacks, but allow customization
         this.bootstrapCallback = this.defaultBootstrapCallback();
@@ -57,7 +67,6 @@ class TableManager {
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(type);
 
-        this.hideMenuOnClickOutside();
         this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
     }
@@ -74,7 +83,9 @@ class TableManager {
             case 'bom':
                 return new TableRowManager('#bom_list_table', 'bom');
             case 'footprint':
-                return new TableRowManager({ saveKey: 'footprints_selected_row' });
+                return new TableRowManager('#footprints_list_table', 'footprint');
+            case 'location':
+                return new TableRowManager('#locations_list_table', 'location');
             default:
                 return new TableRowManager({ saveKey: 'default_selected_row' });
         }
@@ -121,7 +132,9 @@ class TableManager {
      */
     defineActions() {
         this.defineTableRowClickActions();
-        this.attachContextMenu();
+        if (this.menuId) {
+            this.attachContextMenu();
+        }
     }
 
     /**

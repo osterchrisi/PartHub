@@ -332,20 +332,20 @@ export function rebuildCategoriesTable() {
  * Rebuild the footprints table after adding or deleting footprints
  * @param {string} queryString 
  */
-export function rebuildFootprintsTable(queryString) {
-  return $.ajax({
-    url: '/footprints.footprintsTable' + queryString,
-    success: function (data) {
-      $('#footprints_list_table').bootstrapTable('destroy'); // Destroy old footprints table
-      $('#table-window').html(data);                         // Update div with new table
-      bootstrapFootprintsListTable();                        // Bootstrap it
-      var $table = $('#footprints_list_table');
-      var $menu = $('#parts_table_menu');
-      defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
-      makeTableWindowResizable();
-    }
-  });
-}
+// export function rebuildFootprintsTable(queryString) {
+//   return $.ajax({
+//     url: '/footprints.footprintsTable' + queryString,
+//     success: function (data) {
+//       $('#footprints_list_table').bootstrapTable('destroy'); // Destroy old footprints table
+//       $('#table-window').html(data);                         // Update div with new table
+//       bootstrapFootprintsListTable();                        // Bootstrap it
+//       var $table = $('#footprints_list_table');
+//       var $menu = $('#parts_table_menu');
+//       defineFootprintsListTableActions($table, $menu);       // Define table row actions and context menu
+//       makeTableWindowResizable();
+//     }
+//   });
+// }
 
 /**
  * Rebuild the suppliers table after adding or deleting suppliers

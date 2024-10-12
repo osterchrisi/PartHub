@@ -1,26 +1,19 @@
-import {
-    bootstrapLocationsListTable,
-    defineLocationsListTableActions,
-    rebuildLocationsTable
-} from "../tables";
-
 import { TableRowManager } from "../TableRowManager";
-
-
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { ResourceCreator } from "../resourceCreator";
+import { TableManager } from "../TableManager";
 
 
 
 export function initializeLocationsView() {
-    bootstrapLocationsListTable();
-
-    var $table = $('#locations_list_table');
-    var $menu = $('#bom_list_table_menu');
+    const locationsTableManager = new TableManager({
+        type: 'location'
+    });
+    locationsTableManager.bootstrapTable();
+    locationsTableManager.defineActions();
 
     const tableRowManager = new TableRowManager('#locations_list_table', 'location');
     tableRowManager.loadSelectedRow();
-    defineLocationsListTableActions($table, $menu, tableRowManager);
 
     const newLocationCreator = new ResourceCreator({
         type: 'location',
@@ -34,11 +27,11 @@ export function initializeLocationsView() {
         ],
         inputModal: '#mLocationEntry',
         addButton: '#addLocation'
-    }, [rebuildLocationsTable]);
+    }, []);
 
     $('#toolbarAddButton').click(function () {
         newLocationCreator.showModal();
     });
 
-    attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', rebuildLocationsTable);
+    attachDeleteRowsHandler('locations_list_table', 'locations', 'location_id', () => locationsTableManager.rebuildTable());
 };
