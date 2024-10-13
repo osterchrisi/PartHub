@@ -1,4 +1,4 @@
-export { infoWindow }
+export { InfoWindow }
 
 import { StockManager } from "./stockManager";
 import { ImageManager } from "./imageManager";
@@ -17,7 +17,7 @@ import {
     deleteSelectedRows
 } from "./custom";
 
-class infoWindow {
+class InfoWindow {
     constructor(type, id = null) {
         this.type = type;
         this.id = id;

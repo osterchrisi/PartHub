@@ -24,7 +24,7 @@ export function initializePartsView() {
     partsTableManager.bootstrapTable();
     partsTableManager.defineActions();
     
-    //* Table Manager for Categories TAble
+    //* Table Manager for Categories Table
     bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     attachShowCategoriesButtonClickListener();

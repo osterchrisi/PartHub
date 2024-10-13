@@ -1,5 +1,5 @@
 import { ResourceCreator } from "./resourceCreator";
-import { infoWindow } from "./infoWindow";
+import { InfoWindow } from "./InfoWindow";
 
 /**
  * Prevents text selection in the given table when the shift key is pressed (for selecting)
@@ -259,7 +259,7 @@ export function updateInfoWindow(type, id) {
         data: {},
         success: function (data) {
             $('#info-window').html(data);
-            const iw = new infoWindow(type, id);
+            const iw = new InfoWindow(type, id);
             iw.initialize();
         },
         error: function (xhr) {
