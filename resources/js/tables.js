@@ -7,8 +7,8 @@ import {
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
-import { ResourceCreator } from "./resourceCreator.js";
-import { InlineTableCellEditor } from "./inlineTableCellEditor.js";
+import { ResourceCreator } from "./ResourceCreator.js";
+import { InlineTableCellEditor } from "./InlineTableCellEditor.js";
 
 /**
  * Bootstrap the BOM details table

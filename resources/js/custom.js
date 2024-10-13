@@ -1,4 +1,4 @@
-import { ResourceCreator } from "./resourceCreator";
+import { ResourceCreator } from "./ResourceCreator";
 import { InfoWindow } from "./InfoWindow";
 
 /**

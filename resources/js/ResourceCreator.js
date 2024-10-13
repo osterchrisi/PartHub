@@ -1,6 +1,6 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "./custom";
-import { DropdownManager } from "./dropdownManager";
+import { DropdownManager } from "./DropdownManager";
 import { MouserPartSearch } from "./MouserPartSearch";
 import { SupplierRowManager } from "./SupplierRowManager";
 import { TableRowManager } from "./TableRowManager";

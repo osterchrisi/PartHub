@@ -1,6 +1,6 @@
 import { TableRowManager } from "../TableRowManager";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { ResourceCreator } from "../resourceCreator";
+import { ResourceCreator } from "../ResourceCreator";
 import { TableManager } from "../TableManager";
 
 

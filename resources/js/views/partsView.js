@@ -9,7 +9,7 @@ import {
 } from "../custom";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { ResourceCreator } from "../resourceCreator";
+import { ResourceCreator } from "../ResourceCreator";
 import { MouserPartSearch } from "../MouserPartSearch";
 import { SupplierRowManager } from "../SupplierRowManager";
 import { TableRowManager } from "../TableRowManager";

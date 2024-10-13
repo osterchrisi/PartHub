@@ -1,5 +1,5 @@
 export { DropdownManager }
-import { ResourceCreator } from "./resourceCreator";
+import { ResourceCreator } from "./ResourceCreator";
 
 class DropdownManager {
     constructor(options = {}) {

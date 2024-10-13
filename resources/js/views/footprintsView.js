@@ -1,6 +1,6 @@
 import { TableRowManager } from "../TableRowManager";
 import { TableManager } from "../TableManager";
-import { ResourceCreator } from "../resourceCreator";
+import { ResourceCreator } from "../ResourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeFootprintsView() {

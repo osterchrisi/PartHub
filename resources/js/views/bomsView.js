@@ -4,7 +4,7 @@ import {
     attachAddBomHandler
 } from '../toolbar/toolbar';
 
-import { StockManager } from '../stockManager';
+import { StockManager } from '../StockManager';
 import { TableRowManager } from '../TableRowManager';
 import { TableManager } from '../TableManager';
 

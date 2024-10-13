@@ -1,5 +1,5 @@
 export { SupplierRowManager };
-import { DropdownManager } from "./dropdownManager";
+import { DropdownManager } from "./DropdownManager";
 import { updateInfoWindow } from "./custom";
 
 class SupplierRowManager {
