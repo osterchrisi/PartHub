@@ -20,7 +20,7 @@
             </div>
             <!-- Social Sign Up -->
             <div class="text-center mb-3">
-                <a href="{{ route('google.login') }}" class="btn btn-lg btn-outline-light">
+                <a href="{{ route('google.login') }}" class="btn btn-lg btn-outline-light" id="googleSignupBtn">
                     <i class="fab fa-google me-2"></i>Sign up with Google
                 </a>
             </div>
@@ -31,7 +31,7 @@
                 <span class="mx-3 text-muted">OR</span>
                 <hr class="flex-grow-1">
             </div>
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" id="register-form">
                 @csrf
                 <div class="text-start">
                     {{-- User Name --}}
