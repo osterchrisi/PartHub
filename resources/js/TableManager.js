@@ -200,9 +200,8 @@ class TableManager {
             delete: (selectedRows, ids) => {
                 const question = `Are you sure you want to delete ${selectedRows.length} selected row(s)?`;
                 showDeleteConfirmation(question, () => {
-                    //TODO: Code the difference between part/parts, bom/boms,...
-                    deleteSelectedRows(ids, `${this.type}s`, this.id_name, () => this.rebuildTable());
-
+                    //TODO: Code the difference between part/parts, bom/boms, ... in the question
+                    this.deleteRows(ids, `${this.type}s`, this.id_name);
                 });
             },
             edit: (selectedRows) => {
@@ -336,6 +335,18 @@ class TableManager {
                 originalValue: originalValue,
                 originTable: originTable
             }).editCell();
+        });
+    }
+
+    /**
+     * Wrapper for deleteSelectedRows to handle row deletions and rebuild the table.
+     * @param {Array} ids - Array of row IDs to be deleted.
+     * @param {string} model - The model name.
+     * @param {string} idColumn - The name of the ID column.
+     */
+    deleteRows(ids, model, idColumn) {
+        deleteSelectedRows(ids, model, idColumn, () => {
+            this.rebuildTable();
         });
     }
 }

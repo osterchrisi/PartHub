@@ -10,7 +10,7 @@ class CategoryTableManager extends TableManager {
 
     bootstrapTable() {
         this.bootstrapCategoriesListTable(); // Custom bootstrap logic for the category table
-        $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+        this.hideEditColumn();
     }
 
     rebuildTable(queryString = '', postRebuildCallback = null) {
@@ -27,6 +27,10 @@ class CategoryTableManager extends TableManager {
                     this.defineActions(categories);
                 });
             });
+    }
+
+    hideEditColumn() {
+        $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     }
 
     defineActions(categories) {
@@ -55,7 +59,6 @@ class CategoryTableManager extends TableManager {
                     var categoryId = $row.data('id');
                     // Extract the action from the clicked icon's data attribute
                     var action = $(this).data('action');
-
                 });
 
                 //* Delete Category
@@ -66,7 +69,11 @@ class CategoryTableManager extends TableManager {
 
                     // Find child categories recursively and return an array of category IDs
                     var categoryIds = this.findChildCategories(categoryId);
-                    deleteSelectedRows(categoryIds, 'part_categories', 'category_id', this.rebuildTable);
+                    console.log("$row = ", $row);
+                    console.log("categoryId = ", categoryId);
+                    console.log("categoryIds = ", categoryIds);
+                    this.deleteRows(categoryIds, 'part_categories', 'category_id');
+                    // deleteSelectedRows(categoryIds, 'part_categories', 'category_id', this.rebuildTable);
                 });
 
                 //* Add Category
