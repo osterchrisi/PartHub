@@ -28,7 +28,7 @@ export function initializePartsView() {
     //* Table Manager for Categories Table
     const categoriesTableManager = new CategoryTableManager({ type: 'category'})
     categoriesTableManager.bootstrapTable();
-    categoriesTableManager.defineActions();
+    // categoriesTableManager.defineActions();
     // bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
     // $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     // attachShowCategoriesButtonClickListener();

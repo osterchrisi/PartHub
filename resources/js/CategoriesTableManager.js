@@ -5,12 +5,12 @@ import { saveLayoutSettings } from "./custom";
 class CategoryTableManager extends TableManager {
     constructor(options) {
         super(options);
-        $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
         this.attachShowCategoriesButtonClickListener();
     }
 
     bootstrapTable() {
         this.bootstrapCategoriesListTable(); // Custom bootstrap logic for the category table
+        $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
     }
 
     rebuildTable(queryString = '', postRebuildCallback = null) {
