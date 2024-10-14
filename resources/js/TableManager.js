@@ -8,6 +8,7 @@ import {
 } from "./custom";
 
 import { assembleBoms, bootstrapCategoriesListTable } from "./tables";
+import { CategoryService } from "./Services/CategoryService";
 
 class TableManager {
     /**
@@ -69,6 +70,7 @@ class TableManager {
                 this.tableId = 'categories_list_table';
                 this.rebuildUrl = '/categories.categoriesTable';
                 this.container = 'category-window';
+                this.categories = {};
                 break;
             default:
                 this.id_name = 'id';
@@ -86,6 +88,7 @@ class TableManager {
         this.rowClickCallback = this.instantiateRowClickCallback(type);
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(type);
+        // this.categoryService = new CategoryService();
 
         this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
@@ -127,9 +130,11 @@ class TableManager {
                     }
                 };
             case 'category':
-                return (id, categories) => {
+                return (id) => {
+                    console.log("category clik");
                     // Array of category and potential child category names as strings for filtering parts table
-                    var cats = this.getChildCategoriesNames(categories, id);
+                    var cats = CategoryService.getChildCategoriesNames(this.categories, id);
+                    console.log(cats);
 
                     // Filter by categories
                     $('#parts_table').bootstrapTable('filterBy', {
@@ -162,8 +167,8 @@ class TableManager {
     /**
      * Defines the row click and context menu actions for the table.
      */
-    defineActions(categories = null) {
-        this.defineTableRowClickActions(categories);
+    defineActions() {
+        this.defineTableRowClickActions();
         if (this.menuId) {
             this.attachContextMenu();
         }
@@ -174,7 +179,7 @@ class TableManager {
      * Attaches a click event listener to the specified table rows and calls the
      * provided callback function with the extracted ID when a row is selected.
      */
-    defineTableRowClickActions(categories) {
+    defineTableRowClickActions() {
         this.$table.on('click', 'tbody tr', (event) => {
             const selectedRow = this.$table.find('tr.selected-last');
             if (selectedRow.length > 0) {
@@ -184,7 +189,7 @@ class TableManager {
             $currentRow.toggleClass('selected-last');
 
             const id = $currentRow.data('id');
-            if (this.rowClickCallback) this.rowClickCallback(id, categories);
+            if (this.rowClickCallback) this.rowClickCallback(id);
         });
         this.preventTextSelectionOnShift();
     }

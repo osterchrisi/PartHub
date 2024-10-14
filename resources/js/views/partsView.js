@@ -28,19 +28,6 @@ export function initializePartsView() {
     //* Table Manager for Categories Table
     const categoriesTableManager = new CategoryTableManager({ type: 'category'})
     categoriesTableManager.bootstrapTable();
-    // categoriesTableManager.defineActions();
-    // bootstrapCategoriesListTable(); // Also attaches click listeners to the Edit buttons of the category table
-    // $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
-    // attachShowCategoriesButtonClickListener();
-    // $.ajax({
-    //     url: '/categories.get',
-    //     dataType: 'json',
-    //     error: function (error) {
-    //         console.log(error);
-    //     }
-    // }).done(categories => {
-    //     defineCategoriesListInPartsViewTableActions($('#categories_list_table'), $('#bom_list_table_menu'), categories)
-    // });
 
     //* Table Row Manager
     const tableRowManager = new TableRowManager('#parts_table', 'part');
