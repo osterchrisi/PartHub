@@ -46,110 +46,96 @@ class CategoryTableManager extends TableManager {
                     treeColumn: treeColumn,
                 });
 
-                // Edit toggle button click listener
                 this.attachEditCategoriesButtonClickListener();
-
-                //TODO: Use this structure to trigger Deletion / Adding of Categories
-                // Attach click listeners to edit buttons
-                this.$table.on('click', 'tbody .edit-button', () => {
-                    // Get the parent <tr> element
-                    var $row = $(this).closest('tr');
-                    // Extract the data attributes from the <tr> element
-                    var parentId = $row.data('parent-id');
-                    var categoryId = $row.data('id');
-                    // Extract the action from the clicked icon's data attribute
-                    var action = $(this).data('action');
-                });
-
-                //* Delete Category
-                //TODO: This info should be encoded into the HTML table like with my other tables
-                this.$table.on('click', 'tbody .trash-button', () => {
-                    var $row = $(this).closest('tr');
-                    var categoryId = $row.data('id');
-
-                    // Find child categories recursively and return an array of category IDs
-                    var categoryIds = this.findChildCategories(categoryId);
-                    console.log("$row = ", $row);
-                    console.log("categoryId = ", categoryId);
-                    console.log("categoryIds = ", categoryIds);
-                    this.deleteRows(categoryIds, 'part_categories', 'category_id');
-                    // deleteSelectedRows(categoryIds, 'part_categories', 'category_id', this.rebuildTable);
-                });
-
-                //* Add Category
-                //! There used to be a resourceCreator here but I kept running into issues, so hardcoded it for now
-                this.$table.on('click', 'tbody .addcat-button', () => {
-                    const $row = $(this).closest('tr');
-                    const parentCategoryId = $row.data('id'); // Get the parent category ID from the row
-
-                    // Show modal for category entry
-                    $('#mCategoryEntry').modal('show');
-
-                    // Set the parent category ID in a hidden field in the modal
-                    $('#parentCategoryId').val(parentCategoryId);
-                });
-
-                $('#addCategory').off().on('click', () => {
-                    const categoryName = $('#addCategoryName').val();
-                    const parentCategoryId = $('#parentCategoryId').val();
-                    const token = $('input[name="_token"]').attr('value'); // CSRF token
-
-                    // Ensure that the category name is not empty
-                    if (!categoryName) {
-                        alert("Category name cannot be empty!");
-                        return;
-                    }
-
-                    // Make AJAX request to create the new category
-                    $.ajax({
-                        url: '/category.create',
-                        type: 'POST',
-                        data: {
-                            _token: token,
-                            category_name: categoryName,
-                            parent_category: parentCategoryId,
-                            type: 'category'
-                        },
-                        success: function (response) {
-                            // Close modal on success
-                            $('#mCategoryEntry').modal('hide');
-
-                            // Clear the input fields for next time
-                            $('#addCategoryName').val('');
-                            $('#parentCategoryId').val('');
-
-                            // Rebuild the categories table after creation
-                            this.rebuildTable();
-                            const partsTable = new TableManager({ type: 'part'});
-                            partsTable.rebuildTable();
-                        },
-                        error: function (xhr) {
-                            alert("Error creating category. Please try again.");
-                        }
-                    });
-                });
-
-                // Initial state is collapsed
-                let isCollapsed = false;
-
-                // Toggle Expand/Collapse on button click
-                $('#category-toggle-collapse-expand').click( () => {
-                    if (isCollapsed) {
-                        this.$table.treegrid('expandAll');
-                        $(this).text('Toggle');
-                    } else {
-                        this.$table.treegrid('collapseAll');
-                        $(this).text('Toggle');
-                    }
-                    isCollapsed = !isCollapsed; // Toggle the state
-                });
+                this.attachCategorySpecificListeners();
             }
         });
     };
 
+    attachCategorySpecificListeners() {
+        // Edit category listener
+        this.$table.on('click', 'tbody .edit-button', (event) => {
+            const $row = $(event.currentTarget).closest('tr');
+            const parentId = $row.data('parent-id');
+            const categoryId = $row.data('id');
+            const action = $(event.currentTarget).data('action');
+            // Custom edit logic goes here if needed
+        });
+
+        // Delete category listener
+        this.$table.on('click', 'tbody .trash-button', (event) => {
+            const $row = $(event.currentTarget).closest('tr');
+            const categoryId = $row.data('id');
+            const categoryIds = this.findChildCategories(categoryId);
+
+            // Delete categories and related children
+            this.deleteRows(categoryIds, 'part_categories', 'category_id');
+        });
+
+        // Add category listener
+        this.$table.on('click', 'tbody .addcat-button', (event) => {
+            const $row = $(event.currentTarget).closest('tr');
+            const parentCategoryId = $row.data('id');
+
+            // Show modal to add a new category
+            $('#mCategoryEntry').modal('show');
+            $('#parentCategoryId').val(parentCategoryId);
+        });
+
+        // Add category from modal listener
+        $('#addCategory').off().on('click', () => {
+            const categoryName = $('#addCategoryName').val();
+            const parentCategoryId = $('#parentCategoryId').val();
+            const token = $('input[name="_token"]').attr('value');
+
+            // Ensure category name is not empty
+            if (!categoryName) {
+                alert("Category name cannot be empty!");
+                return;
+            }
+
+            // Create new category via AJAX request
+            $.ajax({
+                url: '/category.create',
+                type: 'POST',
+                data: {
+                    _token: token,
+                    category_name: categoryName,
+                    parent_category: parentCategoryId,
+                    type: 'category'
+                },
+                success: () => {
+                    $('#mCategoryEntry').modal('hide');
+                    $('#addCategoryName').val('');
+                    $('#parentCategoryId').val('');
+
+                    this.rebuildTable(); // Rebuild categories table after addition
+                    const partsTable = new TableManager({ type: 'part' });
+                    partsTable.rebuildTable();
+                },
+                error: () => {
+                    alert("Error creating category. Please try again.");
+                }
+            });
+        });
+
+        // Expand/Collapse categories listener
+        let isCollapsed = false;
+        $('#category-toggle-collapse-expand').click(() => {
+            if (isCollapsed) {
+                this.$table.treegrid('expandAll');
+                $('#category-toggle-collapse-expand').text('Toggle');
+            } else {
+                this.$table.treegrid('collapseAll');
+                $('#category-toggle-collapse-expand').text('Toggle');
+            }
+            isCollapsed = !isCollapsed;
+        });
+    }
+
     /**
- * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories Edit column
- */
+     * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories Edit column
+     */
     attachEditCategoriesButtonClickListener() {
         $('#cat-edit-btn').off('click').on('click', function () {
             var columnIndex = 0;
@@ -214,6 +200,7 @@ class CategoryTableManager extends TableManager {
         function findChildren(parentId) {
             $('#categories_list_table tbody tr').each(function () {
                 var $currentRow = $(this);
+                console.log("currentRow = ", $(this));
                 var currentParentId = $currentRow.data('parent-id');
                 if (currentParentId === parentId) {
                     var childCategoryId = $currentRow.data('id');
@@ -230,8 +217,8 @@ class CategoryTableManager extends TableManager {
 
     attachShowCategoriesButtonClickListener() {
         $('#cat-show-btn').off('click').on('click', function () {
-          $('#category-window-container').toggle();
-          saveLayoutSettings(); // Save visibility after toggling
+            $('#category-window-container').toggle();
+            saveLayoutSettings(); // Save visibility after toggling
         });
-      }
+    }
 }
