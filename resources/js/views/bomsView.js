@@ -48,7 +48,6 @@ export function initializeBomsView() {
         }).done(function (data) {
             var querystring = "?search=" + inputVal;
             bomsTableManager.rebuildTable(querystring);
-            // rebuildBomListTable(querystring);
         });
     });
 }

@@ -49,10 +49,6 @@ class ResourceCreator {
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
     this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
-
-    // this.tableManager = new TableManager({ type: this.type });
-    // this.tableRebuildFunctions = [this.tableManager.rebuildTable()];
-    // this.tableRebuildFunctions = [this.tableManager.rebuildTable.bind(this.tableManager)];
   }
 
   showModal() {

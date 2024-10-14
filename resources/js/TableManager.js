@@ -7,7 +7,7 @@ import {
     makeTableWindowResizable,
 } from "./custom";
 
-import { assembleBoms } from "./tables";
+import { assembleBoms, bootstrapCategoriesListTable } from "./tables";
 
 class TableManager {
     /**
@@ -29,33 +29,46 @@ class TableManager {
                 this.tableId = 'parts_table';
                 this.menuId = 'parts_table_menu';
                 this.rebuildUrl = '/parts.partsTable';
+                this.container = 'table-window';
                 break;
             case 'partHistory':
                 this.tableId = 'partStockHistoryTable'
+                this.container = 'partHistory';
                 break;
             case 'partInBoms':
                 this.tableId = 'partInBomsTable'
+                //TODO: Come up with a div name
                 break;
             case 'bom':
                 this.id_name = 'bom_id';
                 this.tableId = 'bom_list_table';
                 this.menuId = 'bom_list_table_menu';
                 this.rebuildUrl = '/boms.bomsTable';
+                this.container = 'table-window';
                 break;
             case 'footprint':
                 this.id_name = 'footprint_id';
                 this.tableId = 'footprints_list_table';
                 this.rebuildUrl = '/footprints.footprintsTable';
+                this.container = 'table-window';
                 break;
             case 'location':
                 this.id_name = 'location_id';
                 this.tableId = 'locations_list_table';
                 this.rebuildUrl = '/location.locationsTable';
+                this.container = 'table-window';
                 break;
             case 'supplier':
                 this.id_name = 'supplier_id';
                 this.tableId = 'suppliers_list_table';
                 this.rebuildUrl = '/suppliers.suppliersTable';
+                this.container = 'table-window';
+                break;
+            case 'category':
+                this.id_name = 'category_id';
+                this.tableId = 'categories_list_table';
+                this.rebuildUrl = '/categories.categoriesTable';
+                this.container = 'category-window';
                 break;
             default:
                 this.id_name = 'id';
@@ -113,6 +126,16 @@ class TableManager {
                         this.tableRowManager.saveSelectedRow(id);
                     }
                 };
+            case 'category':
+                return (id, categories) => {
+                    // Array of category and potential child category names as strings for filtering parts table
+                    var cats = this.getChildCategoriesNames(categories, id);
+
+                    // Filter by categories
+                    $('#parts_table').bootstrapTable('filterBy', {
+                        Category: cats
+                    })
+                }
             default:
                 return (id) => {
                     updateInfoWindow(this.type, id);
@@ -139,8 +162,8 @@ class TableManager {
     /**
      * Defines the row click and context menu actions for the table.
      */
-    defineActions() {
-        this.defineTableRowClickActions();
+    defineActions(categories = null) {
+        this.defineTableRowClickActions(categories);
         if (this.menuId) {
             this.attachContextMenu();
         }
@@ -151,7 +174,7 @@ class TableManager {
      * Attaches a click event listener to the specified table rows and calls the
      * provided callback function with the extracted ID when a row is selected.
      */
-    defineTableRowClickActions() {
+    defineTableRowClickActions(categories) {
         this.$table.on('click', 'tbody tr', (event) => {
             const selectedRow = this.$table.find('tr.selected-last');
             if (selectedRow.length > 0) {
@@ -161,7 +184,7 @@ class TableManager {
             $currentRow.toggleClass('selected-last');
 
             const id = $currentRow.data('id');
-            if (this.rowClickCallback) this.rowClickCallback(id);
+            if (this.rowClickCallback) this.rowClickCallback(id, categories);
         });
         this.preventTextSelectionOnShift();
     }
@@ -178,8 +201,6 @@ class TableManager {
                 const question = `Are you sure you want to delete ${selectedRows.length} selected row(s)?`;
                 showDeleteConfirmation(question, () => {
                     //TODO: Code the difference between part/parts, bom/boms,...
-                    //TODO: This is OG code:
-                    // deleteSelectedRows(ids, this.type, this.id_name, () => this.rebuildTable());
                     deleteSelectedRows(ids, `${this.type}s`, this.id_name, () => this.rebuildTable());
 
                 });
@@ -283,7 +304,7 @@ class TableManager {
             url: `${this.rebuildUrl}${queryString}`,
             success: (data) => {
                 this.$table.bootstrapTable('destroy');
-                $('#table-window').html(data);
+                $(`#${this.container}`).html(data);
                 this.$table = $(`#${this.tableId}`);
                 this.bootstrapTable();
                 this.defineActions();
