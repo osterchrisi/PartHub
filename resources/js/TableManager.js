@@ -83,12 +83,11 @@ class TableManager {
             this.hideMenuOnClickOutside();
         }
 
-        // Set default callbacks, but allow customization
+        // Set default callbacks
         this.bootstrapCallback = this.defaultBootstrapCallback();
-        this.rowClickCallback = this.instantiateRowClickCallback(type);
+        this.rowClickCallback = this.instantiateRowClickCallback(this.type);
         this.contextActions = contextActions || this.defaultContextActions();
-        this.tableRowManager = this.instantiateTableRowManager(type);
-        // this.categoryService = new CategoryService();
+        this.tableRowManager = this.instantiateTableRowManager(this.type);
 
         this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
@@ -123,7 +122,7 @@ class TableManager {
         switch (type) {
             case 'part':
                 return (id) => {
-                    updateInfoWindow(this.type, id);
+                    updateInfoWindow(type, id);
                     this.updateStockModal(id);
                     if (this.tableRowManager) {
                         this.tableRowManager.saveSelectedRow(id);
@@ -143,7 +142,7 @@ class TableManager {
                 }
             default:
                 return (id) => {
-                    updateInfoWindow(this.type, id);
+                    updateInfoWindow(type, id);
                     if (this.tableRowManager) {
                         this.tableRowManager.saveSelectedRow(id);
                     }

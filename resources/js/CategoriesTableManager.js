@@ -43,7 +43,7 @@ class CategoryTableManager extends TableManager {
     }
 
     hideEditColumn() {
-        $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').hide();
+        this.$table.find('[data-field="category_edit"]').hide();
     }
 
     defineActions() {
@@ -66,15 +66,27 @@ class CategoryTableManager extends TableManager {
     };
 
     attachCategorySpecificListeners() {
-        // Edit category listener
+        // Attach each listener
+        this.attachEditCategoryListener();
+        this.attachDeleteCategoryListener();
+        this.attachAddCategoryListener();
+        this.attachAddCategoryFromModalListener();
+        this.attachToggleExpandCollapseListener();
+    }
+
+    // Edit category listener
+    attachEditCategoryListener() {
         this.$table.on('click', 'tbody .edit-button', (event) => {
             const $row = $(event.currentTarget).closest('tr');
             const parentId = $row.data('parent-id');
             const categoryId = $row.data('id');
             const action = $(event.currentTarget).data('action');
+            // Further action logic goes here
         });
+    }
 
-        // Delete category listener
+    // Delete category listener
+    attachDeleteCategoryListener() {
         this.$table.on('click', 'tbody .trash-button', (event) => {
             const $row = $(event.currentTarget).closest('tr');
             const categoryId = $row.data('id');
@@ -83,8 +95,10 @@ class CategoryTableManager extends TableManager {
             // Delete categories and related children
             this.deleteRows(categoryIds, 'part_categories', 'category_id');
         });
+    }
 
-        // Add category listener
+    // Add category listener
+    attachAddCategoryListener() {
         this.$table.on('click', 'tbody .addcat-button', (event) => {
             const $row = $(event.currentTarget).closest('tr');
             const parentCategoryId = $row.data('id');
@@ -93,8 +107,10 @@ class CategoryTableManager extends TableManager {
             $('#mCategoryEntry').modal('show');
             $('#parentCategoryId').val(parentCategoryId);
         });
+    }
 
-        // Add category from modal listener
+    // Add category from modal listener
+    attachAddCategoryFromModalListener() {
         $('#addCategory').off().on('click', () => {
             const categoryName = $('#addCategoryName').val();
             const parentCategoryId = $('#parentCategoryId').val();
@@ -107,6 +123,7 @@ class CategoryTableManager extends TableManager {
             }
 
             // Create new category via AJAX request
+            //TODO: ResourceCreator here would be nice
             $.ajax({
                 url: '/category.create',
                 type: 'POST',
@@ -130,8 +147,10 @@ class CategoryTableManager extends TableManager {
                 }
             });
         });
+    }
 
-        // Expand/Collapse categories listener
+    // Expand/Collapse categories listener
+    attachToggleExpandCollapseListener() {
         let isCollapsed = false;
         $('#category-toggle-collapse-expand').click(() => {
             if (isCollapsed) {
@@ -146,7 +165,8 @@ class CategoryTableManager extends TableManager {
     }
 
     /**
-     * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories Edit column
+     * Attach the click listener to the "Edit Categories" button.
+     * The button toggles the visibility of the Categories Edit column
      */
     attachEditCategoriesButtonClickListener() {
         $('#cat-edit-btn').off('click').on('click', function () {
@@ -156,15 +176,9 @@ class CategoryTableManager extends TableManager {
     }
 
     /**
-     * Attach the click listener to the "Toggle Categories" button. The button toggles the visibility of the Categories div in the parts view
+     * Attach the click listener to the "Toggle Categories" button.
+     * The button toggles the visibility of the Categories div in the parts view
      */
-    attachShowCategoriesButtonClickListener() {
-        $('#cat-show-btn').off('click').on('click', function () {
-            $('#category-window-container').toggle();
-            saveLayoutSettings(); // Save visibility after toggling
-        });
-    }
-
     attachShowCategoriesButtonClickListener() {
         $('#cat-show-btn').off('click').on('click', function () {
             $('#category-window-container').toggle();
