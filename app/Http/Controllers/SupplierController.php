@@ -38,7 +38,8 @@ class SupplierController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        } elseif ($route == 'suppliers.suppliersTable') {
+        }
+        elseif ($route == 'suppliers.suppliersTable') {
             return view('suppliers.suppliersTable', [
                 'suppliers_list' => $suppliers_list,
                 'db_columns' => self::$supplier_list_table_headers,
@@ -84,7 +85,7 @@ class SupplierController extends Controller
             'tabToggleId2' => 'supplierHistory',
             // Parts from Supplier table
             'parts_from_supplier' => $parts_from_supplier,
-            'db_columns' => ['part_name', 'part_id', 'URL', 'SPN', 'price'], // Add additional columns as needed
+            'db_columns' => ['part_name', 'URL', 'SPN', 'price', 'part_id'], // Add additional columns as needed
             'nice_columns' => ['Part', 'URL', 'SPN', 'Price', 'Part ID'], // These are the table headers
         ]);
     }
