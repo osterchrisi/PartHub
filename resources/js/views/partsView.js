@@ -24,6 +24,11 @@ export function initializePartsView() {
     });
     partsTableManager.bootstrapTable();
     partsTableManager.defineActions();
+
+    $('#parts_table').on('post-body.bs.table', function() {
+        document.getElementById('parts_table_placeholder').classList.add('d-none');
+        document.getElementById('parts_table').classList.remove('d-none');
+    });
     
     //* Table Manager for Categories Table
     const categoriesTableManager = new CategoryTableManager({ type: 'category'})

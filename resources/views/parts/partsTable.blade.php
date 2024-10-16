@@ -23,10 +23,42 @@
     }
 </style>
 
+{{-- Placeholder Wrapper --}}
+<div id="parts_table_placeholder">
+    <table class="table table-sm table-hover table-striped w-100" style="font-size:12px">
+        <thead>
+            <tr class="row">
+                <th class="placeholder col"></th>
+                {{-- @foreach ($nice_columns as $column_header)
+                    <th class="placeholder col">{{ $column_header }}</th>
+                @endforeach --}}
+                <th class="placeholder col">Name</th>
+                <th class="placeholder col">Description</th>
+                <th class="placeholder col">Comment</th>
+                <th class="placeholder col">Category</th>
+                <th class="placeholder col">Total Stock</th>
+                <th class="placeholder col">Footprint</th>
+                <th class="placeholder col">Unit</th>
+                <th class="placeholder col">ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for ($i = 0; $i < 10; $i++)
+                <tr class="placeholder-glow row">
+                    <td class="placeholder bg-secondary col mx-1 my-1 py-2"></td>
+                    @foreach ($nice_columns as $column_header)
+                        <td class="placeholder bg-secondary col mx-1 my-1"></td>
+                    @endforeach
+                </tr>
+            @endfor
+        </tbody>
+    </table>
+</div>
+
 {{-- Parts Table --}}
-<table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="parts_table"
-    data-resizable="true" data-search="true" data-search-time-out="" data-search-selector="#filter" data-search-align="left"
-    data-pagination="true" data-show-columns="true" {{-- data-reorderable-columns="true"  --}} data-cookie="true"
+<table class="table table-sm table-responsive table-hover table-striped d-none" style="font-size:12px" id="parts_table"
+    data-resizable="true" data-search="true" data-search-time-out="" data-search-selector="#filter"
+    data-search-align="left" data-pagination="true" data-show-columns="true" {{-- data-reorderable-columns="true"  --}} data-cookie="true"
     data-cookie-id-table="PartsTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
     data-multiple-select-row="true" data-click-to-select="true">
 
@@ -73,7 +105,7 @@
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['footprint'][$column_data] ?? '' }}</td>
                         {{-- Supplier --}}
-                    {{-- @elseif ($column_data == 'supplier_name')
+                        {{-- @elseif ($column_data == 'supplier_name')
                         <td data-editable="true" class="editable supplier" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['supplier'][$column_data] ?? '' }}</td> --}}
@@ -90,7 +122,8 @@
                         <td data-editable="true" class="editable editable-text-cell" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}<div class="edit-pen">
-                                <a href="#"><i class="fas fa-pen fa-lg"></i></a></div>
+                                <a href="#"><i class="fas fa-pen fa-lg"></i></a>
+                            </div>
                         </td>
                     @endif
                 @endforeach
