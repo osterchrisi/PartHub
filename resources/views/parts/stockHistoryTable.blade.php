@@ -18,7 +18,7 @@
                     @endphp
                     <tr data-id="{{ $row['part_id_fk'] }}">
                         @foreach ($stockHistoryTableHeaders as $column_data)
-                            <td data-editable="true" class="editable" data-id="{{ $hist_id }}"
+                            <td data-editable="true" data-id="{{ $hist_id }}"
                                 data-column="{{ $column_data }}">
                                 {{-- Date --}}
                                 @if ($column_data === 'stock_lvl_chng_timestamp')
