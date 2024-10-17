@@ -24,15 +24,11 @@
 </style>
 
 {{-- Placeholder Wrapper --}}
-<div id="parts_table_placeholder">
-    <table class="table table-sm table-hover table-striped w-100" style="font-size:12px">
-        <thead>
-            <tr class="row">
-                <th class="placeholder col"></th>
+{{-- d --}}
                 {{-- @foreach ($nice_columns as $column_header)
                     <th class="placeholder col">{{ $column_header }}</th>
                 @endforeach --}}
-                <th class="placeholder col">Name</th>
+                {{-- <th class="placeholder col">Name</th>
                 <th class="placeholder col">Description</th>
                 <th class="placeholder col">Comment</th>
                 <th class="placeholder col">Category</th>
@@ -53,10 +49,10 @@
             @endfor
         </tbody>
     </table>
-</div>
+</div> --}}
 
 {{-- Parts Table --}}
-<table class="table table-sm table-responsive table-hover table-striped d-none" style="font-size:12px" id="parts_table"
+<table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="parts_table"
     data-resizable="true" data-search="true" data-search-time-out="" data-search-selector="#filter"
     data-search-align="left" data-pagination="true" data-show-columns="true" {{-- data-reorderable-columns="true"  --}} data-cookie="true"
     data-cookie-id-table="PartsTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
