@@ -31,6 +31,7 @@ class TableManager {
                 this.menuId = 'parts_table_menu';
                 this.rebuildUrl = '/parts.partsTable';
                 this.container = 'table-window';
+                this.postBodyCallback = this.hidePlaceHolderTable;
                 break;
             case 'partHistory':
                 this.tableId = 'partStockHistoryTable'
@@ -56,7 +57,7 @@ class TableManager {
             case 'location':
                 this.id_name = 'location_id';
                 this.tableId = 'locations_list_table';
-                this.rebuildUrl = '/location.locationsTable';
+                this.rebuildUrl = '/locations.locationsTable';
                 this.container = 'table-window';
                 break;
             case 'supplier':
@@ -84,7 +85,6 @@ class TableManager {
         }
 
         // Set default callbacks
-        this.bootstrapCallback = this.defaultBootstrapCallback();
         this.rowClickCallback = this.instantiateRowClickCallback(this.type);
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(this.type);
@@ -150,17 +150,16 @@ class TableManager {
         }
     }
 
-    /**
-     * Default bootstrap callback method.
-     */
-    defaultBootstrapCallback() {
-        return () => {
-            this.$table.bootstrapTable({});
-        };
+    bootstrapTable() {
+        this.$table.bootstrapTable({
+            onPostBody: this.postBodyCallback ? this.postBodyCallback.bind(this) : function () { }
+        });
     }
 
-    bootstrapTable() {
-        this.$table.bootstrapTable({});
+    hidePlaceHolderTable() {
+        console.log("Hiding placeholder");
+        $('#parts_table_placeholder').addClass('d-none');
+        this.$table.removeClass('d-none');
     }
 
     /**

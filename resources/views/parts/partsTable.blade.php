@@ -24,11 +24,15 @@
 </style>
 
 {{-- Placeholder Wrapper --}}
-{{-- d --}}
+<div id="parts_table_placeholder">
+    <table class="table table-sm table-hover table-striped w-100" style="font-size:12px">
+        <thead>
+            <tr class="row">
+                <th class="placeholder col"></th>
                 {{-- @foreach ($nice_columns as $column_header)
                     <th class="placeholder col">{{ $column_header }}</th>
                 @endforeach --}}
-                {{-- <th class="placeholder col">Name</th>
+                <th class="placeholder col">Name</th>
                 <th class="placeholder col">Description</th>
                 <th class="placeholder col">Comment</th>
                 <th class="placeholder col">Category</th>
@@ -41,15 +45,17 @@
         <tbody>
             @for ($i = 0; $i < 10; $i++)
                 <tr class="placeholder-glow row">
+                    <td class="placeholder bg-secondary col-1 mx-1 my-1 py-2"></td>
                     <td class="placeholder bg-secondary col mx-1 my-1 py-2"></td>
-                    @foreach ($nice_columns as $column_header)
+                    <td class="placeholder bg-secondary col mx-1 my-1 py-2"></td>
+                    {{-- @foreach ($nice_columns as $column_header)
                         <td class="placeholder bg-secondary col mx-1 my-1"></td>
-                    @endforeach
+                    @endforeach --}}
                 </tr>
             @endfor
         </tbody>
     </table>
-</div> --}}
+</div>
 
 {{-- Parts Table --}}
 <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="parts_table"
