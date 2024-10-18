@@ -142,21 +142,27 @@ class DropdownManager {
     */
     organizeCategories(categories) {
         let categoryMap = {};
+
+        // Create a map with all categories, each with an empty 'children' array
         categories.forEach(category => {
             categoryMap[category.category_id] = { ...category, children: [] };
         });
 
         let nestedCategories = [];
+
         categories.forEach(category => {
             if (category.parent_category === 0) {
+                // If no parent category, add to the top-level categories
                 nestedCategories.push(categoryMap[category.category_id]);
-            } else {
+            } else if (categoryMap[category.parent_category]) {
+                // Check if parent category exists in the map before adding children
                 categoryMap[category.parent_category].children.push(categoryMap[category.category_id]);
             }
         });
 
         return nestedCategories;
     }
+
 
     /**
      * Generates HTML options for categories with nesting.
