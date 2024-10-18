@@ -29,9 +29,6 @@
         <thead>
             <tr class="row">
                 <th class="placeholder col"></th>
-                {{-- @foreach ($nice_columns as $column_header)
-                    <th class="placeholder col">{{ $column_header }}</th>
-                @endforeach --}}
                 <th class="placeholder col">Name</th>
                 <th class="placeholder col">Description</th>
                 <th class="placeholder col">Comment</th>
@@ -47,10 +44,9 @@
                 <tr class="placeholder-glow row">
                     <td class="placeholder bg-secondary col-1 mx-1 my-1 py-2"></td>
                     <td class="placeholder bg-secondary col mx-1 my-1 py-2"></td>
+                    <td class="placeholder bg-secondary col-4 mx-1 my-1 py-2"></td>
                     <td class="placeholder bg-secondary col mx-1 my-1 py-2"></td>
-                    {{-- @foreach ($nice_columns as $column_header)
-                        <td class="placeholder bg-secondary col mx-1 my-1"></td>
-                    @endforeach --}}
+                    <td class="placeholder bg-secondary col-1 mx-1 my-1 py-2"></td>
                 </tr>
             @endfor
         </tbody>
@@ -58,7 +54,7 @@
 </div>
 
 {{-- Parts Table --}}
-<table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="parts_table"
+<table class="table table-sm table-responsive table-hover table-striped d-none" style="font-size:12px" id="parts_table"
     data-resizable="true" data-search="true" data-search-time-out="" data-search-selector="#filter"
     data-search-align="left" data-pagination="true" data-show-columns="true" {{-- data-reorderable-columns="true"  --}} data-cookie="true"
     data-cookie-id-table="PartsTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"

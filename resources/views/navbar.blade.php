@@ -49,7 +49,7 @@ $user_name = $user ? $user->name : '';
                         @endunless
 
                         @if ($user_id == 1)
-                            {{-- Show "What is PartHub?" link for demo user --}}
+                            {{-- Show "What is PartHub?" link for Demo user --}}
                             <li class="nav-item rounded me-2 pt-1">
                                 <a class="nav-link {{ request()->routeIs('whatis') ? 'active' : '' }}"
                                     href="{{ route('whatis') }}">What is PartHub?</a>
@@ -72,7 +72,7 @@ $user_name = $user ? $user->name : '';
                         @endunless
 
                         @if ($user_id == 1)
-                            {{-- Show Sign Up Link if demo user --}}
+                            {{-- Show Sign Up Link if Demo user --}}
                             <li class="pt-1">
                                 <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
@@ -99,7 +99,10 @@ $user_name = $user ? $user->name : '';
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <div class="d-grid justify-content-md-end">
-                                                <button type="submit" class="nav-link nav-link-button">Log Out</button>
+                                                <button type="submit" class="nav-link nav-link-button">
+                                                    @if ($user_id == 1) Quit Demo
+                                                    @else Log Out
+                                                    @endif</button>
                                             </div>
                                         </form>
                                     </li>

@@ -22,7 +22,6 @@ class TableManager {
      * @param {string} options.rebuildUrl - URL to use when rebuilding the table.
      */
     constructor({ type, contextActions = null }) {
-
         this.type = type;
         switch (this.type) {
             case 'part':
@@ -157,7 +156,7 @@ class TableManager {
     }
 
     hidePlaceHolderTable() {
-        console.log("Hiding placeholder");
+        console.trace("Hiding placeholder");
         $('#parts_table_placeholder').addClass('d-none');
         this.$table.removeClass('d-none');
     }
@@ -193,11 +192,8 @@ class TableManager {
     }
 
     /**
-     * Defnies context menu actions that is attached to a table row and is triggered by right-clicking on a cell.
-     */
-    /**
-   * Default context menu actions.
-   */
+    * Defnies context menu actions that is attached to a table row and is triggered by right-clicking on a cell.
+    */
     defaultContextActions() {
         return {
             delete: (selectedRows, ids) => {
