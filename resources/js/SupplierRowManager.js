@@ -1,7 +1,6 @@
 export { SupplierRowManager };
 import { DropdownManager } from "./DropdownManager";
 import { updateInfoWindow } from "./custom";
-import { TableManager } from "./TableManager";
 
 class SupplierRowManager {
     constructor() {

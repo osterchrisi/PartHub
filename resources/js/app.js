@@ -1,7 +1,6 @@
 import './bootstrap';
 import { initializePartsView } from './views/partsView';
 import { initializeBomsView } from './views/bomsView';
-import { initializeCategoriesView } from './views/categoriesView';
 import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
@@ -52,9 +51,6 @@ $(document).ready(function () {
     }
     else if (currentView === 'boms') {
         initializeBomsView();
-    }
-    else if (currentView === 'categories') {
-        initializeCategoriesView();
     }
     else if (currentView === 'locations') {
         initializeLocationsView();

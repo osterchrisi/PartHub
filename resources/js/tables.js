@@ -83,12 +83,6 @@ export function rebuildCategoriesTable() {
 
 
 
-export function defineCategoriesListTableActions($table, $menu, tableRowManager) {
-  defineTableRowClickActions($table, function (id) {
-    updateInfoWindow('category', id);
-  }, tableRowManager);
-}
-
 /**
  * Define actions when clicking rows in the Categories List Table.
  * 

@@ -5,6 +5,9 @@ import {
     // rebuildPartsTable
 } from "./tables";
 
+import { TableManager } from "./TableManager";
+// import { CategoryTableManager } from "./CategoriesTableManager";
+
 /**
  * Class to edit table cells on the frontend and change database table data accordingly
  * Example usage:
@@ -109,8 +112,16 @@ class InlineTableCellEditor {
             } else if (table_name == 'boms') {
                 updateInfoWindow('bom', id);
             } else if (table_name == 'part_categories') {
+                console.log("now calling this");
+                const categoriesTableManager = new CategoryTableManager({ type: 'category' })
+                // categoriesTableManager.rebuildCategoriesTable();
+
+                const partsTableManager = new TableManager({
+                    type: 'part'
+                });
+                partsTableManager.rebuildTable();
                 //TODO: check this!!
-                rebuildCategoriesTable();
+                // rebuildCategoriesTable();
                 // Is here, just commenting to get TableManager to work
                 // rebuildPartsTable('');
             }
