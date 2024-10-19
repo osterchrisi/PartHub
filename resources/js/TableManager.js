@@ -66,6 +66,9 @@ class TableManager {
                 this.rebuildUrl = '/suppliers.suppliersTable';
                 this.container = 'table-window';
                 break;
+            case 'supplierData':
+                this.tableId = 'partSupplierDataTable';
+                break;
             case 'category':
                 this.id_name = 'category_id';
                 this.tableId = 'categories_list_table';
@@ -319,7 +322,7 @@ class TableManager {
 
     enableInlineProcessing() {
         this.$table.on('dblclick', '.editable', (event) => {
-            console.log("dl");
+            console.log("trying to inline process ", this.type);
             const cell = $(event.currentTarget);
 
             if (cell.hasClass('editing')) {

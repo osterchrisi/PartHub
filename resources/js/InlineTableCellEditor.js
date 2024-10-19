@@ -21,7 +21,7 @@ import {
  */
 class InlineTableCellEditor {
     constructor(options) {
-        console.log("ITC");
+        console.log("ITC, type:", options.type);
         // Options
         this.type = options.type;
         this.$cell = options.$cell;
@@ -31,6 +31,8 @@ class InlineTableCellEditor {
         this.table = options.table || 'partsTable';
         // Changed flag
         this.valueChanged = false;
+
+        // console.log("type, $cell, originalValue, originTable, table ", this.type, this.$cell, this.originalValue, this.originTable, this.table);
 
         switch (this.type) {
             case 'category':
@@ -43,9 +45,13 @@ class InlineTableCellEditor {
                 this.endpoint = 'suppliers';
                 break;
             case 'supplierData':
-                this. endpoint = 'suppliers';
+                this.endpoint = 'suppliers';
                 this.table = 'supplier_data';
+                break;
         }
+        console.log("type, $cell, originalValue, originTable, table ", this.type, this.$cell, this.originalValue, this.originTable, this.table);
+
+
     }
 
     editCell() {
@@ -206,6 +212,7 @@ class InlineTableCellEditor {
      * @returns {jQuery} - The created select element
      */
     createSelectElement(data, currentValue, textKey, valueKey) {
+        console.log(data, currentValue, textKey, valueKey);
         // New select element
         const select = $('<select class="form-select-sm">');
         // Iterate over all available data

@@ -34,7 +34,7 @@ export function initializePartsView() {
     const categoriesTableManager = new CategoryTableManager({ type: 'category'})
     categoriesTableManager.bootstrapTable();
 
-    //* Table Row Manager
+    //* Table Row Manager for Parts Table
     const tableRowManager = new TableRowManager('#parts_table', 'part');
     tableRowManager.loadSelectedRow();
 

@@ -75,6 +75,7 @@ class InfoWindow {
                     console.log("delete id = ", deleteRowId);
                     deleteSelectedRows(deleteRowId, 'supplier_data', 'id', () => updateInfoWindow('part', this.id));
                 });
+                const tableManager = new TableManager({ type: 'supplierData' });
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();
@@ -139,8 +140,8 @@ class InfoWindow {
     }
 
     bootstrapShowPartTables() {
-        const histTable = new TableManager({type: 'partHistory'});
-        const partInBomsTable = new TableManager({type: 'partInBoms'});
+        const histTable = new TableManager({ type: 'partHistory' });
+        const partInBomsTable = new TableManager({ type: 'partInBoms' });
         histTable.bootstrapTable();
         partInBomsTable.bootstrapTable();
     }
