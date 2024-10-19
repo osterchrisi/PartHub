@@ -21,7 +21,6 @@ import {
  */
 class InlineTableCellEditor {
     constructor(options) {
-        console.log("ITC, type:", options.type);
         // Options
         this.type = options.type;
         this.$cell = options.$cell;
@@ -32,7 +31,6 @@ class InlineTableCellEditor {
         // Changed flag
         this.valueChanged = false;
 
-        // console.log("type, $cell, originalValue, originTable, table ", this.type, this.$cell, this.originalValue, this.originTable, this.table);
 
         switch (this.type) {
             case 'category':
@@ -45,11 +43,11 @@ class InlineTableCellEditor {
                 this.endpoint = 'suppliers';
                 break;
             case 'supplierData':
+                this.type = 'supplier';     // Need this change, otherwise the way that editDropdownCell calls createSelectElement doesn't work properly
                 this.endpoint = 'suppliers';
                 this.table = 'supplier_data';
                 break;
         }
-        console.log("type, $cell, originalValue, originTable, table ", this.type, this.$cell, this.originalValue, this.originTable, this.table);
 
 
     }
@@ -63,7 +61,6 @@ class InlineTableCellEditor {
     }
 
     editTextCell() {
-        console.log("editing text field");
         // Create input field
         const input = $('<textarea class="form-control">').val(this.originalValue.trim());
         this.$cell.empty().append(input);
@@ -112,6 +109,7 @@ class InlineTableCellEditor {
             } else if (table_name == 'boms') {
                 updateInfoWindow('bom', id);
             } else if (table_name == 'part_categories') {
+                //TODO: check this!!
                 rebuildCategoriesTable();
                 // Is here, just commenting to get TableManager to work
                 // rebuildPartsTable('');
@@ -212,7 +210,6 @@ class InlineTableCellEditor {
      * @returns {jQuery} - The created select element
      */
     createSelectElement(data, currentValue, textKey, valueKey) {
-        console.log(data, currentValue, textKey, valueKey);
         // New select element
         const select = $('<select class="form-select-sm">');
         // Iterate over all available data

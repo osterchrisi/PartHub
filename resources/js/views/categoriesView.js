@@ -1,10 +1,10 @@
 import {
-    bootstrapCategoriesListTable,
+    // bootstrapCategoriesListTable,
     defineCategoriesListTableActions
 } from "../tables";
 
 export function initializeCategoriesView() {
-    bootstrapCategoriesListTable();
+    // bootstrapCategoriesListTable();
 
     var $table = $('#categories_list_table');
     var $menu = $('#bom_list_table_menu');

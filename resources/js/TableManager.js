@@ -7,7 +7,7 @@ import {
     makeTableWindowResizable,
 } from "./custom";
 
-import { assembleBoms, bootstrapCategoriesListTable } from "./tables";
+import { assembleBoms } from "./tables";
 import { CategoryService } from "./Services/CategoryService";
 import { InlineTableCellEditor } from "./InlineTableCellEditor";
 
@@ -322,7 +322,6 @@ class TableManager {
 
     enableInlineProcessing() {
         this.$table.on('dblclick', '.editable', (event) => {
-            console.log("trying to inline process ", this.type);
             const cell = $(event.currentTarget);
 
             if (cell.hasClass('editing')) {

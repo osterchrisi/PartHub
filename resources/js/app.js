@@ -6,11 +6,6 @@ import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
 import { initializeUserSettingsView } from './views/userSettingsView';
-// import { initializeSignupView, processChallenge } from './views/signupView';
-// import { initializeMultiView } from './multiView';
-import {
-    enableInlineProcessing,
-} from "./tables";
 import {
     makeTableWindowResizable,
     clearModalOnHiding,
@@ -75,7 +70,6 @@ $(document).ready(function () {
     }
 
     // Common to all views
-    enableInlineProcessing();
     makeTableWindowResizable();
     clearModalOnHiding();
     focusFirstInputInModals();

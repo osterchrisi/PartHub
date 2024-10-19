@@ -1,10 +1,4 @@
 import {
-    bootstrapCategoriesListTable,
-    defineCategoriesListInPartsViewTableActions,
-    attachShowCategoriesButtonClickListener
-} from "../tables";
-
-import {
     initializeMultiSelect,
 } from "../custom";
 

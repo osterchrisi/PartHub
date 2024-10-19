@@ -1,14 +1,11 @@
 import {
   preventTextSelectionOnShift,
-  deleteSelectedRows,
   removeClickListeners,
   updateInfoWindow,
-  saveLayoutSettings
 } from "./custom";
 
 import { makeTableWindowResizable } from './custom.js';
-import { ResourceCreator } from "./ResourceCreator.js";
-import { InlineTableCellEditor } from "./InlineTableCellEditor.js";
+
 
 /**
  * Bootstrap the BOM details table
@@ -25,140 +22,6 @@ export function bootstrapBomDetailsTable() {
   $fixedTableToolbar.append('<div class="row"><div class="col"><div class="columns columns-right btn-group float-right"><div class="keep-open btn-group" title="Columns"><button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-label="Columns" title="Columns" aria-expanded="false"><i class="bi bi-buildings"></i><span class="caret"></span></button><div class="dropdown-menu dropdown-menu-right" style=""><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Part Name" value="0" checked="checked"> <span>Storage 1</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Quantity needed" value="1" checked="checked"> <span>Storage 2</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Total stock available" value="2" checked="checked"> <span>Storage 3</span></label><label class="dropdown-item dropdown-item-marker"><input type="checkbox" data-field="Can build" value="3" checked="checked"> <span>Storage 4</span></label></div></div></div></div></div>');
 };
 
-//TODO: Extract functions -> Also at editTextCell()->else if->part_categories->treegrid
-/**
- * Bootstrap the Categories table
- * @return void
- */
-export function bootstrapCategoriesListTable(treeColumn = 1) {
-  const $table = $('#categories_list_table');
-  $table.bootstrapTable({
-    rootParentId: '0',
-    onPostBody: function () {
-      // Treegrid
-      $table.treegrid({
-        treeColumn: treeColumn,
-      });
-
-      // Edit toggle button click listener
-      attachEditCategoriesButtonClickListener();
-
-      //TODO: Use this structure to trigger Deletion / Adding of Categories
-      // Attach click listeners to edit buttons
-      $table.on('click', 'tbody .edit-button', function () {
-        // Get the parent <tr> element
-        var $row = $(this).closest('tr');
-        // Extract the data attributes from the <tr> element
-        var parentId = $row.data('parent-id');
-        var categoryId = $row.data('id');
-        // Extract the action from the clicked icon's data attribute
-        var action = $(this).data('action');
-
-      });
-
-      //* Delete Category
-      //TODO: This info should be encoded into the HTML table like with my other tables
-      $table.on('click', 'tbody .trash-button', function () {
-        var $row = $(this).closest('tr');
-        var categoryId = $row.data('id');
-
-        // Find child categories recursively and return an array of category IDs
-        var categoryIds = findChildCategoriesFromCategoryTable(categoryId);
-        deleteSelectedRows(categoryIds, 'part_categories', 'category_id', rebuildCategoriesTable);
-      });
-
-      //* Add Category
-      //! There used to be a resourceCreator here but I kept running into issues, so hardcoded it for now
-      $table.on('click', 'tbody .addcat-button', function () {
-        const $row = $(this).closest('tr');
-        const parentCategoryId = $row.data('id'); // Get the parent category ID from the row
-
-        // Show modal for category entry
-        $('#mCategoryEntry').modal('show');
-
-        // Set the parent category ID in a hidden field in the modal
-        $('#parentCategoryId').val(parentCategoryId);
-      });
-
-      $('#addCategory').off().on('click', function () {
-        const categoryName = $('#addCategoryName').val();
-        const parentCategoryId = $('#parentCategoryId').val();
-        const token = $('input[name="_token"]').attr('value'); // CSRF token
-
-        // Ensure that the category name is not empty
-        if (!categoryName) {
-          alert("Category name cannot be empty!");
-          return;
-        }
-
-        // Make AJAX request to create the new category
-        $.ajax({
-          url: '/category.create',
-          type: 'POST',
-          data: {
-            _token: token,
-            category_name: categoryName,
-            parent_category: parentCategoryId,
-            type: 'category'
-          },
-          success: function (response) {
-            // Close modal on success
-            $('#mCategoryEntry').modal('hide');
-
-            // Clear the input fields for next time
-            $('#addCategoryName').val('');
-            $('#parentCategoryId').val('');
-
-            // Rebuild the categories table after creation
-            rebuildCategoriesTable();
-            rebuildPartsTable('');
-          },
-          error: function (xhr) {
-            alert("Error creating category. Please try again.");
-          }
-        });
-      });
-
-
-
-
-      // Initial state is collapsed
-      let isCollapsed = false;
-
-      // Toggle Expand/Collapse on button click
-      $('#category-toggle-collapse-expand').click(function () {
-        if (isCollapsed) {
-          $table.treegrid('expandAll');
-          $(this).text('Toggle');
-        } else {
-          $table.treegrid('collapseAll');
-          $(this).text('Toggle');
-        }
-        isCollapsed = !isCollapsed; // Toggle the state
-      });
-    }
-  });
-};
-
-/**
- * Attach the click listener to the "Edit Categories" button. The button toggles the visibility of the Categories Edit column
- */
-function attachEditCategoriesButtonClickListener() {
-  $('#cat-edit-btn').off('click').on('click', function () {
-    var columnIndex = 0;
-    $('#categories_list_table th[data-field="category_edit"], #categories_list_table td[data-field="category_edit"]').toggle();
-  });
-}
-
-/**
- * Attach the click listener to the "Toggle Categories" button. The button toggles the visibility of the Categories div in the parts view
- */
-export function attachShowCategoriesButtonClickListener() {
-  $('#cat-show-btn').off('click').on('click', function () {
-    $('#category-window-container').toggle();
-    saveLayoutSettings(); // Save visibility after toggling
-  });
-}
 
 
 /**
@@ -309,81 +172,6 @@ function findChildCategoriesFromCategoryTable(parentId) {
   findChildren(parentId);
   return categoryIds;
 }
-
-/**
- * Inline table cell manipulation of bootstrapped tables
- */
-export function enableInlineProcessing() {
-  // $(document).on('dblclick', '.bootstrap-table .editable', function (e) {
-  //   var cell = $(this);
-
-  //   // Check if the cell is already being edited
-  //   if (cell.hasClass('editing')) {
-  //     return;
-  //   }
-  //   else {
-  //     // Add editing class to the cell
-  //     cell.addClass('editing');
-  //   }
-
-  //   // Get current value and origin table
-  //   var originalValue = cell.text();
-  //   var originTable = cell.closest('table').attr('id');
-
-  //   // * Dropdown cells
-  //   if (cell.hasClass('category')) {
-  //     const editor = new InlineTableCellEditor({
-  //       type: 'category',
-  //       endpoint: 'categories',
-  //       $cell: cell,
-  //       originalValue: originalValue,
-  //       originTable: originTable
-
-  //     }).editCell();
-  //   }
-  //   else if (cell.hasClass('footprint')) {
-  //     const editor = new InlineTableCellEditor({
-  //       type: 'footprint',
-  //       endpoint: 'footprints',
-  //       $cell: cell,
-  //       originalValue: originalValue,
-  //       originTable: originTable
-
-  //     }).editCell();
-  //   }
-  //   else if (cell.hasClass('supplier')) {
-  //     const editor = new InlineTableCellEditor({
-  //       type: 'supplier',
-  //       endpoint: 'suppliers',
-  //       $cell: cell,
-  //       originalValue: originalValue,
-  //       originTable: originTable
-
-  //     }).editCell();
-  //   }
-  //   else if (cell.hasClass('supplierData')) {
-  //     const editor = new InlineTableCellEditor({
-  //       type: 'supplier',
-  //       endpoint: 'suppliers',
-  //       $cell: cell,
-  //       originalValue: originalValue,
-  //       originTable: originTable,
-  //       table: 'supplier_data',
-
-  //     }).editCell();
-  //   }
-  //   //* It's a text cell
-  //   else {
-  //     // editTextCell(cell, originalValue);
-  //     const editor = new InlineTableCellEditor({
-  //       type: 'text',
-  //       $cell: cell,
-  //       originalValue: originalValue,
-  //       originTable: originTable
-  //     }).editCell();
-  //   }
-  // });
-};
 
 /**
 * Displays a modal for assembling one or more BOMs and sends an AJAX request to the server to assemble the BOMs.
