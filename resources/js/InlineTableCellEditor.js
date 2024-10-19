@@ -10,8 +10,7 @@ class InlineTableCellEditor {
         this.originalValue = null;
         this.originTable = null;
         this.valueChanged = false;
-        //TODO: Check if I need this default table type
-        this.table = 'partsTable';  // Default table type (can be overridden)
+        this.table = null;  // Default table type (can be overridden)
     }
 
     enableInlineProcessing() {
@@ -46,6 +45,7 @@ class InlineTableCellEditor {
     }
 
     setEndpoint() {
+        this.table = 'partsTable';
         switch (this.type) {
             case 'category':
                 this.endpoint = 'categories';
