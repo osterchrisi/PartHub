@@ -3,9 +3,7 @@ export { InfoWindow }
 import { StockManager } from "./StockManager";
 import { ImageManager } from "./ImageManager";
 import { DocumentManager } from "./DocumentManager";
-import { ResourceCreator } from "./ResourceCreator";
 import { SupplierRowManager } from "./SupplierRowManager";
-import { DropdownManager } from "./DropdownManager";
 import { TableManager } from "./TableManager";
 
 import {

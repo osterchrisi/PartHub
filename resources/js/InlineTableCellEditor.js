@@ -131,7 +131,6 @@ class InlineTableCellEditor {
 
                 const partsTableManager = new TableManager({ type: 'part' });
                 partsTableManager.rebuildTable();
-
             }
         });
 
