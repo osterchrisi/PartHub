@@ -155,8 +155,8 @@ class TableManager {
         });
     }
 
+    // Get's called on every subsequent onPostBody event as well but it's very lightweight, so I keep it that way
     hidePlaceHolderTable() {
-        console.trace("Hiding placeholder");
         $('#parts_table_placeholder').addClass('d-none');
         this.$table.removeClass('d-none');
     }
