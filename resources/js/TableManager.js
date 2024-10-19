@@ -9,6 +9,7 @@ import {
 
 import { assembleBoms, bootstrapCategoriesListTable } from "./tables";
 import { CategoryService } from "./Services/CategoryService";
+import { InlineTableCellEditor } from "./InlineTableCellEditor";
 
 class TableManager {
     /**
@@ -90,6 +91,7 @@ class TableManager {
 
         this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
+        this.enableInlineProcessing();
     }
 
 
@@ -317,6 +319,7 @@ class TableManager {
 
     enableInlineProcessing() {
         this.$table.on('dblclick', '.editable', (event) => {
+            console.log("dl");
             const cell = $(event.currentTarget);
 
             if (cell.hasClass('editing')) {
@@ -328,8 +331,17 @@ class TableManager {
             const originalValue = cell.text();
             const originTable = cell.closest('table').attr('id');
 
+            // Extract the type from the class that matches the pattern "editable-type"
+            const editableClass = cell.attr('class').split(' ').find(cls => cls.startsWith('editable-'));
+            const type = editableClass ? editableClass.replace('editable-', '') : null;
+
+            if (!type) {
+                console.error('Editable type not found for the clicked cell.');
+                return;
+            }
+
             const editor = new InlineTableCellEditor({
-                type: cell.attr('class').split(' ')[1], // Assume the second class defines the type (e.g., 'category', 'footprint')
+                type: type,
                 $cell: cell,
                 originalValue: originalValue,
                 originTable: originTable

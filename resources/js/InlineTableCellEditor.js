@@ -17,10 +17,11 @@ import {
 
       }).editCell();
  * Example table row
- * <td class="editable editable-text-cell" data-id_field="part_id" data-table_name="parts" data-column="part_name" data-id="100211" data-editable="true"></td>
+ * <td class="editable editable-text" data-id_field="part_id" data-table_name="parts" data-column="part_name" data-id="100211" data-editable="true"></td>
  */
 class InlineTableCellEditor {
     constructor(options) {
+        console.log("ITC");
         // Options
         this.type = options.type;
         this.endpoint = options.endpoint;
@@ -42,6 +43,7 @@ class InlineTableCellEditor {
     }
 
     editTextCell() {
+        console.log("editing text field");
         // Create input field
         const input = $('<textarea class="form-control">').val(this.originalValue.trim());
         this.$cell.empty().append(input);

@@ -314,75 +314,75 @@ function findChildCategoriesFromCategoryTable(parentId) {
  * Inline table cell manipulation of bootstrapped tables
  */
 export function enableInlineProcessing() {
-  $(document).on('dblclick', '.bootstrap-table .editable', function (e) {
-    var cell = $(this);
+  // $(document).on('dblclick', '.bootstrap-table .editable', function (e) {
+  //   var cell = $(this);
 
-    // Check if the cell is already being edited
-    if (cell.hasClass('editing')) {
-      return;
-    }
-    else {
-      // Add editing class to the cell
-      cell.addClass('editing');
-    }
+  //   // Check if the cell is already being edited
+  //   if (cell.hasClass('editing')) {
+  //     return;
+  //   }
+  //   else {
+  //     // Add editing class to the cell
+  //     cell.addClass('editing');
+  //   }
 
-    // Get current value and origin table
-    var originalValue = cell.text();
-    var originTable = cell.closest('table').attr('id');
+  //   // Get current value and origin table
+  //   var originalValue = cell.text();
+  //   var originTable = cell.closest('table').attr('id');
 
-    // * Dropdown cells
-    if (cell.hasClass('category')) {
-      const editor = new InlineTableCellEditor({
-        type: 'category',
-        endpoint: 'categories',
-        $cell: cell,
-        originalValue: originalValue,
-        originTable: originTable
+  //   // * Dropdown cells
+  //   if (cell.hasClass('category')) {
+  //     const editor = new InlineTableCellEditor({
+  //       type: 'category',
+  //       endpoint: 'categories',
+  //       $cell: cell,
+  //       originalValue: originalValue,
+  //       originTable: originTable
 
-      }).editCell();
-    }
-    else if (cell.hasClass('footprint')) {
-      const editor = new InlineTableCellEditor({
-        type: 'footprint',
-        endpoint: 'footprints',
-        $cell: cell,
-        originalValue: originalValue,
-        originTable: originTable
+  //     }).editCell();
+  //   }
+  //   else if (cell.hasClass('footprint')) {
+  //     const editor = new InlineTableCellEditor({
+  //       type: 'footprint',
+  //       endpoint: 'footprints',
+  //       $cell: cell,
+  //       originalValue: originalValue,
+  //       originTable: originTable
 
-      }).editCell();
-    }
-    else if (cell.hasClass('supplier')) {
-      const editor = new InlineTableCellEditor({
-        type: 'supplier',
-        endpoint: 'suppliers',
-        $cell: cell,
-        originalValue: originalValue,
-        originTable: originTable
+  //     }).editCell();
+  //   }
+  //   else if (cell.hasClass('supplier')) {
+  //     const editor = new InlineTableCellEditor({
+  //       type: 'supplier',
+  //       endpoint: 'suppliers',
+  //       $cell: cell,
+  //       originalValue: originalValue,
+  //       originTable: originTable
 
-      }).editCell();
-    }
-    else if (cell.hasClass('supplierData')) {
-      const editor = new InlineTableCellEditor({
-        type: 'supplier',
-        endpoint: 'suppliers',
-        $cell: cell,
-        originalValue: originalValue,
-        originTable: originTable,
-        table: 'supplier_data',
+  //     }).editCell();
+  //   }
+  //   else if (cell.hasClass('supplierData')) {
+  //     const editor = new InlineTableCellEditor({
+  //       type: 'supplier',
+  //       endpoint: 'suppliers',
+  //       $cell: cell,
+  //       originalValue: originalValue,
+  //       originTable: originTable,
+  //       table: 'supplier_data',
 
-      }).editCell();
-    }
-    //* It's a text cell
-    else {
-      // editTextCell(cell, originalValue);
-      const editor = new InlineTableCellEditor({
-        type: 'text',
-        $cell: cell,
-        originalValue: originalValue,
-        originTable: originTable
-      }).editCell();
-    }
-  });
+  //     }).editCell();
+  //   }
+  //   //* It's a text cell
+  //   else {
+  //     // editTextCell(cell, originalValue);
+  //     const editor = new InlineTableCellEditor({
+  //       type: 'text',
+  //       $cell: cell,
+  //       originalValue: originalValue,
+  //       originTable: originTable
+  //     }).editCell();
+  //   }
+  // });
 };
 
 /**
