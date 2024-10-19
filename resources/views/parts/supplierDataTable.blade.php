@@ -15,7 +15,7 @@
                 <tr data-part-id="{{ $part['part_id'] }}" data-supplier-data-id="{{ $row->id }}">
                     @foreach ($supplierDataTableHeaders as $column_data)
                         @if ($column_data === 'supplier_id_fk')
-                            <td data-editable="true" class="editable supplierData" data-id="{{ $row->id }}"
+                            <td data-editable="true" class="editable editable-supplier" data-id="{{ $row->id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $supplierDataTableName }}"
                                 data-id_field="{{ $supplierDataTableIdField }}">
 
@@ -23,7 +23,7 @@
                         @elseif ($column_data == 'state')
                             <td></td>
                         @else
-                            <td data-editable="true" class="editable" data-id="{{ $row->id }}" data-column="{{ $column_data }}"
+                            <td data-editable="true" class="editable editable-text" data-id="{{ $row->id }}" data-column="{{ $column_data }}"
                                 data-table_name="{{ $supplierDataTableName }}"
                                 data-id_field="{{ $supplierDataTableIdField }}">{{ $row->$column_data }}</td>
                         @endif

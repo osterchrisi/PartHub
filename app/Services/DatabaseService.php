@@ -13,6 +13,7 @@ class DatabaseService
     // Map of owner columns
     private static $owner_columns = [
         'boms' => 'bom_owner_u_fk',
+        // 'bom_element_id' =>  'bom_element_owner_id', // Gibt's noch gar nicht
         'footprints' => 'footprint_owner_u_fk',
         'locations' => 'location_owner_u_fk',
         'parts' => 'part_owner_u_fk',

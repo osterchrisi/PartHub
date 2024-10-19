@@ -43,7 +43,7 @@
                             </td>
                         @elseif ($column_data == 'element_quantity')
                             {{-- Quantity Needed --}}
-                            <td style="text-align:right" class="editable " data-id="{{ $bom_elements_id }}"
+                            <td style="text-align:right" class="editable editable-bom-element-quantity" data-id="{{ $bom_elements_id }}"
                                 data-column="{{ $column_data }}" data-table_name="bom_elements"
                                 data-id_field="bom_elements_id">
                                 {{ $row->$column_data }}

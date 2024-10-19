@@ -2,6 +2,9 @@ export { SupplierRowManager };
 import { DropdownManager } from "./DropdownManager";
 import { updateInfoWindow } from "./custom";
 
+/**
+ * This class manages the supplier data rows in the parts info window
+ */
 class SupplierRowManager {
     constructor() {
         this.newRowIndex = 0;

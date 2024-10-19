@@ -24,7 +24,6 @@ class InlineTableCellEditor {
         console.log("ITC");
         // Options
         this.type = options.type;
-        this.endpoint = options.endpoint;
         this.$cell = options.$cell;
         this.originalValue = options.originalValue;
         this.originTable = options.originTable;
@@ -32,6 +31,21 @@ class InlineTableCellEditor {
         this.table = options.table || 'partsTable';
         // Changed flag
         this.valueChanged = false;
+
+        switch (this.type) {
+            case 'category':
+                this.endpoint = 'categories';
+                break;
+            case 'footprint':
+                this.endpoint = 'footprints';
+                break;
+            case 'supplier':
+                this.endpoint = 'suppliers';
+                break;
+            case 'supplierData':
+                this. endpoint = 'suppliers';
+                this.table = 'supplier_data';
+        }
     }
 
     editCell() {
@@ -117,6 +131,7 @@ class InlineTableCellEditor {
             success: (response) => {
                 const data = response;
 
+                //TODO: Dropdownmanager here
                 // Create select element
                 const select = this.createSelectElement(data, this.originalValue, `${this.type}_name`, `${this.type}_id`);
 

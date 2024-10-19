@@ -89,22 +89,22 @@
                             {{ $part['total_stock'] }}</td>
                         {{-- Category --}}
                     @elseif ($column_data == 'category_name')
-                        <td data-editable="true" class="editable category" data-id="{{ $part_id }}"
+                        <td data-editable="true" class="editable editable-category" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}</td>
                         {{-- Unit --}}
                     @elseif ($column_data == 'unit_name')
-                        <td data-editable="true" class="editable unit" data-id="{{ $part_id }}"
+                        <td data-editable="true" class="editable editable-unit" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}</td>
                         {{-- Footprint --}}
                     @elseif ($column_data == 'footprint_name')
-                        <td data-editable="true" class="editable footprint" data-id="{{ $part_id }}"
+                        <td data-editable="true" class="editable editable-footprint" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['footprint'][$column_data] ?? '' }}</td>
                         {{-- Supplier --}}
                         {{-- @elseif ($column_data == 'supplier_name')
-                        <td data-editable="true" class="editable supplier" data-id="{{ $part_id }}"
+                        <td data-editable="true" class="editable editable-supplier" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['supplier'][$column_data] ?? '' }}</td> --}}
                         {{-- Selected / State  --}}
@@ -117,7 +117,7 @@
                             {{ $part[$column_data] }}</td>
                         {{-- 'Simple' (text-only) Fields --}}
                     @else
-                        <td data-editable="true" class="editable editable-text-cell" data-id="{{ $part_id }}"
+                        <td data-editable="true" class="editable editable-text" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}<div class="edit-pen">
                                 <a href="#"><i class="fas fa-pen fa-lg"></i></a>

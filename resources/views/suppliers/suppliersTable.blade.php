@@ -20,7 +20,7 @@
                 <tr data-id="{{ $row['supplier_id'] }}">
                     @foreach ($db_columns as $column_data)
                         @if ($column_data != 'state')
-                            <td data-editable="true" class="editable" data-id="{{ $supplier_id }}"
+                            <td data-editable="true" class="editable editable-text" data-id="{{ $supplier_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                                 data-id_field="{{ $id_field }}">{{ $row[$column_data] }}</td>
                         @else

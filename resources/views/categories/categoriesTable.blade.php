@@ -9,10 +9,11 @@
                 <div class="row">
                     <div class="col-auto me-auto"><span>Categories</span></div>
                     <div class="col-auto pe-1 me-0">
-                        <button id="category-toggle-collapse-expand" class="btn btn-extra-sm btn-outline-secondary">Toggle</button>
+                        <button id="category-toggle-collapse-expand"
+                            class="btn btn-extra-sm btn-outline-secondary">Toggle</button>
                     </div>
-                    <div class="col-auto ms-0 ps-0"><button type="button" class="btn btn-extra-sm btn-outline-secondary"
-                            id="cat-edit-btn">Edit</button></div>
+                    <div class="col-auto ms-0 ps-0"><button type="button"
+                            class="btn btn-extra-sm btn-outline-secondary" id="cat-edit-btn">Edit</button></div>
                 </div>
             </th>
             <th data-field="category_id" data-visible="false" style="display: none;">id</th>
@@ -38,7 +39,7 @@
                         @endunless
                     </div>
                 </td>
-                <td data-editable="true" class="editable" data-id="{{ $category->category_id }}"
+                <td data-editable="true" class="editable editable-text" data-id="{{ $category->category_id }}"
                     data-column="category_name" data-table_name="part_categories" data-id_field="category_id">
                     {{ $category->category_name }}</td>
                 <td style="display: none;">{{ $category->category_id }}</td>

@@ -25,9 +25,9 @@
                 <tr data-id="{{ $run->bom_run_id }}">
                     @foreach ($bomRunsTableHeaders as $column_data)
                     @if ($column_data == 'name')
-                    <td data-editable="true" data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->user->$column_data }}</td>
+                    <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->user->$column_data }}</td>
                     @endif
-                        <td data-editable="true" data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->$column_data }}</td>
+                        <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->$column_data }}</td>
                     @endforeach
                 </tr>
             @endforeach
