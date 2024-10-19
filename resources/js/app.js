@@ -12,6 +12,7 @@ import {
     initializePopovers,
     initializeTooltips
 } from './custom';
+import { InlineTableCellEditor } from './InlineTableCellEditor';
 
 const currentView = document.body.getAttribute('data-view');
 
@@ -19,10 +20,10 @@ const currentView = document.body.getAttribute('data-view');
 function applyLayoutSettings() {
     const layoutKey = `layoutSettings_${currentView}`; // Unique key for this page's layout
     const savedLayout = localStorage.getItem(layoutKey);
-    
+
     if (savedLayout) {
         const layoutData = JSON.parse(savedLayout); // Parse the JSON string
-        
+
         // Apply table and info window widths if present
         if (layoutData.tableWidth) {
             $('#table-window-container').width(layoutData.tableWidth);
@@ -72,4 +73,7 @@ $(document).ready(function () {
     initializePopovers();
     initializeTooltips();
     applyLayoutSettings();
+
+    const inlineEditor = new InlineTableCellEditor();
+    inlineEditor.enableInlineProcessing();
 });

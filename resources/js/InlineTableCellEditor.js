@@ -1,40 +1,51 @@
-export { InlineTableCellEditor }
+export { InlineTableCellEditor };
 import { updateInfoWindow } from "./custom";
-import {
-    rebuildCategoriesTable,
-    // rebuildPartsTable
-} from "./tables";
-
+import { CategoryTableManager } from "./CategoriesTableManager";
 import { TableManager } from "./TableManager";
-// import { CategoryTableManager } from "./CategoriesTableManager";
 
-/**
- * Class to edit table cells on the frontend and change database table data accordingly
- * Example usage:
- * const editor = new InlineTableCellEditor({
-        type: 'category',
-        endpoint: 'categories',
-        $cell: cell,
-        originalValue: originalValue,
-        originTable: originTable
-
-      }).editCell();
- * Example table row
- * <td class="editable editable-text" data-id_field="part_id" data-table_name="parts" data-column="part_name" data-id="100211" data-editable="true"></td>
- */
 class InlineTableCellEditor {
-    constructor(options) {
-        // Options
-        this.type = options.type;
-        this.$cell = options.$cell;
-        this.originalValue = options.originalValue;
-        this.originTable = options.originTable;
-        // Using this.table only to discern a supplier in the partsTable from a supplier in the Supplier Data table
-        this.table = options.table || 'partsTable';
-        // Changed flag
+    constructor() {
+        this.type = null;
+        this.$cell = null;
+        this.originalValue = null;
+        this.originTable = null;
         this.valueChanged = false;
+        //TODO: Check if I need this default table type
+        this.table = 'partsTable';  // Default table type (can be overridden)
+    }
 
+    enableInlineProcessing() {
+        $(document).on('dblclick', '.editable', (event) => {
+            const cell = $(event.currentTarget);
+            if (cell.hasClass('editing')) {
+                return;
+            }
 
+            // Extract the type from the class that matches the pattern "editable-type"
+            const editableClass = cell.attr('class').split(' ').find(cls => cls.startsWith('editable-'));
+            const type = editableClass ? editableClass.replace('editable-', '') : null;
+
+            if (!type) {
+                console.error('Editable type not found for the clicked cell.');
+                return;
+            }
+
+            // Set instance-level properties based on the clicked cell
+            this.type = type;
+            this.$cell = cell;
+            this.originalValue = cell.text();
+            this.originTable = cell.closest('table').attr('id');
+            this.valueChanged = false;
+
+            // Set endpoint based on type
+            this.setEndpoint();
+
+            cell.addClass('editing');
+            this.editCell();
+        });
+    }
+
+    setEndpoint() {
         switch (this.type) {
             case 'category':
                 this.endpoint = 'categories';
@@ -46,13 +57,16 @@ class InlineTableCellEditor {
                 this.endpoint = 'suppliers';
                 break;
             case 'supplierData':
-                this.type = 'supplier';     // Need this change, otherwise the way that editDropdownCell calls createSelectElement doesn't work properly
+                this.type = 'supplier';         // Need this change, otherwise the way that editDropdownCell calls createSelectElement doesn't work properly
                 this.endpoint = 'suppliers';
                 this.table = 'supplier_data';
                 break;
+            case 'text':
+                break;
+            default:
+                console.error(`Unknown type: ${this.type}`);
+                break;
         }
-
-
     }
 
     editCell() {
@@ -112,18 +126,12 @@ class InlineTableCellEditor {
             } else if (table_name == 'boms') {
                 updateInfoWindow('bom', id);
             } else if (table_name == 'part_categories') {
-                console.log("now calling this");
-                const categoriesTableManager = new CategoryTableManager({ type: 'category' })
-                // categoriesTableManager.rebuildCategoriesTable();
+                const categoriesTableManager = new CategoryTableManager({ type: 'category' });
+                categoriesTableManager.rebuildTable();
 
-                const partsTableManager = new TableManager({
-                    type: 'part'
-                });
+                const partsTableManager = new TableManager({ type: 'part' });
                 partsTableManager.rebuildTable();
-                //TODO: check this!!
-                // rebuildCategoriesTable();
-                // Is here, just commenting to get TableManager to work
-                // rebuildPartsTable('');
+
             }
         });
 

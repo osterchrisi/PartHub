@@ -9,7 +9,7 @@ import {
 
 import { assembleBoms } from "./tables";
 import { CategoryService } from "./Services/CategoryService";
-import { InlineTableCellEditor } from "./InlineTableCellEditor";
+// import { InlineTableCellEditor } from "./InlineTableCellEditor";
 
 class TableManager {
     /**
@@ -94,7 +94,7 @@ class TableManager {
 
         this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
-        this.enableInlineProcessing();
+        // this.enableInlineProcessing();
     }
 
 
@@ -134,10 +134,8 @@ class TableManager {
                 };
             case 'category':
                 return (id) => {
-                    console.log("category clik");
                     // Array of category and potential child category names as strings for filtering parts table
                     var cats = CategoryService.getChildCategoriesNames(this.categories, id);
-                    console.log(cats);
 
                     // Filter by categories
                     $('#parts_table').bootstrapTable('filterBy', {
@@ -317,37 +315,6 @@ class TableManager {
                     postRebuildCallback();
                 }
             }
-        });
-    }
-
-    enableInlineProcessing() {
-        this.$table.on('dblclick', '.editable', (event) => {
-            const cell = $(event.currentTarget);
-
-            if (cell.hasClass('editing')) {
-                return;
-            } else {
-                cell.addClass('editing');
-            }
-
-            const originalValue = cell.text();
-            const originTable = cell.closest('table').attr('id');
-
-            // Extract the type from the class that matches the pattern "editable-type"
-            const editableClass = cell.attr('class').split(' ').find(cls => cls.startsWith('editable-'));
-            const type = editableClass ? editableClass.replace('editable-', '') : null;
-
-            if (!type) {
-                console.error('Editable type not found for the clicked cell.');
-                return;
-            }
-
-            const editor = new InlineTableCellEditor({
-                type: type,
-                $cell: cell,
-                originalValue: originalValue,
-                originTable: originTable
-            }).editCell();
         });
     }
 

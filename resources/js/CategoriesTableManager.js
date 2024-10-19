@@ -17,7 +17,6 @@ class CategoryTableManager extends TableManager {
             this.categories = categories;
             this.defineActions();
         });
-
     }
 
     bootstrapTable() {
