@@ -5,7 +5,8 @@
         <!-- Hero Section -->
         <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
             title="Welcome to PartHub" subtitle="Your Ultimate Inventory and BOM Management Solution"
-            demoRoute="{{ route('demo.login') }}" signupRoute="{{ route('signup') }}" />
+            firstButtonRoute="{{ route('demo.login') }}" secondButtonRoute="{{ route('signup') }}"
+            firstButtonText="Explore Demo" secondButtonText="Sign Up Now"/>
 
         <!-- Left-div -->
         <x-left-div title="Start with a clean slate"

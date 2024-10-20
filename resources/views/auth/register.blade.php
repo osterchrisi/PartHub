@@ -3,16 +3,11 @@
 @section('content')
     <div class="container-fluid my-5">
 
-        <div class="row hero-section rounded-3 mb-5 justify-content-center text-center"
-            style="background-image: url('app-related/hero-background.webp'); background-size: cover; background-position: center;">
-            <div class="col">
-                <h1 class="display-1 mb-4">Get Started with PartHub</h1>
-                <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Focus on the fun part of making
-                    things!</p><br>
-                <a href="#register-pricing" class="btn btn-lg gradient-hero-button btn-light extra-shadow ml-2 fs-2">See
-                    Pricing</a>
-            </div>
-        </div>
+        <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
+            title="Sign Up to PartHub" titleExtraClass="" subtitle="Focus on the fun part of making
+        things!"
+            firstButtonRoute="#register-pricing" secondButtonRoute="#register-free" firstButtonText="See Pricing"
+            secondButtonText="Sign Up For Free" />
 
         <x-register-card bgClass="text-white signup-gradient-background" id="register-free">
             <div class="text-center mb-4">
