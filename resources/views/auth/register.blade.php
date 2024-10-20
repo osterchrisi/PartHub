@@ -1,20 +1,20 @@
 @extends('centered-layout')
 
 @section('content')
-    <div class="container my-5">
+    <div class="container-fluid my-5">
 
         <div class="row hero-section rounded-3 mb-5 justify-content-center text-center"
             style="background-image: url('app-related/hero-background.webp'); background-size: cover; background-position: center;">
-            <div class="col-md-8 text-white">
+            <div class="col">
                 <h1 class="display-1 mb-4">Get Started with PartHub</h1>
                 <p class="lead mb-4 bg-dark text-white p-2 rounded d-inline-block p-hero">Focus on the fun part of making
                     things!</p><br>
-                <a href="#register-pricing" class="btn btn-lg btn-light me-2">See Pricing</a>
+                <a href="#register-pricing" class="btn btn-lg gradient-hero-button btn-light extra-shadow ml-2 fs-2">See
+                    Pricing</a>
             </div>
         </div>
 
         <x-register-card bgClass="text-white signup-gradient-background" id="register-free">
-            {{-- <h4 class="alert alert-info mt-1 text-center" role="alert">Now accepting sign ups for beta usage</h4> --}}
             <div class="text-center mb-4">
                 <h2 class="display-5">Create Your Free Account</h2>
             </div>
@@ -85,7 +85,7 @@
         </x-register-card>
 
         <!-- Pricing Section -->
-        <x-register-card bgClass="shadow-sm pricing-gradient-background text-white"  id="register-pricing">
+        <x-register-card bgClass="shadow-sm pricing-gradient-background text-white" id="register-pricing">
             <div class="text-center mb-4">
                 <h2 class="display-4 mb-4">Pricing Plans</h2>
                 <p class="lead">Pick whatever floats your boat</p>
@@ -95,7 +95,7 @@
             <div class="row justify-content-center text-black">
 
                 {{-- Pro --}}
-                <div class="col-md-auto mb-4">
+                <div class="col-auto mb-4">
                     <div class="card border-0 shadow-sm position-relative">
                         <!-- Ribbon Badge -->
                         <div class="ribbon text-white">Early Access Special</div>
@@ -124,8 +124,8 @@
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                             </ul>
                             <div>
-                                <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}" class="disabled-link"><button
-                                        class="btn btn-primary btn-lg" disabled>Start Pro
+                                <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"
+                                    class="disabled-link"><button class="btn btn-primary btn-lg" disabled>Start Pro
                                         Trial</button></a>
                             </div>
                             <div class="text-muted fw-light">Coming soon!</div>
@@ -146,8 +146,7 @@
                                     Movement History</li>
                                 <li class="list-group-item"><i class="fas fa-check"></i> Community support</li>
                             </ul>
-                            <a href="#register-free"
-                                class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
+                            <a href="#register-free" class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
                         </div>
                     </div>
                 </div>
@@ -156,7 +155,6 @@
             <div class="text-center mb-4">
                 <p class="lead">Resources are: Parts, BOMs, Locations, Categories, Suppliers</p>
             </div>
-
         </x-register-card>
     </div>
 @endsection

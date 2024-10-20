@@ -5,8 +5,8 @@
                 <img src="{{ $imageSrc }}" alt="{{ $imageAlt }}" class="img-fluid {{ $imageClass ?? 'rounded w-75' }}">
             </div>
             <div class="col-lg-6 order-lg-1">
-                <h2 class="display-4 my-4 mx-5">{{ $title }}</h2>
-                <p class="lead mx-5">{!! $content !!}</p>
+                <h2 class="display-3 my-4 mx-5">{{ $title }}</h2>
+                <p class="lead fs-2 mx-5">{!! $content !!}</p>
             </div>
         </div>
     </div>

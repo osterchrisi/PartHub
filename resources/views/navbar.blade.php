@@ -74,7 +74,7 @@ $user_name = $user ? $user->name : '';
                         @if ($user_id == 1)
                             {{-- Show Sign Up Link if Demo user --}}
                             <li class="pt-1">
-                                <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
+                                <a class="btn btn-light gradient-button {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
                         @endif
