@@ -49,13 +49,13 @@
                     {{-- Password --}}
                     <label for="password" class="form-label mt-2">Password</label>
                     <input id="password" type="password" name="password" required autocomplete="new-password"
-                        class="form-control">
+                        class="form-control" data-toggle="password">
                     <x-input-error :messages="$errors->get('password')" />
 
                     {{-- Confirm Password --}}
                     <label for="password_confirmation" class="form-label mt-2">Confirm Password</label>
                     <input id="password_confirmation" type="password" name="password_confirmation" required
-                        autocomplete="new-password" class="form-control">
+                        autocomplete="new-password" class="form-control" data-toggle="password">
                     <x-input-error :messages="$errors->get('password_confirmation')" />
 
                     {{-- Hidden Input Fields for Subscription --}}

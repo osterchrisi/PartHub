@@ -32,7 +32,7 @@
                         <div class="form-group mt-4">
                             <label for="password">{{ __('New Password') }}</label>
                             <input id="password" class="form-control" type="password" name="password" required
-                                autocomplete="new-password">
+                                autocomplete="new-password" data-toggle="password">
                             @if ($errors->has('password'))
                                 <div class="text-danger mt-2">{{ $errors->first('password') }}</div>
                             @endif
@@ -42,7 +42,7 @@
                         <div class="form-group mt-4">
                             <label for="password_confirmation">{{ __('Confirm Password') }}</label>
                             <input id="password_confirmation" class="form-control" type="password"
-                                name="password_confirmation" required autocomplete="new-password">
+                                name="password_confirmation" required autocomplete="new-password" data-toggle="password">
                             @if ($errors->has('password_confirmation'))
                                 <div class="text-danger mt-2">{{ $errors->first('password_confirmation') }}</div>
                             @endif

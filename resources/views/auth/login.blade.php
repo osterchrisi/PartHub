@@ -45,7 +45,7 @@
 
             <div class="mb-3 text-start">
                 <label for="inputPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword" name="password" required>
+                <input type="password" class="form-control" id="inputPassword" name="password" data-toggle="password" required>
             </div>
 
             <!-- Remember Me -->
