@@ -122,4 +122,7 @@ return [
         ],
     ],
 
+    // Admin E-Mail (for sending notifications)
+    'admin_email' => env('ADMIN_EMAIL', 'hello@parthub.online'),
+
 ];
