@@ -22,8 +22,8 @@
                         <!-- Password -->
                         <div class="form-group">
                             <label for="password">{{ __('Password') }}</label>
-                            <input id="password" class="form-control" type="password" name="password" required
-                                autocomplete="current-password">
+                            <input id="password" class="form-control form-control-sm" type="password" name="password" required
+                                autocomplete="current-password" data-toggle="password" data-size="sm">
                             @if ($errors->has('password'))
                                 <div class="text-danger mt-2">{{ $errors->first('password') }}</div>
                             @endif

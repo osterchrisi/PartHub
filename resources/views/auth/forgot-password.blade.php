@@ -26,8 +26,8 @@
                                 <form method="POST" action="{{ route('password.email') }}">
                                     @csrf
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        :value="old('email')" required autofocus>
+                                    <input type="email" class="form-control form-control-sm" id="email" name="email"
+                                        :value="old('email')" data-toggle="password" data-size="sm" required autofocus>
                                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </td>
                         </tr>
