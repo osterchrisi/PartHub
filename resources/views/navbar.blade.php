@@ -59,13 +59,13 @@ $user_name = $user ? $user->name : '';
                         @unless (Auth::check())
                             {{-- Show Sign Up Link / Demo button if not authorized (not signed in) --}}
                             <li class="me-2 mb-2 pt-1">
-                                <a class="btn btn-warning {{ request()->routeIs('signup') ? 'active' : '' }}"
+                                <a class="btn btn-light gradient-button {{ request()->routeIs('signup') ? 'active' : '' }}"
                                     href="{{ route('signup') }}" id="continueDemoLink">Create Account</a>
                             </li>
                             <li class="me-2 mb-2 pt-1">
                                 <form id="demoLoginButton" action="{{ route('demo.login') }}" method="GET" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-warning" id="continueDemo">Try Demo</button>
+                                    <button type="submit" class="btn btn-light gradient-button" id="continueDemo">Try Demo</button>
                                 </form>
                             </li>
                             

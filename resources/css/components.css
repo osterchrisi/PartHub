@@ -265,3 +265,18 @@ tr.selected-last {
     transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
     transform-origin: 0% 100%;
 }
+
+.gradient-button {
+    background:
+        /* linear-gradient(to right, blue, fuchsia),
+        linear-gradient(to bottom, yellow, red); */
+        linear-gradient(to right, rgba(72, 140, 181, 0.5), rgba(71, 122, 189, 0.75)),
+        linear-gradient(to bottom, rgba(255, 126, 95, 0.4), rgba(205, 39, 91, 0.4));
+    background-blend-mode: hard-light;
+    color: white;
+    /* Makes the text stand out on the gradient */
+    border: none;
+    /* Remove the default border */
+    transition: background 0.3s ease-in-out;
+    /* Smooth hover effect */
+}
