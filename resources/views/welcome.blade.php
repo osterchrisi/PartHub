@@ -72,5 +72,4 @@
 @endsection
 
 @section('modals and menus')
-    @include('components.modals.userStuffModal')
 @endsection
