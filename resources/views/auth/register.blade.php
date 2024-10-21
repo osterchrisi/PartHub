@@ -95,7 +95,7 @@
                         <!-- Ribbon Badge -->
                         <div class="ribbon text-white">Early Access Special</div>
                         <div class="card-body">
-                            <h3 class="card-title">Maker</h3>
+                            <h3 class="card-title">Maker 🚀</h3>
                             <p class="lead text-muted">Best for small-scale businesses</p>
                             <h4 class><del>€29/month</del></h4>
                             <h4 class="text-danger">€9/month</h4>
@@ -140,6 +140,7 @@
                                 <li class="list-group-item list-group-item-action"><i class="fas fa-check"></i> Stock
                                     Movement History</li>
                                 <li class="list-group-item"><i class="fas fa-check"></i> Community support</li>
+                                <li class="list-group-item"><i class="fas fa-check"></i> Forever free 😇</li>
                             </ul>
                             <a href="#register-free" class="btn btn-outline-primary btn-lg">Sign Up for Free</a>
                         </div>

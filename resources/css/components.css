@@ -294,8 +294,7 @@ tr.selected-last {
     border: none;
     /* Remove the default border */
     transition: background 0.3s ease-in-out;
-    filter: brightness(1.5);
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    /* filter: brightness(1.5); */
 }
 
 .extra-shadow {
