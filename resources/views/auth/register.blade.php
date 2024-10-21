@@ -6,8 +6,8 @@
         <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
             title="Sign Up to PartHub" titleExtraClass="" subtitle="Focus on the fun part of making
         things!"
-            firstButtonRoute="#register-pricing" secondButtonRoute="#register-free" firstButtonText="See Pricing"
-            secondButtonText="Sign Up For Free" />
+        secondButtonRoute="#register-pricing" firstButtonRoute="#register-free" secondButtonText="See Pricing"
+        firstButtonText="Sign Up For Free" />
 
         <x-register-card bgClass="text-white signup-gradient-background" id="register-free">
             <div class="text-center mb-4">
