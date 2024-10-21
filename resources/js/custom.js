@@ -38,7 +38,7 @@ export function saveLayoutSettings() {
     const infoWidth = $('#info-window').width();
     const categoryVisible = $('#category-window-container').is(':visible');
     const currentView = document.body.getAttribute('data-view');
-    
+
     const layoutKey = `layoutSettings_${currentView}`; // Create a unique key based on the page
 
     // Save layout data as an object in local storage
@@ -47,7 +47,7 @@ export function saveLayoutSettings() {
         infoWidth: infoWidth,
         categoryVisible: categoryVisible
     };
-    
+
     localStorage.setItem(layoutKey, JSON.stringify(layoutData)); // Store as a JSON string
 }
 
@@ -59,15 +59,15 @@ export function saveLayoutSettings() {
  */
 export function makeTableWindowResizable() {
     $('#table-window-container').resizable({
-        handles: {'e': '.table-resize-handle'},
-        stop: function() {
+        handles: { 'e': '.table-resize-handle' },
+        stop: function () {
             saveLayoutSettings(); // Save the layout settings after resize
         }
     });
-    
+
     $('#category-window-container').resizable({
-        handles: {'e': '.category-resize-handle'},
-        stop: function() {
+        handles: { 'e': '.category-resize-handle' },
+        stop: function () {
             saveLayoutSettings(); // Save after resizing the category window
         }
     });
@@ -296,6 +296,9 @@ export function clearModalOnHiding() {
             // If not, clear inputs
             if (!isPartEntryHiddenDueToCategory) {
                 $(this).find('input').val('');
+            }
+            else {
+                console.log("no need to reset part entry modal");
             }
         }
     });

@@ -1,3 +1,4 @@
+{{-- Part Entry Modal --}}
 <x-modals.parthub-modal modalId="mPartEntry" backdrop="static" keyboard="false" size="modal-lg"
     modalTitleId="partEntryModalTitle" title="Add New Part" cancelText="Cancel" submitText="Add Part"
     submitButtonId="addPart">

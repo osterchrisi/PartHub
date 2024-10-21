@@ -8,7 +8,9 @@
     title="Create New Category"
     cancelText="Close"
     submitText="Save Category"
-    submitButtonId="saveCategoryButton">
+    submitButtonId="saveCategoryButton"
+    cancelButton1Id="closeCategoryModalButton1"
+    cancelButton2Id="closeCategoryModalButton2">
     
     <form id="categoryCreationForm">
         <div class="form-group">

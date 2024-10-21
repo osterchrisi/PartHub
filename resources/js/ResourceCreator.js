@@ -39,6 +39,7 @@ class ResourceCreator {
     });
 
     this.inputModal.on('show.bs.modal', () => {
+      console.log("now fetch some stuff bro");
       this.attachAddButtonClickListener();
     });
 
@@ -290,16 +291,6 @@ class ResourceCreator {
   attachCategoryModalCloseListeners() {
     $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
       this.inputModal.modal('toggle');
-      this.reinitializeCategoryDropdown();
-    });
-  }
-
-  /**
-  * Reinitializes the category dropdown in the part entry modal in case the modal was closed without creating a new category
-  */
-  reinitializeCategoryDropdown() {
-    this.getCategories().done(newList => {
-      this.addPartCategoryDropdown(newList);
     });
   }
 

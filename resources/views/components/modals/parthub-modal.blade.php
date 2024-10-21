@@ -5,7 +5,7 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="{{ $modalTitleId }}">{{ $title }}</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" id="{{ $cancelButton1Id ?? '' }}" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal Body -->
@@ -15,7 +15,7 @@
 
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ $cancelText }}</button>
+                <button type="button" class="btn btn-secondary" id="{{ $cancelButton2Id ?? '' }}" data-bs-dismiss="modal">{{ $cancelText }}</button>
                 <button type="submit" class="btn btn-primary" id="{{ $submitButtonId }}">{{ $submitText }}</button>
             </div>
         </div>
