@@ -1,12 +1,12 @@
 export { ResourceCreator };
-import { updateInfoWindow } from "./custom";
-import { DropdownManager } from "./DropdownManager";
-import { MouserPartSearch } from "./MouserPartSearch";
-import { SupplierRowManager } from "./SupplierRowManager";
-import { TableRowManager } from "./TableRowManager";
-import { TableManager } from "./TableManager";
-import { DataFetchService } from "./DataFetchService";
-import { FormValidator } from "./FormValidator";
+import { updateInfoWindow } from "../../custom";
+import { DropdownManager } from "../../DropdownManager";
+import { MouserPartSearch } from "../../MouserPartSearch";
+import { SupplierRowManager } from "../../../Tables/SupplierRowManager";
+import { TableRowManager } from "../../../Tables/TableRowManager";
+import { TableManager } from "../../../Tables/TableManager";
+import { DataFetchService } from "../DataFetchService";
+import { FormValidator } from "../../FormValidator";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {

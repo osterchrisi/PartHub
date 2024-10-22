@@ -1,10 +1,10 @@
 export { InfoWindow }
 
-import { StockManager } from "./StockManager";
-import { ImageManager } from "./ImageManager";
-import { DocumentManager } from "./DocumentManager";
-import { SupplierRowManager } from "./SupplierRowManager";
-import { TableManager } from "./TableManager";
+import { StockManager } from "./Resources/StockManager";
+import { ImageManager } from "./Resources/ImageManager";
+import { DocumentManager } from "./Resources/DocumentManager";
+import { SupplierRowManager } from "../Tables/SupplierRowManager";
+import { TableManager } from "../Tables/TableManager";
 
 import {
     bootstrapBomDetailsTable,

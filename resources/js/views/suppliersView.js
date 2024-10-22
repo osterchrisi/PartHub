@@ -1,6 +1,6 @@
-import { TableRowManager } from "../TableRowManager";
-import { TableManager } from "../TableManager";
-import { ResourceCreator } from "../ResourceCreator";
+import { TableRowManager } from "../../Tables/TableRowManager";
+import { TableManager } from "../../Tables/TableManager";
+import { ResourceCreator } from "../Resources/ResourceCreators/ResourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeSuppliersView() {

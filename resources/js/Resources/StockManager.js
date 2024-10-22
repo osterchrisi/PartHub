@@ -4,7 +4,7 @@ import {
     removeClickListeners,
     validateAndSubmitForm,
     updateInfoWindow
-} from './custom';
+} from '../custom';
 
 class StockManager {
     constructor() {

@@ -5,10 +5,10 @@ import {
     showDeleteConfirmation,
     deleteSelectedRows,
     makeTableWindowResizable,
-} from "./custom";
+} from "../js/custom";
 
-import { assembleBoms } from "./tables";
-import { CategoryService } from "./Services/CategoryService";
+import { assembleBoms } from "../js/tables";
+import { CategoryService } from "../js/Services/CategoryService";
 
 class TableManager {
     /**

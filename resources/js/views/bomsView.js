@@ -4,9 +4,9 @@ import {
     attachAddBomHandler
 } from '../toolbar/toolbar';
 
-import { StockManager } from '../StockManager';
-import { TableRowManager } from '../TableRowManager';
-import { TableManager } from '../TableManager';
+import { StockManager } from '../Resources/StockManager';
+import { TableRowManager } from '../../Tables/TableRowManager';
+import { TableManager } from '../../Tables/TableManager';
 
 export function initializeBomsView() {
     //* Table Manager

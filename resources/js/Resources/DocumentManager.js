@@ -1,6 +1,6 @@
 export { DocumentManager };
 
-import { showDeletionConfirmationToast, showDeleteConfirmation } from "./custom";
+import { showDeletionConfirmationToast, showDeleteConfirmation } from "../custom";
 
 /**
  * Class to manage document-related operations such as uploading, displaying, and deleting documents.

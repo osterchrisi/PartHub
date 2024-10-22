@@ -1,7 +1,7 @@
 import { deleteSelectedRows, showDeleteConfirmation, updateInfoWindow } from "../custom";
 import { assembleBoms } from "../tables";
-import { TableManager } from "../TableManager";
-import { TableRowManager } from "../TableRowManager";
+import { TableManager } from "../../Tables/TableManager";
+import { TableRowManager } from "../../Tables/TableRowManager";
 
 export function deleteRowsHandler(table_id, model, id_column, successCallback) {
     // Get selected table rows

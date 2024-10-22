@@ -1,7 +1,7 @@
 export { CategoryTableManager }
-import { CategoryService } from "./Services/CategoryService";
+import { CategoryService } from "../js/Services/CategoryService";
 import { TableManager } from "./TableManager";
-import { saveLayoutSettings } from "./custom";
+import { saveLayoutSettings } from "../js/custom";
 
 class CategoryTableManager extends TableManager {
     constructor(options) {

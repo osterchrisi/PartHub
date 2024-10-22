@@ -3,12 +3,12 @@ import {
 } from "../custom";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { ResourceCreator } from "../ResourceCreator";
+import { ResourceCreator } from "../Resources/ResourceCreators/ResourceCreator";
 import { MouserPartSearch } from "../MouserPartSearch";
-import { SupplierRowManager } from "../SupplierRowManager";
-import { TableRowManager } from "../TableRowManager";
-import { TableManager } from "../TableManager";
-import { CategoryTableManager } from "../CategoriesTableManager";
+import { SupplierRowManager } from "../../Tables/SupplierRowManager";
+import { TableRowManager } from "../../Tables/TableRowManager";
+import { TableManager } from "../../Tables/TableManager";
+import { CategoryTableManager } from "../../Tables/CategoriesTableManager";
 
 export function initializePartsView() {
 

@@ -1,6 +1,6 @@
 export { ImageManager }
 
-import { showDeletionConfirmationToast, showDeleteConfirmation } from "./custom";
+import { showDeletionConfirmationToast, showDeleteConfirmation } from "../custom";
 
 /**
  * Class to manage image-related operations such as uploading, displaying, and deleting images.
