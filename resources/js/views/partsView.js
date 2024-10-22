@@ -9,6 +9,7 @@ import { SupplierRowManager } from "../../Tables/SupplierRowManager";
 import { TableRowManager } from "../../Tables/TableRowManager";
 import { TableManager } from "../../Tables/TableManager";
 import { CategoryTableManager } from "../../Tables/CategoriesTableManager";
+import { PartCreator } from "../Resources/ResourceCreators/PartCreator";
 
 export function initializePartsView() {
 
@@ -20,7 +21,7 @@ export function initializePartsView() {
     partsTableManager.defineActions();
 
     //* Table Manager for Categories Table
-    const categoriesTableManager = new CategoryTableManager({ type: 'category'})
+    const categoriesTableManager = new CategoryTableManager({ type: 'category' })
     categoriesTableManager.bootstrapTable();
 
     //* Table Row Manager for Parts Table
@@ -34,7 +35,7 @@ export function initializePartsView() {
     togglePartEntryButtons();
 
     //* Resource Creator
-    const newPartCreator = new ResourceCreator({
+    const partCreator = new PartCreator({
         type: 'part',
         endpoint: '/part.create',
         table_name: '#parts_table',
@@ -50,22 +51,6 @@ export function initializePartsView() {
             // { name: 'supplier', selector: '#addPartSupplierSelect' },
             { name: 'category', selector: '#addPartCategorySelect' },
             { name: 'min_quantity', selector: '#addPartMinQuantity' },
-            {
-                name: 'suppliers', getValue: function () {
-                    let suppliers = [];
-                    $('#supplierDataTable tbody tr').each(function () {
-                        let rowIndex = $(this).data('supplier-index');
-                        let supplierRow = {
-                            supplier_id: $(`[data-supplier-id="${rowIndex}"]`).val(),
-                            URL: $(`[data-url-id="${rowIndex}"]`).val(),
-                            SPN: $(`[data-spn-id="${rowIndex}"]`).val(),
-                            price: $(`[data-price-id="${rowIndex}"]`).val()
-                        };
-                        suppliers.push(supplierRow);
-                    });
-                    return suppliers;
-                }
-            }
         ],
         inputModal: '#mPartEntry',
         addButton: '#addPart',
@@ -73,8 +58,8 @@ export function initializePartsView() {
 
 
     $('#toolbarAddButton').click(function () {
-        newPartCreator.showModal();
-      });
+        partCreator.showModal();
+    });
 
     //* Supplier Row Manager
     const supplierRowManager = new SupplierRowManager();

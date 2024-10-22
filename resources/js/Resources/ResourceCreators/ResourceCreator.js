@@ -10,7 +10,7 @@ import { FormValidator } from "../../FormValidator";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
-    // Options
+    // Store configuration options for creating resources
     this.type = options.type;
     this.endpoint = options.endpoint;
     this.table = options.table_name;
@@ -21,28 +21,24 @@ class ResourceCreator {
     this.addButton = $(options.addButton);
     this.categoryId = options.categoryId || null;
 
-    // Flag to control dropdown population
+    // Flag to control dropdown population when a modal is closed and re-opened
     this.skipDropdownPopulation = false;
 
-    // Initialize modal behavior
+    // Initialize modal behavior and listeners
     this.initializeModalBehavior();
-
-    // Initialize uppercase toggle functionality for part input
-    this.initializeUppercaseToggle();
-
-    // Attach listeners to the category creation modal close buttons
     this.attachCategoryModalCloseListeners();
 
-    // Instantiate Manager Classes
+    // Instantiate Manager Classes to handle dropdowns and supplier rows
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.supplierRowManager = new SupplierRowManager();
-    this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
   }
 
+  // Show the modal
   showModal() {
     this.inputModal.modal('show');
   }
 
+  // Hide the modal and reset add stock switch
   hideModal() {
     this.inputModal.modal('hide');
     if (!this.skipDropdownPopulation) {
@@ -50,15 +46,7 @@ class ResourceCreator {
     }
   }
 
-  /**
-  * Handles the creation of a new resource via an AJAX request.
-  *
-  * This method collects data from input fields, sends an AJAX POST request to create the resource,
-  * and handles the response. If successful, it updates the InfoWindow, hides the modal,
-  * removes the click listener, rebuilds the table, and selects the newly created row.
-  *
-  * @method requestCreation
-  */
+  // Request creation of a new resource via AJAX
   requestCreation() {
     const data = this.collectFormData();
     data['type'] = this.type;
@@ -66,25 +54,24 @@ class ResourceCreator {
       data['parent_category'] = this.categoryId;
     }
 
+    // Send AJAX request to create the resource
     this.sendAjaxRequest(data)
       .then((response) => this.handleSuccess(response))
       .catch((error) => this.handleError(error));
   }
 
+  // Collect data from input fields to prepare for submission
   collectFormData() {
     const data = {};
     this.inputFields.forEach(field => {
-      if (typeof field.getValue === 'function') {
-        data[field.name] = field.getValue();
-      } else {
-        data[field.name] = $(field.selector).val();
-      }
+      data[field.name] = $(field.selector).val();
     });
     return data;
   }
 
+  // Send the AJAX request to the server to create a resource
   sendAjaxRequest(data) {
-    const token = $('input[name="_token"]').attr('value');
+    const token = $('input[name="_token"]').attr('value'); // CSRF token for security
     return $.ajax({
       url: this.endpoint,
       type: 'POST',
@@ -92,21 +79,21 @@ class ResourceCreator {
     });
   }
 
+  // Handle successful resource creation
   handleSuccess(response) {
     const id = response[this.newIdName];
     if (this.type !== 'category') {
-      updateInfoWindow(this.type, id);
+      updateInfoWindow(this.type, id); // Update UI with new resource info
     }
     this.hideModal();
     this.removeAddButtonClickListener();
-    this.supplierRowManager.resetSupplierDataTable();
+    this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
     this.skipDropdownPopulation = false;
     this.dropdownManager.categoryCreated = false;
-    this.rebuildTables(id);
+    this.rebuildTables(id); // Rebuild relevant tables
   }
 
-  reset
-
+  // Handle errors during resource creation
   handleError(xhr) {
     if (xhr.status === 419) {
       alert('CSRF token mismatch. Please refresh the page and try again.');
@@ -120,10 +107,12 @@ class ResourceCreator {
     }
   }
 
+  // Rebuild tables after successful resource creation
   rebuildTables(id) {
     const tableManager = new TableManager({ type: this.type });
     const promises = [tableManager.rebuildTable()];
 
+    // Once all tables are rebuilt, update specific rows and modals
     $.when.apply($, promises)
       .done(() => {
         if (this.type !== 'category') {
@@ -140,13 +129,23 @@ class ResourceCreator {
       });
   }
 
+  // Attach listeners to category modal close buttons
+  attachCategoryModalCloseListeners() {
+    $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
+      this.skipDropdownPopulation = true;
+      this.inputModal.modal('toggle');
+    });
+  }
+
+  // Attach listener to add button for form submission
   attachAddButtonClickListener() {
     if (!this.clickListenerAttached) {
       let dataFetchPromises = [];
       if (this.type === 'part' && !this.skipDropdownPopulation) {
-        dataFetchPromises = this.fetchDropdownData();
+        dataFetchPromises = this.fetchDropdownData(); // Fetch dropdown data if required
       }
 
+      // Populate dropdowns and set up form validation once data is fetched
       Promise.all(dataFetchPromises)
         .then(data => this.populateDropdowns(data))
         .then(() => this.setupFormValidation())
@@ -157,116 +156,45 @@ class ResourceCreator {
     }
   }
 
+  // Remove click listener from the add button
+  removeAddButtonClickListener() {
+    this.addButton.off('click');
+  }
+
+  // Fetch data required for dropdowns (locations, footprints, categories)
   fetchDropdownData() {
     return [DataFetchService.getLocations(), DataFetchService.getFootprints(), DataFetchService.getCategories()];
   }
 
+  // Populate dropdown menus with fetched data
   populateDropdowns(data) {
     const [locations, footprints, categories] = data;
-
-    if (this.type === 'part') {
-      this.dropdownManager.addPartLocationDropdown(locations);
-      this.dropdownManager.addPartFootprintDropdown(footprints);
-      if (!this.dropdownManager.categoryCreated) {
-        this.dropdownManager.addPartCategoryDropdown(categories);
+    if (this.type !== 'category') {
+      if (this.type === 'part') {
+        this.dropdownManager.addPartLocationDropdown(locations);
+        this.dropdownManager.addPartFootprintDropdown(footprints);
+        if (!this.dropdownManager.categoryCreated) {
+          this.dropdownManager.addPartCategoryDropdown(categories);
+        }
+        this.dropdownManager.categoryCreated = false;
       }
-      this.dropdownManager.categoryCreated = false;
-      this.toggleStockForm();
-      this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
     }
   }
 
+  // Set up form validation for input fields
   setupFormValidation() {
     const formValidator = new FormValidator(this.inputForm, this.addButton);
     formValidator.attachValidation(this.requestCreation.bind(this));
   }
 
-  /**
-   * Toggle the "Add Stock" functionality for a new part
-   */
-  toggleStockForm() {
-    $('#addPartAddStockSwitch').off('change').on('change', function () {
-      $('#addPartQuantity').prop('disabled', !this.checked);
-
-      var selectizeControl = $('#addPartLocSelect')[0].selectize;
-
-      if (this.checked) {
-        selectizeControl.enable();
-      } else {
-        selectizeControl.disable();
-        $('#addPartQuantity').val('');
-      }
-    });
-  }
-
-  removeAddButtonClickListener() {
-    this.addButton.off('click');
-  }
-
-  /**
-  * Initializes the uppercase toggle functionality for the part name input field.
-  *
-  * Sets up an event listener on the toggle button to transform the input text to
-  * uppercase when enabled, and restore the original text when disabled.
-  *
-  * @method initializeUppercaseToggle
-  */
-  initializeUppercaseToggle() {
-    const $toggleButton = $('#toggle-uppercase-button');
-    const $addPartName = $('#addPartName'); //! Is hardcoded...
-    let isUppercase = false;
-    let originalValue = '';
-
-    const toggleUppercase = () => {
-      isUppercase = !isUppercase;
-      if (isUppercase) {
-        originalValue = $addPartName.val(); // Store the original value
-        $addPartName.on('input.uppercase', function () {
-          const uppercased = $(this).val().toUpperCase();
-          $(this).val(uppercased);
-        });
-        $addPartName.val($addPartName.val().toUpperCase());
-        $toggleButton.addClass('active'); // Add active state class
-        $toggleButton.text('AA');
-      } else {
-        $addPartName.off('input.uppercase');
-        $addPartName.val(originalValue); // Restore the original value
-        $toggleButton.removeClass('active'); // Remove active state class
-        $toggleButton.text('Aa');
-      }
-    };
-
-    // Remove any existing click event listeners to prevent duplicate handling
-    $toggleButton.off('click');
-
-    // Event listener for the toggle button
-    $toggleButton.click(() => {
-      toggleUppercase();
-    });
-
-    // Initialize the button text
-    $toggleButton.text('Aa');
-  }
-
-  /**
-  * Attaches click listeners to the close buttons of the category modal.
-  * Ensures that the category dropdown gets reinitialized if no new category has been created.
-  * Otherwise the dropdown becomes unresponsive
-  */
-  attachCategoryModalCloseListeners() {
-    $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
-      this.skipDropdownPopulation = true; // Set the flag before showing the part-entry modal
-      this.inputModal.modal('toggle');
-    });
-  }
-
+  // Initialize modal show and hide behaviors
   initializeModalBehavior() {
     this.inputModal.on('hidden.bs.modal', (event) => this.onModalHidden(event));
     this.inputModal.on('show.bs.modal', () => this.onModalShown());
     $('#categoryCreationModal').on('show.bs.modal', () => { this.skipDropdownPopulation = true; });
-
   }
 
+  // Handle actions when the modal is hidden
   onModalHidden(event) {
     if (event.target === this.inputModal[0]) {
       console.log("ping");
@@ -279,16 +207,14 @@ class ResourceCreator {
     }
   }
 
+  // Handle actions when the modal is shown
   onModalShown() {
-    // Only populate dropdowns if not skipping due to category creation flow
     if (!this.skipDropdownPopulation) {
       this.attachAddButtonClickListener();
     } else {
       console.log("now your cat select gets unresponsive, i promise it");
-      this.setupFormValidation(); // Set up validation, but don't populate dropdowns
+      this.setupFormValidation();
     }
-
-    // Reset the flag after modal is shown
     this.skipDropdownPopulation = false;
   }
 }

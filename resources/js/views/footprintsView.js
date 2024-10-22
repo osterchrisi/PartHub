@@ -1,6 +1,6 @@
 import { TableRowManager } from "../../Tables/TableRowManager";
 import { TableManager } from "../../Tables/TableManager";
-import { ResourceCreator } from "../Resources/ResourceCreators/ResourceCreator";
+import { SimpleResourceCreator } from "../Resources/ResourceCreators/SimpleResourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeFootprintsView() {
@@ -16,7 +16,7 @@ export function initializeFootprintsView() {
     tableRowManager.loadSelectedRow();
 
     //* Resource Creator
-    const newFootprintCreator = new ResourceCreator({
+    const footprintCreator = new SimpleResourceCreator({
         type: 'footprint',
         endpoint: '/footprint.create',
         table_name: '#footprints_list_table',
@@ -31,7 +31,7 @@ export function initializeFootprintsView() {
     }, []);
 
     $('#toolbarAddButton').click(function () {
-        newFootprintCreator.showModal();
+        footprintCreator.showModal();
     });
 
     attachDeleteRowsHandler('footprints_list_table', 'footprints', 'footprint_id', () => footprintsTableManager.rebuildTable());

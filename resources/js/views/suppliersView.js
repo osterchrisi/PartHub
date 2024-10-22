@@ -1,6 +1,6 @@
 import { TableRowManager } from "../../Tables/TableRowManager";
 import { TableManager } from "../../Tables/TableManager";
-import { ResourceCreator } from "../Resources/ResourceCreators/ResourceCreator";
+import { SimpleResourceCreator } from "../Resources/ResourceCreators/SimpleResourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 
 export function initializeSuppliersView() {
@@ -13,7 +13,7 @@ export function initializeSuppliersView() {
     const tableRowManager = new TableRowManager('#suppliers_list_table', 'supplier');
     tableRowManager.loadSelectedRow();
 
-    const newSupplierCreator = new ResourceCreator({
+    const supplierCreator = new SimpleResourceCreator({
         type: 'supplier',
         endpoint: '/supplier.create',
         table_name: '#suppliers_list_table',
@@ -27,7 +27,7 @@ export function initializeSuppliersView() {
     }, []);
 
     $('#toolbarAddButton').click(function () {
-        newSupplierCreator.showModal();
+        supplierCreator.showModal();
     });
 
     attachDeleteRowsHandler('suppliers_list_table', 'suppliers', 'supplier_id', () => suppliersTableManager.rebuildTable());
