@@ -21,6 +21,9 @@ class ResourceCreator {
     this.addButton = $(options.addButton);
     this.categoryId = options.categoryId || null;
 
+    // Flag to control dropdown population
+    this.skipDropdownPopulation = false;
+
     // Initialize modal behavior
     this.initializeModalBehavior();
 
@@ -42,7 +45,9 @@ class ResourceCreator {
 
   hideModal() {
     this.inputModal.modal('hide');
-    $('#addPartAddStockSwitch').prop('checked', false);
+    if (!this.skipDropdownPopulation) {
+      $('#addPartAddStockSwitch').prop('checked', false);
+    }
   }
 
   /**
@@ -133,7 +138,7 @@ class ResourceCreator {
   attachAddButtonClickListener() {
     if (!this.clickListenerAttached) {
       let dataFetchPromises = [];
-      if (this.type === 'part') {
+      if (this.type === 'part' && !this.skipDropdownPopulation) {
         dataFetchPromises = this.fetchDropdownData();
       }
 
@@ -143,6 +148,7 @@ class ResourceCreator {
         .catch(error => console.error('Error fetching data:', error));
 
       this.clickListenerAttached = true;
+      this.skipDropdownPopulation = false;
     }
   }
 
@@ -244,6 +250,7 @@ class ResourceCreator {
   */
   attachCategoryModalCloseListeners() {
     $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
+      this.skipDropdownPopulation = true; // Set the flag before showing the part-entry modal
       this.inputModal.modal('toggle');
     });
   }
@@ -251,6 +258,8 @@ class ResourceCreator {
   initializeModalBehavior() {
     this.inputModal.on('hidden.bs.modal', (event) => this.onModalHidden(event));
     this.inputModal.on('show.bs.modal', () => this.onModalShown());
+    $('#categoryCreationModal').on('show.bs.modal', () => { this.skipDropdownPopulation = true; });
+
   }
 
   onModalHidden(event) {
@@ -259,11 +268,21 @@ class ResourceCreator {
       this.removeAddButtonClickListener();
       this.clickListenerAttached = false;
     }
-    $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
+    if (!this.skipDropdownPopulation) {
+      $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
+    }
   }
 
   onModalShown() {
-    console.log("now fetch some stuff bro");
-    this.attachAddButtonClickListener();
+    // Only populate dropdowns if not skipping due to category creation flow
+    if (!this.skipDropdownPopulation) {
+      this.attachAddButtonClickListener();
+    } else {
+      console.log("now your cat select gets unresponsive, i promise it");
+      this.setupFormValidation(); // Set up validation, but don't populate dropdowns
+    }
+
+    // Reset the flag after modal is shown
+    this.skipDropdownPopulation = false;
   }
 }

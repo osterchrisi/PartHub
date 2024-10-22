@@ -74,7 +74,7 @@ export function initializePartsView() {
 
     $('#toolbarAddButton').click(function () {
         newPartCreator.showModal();
-    });
+      });
 
     //* Supplier Row Manager
     const supplierRowManager = new SupplierRowManager();
