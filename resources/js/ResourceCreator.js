@@ -5,7 +5,8 @@ import { MouserPartSearch } from "./MouserPartSearch";
 import { SupplierRowManager } from "./SupplierRowManager";
 import { TableRowManager } from "./TableRowManager";
 import { TableManager } from "./TableManager";
-
+import { DataFetchService } from "./DataFetchService";
+import { FormValidator } from "./FormValidator";
 
 class ResourceCreator {
   constructor(options, tableRebuildFunctions = []) {
@@ -19,29 +20,12 @@ class ResourceCreator {
     this.inputModal = $(options.inputModal);
     this.addButton = $(options.addButton);
     this.categoryId = options.categoryId || null;
-    // this.tableRebuildFunctions = tableRebuildFunctions;
 
-    //TODO: Check for type, then do only necessary tasks
+    // Initialize modal behavior
+    this.initializeModalBehavior();
 
-    // Initialize upper case toggle functionality for part input
+    // Initialize uppercase toggle functionality for part input
     this.initializeUppercaseToggle();
-
-    // Handle cancellation of the submit form modal, prevent multiple click listeners
-    // Filtering for event.target, so the hiding of the category creation modal is not firing here
-    this.clickListenerAttached = false;
-    this.inputModal.on('hidden.bs.modal', (event) => {
-      if (event.target === this.inputModal[0]) {
-        $('#mouserSearchResults').empty();
-        this.removeAddButtonClickListener()
-        this.clickListenerAttached = false;
-      }
-      $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
-    });
-
-    this.inputModal.on('show.bs.modal', () => {
-      console.log("now fetch some stuff bro");
-      this.attachAddButtonClickListener();
-    });
 
     // Attach listeners to the category creation modal close buttons
     this.attachCategoryModalCloseListeners();
@@ -71,108 +55,119 @@ class ResourceCreator {
   * @method requestCreation
   */
   requestCreation() {
+    const data = this.collectFormData();
+    data['type'] = this.type;
+    if (this.categoryId) {
+      data['parent_category'] = this.categoryId;
+    }
+
+    this.sendAjaxRequest(data)
+      .then((response) => this.handleSuccess(response))
+      .catch((error) => this.handleError(error));
+  }
+
+  collectFormData() {
     const data = {};
-    // Collect static and dynamic input fields
     this.inputFields.forEach(field => {
       if (typeof field.getValue === 'function') {
-        // If it's a function (like the suppliers), execute it
         data[field.name] = field.getValue();
       } else {
-        // Otherwise, collect the value from the selector
         data[field.name] = $(field.selector).val();
       }
     });
-    data['type'] = this.type;
+    return data;
+  }
 
-    if (this.categoryId) { data['parent_category'] = this.categoryId; }
-
+  sendAjaxRequest(data) {
     const token = $('input[name="_token"]').attr('value');
-    $.ajax({
+    return $.ajax({
       url: this.endpoint,
       type: 'POST',
       data: Object.assign({ _token: token }, data),
-      success: (response) => {
-        const id = response[this.newIdName];                // Get new ID
-        if (this.type != 'category') {
-          updateInfoWindow(this.type, id);                  // Update InfoWindow unless a Category has been added
-        }
-        this.hideModal();                                   // Hide Modal
-        this.removeAddButtonClickListener();                // Remove Click Listener
-        const queryString = window.location.search;
-
-        const tableManager = new TableManager({ type: this.type });
-        const promises = [tableManager.rebuildTable()]
-
-        $.when.apply($, promises)
-          .done(() => {
-            if (this.type != 'category') {
-              const tableRowManager = new TableRowManager(this.table);
-              tableRowManager.selectNewRow(id);
-              tableRowManager.saveSelectedRow(id);
-            }
-            if (this.type === 'part') {
-              tableManager.updateStockModal(id);
-            }
-          })
-          .fail(() => {
-            // console.error("Error in one or more table rebuild functions");
-          });
-      },
-      error: (xhr) => {
-        if (xhr.status === 419) {
-          alert('CSRF token mismatch. Please refresh the page and try again.');
-        }
-        else if (xhr.status === 403) {
-          const response = JSON.parse(xhr.responseText);
-          alert(response.message);
-        }
-        else {
-          alert('An error occurred. Please try again.');
-          this.hideModal();                                 // Hide Modal
-          this.removeAddButtonClickListener();              // Remove Click Listener
-        }
-      }
     });
   }
 
+  handleSuccess(response) {
+    const id = response[this.newIdName];
+    if (this.type !== 'category') {
+      updateInfoWindow(this.type, id);
+    }
+    this.hideModal();
+    this.removeAddButtonClickListener();
+    this.rebuildTables(id);
+  }
+
+  handleError(xhr) {
+    if (xhr.status === 419) {
+      alert('CSRF token mismatch. Please refresh the page and try again.');
+    } else if (xhr.status === 403) {
+      const response = JSON.parse(xhr.responseText);
+      alert(response.message);
+    } else {
+      alert('An error occurred. Please try again.');
+      this.hideModal();
+      this.removeAddButtonClickListener();
+    }
+  }
+
+  rebuildTables(id) {
+    const tableManager = new TableManager({ type: this.type });
+    const promises = [tableManager.rebuildTable()];
+
+    $.when.apply($, promises)
+      .done(() => {
+        if (this.type !== 'category') {
+          const tableRowManager = new TableRowManager(this.table);
+          tableRowManager.selectNewRow(id);
+          tableRowManager.saveSelectedRow(id);
+        }
+        if (this.type === 'part') {
+          tableManager.updateStockModal(id);
+        }
+      })
+      .fail(() => {
+        console.error("Error in one or more table rebuild functions");
+      });
+  }
+
   attachAddButtonClickListener() {
-    // Check if the click listener has already been attached
     if (!this.clickListenerAttached) {
-      // Fetch data asynchronously
       let dataFetchPromises = [];
       if (this.type === 'part') {
-        dataFetchPromises.push(this.getLocations());
-        dataFetchPromises.push(this.getFootprints());
-        dataFetchPromises.push(this.getCategories());
-        // dataFetchPromises.push(this.getSuppliers()); // Only for single supplier layout
+        dataFetchPromises = this.fetchDropdownData();
       }
 
-      // Wait for all data promises to resolve
       Promise.all(dataFetchPromises)
-        .then(data => {
-          const [locations, footprints, categories, suppliers] = data;
+        .then(data => this.populateDropdowns(data))
+        .then(() => this.setupFormValidation())
+        .catch(error => console.error('Error fetching data:', error));
 
-          if (this.type === 'part') {
-            // Populate dropdowns
-            this.dropdownManager.addPartLocationDropdown(locations);
-            this.dropdownManager.addPartFootprintDropdown(footprints);
-            // this.dropdownManager.addPartSupplierDropdown(suppliers); // Only for single supplier layout
-            if (this.dropdownManager.categoryCreated == false) {
-              this.dropdownManager.addPartCategoryDropdown(categories);
-            }
-            this.dropdownManager.categoryCreated = false;
-            this.toggleStockForm();
-            this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
-          }
-
-          // Attach click listener and proceed
-          this.validateAndSubmitForm(this.inputForm, this.addButton, this.requestCreation.bind(this));
-          this.clickListenerAttached = true; // Set the flag to true after attaching the click listener
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
+      this.clickListenerAttached = true;
     }
+  }
+
+  fetchDropdownData() {
+    return [DataFetchService.getLocations(), DataFetchService.getFootprints(), DataFetchService.getCategories()];
+  }
+
+  populateDropdowns(data) {
+    const [locations, footprints, categories] = data;
+
+    if (this.type === 'part') {
+      this.dropdownManager.addPartLocationDropdown(locations);
+      this.dropdownManager.addPartFootprintDropdown(footprints);
+      if (!this.dropdownManager.categoryCreated) {
+        this.dropdownManager.addPartCategoryDropdown(categories);
+      }
+      this.dropdownManager.categoryCreated = false;
+      this.toggleStockForm();
+      this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
+    }
+  }
+
+  setupFormValidation() {
+    const formValidator = new FormValidator(this.inputForm, this.addButton);
+    formValidator.attachValidation(this.requestCreation.bind(this));
   }
 
   /**
@@ -195,47 +190,6 @@ class ResourceCreator {
 
   removeAddButtonClickListener() {
     this.addButton.off('click');
-  }
-
-  validateAndSubmitForm($form, $button, submitCallback, submitArgs = []) {
-    // Attach event listeners for form validation and submission
-    $button.click((event) => {
-      event.preventDefault();
-      submitFormIfValid();
-    });
-
-    //* Currently don't like it anymore, so uncommented the submission upon pressing Enter
-    //* Still keeping the preventDefault in, so I don't get browser behaviour that submits forms upon pressing enter (leads to seemingly 'buggy' page reload)
-    // Submit form on Enter keypress, unless you're on a selectized dropdown
-    $form.on('keydown', (event) => {
-      // Check if the Enter key is pressed and the active element is not the selectized input
-      if (event.key === 'Enter' && !$(document.activeElement).is('.selectized')) {
-        event.preventDefault(); // Prevent default form submission
-        // submitFormIfValid();
-      }
-    });
-
-    // Function to submit the form if it's valid
-    const submitFormIfValid = () => {
-      if ($form[0].checkValidity()) {
-        const result = submitCallback.apply(null, submitArgs);
-        return result;
-      } else {
-        displayFieldValidity();
-      }
-    };
-
-    // Function to display validity status of required fields
-    const displayFieldValidity = () => {
-      $form.find('[required]').each(function () {
-        const $field = $(this);
-        if ($field[0].checkValidity()) {
-          $field.removeClass('is-invalid').addClass('is-valid');
-        } else {
-          $field.removeClass('is-valid').addClass('is-invalid');
-        }
-      });
-    };
   }
 
   /**
@@ -294,50 +248,22 @@ class ResourceCreator {
     });
   }
 
-  // Event listener for adding rows to a specific table
-  addSupplierDataRowButtonClickListener(tableId, buttonId, partId = null) {
-    $(`#${buttonId}`).off('click').on('click', () => {
-      this.addSupplierRow(tableId, partId);
-    });
+  initializeModalBehavior() {
+    this.inputModal.on('hidden.bs.modal', (event) => this.onModalHidden(event));
+    this.inputModal.on('show.bs.modal', () => this.onModalShown());
   }
 
-  getSuppliers() {
-    return $.ajax({
-      url: '/suppliers.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
+  onModalHidden(event) {
+    if (event.target === this.inputModal[0]) {
+      $('#mouserSearchResults').empty();
+      this.removeAddButtonClickListener();
+      this.clickListenerAttached = false;
+    }
+    $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
   }
 
-  getCategories() {
-    return $.ajax({
-      url: '/categories.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
-  }
-
-  getFootprints() {
-    return $.ajax({
-      url: '/footprints.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
-  }
-
-  getLocations() {
-    return $.ajax({
-      url: '/locations.get',
-      dataType: 'json',
-      error: function (error) {
-        console.log(error);
-      }
-    });
+  onModalShown() {
+    console.log("now fetch some stuff bro");
+    this.attachAddButtonClickListener();
   }
 }
