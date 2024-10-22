@@ -99,8 +99,13 @@ class ResourceCreator {
     }
     this.hideModal();
     this.removeAddButtonClickListener();
+    this.supplierRowManager.resetSupplierDataTable();
+    this.skipDropdownPopulation = false;
+    this.dropdownManager.categoryCreated = false;
     this.rebuildTables(id);
   }
+
+  reset
 
   handleError(xhr) {
     if (xhr.status === 419) {
@@ -264,6 +269,7 @@ class ResourceCreator {
 
   onModalHidden(event) {
     if (event.target === this.inputModal[0]) {
+      console.log("ping");
       $('#mouserSearchResults').empty();
       this.removeAddButtonClickListener();
       this.clickListenerAttached = false;

@@ -6,7 +6,7 @@ class SupplierRowManager {
     constructor() {
         this.newRowIndex = 0;
         this.dropdownManager = new DropdownManager();
-        
+
         // Attach a click listener to remove row buttons
         this.removeRowButtonClickListener();
     }
@@ -189,15 +189,15 @@ class SupplierRowManager {
     }
 
     // Reset all the bootstrap-table and collapse shenanigans in the Supplier Data section of the part entry modal
-    resetSupplierDataTableOnModalHide() {
+    resetSupplierDataTable() {
         const $supplierTable = $('#supplierDataTable');
         const $addSuppliers = $('#addSuppliers');
-        $('#mPartEntry').on('hidden.bs.modal', () => {
-            $supplierTable.bootstrapTable('destroy');  // Destroy bootstrap-table instance
-            $addSuppliers.empty();  // Clear the content inside the supplier div
 
-            // Rebuild the supplier data table structure
-            $('#addSuppliers').append(`
+        $supplierTable.bootstrapTable('destroy');  // Destroy bootstrap-table instance
+        $addSuppliers.empty();  // Clear the content inside the supplier div
+
+        // Rebuild the supplier data table structure
+        $('#addSuppliers').append(`
                 <div id="supplierTableContainer">
                     <table id="supplierDataTable" class="table table-sm table-bordered table-hover">
                         <thead>
@@ -217,10 +217,10 @@ class SupplierRowManager {
                 <button type="button" id="addSupplierRowBtn-partEntry" class="btn btn-sm btn-secondary mt-2">Add Supplier</button>
             `);
 
-            // Collapse the supplier data div and reset modal size
-            $('#addSuppliers').removeClass('show');
-            $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
-        });
+        // Collapse the supplier data div and reset modal size
+        $('#addSuppliers').removeClass('show');
+        $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
+
     }
 
     // Handle resizing the modal when the supplier data table is collapsed

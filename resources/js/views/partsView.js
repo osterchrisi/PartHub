@@ -79,7 +79,7 @@ export function initializePartsView() {
     //* Supplier Row Manager
     const supplierRowManager = new SupplierRowManager();
     supplierRowManager.bootstrapSupplierDataTable();
-    supplierRowManager.resetSupplierDataTableOnModalHide();
+    // supplierRowManager.resetSupplierDataTableOnModalHide();
     supplierRowManager.resizeModalOnSupplierTableCollapse();
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', () => partsTableManager.rebuildTable());
