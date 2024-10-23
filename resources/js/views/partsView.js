@@ -51,7 +51,7 @@ export function initializePartsView() {
         ],
         inputModal: '#mPartEntry',
         addButton: '#addPart',
-    }, []);
+    });
 
 
     $('#toolbarAddButton').click(function () {

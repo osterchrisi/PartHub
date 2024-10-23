@@ -27,7 +27,7 @@ export function initializeLocationsView() {
         ],
         inputModal: '#mLocationEntry',
         addButton: '#addLocation'
-    }, []);
+    });
 
     $('#toolbarAddButton').click(function () {
         locationCreator.showModal();

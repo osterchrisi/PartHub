@@ -28,7 +28,7 @@ export function initializeFootprintsView() {
         ],
         inputModal: '#mFootprintEntry',
         addButton: '#addFootprint'
-    }, []);
+    });
 
     $('#toolbarAddButton').click(function () {
         footprintCreator.showModal();

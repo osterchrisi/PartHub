@@ -5,8 +5,8 @@ import { DataFetchService } from "../DataFetchService";
 import { DropdownManager } from "../../DropdownManager";
 
 class PartCreator extends ResourceCreator {
-    constructor(options, tableRebuildFunctions = []) {
-        super(options, tableRebuildFunctions);
+    constructor(options) {
+        super(options);
         this.initializeUppercaseToggle();
         this.initializePartEntryButtons();
         this.initializePartInputButtons();
@@ -39,22 +39,21 @@ class PartCreator extends ResourceCreator {
 
     // Populate all dropdowns
     populateAllDropdowns(data) {
-        const [locations, footprints, categories] = data;
+        const { locations, footprints, categories } = data; // Object destructuring
         this.dropdownManager.addPartLocationDropdown(locations);
         this.dropdownManager.addPartFootprintDropdown(footprints);
-        if (!this.dropdownManager.categoryCreated) {
-            this.dropdownManager.addPartCategoryDropdown(categories);
-            console.log("not sure if ever end up here");
-        }
+        this.dropdownManager.addPartCategoryDropdown(categories);
     }
 
     // Fetch data required for dropdowns (locations, footprints, categories)
     fetchAllDropdownData() {
-        return [
+        return Promise.all([
             DataFetchService.getLocations(),
             DataFetchService.getFootprints(),
             DataFetchService.getCategories()
-        ];
+        ]).then(([locations, footprints, categories]) => {
+            return { locations, footprints, categories }; // Return object
+        });
     }
 
     rebuildTables(id) {
@@ -73,50 +72,31 @@ class PartCreator extends ResourceCreator {
     onModalHidden(event) {
         super.onModalHidden(event);
 
-        // console.log("partModalHiddenByCategoryModal = ", this.partModalHiddenByCategoryModal(event));
-
-        // // Check if the part entry modal was hidden because the category creation modal came into view
-        // if (this.partModalHiddenByCategoryModal(event)) {
-        //     console.log("Part modal hidden by category modal");
-        //     $('#mouserSearchResults').empty();
-        // }
-
         if (!this.skipDropdownPopulation) {
             $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
         }
     }
 
-    //TODO: This does NOT actually do what it says it will do - it's always false -> can go!
-    // partModalHiddenByCategoryModal(event) {
-    //     return event.target !== this.inputModal[0];
-    // }
-
     onModalShow() {
         super.onModalShow();
 
-        // Populate all dropdowns (modal gets shown anew)
+        //* Populate all dropdowns (modal gets shown anew)
         if (!this.skipDropdownPopulation) {
-            let dataFetchPromises = this.fetchAllDropdownData();
-
-            Promise.all(dataFetchPromises)
+            this.fetchAllDropdownData()
                 .then(data => {
-                    if (data.length > 0) {
-                        // Populate dropdowns
-                        this.populateAllDropdowns(data);
-                        this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
-                    }
+                    this.populateAllDropdowns(data);
+                    this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
                 })
                 .catch(error => console.error('Error fetching dropdown data:', error));
         }
 
-        // Populate only categories (user came back from NOT creating a new category - otherwise dropdownManager does this)
+        //* Populate only categories (user came back from NOT creating a new category - otherwise dropdownManager does this)
         if (this.skipDropdownPopulation && !this.dropdownManager.categoryCreated) {
             DataFetchService.getCategories()
                 .then(categories => {
                     this.dropdownManager.addPartCategoryDropdown(categories);
                 })
                 .catch(error => console.error('Error fetching categories:', error));
-
         }
 
         // Reset flags

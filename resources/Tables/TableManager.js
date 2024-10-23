@@ -96,10 +96,8 @@ class TableManager {
         // this.enableInlineProcessing();
     }
 
-
-
     /**
-    * Instantiate the TableRowManager based on the type.
+    * Instantiate a TableRowManager based on the type.
     */
     instantiateTableRowManager(type) {
         switch (type) {
@@ -114,7 +112,7 @@ class TableManager {
             case 'supplier':
                 return new TableRowManager('#suppliers_list_table', 'supplier');
             default:
-                return new TableRowManager({ saveKey: 'default_selected_row' });
+                return;
         }
     }
 

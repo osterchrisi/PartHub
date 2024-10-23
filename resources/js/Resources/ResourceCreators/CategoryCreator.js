@@ -3,8 +3,8 @@ import { CategoryTableManager } from "../../../Tables/CategoriesTableManager";
 import { ResourceCreator } from "./ResourceCreator";
 
 class CategoryCreator extends ResourceCreator {
-    constructor(options, tableRebuildFunctions = []) {
-        super(options, tableRebuildFunctions);
+    constructor(options) {
+        super(options);
         this.categoryId = options.categoryId || null;
         this._shouldUpdateInfoWindow = true;
         this._shouldSelectandSaveNewRow = true;

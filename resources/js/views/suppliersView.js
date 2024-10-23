@@ -24,7 +24,7 @@ export function initializeSuppliersView() {
         ],
         inputModal: '#mSupplierEntry',
         addButton: '#addSupplier'
-    }, []);
+    });
 
     $('#toolbarAddButton').click(function () {
         supplierCreator.showModal();
