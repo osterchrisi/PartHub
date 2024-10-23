@@ -1,10 +1,8 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "../../custom";
-import { DropdownManager } from "../../DropdownManager";
 import { MouserPartSearch } from "../../MouserPartSearch";
 import { TableRowManager } from "../../../Tables/TableRowManager";
 import { TableManager } from "../../../Tables/TableManager";
-import { DataFetchService } from "../DataFetchService";
 import { FormValidator } from "../../FormValidator";
 
 class ResourceCreator {
@@ -22,18 +20,11 @@ class ResourceCreator {
     this._shouldUpdateInfoWindow = true;
     this._shouldSelectandSaveNewRow = true;
 
-
-    // Flag to control dropdown population when partEntry modal is closed and re-opened
-    this.skipDropdownPopulation = false;
-
     // Initialize modal behavior and listeners
     this.initializeModalBehavior();
-    this.attachCategoryModalCloseListeners();
     this.setupFormValidation();
 
-
     // Instantiate Manager Classes
-    this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
     this.tableManager = this.createTableManager();
   }
 
@@ -119,14 +110,6 @@ class ResourceCreator {
       .fail(() => {
         console.error("Error in one or more table rebuild functions");
       });
-  }
-
-  // Attach listeners to category modal close buttons
-  attachCategoryModalCloseListeners() {
-    $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
-      this.skipDropdownPopulation = true;
-      this.inputModal.modal('toggle');
-    });
   }
 
   // Remove click listener from the add button

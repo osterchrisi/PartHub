@@ -2,6 +2,7 @@ export { PartCreator };
 import { ResourceCreator } from "./ResourceCreator";
 import { SupplierRowManager } from "../../../Tables/SupplierRowManager";
 import { DataFetchService } from "../DataFetchService";
+import { DropdownManager } from "../../DropdownManager";
 
 class PartCreator extends ResourceCreator {
     constructor(options, tableRebuildFunctions = []) {
@@ -11,6 +12,11 @@ class PartCreator extends ResourceCreator {
         this.togglePartInputs();
         this.supplierRowManager = new SupplierRowManager();
         this.initializeAddStockToggler();
+        this.attachCategoryModalCloseListeners();
+
+        this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
+        // Flag to control dropdown population when partEntry modal is closed and re-opened
+        this.skipDropdownPopulation = false;
     }
 
     // Collect form data and add supplier info
@@ -19,21 +25,27 @@ class PartCreator extends ResourceCreator {
         this.data['suppliers'] = this.collectSupplierData();
     }
 
-    // Populate dropdowns and add additional event listeners
-    populateDropdowns(data) {
+    // Populate all dropdowns
+    populateAllDropdowns(data) {
         const [locations, footprints, categories] = data;
         this.dropdownManager.addPartLocationDropdown(locations);
         this.dropdownManager.addPartFootprintDropdown(footprints);
         if (!this.dropdownManager.categoryCreated) {
             this.dropdownManager.addPartCategoryDropdown(categories);
+            console.log("not sure if ever end up here");
         }
-        this.dropdownManager.categoryCreated = false;
+
+        //TODO: Needs to be here?
         this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
     }
 
     // Fetch data required for dropdowns (locations, footprints, categories)
-    fetchDropdownData() {
-        return [DataFetchService.getLocations(), DataFetchService.getFootprints(), DataFetchService.getCategories()];
+    fetchAllDropdownData() {
+        return [
+            DataFetchService.getLocations(),
+            DataFetchService.getFootprints(),
+            DataFetchService.getCategories()
+        ];
     }
 
     rebuildTables(id) {
@@ -41,9 +53,16 @@ class PartCreator extends ResourceCreator {
         this.tableManager.updateStockModal(id); // Adds the part name to the stock modal
     }
 
+    // Attach listeners to category modal close buttons
+    attachCategoryModalCloseListeners() {
+        $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
+            this.skipDropdownPopulation = true;
+            this.inputModal.modal('toggle');
+        });
+    }
+
     onModalHidden(event) {
         super.onModalHidden(event);
-        console.log("hidden this.inputModal");
 
         // Check if the part entry modal was hidden because the category creation modal came into view
         if (this.partModalHiddenByCategoryModal(event)) {
@@ -64,20 +83,33 @@ class PartCreator extends ResourceCreator {
     onModalShow() {
         super.onModalShow();
 
-        // Conditionally fetch and populate dropdown data
+        // Populate all dropdowns (modal gets shown anew)
         if (!this.skipDropdownPopulation) {
-            let dataFetchPromises = this.fetchDropdownData();
+            let dataFetchPromises = this.fetchAllDropdownData();
 
             Promise.all(dataFetchPromises)
                 .then(data => {
                     if (data.length > 0) {
                         // Populate dropdowns
-                        this.populateDropdowns(data);
+                        this.populateAllDropdowns(data);
                     }
                 })
                 .catch(error => console.error('Error fetching dropdown data:', error));
         }
+
+        // Populate only categories (user came back from NOT creating a new category - otherwise dropdownManager does this)
+        if (this.skipDropdownPopulation && !this.dropdownManager.categoryCreated) {
+            DataFetchService.getCategories()
+                .then(categories => {
+                    this.dropdownManager.addPartCategoryDropdown(categories);
+                })
+                .catch(error => console.error('Error fetching categories:', error));
+
+        }
+
+        // Reset flags
         this.skipDropdownPopulation = false; // Reset flag
+        this.dropdownManager.categoryCreated = false;
     }
 
 
