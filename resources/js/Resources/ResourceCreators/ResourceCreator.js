@@ -19,6 +19,9 @@ class ResourceCreator {
     this.inputFields = options.inputFields;
     this.inputModal = $(options.inputModal);
     this.addButton = $(options.addButton);
+
+    this._shouldUpdateInfoWindow = true;
+    this._shouldSelectandSaveNewRow = true;
     
 
     // Flag to control dropdown population when partEntry modal is closed and re-opened
@@ -28,8 +31,13 @@ class ResourceCreator {
     this.initializeModalBehavior();
     this.attachCategoryModalCloseListeners();
 
-    // Instantiate Manager Classes to handle dropdowns and supplier rows
+    // Instantiate Manager Classes
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
+    this.tableManager = this.createTableManager();
+  }
+
+  createTableManager() {
+    return new TableManager({ type: this.type });
   }
 
   // Show the modal
@@ -67,7 +75,7 @@ class ResourceCreator {
 
   // Send the AJAX request to the server to create a resource
   sendAjaxRequest(data) {
-    const token = $('input[name="_token"]').attr('value'); // CSRF token for security
+    const token = $('input[name="_token"]').attr('value'); // CSRF token
     return $.ajax({
       url: this.endpoint,
       type: 'POST',
@@ -78,13 +86,11 @@ class ResourceCreator {
   // Handle successful resource creation
   handleSuccess(response) {
     const id = response[this.newIdName];
-    if (this.type !== 'category') {
+    if (this._shouldUpdateInfoWindow) {
       updateInfoWindow(this.type, id); // Update UI with new resource info
     }
     this.hideModal();
     this.removeAddButtonClickListener();
-    this.skipDropdownPopulation = false;
-    this.dropdownManager.categoryCreated = false;
     this.rebuildTables(id); // Rebuild relevant tables
   }
 
@@ -104,20 +110,19 @@ class ResourceCreator {
 
   // Rebuild tables after successful resource creation
   rebuildTables(id) {
-    const tableManager = new TableManager({ type: this.type });
-    const promises = [tableManager.rebuildTable()];
+    const promises = [this.tableManager.rebuildTable()];
 
     // Once all tables are rebuilt, update specific rows and modals
     $.when.apply($, promises)
       .done(() => {
-        if (this.type !== 'category') {
+        if (this._shouldSelectandSaveNewRow) {
           const tableRowManager = new TableRowManager(this.table);
           tableRowManager.selectNewRow(id);
           tableRowManager.saveSelectedRow(id);
         }
-        if (this.type === 'part') {
-          tableManager.updateStockModal(id);
-        }
+        // if (this.type === 'part') {
+        //   tableManager.updateStockModal(id);
+        // }
       })
       .fail(() => {
         console.error("Error in one or more table rebuild functions");

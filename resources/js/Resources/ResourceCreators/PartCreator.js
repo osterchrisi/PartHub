@@ -23,6 +23,11 @@ class PartCreator extends ResourceCreator {
       this.toggleStockForm();
       this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
     }
+
+    rebuildTables(id){
+        super.rebuildTables(id);
+        this.tableManager.updateStockModal(id);
+    }
   
     // Collect data from supplier rows in the part form
     collectSupplierData() {
@@ -93,8 +98,12 @@ class PartCreator extends ResourceCreator {
 
     handleSuccess(response){
         super.handleSuccess(response);
-        this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
+        this.supplierRowManager.resetSupplierDataTable();
         this.resetPartEntryButtons();
+
+        // Reset flags
+        this.skipDropdownPopulation = false;
+        this.dropdownManager.categoryCreated = false;
     }
 
     togglePartEntryButtons() {
