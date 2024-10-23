@@ -2,7 +2,6 @@ export { ResourceCreator };
 import { updateInfoWindow } from "../../custom";
 import { DropdownManager } from "../../DropdownManager";
 import { MouserPartSearch } from "../../MouserPartSearch";
-import { SupplierRowManager } from "../../../Tables/SupplierRowManager";
 import { TableRowManager } from "../../../Tables/TableRowManager";
 import { TableManager } from "../../../Tables/TableManager";
 import { DataFetchService } from "../DataFetchService";
@@ -48,9 +47,6 @@ class ResourceCreator {
   // Hide the modal and reset add stock switch
   hideModal() {
     this.inputModal.modal('hide');
-    if (!this.skipDropdownPopulation) {
-      $('#addPartAddStockSwitch').prop('checked', false);
-    }
   }
 
   // Request creation of a new resource via AJAX
@@ -120,9 +116,6 @@ class ResourceCreator {
           tableRowManager.selectNewRow(id);
           tableRowManager.saveSelectedRow(id);
         }
-        // if (this.type === 'part') {
-        //   tableManager.updateStockModal(id);
-        // }
       })
       .fail(() => {
         console.error("Error in one or more table rebuild functions");
@@ -190,25 +183,18 @@ class ResourceCreator {
   // Initialize modal show and hide behaviors
   initializeModalBehavior() {
     this.inputModal.on('hidden.bs.modal', (event) => this.onModalHidden(event));
-    this.inputModal.on('show.bs.modal', () => this.onModalShown());
+    this.inputModal.on('show.bs.modal', () => this.onModalShow());
     $('#categoryCreationModal').on('show.bs.modal', () => { this.skipDropdownPopulation = true; });
   }
 
   // Handle actions when the modal is hidden
   onModalHidden(event) {
-    if (event.target === this.inputModal[0]) {
-      console.log("ping");
-      $('#mouserSearchResults').empty();
       this.removeAddButtonClickListener();
       this.clickListenerAttached = false;
-    }
-    if (!this.skipDropdownPopulation) {
-      $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
-    }
   }
 
   // Handle actions when the modal is shown
-  onModalShown() {
+  onModalShow() {
     if (!this.skipDropdownPopulation) {
       this.attachAddButtonClickListener();
     } else {

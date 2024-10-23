@@ -3,7 +3,6 @@ import {
 } from "../custom";
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
-import { ResourceCreator } from "../Resources/ResourceCreators/ResourceCreator";
 import { MouserPartSearch } from "../MouserPartSearch";
 import { SupplierRowManager } from "../../Tables/SupplierRowManager";
 import { TableRowManager } from "../../Tables/TableRowManager";
