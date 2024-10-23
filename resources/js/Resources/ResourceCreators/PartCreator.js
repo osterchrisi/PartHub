@@ -1,17 +1,18 @@
 export { PartCreator };
 import { ResourceCreator } from "./ResourceCreator";
+import { SupplierRowManager } from "../../../Tables/SupplierRowManager";
 
 class PartCreator extends ResourceCreator {
     constructor(options, tableRebuildFunctions = []) {
       super(options, tableRebuildFunctions);
       this.initializeUppercaseToggle();
+      this.supplierRowManager = new SupplierRowManager();
     }
   
     // Collect form data and add supplier info
     collectFormData() {
-      const data = super.collectFormData();
-      data['suppliers'] = this.collectSupplierData();
-      return data;
+      super.collectFormData();
+      this.data['suppliers'] = this.collectSupplierData();
     }
   
     // Populate part-specific dropdowns and add additional event listeners
@@ -86,5 +87,10 @@ class PartCreator extends ResourceCreator {
           $('#addPartQuantity').val('');
         }
       });
+    }
+
+    handleSuccess(response){
+        super.handleSuccess(response);
+        this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
     }
   }

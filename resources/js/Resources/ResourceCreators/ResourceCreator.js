@@ -19,9 +19,9 @@ class ResourceCreator {
     this.inputFields = options.inputFields;
     this.inputModal = $(options.inputModal);
     this.addButton = $(options.addButton);
-    this.categoryId = options.categoryId || null;
+    
 
-    // Flag to control dropdown population when a modal is closed and re-opened
+    // Flag to control dropdown population when partEntry modal is closed and re-opened
     this.skipDropdownPopulation = false;
 
     // Initialize modal behavior and listeners
@@ -30,7 +30,7 @@ class ResourceCreator {
 
     // Instantiate Manager Classes to handle dropdowns and supplier rows
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
-    this.supplierRowManager = new SupplierRowManager();
+    // this.supplierRowManager = new SupplierRowManager();    
   }
 
   // Show the modal
@@ -48,25 +48,22 @@ class ResourceCreator {
 
   // Request creation of a new resource via AJAX
   requestCreation() {
-    const data = this.collectFormData();
-    data['type'] = this.type;
-    if (this.categoryId) {
-      data['parent_category'] = this.categoryId;
-    }
+    this.collectFormData();
+
+    this.data['type'] = this.type;
 
     // Send AJAX request to create the resource
-    this.sendAjaxRequest(data)
+    this.sendAjaxRequest(this.data)
       .then((response) => this.handleSuccess(response))
       .catch((error) => this.handleError(error));
   }
 
   // Collect data from input fields to prepare for submission
   collectFormData() {
-    const data = {};
+    this.data = {};
     this.inputFields.forEach(field => {
-      data[field.name] = $(field.selector).val();
+      this.data[field.name] = $(field.selector).val();
     });
-    return data;
   }
 
   // Send the AJAX request to the server to create a resource
@@ -87,7 +84,7 @@ class ResourceCreator {
     }
     this.hideModal();
     this.removeAddButtonClickListener();
-    this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
+    // this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
     this.skipDropdownPopulation = false;
     this.dropdownManager.categoryCreated = false;
     this.rebuildTables(id); // Rebuild relevant tables
@@ -102,7 +99,7 @@ class ResourceCreator {
       alert(response.message);
     } else {
       alert('An error occurred. Please try again.');
-      this.hideModal();
+      // this.hideModal();
       this.removeAddButtonClickListener();
     }
   }
