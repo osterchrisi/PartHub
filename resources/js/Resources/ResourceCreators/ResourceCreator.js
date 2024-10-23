@@ -30,7 +30,6 @@ class ResourceCreator {
 
     // Instantiate Manager Classes to handle dropdowns and supplier rows
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
-    // this.supplierRowManager = new SupplierRowManager();    
   }
 
   // Show the modal
@@ -84,7 +83,6 @@ class ResourceCreator {
     }
     this.hideModal();
     this.removeAddButtonClickListener();
-    // this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
     this.skipDropdownPopulation = false;
     this.dropdownManager.categoryCreated = false;
     this.rebuildTables(id); // Rebuild relevant tables

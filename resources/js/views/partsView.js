@@ -31,8 +31,6 @@ export function initializePartsView() {
     //* Mouser API Search
     // Mouser API Search in part entry modal
     // const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
-    togglePartInputs();
-    togglePartEntryButtons();
 
     //* Resource Creator
     const partCreator = new PartCreator({
@@ -105,46 +103,4 @@ function experimentalAjaxSearch(partsTableManager) {
         partsTableManager.rebuildTable(modifiedQueryString);
     });
 
-}
-
-function togglePartInputs() {
-    // Initially show Manual Entry and hide Mouser Search
-    $('#manualEntrySection').show();
-    $('#mouserSearchSection').hide();
-
-    // Manual Entry Button Click Event
-    $('#manualEntryButton').on('click', function () {
-        $('#manualEntrySection').show();
-        $('#mouserSearchSection').hide();
-        // Optionally mark the active button
-        $(this).addClass('active');
-        $('#mouserSearchButton').removeClass('active');
-        $('#addPartName').focus();
-    });
-
-    // Mouser Search Button Click Event
-    $('#mouserSearchButton').on('click', function () {
-        $('#manualEntrySection').hide();
-        $('#mouserSearchSection').show();
-        // Optionally mark the active button
-        $(this).addClass('active');
-        $('#manualEntryButton').removeClass('active');
-        $('#mouserPartName').focus();
-    });
-}
-
-function togglePartEntryButtons() {
-    // Highlight the "Suppliers" button when the suppliers section is toggled
-    $('#addSuppliers').on('show.bs.collapse', function () {
-        $('#showSuppliers').addClass('active');
-    }).on('hide.bs.collapse', function () {
-        $('#showSuppliers').removeClass('active');
-    });
-
-    // Highlight the "Additional Info" button when the advanced options section is toggled
-    $('#advancedOptions').on('show.bs.collapse', function () {
-        $('#showAdvanced').addClass('active');
-    }).on('hide.bs.collapse', function () {
-        $('#showAdvanced').removeClass('active');
-    });
 }

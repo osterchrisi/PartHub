@@ -6,6 +6,8 @@ class PartCreator extends ResourceCreator {
     constructor(options, tableRebuildFunctions = []) {
       super(options, tableRebuildFunctions);
       this.initializeUppercaseToggle();
+      this.togglePartEntryButtons();
+      this.togglePartInputs();
       this.supplierRowManager = new SupplierRowManager();
     }
   
@@ -92,5 +94,53 @@ class PartCreator extends ResourceCreator {
     handleSuccess(response){
         super.handleSuccess(response);
         this.supplierRowManager.resetSupplierDataTable(); // Reset the supplier data table
+        this.resetPartEntryButtons();
+    }
+
+    togglePartEntryButtons() {
+        // Highlight the "Suppliers" button when the suppliers section is toggled
+        $('#addSuppliers').on('show.bs.collapse', function () {
+            $('#showSuppliers').addClass('active');
+        }).on('hide.bs.collapse', function () {
+            $('#showSuppliers').removeClass('active');
+        });
+    
+        // Highlight the "Additional Info" button when the advanced options section is toggled
+        $('#advancedOptions').on('show.bs.collapse', function () {
+            $('#showAdvanced').addClass('active');
+        }).on('hide.bs.collapse', function () {
+            $('#showAdvanced').removeClass('active');
+        });
+    }
+
+    resetPartEntryButtons() {
+        $('#showSuppliers').removeClass('active');
+        $('#showAdvanced').removeClass('active')
+    }
+
+    togglePartInputs() {
+        // Initially show Manual Entry and hide Mouser Search
+        $('#manualEntrySection').show();
+        $('#mouserSearchSection').hide();
+    
+        // Manual Entry Button Click Event
+        $('#manualEntryButton').on('click', function () {
+            $('#manualEntrySection').show();
+            $('#mouserSearchSection').hide();
+            // Optionally mark the active button
+            $(this).addClass('active');
+            $('#mouserSearchButton').removeClass('active');
+            $('#addPartName').focus();
+        });
+    
+        // Mouser Search Button Click Event
+        $('#mouserSearchButton').on('click', function () {
+            $('#manualEntrySection').hide();
+            $('#mouserSearchSection').show();
+            // Optionally mark the active button
+            $(this).addClass('active');
+            $('#manualEntryButton').removeClass('active');
+            $('#mouserPartName').focus();
+        });
     }
   }
