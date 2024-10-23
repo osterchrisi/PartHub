@@ -42,10 +42,10 @@ class PartCreator extends ResourceCreator {
         const [locations, footprints, categories] = data;
         this.dropdownManager.addPartLocationDropdown(locations);
         this.dropdownManager.addPartFootprintDropdown(footprints);
-        // if (!this.dropdownManager.categoryCreated) {
-        //     this.dropdownManager.addPartCategoryDropdown(categories);
-        //     console.log("not sure if ever end up here");
-        // }
+        if (!this.dropdownManager.categoryCreated) {
+            this.dropdownManager.addPartCategoryDropdown(categories);
+            console.log("not sure if ever end up here");
+        }
     }
 
     // Fetch data required for dropdowns (locations, footprints, categories)
@@ -73,21 +73,23 @@ class PartCreator extends ResourceCreator {
     onModalHidden(event) {
         super.onModalHidden(event);
 
-        // Check if the part entry modal was hidden because the category creation modal came into view
-        if (this.partModalHiddenByCategoryModal(event)) {
-            console.log("Part modal hidden by category modal");
-            $('#mouserSearchResults').empty();
-        }
+        // console.log("partModalHiddenByCategoryModal = ", this.partModalHiddenByCategoryModal(event));
+
+        // // Check if the part entry modal was hidden because the category creation modal came into view
+        // if (this.partModalHiddenByCategoryModal(event)) {
+        //     console.log("Part modal hidden by category modal");
+        //     $('#mouserSearchResults').empty();
+        // }
 
         if (!this.skipDropdownPopulation) {
             $('#addPartAddStockSwitch').prop('checked', false).trigger('change');
         }
     }
 
-    //TODO: This does NOT actually do what it says it will do - i think :D
-    partModalHiddenByCategoryModal(event) {
-        return event.target !== this.inputModal[0];
-    }
+    //TODO: This does NOT actually do what it says it will do - it's always false -> can go!
+    // partModalHiddenByCategoryModal(event) {
+    //     return event.target !== this.inputModal[0];
+    // }
 
     onModalShow() {
         super.onModalShow();
