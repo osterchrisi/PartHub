@@ -1,6 +1,7 @@
 export { PartCreator };
 import { ResourceCreator } from "./ResourceCreator";
 import { SupplierRowManager } from "../../../Tables/SupplierRowManager";
+import { DataFetchService } from "../DataFetchService";
 
 class PartCreator extends ResourceCreator {
     constructor(options, tableRebuildFunctions = []) {
@@ -9,6 +10,7 @@ class PartCreator extends ResourceCreator {
         this.togglePartEntryButtons();
         this.togglePartInputs();
         this.supplierRowManager = new SupplierRowManager();
+        this.initializeAddStockToggler();
     }
 
     // Collect form data and add supplier info
@@ -17,24 +19,31 @@ class PartCreator extends ResourceCreator {
         this.data['suppliers'] = this.collectSupplierData();
     }
 
-    // Populate part-specific dropdowns and add additional event listeners
+    // Populate dropdowns and add additional event listeners
     populateDropdowns(data) {
-        super.populateDropdowns(data);
-        this.toggleStockForm();
+        const [locations, footprints, categories] = data;
+        this.dropdownManager.addPartLocationDropdown(locations);
+        this.dropdownManager.addPartFootprintDropdown(footprints);
+        if (!this.dropdownManager.categoryCreated) {
+            this.dropdownManager.addPartCategoryDropdown(categories);
+        }
+        this.dropdownManager.categoryCreated = false;
         this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
+    }
+
+    // Fetch data required for dropdowns (locations, footprints, categories)
+    fetchDropdownData() {
+        return [DataFetchService.getLocations(), DataFetchService.getFootprints(), DataFetchService.getCategories()];
     }
 
     rebuildTables(id) {
         super.rebuildTables(id);
-        this.tableManager.updateStockModal(id);
+        this.tableManager.updateStockModal(id); // Adds the part name to the stock modal
     }
 
     onModalHidden(event) {
         super.onModalHidden(event);
-
-        // if (!this.skipDropdownPopulation) {
-        //     $('#addPartAddStockSwitch').prop('checked', false);
-        // }
+        console.log("hidden this.inputModal");
 
         // Check if the part entry modal was hidden because the category creation modal came into view
         if (this.partModalHiddenByCategoryModal(event)) {
@@ -48,8 +57,32 @@ class PartCreator extends ResourceCreator {
     }
 
     partModalHiddenByCategoryModal(event) {
-        return event.target === this.inputModal[0];
+        console.log("hiding element = ", event.target.id);
+        return event.target !== this.inputModal[0];
     }
+
+    onModalShow() {
+        super.onModalShow();
+
+        // Conditionally fetch and populate dropdown data
+        if (!this.skipDropdownPopulation) {
+            let dataFetchPromises = this.fetchDropdownData();
+
+            Promise.all(dataFetchPromises)
+                .then(data => {
+                    if (data.length > 0) {
+                        // Populate dropdowns
+                        this.populateDropdowns(data);
+                    }
+                })
+                .catch(error => console.error('Error fetching dropdown data:', error));
+        }
+        this.skipDropdownPopulation = false; // Reset flag
+    }
+
+
+
+
 
     // Collect data from supplier rows in the part form
     collectSupplierData() {
@@ -103,7 +136,7 @@ class PartCreator extends ResourceCreator {
     }
 
     // Toggle the "Add Stock" functionality for a new part
-    toggleStockForm() {
+    initializeAddStockToggler() {
         $('#addPartAddStockSwitch').off('change').on('change', function () {
             $('#addPartQuantity').prop('disabled', !this.checked);
 

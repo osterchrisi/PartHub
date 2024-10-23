@@ -21,7 +21,7 @@ class ResourceCreator {
 
     this._shouldUpdateInfoWindow = true;
     this._shouldSelectandSaveNewRow = true;
-    
+
 
     // Flag to control dropdown population when partEntry modal is closed and re-opened
     this.skipDropdownPopulation = false;
@@ -29,6 +29,8 @@ class ResourceCreator {
     // Initialize modal behavior and listeners
     this.initializeModalBehavior();
     this.attachCategoryModalCloseListeners();
+    this.setupFormValidation();
+
 
     // Instantiate Manager Classes
     this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
@@ -86,7 +88,6 @@ class ResourceCreator {
       updateInfoWindow(this.type, id); // Update UI with new resource info
     }
     this.hideModal();
-    this.removeAddButtonClickListener();
     this.rebuildTables(id); // Rebuild relevant tables
   }
 
@@ -99,8 +100,6 @@ class ResourceCreator {
       alert(response.message);
     } else {
       alert('An error occurred. Please try again.');
-      // this.hideModal();
-      this.removeAddButtonClickListener();
     }
   }
 
@@ -130,48 +129,9 @@ class ResourceCreator {
     });
   }
 
-  // Attach listener to add button for form submission
-  attachAddButtonClickListener() {
-    if (!this.clickListenerAttached) {
-      let dataFetchPromises = [];
-      if (this.type === 'part' && !this.skipDropdownPopulation) {
-        dataFetchPromises = this.fetchDropdownData(); // Fetch dropdown data if required
-      }
-
-      // Populate dropdowns and set up form validation once data is fetched
-      Promise.all(dataFetchPromises)
-        .then(data => this.populateDropdowns(data))
-        .then(() => this.setupFormValidation())
-        .catch(error => console.error('Error fetching data:', error));
-
-      this.clickListenerAttached = true;
-      this.skipDropdownPopulation = false;
-    }
-  }
-
   // Remove click listener from the add button
   removeAddButtonClickListener() {
     this.addButton.off('click');
-  }
-
-  // Fetch data required for dropdowns (locations, footprints, categories)
-  fetchDropdownData() {
-    return [DataFetchService.getLocations(), DataFetchService.getFootprints(), DataFetchService.getCategories()];
-  }
-
-  // Populate dropdown menus with fetched data
-  populateDropdowns(data) {
-    const [locations, footprints, categories] = data;
-    if (this.type !== 'category') {
-      if (this.type === 'part') {
-        this.dropdownManager.addPartLocationDropdown(locations);
-        this.dropdownManager.addPartFootprintDropdown(footprints);
-        if (!this.dropdownManager.categoryCreated) {
-          this.dropdownManager.addPartCategoryDropdown(categories);
-        }
-        this.dropdownManager.categoryCreated = false;
-      }
-    }
   }
 
   // Set up form validation for input fields
@@ -181,6 +141,7 @@ class ResourceCreator {
   }
 
   // Initialize modal show and hide behaviors
+  // There is also the global clearModalOnHiding function but it is aware of the category modal shenanigans
   initializeModalBehavior() {
     this.inputModal.on('hidden.bs.modal', (event) => this.onModalHidden(event));
     this.inputModal.on('show.bs.modal', () => this.onModalShow());
@@ -189,18 +150,11 @@ class ResourceCreator {
 
   // Handle actions when the modal is hidden
   onModalHidden(event) {
-      this.removeAddButtonClickListener();
-      this.clickListenerAttached = false;
+    //
   }
 
   // Handle actions when the modal is shown
   onModalShow() {
-    if (!this.skipDropdownPopulation) {
-      this.attachAddButtonClickListener();
-    } else {
-      console.log("now your cat select gets unresponsive, i promise it");
-      this.setupFormValidation();
-    }
-    this.skipDropdownPopulation = false;
+    //
   }
 }

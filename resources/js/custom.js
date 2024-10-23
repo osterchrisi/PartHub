@@ -298,7 +298,7 @@ export function clearModalOnHiding() {
                 $(this).find('input').val('');
             }
             else {
-                console.log("this is the spot where a modal goes out of view because the cat creation modal comes into view");
+                // Leave the values, the user came back from the category modal
             }
         }
     });
