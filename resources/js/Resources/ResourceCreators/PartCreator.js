@@ -8,15 +8,15 @@ class PartCreator extends ResourceCreator {
     constructor(options, tableRebuildFunctions = []) {
         super(options, tableRebuildFunctions);
         this.initializeUppercaseToggle();
-        this.togglePartEntryButtons();
-        this.togglePartInputs();
-        this.supplierRowManager = new SupplierRowManager();
+        this.initializePartEntryButtons();
+        this.initializePartInputButtons();
         this.initializeAddStockToggler();
         this.attachCategoryModalCloseListeners();
 
+        // Part specific managers
+        this.supplierRowManager = new SupplierRowManager();
         this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
-        // Flag to control dropdown population when partEntry modal is closed and re-opened
-        this.skipDropdownPopulation = false;
+        this.skipDropdownPopulation = false;    // Flag to control dropdown population when partEntry modal is closed and re-opened
     }
 
     // Collect form data and add supplier info
@@ -25,18 +25,27 @@ class PartCreator extends ResourceCreator {
         this.data['suppliers'] = this.collectSupplierData();
     }
 
+    handleSuccess(response) {
+        super.handleSuccess(response);
+
+        // Part entry modal specific thingies
+        this.supplierRowManager.resetSupplierDataTable();
+        this.resetPartEntryButtons();
+
+        // Reset flags
+        this.skipDropdownPopulation = false;
+        this.dropdownManager.categoryCreated = false;
+    }
+
     // Populate all dropdowns
     populateAllDropdowns(data) {
         const [locations, footprints, categories] = data;
         this.dropdownManager.addPartLocationDropdown(locations);
         this.dropdownManager.addPartFootprintDropdown(footprints);
-        if (!this.dropdownManager.categoryCreated) {
-            this.dropdownManager.addPartCategoryDropdown(categories);
-            console.log("not sure if ever end up here");
-        }
-
-        //TODO: Needs to be here?
-        this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
+        // if (!this.dropdownManager.categoryCreated) {
+        //     this.dropdownManager.addPartCategoryDropdown(categories);
+        //     console.log("not sure if ever end up here");
+        // }
     }
 
     // Fetch data required for dropdowns (locations, footprints, categories)
@@ -56,7 +65,7 @@ class PartCreator extends ResourceCreator {
     // Attach listeners to category modal close buttons
     attachCategoryModalCloseListeners() {
         $('#closeCategoryModalButton1, #closeCategoryModalButton2').off('click').on('click', () => {
-            this.skipDropdownPopulation = true;
+            this.skipDropdownPopulation = true;  // Upon returning to part entry modal, the dropdowns keep their values
             this.inputModal.modal('toggle');
         });
     }
@@ -75,8 +84,8 @@ class PartCreator extends ResourceCreator {
         }
     }
 
+    //TODO: This does NOT actually do what it says it will do - i think :D
     partModalHiddenByCategoryModal(event) {
-        console.log("hiding element = ", event.target.id);
         return event.target !== this.inputModal[0];
     }
 
@@ -92,6 +101,7 @@ class PartCreator extends ResourceCreator {
                     if (data.length > 0) {
                         // Populate dropdowns
                         this.populateAllDropdowns(data);
+                        this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
                     }
                 })
                 .catch(error => console.error('Error fetching dropdown data:', error));
@@ -108,13 +118,9 @@ class PartCreator extends ResourceCreator {
         }
 
         // Reset flags
-        this.skipDropdownPopulation = false; // Reset flag
+        this.skipDropdownPopulation = false;
         this.dropdownManager.categoryCreated = false;
     }
-
-
-
-
 
     // Collect data from supplier rows in the part form
     collectSupplierData() {
@@ -132,7 +138,7 @@ class PartCreator extends ResourceCreator {
         return suppliers;
     }
 
-    // Initialize uppercase toggle for part name input field
+    // Initialize uppercase toggler for part name input field
     initializeUppercaseToggle() {
         const $toggleButton = $('#toggle-uppercase-button');
         const $addPartName = $('#addPartName');
@@ -167,7 +173,7 @@ class PartCreator extends ResourceCreator {
         $toggleButton.text('Aa'); // Initialize button text
     }
 
-    // Toggle the "Add Stock" functionality for a new part
+    // Initialize the "Add Stock" toggler functionality for a new part
     initializeAddStockToggler() {
         $('#addPartAddStockSwitch').off('change').on('change', function () {
             $('#addPartQuantity').prop('disabled', !this.checked);
@@ -183,17 +189,8 @@ class PartCreator extends ResourceCreator {
         });
     }
 
-    handleSuccess(response) {
-        super.handleSuccess(response);
-        this.supplierRowManager.resetSupplierDataTable();
-        this.resetPartEntryButtons();
-
-        // Reset flags
-        this.skipDropdownPopulation = false;
-        this.dropdownManager.categoryCreated = false;
-    }
-
-    togglePartEntryButtons() {
+    // Initialize behaviour of 'Suppliers' and 'Additional Info' buttons
+    initializePartEntryButtons() {
         // Highlight the "Suppliers" button when the suppliers section is toggled
         $('#addSuppliers').on('show.bs.collapse', function () {
             $('#showSuppliers').addClass('active');
@@ -209,12 +206,15 @@ class PartCreator extends ResourceCreator {
         });
     }
 
+    // Remove 'active' class from the 'Suppliers' and 'Additional Info' buttons
     resetPartEntryButtons() {
         $('#showSuppliers').removeClass('active');
         $('#showAdvanced').removeClass('active')
     }
 
-    togglePartInputs() {
+
+    // Select between manual and API entry mode
+    initializePartInputButtons() {
         // Initially show Manual Entry and hide Mouser Search
         $('#manualEntrySection').show();
         $('#mouserSearchSection').hide();
