@@ -5,15 +5,14 @@ namespace App\Providers;
 use App\Events\StockMovementOccured;
 use App\Listeners\SendStocklevelNotification;
 use App\Listeners\StripeEventListener;
-use Illuminate\Auth\Events\Registered;
+use App\Listeners\UpdateLastLogin;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use Laravel\Cashier\Events\WebhookReceived;
-use App\Listeners\UpdateLastLogin;
 use Illuminate\Support\Facades\Mail;
-
+use Laravel\Cashier\Events\WebhookReceived;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,15 +22,15 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-            // New registered User
+        // New registered User
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-            // Stock Movement occured
+        // Stock Movement occured
         StockMovementOccured::class => [
             SendStocklevelNotification::class,
         ],
-            // Stripe Webhook
+        // Stripe Webhook
         WebhookReceived::class => [
             StripeEventListener::class,
         ],
@@ -54,9 +53,10 @@ class EventServiceProvider extends ServiceProvider
             $adminEmail = config('mail.admin_email');
 
             // Check if the admin email is set
-            if (!$adminEmail) {
+            if (! $adminEmail) {
                 // Log an error if the admin email is not configured
                 \Log::error('Admin email is not set in configuration. Unable to send new user registration notification.');
+
                 return;
             }
 

@@ -38,8 +38,7 @@ class SupplierController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'suppliers.suppliersTable') {
+        } elseif ($route == 'suppliers.suppliersTable') {
             return view('suppliers.suppliersTable', [
                 'suppliers_list' => $suppliers_list,
                 'db_columns' => self::$supplier_list_table_headers,

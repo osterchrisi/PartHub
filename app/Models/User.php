@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'selected_plan',
         'price_id',
-        'last_login_at'
+        'last_login_at',
     ];
 
     /**
@@ -144,7 +144,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->footprints()->count();
     }
-    public function getCategoryCount() {
+
+    public function getCategoryCount()
+    {
         return $this->categories()->count();
     }
 }

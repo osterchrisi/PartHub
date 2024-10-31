@@ -49,6 +49,6 @@ return [
     ],
     'mouser' => [
         'api_key' => env('MOUSER_API_KEY'),
-    ]
+    ],
 
 ];
