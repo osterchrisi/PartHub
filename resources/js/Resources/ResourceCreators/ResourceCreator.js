@@ -32,16 +32,6 @@ class ResourceCreator {
     return new TableManager({ type: this.type });
   }
 
-  // Show the modal
-  showModal() {
-    this.inputModal.modal('show');
-  }
-
-  // Hide the modal and reset add stock switch
-  hideModal() {
-    this.inputModal.modal('hide');
-  }
-
   // Request creation of a new resource via AJAX
   requestCreation() {
     this.collectFormData();
@@ -131,13 +121,37 @@ class ResourceCreator {
     $('#categoryCreationModal').on('show.bs.modal', () => { this.skipDropdownPopulation = true; });
   }
 
+  // Show the modal
+  showModal() {
+    this.inputModal.modal('show');
+  }
+
+  // Hide the modal and reset add stock switch
+  hideModal() {
+    this.inputModal.modal('hide');
+  }
+
   // Handle actions when the modal is hidden
   onModalHidden(event) {
-    //
+    // Empty on purpose, overridable
+    // But here is a bunny if you insist
+
+    // (\(\                   \|/
+    // ( -.-)                 -o-
+    // o_(")(")               /|\
+
+    // Look at him, just chilling in the sun
   }
 
   // Handle actions when the modal is shown
   onModalShow() {
-    //
+    // Empty on purpose, overridable
+    // But here is a bunny if you insist
+
+    // (\(\                   \|/
+    // ( -.-)                 -o-
+    // o_(")(")               /|\
+
+    // Look at him, just chilling in the sun
   }
 }
