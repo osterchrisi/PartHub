@@ -79,10 +79,6 @@ export function initializePartsView() {
     supplierRowManager.bootstrapSupplierDataTable();
     supplierRowManager.resizeModalOnSupplierTableCollapse();
 
-
-
-
-
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', () => partsTableManager.rebuildTable());
 
     /**
