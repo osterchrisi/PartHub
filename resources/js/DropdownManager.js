@@ -1,5 +1,6 @@
 export { DropdownManager }
 import { ResourceCreator } from "./Resources/ResourceCreators/ResourceCreator";
+import { DataFetchService } from "./Services/DataFetchService";
 
 class DropdownManager {
     constructor(options = {}) {
@@ -199,7 +200,6 @@ class DropdownManager {
      * @throws {Error} If the type is unknown.
      * @returns {void}
      */
-    //TODO: Don't like how 'complicated' suppliers are...
     createNewSelectizeDropdownEntry(input, type, supplier_dropdownId = null, newRowIndex = null) {
         const token = $('input[name="_token"]').attr('value');
         let endpoint, newIdName, nameField, getFunction, dropdownFunction, dropdownId, $select;
@@ -209,7 +209,7 @@ class DropdownManager {
                 endpoint = '/location.create';
                 newIdName = 'Location ID';
                 nameField = 'location_name';
-                getFunction = this.getLocations.bind(this);
+                getFunction = DataFetchService.getLocations;
                 dropdownFunction = this.addPartLocationDropdown.bind(this);
                 dropdownId = 'addPartLocSelect';
                 break;
@@ -217,7 +217,7 @@ class DropdownManager {
                 endpoint = '/footprint.create';
                 newIdName = 'Footprint ID';
                 nameField = 'footprint_name';
-                getFunction = this.getFootprints.bind(this);
+                getFunction = DataFetchService.getFootprints;
                 dropdownFunction = this.addPartFootprintDropdown.bind(this);
                 dropdownId = 'addPartFootprintSelect';
                 break;
@@ -225,7 +225,7 @@ class DropdownManager {
                 endpoint = '/supplier.create';
                 newIdName = 'Supplier ID';
                 nameField = 'supplier_name';
-                getFunction = this.getSuppliers.bind(this);
+                getFunction = DataFetchService.getSuppliers;
                 dropdownFunction = this.addPartSupplierDropdown.bind(this);
                 dropdownId = 'addPartSupplierSelect';
                 break;
@@ -297,7 +297,7 @@ class DropdownManager {
   */
     showCategoryCreationModal(input) {
         // Populate parent category dropdown
-        this.getCategories().done((categories) => {
+        DataFetchService.getCategories().done((categories) => {
             const nestedCategories = this.organizeCategories(categories);
             const optionsHTML = this.addCategoryOptions(nestedCategories);
             $('#parentCategory').html(optionsHTML);
@@ -338,7 +338,7 @@ class DropdownManager {
                     category_id: response['Category ID'],
                     category_name: categoryName
                 };
-                this.getCategories().done((newList) => {
+                DataFetchService.getCategories().done((newList) => {
                     this.addPartCategoryDropdown(newList);
                     var selectize = $('#addPartCategorySelect')[0].selectize;
                     selectize.addItem(newEntry['category_id']);
@@ -349,46 +349,6 @@ class DropdownManager {
             },
             error: function () {
                 console.error('Error creating new category');
-            }
-        });
-    }
-
-    getSuppliers() {
-        return $.ajax({
-            url: '/suppliers.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
-
-    getCategories() {
-        return $.ajax({
-            url: '/categories.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
-
-    getFootprints() {
-        return $.ajax({
-            url: '/footprints.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
-
-    getLocations() {
-        return $.ajax({
-            url: '/locations.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
             }
         });
     }

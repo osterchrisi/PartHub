@@ -5,6 +5,7 @@ import { ImageManager } from "./Resources/ImageManager";
 import { DocumentManager } from "./Resources/DocumentManager";
 import { SupplierRowManager } from "./Tables/SupplierRowManager";
 import { TableManager } from "./Tables/TableManager";
+import { DataFetchService } from "./Services/DataFetchService";
 
 import {
     bootstrapBomDetailsTable,
@@ -145,10 +146,8 @@ class InfoWindow {
     }
 
     setupStockChangeButtons(stockManager, id) {
-        $.ajax({
-            url: '/locations.get',
-            dataType: 'json',
-            success: function (locations) {
+        DataFetchService.getLocations()
+            .done(locations => {
                 // Add Stock Button
                 $('#addStockButton').click(function () {
                     stockManager.showStockChangeModal(1, locations, id);
@@ -161,11 +160,10 @@ class InfoWindow {
                 $('#reduceStockButton').click(function () {
                     stockManager.showStockChangeModal(-1, locations, id);
                 });
-            },
-            error: function (error) {
-                // console.log(error);
-            }
-        });
+            })
+            .fail(error => {
+                console.error(error);
+            });
     }
 
     setupImageManager() {

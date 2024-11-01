@@ -1,6 +1,7 @@
 export { CategoryTableManager }
 import { CategoryService } from "../Services/CategoryService";
 import { TableManager } from "./TableManager";
+import { DataFetchService } from "../Services/DataFetchService";
 import { saveLayoutSettings } from "../custom";
 
 /**
@@ -13,16 +14,15 @@ class CategoryTableManager extends TableManager {
     constructor(options) {
         super(options);
         this.attachShowCategoriesButtonClickListener();
-        $.ajax({
-            url: '/categories.get',
-            dataType: 'json',
-            error: function (error) {
-                console.log(error);
-            }
-        }).done(categories => {
-            this.categories = categories;
-            this.defineActions();
-        });
+
+        DataFetchService.getCategories()
+            .done(categories => {
+                this.categories = categories;
+                this.defineActions();
+            })
+            .fail(error => {
+                console.error(error);
+            });
 
         // Needs a Category Creator. If not passed via the concstructor, ends up in an import loop
         this.categoryCreator = options.resourceCreator;
@@ -37,16 +37,14 @@ class CategoryTableManager extends TableManager {
         super.rebuildTable(queryString, postRebuildCallback)
             .done(() => {
                 // Only run this additional code after the parent rebuildTable is done
-                $.ajax({
-                    url: '/categories.get',
-                    dataType: 'json',
-                    error: function (error) {
-                        console.log(error);
-                    }
-                }).done(categories => {
-                    this.categories = categories;
-                    this.defineActions();
-                });
+                DataFetchService.getCategories()
+                    .done(categories => {
+                        this.categories = categories;
+                        this.defineActions();
+                    })
+                    .fail(error => {
+                        console.error(error);
+                    });
             });
     }
 
