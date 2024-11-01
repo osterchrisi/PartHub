@@ -5,20 +5,22 @@ import { ResourceCreator } from "./ResourceCreator";
 class CategoryCreator extends ResourceCreator {
     constructor(options) {
         super(options);
-        this.categoryId = options.categoryId || null;
-        this._shouldUpdateInfoWindow = true;
-        this._shouldSelectandSaveNewRow = true;
-        this.tableManager = new CategoryTableManager({ type: this.type });
+        this.parentCategoryId = options.parentCategoryId || null;
+        this._shouldUpdateInfoWindow = false;
+        this._shouldSelectandSaveNewRow = false;
     }
 
     createTableManager() {
-        return new CategoryTableManager({ type: this.type });
-      }
+        return new CategoryTableManager({
+            type: this.type,
+            resourceCreator: this
+        });
+    }
 
-    collectFormData (){
-        super.collectFormData;
-        if (this.categoryId) {
-            this.data['parent_category'] = this.categoryId;
-          }
+    collectFormData() {
+        super.collectFormData();
+        if (this.parentCategoryId) {
+            this.data['parent_category'] = this.parentCategoryId;
+        }
     }
 }  

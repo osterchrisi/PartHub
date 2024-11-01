@@ -3,6 +3,12 @@ import { CategoryService } from "../js/Services/CategoryService";
 import { TableManager } from "./TableManager";
 import { saveLayoutSettings } from "../js/custom";
 
+/**
+ * The CategoryTableManager is special because:
+ * - It uses treegrid on the bootstrap method
+ * - It can dynamically add categories depending on which row was clicked (defines parent category)
+ * - It therefor needs its own CategoryCreator
+ */
 class CategoryTableManager extends TableManager {
     constructor(options) {
         super(options);
@@ -17,6 +23,9 @@ class CategoryTableManager extends TableManager {
             this.categories = categories;
             this.defineActions();
         });
+
+        // Needs a Category Creator. If not passed along, ends up in an import loop
+        this.categoryCreator = options.resourceCreator;
     }
 
     bootstrapTable() {
@@ -69,7 +78,6 @@ class CategoryTableManager extends TableManager {
         this.attachEditCategoryListener();
         this.attachDeleteCategoryListener();
         this.attachAddCategoryListener();
-        this.attachAddCategoryFromModalListener();
         this.attachToggleExpandCollapseListener();
     }
 
@@ -101,50 +109,10 @@ class CategoryTableManager extends TableManager {
         this.$table.on('click', 'tbody .addcat-button', (event) => {
             const $row = $(event.currentTarget).closest('tr');
             const parentCategoryId = $row.data('id');
-
-            // Show modal to add a new category
-            $('#mCategoryEntry').modal('show');
             $('#parentCategoryId').val(parentCategoryId);
-        });
-    }
 
-    // Add category from modal listener
-    attachAddCategoryFromModalListener() {
-        $('#addCategory').off().on('click', () => {
-            const categoryName = $('#addCategoryName').val();
-            const parentCategoryId = $('#parentCategoryId').val();
-            const token = $('input[name="_token"]').attr('value');
-
-            // Ensure category name is not empty
-            if (!categoryName) {
-                alert("Category name cannot be empty!");
-                return;
-            }
-
-            // Create new category via AJAX request
-            //TODO: ResourceCreator here would be nice
-            $.ajax({
-                url: '/category.create',
-                type: 'POST',
-                data: {
-                    _token: token,
-                    category_name: categoryName,
-                    parent_category: parentCategoryId,
-                    type: 'category'
-                },
-                success: () => {
-                    $('#mCategoryEntry').modal('hide');
-                    $('#addCategoryName').val('');
-                    $('#parentCategoryId').val('');
-
-                    this.rebuildTable(); // Rebuild categories table after addition
-                    const partsTable = new TableManager({ type: 'part' });
-                    partsTable.rebuildTable();
-                },
-                error: () => {
-                    alert("Error creating category. Please try again.");
-                }
-            });
+            // CategoryCreator takes over from here on
+            this.categoryCreator.showModal();
         });
     }
 

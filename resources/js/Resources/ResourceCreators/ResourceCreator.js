@@ -35,7 +35,6 @@ class ResourceCreator {
   // Request creation of a new resource via AJAX
   requestCreation() {
     this.collectFormData();
-
     this.data['type'] = this.type;
 
     // Send AJAX request to create the resource

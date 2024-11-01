@@ -9,6 +9,7 @@ import { TableRowManager } from "../../Tables/TableRowManager";
 import { TableManager } from "../../Tables/TableManager";
 import { CategoryTableManager } from "../../Tables/CategoriesTableManager";
 import { PartCreator } from "../Resources/ResourceCreators/PartCreator";
+import { CategoryCreator } from "../Resources/ResourceCreators/CategoryCreator";
 
 export function initializePartsView() {
 
@@ -19,8 +20,23 @@ export function initializePartsView() {
     partsTableManager.bootstrapTable();
     partsTableManager.defineActions();
 
+    //* Category Creator
+    const categoryCreator = new CategoryCreator({
+        type: 'category',
+        endpoint: '/category.create',
+        table: '#categories_list_table',
+        newIdName: 'Category ID',
+        inputForm: '#categoryEntryForm',
+        inputFields: [
+            { name: 'category_name', selector: '#addCategoryName' },
+            { name: 'parent_category', selector: '#parentCategoryId' }
+        ],
+        inputModal: '#mCategoryEntry',
+        addButton: '#addCategory',
+    });
+
     //* Table Manager for Categories Table
-    const categoriesTableManager = new CategoryTableManager({ type: 'category' })
+    const categoriesTableManager = new CategoryTableManager({ type: 'category', resourceCreator: categoryCreator })
     categoriesTableManager.bootstrapTable();
 
     //* Table Row Manager for Parts Table
@@ -31,7 +47,7 @@ export function initializePartsView() {
     // Mouser API Search in part entry modal
     // const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
 
-    //* Resource Creator
+    //* Resource Creator for Parts
     const partCreator = new PartCreator({
         type: 'part',
         endpoint: '/part.create',
@@ -62,6 +78,10 @@ export function initializePartsView() {
     const supplierRowManager = new SupplierRowManager();
     supplierRowManager.bootstrapSupplierDataTable();
     supplierRowManager.resizeModalOnSupplierTableCollapse();
+
+
+
+
 
     attachDeleteRowsHandler('parts_table', 'parts', 'part_id', () => partsTableManager.rebuildTable());
 
