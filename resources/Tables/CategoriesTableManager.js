@@ -24,7 +24,7 @@ class CategoryTableManager extends TableManager {
             this.defineActions();
         });
 
-        // Needs a Category Creator. If not passed along, ends up in an import loop
+        // Needs a Category Creator. If not passed via the concstructor, ends up in an import loop
         this.categoryCreator = options.resourceCreator;
     }
 
