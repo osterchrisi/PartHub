@@ -3,8 +3,8 @@ export { InfoWindow }
 import { StockManager } from "./Resources/StockManager";
 import { ImageManager } from "./Resources/ImageManager";
 import { DocumentManager } from "./Resources/DocumentManager";
-import { SupplierRowManager } from "../Tables/SupplierRowManager";
-import { TableManager } from "../Tables/TableManager";
+import { SupplierRowManager } from "./Tables/SupplierRowManager";
+import { TableManager } from "./Tables/TableManager";
 
 import {
     bootstrapBomDetailsTable,

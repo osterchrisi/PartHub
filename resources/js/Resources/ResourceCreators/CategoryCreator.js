@@ -1,5 +1,5 @@
 export { CategoryCreator };
-import { CategoryTableManager } from "../../../Tables/CategoriesTableManager";
+import { CategoryTableManager } from "../../Tables/CategoriesTableManager";
 import { ResourceCreator } from "./ResourceCreator";
 
 class CategoryCreator extends ResourceCreator {

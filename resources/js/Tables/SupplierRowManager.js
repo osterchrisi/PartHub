@@ -1,6 +1,6 @@
 export { SupplierRowManager };
-import { DropdownManager } from "../js/DropdownManager";
-import { updateInfoWindow } from "../js/custom";
+import { DropdownManager } from "../DropdownManager";
+import { updateInfoWindow } from "../custom";
 
 class SupplierRowManager {
     constructor() {

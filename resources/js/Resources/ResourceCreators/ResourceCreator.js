@@ -1,8 +1,8 @@
 export { ResourceCreator };
 import { updateInfoWindow } from "../../custom";
 import { MouserPartSearch } from "../../MouserPartSearch";
-import { TableRowManager } from "../../../Tables/TableRowManager";
-import { TableManager } from "../../../Tables/TableManager";
+import { TableRowManager } from "../../Tables/TableRowManager";
+import { TableManager } from "../../Tables/TableManager";
 import { FormValidator } from "../../FormValidator";
 
 class ResourceCreator {

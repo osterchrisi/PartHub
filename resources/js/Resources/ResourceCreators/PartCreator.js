@@ -1,6 +1,6 @@
 export { PartCreator };
 import { ResourceCreator } from "./ResourceCreator";
-import { SupplierRowManager } from "../../../Tables/SupplierRowManager";
+import { SupplierRowManager } from "../../Tables/SupplierRowManager";
 import { DataFetchService } from "../DataFetchService";
 import { DropdownManager } from "../../DropdownManager";
 

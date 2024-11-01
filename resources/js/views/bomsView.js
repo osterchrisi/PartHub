@@ -5,8 +5,8 @@ import {
 } from '../toolbar/toolbar';
 
 import { StockManager } from '../Resources/StockManager';
-import { TableRowManager } from '../../Tables/TableRowManager';
-import { TableManager } from '../../Tables/TableManager';
+import { TableRowManager } from '../Tables/TableRowManager';
+import { TableManager } from '../Tables/TableManager';
 
 export function initializeBomsView() {
     //* Table Manager

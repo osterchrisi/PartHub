@@ -1,5 +1,5 @@
-import { TableRowManager } from "../../Tables/TableRowManager";
-import { TableManager } from "../../Tables/TableManager";
+import { TableRowManager } from "../Tables/TableRowManager";
+import { TableManager } from "../Tables/TableManager";
 import { SimpleResourceCreator } from "../Resources/ResourceCreators/SimpleResourceCreator";
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 

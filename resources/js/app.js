@@ -12,7 +12,7 @@ import {
     initializePopovers,
     initializeTooltips
 } from './custom';
-import { InlineTableCellEditor } from '../Tables/InlineTableCellEditor';
+import { InlineTableCellEditor } from './Tables/InlineTableCellEditor';
 
 const currentView = document.body.getAttribute('data-view');
 

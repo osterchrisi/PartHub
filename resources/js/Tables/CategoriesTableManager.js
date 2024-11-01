@@ -1,7 +1,7 @@
 export { CategoryTableManager }
-import { CategoryService } from "../js/Services/CategoryService";
+import { CategoryService } from "../Services/CategoryService";
 import { TableManager } from "./TableManager";
-import { saveLayoutSettings } from "../js/custom";
+import { saveLayoutSettings } from "../custom";
 
 /**
  * The CategoryTableManager is special because:

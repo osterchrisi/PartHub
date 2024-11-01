@@ -1,4 +1,4 @@
-import { updateInfoWindow } from "../js/custom";
+import { updateInfoWindow } from "../custom";
 
 /**
  * Manages the table rows, including row selection, highlighting, and page switching.

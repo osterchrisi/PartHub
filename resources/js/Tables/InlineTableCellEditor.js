@@ -1,5 +1,5 @@
 export { InlineTableCellEditor };
-import { updateInfoWindow } from "../js/custom";
+import { updateInfoWindow } from "../custom";
 import { CategoryTableManager } from "./CategoriesTableManager";
 import { TableManager } from "./TableManager";
 

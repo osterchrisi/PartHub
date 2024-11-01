@@ -4,10 +4,10 @@ import {
 
 import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { MouserPartSearch } from "../MouserPartSearch";
-import { SupplierRowManager } from "../../Tables/SupplierRowManager";
-import { TableRowManager } from "../../Tables/TableRowManager";
-import { TableManager } from "../../Tables/TableManager";
-import { CategoryTableManager } from "../../Tables/CategoriesTableManager";
+import { SupplierRowManager } from "../Tables/SupplierRowManager";
+import { TableRowManager } from "../Tables/TableRowManager";
+import { TableManager } from "../Tables/TableManager";
+import { CategoryTableManager } from "../Tables/CategoriesTableManager";
 import { PartCreator } from "../Resources/ResourceCreators/PartCreator";
 import { CategoryCreator } from "../Resources/ResourceCreators/CategoryCreator";
 
