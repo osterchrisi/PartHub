@@ -76,7 +76,7 @@
     </script>
 
     <!-- Bootstrap Show Password -->
-    <script src="https://unpkg.com/bootstrap-show-password@1.3.0/dist/bootstrap-show-password.min.js"></script>
+    {{-- <script src="https://unpkg.com/bootstrap-show-password@1.3.0/dist/bootstrap-show-password.min.js"></script> --}}
 
     <!-- Lightbox 2 for Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
