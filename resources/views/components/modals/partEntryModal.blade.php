@@ -13,8 +13,11 @@
 
         <!-- Manual Entry Part Name Input -->
         <div class="input-group mb-3" id="manualEntrySection">
-            <input type="text" class="form-control" id="addPartName" placeholder="Part Name">
+            <input type="text" class="form-control" id="addPartName" name="part_name" placeholder="Part Name">
             <button class="btn btn-outline-secondary" type="button" id="toggle-uppercase-button">AA</button>
+        </div>
+        <div id="error-part_name" class="d-none text-danger">
+            <x-input-error :messages="[]" />
         </div>
 
         {{-- <!-- Mouser Search Section (Initially Hidden) --> 
@@ -40,7 +43,11 @@
         <div class="row mb-3">
             {{-- Quantity --}}
             <div class="col-3">
-                <input class="form-control form-control-md" placeholder="Quantity" id="addPartQuantity" disabled>
+                <input class="form-control form-control-md" name="quantity" placeholder="Quantity" id="addPartQuantity"
+                    disabled>
+                <div id="error-quantity" class="d-none text-danger">
+                    <x-input-error :messages="[]" />
+                </div>
             </div>
             {{-- Location --}}
             <div class="col">
@@ -74,6 +81,18 @@
                 <button type="button" id="addSupplierRowBtn-partEntry"
                     class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add Supplier</button>
             </div>
+            <div id="error-suppliers.1.supplier_id" class="d-none text-danger">
+                <x-input-error :messages="[]" />
+            </div>
+            <div id="error-suppliers.1.URL" class="d-none text-danger">
+                <x-input-error :messages="[]" />
+            </div>
+            <div id="error-suppliers.1.SPN" class="d-none text-danger">
+                <x-input-error :messages="[]" />
+            </div>
+            <div id="error-suppliers.1.price" class="d-none text-danger">
+                <x-input-error :messages="[]" />
+            </div>
         </div>
 
         {{-- Advanced Options --}}
@@ -81,9 +100,12 @@
             <div class="row">
                 {{-- Minimum Quantity --}}
                 <div class="mt-3">
-                    <input class="form-control form-control-sm not-required" id="addPartMinQuantity"
+                    <input class="form-control form-control-sm not-required" name="min_quantity" id="addPartMinQuantity"
                         placeholder="Minimum Quantity" data-bs-toggle="tooltip"
                         data-bs-title="Notification threshold for all locations combined" data-bs-placement="right">
+                    <div id="error-min_quantity" class="d-none text-danger">
+                        <x-input-error :messages="[]" />
+                    </div>
                 </div>
                 <div class="col">
                     {{-- Category --}}
@@ -98,15 +120,22 @@
                 {{-- Description --}}
                 <div class="col">
                     <br>
-                    <input class="form-control form-control-sm not-required" id="addPartDescription"
+                    <input class="form-control form-control-sm not-required" name="description" id="addPartDescription"
                         placeholder="Description">
+                    <div id="error-description" class="d-none text-danger">
+                        <x-input-error :messages="[]" />
+                    </div>
                 </div>
             </div>
             <div class="row">
                 {{-- Comment --}}
                 <div class="col">
                     <br>
-                    <input class="form-control form-control-sm not-required" id="addPartComment" placeholder="Comment">
+                    <input class="form-control form-control-sm not-required" name="comment" id="addPartComment"
+                        placeholder="Comment">
+                    <div id="error-comment" class="d-none text-danger">
+                        <x-input-error :messages="[]" />
+                    </div>
                 </div>
             </div>
         </div>

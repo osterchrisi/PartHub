@@ -69,16 +69,39 @@ class ResourceCreator {
     }
     this.hideModal();
     this.rebuildTables(id); // Rebuild relevant tables
+    // Clear error messages
+    $('.text-danger').addClass('d-none').text('');
   }
 
   // Handle errors during resource creation
   handleError(xhr) {
+    // Clear all previous error messages
+    $('.text-danger').addClass('d-none').text('');
     if (xhr.status === 419) {
       alert('CSRF token mismatch. Please refresh the page and try again.');
     } else if (xhr.status === 403) {
       const response = JSON.parse(xhr.responseText);
       alert(response.message);
-    } else {
+    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
+      $.each(xhr.responseJSON.errors, function (key, messages) {
+        // Show the error message for the specific field
+        // $('#error-' + key).removeClass('d-none').text(messages[0]);
+        // Escape the dots in the key to select the correct element
+        const errorDiv = $(`#error-${key.replace(/\./g, '\\.')}`);
+
+        // Log the target div and the message
+        console.log('Target div:', errorDiv);
+        console.log('Error message:', messages[0]);
+
+        // Display the error if the div is found
+        if (errorDiv.length) {
+          errorDiv.removeClass('d-none').text(messages[0]);
+        } else {
+          console.warn(`No div found for error key: ${key}`);
+        }
+      });
+    }
+    else {
       alert('An error occurred. Please try again.');
     }
   }
