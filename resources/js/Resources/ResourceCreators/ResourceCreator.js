@@ -75,36 +75,45 @@ class ResourceCreator {
 
   // Handle errors during resource creation
   handleError(xhr) {
-    // Clear all previous error messages
+    // Clear all previous error messages and remove .is-invalid class from inputs and selectize controls
     $('.text-danger').addClass('d-none').text('');
+    $('input, select, textarea').removeClass('is-invalid');
+    $('.selectize-control').removeClass('is-invalid');
+
     if (xhr.status === 419) {
       alert('CSRF token mismatch. Please refresh the page and try again.');
     } else if (xhr.status === 403) {
       const response = JSON.parse(xhr.responseText);
       alert(response.message);
     } else if (xhr.responseJSON && xhr.responseJSON.errors) {
-      $.each(xhr.responseJSON.errors, function (key, messages) {
-        // Show the error message for the specific field
-        // $('#error-' + key).removeClass('d-none').text(messages[0]);
-        // Escape the dots in the key to select the correct element
+      $.each(xhr.responseJSON.errors, (key, messages) => {
         const errorDiv = $(`#error-${key.replace(/\./g, '\\.')}`);
+        const inputField = $(`[name="${key}"]`);
 
-        // Log the target div and the message
-        console.log('Target div:', errorDiv);
-        console.log('Error message:', messages[0]);
+        // Display invalid inputs 
+        if (inputField.length) {
+          inputField.addClass('is-invalid');
+          if (inputField.is('select')) {
+            inputField.siblings('.selectize-control').addClass('is-invalid');
+          }
+        }
 
-        // Display the error if the div is found
+        // Show error messages
         if (errorDiv.length) {
           errorDiv.removeClass('d-none').text(messages[0]);
         } else {
           console.warn(`No div found for error key: ${key}`);
         }
       });
-    }
-    else {
+    } else {
       alert('An error occurred. Please try again.');
     }
   }
+
+
+
+
+
 
   // Rebuild tables after successful resource creation
   rebuildTables(id) {

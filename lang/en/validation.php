@@ -186,6 +186,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'part_name' => 'Part Name',
+        'min_quantity' => 'Minimum Quantity',
+        'suppliers.*.supplier_id' => 'Supplier',
+        'suppliers.*.URL' => 'URL',
+        'suppliers.*.SPN' => 'Supplier Part Number (SPN)',
+        'suppliers.*.price' => 'Price',
+    ],
 
 ];

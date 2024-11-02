@@ -295,7 +295,13 @@ export function clearModalOnHiding() {
 
             // If not, clear inputs
             if (!isPartEntryHiddenDueToCategory) {
+                // Clear input values
                 $(this).find('input').val('');
+
+                // Clear invalid field displays
+                $('.text-danger').addClass('d-none').text('');
+                $('input, select, textarea').removeClass('is-invalid');
+                $('.selectize-control').removeClass('is-invalid');
             }
             else {
                 // Leave the values, the user came back from the category modal
