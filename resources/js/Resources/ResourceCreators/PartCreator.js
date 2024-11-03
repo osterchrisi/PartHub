@@ -13,11 +13,12 @@ class PartCreator extends ResourceCreator {
         this.initializeAddStockToggler();
         this.attachCategoryModalCloseListeners();
 
-        // Part specific managers
+        //Supplier Row Manager
         this.supplierRowManager = new SupplierRowManager();
         this.supplierRowManager.bootstrapSupplierDataTable();
         this.supplierRowManager.resizeModalOnSupplierTableCollapse();
 
+        // Dropdown Manager
         this.dropdownManager = new DropdownManager({ inputModal: this.inputModal });
         this.skipDropdownPopulation = false;    // Flag to control dropdown population when partEntry modal is closed and re-opened
     }
