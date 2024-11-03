@@ -20,10 +20,12 @@ class SupplierRowManager {
      * @param {number} partId - The ID of the part (optional).
      */
     addSupplierRow(tableId, partId) {
+        console.log("this.newRowIndex at start ", this.newRowIndex);
         $('#addSupplierRowBtn-info').prop('disabled', true);
 
         let newRowIndex = this.newRowIndex;
         let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
+        this.newRowIndex++;
 
         // Check if the table requires extra fields (specific to #partSupplierDataTable)
         let selectBox = tableId === '#partSupplierDataTable' ? '<td></td>' : '';
@@ -44,14 +46,24 @@ class SupplierRowManager {
 
         // Fetch suppliers and populate the dropdown
         DataFetchService.getSuppliers().done((suppliers) => {
-            this.dropdownManager.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
+            // Check if suppliers were successfully fetched
+            if (suppliers && suppliers.length) {
+                console.log("got dem suppliers");
+                console.log("newRowIndex before dropdownmanager ", newRowIndex);
+                this.dropdownManager.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
+            } else {
+                console.warn("No suppliers fetched, cannot populate dropdown.");
+            }
+        }).fail(() => {
+            console.error("Failed to fetch suppliers.");
         });
 
         // Attach a save Supplier Row handler if the table is #partSupplierDataTable
         if (tableId === '#partSupplierDataTable') {
             this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
         }
-        this.newRowIndex++;
+        
+        console.log("this.newRowIndex at end", this.newRowIndex);
     }
 
     /**

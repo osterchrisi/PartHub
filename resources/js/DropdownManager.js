@@ -71,6 +71,14 @@ class DropdownManager {
     */
     addPartSupplierDropdown(suppliers, dropdownId, newRowIndex) {
         const div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
+        console.log("target div = ", div);
+
+        if (!div) {
+            console.warn(`Dropdown container with ID ${dropdownId} not found.`);
+            return; // Exit the function if the target div is missing
+        }
+
+
         let selectHTML = `<select class='form-select form-select-sm not-required' data-supplier-id='${newRowIndex}'>`;
         selectHTML += "<option value=''>No Supplier</option>";
 
