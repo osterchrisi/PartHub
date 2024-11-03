@@ -109,14 +109,17 @@ class PartCreator extends ResourceCreator {
         let suppliers = [];
         $('#supplierDataTable tbody tr').each(function () {
             let rowIndex = $(this).data('supplier-index');
-            let supplierRow = {
-                supplier_id: $(`[data-supplier-id="${rowIndex}"]`).val(),
-                URL: $(`[data-url-id="${rowIndex}"]`).val(),
-                SPN: $(`[data-spn-id="${rowIndex}"]`).val(),
-                price: $(`[data-price-id="${rowIndex}"]`).val()
-            };
-            suppliers.push(supplierRow);
+            if (typeof rowIndex !== 'undefined') {
+                let supplierRow = {
+                    supplier_id: $(`[data-supplier-id="${rowIndex}"]`).val(),
+                    URL: $(`[data-url-id="${rowIndex}"]`).val(),
+                    SPN: $(`[data-spn-id="${rowIndex}"]`).val(),
+                    price: $(`[data-price-id="${rowIndex}"]`).val()
+                };
+                suppliers.push(supplierRow);
+            }
         });
+        console.log(suppliers);
         return suppliers;
     }
 

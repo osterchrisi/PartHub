@@ -161,6 +161,7 @@ class SupplierRowManager {
             };
             newSupplierData.push(supplierRow);
         }
+        console.log(newSupplierData);
         return newSupplierData;
     }
 

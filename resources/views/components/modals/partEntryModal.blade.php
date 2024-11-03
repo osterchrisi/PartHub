@@ -81,16 +81,16 @@
                 <button type="button" id="addSupplierRowBtn-partEntry"
                     class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add Supplier</button>
             </div>
-            <div id="error-suppliers.1.supplier_id" class="d-none text-danger">
+            <div id="error-suppliers.0.supplier_id" class="d-none text-danger">
                 <x-input-error :messages="[]" />
             </div>
-            <div id="error-suppliers.1.URL" class="d-none text-danger">
+            <div id="error-suppliers.0.URL" class="d-none text-danger">
                 <x-input-error :messages="[]" />
             </div>
-            <div id="error-suppliers.1.SPN" class="d-none text-danger">
+            <div id="error-suppliers.0.SPN" class="d-none text-danger">
                 <x-input-error :messages="[]" />
             </div>
-            <div id="error-suppliers.1.price" class="d-none text-danger">
+            <div id="error-suppliers.0.price" class="d-none text-danger">
                 <x-input-error :messages="[]" />
             </div>
         </div>

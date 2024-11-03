@@ -84,7 +84,7 @@ class FormValidator {
     handleSupplierError(key, message) {
         const fieldKeyParts = key.split('.');  // e.g., "suppliers.1.price"
         if (fieldKeyParts[0] === 'suppliers' && fieldKeyParts.length > 2) {
-            const rowIndex = parseInt(fieldKeyParts[1], 10) - 1; // Adjust by subtracting 1
+            const rowIndex = parseInt(fieldKeyParts[1], 10);
             const fieldName = fieldKeyParts[2]; // e.g., price
 
             let inputField;
