@@ -19,6 +19,8 @@ class SupplierRowManager {
      * @param {number} partId - The ID of the part (optional).
      */
     addSupplierRow(tableId, partId) {
+        $('#addSupplierRowBtn-info').prop('disabled', true);
+
         let newRowIndex = this.newRowIndex;
         let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
 
@@ -70,6 +72,7 @@ class SupplierRowManager {
     removeRowButtonClickListener() {
         $(document).on('click', '.remove-row-btn', function () {
             $(this).closest('tr').remove();
+            $('#addSupplierRowBtn-info').prop('disabled', false);
         });
     }
 
@@ -121,16 +124,11 @@ class SupplierRowManager {
                 success: function (response) {
                     console.log('Supplier data saved successfully:', response);
                     updateInfoWindow('part', part_id);  // Update the InfoWindow after saving
+                    $('#addSupplierRowBtn-info').prop('disabled', false);
                 },
                 error: function (xhr) {
                     const formValidator = new FormValidator($('#partSupplierDataTableForm'));
                     formValidator.handleError(xhr);
-                    // if (xhr.status === 403) {
-                    //     const response = JSON.parse(xhr.responseText);
-                    //     alert(response.message);
-                    // } else {
-                    //     console.error('Error saving supplier data:', xhr);
-                    // }
                 }
             });
         } else {

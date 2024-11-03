@@ -34,16 +34,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div id="error-suppliers.0.supplier_id" class="d-none text-danger">
-            <x-input-error :messages="[]" />
-        </div>
-        <div id="error-suppliers.0.URL" class="d-none text-danger">
-            <x-input-error :messages="[]" />
-        </div>
-        <div id="error-suppliers.0.SPN" class="d-none text-danger">
-            <x-input-error :messages="[]" />
-        </div>
-        <div id="error-suppliers.0.price" class="d-none text-danger">
+        <div id="error-supplier" class="d-none text-danger">
             <x-input-error :messages="[]" />
         </div>
         <button type="button" id="addSupplierRowBtn-info"

@@ -86,7 +86,8 @@ class FormValidator {
         if (fieldKeyParts[0] === 'suppliers' && fieldKeyParts.length > 2) {
             const rowIndex = parseInt(fieldKeyParts[1], 10);
             const fieldName = fieldKeyParts[2]; // e.g., price
-
+    
+            // Target the correct input field based on field name
             let inputField;
             if (fieldName === 'URL') {
                 inputField = $(`[data-url-id="${rowIndex}"]`);
@@ -101,21 +102,22 @@ class FormValidator {
                     inputField.siblings('.selectize-control').addClass('is-invalid');
                 }
             }
-
-            // Add .is-invalid class if input field exists
+    
+            // Add .is-invalid class to the input field if it exists
             if (inputField && inputField.length) {
                 inputField.addClass('is-invalid');
             } else {
                 console.warn(`No input field found for error key: ${key}`);
             }
-
-            const errorDiv = $(`#error-${key.replace(/\./g, '\\.')}`);
-            // Show error messages
-            if (errorDiv.length) {
-                errorDiv.removeClass('d-none').text(message);
+    
+            // Append the error message to the supplier error div
+            const generalErrorDiv = $('#error-supplier');
+            if (generalErrorDiv.length) {
+                generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
             } else {
-                console.warn(`No div found for error key: ${key}`);
+                console.warn('No general error div found.');
             }
         }
     }
+    
 }
