@@ -37,47 +37,6 @@ class PartCreator extends ResourceCreator {
         this.dropdownManager.categoryCreated = false;
     }
 
-    // Specialized error handling for supplier data rows
-    handleError(xhr) {
-        // Call general error handling from ResourceCreator
-        super.handleError(xhr);
-
-        // Handle supplier-specific errors
-        if (xhr.responseJSON && xhr.responseJSON.errors) {
-            $.each(xhr.responseJSON.errors, (key, messages) => {
-                const fieldKeyParts = key.split('.');  // e.g., "suppliers.1.price"
-
-                if (fieldKeyParts[0] === 'suppliers' && fieldKeyParts.length > 2) {
-                    const rowIndex = parseInt(fieldKeyParts[1], 10) - 1; // Adjust by subtracting 1
-                    const fieldName = fieldKeyParts[2]; // e.g., price
-
-                    let inputField;
-                    if (fieldName === 'URL') {
-                        inputField = $(`[data-url-id="${rowIndex}"]`);
-                    } else if (fieldName === 'SPN') {
-                        inputField = $(`[data-spn-id="${rowIndex}"]`);
-                    } else if (fieldName === 'price') {
-                        inputField = $(`[data-price-id="${rowIndex}"]`);
-                    } else if (fieldName === 'supplier_id') {
-                        inputField = $(`#addPartSupplier-${rowIndex} select`);
-                        if (inputField.length) {
-                            inputField.addClass('is-invalid');
-                            inputField.siblings('.selectize-control').addClass('is-invalid');
-                        }
-                    }
-
-                    // Add .is-invalid class if input field exists
-                    if (inputField && inputField.length) {
-                        inputField.addClass('is-invalid');
-                    } else {
-                        console.warn(`No input field found for error key: ${key}`);
-                    }
-                }
-            });
-        }
-    }
-
-
     // Populate all dropdowns
     populateAllDropdowns(data) {
         const { locations, footprints, categories } = data; // Object destructuring

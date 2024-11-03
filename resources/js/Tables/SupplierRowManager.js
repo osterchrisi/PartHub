@@ -1,5 +1,6 @@
 export { SupplierRowManager };
 import { DropdownManager } from "../DropdownManager";
+import { FormValidator } from "../FormValidator";
 import { updateInfoWindow } from "../custom";
 
 class SupplierRowManager {
@@ -122,12 +123,14 @@ class SupplierRowManager {
                     updateInfoWindow('part', part_id);  // Update the InfoWindow after saving
                 },
                 error: function (xhr) {
-                    if (xhr.status === 403) {
-                        const response = JSON.parse(xhr.responseText);
-                        alert(response.message);
-                    } else {
-                        console.error('Error saving supplier data:', xhr);
-                    }
+                    const formValidator = new FormValidator($('#partSupplierDataTableForm'));
+                    formValidator.handleError(xhr);
+                    // if (xhr.status === 403) {
+                    //     const response = JSON.parse(xhr.responseText);
+                    //     alert(response.message);
+                    // } else {
+                    //     console.error('Error saving supplier data:', xhr);
+                    // }
                 }
             });
         } else {

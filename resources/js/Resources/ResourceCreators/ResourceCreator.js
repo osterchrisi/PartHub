@@ -22,6 +22,8 @@ class ResourceCreator {
 
     // Initialize modal behavior and listeners
     this.initializeModalBehavior();
+
+    this.formValidator = new FormValidator(this.inputForm, this.addButton);
     this.setupFormValidation();
 
     // Instantiate Manager Classes
@@ -75,45 +77,8 @@ class ResourceCreator {
 
   // Handle errors during resource creation
   handleError(xhr) {
-    // Clear all previous error messages and remove .is-invalid class from inputs and selectize controls
-    $('.text-danger').addClass('d-none').text('');
-    $('input, select, textarea').removeClass('is-invalid');
-    $('.selectize-control').removeClass('is-invalid');
-
-    if (xhr.status === 419) {
-      alert('CSRF token mismatch. Please refresh the page and try again.');
-    } else if (xhr.status === 403) {
-      const response = JSON.parse(xhr.responseText);
-      alert(response.message);
-    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
-      $.each(xhr.responseJSON.errors, (key, messages) => {
-        const errorDiv = $(`#error-${key.replace(/\./g, '\\.')}`);
-        const inputField = $(`[name="${key}"]`);
-
-        // Display invalid inputs 
-        if (inputField.length) {
-          inputField.addClass('is-invalid');
-          if (inputField.is('select')) {
-            inputField.siblings('.selectize-control').addClass('is-invalid');
-          }
-        }
-
-        // Show error messages
-        if (errorDiv.length) {
-          errorDiv.removeClass('d-none').text(messages[0]);
-        } else {
-          console.warn(`No div found for error key: ${key}`);
-        }
-      });
-    } else {
-      alert('An error occurred. Please try again.');
-    }
+    this.formValidator.handleError(xhr);
   }
-
-
-
-
-
 
   // Rebuild tables after successful resource creation
   rebuildTables(id) {
@@ -140,8 +105,7 @@ class ResourceCreator {
 
   // Set up form validation for input fields
   setupFormValidation() {
-    const formValidator = new FormValidator(this.inputForm, this.addButton);
-    formValidator.attachValidation(this.requestCreation.bind(this));
+    this.formValidator.attachValidation(this.requestCreation.bind(this));
   }
 
   // Initialize modal show and hide behaviors

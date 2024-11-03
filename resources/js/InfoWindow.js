@@ -54,7 +54,8 @@ class InfoWindow {
                 this.setupStockChangeButtons(stockManager, this.id);
                 this.setupImageManager();
                 this.setupDocumentManager();
-                // Supplier Data Table
+
+                // Supplier Data Table in Info Window
                 $('#partSupplierDataTable').bootstrapTable({});
                 $('#partSupplierDataTable').on('check.bs.table uncheck.bs.table ' +
                     'check-all.bs.table uncheck-all.bs.table',
@@ -62,7 +63,7 @@ class InfoWindow {
                         $('#deleteSupplierRowBtn-info').prop('disabled', !$('#partSupplierDataTable').bootstrapTable('getSelections').length);
                     })
 
-
+                // Supplier Row Manager in Info Window
                 const supplierRowManager = new SupplierRowManager();
                 supplierRowManager.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
 
