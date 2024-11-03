@@ -2,6 +2,7 @@ export { SupplierRowManager };
 import { DropdownManager } from "../DropdownManager";
 import { FormValidator } from "../FormValidator";
 import { updateInfoWindow } from "../custom";
+import { DataFetchService } from "../Services/DataFetchService";
 
 class SupplierRowManager {
     constructor() {
@@ -42,7 +43,7 @@ class SupplierRowManager {
         $(`${tableId} tbody`).append(newRow);
 
         // Fetch suppliers and populate the dropdown
-        this.getSuppliers().done((suppliers) => {
+        DataFetchService.getSuppliers().done((suppliers) => {
             this.dropdownManager.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
         });
 
@@ -229,21 +230,6 @@ class SupplierRowManager {
     resizeModalOnSupplierTableCollapse() {
         $('#addSuppliers').on('hidden.bs.collapse', event => {
             $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
-        });
-    }
-
-    /**
-     * Fetches the suppliers from the server.
-     * 
-     * @returns {Promise} - A promise that resolves with the list of suppliers.
-     */
-    getSuppliers() {
-        return $.ajax({
-            url: '/suppliers.get',
-            dataType: 'json',
-            error: function (error) {
-                console.error('Error fetching suppliers:', error);
-            }
         });
     }
 }
