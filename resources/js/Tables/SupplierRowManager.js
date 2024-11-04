@@ -27,7 +27,9 @@ class SupplierRowManager {
         //TODO: Change this better to this.table when refactor is over
         let tableId = this.$table.attr('id') ? `#${this.$table.attr('id')}` : undefined;
 
-        $('#addSupplierRowBtn-info').prop('disabled', true);
+        if (tableId === '#partSupplierDataTable') {
+            $('#addSupplierRowBtn-info').prop('disabled', true);
+        }
 
         let newRowIndex = this.newRowIndex;
         let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
