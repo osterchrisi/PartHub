@@ -100,7 +100,7 @@ class StockManager {
                     $('#mStockModalInfo').html(message);
 
                     // Attach click listener to "Do It Anyway" button
-                    this.changeStockAnywayClickListener(r, this.pid);
+                    this.changeStockAnywayClickListener(r);
                 }
             },
             error: (xhr) => {
@@ -152,7 +152,7 @@ class StockManager {
                         alert('CSRF token mismatch. Please refresh the page and try again.');
                     } else {
                         // Other errors
-                        alert('An error occurred. Please try again.');
+                        this.formValidator.handleError(xhr);
                     }
                 }
             });
@@ -171,6 +171,9 @@ class StockManager {
     showStockChangeModal(change, locations, pid) {
         let modalTitle = '';
         let changeText = '';
+
+        // Assign change and ID to the class instance
+        //TODO: This is somehow a bit 'reverse' here. Some nice refactoring needed. Gets called from infoWindow
         this.change = change;
         this.pid = pid;
 
@@ -203,6 +206,7 @@ class StockManager {
         this.formValidator.attachValidation();
     }
 
+    //TODO: Substitute these three methods via DropdownManager
     /**
      * Create a dropdown element and selectize it
      * 

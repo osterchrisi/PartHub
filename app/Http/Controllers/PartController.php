@@ -14,6 +14,7 @@ use App\Services\DatabaseService;
 use App\Services\MouserApiService;
 use App\Services\StockService;
 use App\Services\SupplierService;
+use App\Http\Requests\StockChangeRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -284,10 +285,11 @@ class PartController extends Controller
      * @param  Request  $request  The HTTP request containing stock change data.
      * @return \Illuminate\Http\JsonResponse A JSON response indicating success or requesting user action.
      */
-    public function handleStockRequests(Request $request)
+    public function handleStockRequests(StockChangeRequest $request)
     {
         // Access stock changes to prepare
-        $requested_changes = $request->all()['stock_changes'];
+        // $requested_changes = $request->all()['stock_changes'];
+        $requested_changes = $request->validated()['stock_changes'];
 
         // Extract type of change from the first entry in the array (all entries have same type)
         $change = $requested_changes[0]['change'];
