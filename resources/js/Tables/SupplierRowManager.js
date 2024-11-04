@@ -5,8 +5,12 @@ import { updateInfoWindow } from "../custom";
 import { DataFetchService } from "../Services/DataFetchService";
 
 class SupplierRowManager {
-    constructor() {
+    constructor(options) {
         this.newRowIndex = 0;
+
+        this.inputForm = options.inputForm; // Form name of the supplier data row(s)
+        this.$table = $(options.table);
+
         this.dropdownManager = new DropdownManager();
 
         // Attach a click listener to remove row buttons
@@ -16,10 +20,12 @@ class SupplierRowManager {
     /**
      * Adds a new supplier data row to a specific table
      * 
-     * @param {string} tableId - The ID of the table to add the row to.
-     * @param {number} partId - The ID of the part (optional).
+     * @param {number} partId - The ID of the part (optional for infoWindow).
      */
-    addSupplierRow(tableId, partId) {
+    addSupplierRow(partId) {
+        //TODO: Change this better to this.table when refactor is over
+        let tableId = this.$table.attr('id') ? `#${this.$table.attr('id')}` : undefined;
+
         console.log("this.newRowIndex at start ", this.newRowIndex);
         $('#addSupplierRowBtn-info').prop('disabled', true);
 
@@ -69,13 +75,12 @@ class SupplierRowManager {
     /**
      * Attaches an event listener for adding a supplier data row when a button is clicked.
      * 
-     * @param {string} tableId - The ID of the table to add the row to.
      * @param {string} buttonId - The ID of the button that triggers row addition.
      * @param {number|null} partId - The ID of the part (optional).
      */
-    addSupplierDataRowButtonClickListener(tableId, buttonId, partId = null) {
+    addSupplierDataRowButtonClickListener(buttonId, partId = null) {
         $(`#${buttonId}`).off('click').on('click', () => {
-            this.addSupplierRow(tableId, partId);
+            this.addSupplierRow(partId);
         });
     }
 
@@ -139,8 +144,10 @@ class SupplierRowManager {
                     updateInfoWindow('part', part_id);  // Update the InfoWindow after saving
                     $('#addSupplierRowBtn-info').prop('disabled', false);
                 },
-                error: function (xhr) {
-                    const formValidator = new FormValidator($('#partSupplierDataTableForm'));
+                error: (xhr) => {
+                    console.log("this.inputForm = ", this.inputForm);
+                    console.log("$(this.inputForm) = ", $(this.inputForm));
+                    const formValidator = new FormValidator($(this.inputForm));
                     formValidator.handleError(xhr);
                 }
             });

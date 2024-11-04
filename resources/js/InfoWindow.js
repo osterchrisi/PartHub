@@ -64,8 +64,11 @@ class InfoWindow {
                     })
 
                 // Supplier Row Manager in Info Window
-                const supplierRowManager = new SupplierRowManager();
-                supplierRowManager.addSupplierDataRowButtonClickListener('#partSupplierDataTable', 'addSupplierRowBtn-info', this.id);
+                const supplierRowManager = new SupplierRowManager({
+                    inputForm: '#partSupplierDataTableForm',
+                    table: '#partSupplierDataTable'
+                });
+                supplierRowManager.addSupplierDataRowButtonClickListener('addSupplierRowBtn-info', this.id);
 
 
                 $('#deleteSupplierRowBtn-info').click(() => {

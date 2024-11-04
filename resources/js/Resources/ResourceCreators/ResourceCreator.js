@@ -23,8 +23,10 @@ class ResourceCreator {
     // Initialize modal behavior and listeners
     this.initializeModalBehavior();
 
-    this.formValidator = new FormValidator(this.inputForm, this.addButton);
-    this.setupFormValidation();
+    this.formValidator = new FormValidator(this.inputForm, {
+      button: this.addButton,
+      submitCallback: this.requestCreation.bind(this)
+    });
 
     // Instantiate Manager Classes
     this.tableManager = this.createTableManager();
@@ -104,9 +106,9 @@ class ResourceCreator {
   }
 
   // Set up form validation for input fields
-  setupFormValidation() {
-    this.formValidator.attachValidation(this.requestCreation.bind(this));
-  }
+  // setupFormValidation() {
+  //   this.formValidator.attachValidation(this.requestCreation.bind(this));
+  // }
 
   // Initialize modal show and hide behaviors
   // There is also the global clearModalOnHiding function but it is aware of the category modal shenanigans

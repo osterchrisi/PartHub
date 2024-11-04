@@ -1,15 +1,22 @@
 export { FormValidator }
 
 class FormValidator {
-    constructor($form, $button) {
+    constructor($form, config = {}) {
         this.$form = $form || null;
-        this.$button = $button || null;
+        this.$button = config.button || null;
+        this.submitCallback = config.submitCallback || null;
+        console.log("this.$form = ", this.$form);
+
+        // Attach validation on instantiation if button and callback are provided
+        if (this.$button && this.submitCallback) {
+            this.attachValidation();
+        }
     }
 
     attachValidation(submitCallback) {
         this.$button.click((event) => {
             event.preventDefault();
-            this.submitFormIfValid(submitCallback);
+            this.submitFormIfValid();
         });
 
         //* Currently don't like it anymore, so uncommented the submission upon pressing Enter
@@ -22,9 +29,9 @@ class FormValidator {
         });
     }
 
-    submitFormIfValid(submitCallback) {
+    submitFormIfValid() {
         if (this.$form[0].checkValidity()) {
-            submitCallback();
+            this.submitCallback();
         } else {
             this.displayFieldValidity();
         }
@@ -34,7 +41,7 @@ class FormValidator {
     clearErrors() {
         this.$form.find('.text-danger').addClass('d-none').text('');
         this.$form.find('input, select, textarea').removeClass('is-invalid');
-        $('.selectize-control').removeClass('is-invalid');
+        this.$form.find('.selectize-control').removeClass('is-invalid');
     }
 
     // Main method to handle errors during form submission, including supplier row errors
@@ -61,10 +68,9 @@ class FormValidator {
 
     // Method to handle errors for general form fields
     handleGeneralError(key, message) {
-        const errorDiv = $(`#error-${key.replace(/\./g, '\\.')}`);
-        const inputField = $(`[name="${key}"]`);
+        const errorDiv = this.$form.find(`#error-${key.replace(/\./g, '\\.')}`);
+        const inputField = this.$form.find(`[name="${key}"]`);
 
-        // Display invalid inputs
         if (inputField.length) {
             inputField.addClass('is-invalid');
             if (inputField.is('select')) {
@@ -72,52 +78,38 @@ class FormValidator {
             }
         }
 
-        // Show error messages
         if (errorDiv.length) {
             errorDiv.removeClass('d-none').text(message);
-        } else {
-            console.warn(`No div found for error key: ${key}`);
         }
     }
 
     // Method to handle errors for dynamically added supplier data rows
     handleSupplierError(key, message) {
-        const fieldKeyParts = key.split('.');  // e.g., "suppliers.1.price"
-        if (fieldKeyParts[0] === 'suppliers' && fieldKeyParts.length > 2) {
-            const rowIndex = parseInt(fieldKeyParts[1], 10);
-            const fieldName = fieldKeyParts[2]; // e.g., price
-    
-            // Target the correct input field based on field name
-            let inputField;
-            if (fieldName === 'URL') {
-                inputField = $(`[data-url-id="${rowIndex}"]`);
-            } else if (fieldName === 'SPN') {
-                inputField = $(`[data-spn-id="${rowIndex}"]`);
-            } else if (fieldName === 'price') {
-                inputField = $(`[data-price-id="${rowIndex}"]`);
-            } else if (fieldName === 'supplier_id') {
-                inputField = $(`#addPartSupplier-${rowIndex} select`);
-                if (inputField.length) {
-                    inputField.addClass('is-invalid');
-                    inputField.siblings('.selectize-control').addClass('is-invalid');
-                }
-            }
-    
-            // Add .is-invalid class to the input field if it exists
-            if (inputField && inputField.length) {
-                inputField.addClass('is-invalid');
-            } else {
-                console.warn(`No input field found for error key: ${key}`);
-            }
-    
-            // Append the error message to the supplier error div
-            const generalErrorDiv = $('#error-supplier');
-            if (generalErrorDiv.length) {
-                generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
-            } else {
-                console.warn('No general error div found.');
-            }
+        console.log("handling errors");
+        let inputField;
+        const rowIndex = parseInt(key.split('.')[1], 10);
+        const fieldName = key.split('.')[2];
+        console.log("this.form = ", this.$form);
+
+        if (fieldName === 'URL') inputField = this.$form.find(`[data-url-id="${rowIndex}"]`);
+        else if (fieldName === 'SPN') inputField = this.$form.find(`[data-spn-id="${rowIndex}"]`);
+        else if (fieldName === 'price') {
+            inputField = this.$form.find(`[data-price-id="${rowIndex}"]`);
         }
+        else if (fieldName === 'supplier_id') {
+            inputField = this.$form.find(`#addPartSupplier-${rowIndex} select`);
+            if (inputField.length) inputField.siblings('.selectize-control').addClass('is-invalid');
+        }
+
+        if (inputField && inputField.length) {
+            console.log("boom");
+            inputField.addClass('is-invalid');
+        }
+
+        console.log(inputField);
+
+        const generalErrorDiv = this.$form.find('#error-supplier');
+        if (generalErrorDiv.length) generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
     }
-    
+
 }

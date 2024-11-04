@@ -14,7 +14,10 @@ class PartCreator extends ResourceCreator {
         this.attachCategoryModalCloseListeners();
 
         //Supplier Row Manager
-        this.supplierRowManager = new SupplierRowManager();
+        this.supplierRowManager = new SupplierRowManager({
+            inputForm: '#partEntryForm',
+            table: '#supplierDataTable'
+        });
         this.supplierRowManager.bootstrapSupplierDataTable();
         this.supplierRowManager.resizeModalOnSupplierTableCollapse();
 
@@ -89,7 +92,7 @@ class PartCreator extends ResourceCreator {
             this.fetchAllDropdownData()
                 .then(data => {
                     this.populateAllDropdowns(data);
-                    this.supplierRowManager.addSupplierDataRowButtonClickListener('#supplierDataTable', 'addSupplierRowBtn-partEntry');
+                    this.supplierRowManager.addSupplierDataRowButtonClickListener('addSupplierRowBtn-partEntry');
                 })
                 .catch(error => console.error('Error fetching dropdown data:', error));
         }
