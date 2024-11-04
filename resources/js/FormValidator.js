@@ -5,7 +5,6 @@ class FormValidator {
         this.$form = $form || null;
         this.$button = config.button || null;
         this.submitCallback = config.submitCallback || null;
-        console.log("this.$form = ", this.$form);
 
         // Attach validation on instantiation if button and callback are provided
         if (this.$button && this.submitCallback) {
@@ -85,11 +84,9 @@ class FormValidator {
 
     // Method to handle errors for dynamically added supplier data rows
     handleSupplierError(key, message) {
-        console.log("handling errors");
         let inputField;
         const rowIndex = parseInt(key.split('.')[1], 10);
         const fieldName = key.split('.')[2];
-        console.log("this.form = ", this.$form);
 
         if (fieldName === 'URL') inputField = this.$form.find(`[data-url-id="${rowIndex}"]`);
         else if (fieldName === 'SPN') inputField = this.$form.find(`[data-spn-id="${rowIndex}"]`);
@@ -102,11 +99,8 @@ class FormValidator {
         }
 
         if (inputField && inputField.length) {
-            console.log("boom");
             inputField.addClass('is-invalid');
         }
-
-        console.log(inputField);
 
         const generalErrorDiv = this.$form.find('#error-supplier');
         if (generalErrorDiv.length) generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);

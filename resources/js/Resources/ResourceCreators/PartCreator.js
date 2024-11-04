@@ -126,7 +126,6 @@ class PartCreator extends ResourceCreator {
                 suppliers.push(supplierRow);
             }
         });
-        console.log(suppliers);
         return suppliers;
     }
 

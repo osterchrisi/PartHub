@@ -26,7 +26,6 @@ class SupplierRowManager {
         //TODO: Change this better to this.table when refactor is over
         let tableId = this.$table.attr('id') ? `#${this.$table.attr('id')}` : undefined;
 
-        console.log("this.newRowIndex at start ", this.newRowIndex);
         $('#addSupplierRowBtn-info').prop('disabled', true);
 
         let newRowIndex = this.newRowIndex;
@@ -54,8 +53,6 @@ class SupplierRowManager {
         DataFetchService.getSuppliers().done((suppliers) => {
             // Check if suppliers were successfully fetched
             if (suppliers && suppliers.length) {
-                console.log("got dem suppliers");
-                console.log("newRowIndex before dropdownmanager ", newRowIndex);
                 this.dropdownManager.addPartSupplierDropdown(suppliers, newDropdownDiv, newRowIndex);
             } else {
                 console.warn("No suppliers fetched, cannot populate dropdown.");
@@ -68,9 +65,7 @@ class SupplierRowManager {
         if (tableId === '#partSupplierDataTable') {
             this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
         }
-        
-        console.log("this.newRowIndex at end", this.newRowIndex);
-    }
+            }
 
     /**
      * Attaches an event listener for adding a supplier data row when a button is clicked.
@@ -145,8 +140,6 @@ class SupplierRowManager {
                     $('#addSupplierRowBtn-info').prop('disabled', false);
                 },
                 error: (xhr) => {
-                    console.log("this.inputForm = ", this.inputForm);
-                    console.log("$(this.inputForm) = ", $(this.inputForm));
                     const formValidator = new FormValidator($(this.inputForm));
                     formValidator.handleError(xhr);
                 }
@@ -179,7 +172,6 @@ class SupplierRowManager {
             };
             newSupplierData.push(supplierRow);
         }
-        console.log(newSupplierData);
         return newSupplierData;
     }
 
