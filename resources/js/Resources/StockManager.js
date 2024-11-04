@@ -1,14 +1,22 @@
 export { StockManager };
+import { FormValidator } from '../FormValidator';
 
 import {
     removeClickListeners,
-    validateAndSubmitForm,
     updateInfoWindow
 } from '../custom';
 
 class StockManager {
     constructor() {
         this.token = $('input[name="_token"]').attr('value');
+        this.change = null;
+        this.pid = null;
+
+        this.$form = $('#stockChangingForm');
+        this.formValidator = new FormValidator(this.$form, {
+            button: $('#AddStock'),
+            submitCallback: this.prepareStockChange.bind(this)
+        });
     }
 
     /**
@@ -16,20 +24,20 @@ class StockManager {
      * @param change - The type of change. '1' for adding, '-1' for reducing and '0' for moving stock
      * @param {number} pid - The part ID for the stock change
      */
-    prepareStockChange(change, pid) {
+    prepareStockChange() {
         const q = $("#addStockQuantity").val();       // Quantity
         const c = $("#addStockDescription").val();    // Comment
         let tl = null;
         let fl = null;
 
         // Get required locations
-        if (change == '1') {
+        if (this.change == '1') {
             tl = $("#toStockLocation").val();   // To Location
         }
-        if (change == '-1') {
+        if (this.change == '-1') {
             fl = $("#fromStockLocation").val(); // From Location
         }
-        if (change == '0') {
+        if (this.change == '0') {
             tl = $("#toStockLocation").val();   // To Location
             fl = $("#fromStockLocation").val(); // From Location
         }
@@ -40,19 +48,19 @@ class StockManager {
             to_location: tl,
             from_location: fl,
             comment: c,
-            part_id: pid,
-            change: change
+            part_id: this.pid,
+            change: this.change
         }];
 
         // To and From location are identical - inform user
-        if (change == '0' && tl == fl) {
+        if (this.change == '0' && tl == fl) {
             const message = '<div class="alert alert-warning text-center">To and From location are identical</div>';
             $('#mStockModalInfo').html(message);
             return;
         }
 
         // Call the stock changing script
-        this.requestStockChange(stockChanges, pid);
+        this.requestStockChange(stockChanges);
     }
 
     /**
@@ -63,7 +71,7 @@ class StockManager {
      * @param {number} pid - The part ID for which the stock is changes and later the info window updated
      * @return void
      */
-    requestStockChange(stockChanges, pid) {
+    requestStockChange(stockChanges) {
         $.ajax({
             url: '/parts.requestStockChange',
             type: 'POST',
@@ -75,7 +83,7 @@ class StockManager {
                 const r = response;
                 if (r.status === 'success') {
                     //* Do the normal thing here, all requested stock available
-                    updateInfoWindow('part', pid);
+                    updateInfoWindow('part', this.pid);
                     // Update 'Total Stock' in parts table
                     const new_stock_level = r.result[r.result.length - 1].new_total_stock;
                     const $cell = $('tr.selected-last td[data-column="total_stock"]');
@@ -92,7 +100,7 @@ class StockManager {
                     $('#mStockModalInfo').html(message);
 
                     // Attach click listener to "Do It Anyway" button
-                    this.changeStockAnywayClickListener(r, pid);
+                    this.changeStockAnywayClickListener(r, this.pid);
                 }
             },
             error: (xhr) => {
@@ -102,7 +110,7 @@ class StockManager {
                     alert('CSRF token mismatch. Please refresh the page and try again.');
                 } else {
                     // Other errors
-                    alert('An error occurred. Please try again.');
+                    this.formValidator.handleError(xhr);
                 }
             }
         });
@@ -119,7 +127,7 @@ class StockManager {
      * @param {number} pid - The part ID for which the stock change was requested and the info window will be updated
      * @return void
      */
-    changeStockAnywayClickListener(r, pid) {
+    changeStockAnywayClickListener(r) {
         $('#btnChangeStockAnyway').off('click').on('click', () => {
             for (const change of r.changes) {
                 change.status = 'gtg';
@@ -135,7 +143,7 @@ class StockManager {
                 },
                 success: (response) => {
                     $('#mAddStock').modal('hide');
-                    updateInfoWindow('part', pid);
+                    updateInfoWindow('part', this.pid);
                 },
                 error: (xhr) => {
                     // Handle the error
@@ -163,6 +171,8 @@ class StockManager {
     showStockChangeModal(change, locations, pid) {
         let modalTitle = '';
         let changeText = '';
+        this.change = change;
+        this.pid = pid;
 
         switch (change) {
             case 1:
@@ -190,7 +200,7 @@ class StockManager {
 
         $('#mAddStock').modal('show'); // Show modal
         removeClickListeners('#AddStock'); // Remove previously added click listener
-        validateAndSubmitForm('stockChangingForm', 'AddStock', this.prepareStockChange.bind(this), [change, pid]); // Attach validate form 
+        this.formValidator.attachValidation();
     }
 
     /**

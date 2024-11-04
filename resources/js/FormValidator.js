@@ -12,7 +12,7 @@ class FormValidator {
         }
     }
 
-    attachValidation(submitCallback) {
+    attachValidation() {
         this.$button.click((event) => {
             event.preventDefault();
             this.submitFormIfValid();
@@ -23,17 +23,20 @@ class FormValidator {
         this.$form.on('keydown', (event) => {
             if (event.key === 'Enter' && !$(document.activeElement).is('.selectized')) {
                 event.preventDefault();
-                // this.submitFormIfValid(submitCallback);
+                // this.submitFormIfValid();
             }
         });
     }
 
     submitFormIfValid() {
-        if (this.$form[0].checkValidity()) {
-            this.submitCallback();
-        } else {
-            this.displayFieldValidity();
-        }
+        // if (this.$form[0].checkValidity()) {
+        //     this.submitCallback();
+        // } else {
+        //     this.displayFieldValidity();
+        // }
+
+        // Keeping only this for now:
+        this.submitCallback();
     }
 
     // Method to clear all existing errors before displaying new ones
@@ -84,46 +87,46 @@ class FormValidator {
 
     // Method to handle errors for dynamically added supplier data rows
     handleSupplierError(key, message) {
-    const fieldKeyParts = key.split('.');  // Split on dots, e.g., "suppliers.0.price"
-    const errorRowIndex = parseInt(fieldKeyParts[1], 10);  // Extract the error row index
+        const fieldKeyParts = key.split('.');  // Split on dots, e.g., "suppliers.0.price"
+        const errorRowIndex = parseInt(fieldKeyParts[1], 10);  // Extract the error row index
 
-    // Capture visible supplier row indexes in the form order they appear
-    const visibleRowIndexes = this.$form.find('[data-supplier-index]').map(function() {
-        return $(this).data('supplier-index');
-    }).get();
+        // Capture visible supplier row indexes in the form order they appear
+        const visibleRowIndexes = this.$form.find('[data-supplier-index]').map(function () {
+            return $(this).data('supplier-index');
+        }).get();
 
-    // Check if the error row index is present in visible rows
-    const rowIndex = visibleRowIndexes[errorRowIndex];
-    if (typeof rowIndex === 'undefined') {
-        console.warn(`No visible row found for error at index ${errorRowIndex}`);
-        return;
+        // Check if the error row index is present in visible rows
+        const rowIndex = visibleRowIndexes[errorRowIndex];
+        if (typeof rowIndex === 'undefined') {
+            console.warn(`No visible row found for error at index ${errorRowIndex}`);
+            return;
+        }
+
+        // Map the error to the corresponding field in the current row
+        const fieldName = fieldKeyParts[2];  // e.g., 'price'
+        let inputField;
+
+        if (fieldName === 'URL') {
+            inputField = this.$form.find(`[data-url-id="${rowIndex}"]`);
+        } else if (fieldName === 'SPN') {
+            inputField = this.$form.find(`[data-spn-id="${rowIndex}"]`);
+        } else if (fieldName === 'price') {
+            inputField = this.$form.find(`[data-price-id="${rowIndex}"]`);
+        } else if (fieldName === 'supplier_id') {
+            inputField = this.$form.find(`#addPartSupplier-${rowIndex} select`);
+            if (inputField.length) inputField.siblings('.selectize-control').addClass('is-invalid');
+        }
+
+        // Apply invalid class if field exists, and append the error message
+        if (inputField && inputField.length) {
+            inputField.addClass('is-invalid');
+        } else {
+            console.warn(`No input field found for error key: ${key}`);
+        }
+
+        const generalErrorDiv = this.$form.find('#error-supplier');
+        if (generalErrorDiv.length) {
+            generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
+        }
     }
-
-    // Map the error to the corresponding field in the current row
-    const fieldName = fieldKeyParts[2];  // e.g., 'price'
-    let inputField;
-
-    if (fieldName === 'URL') {
-        inputField = this.$form.find(`[data-url-id="${rowIndex}"]`);
-    } else if (fieldName === 'SPN') {
-        inputField = this.$form.find(`[data-spn-id="${rowIndex}"]`);
-    } else if (fieldName === 'price') {
-        inputField = this.$form.find(`[data-price-id="${rowIndex}"]`);
-    } else if (fieldName === 'supplier_id') {
-        inputField = this.$form.find(`#addPartSupplier-${rowIndex} select`);
-        if (inputField.length) inputField.siblings('.selectize-control').addClass('is-invalid');
-    }
-
-    // Apply invalid class if field exists, and append the error message
-    if (inputField && inputField.length) {
-        inputField.addClass('is-invalid');
-    } else {
-        console.warn(`No input field found for error key: ${key}`);
-    }
-
-    const generalErrorDiv = this.$form.find('#error-supplier');
-    if (generalErrorDiv.length) {
-        generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
-    }
-}
 }
