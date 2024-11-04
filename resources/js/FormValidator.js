@@ -126,8 +126,4 @@ class FormValidator {
         generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
     }
 }
-
-
-
-
 }

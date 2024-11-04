@@ -25,8 +25,8 @@ class SupplierDataController extends Controller
         $validated = $request->validate([
             'part_id' => 'required|integer',
             'suppliers' => 'required|array',
-            'suppliers.*.supplier_id' => 'required|integer',
-            'suppliers.*.URL' => 'nullable|string', // Could also be URL for the validator but seems user-unfriendly
+            'suppliers.*.supplier_id' => 'required|integer|required_with:suppliers.*.URL,suppliers.*.SPN,suppliers.*.price',
+            'suppliers.*.URL' => 'nullable|url',
             'suppliers.*.SPN' => 'nullable|string|max:255',
             'suppliers.*.price' => 'nullable|numeric',
         ]);
