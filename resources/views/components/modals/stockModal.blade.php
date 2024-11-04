@@ -13,12 +13,15 @@
     <span id="stockChangeText"></span>
     <span id="partName"></span>
     <br><br>
-    <form method="post" action="create-part.php" id="stockChangingForm">
+    <form method="post" id="stockChangingForm">
         @csrf
         <div class="row">
             <div class="col-3">
-                <input class="form-control" placeholder="Quantity" id="addStockQuantity" required>
+                <input class="form-control" placeholder="Quantity" id="addStockQuantity" name="stock_changes.0.quantity" required>
             </div>
+        </div>
+        <div id="error-stock_changes_0_quantity" class="d-none text-danger mt-1">
+            <x-input-error :messages="[]" />
         </div>
         <div class="row mt-3" id="FromStockLocationDiv-row">
             <div class="input-group" id="FromStockLocationDiv"></div>

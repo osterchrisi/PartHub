@@ -70,7 +70,9 @@ class FormValidator {
 
     // Method to handle errors for general form fields
     handleGeneralError(key, message) {
-        const errorDiv = this.$form.find(`#error-${key.replace(/\./g, '\\.')}`);
+
+        // const errorId = `#error-${key.replace(/\./g, '_')}`;
+        const errorDiv = this.$form.find(`#error-${key.replace(/\./g, '_')}`);
         const inputField = this.$form.find(`[name="${key}"]`);
 
         if (inputField.length) {
