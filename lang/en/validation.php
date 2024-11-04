@@ -193,6 +193,9 @@ return [
         'suppliers.*.URL' => 'URL',
         'suppliers.*.SPN' => 'Supplier Part Number (SPN)',
         'suppliers.*.price' => 'Price',
+        'URL' => 'URL',
+        'SPN' => 'Supplier Part Number (SPN)',
+        'price' => 'Price',
     ],
 
 ];
