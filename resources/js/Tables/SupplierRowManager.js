@@ -66,7 +66,7 @@ class SupplierRowManager {
         if (tableId === '#partSupplierDataTable') {
             this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
         }
-            }
+    }
 
     /**
      * Attaches an event listener for adding a supplier data row when a button is clicked.
@@ -84,8 +84,8 @@ class SupplierRowManager {
      * Attaches a click listener to remove the row.
      */
     removeRowButtonClickListener() {
-        $(document).on('click', '.remove-row-btn', () => {
-            $(this).closest('tr').remove();
+        $(document).on('click', '.remove-row-btn', (event) => {
+            $(event.currentTarget).closest('tr').remove();
             $('#addSupplierRowBtn-info').prop('disabled', false);
             this.formValidator.clearErrors();
         });

@@ -287,7 +287,7 @@ export function updateInfoWindow(type, id) {
  * Clears any input fields of any modal upon hiding (Cancel and/or submitting)
  */
 export function clearModalOnHiding() {
-    //TODO: Naja...
+    //TODO: Not sure about istantiating SRM here...
     const sr = new SupplierRowManager({});
     $(document).on('hidden.bs.modal', '.modal', function (event) {
         // Don't do it if the modal was hidden due to creating a new category
