@@ -71,7 +71,6 @@ class DropdownManager {
     */
     addPartSupplierDropdown(suppliers, dropdownId, newRowIndex) {
         const div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
-        console.log("target div = ", div);
 
         if (!div) {
             console.warn(`Dropdown container with ID ${dropdownId} not found.`);

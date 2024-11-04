@@ -8,9 +8,10 @@ class SupplierRowManager {
     constructor(options) {
         this.newRowIndex = 0;
 
-        this.inputForm = options.inputForm; // Form name of the supplier data row(s)
-        this.$table = $(options.table);
+        this.inputForm = options.inputForm || null; // Form name of the supplier data row(s)
+        this.$table = $(options.table) || null;
 
+        this.formValidator = new FormValidator($(this.inputForm));
         this.dropdownManager = new DropdownManager();
 
         // Attach a click listener to remove row buttons
@@ -83,9 +84,10 @@ class SupplierRowManager {
      * Attaches a click listener to remove the row.
      */
     removeRowButtonClickListener() {
-        $(document).on('click', '.remove-row-btn', function () {
+        $(document).on('click', '.remove-row-btn', () => {
             $(this).closest('tr').remove();
             $('#addSupplierRowBtn-info').prop('disabled', false);
+            this.formValidator.clearErrors();
         });
     }
 
@@ -134,14 +136,15 @@ class SupplierRowManager {
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: (response) => {
                     console.log('Supplier data saved successfully:', response);
                     updateInfoWindow('part', part_id);  // Update the InfoWindow after saving
                     $('#addSupplierRowBtn-info').prop('disabled', false);
+                    this.formValidator.clearErrors();
+
                 },
                 error: (xhr) => {
-                    const formValidator = new FormValidator($(this.inputForm));
-                    formValidator.handleError(xhr);
+                    this.formValidator.handleError(xhr);
                 }
             });
         } else {

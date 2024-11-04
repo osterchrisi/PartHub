@@ -1,5 +1,6 @@
 import { ResourceCreator } from "./Resources/ResourceCreators/ResourceCreator";
 import { InfoWindow } from "./InfoWindow";
+import { SupplierRowManager } from "./Tables/SupplierRowManager";
 
 /**
  * Prevents text selection in the given table when the shift key is pressed (for selecting)
@@ -286,6 +287,8 @@ export function updateInfoWindow(type, id) {
  * Clears any input fields of any modal upon hiding (Cancel and/or submitting)
  */
 export function clearModalOnHiding() {
+    //TODO: Naja...
+    const sr = new SupplierRowManager({});
     $(document).on('hidden.bs.modal', '.modal', function (event) {
         // Don't do it if the modal was hidden due to creating a new category
         const targetModalId = event.target.id;
@@ -302,6 +305,8 @@ export function clearModalOnHiding() {
                 $('.text-danger').addClass('d-none').text('');
                 $('input, select, textarea').removeClass('is-invalid');
                 $('.selectize-control').removeClass('is-invalid');
+
+                sr.resetSupplierDataTable({});
             }
             else {
                 // Leave the values, the user came back from the category modal
