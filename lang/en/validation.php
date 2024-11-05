@@ -196,7 +196,7 @@ return [
         'URL' => 'URL',
         'SPN' => 'Supplier Part Number (SPN)',
         'price' => 'Price',
-        'stock_changes.*.quantity' => 'stock change',
+        'stock_changes.*.quantity' => 'Quantity',
     ],
 
 ];

@@ -71,7 +71,7 @@ class FormValidator {
     // Method to handle errors for general form fields
     handleGeneralError(key, message) {
 
-        // const errorId = `#error-${key.replace(/\./g, '_')}`;
+        // The error div for general errors has dots replaced by underscores
         const errorDiv = this.$form.find(`#error-${key.replace(/\./g, '_')}`);
         const inputField = this.$form.find(`[name="${key}"]`);
 
