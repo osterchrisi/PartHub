@@ -43,9 +43,10 @@ class DatabaseServiceController extends Controller
         $new_value = $request->input('new_value');
 
         try {
-            DatabaseService::updateCell($table_name, $id_field, $id, $column, $new_value);
+            // Pass the response from DatabaseService directly to the client
+            $response = DatabaseService::updateCell($table_name, $id_field, $id, $column, $new_value);
 
-            return response()->json(['message' => 'Cell updated successfully'], 200);
+            return response()->json($response, 200);
         } catch (Exception $e) {
             Log::error($e->getMessage());
 

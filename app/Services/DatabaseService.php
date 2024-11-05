@@ -96,16 +96,24 @@ class DatabaseService
             }
         }
 
-        // Get the owner column for the specified table
         $owner_column = self::$owner_columns[$table_name] ?? null;
         if (!$owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
-        // Get the authenticated user's ID
         $user_id = Auth::id();
 
-        // Ensure the row belongs to the current user before updating
+        // Check if the new value is different from the current one
+        $currentValue = DB::table($table_name)
+            ->where($id_field, $id)
+            ->where($owner_column, $user_id)
+            ->value($column);
+
+        if ($currentValue === $new_value) {
+            return ['message' => 'No changes were made.'];
+        }
+
+        // Proceed with the update only if the value is different
         $updated = DB::table($table_name)
             ->where($id_field, $id)
             ->where($owner_column, $user_id)
@@ -114,7 +122,9 @@ class DatabaseService
         if (!$updated) {
             throw new Exception('Unauthorized or row not found for updating');
         }
+        return ['message' => 'Cell updated successfully.'];
     }
+
 
     /**
      * Dynamically retrieve validation rules for the specified table and column.
