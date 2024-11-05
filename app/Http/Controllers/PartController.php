@@ -19,6 +19,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class PartController extends Controller
 {
@@ -285,11 +287,11 @@ class PartController extends Controller
      * @param  Request  $request  The HTTP request containing stock change data.
      * @return \Illuminate\Http\JsonResponse A JSON response indicating success or requesting user action.
      */
-    public function handleStockRequests(StockChangeRequest $request)
+    public function handleStockRequests(Request $request)
     {
         // Access stock changes to prepare
         // $requested_changes = $request->all()['stock_changes'];
-        $requested_changes = $request->validated()['stock_changes'];
+        $requested_changes = $this->validateStockRequest($request);
 
         // Extract type of change from the first entry in the array (all entries have same type)
         $change = $requested_changes[0]['change'];
@@ -330,6 +332,32 @@ class PartController extends Controller
 
             return response()->json($result);
         }
+    }
+
+    protected function validateStockRequest(Request $request)
+    {
+        $rules = [
+            'stock_changes' => 'required|array',
+            'stock_changes.*.quantity' => 'required|integer|min:1',             // Must be an integer and at least 1
+            'stock_changes.*.to_location' => 'nullable|integer',                // Optional integer
+            'stock_changes.*.from_location' => 'nullable|integer',              // Optional integer
+            'stock_changes.*.comment' => 'nullable|string|max:255',             // Optional, max 255 characters
+            'stock_changes.*.part_id' => 'required|integer',                    // Required integer
+            'stock_changes.*.change' => 'required|string|in:1,0,-1',            // Required and must be one of the defined types
+            'stock_changes.*.bom_id' => 'nullable|integer',                     // Optional, can be empty or integer
+            'stock_changes.*.assemble_quantity' => 'nullable|integer|min:1',    // Optional, integer if provided, at least 1
+            'stock_changes.*.status' => 'nullable|string|in:gtg,ntg,stg',       // Optional status with specific values
+            'stock_changes.*.to_quantity' => 'nullable|integer',                // Optional integer, can be empty
+            'stock_changes.*.from_quantity' => 'nullable|integer',              // Optional integer, can be empty
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            throw new \Illuminate\Validation\ValidationException($validator);
+        }
+
+        return $validator->validated();
     }
 
     public function searchMouserPartNumber($searchTerm)
