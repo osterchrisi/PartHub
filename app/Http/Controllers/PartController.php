@@ -104,7 +104,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -157,7 +158,7 @@ class PartController extends Controller
             );
 
             // Handle stock level if quantity and location are provided
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
                     $new_part_id,
@@ -171,14 +172,14 @@ class PartController extends Controller
             }
 
             // Handle supplier data through SupplierService
-            if (! empty($validated['suppliers'])) {
+            if (!empty($validated['suppliers'])) {
                 $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
             // Trigger stock movement event
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
                 event(new StockMovementOccured($stock_level, Auth::user()));
             }
@@ -191,7 +192,7 @@ class PartController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
 
@@ -258,7 +259,8 @@ class PartController extends Controller
                     'tabToggleId3' => 'partSuppliers',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -289,49 +291,8 @@ class PartController extends Controller
      */
     public function handleStockRequests(Request $request)
     {
-        // Access stock changes to prepare
-        // $requested_changes = $request->all()['stock_changes'];
         $requested_changes = $this->validateStockRequest($request);
-
-        // Extract type of change from the first entry in the array (all entries have same type)
-        $change = $requested_changes[0]['change'];
-
-        // Initialize arrays
-        $changes = [];
-        $negative_stock = [];
-
-        //* Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
-        foreach ($requested_changes as $requested_change) {
-
-            // Extract change details from request
-            $requested_change_details = $this->stockService->parseRequestedChangeDetails($requested_change);
-
-            // Get relevant stock levels for currently iterated part
-            $requested_change_stock_levels = $this->stockService->getRelevantStockLevelsForChange($requested_change_details);
-
-            // Collect changes to be made
-            $result = $this->stockService->collectStockChangeDetails($requested_change_details, $requested_change_stock_levels, $negative_stock);
-
-            // Append array of collected changes to the main arrays
-            $changes[] = $result['changes'];
-            if (array_key_exists('negative_stock', $result)) {
-                $negative_stock[] = $result['negative_stock'];
-            }
-        }
-
-        //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (! empty($negative_stock)) {
-            $response = $this->stockService->generateStockShortageResponse($negative_stock, $changes, $change);
-
-            return response()->json($response);
-        }
-
-        //* No user permission necessary
-        else {
-            $result = $this->stockService->processStockChanges($changes);
-
-            return response()->json($result);
-        }
+        return $this->stockService->handleStockRequest($requested_changes['stock_changes']);
     }
 
     protected function validateStockRequest(Request $request)

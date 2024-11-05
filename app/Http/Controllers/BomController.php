@@ -7,6 +7,7 @@ use App\Models\Bom;
 use App\Models\BomElements;
 use App\Models\BomRun;
 use App\Services\CsvImportService;
+use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +30,11 @@ class BomController extends Controller
     private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'name'];
 
     private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'User'];
+    protected $stockService;
+    public function __construct(StockService $stockService)
+    {
+        $this->stockService = $stockService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -108,7 +114,7 @@ class BomController extends Controller
      *
      * @return mixed
      */
-    public static function prepareBomForAssembly(Request $request)
+    public function prepareBomForAssembly(Request $request)
     {
         // Get the input values from the request
         $ids = $request->input('ids');
@@ -148,13 +154,7 @@ class BomController extends Controller
             }
         }
 
-        // Assign the final array to the stock_changes key in the request input
-        $request->merge(['stock_changes' => $all_stock_changes]);
-
-        // Make new PartController and let it do its thing
-        $partController = app(PartController::class);
-
-        return $partController->handleStockRequests($request);
+        return $this->stockService->handleStockRequest($all_stock_changes);
     }
 
     public function importBom(Request $request)
