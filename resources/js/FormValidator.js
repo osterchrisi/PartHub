@@ -29,13 +29,6 @@ class FormValidator {
     }
 
     submitFormIfValid() {
-        // if (this.$form[0].checkValidity()) {
-        //     this.submitCallback();
-        // } else {
-        //     this.displayFieldValidity();
-        // }
-
-        // Keeping only this for now:
         this.submitCallback();
     }
 
