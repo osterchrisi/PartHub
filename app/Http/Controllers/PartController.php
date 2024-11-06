@@ -15,6 +15,7 @@ use App\Services\MouserApiService;
 use App\Services\StockService;
 use App\Services\SupplierService;
 use App\Services\Validators\PartValidatorService;
+use App\Services\Validators\StockValidatorService;
 use App\Http\Requests\StockChangeRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,34 +27,29 @@ use Illuminate\Support\Facades\Validator;
 class PartController extends Controller
 {
     private static $table_name = 'parts';
-
     private static $supplierDataTable = 'supplier_data';
-
     private static $id_field = 'part_id';
-
     private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id'];
-
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
     private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', 'ID'];
 
     protected $databaseService;
-
     protected $stockService;
-
     protected $supplierService;
-
     protected $categoryService;
-
     protected $mouserApi;
+    protected $partValidator;
+    protected $stockValidator;
 
-    public function __construct(PartValidatorService $validatorService, CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService, MouserApiService $mouserApi)
+    public function __construct(StockValidatorService $stockValidatorService, PartValidatorService $partValidatorService, CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService, MouserApiService $mouserApi)
     {
         $this->categoryService = $categoryService;
         $this->databaseService = $databaseService;
         $this->stockService = $stockService;
         $this->supplierService = $supplierService;
         $this->mouserApi = $mouserApi;
-        $this->partValidator = $validatorService;
+        $this->partValidator = $partValidatorService;
+        $this->stockValidator = $stockValidatorService;
 
     }
 
@@ -195,7 +191,6 @@ class PartController extends Controller
         $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
 
         // Need to jump through a few hoops for proper time-zoning
-        // TODO: Investigate this...?
         foreach ($stockHistory as $historyItem) {
             // Parse the timestamp as UTC without altering the time itself
             $utcTimestamp = Carbon::createFromFormat('Y-m-d H:i:s', $historyItem->stock_lvl_chng_timestamp, 'UTC');
@@ -280,34 +275,8 @@ class PartController extends Controller
      */
     public function handleStockRequests(Request $request)
     {
-        $requested_changes = $this->validateStockRequest($request);
+        $requested_changes = $this->stockValidator->validate($request->all());
         return $this->stockService->handleStockRequest($requested_changes['stock_changes']);
-    }
-
-    protected function validateStockRequest(Request $request)
-    {
-        $rules = [
-            'stock_changes' => 'required|array',
-            'stock_changes.*.quantity' => 'required|integer|min:1',             // Must be an integer and at least 1
-            'stock_changes.*.to_location' => 'nullable|integer',                // Optional integer
-            'stock_changes.*.from_location' => 'nullable|integer',              // Optional integer
-            'stock_changes.*.comment' => 'nullable|string|max:255',             // Optional, max 255 characters
-            'stock_changes.*.part_id' => 'required|integer',                    // Required integer
-            'stock_changes.*.change' => 'required|string|in:1,0,-1',            // Required and must be one of the defined types
-            'stock_changes.*.bom_id' => 'nullable|integer',                     // Optional, can be empty or integer
-            'stock_changes.*.assemble_quantity' => 'nullable|integer|min:1',    // Optional, integer if provided, at least 1
-            'stock_changes.*.status' => 'nullable|string|in:gtg,ntg,stg',       // Optional status with specific values
-            'stock_changes.*.to_quantity' => 'nullable|integer',                // Optional integer, can be empty
-            'stock_changes.*.from_quantity' => 'nullable|integer',              // Optional integer, can be empty
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            throw new \Illuminate\Validation\ValidationException($validator);
-        }
-
-        return $validator->validated();
     }
 
     public function searchMouserPartNumber($searchTerm)

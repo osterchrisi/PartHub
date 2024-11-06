@@ -1,13 +1,13 @@
 {{-- Styling for the edit pens --}}
 {{-- Uncomment the ".editable-text-cell:hover .edit-pen" part to magically make the edit pens appear --}}
 <style>
-    .editable-text-cell {
+    .editable {
         position: relative;
     }
 
-    /* .editable-text-cell:hover .edit-pen {
+    .editable:hover .edit-pen {
         display: block;
-    } */
+    }
 
     .edit-pen {
         padding-top: 4px;
@@ -91,17 +91,29 @@
                     @elseif ($column_data == 'category_name')
                         <td data-editable="true" class="editable editable-category" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}</td>
+                            data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}<div
+                                class="edit-pen">
+                                <a href="#"><i class="fas fa-pen fa-lg"></i></a>
+                            </div>
+                        </td>
                         {{-- Unit --}}
                     @elseif ($column_data == 'unit_name')
                         <td data-editable="true" class="editable editable-unit" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}</td>
+                            data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}<div
+                                class="edit-pen">
+                                <a href="#"><i class="fas fa-pen fa-lg"></i></a>
+                            </div>
+                        </td>
                         {{-- Footprint --}}
                     @elseif ($column_data == 'footprint_name')
                         <td data-editable="true" class="editable editable-footprint" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['footprint'][$column_data] ?? '' }}</td>
+                            data-id_field="{{ $id_field }}">{{ $part['footprint'][$column_data] ?? '' }}<div
+                                class="edit-pen">
+                                <a href="#"><i class="fas fa-pen fa-lg"></i></a>
+                            </div>
+                        </td>
                         {{-- Supplier --}}
                         {{-- @elseif ($column_data == 'supplier_name')
                         <td data-editable="true" class="editable editable-supplier" data-id="{{ $part_id }}"

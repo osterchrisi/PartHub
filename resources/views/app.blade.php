@@ -38,6 +38,7 @@
             <div class="col-10 flex-shrink-1" id="table-window-container" style="overflow-x: auto;">
                 <div class="border rounded border-primary border-opacity-25 px-3 me-3 shadow-sm" id="table-window">
                     @yield('table-window')
+                    <p class="text-muted">Use <kbd>Ctrl</kbd> and/or <kbd>Shift</kbd> to select rows in the table</p>
                 </div>
                 <div class="table-resize-handle ui-resizable-handle ui-resizable-e rounded"></div>
             </div>
