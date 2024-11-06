@@ -123,5 +123,8 @@ class FormValidator {
         if (generalErrorDiv.length) {
             generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
         }
+        else {
+            console.log(generalErrorDiv, " not found in ", this.$form);
+        }
     }
 }

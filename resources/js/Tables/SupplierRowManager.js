@@ -217,8 +217,9 @@ class SupplierRowManager {
 
         // Rebuild the supplier data table structure
         $('#addSuppliers').append(`
+        <div class="col">
                 <div id="supplierTableContainer">
-                    <table id="supplierDataTable" class="table table-sm table-bordered table-hover">
+                    <table id="supplierDataTable" class="table table-sm table-bordered table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th data-field="supplier">Supplier</th>
@@ -233,7 +234,11 @@ class SupplierRowManager {
                         </tbody>
                     </table>
                 </div>
-                <button type="button" id="addSupplierRowBtn-partEntry" class="btn btn-sm btn-secondary mt-2">Add Supplier</button>
+                <button type="button" id="addSupplierRowBtn-partEntry" class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add Supplier</button>
+                </div>
+            <div id="error-supplier" class="d-none text-danger">
+                <x-input-error :messages="[]" />
+            </div>
             `);
 
         // Collapse the supplier data div and reset modal size

@@ -14,6 +14,7 @@ use App\Services\DatabaseService;
 use App\Services\MouserApiService;
 use App\Services\StockService;
 use App\Services\SupplierService;
+use App\Services\Validators\PartValidatorService;
 use App\Http\Requests\StockChangeRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -45,13 +46,15 @@ class PartController extends Controller
 
     protected $mouserApi;
 
-    public function __construct(CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService, MouserApiService $mouserApi)
+    public function __construct(PartValidatorService $validatorService, CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService, MouserApiService $mouserApi)
     {
         $this->categoryService = $categoryService;
         $this->databaseService = $databaseService;
         $this->stockService = $stockService;
         $this->supplierService = $supplierService;
         $this->mouserApi = $mouserApi;
+        $this->partValidator = $validatorService;
+
     }
 
     /**
@@ -123,21 +126,7 @@ class PartController extends Controller
     public function create(Request $request)
     {
         // Validate the part data (excluding suppliers for now)
-        $validated = $request->validate([
-            'part_name' => 'required|string|max:255',
-            'quantity' => 'nullable|integer',
-            'to_location' => 'nullable|integer',
-            'comment' => 'nullable|string',
-            'description' => 'nullable|string',
-            'footprint' => 'nullable|string',
-            'category' => 'nullable|integer',
-            'min_quantity' => 'nullable|integer',
-            'suppliers' => 'nullable|array',
-            'suppliers.*.supplier_id' => 'nullable|integer|required_with:suppliers.*.URL,suppliers.*.SPN,suppliers.*.price',
-            'suppliers.*.URL' => 'nullable|url',
-            'suppliers.*.SPN' => 'nullable|string|max:255',
-            'suppliers.*.price' => 'nullable|numeric',
-        ]);
+        $validated = $this->partValidator->validate($request->all());
 
         $user_id = Auth::user()->id;
         $root_category = $this->categoryService->findRootCategory($user_id)->category_id ?? null;
