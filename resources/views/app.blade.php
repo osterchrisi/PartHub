@@ -26,7 +26,7 @@
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
                     <div class="flex-grow-0" id='category-window-container' style="display: none;">
-                        <div class="rounded border border-dark border-opacity-25 me-3 ps-3 pb-3" id="category-window">
+                        <div class="rounded border border-dark border-opacity-25 me-3 ps-3 pb-3 shadow-sm" id="category-window">
                             @include('categories.categoriesTable')
                         </div>
                         <div class="category-resize-handle ui-resizable-handle ui-resizable-e rounded-1"></div>
@@ -36,14 +36,14 @@
 
             {{-- Table Window --}}
             <div class="col-10 flex-shrink-1" id="table-window-container" style="overflow-x: auto;">
-                <div class="border rounded border-primary border-opacity-25 px-3 me-3" id="table-window">
+                <div class="border rounded border-primary border-opacity-25 px-3 me-3 shadow-sm" id="table-window">
                     @yield('table-window')
                 </div>
                 <div class="table-resize-handle ui-resizable-handle ui-resizable-e rounded"></div>
             </div>
 
             {{-- Info Window --}}
-            <div class='flex-grow-1 d-flex sticky justify-content-center info-window rounded border border-info border-opacity-25 pb-3'
+            <div class='flex-grow-1 d-flex sticky justify-content-center info-window rounded border border-info border-opacity-25 pb-3 shadow-sm'
                 id='info-window' style="position: sticky; top: 50px; height: 89vh; overflow-x: auto;">
                 @yield('info-window')
             </div>
