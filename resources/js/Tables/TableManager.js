@@ -134,10 +134,17 @@ class TableManager {
                     // Array of category and potential child category names as strings for filtering parts table
                     var cats = CategoryService.getChildCategoriesNames(this.categories, id);
 
-                    // Filter by categories
-                    $('#parts_table').bootstrapTable('filterBy', {
-                        Category: cats
-                    })
+                    // Custom filter by categoreis for parts table 
+                    // Filtering by the data-category attribute (ends up in the table / row object)
+                    $('#parts_table').bootstrapTable('filterBy', {}, {
+                    filterAlgorithm: function(row) {
+                        // Access the category string from the row object
+                        const category = row._Category_data.category;
+
+                        const match = cats.includes(category);
+                        return match;
+                    }
+                });
                 }
             default:
                 return (id) => {

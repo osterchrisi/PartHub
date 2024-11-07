@@ -23,6 +23,10 @@
     }
 </style>
 
+@php
+    // var_dump($parts);
+@endphp
+
 {{-- Placeholder Wrapper --}}
 <div id="parts_table_placeholder">
     <table class="table table-sm table-hover table-striped w-100" style="font-size:12px">
@@ -91,8 +95,9 @@
                     @elseif ($column_data == 'category_name')
                         <td data-editable="true" class="editable editable-category" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['category'][$column_data] ?? '' }}<div
-                                class="edit-pen">
+                            data-id_field="{{ $id_field }}"
+                            data-category="{{ $part['category'][$column_data] ?? '' }}">
+                            {{ $part['category'][$column_data] ?? '' }}<div class="edit-pen">
                                 <a href="#"><i class="fas fa-pen fa-lg"></i></a>
                             </div>
                         </td>
