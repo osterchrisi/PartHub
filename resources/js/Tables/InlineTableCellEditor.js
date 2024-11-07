@@ -198,8 +198,8 @@ class InlineTableCellEditor {
                     // Change cell text back if value was not changed
                     if (!this.valueChanged) {
                         this.$cell.text(this.originalValue);
-                        this.$cell.append($('#edit-pen-template').html());
                     }
+                    this.$cell.append($('#edit-pen-template').html());
                     this.$cell.removeClass('editing');
                 });
 
@@ -210,8 +210,8 @@ class InlineTableCellEditor {
                         // Change cell text back if value was not changed
                         if (!this.valueChanged) {
                             this.$cell.text(this.originalValue);
-                            this.$cell.append($('#edit-pen-template').html());
                         }
+                        this.$cell.append($('#edit-pen-template').html());
                         this.$cell.removeClass('editing');
                         // Remove the event handler once it has done its job
                         $(document).off('keydown');
@@ -277,6 +277,7 @@ class InlineTableCellEditor {
             }
             // Editing aftermath
             select.remove();
+            this.$cell.append($('#edit-pen-template').html());
             cell.removeClass('editing');
             changeFlagCallback(); // Callback function to set change flag
             $(document).off('keydown'); // Removing the escape handler because it's on document level

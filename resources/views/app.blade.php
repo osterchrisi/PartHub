@@ -95,8 +95,7 @@
 
 <!-- Hidden template for the edit pen -->
 <div id="edit-pen-template" style="display: none;">
-    @component('components.edit-pen')
-    @endcomponent
+    <x-edit-pen />
 </div>
 
 {{-- Modals and Menus --}}
