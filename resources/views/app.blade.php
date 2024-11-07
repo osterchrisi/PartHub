@@ -93,6 +93,12 @@
     </div>
 </div>
 
+<!-- Hidden template for the edit pen -->
+<div id="edit-pen-template" style="display: none;">
+    @component('components.edit-pen')
+    @endcomponent
+</div>
+
 {{-- Modals and Menus --}}
 @yield('modals and menus')
 </body>

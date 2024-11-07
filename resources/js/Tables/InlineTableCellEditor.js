@@ -14,8 +14,9 @@ class InlineTableCellEditor {
     }
 
     enableInlineProcessing() {
-        $(document).on('dblclick', '.editable', (event) => {
-            const cell = $(event.currentTarget);
+        $(document).on('click', '.edit-pen', (event) => {
+            event.preventDefault();
+            const cell = $(event.currentTarget).closest('.editable');
             if (cell.hasClass('editing')) {
                 return;
             }
@@ -112,6 +113,7 @@ class InlineTableCellEditor {
 
             // Call the updating function
             this.updateCell(id, column, table_name, new_value, id_field);
+            this.$cell.append($('#edit-pen-template').html());
             this.$cell.removeClass('editing');
 
             //TODO: Not great - but works?!
@@ -139,6 +141,7 @@ class InlineTableCellEditor {
             if (event.key === "Escape") {
                 input.remove();
                 this.$cell.text(this.originalValue);
+                this.$cell.append($('#edit-pen-template').html());
                 this.$cell.removeClass('editing');
                 return;
             }
@@ -195,6 +198,7 @@ class InlineTableCellEditor {
                     // Change cell text back if value was not changed
                     if (!this.valueChanged) {
                         this.$cell.text(this.originalValue);
+                        this.$cell.append($('#edit-pen-template').html());
                     }
                     this.$cell.removeClass('editing');
                 });
@@ -206,6 +210,7 @@ class InlineTableCellEditor {
                         // Change cell text back if value was not changed
                         if (!this.valueChanged) {
                             this.$cell.text(this.originalValue);
+                            this.$cell.append($('#edit-pen-template').html());
                         }
                         this.$cell.removeClass('editing');
                         // Remove the event handler once it has done its job
