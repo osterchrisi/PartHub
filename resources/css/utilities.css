@@ -15,13 +15,16 @@
     cursor: col-resize;
     z-index: 1;
     background-color: rgba(var(--bs-info-rgb), 0.01);
-    transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effect */
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    /* Smooth transition for hover effect */
 }
 
 /* Hover effect for the resizable handle */
 .ui-resizable-e:hover {
-    background-color: rgba(var(--bs-primary-rgb), 0.1); /* Change to a new color on hover */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional shadow for a more visible effect */
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    /* Change to a new color on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* Optional shadow for a more visible effect */
 }
 
 
@@ -66,4 +69,55 @@
     opacity: 0.5;
     background-color: #f0f0f0;
     border: 2px dashed #ccc;
+}
+
+/* Keyboard Hints */
+#table-window:hover .key-hint {
+    opacity: 1;
+    visibility: visible;
+}
+
+.key-hint {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Editable Pen */
+.editable {
+    position: relative;
+}
+
+.editable .edit-pen {
+    padding-top: 4px;
+    padding-right: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    /* transition: visibility 0.05s ease, opacity 0.05s ease; */
+}
+
+.editable:hover .edit-pen {
+    visibility: visible;
+}
+
+.editable:hover .edit-pen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.5); /* Adjust for desired opacity effect */
+    z-index: -1;
+}
+
+.edit-pen a {
+    color: var(--bs-gray-500);
+    /* transition: color 0.05s ease; */
+}
+
+.edit-pen a:hover {
+    color: black;
 }

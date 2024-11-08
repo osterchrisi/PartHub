@@ -1,26 +1,7 @@
 {{-- Styling for the edit pens --}}
 {{-- Uncomment the ".editable-text-cell:hover .edit-pen" part to magically make the edit pens appear --}}
 <style>
-    .editable {
-        position: relative;
-    }
 
-    .editable:hover .edit-pen {
-        display: block;
-    }
-
-    .edit-pen {
-        padding-top: 4px;
-        padding-right: 2px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        display: none;
-    }
-
-    .edit-pen a {
-        color: var(--bs-gray-500);
-    }
 </style>
 
 @php
@@ -98,14 +79,12 @@
                             data-id_field="{{ $id_field }}"
                             data-category="{{ $part['category'][$column_data] ?? '' }}">
                             {{ $part['category'][$column_data] ?? '' }}<x-edit-pen />
-
                         </td>
                         {{-- Unit --}}
                     @elseif ($column_data == 'unit_name')
                         <td data-editable="true" class="editable editable-unit" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}<x-edit-pen />
-
                         </td>
                         {{-- Footprint --}}
                     @elseif ($column_data == 'footprint_name')
@@ -113,7 +92,6 @@
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">
                             {{ $part['footprint'][$column_data] ?? '' }}<x-edit-pen />
-
                         </td>
                         {{-- Supplier --}}
                         {{-- @elseif ($column_data == 'supplier_name')
@@ -133,7 +111,6 @@
                         <td data-editable="true" class="editable editable-text" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}<x-edit-pen />
-
                         </td>
                     @endif
                 @endforeach
