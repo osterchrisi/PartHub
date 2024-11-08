@@ -1,6 +1,7 @@
 export { ImageManager }
 
-import { showDeletionConfirmationToast, showDeleteConfirmation } from "../custom";
+import { showDeleteConfirmationModal } from "../custom";
+import { Layout } from "../User Interface/Layout";
 
 /**
  * Class to manage image-related operations such as uploading, displaying, and deleting images.
@@ -147,7 +148,7 @@ class ImageManager {
     * @returns {void}
     */
     deleteImage(type, id) {
-        showDeleteConfirmation('Are you sure you want to delete this image?', () => {
+        showDeleteConfirmationModal('Are you sure you want to delete this image?', () => {
             var csrfToken = $('input[name="_token"]').val();
 
             $.ajax({
@@ -158,7 +159,7 @@ class ImageManager {
                 },
                 success: (response) => {
                     if (response.success) {
-                        showDeletionConfirmationToast(1, 'image');
+                        Layout.showDeletionConfirmationToast(1, 'image');
                         this.fetchImages(this.type, this.id);
                     }
                 },

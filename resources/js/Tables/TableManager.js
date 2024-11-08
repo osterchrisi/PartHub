@@ -2,13 +2,13 @@ export { TableManager };
 import { TableRowManager } from "./TableRowManager";
 import {
     updateInfoWindow,
-    showDeleteConfirmation,
+    showDeleteConfirmationModal,
     deleteSelectedRows,
-    makeTableWindowResizable,
 } from "../custom";
 
 import { assembleBoms } from "../tables";
 import { CategoryService } from "../Services/CategoryService";
+import { Layout } from "../User Interface/Layout";
 
 class TableManager {
     /**
@@ -205,7 +205,7 @@ class TableManager {
         return {
             delete: (selectedRows, ids) => {
                 const question = `Are you sure you want to delete ${selectedRows.length} selected row(s)?`;
-                showDeleteConfirmation(question, () => {
+                showDeleteConfirmationModal(question, () => {
                     //TODO: Code the difference between part/parts, bom/boms, ... in the question
                     this.deleteRows(ids, `${this.type}s`, this.id_name);
                 });
@@ -313,7 +313,7 @@ class TableManager {
                 this.$table = $(`#${this.tableId}`);
                 this.bootstrapTable();
                 this.defineActions();
-                makeTableWindowResizable();
+                Layout.makeTableWindowResizable();
 
                 if (typeof postRebuildCallback === 'function') {
                     postRebuildCallback();

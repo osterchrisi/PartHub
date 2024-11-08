@@ -1,4 +1,4 @@
-import { deleteSelectedRows, showDeleteConfirmation, updateInfoWindow } from "../custom";
+import { deleteSelectedRows, showDeleteConfirmationModal, updateInfoWindow } from "../custom";
 import { assembleBoms } from "../tables";
 import { TableManager } from "../Tables/TableManager";
 import { TableRowManager } from "../Tables/TableRowManager";
@@ -21,7 +21,7 @@ export function deleteRowsHandler(table_id, model, id_column, successCallback) {
         }
 
         // Show confirmation dialog and proceed to delete selected rows
-        showDeleteConfirmation(question, () => {
+        showDeleteConfirmationModal(question, () => {
             deleteSelectedRows(ids, model, id_column, successCallback);
         });
     }

@@ -1,6 +1,7 @@
 export { DocumentManager };
 
-import { showDeletionConfirmationToast, showDeleteConfirmation } from "../custom";
+import { showDeleteConfirmationModal } from "../custom";
+import { Layout } from "../User Interface/Layout";
 
 /**
  * Class to manage document-related operations such as uploading, displaying, and deleting documents.
@@ -126,7 +127,7 @@ class DocumentManager {
     * @returns {void}
     */
     deleteDocument(type, id) {
-        showDeleteConfirmation('Are you sure you want to delete this document?', () => {
+        showDeleteConfirmationModal('Are you sure you want to delete this document?', () => {
             var csrfToken = $('input[name="_token"]').val();
 
             $.ajax({
@@ -137,7 +138,7 @@ class DocumentManager {
                 },
                 success: (response) => {
                     if (response.success) {
-                        showDeletionConfirmationToast(1, 'document');
+                        Layout.showDeletionConfirmationToast(1, 'document');
                         this.fetchDocuments(this.type, this.id);
                     }
                 },

@@ -1,6 +1,7 @@
 import { ResourceCreator } from "./Resources/ResourceCreators/ResourceCreator";
 import { InfoWindow } from "./InfoWindow";
 import { SupplierRowManager } from "./Tables/SupplierRowManager";
+import { Layout } from "./User Interface/Layout";
 
 /**
  * Prevents text selection in the given table when the shift key is pressed (for selecting)
@@ -32,48 +33,6 @@ export function preventTextSelectionOnShift($table) {
 export function removeClickListeners(id) {
     $(id).off('click');
 }
-
-// Function to save sizes and visibility state in local storage
-export function saveLayoutSettings() {
-    const tableWidth = $('#table-window-container').width();
-    const infoWidth = $('#info-window').width();
-    const categoryVisible = $('#category-window-container').is(':visible');
-    const currentView = document.body.getAttribute('data-view');
-
-    const layoutKey = `layoutSettings_${currentView}`; // Create a unique key based on the page
-
-    // Save layout data as an object in local storage
-    const layoutData = {
-        tableWidth: tableWidth,
-        infoWidth: infoWidth,
-        categoryVisible: categoryVisible
-    };
-
-    localStorage.setItem(layoutKey, JSON.stringify(layoutData)); // Store as a JSON string
-}
-
-
-
-/**
- * Make the table-window and the info-window resizable
- * @return void 
- */
-export function makeTableWindowResizable() {
-    $('#table-window-container').resizable({
-        handles: { 'e': '.table-resize-handle' },
-        stop: function () {
-            saveLayoutSettings(); // Save the layout settings after resize
-        }
-    });
-
-    $('#category-window-container').resizable({
-        handles: { 'e': '.category-resize-handle' },
-        stop: function () {
-            saveLayoutSettings(); // Save after resizing the category window
-        }
-    });
-}
-
 
 /**
  * 'Selectize' the category multi select, prepare values and append to the hidden input field
@@ -124,7 +83,7 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             'X-CSRF-TOKEN': token
         },
         success: function (response) {
-            showDeletionConfirmationToast(ids.length, model);
+            Layout.showDeletionConfirmationToast(ids.length, model);
             var queryString = window.location.search;
             successCallback(queryString);
         },
@@ -139,59 +98,6 @@ export function deleteSelectedRows(ids, model, id_column, successCallback) {
             }
         }
     });
-}
-
-/**
- * Initializes Bootstrap popovers on all elements with the 'data-bs-toggle="popover"' attribute.
- * @returns {void}
- */
-export function initializePopovers() {
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-}
-
-export function showDeletionConfirmationToast(numElements, type) {
-    const deleteToast = document.getElementById('tConfirmDelete');
-
-    // Correct singular / plural wording
-    if (type == 'parts') {
-        if (numElements > 1) {
-            type = 'parts';
-        } else {
-            type = 'part';
-        }
-    }
-    else if (type == 'boms') {
-        if (numElements > 1) {
-            type = 'BOMs';
-        } else {
-            type = 'BOM';
-        }
-    }
-    else if (type == 'part_categories') {
-        if (numElements > 1) {
-            type = 'categories';
-        } else {
-            type = 'category';
-        }
-    }
-    else if (type == 'image') {
-        if (numElements > 1) {
-            type = 'images';
-        } else {
-            type = 'image';
-        }
-    }
-
-    const numDeletedItemsSpan = document.getElementById('numDeletedItems');
-    numDeletedItemsSpan.textContent = numElements.toString();
-
-    const typeSpan = document.getElementById('typeSpan');
-    typeSpan.textContent = type.toString();
-
-    const toast = bootstrap.Toast.getOrCreateInstance(deleteToast);
-    toast.show();
-
 }
 
 /**
@@ -289,7 +195,7 @@ export function focusFirstInputInModals() {
  * @param {string} question - The question to display in the modal.
  * @param {function} confirmCallback - The callback function to execute upon confirmation.
  */
-export function showDeleteConfirmation(question, confirmCallback) {
+export function showDeleteConfirmationModal(question, confirmCallback) {
     // Set the delete question
     $('#deleteQuestion').text(question);
 
@@ -301,13 +207,4 @@ export function showDeleteConfirmation(question, confirmCallback) {
         confirmCallback();
         $('#deleteConfirmationModal').modal('hide');
     });
-}
-
-// Initialize Tooltips
-export function initializeTooltips() {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl, {
-        animation: true,
-        delay: { "show": 500, "hide": 100 }
-    }));
 }

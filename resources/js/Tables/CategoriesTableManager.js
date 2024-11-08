@@ -2,7 +2,7 @@ export { CategoryTableManager }
 import { CategoryService } from "../Services/CategoryService";
 import { TableManager } from "./TableManager";
 import { DataFetchService } from "../Services/DataFetchService";
-import { saveLayoutSettings } from "../custom";
+import { Layout } from "../User Interface/Layout";
 
 /**
  * The CategoryTableManager is special because:
@@ -147,7 +147,7 @@ class CategoryTableManager extends TableManager {
     attachShowCategoriesButtonClickListener() {
         $('#cat-show-btn').off('click').on('click', function () {
             $('#category-window-container').toggle();
-            saveLayoutSettings(); // Save visibility after toggling
+            Layout.saveLayoutSettings(); // Save visibility after toggling
         });
     }
 }
