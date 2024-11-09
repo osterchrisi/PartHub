@@ -33,7 +33,8 @@ class InlineTableCellEditor {
             // Set instance-level properties based on the clicked cell
             this.type = type;
             this.$cell = cell;
-            this.originalValue = cell.text();
+            // Update to correctly find the content within the flexbox component
+            this.originalValue = cell.find('.d-flex span').first().text().trim();
             this.originTable = cell.closest('table').attr('id');
             this.valueChanged = false;
 
@@ -81,7 +82,7 @@ class InlineTableCellEditor {
     editTextCell() {
         // Create input field
         const input = $('<textarea class="form-control">').val(this.originalValue.trim());
-        this.$cell.empty().append(input);
+        this.$cell.find('.d-flex span').first().empty().append(input);
         input.focus();
 
         // Create label for input field
@@ -101,7 +102,7 @@ class InlineTableCellEditor {
             const new_value = input.val();
 
             // Update cell with new value
-            this.$cell.text(new_value);
+            this.$cell.find('.d-flex span').first().text(new_value);
 
             // Get database row id, id column name, currently edited column name and database table
             // These are encoded in the table data cells and look like this, e.g.:
@@ -140,7 +141,7 @@ class InlineTableCellEditor {
         input.on('keydown', (event) => {
             if (event.key === "Escape") {
                 input.remove();
-                this.$cell.text(this.originalValue);
+                this.$cell.find('.d-flex span').first().text(this.originalValue);
                 this.$cell.append($('#edit-pen-template').html());
                 this.$cell.removeClass('editing');
                 return;

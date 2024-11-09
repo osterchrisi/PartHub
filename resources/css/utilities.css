@@ -27,30 +27,6 @@
     /* Optional shadow for a more visible effect */
 }
 
-
-/* .ui-resizable-e:before,
-.ui-resizable-e:after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 50rem;
-    left: 0.25rem;
-    background-color: #000;
-} */
-
-/* .ui-resizable-e:before {
-    height: 100rem;
-    width: 1px;
-    margin-left: -2px;
-    background-color: var(--bs-primary-border-subtle);
-} */
-
-/* .ui-resizable-e:after {
-    height: 100rem;
-    width: 1px;
-    background-color: var(--bs-primary-border-subtle);
-} */
-
 /* Warning Button */
 .btn-warning {
     background-color: #ffc107;
@@ -84,18 +60,8 @@
 }
 
 /* Editable Pen */
-.editable {
-    position: relative;
-}
-
 .editable .edit-pen {
-    padding-top: 4px;
-    padding-right: 2px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    visibility: hidden;
-    /* transition: visibility 0.05s ease, opacity 0.05s ease; */
+    visibility: hidden; /*hidden*/
 }
 
 .editable:hover .edit-pen {

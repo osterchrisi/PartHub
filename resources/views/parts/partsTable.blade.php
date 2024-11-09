@@ -78,20 +78,29 @@
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}"
                             data-category="{{ $part['category'][$column_data] ?? '' }}">
-                            {{ $part['category'][$column_data] ?? '' }}<x-edit-pen />
+                            <x-tables.td-editable-flexbox :content="$part['category'][$column_data] ?? ''">
+                                <x-tables.edit-pen />
+                            </x-flexbox-container>
+                            {{-- {{ $part['category'][$column_data] ?? '' }}<x-tables.edit-pen /> --}}
                         </td>
                         {{-- Unit --}}
                     @elseif ($column_data == 'unit_name')
                         <td data-editable="true" class="editable editable-unit" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['unit'][$column_data] ?? '' }}<x-edit-pen />
+                            data-id_field="{{ $id_field }}">
+                            <x-tables.td-editable-flexbox :content="$part['unit'][$column_data] ?? ''">
+                                <x-tables.edit-pen />
+                            </x-flexbox-container>
                         </td>
                         {{-- Footprint --}}
                     @elseif ($column_data == 'footprint_name')
                         <td data-editable="true" class="editable editable-footprint" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">
-                            {{ $part['footprint'][$column_data] ?? '' }}<x-edit-pen />
+                            <x-tables.td-editable-flexbox :content="$part['footprint'][$column_data] ?? ''">
+                                <x-tables.edit-pen />
+                            </x-flexbox-container>
+                                {{-- {{ $part['footprint'][$column_data] ?? '' }}<x-tables.edit-pen /> --}}
                         </td>
                         {{-- Supplier --}}
                         {{-- @elseif ($column_data == 'supplier_name')
@@ -110,7 +119,10 @@
                     @else
                         <td data-editable="true" class="editable editable-text" data-id="{{ $part_id }}"
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part[$column_data] ?? '' }}<x-edit-pen />
+                            data-id_field="{{ $id_field }}">
+                            <x-tables.td-editable-flexbox :content="$part[$column_data] ?? ''">
+                                <x-tables.edit-pen />
+                                </x-flexbox-container>
                         </td>
                     @endif
                 @endforeach

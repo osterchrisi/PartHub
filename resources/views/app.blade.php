@@ -95,7 +95,7 @@
 
 <!-- Hidden template for the edit pen -->
 <div id="edit-pen-template" style="display: none;">
-    <x-edit-pen />
+    <x-tables.edit-pen />
 </div>
 
 {{-- Modals and Menus --}}
