@@ -14,6 +14,7 @@ class InlineTableCellEditor {
     }
 
     enableInlineProcessing() {
+        $(document).off('click', '.edit-pen');
         $(document).on('click', '.edit-pen', (event) => {
             event.preventDefault();
             const cell = $(event.currentTarget).closest('.editable');
@@ -80,13 +81,15 @@ class InlineTableCellEditor {
     }
 
     editTextCell() {
-        // Create input field
+        // Create input field for changing the value
         const input = $('<textarea class="form-control">').val(this.originalValue.trim());
+        
+        // Find the content span within the table cell
         this.$cell.find('.d-flex span').first().empty().append(input);
         input.focus();
 
         // Create label for input field
-        const label = $('<small class="text-muted">Enter: Confirm</small>');
+        const label = $('<small class="text-muted" id="enter-helper">Enter: Confirm</small>');
         this.$cell.append(label);
 
         // Update database value on pressing Enter key
@@ -114,12 +117,14 @@ class InlineTableCellEditor {
 
             // Call the updating function
             this.updateCell(id, column, table_name, new_value, id_field);
-            this.$cell.append($('#edit-pen-template').html());
+            this.$cell.find('.text-muted').remove();
             this.$cell.removeClass('editing');
 
             //TODO: Not great - but works?!
             if (table_name == 'parts') {
                 updateInfoWindow('part', id);
+                const partsTableManager = new TableManager({ type: 'part' });
+                partsTableManager.rebuildTable();
             } else if (table_name == 'locations') {
                 updateInfoWindow('location', id);
             } else if (table_name == 'footprints') {
@@ -135,6 +140,8 @@ class InlineTableCellEditor {
                 const partsTableManager = new TableManager({ type: 'part' });
                 partsTableManager.rebuildTable();
             }
+
+            this.enableInlineProcessing();
         });
 
         // Close input on "Escape" key press (don't update)
@@ -142,7 +149,8 @@ class InlineTableCellEditor {
             if (event.key === "Escape") {
                 input.remove();
                 this.$cell.find('.d-flex span').first().text(this.originalValue);
-                this.$cell.append($('#edit-pen-template').html());
+                this.$cell.find('.text-muted').remove();
+                // this.$cell.append($('#edit-pen-template').html());
                 this.$cell.removeClass('editing');
                 return;
             }
