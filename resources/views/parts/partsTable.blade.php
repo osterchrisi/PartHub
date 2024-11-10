@@ -1,13 +1,3 @@
-{{-- Styling for the edit pens --}}
-{{-- Uncomment the ".editable-text-cell:hover .edit-pen" part to magically make the edit pens appear --}}
-<style>
-
-</style>
-
-@php
-    // var_dump($parts);
-@endphp
-
 {{-- Placeholder Wrapper --}}
 <div id="parts_table_placeholder">
     <table class="table table-sm table-hover table-striped w-100" style="font-size:12px">
@@ -66,7 +56,6 @@
             @endphp
             <tr data-id="{{ $part_id }}">
                 @foreach ($db_columns as $column_data)
-                    {{-- I am inserting '' for everything that could potentially not have a value, especially values that are potentially inside another array. Otherwise I get array offset errors --}}
                     {{-- Total Stock --}}
                     @if ($column_data == 'total_stock')
                         <td style="text-align:right" data-id="{{ $part_id }}" data-column="{{ $column_data }}"
@@ -81,7 +70,6 @@
                             <x-tables.td-editable-flexbox :content="$part['category'][$column_data] ?? ''">
                                 <x-tables.edit-pen />
                             </x-flexbox-container>
-                            {{-- {{ $part['category'][$column_data] ?? '' }}<x-tables.edit-pen /> --}}
                         </td>
                         {{-- Unit --}}
                     @elseif ($column_data == 'unit_name')
@@ -100,13 +88,7 @@
                             <x-tables.td-editable-flexbox :content="$part['footprint'][$column_data] ?? ''">
                                 <x-tables.edit-pen />
                             </x-flexbox-container>
-                                {{-- {{ $part['footprint'][$column_data] ?? '' }}<x-tables.edit-pen /> --}}
                         </td>
-                        {{-- Supplier --}}
-                        {{-- @elseif ($column_data == 'supplier_name')
-                        <td data-editable="true" class="editable editable-supplier" data-id="{{ $part_id }}"
-                            data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                            data-id_field="{{ $id_field }}">{{ $part['supplier'][$column_data] ?? '' }}</td> --}}
                         {{-- Selected / State  --}}
                     @elseif ($column_data == 'state')
                         <td></td>
@@ -122,7 +104,7 @@
                             data-id_field="{{ $id_field }}">
                             <x-tables.td-editable-flexbox :content="$part[$column_data] ?? ''">
                                 <x-tables.edit-pen />
-                                </x-flexbox-container>
+                            </x-flexbox-container>
                         </td>
                     @endif
                 @endforeach
