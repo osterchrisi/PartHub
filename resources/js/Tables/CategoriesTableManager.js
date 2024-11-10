@@ -65,11 +65,55 @@ class CategoryTableManager extends TableManager {
                     treeColumn: treeColumn,
                 });
 
+                this.restructureTreegridCells();
+
+
                 this.attachEditCategoriesButtonClickListener();
                 this.attachCategorySpecificListeners();
             }
         });
     };
+
+    restructureTreegridCells() {
+        // Target only the cells within the current table instance
+        this.$table.find('td.editable.editable-text').each(function () {
+            // Create a wrapper div with the same structure as your Blade component
+            const wrapperDiv = $('<div class="d-flex justify-content-between w-100"></div>');
+
+            // Collect treegrid elements (indents, expander) from the start of the cell
+            // const treegridElements = $(this).children('.treegrid-indent, .treegrid-expander').detach();
+
+            // Selecting and detaching treegrid elements with logging
+            const treegridElements = $(this).children('.treegrid-indent, .treegrid-expander');
+
+            // Logging the number of elements found
+            console.log(`Number of elements found to detach: ${treegridElements.length}`);
+
+            // Logging each element
+            treegridElements.each((index, element) => {
+                console.log(`Detaching element ${index + 1}:`, element);
+            });
+
+            // Detaching the elements
+            const detachedElements = treegridElements.detach();
+
+            // Move the content span using the specific ID (adjust if you prefer using a class)
+            const contentSpan = $(this).find('#contentSpan').detach();
+
+            // Move the edit-pen if it exists
+            const editPen = $(this).find('.edit-pen').detach().addClass('ms-auto');
+
+            // Append elements in order to the wrapperDiv
+            treegridElements.appendTo(wrapperDiv);
+            wrapperDiv.append(contentSpan);
+            wrapperDiv.append(editPen);
+
+            // Clear the existing td content and append the modified wrapper div
+            $(this).empty().append(wrapperDiv);
+        });
+    }
+
+
 
     attachCategorySpecificListeners() {
         // Attach each listener

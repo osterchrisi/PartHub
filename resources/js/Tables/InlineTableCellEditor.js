@@ -36,10 +36,11 @@ class InlineTableCellEditor {
             // Set instance-level properties based on the clicked cell
             this.type = type;
             this.$cell = cell;
-            this.$cellContent = this.$cell.find('.d-flex span').first();
+            this.$cellContent = this.$cell.find('.d-flex #contentSpan');
+
 
             // Find the content within the flexbox component
-            this.originalValue = cell.find('.d-flex span').first().text().trim();
+            this.originalValue = cell.find('.d-flex #contentSpan').text().trim();
             this.originTable = cell.closest('table').attr('id');
             this.valueChanged = false;
 

@@ -41,7 +41,10 @@
                 </td>
                 <td data-editable="true" class="editable editable-text" data-id="{{ $category->category_id }}"
                     data-column="category_name" data-table_name="part_categories" data-id_field="category_id">
-                    {{ $category->category_name }}</td>
+                    <x-tables.td-editable-flexbox :content="$category->category_name ?? ''">
+                        <x-tables.edit-pen />
+                    </x-flexbox-container>
+                </td>
                 <td style="display: none;">{{ $category->category_id }}</td>
                 <td style="display: none;">{{ $category->parent_category }}</td>
             </tr>
