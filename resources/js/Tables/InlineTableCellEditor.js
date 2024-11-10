@@ -12,7 +12,7 @@ class InlineTableCellEditor {
         this.originalValue = null;
         this.originTable = null;
         this.valueChanged = false;
-        this.table = null;  // Default table type (can be overridden)
+        this.table = null; 
     }
 
     enableInlineProcessing() {
@@ -40,7 +40,7 @@ class InlineTableCellEditor {
 
 
             // Find the content within the flexbox component
-            this.originalValue = cell.find('.d-flex #contentSpan').text().trim();
+            this.originalValue = this.$cellContent.text().trim();
             this.originTable = cell.closest('table').attr('id');
             this.valueChanged = false;
 

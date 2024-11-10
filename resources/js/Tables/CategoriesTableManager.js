@@ -66,36 +66,24 @@ class CategoryTableManager extends TableManager {
                 });
 
                 this.restructureTreegridCells();
-
-
                 this.attachEditCategoriesButtonClickListener();
                 this.attachCategorySpecificListeners();
             }
         });
     };
 
+    /**
+     * Restructures the editable-category cells after the layout gets lost
+     * due to treegrid'ing the table.
+     */
     restructureTreegridCells() {
         // Target only the cells within the current table instance
         this.$table.find('td.editable.editable-text').each(function () {
-            // Create a wrapper div with the same structure as your Blade component
+            // Create a wrapper div with the same structure as the Blade component
             const wrapperDiv = $('<div class="d-flex justify-content-between w-100"></div>');
 
-            // Collect treegrid elements (indents, expander) from the start of the cell
-            // const treegridElements = $(this).children('.treegrid-indent, .treegrid-expander').detach();
-
-            // Selecting and detaching treegrid elements with logging
+            // Collect treegrid elements
             const treegridElements = $(this).children('.treegrid-indent, .treegrid-expander');
-
-            // Logging the number of elements found
-            console.log(`Number of elements found to detach: ${treegridElements.length}`);
-
-            // Logging each element
-            treegridElements.each((index, element) => {
-                console.log(`Detaching element ${index + 1}:`, element);
-            });
-
-            // Detaching the elements
-            const detachedElements = treegridElements.detach();
 
             // Move the content span using the specific ID (adjust if you prefer using a class)
             const contentSpan = $(this).find('#contentSpan').detach();
@@ -130,7 +118,6 @@ class CategoryTableManager extends TableManager {
             const parentId = $row.data('parent-id');
             const categoryId = $row.data('id');
             const action = $(event.currentTarget).data('action');
-            // Further action logic goes here
         });
     }
 
