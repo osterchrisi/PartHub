@@ -12,18 +12,18 @@ class DataFetchService {
     }
   
     static getSuppliers() {
-      return this.fetch('/suppliers.get');
+      return DataFetchService.fetch('/suppliers.get');
     }
   
     static getCategories() {
-      return this.fetch('/categories.get');
+      return DataFetchService.fetch('/categories.get');
     }
   
     static getFootprints() {
-      return this.fetch('/footprints.get');
+      return DataFetchService.fetch('/footprints.get');
     }
   
     static getLocations() {
-      return this.fetch('/locations.get');
+      return DataFetchService.fetch('/locations.get');
     }
   }

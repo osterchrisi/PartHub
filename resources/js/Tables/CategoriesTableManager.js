@@ -8,7 +8,6 @@ import { Layout } from "../User Interface/Layout";
  * The CategoryTableManager is special because:
  * - It uses treegrid on the bootstrap method
  * - It can dynamically add categories depending on which row was clicked (defines parent category)
- * - It therefor needs its own CategoryCreator
  */
 class CategoryTableManager extends TableManager {
     constructor(options) {
