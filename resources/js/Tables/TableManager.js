@@ -9,7 +9,6 @@ import {
 import { assembleBoms } from "../tables";
 import { CategoryService } from "../Services/CategoryService";
 import { Layout } from "../User Interface/Layout";
-// import { InlineTableCellEditor } from "./InlineTableCellEditor";
 
 class TableManager {
     /**
@@ -94,7 +93,6 @@ class TableManager {
 
         this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
-        // this.enableInlineProcessing();
     }
 
     /**

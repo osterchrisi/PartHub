@@ -7,6 +7,7 @@ class InlineTableCellEditor {
     constructor() {
         this.type = null;
         this.$cell = null;
+        this.$cellContent = null;
         this.originalValue = null;
         this.originTable = null;
         this.valueChanged = false;
@@ -34,7 +35,9 @@ class InlineTableCellEditor {
             // Set instance-level properties based on the clicked cell
             this.type = type;
             this.$cell = cell;
-            // Update to correctly find the content within the flexbox component
+            this.$cellContent = this.$cell.find('.d-flex span').first();
+
+            // Find the content within the flexbox component
             this.originalValue = cell.find('.d-flex span').first().text().trim();
             this.originTable = cell.closest('table').attr('id');
             this.valueChanged = false;
@@ -83,9 +86,9 @@ class InlineTableCellEditor {
     editTextCell() {
         // Create input field for changing the value
         const input = $('<textarea class="form-control">').val(this.originalValue.trim());
-        
+
         // Find the content span within the table cell
-        this.$cell.find('.d-flex span').first().empty().append(input);
+        this.$cellContent.empty().append(input);
         input.focus();
 
         // Create label for input field
@@ -105,7 +108,7 @@ class InlineTableCellEditor {
             const new_value = input.val();
 
             // Update cell with new value
-            this.$cell.find('.d-flex span').first().text(new_value);
+            this.$cellContent.text(new_value);
 
             // Get database row id, id column name, currently edited column name and database table
             // These are encoded in the table data cells and look like this, e.g.:
@@ -120,27 +123,7 @@ class InlineTableCellEditor {
             this.$cell.find('.text-muted').remove();
             this.$cell.removeClass('editing');
 
-            //TODO: Not great - but works?!
-            if (table_name == 'parts') {
-                updateInfoWindow('part', id);
-                const partsTableManager = new TableManager({ type: 'part' });
-                partsTableManager.rebuildTable();
-            } else if (table_name == 'locations') {
-                updateInfoWindow('location', id);
-            } else if (table_name == 'footprints') {
-                updateInfoWindow('footprint', id);
-            } else if (table_name == 'suppliers') {
-                updateInfoWindow('supplier', id);
-            } else if (table_name == 'boms') {
-                updateInfoWindow('bom', id);
-            } else if (table_name == 'part_categories') {
-                const categoriesTableManager = new CategoryTableManager({ type: 'category' });
-                categoriesTableManager.rebuildTable();
-
-                const partsTableManager = new TableManager({ type: 'part' });
-                partsTableManager.rebuildTable();
-            }
-
+            this.refreshTableAndInfoWindows(table_name, id)
             this.enableInlineProcessing();
         });
 
@@ -148,7 +131,7 @@ class InlineTableCellEditor {
         input.on('keydown', (event) => {
             if (event.key === "Escape") {
                 input.remove();
-                this.$cell.find('.d-flex span').first().text(this.originalValue);
+                this.$cellContent.text(this.originalValue);
                 this.$cell.find('.text-muted').remove();
                 // this.$cell.append($('#edit-pen-template').html());
                 this.$cell.removeClass('editing');
@@ -170,7 +153,8 @@ class InlineTableCellEditor {
                 const select = this.createSelectElement(data, this.originalValue, `${this.type}_name`, `${this.type}_id`);
 
                 // Append, selectize category dropdown
-                this.$cell.empty().append(select);
+                this.$cellContent.empty().append(select);
+                // this.$cell.empty().append(select);
                 select.selectize({
                     onDropdownOpen: function () {
                         $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
@@ -188,7 +172,7 @@ class InlineTableCellEditor {
                 // Selectize.js does not natively support listening to multiple events
                 // This covers changing the value or chosing a value for the first time
                 selectizeControl.on('change', () => {
-                    this.selectEventHandler(select, this.$cell, data, () => {
+                    this.selectEventHandler(select, this.$cellContent, data, () => {
                         this.valueChanged = true;
                     });
                 });
@@ -206,10 +190,11 @@ class InlineTableCellEditor {
                     select.remove();
                     // Change cell text back if value was not changed
                     if (!this.valueChanged) {
-                        this.$cell.text(this.originalValue);
+                        this.$cellContent.text(this.originalValue);
                     }
-                    this.$cell.append($('#edit-pen-template').html());
+                    // this.$cell.append($('#edit-pen-template').html());
                     this.$cell.removeClass('editing');
+                    this.enableInlineProcessing();
                 });
 
                 // Listen for the Escape keydown event on the document level
@@ -218,9 +203,9 @@ class InlineTableCellEditor {
                         select.remove();
                         // Change cell text back if value was not changed
                         if (!this.valueChanged) {
-                            this.$cell.text(this.originalValue);
+                            this.$cellContent.text(this.originalValue);
                         }
-                        this.$cell.append($('#edit-pen-template').html());
+                        // this.$cell.append($('#edit-pen-template').html());
                         this.$cell.removeClass('editing');
                         // Remove the event handler once it has done its job
                         $(document).off('keydown');
@@ -243,7 +228,7 @@ class InlineTableCellEditor {
      */
     createSelectElement(data, currentValue, textKey, valueKey) {
         // New select element
-        const select = $('<select class="form-select-sm">');
+        const select = $('<select class="form-select-sm w-100">');
         // Iterate over all available data
         data.forEach(item => {
             // Create new option
@@ -284,11 +269,15 @@ class InlineTableCellEditor {
                 // Do not get confused. Since I listen to two types of events, one never finds a matching ID
                 // console.log(`No matching ${this.type} found for id:`, selectedValue);
             }
+
             // Editing aftermath
             select.remove();
-            this.$cell.append($('#edit-pen-template').html());
             cell.removeClass('editing');
             changeFlagCallback(); // Callback function to set change flag
+
+            this.refreshTableAndInfoWindows(table_name, id)
+            this.enableInlineProcessing();
+
             $(document).off('keydown'); // Removing the escape handler because it's on document level
         });
     }
@@ -343,4 +332,25 @@ class InlineTableCellEditor {
             }
         });
     }
+
+    refreshTableAndInfoWindows(table_name, id) {
+        const tableManagerMapping = {
+            'parts': () => {
+                updateInfoWindow('part', id);
+                new TableManager({ type: 'part' }).rebuildTable();
+            },
+            'locations': () => updateInfoWindow('location', id),
+            'footprints': () => updateInfoWindow('footprint', id),
+            'suppliers': () => updateInfoWindow('supplier', id),
+            'boms': () => updateInfoWindow('bom', id),
+            'part_categories': () => {
+                new CategoryTableManager({ type: 'category' }).rebuildTable();
+                new TableManager({ type: 'part' }).rebuildTable();
+            }
+        };
+        if (tableManagerMapping[table_name]) {
+            tableManagerMapping[table_name]();
+        }
+    }
+
 }
