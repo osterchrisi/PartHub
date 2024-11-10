@@ -80,7 +80,7 @@ class CategoryTableManager extends TableManager {
         // Target only the cells within the current table instance
         this.$table.find('td.editable.editable-text').each(function () {
             // Create a wrapper div with the same structure as the Blade component
-            const wrapperDiv = $('<div class="d-flex justify-content-between w-100"></div>');
+            const wrapperDiv = $('#treegrid-editable-template-container #editable-cell-content').clone().removeAttr('id').empty();
 
             // Collect treegrid elements
             const treegridElements = $(this).children('.treegrid-indent, .treegrid-expander');
@@ -100,8 +100,6 @@ class CategoryTableManager extends TableManager {
             $(this).empty().append(wrapperDiv);
         });
     }
-
-
 
     attachCategorySpecificListeners() {
         // Attach each listener

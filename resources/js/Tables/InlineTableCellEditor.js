@@ -38,7 +38,6 @@ class InlineTableCellEditor {
             this.$cell = cell;
             this.$cellContent = this.$cell.find('.d-flex #contentSpan');
 
-
             // Find the content within the flexbox component
             this.originalValue = this.$cellContent.text().trim();
             this.originTable = cell.closest('table').attr('id');
@@ -135,7 +134,6 @@ class InlineTableCellEditor {
                 input.remove();
                 this.$cellContent.text(this.originalValue);
                 this.$cell.find('.text-muted').remove();
-                // this.$cell.append($('#edit-pen-template').html());
                 this.$cell.removeClass('editing');
                 return;
             }
@@ -194,7 +192,6 @@ class InlineTableCellEditor {
                     if (!this.valueChanged) {
                         this.$cellContent.text(this.originalValue);
                     }
-                    // this.$cell.append($('#edit-pen-template').html());
                     this.$cell.removeClass('editing');
                     this.enableInlineProcessing();
                 });
@@ -207,7 +204,6 @@ class InlineTableCellEditor {
                         if (!this.valueChanged) {
                             this.$cellContent.text(this.originalValue);
                         }
-                        // this.$cell.append($('#edit-pen-template').html());
                         this.$cell.removeClass('editing');
                         // Remove the event handler once it has done its job
                         $(document).off('keydown');

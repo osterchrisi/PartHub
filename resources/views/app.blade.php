@@ -15,10 +15,10 @@
             @yield('filter-form')
         </div>
         @if (isset($view) && $view === 'parts')
-        <div class="ps-2">
-            <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1 me-3"
-                id="cat-show-btn">Categories</button>
-        </div>
+            <div class="ps-2">
+                <button type="button" class="categories-button btn btn-sm btn-outline-secondary mb-1 ms-1 me-3"
+                    id="cat-show-btn">Categories</button>
+            </div>
         @endif
 
         <div class="d-flex flex-nowrap w-100">
@@ -26,7 +26,8 @@
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
                     <div class="flex-grow-0" id='category-window-container' style="display: none;">
-                        <div class="rounded border border-dark border-opacity-25 me-3 ps-3 pb-3 shadow-sm" id="category-window">
+                        <div class="rounded border border-dark border-opacity-25 me-3 ps-3 pb-3 shadow-sm"
+                            id="category-window">
                             @include('categories.categoriesTable')
                         </div>
                         <div class="category-resize-handle ui-resizable-handle ui-resizable-e rounded-1"></div>
@@ -38,7 +39,8 @@
             <div class="col-10 flex-shrink-1" id="table-window-container" style="overflow-x: auto;">
                 <div class="border rounded border-primary border-opacity-25 px-3 me-3 shadow-sm" id="table-window">
                     @yield('table-window')
-                    <p class="text-muted key-hint"><small>Use <kbd>Ctrl</kbd>, <kbd>Shift</kbd> to select multiple rows in the table</small></p>
+                    <p class="text-muted key-hint"><small>Use <kbd>Ctrl</kbd>, <kbd>Shift</kbd> to select multiple rows
+                            in the table</small></p>
                 </div>
                 <div class="table-resize-handle ui-resizable-handle ui-resizable-e rounded"></div>
             </div>
@@ -93,9 +95,9 @@
     </div>
 </div>
 
-<!-- Hidden template for the edit pen -->
-<div id="edit-pen-template" style="display: none;">
-    <x-tables.edit-pen />
+<!-- Hidden template for the editable cell content in category table -->
+<div id="treegrid-editable-template-container" class="d-none">
+    @include('components.tables.td-editable-flexbox')
 </div>
 
 {{-- Modals and Menus --}}
