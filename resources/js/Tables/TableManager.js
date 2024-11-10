@@ -167,6 +167,12 @@ class TableManager {
         this.$table.removeClass('d-none');
     }
 
+    // For later use when all tables get a placeholder table
+    showPlaceHolderTable() {
+        // $('#parts_table_placeholder').removeClass('d-none');
+        // this.$table.addClass('d-none');
+    }
+
     /**
      * Defines the row click and context menu actions for the table.
      */

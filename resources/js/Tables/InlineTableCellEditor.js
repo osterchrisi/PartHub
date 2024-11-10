@@ -2,6 +2,7 @@ export { InlineTableCellEditor };
 import { updateInfoWindow } from "../custom";
 import { CategoryTableManager } from "./CategoriesTableManager";
 import { TableManager } from "./TableManager";
+import { TableRowManager } from "./TableRowManager";
 
 class InlineTableCellEditor {
     constructor() {
@@ -336,8 +337,11 @@ class InlineTableCellEditor {
     refreshTableAndInfoWindows(table_name, id) {
         const tableManagerMapping = {
             'parts': () => {
-                updateInfoWindow('part', id);
-                new TableManager({ type: 'part' }).rebuildTable();
+                // updateInfoWindow('part', id);
+                new TableManager({ type: 'part' }).rebuildTable().done(() => {
+                    const tableRowManager = new TableRowManager('#parts_table', 'part');
+                    tableRowManager.loadSelectedRow();
+                });
             },
             'locations': () => updateInfoWindow('location', id),
             'footprints': () => updateInfoWindow('footprint', id),
