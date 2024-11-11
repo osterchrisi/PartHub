@@ -19,7 +19,15 @@
                 @endphp
                 <tr data-id="{{ $row['location_id'] }}">
                     @foreach ($db_columns as $column_data)
-                        @if ($column_data != 'state')
+                        @if ($column_data === 'location_name')
+                            <td data-editable="true" class="editable editable-text" data-id="{{ $location_id }}"
+                                data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
+                                data-id_field="{{ $id_field }}">
+                                <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
+                                    <x-tables.edit-pen />
+                                    </x-flexbox-container>
+                            </td>
+                        @elseif ($column_data === 'location_description')
                             <td data-editable="true" class="editable editable-text" data-id="{{ $location_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                                 data-id_field="{{ $id_field }}">
@@ -27,6 +35,10 @@
                                     <x-tables.edit-pen />
                                 </x-flexbox-container>
                             </td>
+                        @elseif ($column_data === 'location_id')
+                            <td data-id="{{ $location_id }}" data-column="{{ $column_data }}"
+                                data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">
+                                {{ $row[$column_data] }}</td>
                         @else
                             {{-- 'state' is empty, Bootstrap Tables will place a checkbox here --}}
                             <td></td>
