@@ -47,6 +47,7 @@ class InlineTableCellEditor {
             this.setEndpoint();
 
             cell.addClass('editing');
+            this.$cellContent.addClass('me-auto flex-grow-1');
             this.editCell();
         });
     }
@@ -152,9 +153,8 @@ class InlineTableCellEditor {
                 // Create select element
                 const select = this.createSelectElement(data, this.originalValue, `${this.type}_name`, `${this.type}_id`);
 
-                // Append, selectize category dropdown
+                // Append, selectize category dropdown and make sure it fills the whole cell width
                 this.$cellContent.empty().append(select);
-                // this.$cell.empty().append(select);
                 select.selectize({
                     onDropdownOpen: function () {
                         $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
