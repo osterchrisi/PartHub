@@ -353,8 +353,18 @@ class InlineTableCellEditor {
                 });
             },
 
-            'suppliers': () => updateInfoWindow('supplier', id),
-            'boms': () => updateInfoWindow('bom', id),
+            'suppliers': () => {
+                new TableManager({ type: 'supplier' }).rebuildTable().done(() => {
+                    const tableRowManager = new TableRowManager('#suppliers_list_table', 'supplier');
+                    tableRowManager.loadSelectedRow();
+                });
+            },
+            'boms': () => {
+                new TableManager({ type: 'bom' }).rebuildTable().done(() => {
+                    const tableRowManager = new TableRowManager('#bom_list_table', 'bom');
+                    tableRowManager.loadSelectedRow();
+                });
+            },
             'part_categories': () => {
                 new CategoryTableManager({ type: 'category' }).rebuildTable();
                 new TableManager({ type: 'part' }).rebuildTable();
