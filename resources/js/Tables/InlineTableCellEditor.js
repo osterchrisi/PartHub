@@ -346,7 +346,13 @@ class InlineTableCellEditor {
                     tableRowManager.loadSelectedRow();
                 });
             },
-            'footprints': () => updateInfoWindow('footprint', id),
+            'footprints': () => {
+                new TableManager({ type: 'footprint' }).rebuildTable().done(() => {
+                    const tableRowManager = new TableRowManager('#footprints_list_table', 'footprint');
+                    tableRowManager.loadSelectedRow();
+                });
+            },
+
             'suppliers': () => updateInfoWindow('supplier', id),
             'boms': () => updateInfoWindow('bom', id),
             'part_categories': () => {

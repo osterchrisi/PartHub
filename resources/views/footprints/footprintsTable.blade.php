@@ -26,7 +26,11 @@
                         @if ($column_data != 'state')
                             <td data-editable="true" class="editable editable-text" data-id="{{ $footprint_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                                data-id_field="{{ $id_field }}">{{ $row[$column_data] }}</td>
+                                data-id_field="{{ $id_field }}">
+                                <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
+                                    <x-tables.edit-pen />
+                                </x-flexbox-container>
+                            </td>
                         @else
                         {{-- 'state' is empty, Bootstrap Tables will place a checkbox here --}}
                         <td></td>
