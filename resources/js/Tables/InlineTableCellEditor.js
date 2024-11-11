@@ -12,7 +12,7 @@ class InlineTableCellEditor {
         this.originalValue = null;
         this.originTable = null;
         this.valueChanged = false;
-        this.table = null; 
+        this.table = null;
     }
 
     enableInlineProcessing() {
@@ -332,15 +332,20 @@ class InlineTableCellEditor {
     }
 
     refreshTableAndInfoWindows(table_name, id) {
+        // loadSelectedRow method also updates InfoWindow
         const tableManagerMapping = {
             'parts': () => {
-                // updateInfoWindow('part', id);
                 new TableManager({ type: 'part' }).rebuildTable().done(() => {
                     const tableRowManager = new TableRowManager('#parts_table', 'part');
                     tableRowManager.loadSelectedRow();
                 });
             },
-            'locations': () => updateInfoWindow('location', id),
+            'locations': () => {
+                new TableManager({ type: 'location' }).rebuildTable().done(() => {
+                    const tableRowManager = new TableRowManager('#locations_list_table', 'location');
+                    tableRowManager.loadSelectedRow();
+                });
+            },
             'footprints': () => updateInfoWindow('footprint', id),
             'suppliers': () => updateInfoWindow('supplier', id),
             'boms': () => updateInfoWindow('bom', id),

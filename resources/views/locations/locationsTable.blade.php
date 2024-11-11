@@ -1,9 +1,9 @@
 <div>
-    <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="locations_list_table"
-        data-resizable="true" data-pagination="true" data-show-columns="true" 
-        {{-- data-reorderable-columns="true" --}}
-        data-cookie="true" data-cookie-id-table="LocationsListTableState" data-cookie-storage="localStorage"
-        data-max-moving-rows="100" data-multiple-select-row="true" data-click-to-select="true">
+    <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px"
+        id="locations_list_table" data-resizable="true" data-pagination="true" data-show-columns="true"
+        {{-- data-reorderable-columns="true" --}} data-cookie="true" data-cookie-id-table="LocationsListTableState"
+        data-cookie-storage="localStorage" data-max-moving-rows="100" data-multiple-select-row="true"
+        data-click-to-select="true">
         <thead>
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
@@ -22,10 +22,14 @@
                         @if ($column_data != 'state')
                             <td data-editable="true" class="editable editable-text" data-id="{{ $location_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
-                                data-id_field="{{ $id_field }}">{{ $row[$column_data] }}</td>
+                                data-id_field="{{ $id_field }}">
+                                <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
+                                    <x-tables.edit-pen />
+                                </x-flexbox-container>
+                            </td>
                         @else
-                        {{-- 'state' is empty, Bootstrap Tables will place a checkbox here --}}
-                        <td></td>
+                            {{-- 'state' is empty, Bootstrap Tables will place a checkbox here --}}
+                            <td></td>
                         @endif
                     @endforeach
                 </tr>
