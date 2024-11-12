@@ -10,7 +10,6 @@
                     <form method="POST" enctype="multipart/form-data" id="{{ $formId }}">
                         @csrf
                         <div class="input-group mb-3">
-                            {{-- <label for="{{ $inputId }}" class="form-label form-label-sm">{{ $labelText }}</label> --}}
                             <input type="file" class="form-control form-control-sm" id="{{ $inputId }}"
                                 name="{{ $inputName }}" accept="{{ $acceptType }}" required>
                             <button type="submit" class="btn btn-outline-primary btn-sm">{{ $buttonText }}</button>
@@ -20,6 +19,7 @@
                                 </div>
                             </div>
                         </div>
+                        <small class="text-muted">Allowed file types: {{ $acceptType }}. Max size: 2MB.</small>
                     </form>
                 </div>
             </div>
