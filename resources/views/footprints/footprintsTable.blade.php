@@ -40,7 +40,7 @@
                                     </x-flexbox-container>
                             </td>
                         @elseif ($column_data === 'footprint_id')
-                        <td data-editable="true" class="editable editable-text" data-id="{{ $footprint_id }}"
+                        <td data-id="{{ $footprint_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                                 data-id_field="{{ $id_field }}">{{ $row[$column_data] }}</td>
                         @else

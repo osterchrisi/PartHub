@@ -20,14 +20,23 @@
                                     data-id="{{ $row->id }}" data-column="{{ $column_data }}"
                                     data-table_name="{{ $supplierDataTableName }}"
                                     data-id_field="{{ $supplierDataTableIdField }}">
-
-                                    {{ $row->supplier->supplier_name }}</td>
+                                    <x-tables.td-editable-flexbox :content="$row->supplier->supplier_name ?? ''">
+                                        <x-tables.edit-pen />
+                                    </x-flexbox-container>
+                                    {{-- {{ $row->supplier->supplier_name }} --}}
+                                
+                                </td>
                             @elseif ($column_data == 'state')
                                 <td></td>
                             @else
                                 <td data-editable="true" class="editable editable-text" data-id="{{ $row->id }}"
                                     data-column="{{ $column_data }}" data-table_name="{{ $supplierDataTableName }}"
-                                    data-id_field="{{ $supplierDataTableIdField }}">{{ $row->$column_data }}</td>
+                                    data-id_field="{{ $supplierDataTableIdField }}">
+                                    <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''">
+                                        <x-tables.edit-pen />
+                                    </x-flexbox-container>
+                                    {{-- {{ $row->$column_data }} --}}
+                                </td>
                             @endif
                         @endforeach
                     </tr>
