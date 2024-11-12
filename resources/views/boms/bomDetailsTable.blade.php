@@ -43,10 +43,12 @@
                             </td>
                         @elseif ($column_data == 'element_quantity')
                             {{-- Quantity Needed --}}
-                            <td style="text-align:right" class="editable editable-bom-element-quantity" data-id="{{ $bom_elements_id }}"
+                            <td style="text-align:right" class="editable editable-text" data-id="{{ $bom_elements_id }}"
                                 data-column="{{ $column_data }}" data-table_name="bom_elements"
                                 data-id_field="bom_elements_id">
-                                {{ $row->$column_data }}
+                                <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''" alignment="right">
+                                    <x-tables.edit-pen />
+                                </x-flexbox-container>
                             </td>
                         @elseif ($column_data == 'can_build')
                             @php                          

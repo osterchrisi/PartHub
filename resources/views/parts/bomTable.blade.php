@@ -25,7 +25,6 @@
                 <tr data-id="{{ $row['bom_elements_id'] }}">
                     @foreach ($bomTableHeaders as $column_data)
                         <td data-editable="true"
-                        {{-- class="editable editable-text" --}}
                         data-id="{{ $bom_id }}" data-column="{{ $column_data }}" data-table_name="bom_elements" data-id_field="bom_elements_id">{{ $row[$column_data] }}</td>
                     @endforeach
                 </tr>

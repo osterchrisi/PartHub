@@ -52,6 +52,7 @@ class InlineTableCellEditor {
         });
     }
 
+    // Endpoints for dropdown data
     setEndpoint() {
         this.table = 'partsTable';
         switch (this.type) {
