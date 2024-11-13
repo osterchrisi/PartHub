@@ -40,7 +40,7 @@ class Layout {
             // Apply visibility state to filter-form-div
             if (layoutData.filterFormVisible !== undefined) {
                 if (layoutData.filterFormVisible) {
-                    $('#filter-form-div').addClass('show'); // Use Bootstrap's 'show' class to toggle visibility
+                    $('#filter-form-div').addClass('show');
                 } else {
                     $('#filter-form-div').removeClass('show');
                 }

@@ -17,7 +17,7 @@
         @csrf
         <div class="row">
             <div class="col-3">
-                <input class="form-control" placeholder="Quantity" id="addStockQuantity" name="stock_changes.0.quantity" required>
+                <input class="form-control" placeholder="Quantity" id="addStockQuantity" name="stock_changes.0.quantity" autocomplete="off" required>
             </div>
         </div>
         <div id="error-stock_changes_0_quantity" class="d-none text-danger mt-1">
@@ -30,7 +30,7 @@
             <div class="input-group" id="ToStockLocationDiv"></div>
         </div>
         <br>
-        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription">
+        <input class="form-control" placeholder="Optional: Description / PO" id="addStockDescription" autocomplete="off">
     </form>
     <div class="row mt-3">
         <div id="mStockModalInfo"></div>

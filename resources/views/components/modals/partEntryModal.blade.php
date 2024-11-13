@@ -43,7 +43,7 @@
         <div class="row mb-3">
             {{-- Quantity --}}
             <div class="col-3">
-                <input class="form-control form-control-md" name="quantity" placeholder="Quantity" id="addPartQuantity"
+                <input class="form-control form-control-md" name="quantity" placeholder="Quantity" id="addPartQuantity" autocomplete="off"
                     disabled>
                 <div id="error-quantity" class="d-none text-danger">
                     <x-input-error :messages="[]" />
@@ -89,11 +89,22 @@
         {{-- Advanced Options --}}
         <div class="collapse mb-4" id="advancedOptions">
             <div class="row">
+                {{-- Description --}}
+                <div class="col">
+                    <br>
+                    <input class="form-control form-control-sm not-required" name="description" id="addPartDescription"
+                        placeholder="Description" autocomplete="off">
+                    <div id="error-description" class="d-none text-danger">
+                        <x-input-error :messages="[]" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 {{-- Minimum Quantity --}}
                 <div class="mt-3">
                     <input class="form-control form-control-sm not-required" name="min_quantity" id="addPartMinQuantity"
                         placeholder="Minimum Quantity" data-bs-toggle="tooltip"
-                        data-bs-title="Notification threshold for all locations combined" data-bs-placement="right">
+                        data-bs-title="Notification threshold for all locations combined" data-bs-placement="right" autocomplete="off">
                     <div id="error-min_quantity" class="d-none text-danger">
                         <x-input-error :messages="[]" />
                     </div>
@@ -108,22 +119,11 @@
                 </div>
             </div>
             <div class="row">
-                {{-- Description --}}
-                <div class="col">
-                    <br>
-                    <input class="form-control form-control-sm not-required" name="description" id="addPartDescription"
-                        placeholder="Description">
-                    <div id="error-description" class="d-none text-danger">
-                        <x-input-error :messages="[]" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 {{-- Comment --}}
                 <div class="col">
                     <br>
                     <input class="form-control form-control-sm not-required" name="comment" id="addPartComment"
-                        placeholder="Comment">
+                        placeholder="Comment" autocomplete="off">
                     <div id="error-comment" class="d-none text-danger">
                         <x-input-error :messages="[]" />
                     </div>

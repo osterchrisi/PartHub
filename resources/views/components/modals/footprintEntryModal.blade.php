@@ -14,10 +14,10 @@
     <?php echo $footprint_name; ?><br><br>
     <form id="footprintEntryForm">
         @csrf
-        <input class="form-control form-control-sm" placeholder="Footprint Name" id="addFootprintName" required><br>
+        <input class="form-control form-control-sm" placeholder="Footprint Name" id="addFootprintName" autocomplete="off" required><br>
         <div class="row">
             <div class="col">
-                <input class="form-control form-control-sm" placeholder="Footprint Alias" id="addFootprintAlias"><br>
+                <input class="form-control form-control-sm" placeholder="Footprint Alias" id="addFootprintAlias" autocomplete="off"><br>
             </div>
         </div>
     </form>

@@ -15,7 +15,7 @@
     <form id="categoryCreationForm">
         <div class="form-group">
             <label for="categoryName">Category Name</label>
-            <input type="text" class="form-control" id="categoryName" required>
+            <input type="text" class="form-control" id="categoryName" autocomplete="off" required>
         </div>
         <div class="form-group">
             <label for="parentCategory">Parent Category</label>

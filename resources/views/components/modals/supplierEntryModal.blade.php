@@ -14,6 +14,6 @@
     <?php echo $supplier_name; ?><br><br>
     <form id="supplierEntryForm">
         @csrf
-        <input class="form-control form-control-sm" placeholder="Supplier Name" id="addSupplierName" required><br>
+        <input class="form-control form-control-sm" placeholder="Supplier Name" id="addSupplierName" autocomplete="off" required><br>
     </form>
 </x-modals.parthub-modal>
