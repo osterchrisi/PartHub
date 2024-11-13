@@ -1,9 +1,19 @@
 export { Layout };
 
 class Layout {
+    static view = document.body.getAttribute('data-view');
+
+    static initialize() {
+        Layout.applySavedLayout();
+        Layout.makeTableWindowResizable();
+        Layout.initializePopovers();
+        Layout.initializeTooltips();
+        Layout.saveFilterDivState();
+    }
+
     // Function to recall and apply saved settings from local storage
-    static applySavedLayout(currentView) {
-        const layoutKey = `layoutSettings_${currentView}`; // Unique key for this page's layout
+    static applySavedLayout() {
+        const layoutKey = `layoutSettings_${Layout.view}`; // Unique key for this page's layout
         const savedLayout = localStorage.getItem(layoutKey);
 
         if (savedLayout) {
@@ -127,10 +137,8 @@ class Layout {
         const infoWidth = $('#info-window').width();
         const categoryVisible = $('#category-window-container').is(':visible');
         const filterFormVisible = $('#filter-form-div').hasClass('show');
-        console.log(filterFormVisible);
 
-        const currentView = document.body.getAttribute('data-view');
-        const layoutKey = `layoutSettings_${currentView}`; // Create a unique key based on the page
+        const layoutKey = `layoutSettings_${Layout.view}`; // Create a unique key based on the page
 
         // Save layout data as an object in local storage
         const layoutData = {

@@ -1,5 +1,7 @@
 export { StockManager };
 import { FormValidator } from '../FormValidator';
+import { TableManager } from '../Tables/TableManager';
+import { TableRowManager } from '../Tables/TableRowManager';
 
 import {
     removeClickListeners,
@@ -88,7 +90,11 @@ class StockManager {
                     const new_stock_level = r.result[r.result.length - 1].new_total_stock;
                     const $cell = $('tr.selected-last td[data-column="total_stock"]');
                     $cell.text(new_stock_level);
-                    //TODO: Add a $table.bootstrapTable('updateCell', {index, field, value}) here to keep the data between pagination jumps
+                    //TODO: Could save a table reload if stock didn't change (just move)
+                    new TableManager({ type: 'part' }).rebuildTable().done(() => {
+                        const tableRowManager = new TableRowManager('#parts_table', 'part');
+                        tableRowManager.loadSelectedRow();
+                    });
                     $('#mAddStock').modal('hide');
                 } else {
                     //* User permission required

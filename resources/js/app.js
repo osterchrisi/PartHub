@@ -14,7 +14,7 @@ import { Layout } from './User Interface/Layout';
 
 const currentView = document.body.getAttribute('data-view');
 
-Layout.applySavedLayout(currentView);
+Layout.initialize();
 
 $(document).ready(function () {
     if (currentView === 'parts') {
@@ -37,11 +37,6 @@ $(document).ready(function () {
     }
 
     // Common to all views
-    Layout.makeTableWindowResizable();
-    Layout.initializePopovers();
-    Layout.initializeTooltips();
-    Layout.saveFilterDivState();
-
     clearModalOnHiding();
     focusFirstInputInModals();
 
