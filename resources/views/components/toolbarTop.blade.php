@@ -19,7 +19,7 @@
 
             @if($showFilterButton ?? false)
                 <x-buttons.toolbar-button icon="fa-filter" text="Filter" id="toolbarFilterButton" data-bs-toggle="collapse"
-                    data-bs-target="#parts-filter-form" />
+                    data-bs-target="#filter-form-div" />
             @endif
 
             @if($showAssembleButton ?? false)

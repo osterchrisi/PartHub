@@ -40,6 +40,7 @@ $(document).ready(function () {
     Layout.makeTableWindowResizable();
     Layout.initializePopovers();
     Layout.initializeTooltips();
+    Layout.saveFilterDivState();
 
     clearModalOnHiding();
     focusFirstInputInModals();

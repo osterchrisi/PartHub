@@ -19,7 +19,7 @@
                                 </div>
                             </div>
                         </div>
-                        <small class="text-muted">Allowed file types: {{ $acceptType }}. Max size: 2MB.</small>
+                        <small class="text-muted ms-1">Allowed file types: {{ $acceptType }}. Max size: 2MB.</small>
                     </form>
                 </div>
             </div>

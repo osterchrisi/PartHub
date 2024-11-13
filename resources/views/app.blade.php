@@ -11,7 +11,7 @@
     <br>
     <div class="row" id="content-row">
         {{-- Filter Form --}}
-        <div class="row collapse" id="parts-filter-form">
+        <div class="row collapse" id="filter-form-div">
             @yield('filter-form')
         </div>
         @if (isset($view) && $view === 'parts')
