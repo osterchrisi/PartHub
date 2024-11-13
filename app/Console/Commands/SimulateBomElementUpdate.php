@@ -36,7 +36,6 @@ class SimulateBomElementUpdate extends Command
         $this->info('Simulation Results:');
         $this->line(json_encode($results, JSON_PRETTY_PRINT));
 
-
         return 0;
     }
 }

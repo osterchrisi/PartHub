@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -15,7 +13,7 @@ return new class extends Migration
         DB::table('bom_elements')
             ->join('boms', 'bom_elements.bom_id_fk', '=', 'boms.bom_id')
             ->update([
-                'bom_elements.bom_element_owner_u_fk' => DB::raw('boms.bom_owner_u_fk')
+                'bom_elements.bom_element_owner_u_fk' => DB::raw('boms.bom_owner_u_fk'),
             ]);
     }
 
@@ -29,7 +27,7 @@ return new class extends Migration
         // Optionally, you can set bom_element_owner_u_fk back to null or handle reversing differently
         DB::table('bom_elements')
             ->update([
-                'bom_elements.bom_element_owner_u_fk' => null
+                'bom_elements.bom_element_owner_u_fk' => null,
             ]);
     }
 };

@@ -30,7 +30,9 @@ class BomController extends Controller
     private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'name'];
 
     private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'User'];
+
     protected $stockService;
+
     public function __construct(StockService $stockService)
     {
         $this->stockService = $stockService;
