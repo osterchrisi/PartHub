@@ -25,7 +25,7 @@
             {{-- Categories Section --}}
             @if (isset($view) && $view === 'parts')
                 <div class="d-flex flex-column">
-                    <div class="flex-grow-0" id='category-window-container' style="display: none;">
+                    <div class="flex-grow-0 sticky" id='category-window-container' style="display: none; position: sticky; top: 50px;">
                         <div class="rounded border border-dark border-opacity-25 me-3 ps-3 pb-3 shadow-sm"
                             id="category-window">
                             @include('categories.categoriesTable')

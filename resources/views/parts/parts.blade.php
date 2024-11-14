@@ -24,7 +24,7 @@ If the right-click menu is not on top, it won't show --}}
 @section('filter-form')
     <div class="col-3" id="search-box-div">
         <form method="get" id="search_form" action=" {{ route('parts') }}">
-            <input type="text" class="form-control form-control-sm" id="search" name="search"
+            <input type="text" class="form-control form-control-sm pb-2" id="search" name="search"
                 placeholder="Start typing to filter..." value="{{ $search_term }}"><br><br><br>
     </div>
     <div class="col-3" id="category-box-div">
@@ -32,7 +32,7 @@ If the right-click menu is not on top, it won't show --}}
         @include('components.selects.categoryMultiSelect')
     </div>
     <div class="col-1" id="search-button-div">
-        <button type="submit" class="btn btn-sm btn-primary">Search</button><br><br>
+        <button type="submit" class="btn btn-sm btn-primary">Filter</button><br><br>
     </div>
     </form>
 @endsection
