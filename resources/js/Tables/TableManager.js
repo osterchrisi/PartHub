@@ -91,7 +91,6 @@ class TableManager {
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(this.type);
 
-        this.preventTextSelectionOnShift();
         this.instantiateRowClickCallback();
     }
 
@@ -200,7 +199,6 @@ class TableManager {
             const id = $currentRow.data('id');
             if (this.rowClickCallback) this.rowClickCallback(id);
         });
-        this.preventTextSelectionOnShift();
     }
 
     /**
@@ -262,22 +260,6 @@ class TableManager {
         $(document).off('click').on('click', (event) => {
             if (!this.$menu.is(event.target) && this.$menu.has(event.target).length === 0) {
                 this.hideContextMenu();
-            }
-        });
-    }
-
-    preventTextSelectionOnShift() {
-        // Shift is pressed
-        $(document).on('keydown', (event) => {
-            if (event.shiftKey) {
-                this.$table.addClass('table-no-select');
-            }
-        });
-
-        // Shift is released
-        $(document).on('keyup', (event) => {
-            if (!event.shiftKey) {
-                this.$table.removeClass('table-no-select');
             }
         });
     }

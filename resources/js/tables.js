@@ -127,7 +127,6 @@ function hideBOMAssemblyModalAndCleanup() {
   });
 }
 
-//TODO: Extract functions
 /**
 * Send back the changes array with all statuses set to "gtg" (good to got)
 * when the user chooses to continue with assembling BOMs even if there isn't enough stock for some parts.

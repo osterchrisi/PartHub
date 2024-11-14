@@ -119,6 +119,17 @@ class DatabaseService
             ->update([$column => $new_value]);
 
         if (! $updated) {
+            // Detailled logging for the curious mind
+            \Log::warning('Update failed', [
+                'table_name' => $table_name,
+                'id_field' => $id_field,
+                'id' => $id,
+                'column' => $column,
+                'new_value' => $new_value,
+                'user_id' => $user_id,
+                'current_value' => $currentValue,
+                'owner_column' => $owner_column
+            ]);
             throw new Exception('Unauthorized or row not found for updating');
         }
 

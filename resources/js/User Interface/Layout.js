@@ -9,6 +9,7 @@ class Layout {
         Layout.initializePopovers();
         Layout.initializeTooltips();
         Layout.saveFilterDivState();
+        Layout.preventTextSelectionOnShift();
     }
 
     // Function to recall and apply saved settings from local storage
@@ -156,5 +157,21 @@ class Layout {
             Layout.saveLayoutSettings(); // Save the state once the collapse transition completes
         });
 
+    }
+
+    static preventTextSelectionOnShift() {
+        // Shift is pressed
+        $(document).on('keydown', (event) => {
+            if (event.shiftKey) {
+                $('table[data-multiple-select-row="true"]').addClass('table-no-select');
+            }
+        });
+
+        // Shift is released
+        $(document).on('keyup', (event) => {
+            if (!event.shiftKey) {
+                $('table[data-multiple-select-row="true"]').removeClass('table-no-select');
+            }
+        });
     }
 }
