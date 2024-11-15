@@ -1,4 +1,80 @@
-<table class="table table-sm table-borderless table-responsive table-hover table-striped w-auto mt-3 me-3 mb-3"
+<div id="categories_list_table_placeholder" class="mt-3 me-4 mb-3 w-auto">
+    <table class="table table-sm table-hover table-striped table-bordered table-responsive w-100 w-auto" style="font-size:12px; min-width:15rem;">
+        <thead>
+            <tr>
+                <th class="placeholder">Categories</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-expander treegrid-expander-expanded"></span>
+                        <span class="placeholder col-3"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-expander"></span>
+                        <span class="placeholder col-4"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-indent"></span><span
+                            class="treegrid-expander treegrid-expander-expanded"></span>
+                        <span class="placeholder col-5"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-indent"></span><span class="treegrid-expander"></span><span
+                            class="placeholder col-3"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-indent"></span><span class="treegrid-expander"></span><span
+                            class="placeholder col-4"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-indent"></span><span class="treegrid-expander"></span><span
+                            class="placeholder col-3"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-expander"></span>
+                        <span class="placeholder col-4"></span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="placeholder-glow my-0"><span class="treegrid-indent"></span><span
+                            class="treegrid-expander"></span>
+                        <span class="placeholder col-5"></span>
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<table class="table table-sm table-borderless table-responsive table-hover table-striped w-auto mt-3 me-3 mb-3 d-none"
     style="font-size:12px" id="categories_list_table" data-resizable="true" {{-- data-reorderable-columns="true" --}} data-cookie="true"
     data-cookie-id-table="CategoriesListTableState" data-cookie-storage="localStorage" data-max-moving-rows="100"
     data-parent-id-field="parent_category" data-tree-show-field="category_name" data-id-field="category_id">
@@ -43,7 +119,7 @@
                     data-column="category_name" data-table_name="part_categories" data-id_field="category_id">
                     <x-tables.td-editable-flexbox :content="$category->category_name ?? ''">
                         <x-tables.edit-pen />
-                    </x-flexbox-container>
+                        </x-flexbox-container>
                 </td>
                 <td style="display: none;">{{ $category->category_id }}</td>
                 <td style="display: none;">{{ $category->parent_category }}</td>
