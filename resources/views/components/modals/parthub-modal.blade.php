@@ -16,7 +16,9 @@
             <!-- Modal Footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="{{ $cancelButton2Id ?? '' }}" data-bs-dismiss="modal">{{ $cancelText }}</button>
+                @if (!empty($submitButtonId))
                 <button type="submit" class="btn btn-primary" id="{{ $submitButtonId }}">{{ $submitText }}</button>
+                @endif
             </div>
         </div>
     </div>

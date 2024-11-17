@@ -74,6 +74,19 @@
     </div>
 </div>
 
+{{-- Inline Table Cell Updating Error Modal --}}
+<x-modals.parthub-modal
+    modalId="dynamicErrorModal"
+    modalTitleId="dynamicErrorModalTitle"
+    title="Error"
+    cancelText="Close"
+    submitText=""
+    size="modal-lg"
+    backdrop="true"
+    keyboard="true">
+</x-modals.parthub-modal>
+
+
 @include('footer')
 
 {{-- Toasts --}}

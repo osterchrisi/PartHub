@@ -56,13 +56,28 @@ class FormValidator {
                     this.handleGeneralError(key, messages[0]);
                 }
             });
-        } else {
+        } else if (xhr.responseJSON && xhr.responseJSON.error){
+            // alert(xhr.responseJSON.error);
+            // Get the error message
+        const errorMessage = xhr.responseJSON.error;
+
+        // Inject the error message into the modal's body
+        document.querySelector('#dynamicErrorModal .modal-body').textContent = errorMessage;
+
+        // Show the modal using Bootstrap's JS API
+        const errorModal = new bootstrap.Modal(document.getElementById('dynamicErrorModal'));
+        errorModal.show();
+        }
+        
+        else {
             alert('An error occurred. Please try again.');
         }
     }
 
     // Method to handle errors for general form fields
     handleGeneralError(key, message) {
+        console.log("key ", key);
+        console.log("message", message);
 
         // The error div for general errors has dots replaced by underscores
         const errorDiv = this.$form.find(`#error-${key.replace(/\./g, '_')}`);

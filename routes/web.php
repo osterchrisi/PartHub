@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //* Database Service Routes
-Route::post('/updateCell', [DatabaseServiceController::class, 'updateCell'])->middleware(['auth', 'verified']);
+Route::patch('/updateCell', [DatabaseServiceController::class, 'updateCell'])->middleware(['auth', 'verified']);
 Route::post('/deleteRow', [DatabaseServiceController::class, 'deleteRow'])->middleware(['auth', 'verified']);
 
 //* Part Routes

@@ -3,6 +3,7 @@ import { updateInfoWindow } from "../custom";
 import { CategoryTableManager } from "./CategoriesTableManager";
 import { TableManager } from "./TableManager";
 import { TableRowManager } from "./TableRowManager";
+import { FormValidator } from "../FormValidator";
 
 class InlineTableCellEditor {
     constructor() {
@@ -208,6 +209,7 @@ class InlineTableCellEditor {
                         this.$cell.removeClass('editing');
                         // Remove the event handler once it has done its job
                         $(document).off('keydown');
+                        this.enableInlineProcessing();
                     }
                 });
             },
@@ -307,7 +309,7 @@ class InlineTableCellEditor {
 
         return $.ajax({
             url: '/updateCell',
-            type: 'POST',
+            type: 'PATCH',
             data: {
                 id: id,
                 column: column,
@@ -325,8 +327,10 @@ class InlineTableCellEditor {
                 if (xhr.status === 419) {
                     alert('CSRF token mismatch. Please refresh the page and try again.');
                 } else {
-                    alert('Error updating data');
-                    this.$cell.text(this.originalValue);
+                    // alert('Error updating data');
+                    const formValidator = new FormValidator($('#partSupplierDataTableForm'));
+                    formValidator.handleError(xhr);
+                    this.$cellContent.text(this.originalValue);
                 }
             }
         });

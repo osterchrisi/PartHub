@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Services\Validators\PartValidatorService;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class DatabaseService
 {
@@ -35,7 +39,7 @@ class DatabaseService
         try {
             // Get the owner column for the specified table
             $owner_column = self::$owner_columns[$table] ?? null;
-            if (! $owner_column) {
+            if (!$owner_column) {
                 throw new Exception("No owner column found for table {$table}");
             }
 
@@ -54,12 +58,12 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->delete();
 
-            if (! $deleted) {
+            if (!$deleted) {
                 throw new Exception('Unauthorized or row not found for deletion');
             }
 
             // Additional logic if the deleted row is a category
-            if ($table === 'part_categories' && ! empty($partsToUpdate)) {
+            if ($table === 'part_categories' && !empty($partsToUpdate)) {
                 // Get the root category for the user
                 $root_category = app()->make('App\Services\CategoryService')->findRootCategory($user_id)->category_id ?? null;
 
@@ -85,18 +89,25 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
-        $rules = self::getValidationRulesForTable($table_name, $column);
+        $httpMethod = request()->method() ?? 'POST';
 
-        // If validation rules exist for the column, validate before updating
-        if ($rules) {
-            $validator = Validator::make([$column => $new_value], $rules);
-            if ($validator->fails()) {
-                throw new Exception('Validation failed: '.$validator->errors()->first());
+        if ($table_name === 'parts' || $table_name === 'supplier_data') {
+            $validatorService = app(PartValidatorService::class);
+
+            // Prepare data for validation
+            $data = [$column => $new_value, 'part_id' => $id]; // Ensure 'part_id' is included for updating the DB afterwards
+
+            try {
+                // Perform validation based on HTTP method
+                $validated = $validatorService->validate($data, $httpMethod);
+                $new_value = $validated[$column] ?? $new_value;
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                    throw new Exception($e->getMessage());
             }
         }
 
         $owner_column = self::$owner_columns[$table_name] ?? null;
-        if (! $owner_column) {
+        if (!$owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
@@ -118,7 +129,7 @@ class DatabaseService
             ->where($owner_column, $user_id)
             ->update([$column => $new_value]);
 
-        if (! $updated) {
+        if (!$updated) {
             // Detailled logging for the curious mind
             \Log::warning('Update failed', [
                 'table_name' => $table_name,
@@ -134,22 +145,5 @@ class DatabaseService
         }
 
         return ['message' => 'Cell updated successfully.'];
-    }
-
-    /**
-     * Dynamically retrieve validation rules for the specified table and column.
-     */
-    protected static function getValidationRulesForTable($table_name, $column)
-    {
-        $requestClass = 'App\\Http\\Requests\\'.ucfirst(Str::camel($table_name)).'Request';
-
-        if (class_exists($requestClass)) {
-            \Log::info('I found rules omg!');
-            $requestInstance = new $requestClass;
-
-            return [$column => $requestInstance->rules()[$column] ?? []];
-        }
-
-        return [];
     }
 }
