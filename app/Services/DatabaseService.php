@@ -91,6 +91,10 @@ class DatabaseService
     {
         $httpMethod = request()->method() ?? 'POST';
 
+        // Rudimentary for now. Most important is Price (integer) and URL (URL)
+        //TODO: Pretty unhappy with this. Maybe also try to have dedicated Controller methods for updating and see
+        //TODO: if the exceptions thrown are identical then. Currently they are different between calling from Controller
+        //TODO: and calling via DatabaseService...
         if ($table_name === 'parts' || $table_name === 'supplier_data') {
             $validatorService = app(PartValidatorService::class);
 

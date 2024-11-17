@@ -56,19 +56,20 @@ class FormValidator {
                     this.handleGeneralError(key, messages[0]);
                 }
             });
-        } else if (xhr.responseJSON && xhr.responseJSON.error){
-            // alert(xhr.responseJSON.error);
-            // Get the error message
-        const errorMessage = xhr.responseJSON.error;
+        } else if (xhr.responseJSON && xhr.responseJSON.error) {
+            // This is for showing errors via InlineTableCellEditor as I cannot for the love of my life
+            // find out why different exception structures are thrown if the validation is done via
+            // Controller or DatabaseService
+            const errorMessage = xhr.responseJSON.error;
 
-        // Inject the error message into the modal's body
-        document.querySelector('#dynamicErrorModal .modal-body').textContent = errorMessage;
+            // Inject the error message into the modal's body
+            document.querySelector('#dynamicErrorModal .modal-body').textContent = errorMessage;
 
-        // Show the modal using Bootstrap's JS API
-        const errorModal = new bootstrap.Modal(document.getElementById('dynamicErrorModal'));
-        errorModal.show();
+            // Show modal
+            const errorModal = new bootstrap.Modal(document.getElementById('dynamicErrorModal'));
+            errorModal.show();
         }
-        
+
         else {
             alert('An error occurred. Please try again.');
         }
@@ -76,9 +77,6 @@ class FormValidator {
 
     // Method to handle errors for general form fields
     handleGeneralError(key, message) {
-        console.log("key ", key);
-        console.log("message", message);
-
         // The error div for general errors has dots replaced by underscores
         const errorDiv = this.$form.find(`#error-${key.replace(/\./g, '_')}`);
         const inputField = this.$form.find(`[name="${key}"]`);
