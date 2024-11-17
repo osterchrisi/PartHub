@@ -155,7 +155,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/{setting_name}', [UserSettingController::class, 'getUserSetting'])->middleware(['auth', 'verified']);
     Route::post('/settings/{setting_name}', [UserSettingController::class, 'updateUserSetting'])->middleware(['auth', 'verified']);
 });
-Route::get('/user-settigs', [UserSettingController::class, 'index'])->middleware(['auth', 'verified'])->name('user-settings');
+Route::get('/user-settings', [UserSettingController::class, 'index'])->middleware(['auth', 'verified'])->name('user-settings');
 Route::post('/user/settings', [UserSettingController::class, 'update'])->name('user.settings.update')->middleware('auth');
 
 //* Standalone Pages Routes
