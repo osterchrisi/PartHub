@@ -12,6 +12,7 @@ class PartValidatorService
         // Check if creating completely new or updating
         $isUpdating = in_array($httpMethod, ['PUT', 'PATCH']);
 
+        //TODO: After updating DBSController remove the column names-y things here
         $rules = [
             'part_name' => $isUpdating ? 'nullable|string|max:255' : 'required|string|max:255',
             'part_id' => $isUpdating ? 'required|integer' : 'sometimes|integer',

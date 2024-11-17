@@ -89,27 +89,6 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
-        $httpMethod = request()->method() ?? 'POST';
-
-        // Rudimentary for now. Most important is Price (integer) and URL (URL)
-        //TODO: Pretty unhappy with this. Maybe also try to have dedicated Controller methods for updating and see
-        //TODO: if the exceptions thrown are identical then. Currently they are different between calling from Controller
-        //TODO: and calling via DatabaseService...
-        if ($table_name === 'parts' || $table_name === 'supplier_data') {
-            $validatorService = app(PartValidatorService::class);
-
-            // Prepare data for validation
-            $data = [$column => $new_value, 'part_id' => $id]; // Ensure 'part_id' is included for updating the DB afterwards
-
-            try {
-                // Perform validation based on HTTP method
-                $validated = $validatorService->validate($data, $httpMethod);
-                $new_value = $validated[$column] ?? $new_value;
-            } catch (\Illuminate\Validation\ValidationException $e) {
-                    throw new Exception($e->getMessage());
-            }
-        }
-
         $owner_column = self::$owner_columns[$table_name] ?? null;
         if (!$owner_column) {
             throw new Exception("No owner column found for table {$table_name}");

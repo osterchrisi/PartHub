@@ -56,21 +56,7 @@ class FormValidator {
                     this.handleGeneralError(key, messages[0]);
                 }
             });
-        } else if (xhr.responseJSON && xhr.responseJSON.error) {
-            // This is for showing errors via InlineTableCellEditor as I cannot for the love of my life
-            // find out why different exception structures are thrown if the validation is done via
-            // Controller or DatabaseService
-            const errorMessage = xhr.responseJSON.error;
-
-            // Inject the error message into the modal's body
-            document.querySelector('#dynamicErrorModal .modal-body').textContent = errorMessage;
-
-            // Show modal
-            const errorModal = new bootstrap.Modal(document.getElementById('dynamicErrorModal'));
-            errorModal.show();
-        }
-
-        else {
+        } else {
             alert('An error occurred. Please try again.');
         }
     }

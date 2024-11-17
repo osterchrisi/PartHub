@@ -76,9 +76,9 @@
 
 {{-- Inline Table Cell Updating Error Modal --}}
 <x-modals.parthub-modal
-    modalId="dynamicErrorModal"
-    modalTitleId="dynamicErrorModalTitle"
-    title="Error"
+    modalId="updateErrorModal"
+    modalTitleId="updateErrorModalTitle"
+    title="Error updating data"
     cancelText="Close"
     submitText=""
     size="modal-lg"

@@ -46,6 +46,9 @@
         <div id="error-supplier" class="d-none text-danger">
             <x-input-error :messages="[]" />
         </div>
+        <div id="error-price" class="d-none text-danger">
+            <x-input-error :messages="[]" />
+        </div>
         <button type="button" id="addSupplierRowBtn-info"
             class="btn btn-sm btn-secondary add-supplier-data-btn mt-2">Add
             Supplier</button>

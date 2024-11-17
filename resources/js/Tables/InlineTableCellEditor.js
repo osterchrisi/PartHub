@@ -327,9 +327,22 @@ class InlineTableCellEditor {
                 if (xhr.status === 419) {
                     alert('CSRF token mismatch. Please refresh the page and try again.');
                 } else {
-                    // alert('Error updating data');
-                    const formValidator = new FormValidator($('#partSupplierDataTableForm'));
-                    formValidator.handleError(xhr);
+                    // Using the FormValidator here is cumbersome because no form and no button is present
+                    // So this is simply handled via a modal shown to the user
+                
+                    // Update modal text and title
+                    const errorMessage = xhr.responseJSON.message;
+                    const firstKey = Object.keys(xhr.responseJSON.errors)[0];
+                    
+                    document.querySelector('#updateErrorModal .modal-body').textContent = errorMessage;
+                    const modalTitleElement = document.getElementById('updateErrorModalTitle');
+                    if (modalTitleElement && firstKey) {
+                        modalTitleElement.textContent = `Error updating ${firstKey}`;
+                    }
+
+                    // Show modal
+                    const errorModal = new bootstrap.Modal(document.getElementById('updateErrorModal'));
+                    errorModal.show();
                     this.$cellContent.text(this.originalValue);
                 }
             }
