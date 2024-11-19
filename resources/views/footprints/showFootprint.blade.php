@@ -10,7 +10,7 @@
     <!-- Tabs -->
     <x-tablist id="footprintTabs" defaultTab="{{ $tabId1 }}">
         <x-buttons.tab-button id="{{ $tabId1 }}" toggleTarget="{{ $tabToggleId1 }}" tabText="{{ $tabText1 }}" />
-        <x-buttons.tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" />
+        {{-- <x-buttons.tab-button id="{{ $tabId2 }}" toggleTarget="{{ $tabToggleId2 }}" tabText="{{ $tabText2 }}" /> --}}
     </x-tablist>
 
     <!-- Tabs Content -->
@@ -28,9 +28,9 @@
             @endphp
         </div>
 
-        <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
+        {{-- <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
             <br>
             No footprint history
-        </div>
+        </div> --}}
     </div>
 </div>
