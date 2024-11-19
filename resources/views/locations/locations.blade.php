@@ -5,8 +5,6 @@
 @php
 $showAddButton = true;
 $showDeleteButton = true;
-$showEditButton = true;
-$showFilterButton = true;
 @endphp
 
 {{-- Modals and Menus --}}

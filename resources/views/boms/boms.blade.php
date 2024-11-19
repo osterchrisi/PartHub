@@ -11,8 +11,6 @@
 @php
 $showAddButton = true;
 $showDeleteButton = true;
-$showEditButton = true;
-$showFilterButton = true;
 $showAssembleButton = true;
 @endphp
 
