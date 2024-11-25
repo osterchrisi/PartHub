@@ -6,8 +6,8 @@
         <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
             title="Sign Up to PartHub" titleExtraClass="" subtitle="Focus on the fun part of making
         things!"
-        secondButtonRoute="#register-pricing" firstButtonRoute="#register-free" secondButtonText="See Pricing"
-        firstButtonText="Sign Up For Free" />
+            secondButtonRoute="#register-pricing" firstButtonRoute="#register-free" secondButtonText="See Pricing"
+            firstButtonText="Sign Up For Free" />
 
         <x-register-card bgClass="text-white signup-gradient-background" id="register-free">
             <div class="text-center mb-4">
@@ -82,7 +82,7 @@
         <!-- Pricing Section -->
         <x-register-card bgClass="shadow-sm pricing-gradient-background text-white" id="register-pricing">
             <div class="text-center mb-4">
-                <h2 class="display-4 mb-4">Pricing Plans</h2>
+                <h2 class="display-4 mb-4">Looking for more?</h2>
                 <p class="lead">Pick whatever floats your boat</p>
             </div>
 
@@ -96,7 +96,7 @@
                         <div class="ribbon text-white">Early Access Special</div>
                         <div class="card-body">
                             <h3 class="card-title">Maker 🚀</h3>
-                            <p class="lead text-muted">Best for small-scale businesses</p>
+                            <p class="lead text-muted fs-6">Best for small-scale businesses</p>
                             <h4 class><del>€29/month</del></h4>
                             <h4 class="text-danger">€9/month</h4>
                             <ul class="list-group my-4 list-group-item-action text-start">
@@ -117,6 +117,8 @@
                                         class="fas fa-check pricing-tier-check"></i> Documents for Resources</li>
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> 14-day Free Trial Period</li>
                             </ul>
                             <div>
                                 <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"
@@ -133,7 +135,7 @@
                     <div class="card text-center border-0 shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title">Free</h3>
-                            <p class="lead text-muted">Best for Enthusiasts and Tinkerers</p>
+                            <p class="lead text-muted fs-6">Best for Enthusiasts and Tinkerers</p>
                             <h4 class>€0/month</h4>
                             <ul class="list-group my-4 text-start">
                                 <li class="list-group-item"><i class="fas fa-check"></i> Limited Resources</li>
