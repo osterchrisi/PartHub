@@ -7,7 +7,7 @@
         </span>
         <span id="contentSpan" class="ms-auto">{{ $content }}</span>
     @else
-        <span id="contentSpan">{{ $content }}</span>
+        <span id="contentSpan" class="text-truncate">{{ $content }}</span>
         <span class="edit-pen ms-2">
             {{ $slot ?? '' }}
         </span>

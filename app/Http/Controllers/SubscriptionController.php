@@ -10,7 +10,7 @@ class SubscriptionController extends Controller
      * Handle the subscription checkout process.
      *
      * This method initializes a new subscription for the authenticated user with the specified type
-     * and Stripe price ID. It includes a 30-day trial period and allows promotion codes.
+     * and Stripe price ID. It includes a 14-day trial period and allows promotion codes.
      * The user is redirected to Stripe's hosted checkout page.
      *
      * @param  \Illuminate\Http\Request  $request  The current request instance.

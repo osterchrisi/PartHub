@@ -15,6 +15,7 @@
                 @foreach ($supplierData as $row)
                     <tr data-part-id="{{ $part['part_id'] }}" data-supplier-data-id="{{ $row->id }}">
                         @foreach ($supplierDataTableHeaders as $column_data)
+                            {{-- Supplier --}}
                             @if ($column_data === 'supplier_id_fk')
                                 <td data-editable="true" class="editable editable-supplierData"
                                     data-id="{{ $row->id }}" data-column="{{ $column_data }}"
@@ -22,9 +23,19 @@
                                     data-id_field="{{ $supplierDataTableIdField }}">
                                     <x-tables.td-editable-flexbox :content="$row->supplier->supplier_name ?? ''">
                                         <x-tables.edit-pen />
-                                    </x-flexbox-container>
-                                    {{-- {{ $row->supplier->supplier_name }} --}}
-                                
+                                        </x-flexbox-container>
+                                        {{-- {{ $row->supplier->supplier_name }} --}}
+
+                                </td>
+                                {{-- URL --}}
+                            @elseif ($column_data === 'URL')
+                                <td data-editable="true" class="editable editable-text" style="max-width: 10rem"
+                                    data-id="{{ $row->id }}" data-column="{{ $column_data }}"
+                                    data-table_name="{{ $supplierDataTableName }}"
+                                    data-id_field="{{ $supplierDataTableIdField }}">
+                                    <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''">
+                                        <x-tables.edit-pen />
+                                        </x-flexbox-container>
                                 </td>
                             @elseif ($column_data == 'state')
                                 <td></td>
@@ -34,8 +45,8 @@
                                     data-id_field="{{ $supplierDataTableIdField }}">
                                     <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''">
                                         <x-tables.edit-pen />
-                                    </x-flexbox-container>
-                                    {{-- {{ $row->$column_data }} --}}
+                                        </x-flexbox-container>
+                                        {{-- {{ $row->$column_data }} --}}
                                 </td>
                             @endif
                         @endforeach

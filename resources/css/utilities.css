@@ -87,3 +87,13 @@
 .edit-pen a:hover {
     color: black;
 }
+
+.truncate-url {
+    /* max-width: 200px; Adjust as needed */
+    /* white-space: nowrap; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* display: inline-ock; */
+    vertical-align: middle; /* Optional for alignment */
+    cursor: pointer; /* Indicate the text is clickable (for tooltip) */
+}
