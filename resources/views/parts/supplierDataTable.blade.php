@@ -29,11 +29,11 @@
                                 </td>
                                 {{-- URL --}}
                             @elseif ($column_data === 'URL')
-                                <td data-editable="true" class="editable editable-text" style="max-width: 10rem"
+                                <td data-editable="true" class="editable editable-text user-select-all" style="max-width: 10rem"
                                     data-id="{{ $row->id }}" data-column="{{ $column_data }}"
                                     data-table_name="{{ $supplierDataTableName }}"
                                     data-id_field="{{ $supplierDataTableIdField }}">
-                                    <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''">
+                                    <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''" extraContentClass="text-truncate">
                                         <x-tables.edit-pen />
                                         </x-flexbox-container>
                                 </td>
