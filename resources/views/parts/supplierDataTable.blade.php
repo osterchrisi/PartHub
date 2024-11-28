@@ -23,19 +23,19 @@
                                     data-id_field="{{ $supplierDataTableIdField }}">
                                     <x-tables.td-editable-flexbox :content="$row->supplier->supplier_name ?? ''">
                                         <x-tables.edit-pen />
-                                        </x-flexbox-container>
-                                        {{-- {{ $row->supplier->supplier_name }} --}}
+                                    </x-tables.td-editable-flexbox>
 
                                 </td>
                                 {{-- URL --}}
                             @elseif ($column_data === 'URL')
-                                <td data-editable="true" class="editable editable-text user-select-all" style="max-width: 10rem"
+                                <td data-editable="true" class="editable editable-text" style="max-width: 10rem"
                                     data-id="{{ $row->id }}" data-column="{{ $column_data }}"
                                     data-table_name="{{ $supplierDataTableName }}"
                                     data-id_field="{{ $supplierDataTableIdField }}">
                                     <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''" extraContentClass="text-truncate">
+                                        <x-tables.copy-clipboard :content="$row->$column_data ?? ''" />
                                         <x-tables.edit-pen />
-                                        </x-flexbox-container>
+                                    </x-tables.td-editable-flexbox>
                                 </td>
                             @elseif ($column_data == 'state')
                                 <td></td>
@@ -45,8 +45,7 @@
                                     data-id_field="{{ $supplierDataTableIdField }}">
                                     <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''">
                                         <x-tables.edit-pen />
-                                        </x-flexbox-container>
-                                        {{-- {{ $row->$column_data }} --}}
+                                    </x-tables.td-editable-flexbox>
                                 </td>
                             @endif
                         @endforeach

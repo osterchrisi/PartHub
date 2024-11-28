@@ -23,13 +23,13 @@
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                                 data-id_field="{{ $id_field }}"><x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
                                     <x-tables.edit-pen />
-                                    </x-flexbox-container></td>
+                                    </x-tables.td-editable-flexbox></td>
                         @elseif ($column_data === 'bom_description')
                             <td data-editable="true" class="editable editable-text" data-id="{{ $bom_id }}"
                                 data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                                 data-id_field="{{ $id_field }}"><x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
                                     <x-tables.edit-pen />
-                                    </x-flexbox-container></td>
+                                    </x-tables.td-editable-flexbox></td>
                         @elseif ($column_data === 'bom_id')
                             <td data-id="{{ $bom_id }}" data-column="{{ $column_data }}"
                                 data-table_name="{{ $table_name }}" data-id_field="{{ $id_field }}">

@@ -29,7 +29,7 @@
                                 data-id_field="{{ $id_field }}">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
                                     <x-tables.edit-pen />
-                                    </x-flexbox-container>
+                                    </x-tables.td-editable-flexbox>
                             </td>
                         @elseif ($column_data === 'footprint_alias')
                             <td data-editable="true" class="editable editable-text" data-id="{{ $footprint_id }}"
@@ -37,7 +37,7 @@
                                 data-id_field="{{ $id_field }}">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
                                     <x-tables.edit-pen />
-                                    </x-flexbox-container>
+                                    </x-tables.td-editable-flexbox>
                             </td>
                         @elseif ($column_data === 'footprint_id')
                         <td data-id="{{ $footprint_id }}"

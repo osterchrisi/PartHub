@@ -48,7 +48,7 @@
                                 data-id_field="bom_elements_id">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''" alignment="right">
                                     <x-tables.edit-pen />
-                                </x-flexbox-container>
+                                </x-tables.td-editable-flexbox>
                             </td>
                         @elseif ($column_data == 'can_build')
                             @php                          

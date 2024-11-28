@@ -69,7 +69,7 @@
                             data-category="{{ $part['category'][$column_data] ?? '' }}">
                             <x-tables.td-editable-flexbox :content="$part['category'][$column_data] ?? ''">
                                 <x-tables.edit-pen />
-                            </x-flexbox-container>
+                            </x-tables.td-editable-flexbox>
                         </td>
                         {{-- Unit --}}
                     @elseif ($column_data == 'unit_name')
@@ -78,7 +78,7 @@
                             data-id_field="{{ $id_field }}">
                             <x-tables.td-editable-flexbox :content="$part['unit'][$column_data] ?? ''">
                                 <x-tables.edit-pen />
-                            </x-flexbox-container>
+                            </x-tables.td-editable-flexbox>
                         </td>
                         {{-- Footprint --}}
                     @elseif ($column_data == 'footprint_name')
@@ -87,7 +87,7 @@
                             data-id_field="{{ $id_field }}">
                             <x-tables.td-editable-flexbox :content="$part['footprint'][$column_data] ?? ''">
                                 <x-tables.edit-pen />
-                            </x-flexbox-container>
+                            </x-tables.td-editable-flexbox>
                         </td>
                         {{-- Selected / State  --}}
                     @elseif ($column_data == 'state')
@@ -104,7 +104,7 @@
                             data-id_field="{{ $id_field }}">
                             <x-tables.td-editable-flexbox :content="$part[$column_data] ?? ''">
                                 <x-tables.edit-pen />
-                            </x-flexbox-container>
+                            </x-tables.td-editable-flexbox>
                         </td>
                     @endif
                 @endforeach

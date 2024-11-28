@@ -25,7 +25,7 @@
                                 data-id_field="{{ $id_field }}">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
                                     <x-tables.edit-pen />
-                                    </x-flexbox-container>
+                                    </x-tables.td-editable-flexbox>
                             </td>
                         @elseif ($column_data === 'location_description')
                             <td data-editable="true" class="editable editable-text" data-id="{{ $location_id }}"
@@ -33,7 +33,7 @@
                                 data-id_field="{{ $id_field }}">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
                                     <x-tables.edit-pen />
-                                </x-flexbox-container>
+                                </x-tables.td-editable-flexbox>
                             </td>
                         @elseif ($column_data === 'location_id')
                             <td data-id="{{ $location_id }}" data-column="{{ $column_data }}"

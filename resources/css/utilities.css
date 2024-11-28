@@ -60,15 +60,18 @@
 }
 
 /* Editable Pen */
-.editable .edit-pen {
-    visibility: hidden; /*hidden*/
+.editable .edit-pen,
+.editable .copy-clipboard {
+    visibility: hidden;
 }
 
-.editable:hover .edit-pen {
+.editable:hover .edit-pen,
+.editable:hover .copy-clipboard {
     visibility: visible;
 }
 
-.editable:hover .edit-pen::before {
+.editable:hover .edit-pen::before,
+.editable:hover .copy-clipboard::before {
     content: "";
     position: absolute;
     top: 0;
@@ -79,14 +82,17 @@
     z-index: -1;
 }
 
-.edit-pen a {
+.edit-pen a,
+.copy-clipboard a {
     color: var(--bs-gray-500);
     /* transition: color 0.05s ease; */
 }
 
-.edit-pen a:hover {
+.edit-pen a:hover,
+.copy-clipboard a:hover {
     color: black;
 }
+
 
 .truncate-url {
     /* max-width: 200px; Adjust as needed */
