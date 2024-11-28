@@ -42,4 +42,30 @@ $(document).ready(function () {
 
     const inlineEditor = new InlineTableCellEditor();
     inlineEditor.enableInlineProcessing();
+
+    $(document).ready(function () {
+        // Attach click event to elements with class "copy-to-clipboard"
+        $(document).on('click', '.copy-to-clipboard', function (event) {
+            event.preventDefault(); // Prevent default anchor behavior
+    
+            const url = $(this).data('url'); // Get the URL from the data attribute
+            if (url) {
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        // Show success feedback using Bootstrap tooltip
+                        const $tooltipElement = $(this);
+                        $tooltipElement.attr('data-bs-title', 'Copied!').tooltip('show');
+    
+                        // Reset tooltip text after a short delay
+                        setTimeout(() => {
+                            $tooltipElement.tooltip('hide');
+                        }, 2000);
+                    })
+                    .catch((err) => {
+                        console.error('Failed to copy:', err);
+                    });
+            }
+        });
+    });
+    
 });
