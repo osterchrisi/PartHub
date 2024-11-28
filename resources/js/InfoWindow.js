@@ -15,6 +15,7 @@ import {
     updateInfoWindow,
     deleteSelectedRows
 } from "./custom";
+import { Layout } from "./User Interface/Layout";
 
 class InfoWindow {
     constructor(type, id = null) {
@@ -91,6 +92,8 @@ class InfoWindow {
                 break;
         }
         this.setupTabs();
+        Layout.initializeTooltips();
+        Layout.initializePopovers();
     }
 
     setupTabs() {
