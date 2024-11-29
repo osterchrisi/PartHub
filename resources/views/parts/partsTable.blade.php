@@ -103,6 +103,8 @@
                             data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
                             data-id_field="{{ $id_field }}">
                             <x-tables.td-editable-flexbox :content="$part[$column_data] ?? ''">
+                                {{-- Not yet working
+                                <x-tables.copy-clipboard :content="$part[$column_data] ?? ''" /> --}}
                                 <x-tables.edit-pen />
                             </x-tables.td-editable-flexbox>
                         </td>

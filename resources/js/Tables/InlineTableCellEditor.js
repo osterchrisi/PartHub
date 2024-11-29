@@ -112,8 +112,6 @@ class InlineTableCellEditor {
             const new_value = input.val().trim();
 
             // Update cell with new value
-            // this.$cellContent.text(new_value);
-
             // Validate the updated value and update the cell
             if (this.isValidURL(new_value)) {
                 this.$cellContent.html(`<a href="${new_value}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">${new_value}</a>`);
@@ -121,10 +119,10 @@ class InlineTableCellEditor {
                 this.$cellContent.text(new_value); // Set as plain text if not a valid URL
             }
 
-            // Update data-url attribute for the copy-clipboard anchor
+            // Update data-content attribute for the copy-clipboard anchor
             const copyClipboardAnchor = this.$cell.find('.copy-to-clipboard');
             if (copyClipboardAnchor.length > 0) {
-                copyClipboardAnchor.attr('data-url', new_value);
+                copyClipboardAnchor.attr('data-content', new_value);
             }
 
             // Get database row id, id column name, currently edited column name and database table
