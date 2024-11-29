@@ -93,13 +93,12 @@
     color: black;
 }
 
+a.text-decoration-none {
+    color: inherit; /* Match the table's text color */
+    text-decoration: none;
+}
 
-.truncate-url {
-    /* max-width: 200px; Adjust as needed */
-    /* white-space: nowrap; */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* display: inline-ock; */
-    vertical-align: middle; /* Optional for alignment */
-    cursor: pointer; /* Indicate the text is clickable (for tooltip) */
+a.text-decoration-none:hover {
+    text-decoration: underline; /* Highlight on hover */
+    color: #007bff; /* Optional: Use Bootstrap's primary color */
 }

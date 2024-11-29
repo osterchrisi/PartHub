@@ -109,10 +109,23 @@ class InlineTableCellEditor {
         // Update database value on blur event (clicking outside the input field)
         input.blur(() => {
             // Get newly entered value
-            const new_value = input.val();
+            const new_value = input.val().trim();
 
             // Update cell with new value
-            this.$cellContent.text(new_value);
+            // this.$cellContent.text(new_value);
+
+            // Validate the updated value and update the cell
+            if (this.isValidURL(new_value)) {
+                this.$cellContent.html(`<a href="${new_value}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">${new_value}</a>`);
+            } else {
+                this.$cellContent.text(new_value); // Set as plain text if not a valid URL
+            }
+
+            // Update data-url attribute for the copy-clipboard anchor
+            const copyClipboardAnchor = this.$cell.find('.copy-to-clipboard');
+            if (copyClipboardAnchor.length > 0) {
+                copyClipboardAnchor.attr('data-url', new_value);
+            }
 
             // Get database row id, id column name, currently edited column name and database table
             // These are encoded in the table data cells and look like this, e.g.:
@@ -329,11 +342,11 @@ class InlineTableCellEditor {
                 } else {
                     // Using the FormValidator here is cumbersome because no form and no button is present
                     // So this is simply handled via a modal shown to the user
-                
+
                     // Update modal text and title
                     const errorMessage = xhr.responseJSON.message;
                     const firstKey = Object.keys(xhr.responseJSON.errors)[0];
-                    
+
                     document.querySelector('#updateErrorModal .modal-body').textContent = errorMessage;
                     const modalTitleElement = document.getElementById('updateErrorModalTitle');
                     if (modalTitleElement && firstKey) {
@@ -390,6 +403,16 @@ class InlineTableCellEditor {
         };
         if (tableManagerMapping[table_name]) {
             tableManagerMapping[table_name]();
+        }
+    }
+
+    // Check if the updated text cell is a URL
+    isValidURL(url) {
+        try {
+            const parsedURL = new URL(url); // This will throw an error for invalid URLs
+            return parsedURL.protocol === "http:" || parsedURL.protocol === "https:";
+        } catch (e) {
+            return false;
         }
     }
 

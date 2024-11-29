@@ -48,8 +48,9 @@ $(document).ready(function () {
     $(document).on('click', '.copy-to-clipboard', function (event) {
         event.preventDefault(); // Prevent default anchor behavior
 
-        const url = $(this).data('url'); // Get the URL from the data attribute
+        const url = $(this).attr('data-url'); // Get the URL from the data attribute
         if (url) {
+            console.log("url = ", url);
             navigator.clipboard.writeText(url)
                 .then(() => {
                     // Show success feedback using Bootstrap tooltip
