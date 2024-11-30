@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-between w-100" id="editable-cell-content">
     @if ($alignment === 'right')
         {{-- Icons --}}
-        <span class="me-2">
+        <span class="me-2 d-flex align-items-center">
             {{ $slot ?? '' }}
         </span>
         {{-- Content --}}
@@ -36,7 +36,7 @@
             @endif
         </span>
         {{-- Icons --}}
-        <span class="ms-2">
+        <span class="ms-2 d-flex align-items-center">
             {{ $slot ?? '' }}
         </span>
     @endif
