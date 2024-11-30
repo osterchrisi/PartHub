@@ -6,28 +6,36 @@
 
 <div class="d-flex justify-content-between w-100" id="editable-cell-content">
     @if ($alignment === 'right')
+        {{-- Icons --}}
         <span class="me-2">
             {{ $slot ?? '' }}
         </span>
+        {{-- Content --}}
         <span id="contentSpan" class="ms-auto {{ $extraContentClass }}">
+            {{-- URLs in the SupplierDataTable --}}
             @if (filter_var($content, FILTER_VALIDATE_URL))
                 <a href="{{ $content }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
                     {{ $content }}
                 </a>
+                {{-- All other content --}}
             @else
                 {{ $content }}
             @endif
         </span>
     @else
+        {{-- Content --}}
         <span id="contentSpan" class="{{ $extraContentClass }}">
+            {{-- URLs in the SupplierDataTable --}}
             @if (filter_var($content, FILTER_VALIDATE_URL))
                 <a href="{{ $content }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
                     {{ $content }}
                 </a>
+                {{-- All other content --}}
             @else
                 {{ $content }}
             @endif
         </span>
+        {{-- Icons --}}
         <span class="ms-2">
             {{ $slot ?? '' }}
         </span>
