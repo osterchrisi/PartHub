@@ -5,6 +5,7 @@
 ])
 
 <div class="d-flex justify-content-between w-100" id="editable-cell-content">
+    {{-- Numbers for Couting --}}
     @if ($alignment === 'right')
         {{-- Icons --}}
         <span class="me-2 d-flex align-items-center">
@@ -22,6 +23,7 @@
                 {{ $content }}
             @endif
         </span>
+    {{-- All other table cells --}}
     @else
         {{-- Content --}}
         <span id="contentSpan" class="{{ $extraContentClass }}">
