@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
     {
         return $request->user()
             ->newSubscription($type, $priceId)
-            ->trialDays(14)
+            ->trialDays(30)
             ->allowPromotionCodes()
             ->checkout([
                 'success_url' => route('welcome'),

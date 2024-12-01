@@ -118,7 +118,9 @@
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Premium support</li>
                                 <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> 14-day Free Trial Period</li>
+                                        class="fas fa-check pricing-tier-check"></i> 30-day Free Trial Period</li>
+                                <li class="list-group-item list-group-item-action"><i
+                                        class="fas fa-check pricing-tier-check"></i> Try it without risk</li>
                             </ul>
                             <div>
                                 <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"

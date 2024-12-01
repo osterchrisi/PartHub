@@ -96,6 +96,7 @@ $user = Auth::user();
                 </div>
             </div>
 
+            {{-- Subscription --}}
             <div class="card shadow-sm mt-4 mb-4">
                 <div class="card-body">
                     <h2 class="card-title text-center">
@@ -104,8 +105,52 @@ $user = Auth::user();
                     <small class="d-block text-muted text-center mb-3">
                         {{ __('Manage your subscription.') }}
                     </small>
+
+                    @php
+                        $subscription = auth()->user()->subscription('maker');
+                        $subscriptionType = $subscription ? $subscription->name : 'free';
+                        $limits = config("subscription_limits.{$subscriptionType}");
+                    @endphp
+
+                    <div class="text-center mb-4">
+                        <h5>{{ __('Current Plan: ') }}<strong>{{ ucfirst($subscriptionType) }}</strong></h5>
+                        @if ($subscriptionType === 'free')
+                            <p class="text-muted">{{ __('You are currently on the free plan.') }}</p>
+                        @else
+                            <p class="text-muted">
+                                {{ __('Your subscription ends at: ') }}
+                                {{ $subscription->ends_at ? $subscription->ends_at->format('d/m/Y') : __('N/A') }}
+                            </p>
+                        @endif
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        @foreach ($limits as $key => $limit)
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>{{ __(ucwords(str_replace('_', ' ', $key))) }}</span>
+                                <span>{{ is_null($limit) ? __('Unlimited') : $limit }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <div class="text-center mt-4">
+                        @if ($subscriptionType === 'free')
+                            <!-- Upgrade Button -->
+                            <a href="{{ route('subscription.checkout', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"
+                                class="btn btn-success">
+                                {{ __('Upgrade to Maker Plan') }}
+                            </a>
+                        @else
+                            <!-- Manage Subscription Button -->
+                            <a href="{{ route('subscription.manage') }}" class="btn btn-primary">
+                                {{ __('Manage Subscription') }}
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
+
+
 
             {{-- Update Password --}}
             <div class="card shadow-sm mt-4 mb-4">

@@ -7,7 +7,7 @@ return [
         'location_limit' => 10,
         'supplier_limit' => 10,
         'supplier_data_limit' => 1,
-        'footprint_limit' => 0,
+        'footprint_limit' => 10,
         'category_limit' => 10,
     ],
     'maker' => [
