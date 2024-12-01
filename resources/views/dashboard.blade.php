@@ -25,6 +25,7 @@ $user = Auth::user();
                         @csrf
                     </form>
 
+                    {{-- Profile Information --}}
                     <form method="post" action="{{ route('profile.update') }}" class="mt-6">
                         @csrf
                         @method('patch')
@@ -94,6 +95,19 @@ $user = Auth::user();
                     </form>
                 </div>
             </div>
+
+            <div class="card shadow-sm mt-4 mb-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center">
+                        {{ __('Subscription') }}
+                    </h2>
+                    <small class="d-block text-muted text-center mb-3">
+                        {{ __('Manage your subscription.') }}
+                    </small>
+                </div>
+            </div>
+
+            {{-- Update Password --}}
             <div class="card shadow-sm mt-4 mb-4">
                 <div class="card-body">
                     <h2 class="card-title text-center">
@@ -107,8 +121,9 @@ $user = Auth::user();
                         @method('put')
                         <div class="col">
                             <x-input-label for="current_password" :value="__('Current Password')" />
-                            <input id="current_password" name="current_password" type="password" class="form-control form-control-sm"
-                                autocomplete="current-password" data-toggle="password" data-size="sm">
+                            <input id="current_password" name="current_password" type="password"
+                                class="form-control form-control-sm" autocomplete="current-password" data-toggle="password"
+                                data-size="sm">
                             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
                         </div>
                         <div class="col">
@@ -120,7 +135,8 @@ $user = Auth::user();
                         <div class="col">
                             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
                             <input id="password_confirmation" name="password_confirmation" type="password"
-                                class="form-control form-control-sm" autocomplete="new-password" data-toggle="password" data-size="sm">
+                                class="form-control form-control-sm" autocomplete="new-password" data-toggle="password"
+                                data-size="sm">
                             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
                         </div>
                         <div class="col mt-3">
@@ -135,6 +151,8 @@ $user = Auth::user();
                     </form>
                 </div>
             </div>
+
+            {{-- Delete Account --}}
             <div class="card shadow-sm mt-4 mb-4">
                 <div class="card-body">
                     <h2 class="card-title text-center">
