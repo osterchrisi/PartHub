@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class DatabaseServiceController extends Controller
 {
-
     protected $partValidator;
 
     protected $stockValidator;
@@ -21,6 +20,7 @@ class DatabaseServiceController extends Controller
         $this->partValidator = $partValidatorService;
         $this->stockValidator = $stockValidatorService;
     }
+
     /**
      * Delete a row from the table
      */
@@ -46,7 +46,6 @@ class DatabaseServiceController extends Controller
     //TODO: I guess what I'll do is to make a mapping for the column_names to the "clear" names in any given rules of any given Validator.
     //TODO: This way the DatabaseServiceController takes care of the incoming request, swaps the column_name and goes on.
     //TODO: For this, I need different update methods inside DSC for any given resource so I have it nicely separated.
-    
 
     /**
      * Update a cell in the table

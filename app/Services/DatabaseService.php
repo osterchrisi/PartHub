@@ -6,12 +6,6 @@ use App\Models\Part;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use App\Services\Validators\PartValidatorService;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 
 class DatabaseService
 {
@@ -39,7 +33,7 @@ class DatabaseService
         try {
             // Get the owner column for the specified table
             $owner_column = self::$owner_columns[$table] ?? null;
-            if (!$owner_column) {
+            if (! $owner_column) {
                 throw new Exception("No owner column found for table {$table}");
             }
 
@@ -58,12 +52,12 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->delete();
 
-            if (!$deleted) {
+            if (! $deleted) {
                 throw new Exception('Unauthorized or row not found for deletion');
             }
 
             // Additional logic if the deleted row is a category
-            if ($table === 'part_categories' && !empty($partsToUpdate)) {
+            if ($table === 'part_categories' && ! empty($partsToUpdate)) {
                 // Get the root category for the user
                 $root_category = app()->make('App\Services\CategoryService')->findRootCategory($user_id)->category_id ?? null;
 
@@ -90,7 +84,7 @@ class DatabaseService
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
         $owner_column = self::$owner_columns[$table_name] ?? null;
-        if (!$owner_column) {
+        if (! $owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
@@ -112,7 +106,7 @@ class DatabaseService
             ->where($owner_column, $user_id)
             ->update([$column => $new_value]);
 
-        if (!$updated) {
+        if (! $updated) {
             // Detailled logging for the curious mind
             \Log::warning('Update failed', [
                 'table_name' => $table_name,
@@ -122,7 +116,7 @@ class DatabaseService
                 'new_value' => $new_value,
                 'user_id' => $user_id,
                 'current_value' => $currentValue,
-                'owner_column' => $owner_column
+                'owner_column' => $owner_column,
             ]);
             throw new Exception('Unauthorized or row not found for updating');
         }
