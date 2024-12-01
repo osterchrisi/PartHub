@@ -21,7 +21,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -167,7 +167,8 @@ Route::get('/signup', function () {
     //TODO: Das geht wahrscheinlich sauberer...
     if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
-    } else {
+    }
+    else {
         return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 })
@@ -196,6 +197,12 @@ Route::get('/imprint', function () {
     return view('imprint', ['title' => 'Imprint', 'view' => 'imprint']);
 })
     ->name('imprint');
+
+// Support
+Route::get('/support', function () {
+    return view('support', ['title' => 'Support', 'view' => 'support']);
+})
+    ->name('support');
 
 // My 'Multi View' Tryout
 Route::get('/multi', function () {

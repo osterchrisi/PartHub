@@ -28,10 +28,14 @@
                             Preferences</a></p>
                 </div>
             </td>
-
             <td>
                 <div>
                     <span class="fs-6 lead"><a href="{{ route('imprint') }}">Imprint</a></p>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <span class="fs-6 lead"><a href="{{ route('support') }}">Support</a></p>
                 </div>
             </td>
         </tr>

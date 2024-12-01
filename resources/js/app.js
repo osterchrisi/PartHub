@@ -5,6 +5,7 @@ import { initializeLocationsView } from './views/locationsView';
 import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
 import { initializeUserSettingsView } from './views/userSettingsView';
+import { initializeSupportView } from './views/supportView';
 import {
     clearModalOnHiding,
     focusFirstInputInModals,
@@ -34,6 +35,9 @@ $(document).ready(function () {
     }
     else if (currentView === 'user-settings') {
         initializeUserSettingsView();
+    }
+    else if (currentView === 'support') {
+        initializeSupportView();
     }
 
     // Common to all views
