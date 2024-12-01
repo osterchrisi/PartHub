@@ -123,11 +123,11 @@
                                         class="fas fa-check pricing-tier-check"></i> Try it without risk</li>
                             </ul>
                             <div>
-                                <a href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"
-                                    class="disabled-link"><button class="btn btn-primary btn-lg" disabled>Start Pro
+                                <a
+                                    href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"><button
+                                        class="btn btn-primary btn-lg">Start Pro
                                         Trial</button></a>
                             </div>
-                            <div class="text-muted fw-light">Coming soon!</div>
                         </div>
                     </div>
                 </div>

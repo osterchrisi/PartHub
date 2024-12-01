@@ -94,7 +94,6 @@ $user_name = $user ? $user->name : '';
                                     </li>
                                     <li><a class="nav-link" href="{{ route('user-settings') }}">User Settings</a></li>
                                     <li><a class="nav-link" href="{{ route('dashboard') }}">Account</a></li>
-                                    <li><a class="nav-link" href="{{ route('subscription.manage') }}" target="_blank">Subscription</a></li>
                                     <li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                             @csrf

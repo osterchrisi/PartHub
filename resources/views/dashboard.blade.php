@@ -103,7 +103,7 @@ $user = Auth::user();
                         {{ __('Subscription') }}
                     </h2>
                     <small class="d-block text-muted text-center mb-3">
-                        {{ __('Manage your subscription.') }}
+                        {{ __('Manage or upgrade your subscription.') }}
                     </small>
 
                     @php
@@ -112,26 +112,63 @@ $user = Auth::user();
                         $limits = config("subscription_limits.{$subscriptionType}");
                     @endphp
 
-                    <div class="text-center mb-4">
-                        <h5>{{ __('Current Plan: ') }}<strong>{{ ucfirst($subscriptionType) }}</strong></h5>
-                        @if ($subscriptionType === 'free')
-                            <p class="text-muted">{{ __('You are currently on the free plan.') }}</p>
-                        @else
-                            <p class="text-muted">
-                                {{ __('Your subscription ends at: ') }}
-                                {{ $subscription->ends_at ? $subscription->ends_at->format('d/m/Y') : __('N/A') }}
-                            </p>
-                        @endif
-                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <!-- Subscription Limits -->
+                        <div class="col-md-auto">
+                            <div class="text-center mb-4">
+                                <h5>{{ __('Current Plan: ') }}<strong>{{ ucfirst($subscriptionType) }}</strong></h5>
+                                @if ($subscriptionType === 'free')
+                                    <p class="text-muted">{{ __('You are currently on the free plan.') }}</p>
+                                @else
+                                    <p class="text-muted">
+                                        {{ __('Your subscription ends at: ') }}
+                                        {{ $subscription->ends_at ? $subscription->ends_at->format('d/m/Y') : __('N/A') }}
+                                    </p>
+                                @endif
+                            </div>
+                            <ul class="list-group my-4 list-group-item-action text-start">
+                                @foreach ($limits as $key => $limit)
+                                    <li class="list-group-item list-group-item-action">
+                                        {{ __(ucwords(str_replace('_', ' ', $key))) }}:
+                                        <strong>{{ is_null($limit) ? __('Unlimited') : $limit }}</strong>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
 
-                    <ul class="list-group list-group-flush">
-                        @foreach ($limits as $key => $limit)
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>{{ __(ucwords(str_replace('_', ' ', $key))) }}</span>
-                                <span>{{ is_null($limit) ? __('Unlimited') : $limit }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
+                        <!-- Features Table for Maker Plan -->
+                        @unless ($subscriptionType === 'maker')
+                            <div class="col-md-6">
+                                <div class="text-center mb-4">
+                                    <h5>{{ __('Why Upgrade to Maker?') }}</h5>
+                                    <p class="text-muted">{{ __('Check these awesome features') }}</p>
+                                </div>
+                                <ul class="list-group my-4 list-group-item-action text-start">
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Unlimited Resources</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Multiple Storage Locations per Part
+                                    </li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Multiple Suppliers per Part</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Stock Movement History</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Minimum Stock Notifications</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Images for Resources</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Documents for Resources</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Premium support</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> 30-day Free Trial Period</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-check pricing-tier-check"></i> Try it without risk</li>
+                                </ul>
+                            </div>
+                        @endunless
+                    </div>
 
                     <div class="text-center mt-4">
                         @if ($subscriptionType === 'free')
@@ -149,6 +186,8 @@ $user = Auth::user();
                     </div>
                 </div>
             </div>
+
+
 
 
 
@@ -190,7 +229,8 @@ $user = Auth::user();
                                 <div class="alert alert-success mt-3 p-2 pe-0">{{ __('Saved.') }}</div>
                             @endif
                             @if (session('status') === 'password-demo-change')
-                                <div class="alert alert-danger mt-3 p-2 pe-0">{{ __("Can't change demo user data") }}</div>
+                                <div class="alert alert-danger mt-3 p-2 pe-0">{{ __("Can't change demo user data") }}
+                                </div>
                             @endif
                         </div>
                     </form>
