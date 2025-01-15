@@ -291,3 +291,18 @@ tr.selected-last {
 .extra-shadow {
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 1);
 }
+
+.signup-button {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 1);
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(45deg, #007bff, #6610f2);
+    color: white;
+    border: none;
+}
+
+.signup-button:hover {
+    box-shadow: 20px 20px 25px rgba(0, 0, 0, 0.8), 0 0 25px rgba(138, 43, 226, 0.7);
+    transform: scale(1.1);
+    background: linear-gradient(45deg, #6610f2, #e83e8c);
+    color: #f8f9fa; /* Light color for better contrast */
+}

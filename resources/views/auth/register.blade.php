@@ -125,7 +125,7 @@
                             <div>
                                 <a
                                     href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1QhcmVEb2UyIF2shObeC4qlI']) }}"><button
-                                        class="btn btn-primary btn-lg">Start Pro
+                                        class="btn btn-primary btn-lg signup-button">Start Pro
                                         Trial</button></a>
                             </div>
                         </div>
