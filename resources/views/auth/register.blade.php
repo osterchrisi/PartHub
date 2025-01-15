@@ -93,12 +93,12 @@
                 <div class="col-auto mb-4">
                     <div class="card border-0 shadow-sm position-relative">
                         <!-- Ribbon Badge -->
-                        <div class="ribbon text-white">Early Access Special</div>
+                        <div class="ribbon text-white">Early Access Special 🤯</div>
                         <div class="card-body">
                             <h3 class="card-title">Maker 🚀</h3>
                             <p class="lead text-muted fs-6">Best for small-scale businesses</p>
-                            <h4 class><del>€29/month</del></h4>
-                            <h4 class="text-danger">€9/month</h4>
+                            <h4 class><del>€9,99/month</del></h4>
+                            <h4 class="text-danger">€1,99/month</h4>
                             <ul class="list-group my-4 list-group-item-action text-start">
                                 <li class="list-group-item list-group-item-action"><i
                                         class="fas fa-check pricing-tier-check"></i> Unlimited Resources</li>
@@ -124,7 +124,7 @@
                             </ul>
                             <div>
                                 <a
-                                    href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1Q6cQPEb2UyIF2shSxSBcIox']) }}"><button
+                                    href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1QhcmVEb2UyIF2shObeC4qlI']) }}"><button
                                         class="btn btn-primary btn-lg">Start Pro
                                         Trial</button></a>
                             </div>
