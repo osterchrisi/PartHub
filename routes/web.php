@@ -64,9 +64,9 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::post('/part.create', 'create')->middleware('resource.limits');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
         Route::get('/search-mouser-part/{searchTerm}', 'searchMouserPartNumber');
-        Route::get('/parts/{id}/alternatives', 'PartController@getAlternatives');
-        Route::post('/parts/{id}/alternatives', 'PartController@addAlternative');
-        Route::delete('/parts/{id}/alternatives/{alt_id}', 'PartController@removeAlternative');
+        Route::get('/parts/{id}/alternatives', 'getAlternatives');
+        Route::post('/parts/{id}/alternatives', 'addAlternative');
+        Route::delete('/parts/{id}/alternatives/{alt_id}', 'removeAlternative');
 
     });
 });
