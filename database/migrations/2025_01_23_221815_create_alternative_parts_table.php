@@ -11,12 +11,19 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('alternative_parts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('part_id')->constrained('parts', 'part_id')->onDelete('cascade');
-            $table->foreignId('alternative_part_id')->constrained('parts', 'part_id')->onDelete('cascade');
-            $table->unique(['part_id', 'alternative_part_id']); // Prevent duplicates
+            $table->id();  // Laravel's default auto-increment BIGINT primary key
+
+            $table->integer('part_id');
+            $table->integer('alternative_part_id');
+            
+            $table->foreign('part_id')->references('part_id')->on('parts');
+            $table->foreign('alternative_part_id')->references('part_id')->on('parts');
+        
+            $table->unique(['part_id', 'alternative_part_id']);
+
             $table->timestamps();
         });
+
 
     }
 
