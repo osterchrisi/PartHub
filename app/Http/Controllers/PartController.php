@@ -110,7 +110,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -149,7 +150,7 @@ class PartController extends Controller
             );
 
             // Handle stock level if quantity and location are provided
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
                     $new_part_id,
@@ -163,14 +164,14 @@ class PartController extends Controller
             }
 
             // Handle supplier data through SupplierService
-            if (! empty($validated['suppliers'])) {
+            if (!empty($validated['suppliers'])) {
                 $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
             // Trigger stock movement event
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
                 event(new StockMovementOccured($stock_level, Auth::user()));
             }
@@ -183,7 +184,7 @@ class PartController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
 
@@ -249,7 +250,8 @@ class PartController extends Controller
                     'tabToggleId3' => 'partSuppliers',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -296,4 +298,33 @@ class PartController extends Controller
         // Return the result as JSON for the front-end
         return response()->json($result);
     }
+
+    public function getAlternatives($id)
+    {
+        $part = Part::with('alternatives')->findOrFail($id);
+        return response()->json($part->alternatives);
+    }
+
+    public function addAlternative(Request $request, $id)
+    {
+        $part = Part::findOrFail($id);
+        $alternative = Part::findOrFail($request->alternative_id);
+
+        if ($part->id === $alternative->id) {
+            return response()->json(['error' => 'A part cannot be its own alternative'], 400);
+        }
+
+        $part->alternatives()->syncWithoutDetaching([$alternative->id]);
+
+        return response()->json(['message' => 'Alternative added']);
+    }
+
+    public function removeAlternative($id, $alt_id)
+    {
+        $part = Part::findOrFail($id);
+        $part->alternatives()->detach($alt_id);
+
+        return response()->json(['message' => 'Alternative removed']);
+    }
+
 }

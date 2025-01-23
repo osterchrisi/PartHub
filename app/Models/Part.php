@@ -41,6 +41,17 @@ class Part extends Model
         return $this->hasMany(BomElements::class, 'part_id_fk');
     }
 
+    public function alternatives()
+    {
+        return $this->belongsToMany(
+            Part::class,
+            'alternative_parts',
+            'part_id', // Foreign key on the pivot table
+            'alternative_part_id' // Related key
+        );
+    }
+
+
     private static $column_names = [
         'part_id',
         'part_name',
@@ -72,13 +83,14 @@ class Part extends Model
                     $query->orWhere($column, 'like', "%$search_term%");
                 }
             });
-        } else {
+        }
+        else {
             // Only in specified colum (single)
             $query->where($search_column, 'like', "%$search_term%");
         }
 
         // Filter for categories
-        if (! in_array('all', $search_category)) {
+        if (!in_array('all', $search_category)) {
             $query->whereHas('category', function ($query) use ($search_category) {
                 $query->whereIn('category_id', $search_category)
                     ->orWhereIn('parent_category', $search_category);
@@ -94,7 +106,7 @@ class Part extends Model
     public static function getBomsContainingPart($part_id)
     {
         $part = Part::find($part_id);
-        if (! $part) {
+        if (!$part) {
             return [];
         }
 

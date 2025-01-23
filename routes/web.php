@@ -21,7 +21,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +64,10 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::post('/part.create', 'create')->middleware('resource.limits');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');
         Route::get('/search-mouser-part/{searchTerm}', 'searchMouserPartNumber');
+        Route::get('/parts/{id}/alternatives', 'PartController@getAlternatives');
+        Route::post('/parts/{id}/alternatives', 'PartController@addAlternative');
+        Route::delete('/parts/{id}/alternatives/{alt_id}', 'PartController@removeAlternative');
+
     });
 });
 
@@ -167,7 +171,8 @@ Route::get('/signup', function () {
     //TODO: Das geht wahrscheinlich sauberer...
     if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
-    } else {
+    }
+    else {
         return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 })
