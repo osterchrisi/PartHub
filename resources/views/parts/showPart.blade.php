@@ -47,6 +47,8 @@
 
         </div>
     </div>
+    
+    {{-- Part Comment --}}
     <div class="pb-3 pe-3 pt-3">
         <h6>Comment</h6>
         {{-- <p class="form-control bg-light">{{ $part['part_comment'] }}</p> --}}
