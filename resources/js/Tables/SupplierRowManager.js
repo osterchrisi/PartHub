@@ -36,7 +36,7 @@ class SupplierRowManager {
         let newDropdownDiv = `addPartSupplier-${newRowIndex}`;
         this.newRowIndex++;
 
-        // Check if the table requires extra fields (specific to #partSupplierDataTable)
+        // Check if the table requires extra fields (specific to #partSupplierDataTable in info window)
         let selectBox = tableId === '#partSupplierDataTable' ? '<td></td>' : '';
         let createBox = tableId === '#partSupplierDataTable' ? `<button type="button" class="btn btn-sm btn-success ms-1" id="create-${newRowIndex}"><i class="fas fa-check"></i></button>` : '';
 
@@ -65,7 +65,7 @@ class SupplierRowManager {
             console.error("Failed to fetch suppliers.");
         });
 
-        // Attach a save Supplier Row handler if the table is #partSupplierDataTable
+        // Attach a save Supplier Row handler if the table is #partSupplierDataTable (in infow window)
         if (tableId === '#partSupplierDataTable') {
             this.saveSupplierDataRowButtonClickListener(`create-${newRowIndex}`);
         }

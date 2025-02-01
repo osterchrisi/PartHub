@@ -25,21 +25,21 @@ class AlternativesRowManager {
     addAlternativeRow(partId) {
         let tableId = this.$table.attr('id') ? `#${this.$table.attr('id')}` : undefined;
 
-        // Disable the add button temporarily
-        if (tableId === '#partAlternativeDataTable') {
-            $('#addAlternativeRowBtn-info').prop('disabled', true);
-        }
+        $('#addAlternativeRowBtn-info').prop('disabled', true);
+
 
         let newRowIndex = this.newRowIndex;
         let newDropdownDiv = `addPartAlternative-${newRowIndex}`;
         this.newRowIndex++;
 
+        let selectBox = '<td></td>';
+        let createBox = `<button type="button" class="btn btn-sm btn-success ms-1" id="create-${newRowIndex}"><i class="fas fa-check"></i></button>`;
+
         let newRow = `
             <tr data-alternative-index="${newRowIndex}" data-part-id="${partId}">
+            ${selectBox}
                 <td><div id='${newDropdownDiv}'></div></td>
-                <td><button type="button" class="btn btn-sm btn-danger remove-row-btn">
-                    <i class="fas fa-trash"></i>
-                </button></td>
+                <td><div class='d-flex'><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-trash"></i></button>${createBox}</div></td>
             </tr>`;
 
         $(`${tableId} tbody`).append(newRow);

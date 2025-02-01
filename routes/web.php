@@ -68,7 +68,6 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::get('/parts/{id}/alternatives', 'getAlternatives');
         Route::post('/parts/{id}/alternatives', 'addAlternative');
         Route::delete('/parts/{id}/alternatives/{alt_id}', 'removeAlternative');
-
     });
 });
 
