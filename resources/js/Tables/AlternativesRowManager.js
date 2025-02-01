@@ -45,6 +45,7 @@ class AlternativesRowManager {
         $(`${tableId} tbody`).append(newRow);
 
         // Fetch available alternative parts and populate the dropdown
+        //TODO: Currently fetching full eloquent model, should only fetch necessary data
         DataFetchService.getParts().done((parts) => {
             if (parts && parts.length) {
                 this.dropdownManager.addPartAlternativeDropdown(parts, newDropdownDiv, newRowIndex);

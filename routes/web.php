@@ -60,6 +60,7 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
         Route::get('/parts', 'index')->name('parts');
         Route::get('/part/{id}', 'show');
         Route::get('/part.getName', 'getName');
+        Route::get('/parts.get', 'getParts');
         Route::post('/parts.requestStockChange', 'handleStockRequests');
         Route::post('/part.create', 'create')->middleware('resource.limits');
         Route::get('/parts.partsTable', 'index')->name('parts.partsTable');

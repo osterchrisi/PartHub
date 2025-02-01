@@ -1,4 +1,4 @@
-@dump($alternativeData)
+{{-- @dump($alternativeData) --}}
 <form id="partAlternativeTableForm">
     <div class="mt-3">
         <table class="table table-striped table-hover table-sm" style="font-size:12px" id="partAlternativeTable"
@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 @foreach ($alternativeData as $row)
-                @dump($row)
+                {{-- @dump($row) --}}
                 <tr data-part-id="{{ $part['part_id'] }}" data-alternative-data-id="{{ $row->id }}">
                     @foreach ($alternativeDataTableHeaders as $column_data)
                     {{-- Alternative --}}

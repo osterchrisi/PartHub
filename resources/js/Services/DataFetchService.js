@@ -26,4 +26,8 @@ class DataFetchService {
     static getLocations() {
       return DataFetchService.fetch('/locations.get');
     }
+
+    static getParts() {
+      return DataFetchService.fetch('/parts.get');
+    }
   }

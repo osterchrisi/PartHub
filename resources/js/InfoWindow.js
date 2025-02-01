@@ -4,6 +4,7 @@ import { StockManager } from "./Resources/StockManager";
 import { ImageManager } from "./Resources/ImageManager";
 import { DocumentManager } from "./Resources/DocumentManager";
 import { SupplierRowManager } from "./Tables/SupplierRowManager";
+import { AlternativesRowManager } from "./Tables/AlternativesRowManager";
 import { TableManager } from "./Tables/TableManager";
 import { DataFetchService } from "./Services/DataFetchService";
 
@@ -57,7 +58,8 @@ class InfoWindow {
                 this.setupImageManager();
                 this.setupDocumentManager();
 
-                // Supplier Data Table in Info Window
+                //TODO: Clean these two up, lotta code here...
+                //* Supplier Data Table in Info Window
                 $('#partSupplierDataTable').bootstrapTable({});
                 $('#partSupplierDataTable').on('check.bs.table uncheck.bs.table ' +
                     'check-all.bs.table uncheck-all.bs.table',
@@ -82,8 +84,30 @@ class InfoWindow {
                 });
                 const tableManager = new TableManager({ type: 'supplierData' });
 
+                //* Part Alternative Data Table in Info Window
                 $('#partAlternativeTable').bootstrapTable({});
+                $('#partAlternativeTable').on('check.bs.table uncheck.bs.table ' +
+                    'check-all.bs.table uncheck-all.bs.table',
+                    function () {
+                        $('#deleteAlternativeRowBtn-info').prop('disabled', !$('#partAlternativeTable').bootstrapTable('getSelections').length);
+                    })
 
+                // Alternative Row Manager in Info Window
+                const alternativeRowManager = new AlternativesRowManager({
+                    inputForm: '#partAlternativeTableForm',
+                    table: '#partAlternativeTable'
+                });
+                alternativeRowManager.addAlternativeDataRowButtonClickListener('addAlternativeRowBtn-info', this.id);
+
+                $('#deleteAlternativeRowBtn-info').click(() => {
+                    let selection = $('#partAlternativeTable').bootstrapTable('getSelections');
+                    let deleteRowId = [];
+                    selection.forEach(row => {
+                        deleteRowId.push(row['alternative-data-id']);
+                    });
+                    console.log("delete id = ", deleteRowId);
+                    deleteSelectedRows(deleteRowId, 'alternative_data', 'id', () => updateInfoWindow('part', this.id));
+                });
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();
