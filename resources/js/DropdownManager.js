@@ -125,7 +125,7 @@ class DropdownManager {
         var div = document.getElementById("addPartCategoryDropdown");
         var nestedCategories = this.organizeCategories(categories);
 
-        var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Category' id='addPartCategorySelect'>";
+        var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Select Category' id='addPartCategorySelect'>";
         selectHTML += "<option value=''>No Category</option>";
         selectHTML += this.addCategoryOptions(nestedCategories);
         selectHTML += "</select>";
