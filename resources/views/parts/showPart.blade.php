@@ -48,5 +48,12 @@
             @include('parts.supplierDataTable')
 
         </div>
+
+        {{-- Alternatives Tab --}}
+        <div class="tab-pane fade" id="{{ $tabToggleId4 }}" role="tabpanel" tabindex="0">
+
+            @include('parts.partAlternatives')
+
+        </div>
     </div>
 </div>

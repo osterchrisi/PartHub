@@ -359,4 +359,31 @@ class DropdownManager {
             }
         });
     }
+
+    addPartAlternativeDropdown(alternatives, dropdownId, newRowIndex) {
+        const div = document.getElementById(dropdownId);
+        if (!div) {
+            console.warn(`Dropdown container with ID ${dropdownId} not found.`);
+            return;
+        }
+    
+        let selectHTML = `<select class='form-select form-select-sm' data-alternative-id='${newRowIndex}'>`;
+        selectHTML += "<option value=''>Select Alternative</option>";
+    
+        for (let i = 0; i < alternatives.length; i++) {
+            selectHTML += `<option value='${alternatives[i]['part_id']}'>${alternatives[i]['part_name']}</option>`;
+        }
+        selectHTML += "</select>";
+        div.innerHTML = selectHTML;
+    
+        // Initialize Selectize on the dropdown
+        $(`[data-alternative-id="${newRowIndex}"]`).selectize({
+            create: false,
+            placeholder: 'Select Alternative',
+            onInitialize: function () {
+                this.setValue('');
+            }
+        });
+    }
+    
 }

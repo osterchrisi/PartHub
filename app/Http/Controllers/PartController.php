@@ -196,6 +196,8 @@ class PartController extends Controller
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
         $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
+        $apart = Part::with('alternatives')->findOrFail($part_id);
+        $alternativeData = $apart->alternatives;
 
         // Need to jump through a few hoops for proper time-zoning
         foreach ($stockHistory as $historyItem) {
@@ -238,6 +240,12 @@ class PartController extends Controller
                     'supplierDataTableHeaders' => ['state', 'supplier_id_fk', 'URL', 'SPN', 'price'],
                     'nice_supplierDataTableHeaders' => ['Supplier', 'URL', 'SPN', 'Price'],
                     'supplierData' => $supplierData,
+                    // Alternatives
+                    'alternativeDataTableName' => 'alternative_parts',
+                    'alternativeDataTableIdField' => 'id',
+                    'alternativeDataTableHeaders' => ['state', 'alternative_id_fk'],
+                    'nice_alternativeDataTableHeaders' => ['Alternative'],
+                    'alternativeData' => $alternativeData,
                     // Tabs
                     'tabId1' => 'info',
                     'tabText1' => 'General',
@@ -312,22 +320,32 @@ class PartController extends Controller
     {
         $part = Part::findOrFail($id);
         $alternative = Part::findOrFail($request->alternative_id);
-
-        if ($part->id === $alternative->id) {
+    
+        if ($part->part_id === $alternative->part_id) { // Match your DB's primary key naming
             return response()->json(['error' => 'A part cannot be its own alternative'], 400);
         }
-
-        $part->alternatives()->syncWithoutDetaching([$alternative->id]);
-
-        return response()->json(['message' => 'Alternative added']);
+    
+        $part->alternatives()->syncWithoutDetaching([$alternative->part_id]);
+    
+        // Return updated alternative list
+        return response()->json([
+            'message' => 'Alternative added',
+            'alternatives' => $part->alternatives // Send updated alternatives
+        ]);
     }
+    
 
     public function removeAlternative($id, $alt_id)
     {
         $part = Part::findOrFail($id);
         $part->alternatives()->detach($alt_id);
-
-        return response()->json(['message' => 'Alternative removed']);
+    
+        // Return updated alternative list
+        return response()->json([
+            'message' => 'Alternative removed',
+            'alternatives' => $part->alternatives // Send updated alternatives
+        ]);
     }
+    
 
 }
