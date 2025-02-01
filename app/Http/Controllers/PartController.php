@@ -243,7 +243,7 @@ class PartController extends Controller
                     // Alternatives
                     'alternativeDataTableName' => 'alternative_parts',
                     'alternativeDataTableIdField' => 'id',
-                    'alternativeDataTableHeaders' => ['state', 'alternative_id_fk'],
+                    'alternativeDataTableHeaders' => ['state', 'alternative_part_id'],
                     'nice_alternativeDataTableHeaders' => ['Alternative'],
                     'alternativeData' => $alternativeData,
                     // Tabs

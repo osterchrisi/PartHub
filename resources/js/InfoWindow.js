@@ -22,6 +22,7 @@ class InfoWindow {
         this.type = type;
         this.id = id;
 
+        // Set default tab in case nothing is set
         switch (type) {
             case 'part':
                 this.defaultTab = 'partTabs'
@@ -80,6 +81,9 @@ class InfoWindow {
                     deleteSelectedRows(deleteRowId, 'supplier_data', 'id', () => updateInfoWindow('part', this.id));
                 });
                 const tableManager = new TableManager({ type: 'supplierData' });
+
+                $('#partAlternativeTable').bootstrapTable({});
+
                 break;
             case 'bom':
                 bootstrapBomDetailsTable();

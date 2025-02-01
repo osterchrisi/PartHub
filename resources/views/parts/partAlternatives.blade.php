@@ -1,7 +1,7 @@
-{{-- @dump($alternativeData) --}}
+@dump($alternativeData)
 <form id="partAlternativeTableForm">
     <div class="mt-3">
-        <table class="table table-striped table-hover table-sm" style="font-size:12px" id="partAlternativeDataTable"
+        <table class="table table-striped table-hover table-sm" style="font-size:12px" id="partAlternativeTable"
             data-single-select="true" data-resizable="true">
             <thead>
                 <tr> {{-- This first column is for Bootstrap Table Click-To-Select to work --}}
@@ -13,40 +13,21 @@
             </thead>
             <tbody>
                 @foreach ($alternativeData as $row)
+                @dump($row)
                 <tr data-part-id="{{ $part['part_id'] }}" data-alternative-data-id="{{ $row->id }}">
                     @foreach ($alternativeDataTableHeaders as $column_data)
                     {{-- Alternative --}}
-                    @if ($column_data === 'alternative_id_fk')
+                    @if ($column_data === 'alternative_part_id')
                     <td data-editable="true" class="editable editable-alternativeData" data-id="{{ $row->id }}"
                         data-column="{{ $column_data }}" data-table_name="{{ $alternativeDataTableName }}"
                         data-id_field="{{ $alternativeDataTableIdField }}">
-                        <x-tables.td-editable-flexbox :content="$row->alternative->alternative_name ?? ''">
+                        <x-tables.td-editable-flexbox :content="$row->pivot->alternative_part_id ?? 'still no'">
                             <x-tables.edit-pen />
                         </x-tables.td-editable-flexbox>
 
                     </td>
-                    <!-- {{-- URL --}}
-                    @elseif ($column_data === 'URL')
-                    <td data-editable="true" class="editable editable-text" style="max-width: 10rem"
-                        data-id="{{ $row->id }}" data-column="{{ $column_data }}"
-                        data-table_name="{{ $alternativeDataTableName }}"
-                        data-id_field="{{ $alternativeDataTableIdField }}">
-                        <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''"
-                            extraContentClass="text-truncate">
-                            <x-tables.copy-clipboard :content="$row->$column_data ?? ''" />
-                            <x-tables.edit-pen />
-                        </x-tables.td-editable-flexbox>
-                    </td>
                     @elseif ($column_data == 'state')
                     <td></td>
-                    @else
-                    <td data-editable="true" class="editable editable-text" data-id="{{ $row->id }}"
-                        data-column="{{ $column_data }}" data-table_name="{{ $alternativeDataTableName }}"
-                        data-id_field="{{ $alternativeDataTableIdField }}">
-                        <x-tables.td-editable-flexbox :content="$row->$column_data ?? ''">
-                            <x-tables.edit-pen />
-                        </x-tables.td-editable-flexbox>
-                    </td> -->
                     @endif
                     @endforeach
                 </tr>
