@@ -23,6 +23,8 @@
             tabText="{{ $tabText2 }}" />
         <x-buttons.tab-button id="{{ $tabId3 }}" toggleTarget="{{ $tabToggleId3 }}"
             tabText="{{ $tabText3 }}" />
+        <x-buttons.tab-button id="{{ $tabId4 }}" toggleTarget="{{ $tabToggleId4 }}"
+            tabText="{{ $tabText4 }}" />
     </x-tablist>
 
     <!-- Tabs Content -->
@@ -47,26 +49,4 @@
 
         </div>
     </div>
-    
-    {{-- Part Comment --}}
-    <div class="pb-3 pe-3 pt-3">
-        <h6>Comment</h6>
-        {{-- <p class="form-control bg-light">{{ $part['part_comment'] }}</p> --}}
-        <table>
-            <tr>
-                <td data-editable="true" class="editable editable-text" data-id="{{ $part['part_id'] }}"
-                    data-column="part_comment" data-table_name="parts" data-id_field="part_id">
-                    <x-tables.td-editable-flexbox :content="$part['part_comment'] ?? ''">
-                        {{-- Not yet working
-                                <x-tables.copy-clipboard :content="$part[$column_data] ?? ''" /> --}}
-                        <x-tables.edit-pen />
-                    </x-tables.td-editable-flexbox>
-                </td>
-            </tr>
-        </table>
-
-    </div>
-
-
-
 </div>

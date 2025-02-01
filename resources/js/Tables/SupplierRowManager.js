@@ -27,6 +27,7 @@ class SupplierRowManager {
         //TODO: Change this better to this.table when refactor is over
         let tableId = this.$table.attr('id') ? `#${this.$table.attr('id')}` : undefined;
 
+        // Only for Supplier Table in part info window
         if (tableId === '#partSupplierDataTable') {
             $('#addSupplierRowBtn-info').prop('disabled', true);
         }

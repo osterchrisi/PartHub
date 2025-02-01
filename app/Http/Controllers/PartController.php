@@ -248,6 +248,9 @@ class PartController extends Controller
                     'tabId3' => 'suppliers',
                     'tabText3' => 'Suppliers',
                     'tabToggleId3' => 'partSuppliers',
+                    'tabId4' => 'alternatives',
+                    'tabText4' => 'Alternatives',
+                    'tabToggleId4' => 'partAlternatives',
                 ]
             );
         }
