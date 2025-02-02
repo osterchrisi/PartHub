@@ -21,7 +21,7 @@
                     <td data-editable="true" class="editable editable-alternativePart" data-id="{{ $row->pivot->id }}"
                         data-column="{{ $column_data }}" data-table_name="{{ $alternativeDataTableName }}"
                         data-id_field="{{ $alternativeDataTableIdField }}">
-                        <x-tables.td-editable-flexbox :content="$row->pivot->alternative_part_id ?? 'still no'">
+                        <x-tables.td-editable-flexbox :content="$row->part_name ?? ''">
                             <x-tables.edit-pen />
                         </x-tables.td-editable-flexbox>
 
@@ -37,8 +37,6 @@
         <div id="error-alternative" class="d-none text-danger">
             <x-input-error :messages="[]" />
         </div>
-        <div id="error-price" class="d-none text-danger">
-            <x-input-error :messages="[]" />
         </div>
         <button type="button" id="addAlternativeRowBtn-info"
             class="btn btn-sm btn-secondary add-alternative-data-btn mt-2">Add

@@ -46,11 +46,17 @@ class Part extends Model
         return $this->belongsToMany(
             Part::class,
             'alternative_parts',
-            'part_id', // Foreign key on the pivot table
-            'alternative_part_id' // Related key
-        )->withPivot('id');
+            'part_id',              // Foreign key on the pivot table
+            'alternative_part_id'   // Related key
+        )
+            ->withPivot('id')
+            ->with(['alternativeDetails']);
     }
 
+    public function alternativeDetails()
+    {
+        return $this->belongsTo(Part::class, 'alternative_part_id', 'part_id');
+    }
 
     private static $column_names = [
         'part_id',

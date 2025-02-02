@@ -48,6 +48,9 @@ class FormValidator {
         } else if (xhr.status === 403) {
             const response = JSON.parse(xhr.responseText);
             alert(response.message);
+        } else if (xhr.status === 400 && xhr.responseJSON.error) {
+            // For alternative part errors
+            $('#error-alternative').removeClass('d-none').text(xhr.responseJSON.error);
         } else if (xhr.responseJSON && xhr.responseJSON.errors) {
             $.each(xhr.responseJSON.errors, (key, messages) => {
                 if (key.startsWith('suppliers')) {
