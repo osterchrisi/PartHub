@@ -318,43 +318,75 @@ class PartController extends Controller
 
     public function addAlternative(Request $request, $id)
     {
-        $part = Part::findOrFail($id);
-        $alternative = Part::findOrFail($request->alternative_id);
-    
-        if ($part->part_id === $alternative->part_id) { // Match your DB's primary key naming
-            return response()->json(['error' => 'A part cannot be its own alternative'], 400);
+        $part = Part::findOrFail($id); // Find the base part
+
+        if (!$request->has('alternatives') || !is_array($request->alternatives)) {
+            return response()->json(['error' => 'Invalid alternatives format'], 400);
         }
-    
-        $part->alternatives()->syncWithoutDetaching([$alternative->part_id]);
-    
-        // Return updated alternative list
+
+        $alternativeIds = collect($request->alternatives)
+            ->pluck('alternative_id') // Extract alternative IDs
+            ->unique() // Remove duplicates
+            ->map(fn($id) => (int) $id) // Convert to integers
+            ->reject(fn($altId) => $altId === $part->part_id) // Prevent self-reference
+            ->toArray();
+
+        if (empty($alternativeIds)) {
+            return response()->json(['error' => 'No valid alternatives provided'], 400);
+        }
+
+        // Validate that all alternative IDs exist in the database
+        $existingAlternatives = Part::whereIn('part_id', $alternativeIds)->pluck('part_id')->toArray();
+
+        if (count($existingAlternatives) !== count($alternativeIds)) {
+            return response()->json(['error' => 'One or more alternative parts do not exist'], 400);
+        }
+
+        // Fetch already linked alternatives
+        $alreadyLinked = $part->alternatives()
+            ->whereIn('alternative_parts.alternative_part_id', $alternativeIds) // Explicit table reference
+            ->pluck('alternative_parts.alternative_part_id') // Explicitly select the correct column
+            ->toArray();
+
+        if (!empty($alreadyLinked)) {
+            return response()->json([
+                'error' => 'One or more alternatives are already linked',
+                'already_linked' => $alreadyLinked
+            ], 400);
+        }
+
+        // Attach alternatives if they are not already linked
+        $part->alternatives()->attach($existingAlternatives);
+
         return response()->json([
-            'message' => 'Alternative added',
-            'alternatives' => $part->alternatives // Send updated alternatives
+            'message' => 'Alternatives added successfully',
+            'alternatives' => $part->alternatives // Return updated alternatives
         ]);
     }
-    
+
+
+
 
     public function removeAlternative($id, $alt_id)
     {
         $part = Part::findOrFail($id);
         $part->alternatives()->detach($alt_id);
-    
+
         // Return updated alternative list
         return response()->json([
             'message' => 'Alternative removed',
             'alternatives' => $part->alternatives // Send updated alternatives
         ]);
     }
-    
+
 
     public function getParts()
     {
         $userId = Auth::id(); // Get the logged-in user's ID
-    
+
         $parts = Part::where('part_owner_u_fk', $userId)->get();
-    
+
         return response()->json($parts);
     }
-    
+
 }
