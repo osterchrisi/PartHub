@@ -71,6 +71,10 @@ class InlineTableCellEditor {
                 this.endpoint = 'suppliers';
                 this.table = 'supplier_data';
                 break;
+            case 'alternativePart':
+                this.type = 'part';             // Need this change, otherwise the way that editDropdownCell calls createSelectElement doesn't work properly
+                this.endpoint = 'parts';
+                break;
             case 'text':
                 break;
             default:
@@ -266,9 +270,15 @@ class InlineTableCellEditor {
         // Get cell part_id, column name and database table
         // These are encoded in the table data cells
         const id = cell.closest('td').data('id');
-        const column = `part_${this.type}_fk`;
+        let column = `part_${this.type}_fk`;
         const table_name = cell.closest('td').data('table_name');
         const id_field = cell.closest('td').data('id_field');
+
+        // This feels silly and should be refactored. It's a special case for the alternative parts
+        // this.type for alternativePart is already cahnged to 'part' in the setEndpoint method
+        if (this.endpoint === 'parts') {
+            column = 'alternative_part_id';
+        }
 
         // Call the database table updating function
         $.when(this.updateCell(id, column, table_name, selectedValue, id_field)).done(() => {
