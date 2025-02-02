@@ -382,8 +382,7 @@ class PartController extends Controller
 
     public function getParts()
     {
-        $userId = Auth::id(); // Get the logged-in user's ID
-
+        $userId = Auth::id();
         $parts = Part::where('part_owner_u_fk', $userId)->get();
 
         return response()->json($parts);

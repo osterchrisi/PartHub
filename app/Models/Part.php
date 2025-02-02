@@ -48,7 +48,7 @@ class Part extends Model
             'alternative_parts',
             'part_id', // Foreign key on the pivot table
             'alternative_part_id' // Related key
-        );
+        )->withPivot('id');
     }
 
 

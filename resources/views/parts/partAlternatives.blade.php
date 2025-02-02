@@ -13,12 +13,12 @@
             </thead>
             <tbody>
                 @foreach ($alternativeData as $row)
-                {{-- @dump($row) --}}
-                <tr data-part-id="{{ $part['part_id'] }}" data-alternative-data-id="{{ $row->id }}">
+                @dump($row)
+                <tr data-part-id="{{ $part['part_id'] }}" data-alternative-data-id="{{ $row->pivot->id }}">
                     @foreach ($alternativeDataTableHeaders as $column_data)
                     {{-- Alternative --}}
                     @if ($column_data === 'alternative_part_id')
-                    <td data-editable="true" class="editable editable-alternativeData" data-id="{{ $row->id }}"
+                    <td data-editable="true" class="editable editable-alternativePart" data-id="{{ $row->pivot->id }}"
                         data-column="{{ $column_data }}" data-table_name="{{ $alternativeDataTableName }}"
                         data-id_field="{{ $alternativeDataTableIdField }}">
                         <x-tables.td-editable-flexbox :content="$row->pivot->alternative_part_id ?? 'still no'">
