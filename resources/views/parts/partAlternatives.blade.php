@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 @foreach ($alternativeData as $row)
-                @dump($row)
+                {{-- @dump($row) --}}
                 <tr data-part-id="{{ $part['part_id'] }}" data-alternative-data-id="{{ $row->pivot->id }}">
                     @foreach ($alternativeDataTableHeaders as $column_data)
                     {{-- Alternative --}}

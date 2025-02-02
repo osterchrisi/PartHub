@@ -103,7 +103,8 @@ class InfoWindow {
                     let selection = $('#partAlternativeTable').bootstrapTable('getSelections');
                     let deleteRowId = [];
                     selection.forEach(row => {
-                        deleteRowId.push(row['alternative-data-id']);
+                        console.log(row);
+                        deleteRowId.push(row._data['alternative-data-id']);
                     });
                     console.log("delete id = ", deleteRowId);
                     deleteSelectedRows(deleteRowId, 'alternative_data', 'id', () => updateInfoWindow('part', this.id));

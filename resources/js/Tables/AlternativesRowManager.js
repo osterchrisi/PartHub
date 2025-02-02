@@ -70,7 +70,7 @@ class AlternativesRowManager {
     }
 
     /**
-     * Attaches a click listener to remove the row.
+     * Attaches a click listener to remove the curently actively added row.
      */
     removeRowButtonClickListener() {
         $(document).on('click', '.remove-row-btn', (event) => {

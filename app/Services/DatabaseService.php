@@ -20,6 +20,7 @@ class DatabaseService
         'stock_level_change_history' => 'stock_lvl_chng_user_fk',
         'suppliers' => 'supplier_owner_u_fk',
         'supplier_data' => 'supplier_data_owner_u_fk',
+        'alternative_parts' => 'alternative_parts_owner_u_fk',
     ];
 
     /**
