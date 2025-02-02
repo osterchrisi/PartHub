@@ -319,6 +319,7 @@ class PartController extends Controller
     public function addAlternative(Request $request, $id)
     {
         $part = Part::findOrFail($id); // Find the base part
+        $userId = Auth::id();
 
         if (!$request->has('alternatives') || !is_array($request->alternatives)) {
             return response()->json(['error' => 'Invalid alternatives format'], 400);
@@ -356,7 +357,12 @@ class PartController extends Controller
         }
 
         // Attach alternatives if they are not already linked
-        $part->alternatives()->attach($existingAlternatives);
+        $syncData = [];
+        foreach ($existingAlternatives as $alternativeId) {
+            $syncData[$alternativeId] = ['alternative_parts_owner_u_fk' => $userId];
+        }
+
+        $part->alternatives()->syncWithoutDetaching($syncData);
 
         return response()->json([
             'message' => 'Alternatives added successfully',
