@@ -41,16 +41,9 @@ class Part extends Model
         return $this->hasMany(BomElements::class, 'part_id_fk');
     }
 
-    public function alternatives()
+    public function alternativeGroups()
     {
-        return $this->belongsToMany(
-            Part::class,
-            'alternative_parts',
-            'part_id',              // Foreign key on the pivot table
-            'alternative_part_id'   // Related key
-        )
-            ->withPivot('id')
-            ->with(['alternativeDetails']);
+        return $this->belongsToMany(AlternativeGroup::class, 'alternative_group_elements', 'part_id', 'alternative_group_id');
     }
 
     public function alternativeDetails()

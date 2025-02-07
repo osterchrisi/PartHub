@@ -9,6 +9,7 @@ use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
 use App\Models\Supplier;
+use App\Models\AlternativeGroup;
 use App\Services\CategoryService;
 use App\Services\DatabaseService;
 use App\Services\MouserApiService;
@@ -196,8 +197,16 @@ class PartController extends Controller
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
         $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
-        $apart = Part::with('alternatives')->findOrFail($part_id);
-        $alternativeData = $apart->alternatives;
+        // $apart = Part::with('alternatives')->findOrFail($part_id);
+        // $alternativeData = $apart->alternatives;
+
+        $apart = Part::with('alternativeGroups.alternativeParts')->findOrFail($part_id);
+
+        // Collect all unique alternative parts excluding the original part itself
+        $alternativeData = $apart->alternativeGroups->flatMap->alternativeParts
+            ->where('part_id', '!=', $part_id)
+            ->unique('part_id'); // Ensure no duplicates
+
 
         // Need to jump through a few hoops for proper time-zoning
         foreach ($stockHistory as $historyItem) {
@@ -312,63 +321,49 @@ class PartController extends Controller
 
     public function getAlternatives($id)
     {
-        $part = Part::with('alternatives')->findOrFail($id);
-        return response()->json($part->alternatives);
+        $part = Part::with('alternativeGroups.parts')->findOrFail($id);
+
+        // Extract all unique parts in the same groups
+        $alternatives = $part->alternativeGroups->flatMap->parts->unique('part_id');
+
+        return response()->json($alternatives);
     }
+
 
     public function addAlternative(Request $request, $id)
     {
-        $part = Part::findOrFail($id); // Find the base part
+        $part = Part::findOrFail($id);
         $userId = Auth::id();
 
         if (!$request->has('alternatives') || !is_array($request->alternatives)) {
             return response()->json(['error' => 'Invalid alternatives format'], 400);
         }
 
-        $alternativeIds = collect($request->alternatives)
-            ->pluck('alternative_id') // Extract alternative IDs
-            ->unique() // Remove duplicates
-            ->map(fn($id) => (int) $id) // Convert to integers
-            ->reject(fn($altId) => $altId === $part->part_id) // Prevent self-reference
-            ->toArray();
+        $alternativeIds = collect($request->alternatives)->pluck('alternative_id')->unique()->toArray();
 
         if (empty($alternativeIds)) {
             return response()->json(['error' => 'No valid alternatives provided'], 400);
         }
 
-        // Validate that all alternative IDs exist in the database
-        $existingAlternatives = Part::whereIn('part_id', $alternativeIds)->pluck('part_id')->toArray();
+        // Find an existing alternative group
+        $group = $part->alternativeGroups()->first();
 
-        if (count($existingAlternatives) !== count($alternativeIds)) {
-            return response()->json(['error' => 'One or more alternative parts do not exist'], 400);
+        if (!$group) {
+            // Create new alternative group if none exists
+            $group = AlternativeGroup::create(['owner_u_fk' => $userId]);
+            $group->parts()->attach($part->part_id);
         }
 
-        // Fetch already linked alternatives
-        $alreadyLinked = $part->alternatives()
-            ->whereIn('alternative_parts.alternative_part_id', $alternativeIds) // Explicit table reference
-            ->pluck('alternative_parts.alternative_part_id') // Explicitly select the correct column
-            ->toArray();
-
-        if (!empty($alreadyLinked)) {
-            return response()->json([
-                'error' => 'One or more alternatives are already linked',
-                'already_linked' => $alreadyLinked
-            ], 400);
-        }
-
-        // Attach alternatives if they are not already linked
-        $syncData = [];
-        foreach ($existingAlternatives as $alternativeId) {
-            $syncData[$alternativeId] = ['alternative_parts_owner_u_fk' => $userId];
-        }
-
-        $part->alternatives()->syncWithoutDetaching($syncData);
+        // Add new alternatives to the group
+        $group->parts()->syncWithoutDetaching($alternativeIds);
 
         return response()->json([
             'message' => 'Alternatives added successfully',
-            'alternatives' => $part->alternatives // Return updated alternatives
+            'group_id' => $group->id,
+            'alternatives' => $group->parts()->get()
         ]);
     }
+
 
 
 
