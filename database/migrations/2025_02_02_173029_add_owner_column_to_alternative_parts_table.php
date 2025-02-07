@@ -10,7 +10,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('alternative_parts', function (Blueprint $table) {
-            $table->unsignedBigInteger('alternative_parts_owner_u_fk')->after('alternative_part_id');
+            $table->unsignedBigInteger('alternative_parts_owner_u_fk')->nullable()->after('alternative_part_id');
 
             $table->foreign('alternative_parts_owner_u_fk')
                 ->references('id')->on('users')
