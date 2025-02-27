@@ -10,6 +10,7 @@ class AlternativeGroup extends Model
     use HasFactory;
 
     protected $table = 'alternative_groups';
+
     protected $fillable = ['owner_u_fk'];
 
     public function parts()
@@ -21,5 +22,4 @@ class AlternativeGroup extends Model
     {
         return $this->belongsToMany(Part::class, 'alternative_group_elements', 'alternative_group_id', 'part_id');
     }
-
 }
