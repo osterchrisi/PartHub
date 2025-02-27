@@ -99,29 +99,7 @@
                             <p class="lead text-muted fs-6">Best for small-scale businesses</p>
                             <h4 class><del>€9,99/month</del></h4>
                             <h4 class="text-danger">€1,99/month</h4>
-                            <ul class="list-group my-4 list-group-item-action text-start">
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Unlimited Resources</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Multiple Storage Locations per Part
-                                </li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Multiple Suppliers per Part</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Stock Movement History</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Minimum Stock Notifications</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Images for Resources</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Documents for Resources</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Premium support</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> 30-day Free Trial Period</li>
-                                <li class="list-group-item list-group-item-action"><i
-                                        class="fas fa-check pricing-tier-check"></i> Try it without risk</li>
-                            </ul>
+                            <x-maker-features-list />
                             <div>
                                 <a
                                     href="{{ route('register', ['plan' => 'maker', 'priceId' => 'price_1QhcmVEb2UyIF2shObeC4qlI']) }}"><button
