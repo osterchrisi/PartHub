@@ -5,8 +5,8 @@
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
             <td colspan="3">
-                <h1 class="display-1">PartHub</h1><br>
-                <h1>Inventory and BOM management</h1><br>
+                <h1 class="display-1 text-white">PartHub</h1><br>
+                <h1 class="text-white">Inventory and BOM management</h1><br>
                 @if (session('loggedIn'))
                     <div class="alert alert-info" role="alert">Nice to have you back, {{ optional(Auth::user())->name }}! 🚀
                     </div>
@@ -21,21 +21,21 @@
         <tr>
             <td width="33.3%">
                 <div class="list-group">
-                    <a href="{{ route('parts') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items">
+                    <a href="{{ route('parts') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
                         <h1><i class="bi bi-cpu"></i></h1>Parts
                     </a>
                 </div>
             </td>
             <td width="33.3%">
                 <div class="list-group">
-                    <a href="{{ route('boms') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items">
+                    <a href="{{ route('boms') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
                         <h1><i class="bi bi-clipboard-check"></i></h1>BOMs
                     </a>
                 </div>
             </td>
             <td width="33.3%">
                 <div class="list-group">
-                    <a href="{{ route('locations') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items">
+                    <a href="{{ route('locations') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
                         <h1><i class="bi bi-buildings"></i></h1>Storage
                     </a>
                 </div>
@@ -48,7 +48,7 @@
                         <td width="11.33%"></td>
                         <td width="33%">
                             <div class="list-group">
-                                <a href="{{ route('suppliers') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items">
+                                <a href="{{ route('suppliers') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
                                     <h1><i class="bi bi-cart2"></i></h1>Suppliers
                                 </a>
                             </div>
@@ -56,7 +56,7 @@
                         <td width="11.33%"></td>
                         <td width="33%">
                             <div class="list-group">
-                                <a href="{{ route('footprints') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items">
+                                <a href="{{ route('footprints') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
                                     <h1><i class="bi bi-outlet"></i></h1>Footprints
                                 </a>
                             </div>
