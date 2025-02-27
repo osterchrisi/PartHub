@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid my-5">
 
-        <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
+        <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/adobe_stock_background2.jpeg"
             title="Sign Up to PartHub" titleExtraClass="" subtitle="Focus on the fun part of making
         things!"
             secondButtonRoute="#register-pricing" firstButtonRoute="#register-free" secondButtonText="See Pricing"

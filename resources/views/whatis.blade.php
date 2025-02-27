@@ -4,7 +4,7 @@
     <div class="container-fluid my-5">
         <!-- Hero Section -->
         <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/adobe_stock_background2.jpeg"
-            title="PartHub" subtitle="Your Ultimate Inventory Tracking Solution"
+            title="PartHub" subtitle="Track Parts - Save Time"
             firstButtonRoute="{{ route('demo.login') }}" secondButtonRoute="{{ route('signup') }}"
             firstButtonText="Explore Demo" secondButtonText="Sign Up Now"/>
 
@@ -13,7 +13,7 @@
             imageSrc="app-related/image1.webp" 
             imageAlt="Person organizing parts in a workshop"
             content="You work best in a tidy environment. PartHub is designed to let you focus on the creative parts of your work. It is an Inventory and BOM management software."
-            bgClass="card-light-bg signup-gradient-background" />
+            bgClass="card-light-bg signup-gradient-background text-white" />
 
         <!-- Right-div -->
         <x-right-div title="Work better"
@@ -27,7 +27,7 @@
             imageSrc="app-related/image3.webp" 
             imageAlt="Close-up of electronic components"
             content="If you handle small parts for your projects, PartHub is here to simplify your life. Ideal for electronic parts but customizable for any type of inventory."
-            bgClass="card-light-bg signup-gradient-background" />
+            bgClass="card-light-bg signup-gradient-background text-white" />
 
         <!-- Feature List Section -->
         <x-left-div 
