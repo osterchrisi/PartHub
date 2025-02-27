@@ -23,8 +23,10 @@
             tabText="{{ $tabText2 }}" />
         <x-buttons.tab-button id="{{ $tabId3 }}" toggleTarget="{{ $tabToggleId3 }}"
             tabText="{{ $tabText3 }}" />
+            @subscribed('maker')
         <x-buttons.tab-button id="{{ $tabId4 }}" toggleTarget="{{ $tabToggleId4 }}"
             tabText="{{ $tabText4 }}" />
+            @endsubscribed
     </x-tablist>
 
     <!-- Tabs Content -->
