@@ -7,7 +7,7 @@
         <tr>
             <td>
                 <div>
-                    <span class="fs-6 lead">&copy; 2024 </span><span class="fs-6 lead" data-bs-toggle="tooltip"
+                    <span class="fs-6 lead">&copy; 2025 </span><span class="fs-6 lead" data-bs-toggle="tooltip"
                         data-bs-title="{{ $version }}">PartHub</span><span class="fs-6 lead">. All rights reserved.
                         </p>
                 </div>
