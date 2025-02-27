@@ -3,8 +3,8 @@
 @section('content')
     <div class="container-fluid my-5">
         <!-- Hero Section -->
-        <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/hero-background.webp"
-            title="Welcome to PartHub" subtitle="Your Ultimate Inventory and BOM Management Solution"
+        <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/adobe_stock_background2.jpeg"
+            title="PartHub" subtitle="Your Ultimate Inventory Tracking Solution"
             firstButtonRoute="{{ route('demo.login') }}" secondButtonRoute="{{ route('signup') }}"
             firstButtonText="Explore Demo" secondButtonText="Sign Up Now"/>
 

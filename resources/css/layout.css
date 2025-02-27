@@ -47,7 +47,7 @@
 }
 
 .hero-section h1 {
-    font-size: 4rem;
+    font-size: 10rem;
     font-weight: bold;
 }
 
@@ -62,7 +62,7 @@
 
 /* Landing Page */
 .landing-page {
-    background-image: url('/public/app-related/alternative-background-2.webp');
+    background-image: url('/public/app-related/adobe_stock_background1.jpeg');
     background-size: cover;
     background-repeat: repeat-y;
     background-position: center;
