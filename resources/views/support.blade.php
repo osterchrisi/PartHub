@@ -2,7 +2,7 @@
 @extends('centered-layout')
 
 @section('content')
-    <div class="container text-center py-5">
+    <div class="container text-center py-5 text-white bg-gradient rounded-3">
         <div class="row">
             <div class="col">
                 <h1 class="display-4 mb-4">

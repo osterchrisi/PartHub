@@ -4,7 +4,7 @@
     <div class="container-fluid my-5">
         <!-- Hero Section -->
         <x-hero-card divExtraClass="justify-content-center text-center" backgroundImage="app-related/adobe_stock_background2.jpeg"
-            title="PartHub" subtitle="Track Parts - Save Time"
+            title="PartHub" subtitle="Track Parts, Save Time"
             firstButtonRoute="{{ route('demo.login') }}" secondButtonRoute="{{ route('signup') }}"
             firstButtonText="Explore Demo" secondButtonText="Sign Up Now"/>
 
@@ -35,13 +35,14 @@
             imageAlt="Feature 1"
             title="📦 Keep an up-to-date inventory easily"
             content="Effortlessly manage your inventory and always stay up to date with the latest stock levels."
-            bgClass="pricing-gradient-background card-primary-bg text-white"/>
+            bgClass="pricing-gradient-background card-primary-bg text-white" />
 
         <x-right-div 
             imageSrc="app-related/feature-images/MultipleStorage.png" 
             imageAlt="Feature 2"
             title="🏷️ Manage multiple storage locations"
-            content="Track parts across different storage locations and keep everything organized with ease." />
+            content="Track parts across different storage locations and keep everything organized with ease."
+            bgClass="card-light-bg signup-gradient-background text-white" /> />
 
         <x-left-div 
             imageSrc="app-related/feature-images/Suppliers.png" 
@@ -54,7 +55,8 @@
             imageSrc="app-related/feature-images/StockHistory.png" 
             imageAlt="Feature 4"
             title="📝 Automatic part history tracking"
-            content="Track the history of each part automatically, giving you a complete audit trail." />
+            content="Track the history of each part automatically, giving you a complete audit trail."
+            bgClass="card-light-bg signup-gradient-background text-white" /> />
 
         <x-left-div 
             imageSrc="app-related/feature-images/AssembleBom.png" 
@@ -67,7 +69,8 @@
             imageSrc="app-related/feature-images/StockLevelNotification.png" 
             imageAlt="Feature 6"
             title="🔔 Set notification thresholds"
-            content="Set notification thresholds to stay informed about low stock and important updates." />
+            content="Set notification thresholds to stay informed about low stock and important updates."
+            bgClass="card-light-bg signup-gradient-background text-white" />
 
         <x-left-div 
             imageSrc="app-related/feature-images/Images.png" 
@@ -80,15 +83,15 @@
         <x-right-div title="Who is Behind PartHub?"
             imageSrc="app-related/Chrisi_und_Kaja_square.webp" 
             imageAlt="Christian and his dog Kaja"
-            content='PartHub was created by <a href="https://christianzollner.com" target="_blank" class="text-white">Christian Zollner</a>, founder of <a href="https://koma-elektronik.com" target="_blank" class="text-white">KOMA Elektronik</a>. Christian programmed this software because no inventory tracking software of this kind existed for his company.'
+            content='PartHub was created by <a href="https://christianzollner.com" target="_blank" class="text-white">Christian Zollner</a>, founder of <a href="https://koma-elektronik.com" target="_blank" class="text-white">KOMA Elektronik</a>. Christian programmed this software because no inventory tracking software of this kind existed for his company. <br><span class="text-muted fs-6"> (His dog Kaja helped a little too)</span'
             imageClass="rounded-circle w-50"
-            bgClass="bg-secondary bg-gradient text-white" />
+            bgClass="card-light-bg signup-gradient-background text-white" />
 
         <!-- Call to Action -->
         <div class="row mb-5" id="whatis-call-to-action-div">
             <div class="col-12 bg-primary bg-gradient text-white text-center p-5 rounded">
                 <h2 class="display-3 mb-4">Ready to Get Started?</h2>
-                <p class="lead fs-2">Sign up today and start organizing your parts like never before!</p>
+                <p class="lead fs-2">Sign up today and <span class="fw-bold">start organizing your parts like never before!</span></p>
                 <a href="{{ route('signup') }}" class="btn btn-lg gradient-hero-button btn-light extra-shadow mt-4 fs-1">Sign Up Now</a>
             </div>
         </div>
