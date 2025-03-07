@@ -42,8 +42,9 @@ class SocialiteController extends Controller
                 // Log the user in if they already exist
                 Auth::login($user);
             } else {
-                // Use the existing registration logic to register the user
+                // Register the user
                 $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
+                return redirect(RouteServiceProvider::HOME)->with('firstLogin', true);
             }
 
             // Redirect to home or intended route
