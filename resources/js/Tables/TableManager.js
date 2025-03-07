@@ -74,6 +74,7 @@ class TableManager {
                 this.rebuildUrl = '/categories.categoriesTable';
                 this.container = 'category-window';
                 this.categories = {};
+                this.postBodyCallback = this.hidePlaceHolderTable;
                 break;
             default:
                 this.id_name = 'id';
@@ -166,6 +167,7 @@ class TableManager {
         $('#categories_list_table_placeholder').addClass('d-none');
         $('#categories_list_table').removeClass('d-none');
         this.$table.removeClass('d-none');
+        console.log("gettin called, tis my $table", this.$table);
     }
 
     // For later use when all tables get a placeholder table

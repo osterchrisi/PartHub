@@ -41,9 +41,9 @@
 /* Hero Section */
 .hero-section {
     background-size: cover;
-    background-position: center -60px;
+    background-position: center -1px;
     color: white;
-    padding: 5rem 0;
+    padding: 3rem 0;
     box-shadow: inset 0 0 2rem rgba(255, 255, 255, 0.5);
 }
 

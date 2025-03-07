@@ -67,6 +67,7 @@ class CategoryTableManager extends TableManager {
                 this.restructureTreegridCells();
                 this.attachEditCategoriesButtonClickListener();
                 this.attachCategorySpecificListeners();
+                this.hidePlaceHolderTable();
             }
         });
     };
