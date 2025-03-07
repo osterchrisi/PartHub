@@ -90,7 +90,7 @@ trait RegistersUsers
             // Then, attempt to send the welcome email
             Mail::to($email)->send(new WelcomeEmail(new User(['email' => $email])));
 
-        } catch (ValidationException | TransportExceptionInterface $e) {
+        } catch (ValidationException|TransportExceptionInterface $e) {
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
         }
     }

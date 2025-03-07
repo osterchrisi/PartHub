@@ -37,7 +37,6 @@ class DatabaseService
         'alternative_group_elements' => \App\Models\AlternativeGroupElement::class,
     ];
 
-
     /**
      * Delete a row after verifying ownership
      */
@@ -49,7 +48,7 @@ class DatabaseService
         try {
             // Get the owner column for the specified table
             $owner_column = self::$owner_columns[$table] ?? null;
-            if (!$owner_column) {
+            if (! $owner_column) {
                 throw new Exception("No owner column found for table {$table}");
             }
 
@@ -68,12 +67,12 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->delete();
 
-            if (!$deleted) {
+            if (! $deleted) {
                 throw new Exception('Unauthorized or row not found for deletion');
             }
 
             // Additional logic if the deleted row is a category
-            if ($table === 'part_categories' && !empty($partsToUpdate)) {
+            if ($table === 'part_categories' && ! empty($partsToUpdate)) {
                 // Get the root category for the user
                 $root_category = app()->make('App\Services\CategoryService')->findRootCategory($user_id)->category_id ?? null;
 
@@ -99,14 +98,14 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
-        if (!isset(self::$modelMap[$table_name])) {
+        if (! isset(self::$modelMap[$table_name])) {
             throw new Exception("No Eloquent model found for table {$table_name}");
         }
 
         $modelClass = self::$modelMap[$table_name];
         $owner_column = self::$owner_columns[$table_name] ?? null;
 
-        if (!$owner_column) {
+        if (! $owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
@@ -118,12 +117,12 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->first();
 
-            if (!$record) {
-                throw new Exception("Unauthorized or row not found for updating");
+            if (! $record) {
+                throw new Exception('Unauthorized or row not found for updating');
             }
 
             // Check if the new value is different
-            if ($record->$column === $new_value) {
+            if ($new_value === $record->$column) {
                 return ['message' => 'No changes were made.'];
             }
 
@@ -151,5 +150,4 @@ class DatabaseService
             throw $e;
         }
     }
-
 }

@@ -44,6 +44,7 @@ class SocialiteController extends Controller
             } else {
                 // Register the user
                 $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
+
                 return redirect(RouteServiceProvider::HOME)->with('firstLogin', true);
             }
 

@@ -56,43 +56,43 @@ class ImageController extends Controller
     }
 
     public function deleteImage($type, $id)
-{
-    try {
-        // Find the image by ID, type, and owner
-        $image = Image::where('id', $id)
-            ->where('type', $type)
-            ->where('image_owner_u_id', auth()->id())
-            ->first();
+    {
+        try {
+            // Find the image by ID, type, and owner
+            $image = Image::where('id', $id)
+                ->where('type', $type)
+                ->where('image_owner_u_id', auth()->id())
+                ->first();
 
-        if (! $image) {
-            return response()->json(['error' => 'Image not found or not authorized'], 404);
+            if (! $image) {
+                return response()->json(['error' => 'Image not found or not authorized'], 404);
+            }
+
+            DB::beginTransaction();
+
+            // Delete the image file
+            $this->deleteFile($image->filename);
+
+            // Delete the thumbnail file if it exists
+            $thumbnailPath = str_replace(
+                basename($image->filename),
+                'thumbnails/'.pathinfo($image->filename, PATHINFO_FILENAME).'.webp',
+                $image->filename
+            );
+            $this->deleteFile($thumbnailPath);
+
+            // Delete the image record from the database
+            $image->delete();
+
+            DB::commit();
+
+            return response()->json(['success' => 'Image deleted successfully']);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
         }
-
-        DB::beginTransaction();
-
-        // Delete the image file
-        $this->deleteFile($image->filename);
-
-        // Delete the thumbnail file if it exists
-        $thumbnailPath = str_replace(
-            basename($image->filename),
-            'thumbnails/' . pathinfo($image->filename, PATHINFO_FILENAME) . '.webp',
-            $image->filename
-        );
-        $this->deleteFile($thumbnailPath);
-
-        // Delete the image record from the database
-        $image->delete();
-
-        DB::commit();
-
-        return response()->json(['success' => 'Image deleted successfully']);
-    } catch (\Exception $e) {
-        DB::rollback();
-        return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
     }
-}
-
 
     public function reorderImages(Request $request, $type, $id)
     {

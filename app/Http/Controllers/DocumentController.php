@@ -60,7 +60,7 @@ class DocumentController extends Controller
                 ->where('document_owner_u_id', auth()->id())
                 ->first();
 
-            if (!$document) {
+            if (! $document) {
                 return response()->json(['error' => 'Document not found or not authorized'], 404);
             }
 
@@ -77,8 +77,8 @@ class DocumentController extends Controller
             return response()->json(['success' => 'Document deleted successfully']);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+
+            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
         }
     }
-
 }

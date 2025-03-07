@@ -41,10 +41,10 @@ function calculateTotalStock($stockLevels)
     return $total_stock;
 }
 
-if (!function_exists('convertToUserTimezone')) {
+if (! function_exists('convertToUserTimezone')) {
     function convertToUserTimezone($timestamp, $timezone = null)
     {
-        if (!$timestamp) {
+        if (! $timestamp) {
             return null;
         }
 
