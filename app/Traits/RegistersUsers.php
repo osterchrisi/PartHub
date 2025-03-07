@@ -46,24 +46,30 @@ trait RegistersUsers
 
         DB::beginTransaction();
         // If email validation succeeds, create the user, create password if Google Oauth
-        $user = User::create([
-            'name' => $name,
-            'email' => $email,
-            'password' => $password ? Hash::make($password) : Hash::make(Str::random(16)),
-            'selected_plan' => $selectedPlan,
-            'price_id' => $priceId,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password ? Hash::make($password) : Hash::make(Str::random(16)),
+                'selected_plan' => $selectedPlan,
+                'price_id' => $priceId,
+            ]);
 
-        // Fire registration event
-        event(new Registered($user));
+            // Fire registration event
+            event(new Registered($user));
 
-        // Log the user in
-        Auth::login($user);
+            // Log the user in
+            Auth::login($user);
 
-        // Create default location and root category
-        Location::createLocation('Default Location', 'Feel free to change the description');
-        $this->categoryService->createNewRootCategory();
-        DB::commit();
+            // Create default location and root category
+            Location::createLocation('Default Location', 'Feel free to change the description');
+            $this->categoryService->createNewRootCategory();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Auth::logout();
+            throw $e;
+        }
 
         return $user;
     }
@@ -84,7 +90,7 @@ trait RegistersUsers
             // Then, attempt to send the welcome email
             Mail::to($email)->send(new WelcomeEmail(new User(['email' => $email])));
 
-        } catch (ValidationException|TransportExceptionInterface $e) {
+        } catch (ValidationException | TransportExceptionInterface $e) {
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
         }
     }
