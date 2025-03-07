@@ -23,6 +23,7 @@ class DatabaseService
         'alternative_group_elements' => 'owner_u_fk',
     ];
 
+    // Map of table names to Eloquent models
     private static $modelMap = [
         'boms' => \App\Models\Bom::class,
         'bom_elements' => \App\Models\BomElements::class,

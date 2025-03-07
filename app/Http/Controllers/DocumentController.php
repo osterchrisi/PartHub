@@ -51,25 +51,34 @@ class DocumentController extends Controller
         return response()->json($documents);
     }
 
-    public function delete($type, $id)
+    public function deleteDocument($type, $id)
     {
-        // Find the document by ID and type
-        $document = Document::where('id', $id)
-            ->where('type', $type)
-            ->where('document_owner_u_id', auth()->id())
-            ->first();
+        try {
+            // Find the document by ID, type, and owner
+            $document = Document::where('id', $id)
+                ->where('type', $type)
+                ->where('document_owner_u_id', auth()->id())
+                ->first();
 
-        if (! $document) {
-            return response()->json(['error' => 'Document not found or not authorized'], 404);
+            if (!$document) {
+                return response()->json(['error' => 'Document not found or not authorized'], 404);
+            }
+
+            DB::beginTransaction();
+
+            // Delete the document file
+            $this->deleteFile($document->filename);
+
+            // Delete the document record from the database
+            $document->delete();
+
+            DB::commit();
+
+            return response()->json(['success' => 'Document deleted successfully']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
-
-        DB::beginTransaction();
-        $this->deleteFile($document->filename);
-
-        // Delete the document record from the database
-        $document->delete();
-        DB::commit();
-
-        return response()->json(['success' => 'Document deleted successfully']);
     }
+
 }
