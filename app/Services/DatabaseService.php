@@ -23,6 +23,20 @@ class DatabaseService
         'alternative_parts' => 'alternative_parts_owner_u_fk',
     ];
 
+    private static $modelMap = [
+        'boms' => \App\Models\Bom::class,
+        'bom_elements' => \App\Models\BomElement::class,
+        'footprints' => \App\Models\Footprint::class,
+        'locations' => \App\Models\Location::class,
+        'parts' => \App\Models\Part::class,
+        'part_categories' => \App\Models\PartCategory::class,
+        'stock_level_change_history' => \App\Models\StockLevelChange::class,
+        'suppliers' => \App\Models\Supplier::class,
+        'supplier_data' => \App\Models\SupplierData::class,
+        'alternative_parts' => \App\Models\AlternativePart::class,
+    ];
+
+
     /**
      * Delete a row after verifying ownership
      */
@@ -34,7 +48,7 @@ class DatabaseService
         try {
             // Get the owner column for the specified table
             $owner_column = self::$owner_columns[$table] ?? null;
-            if (! $owner_column) {
+            if (!$owner_column) {
                 throw new Exception("No owner column found for table {$table}");
             }
 
@@ -53,12 +67,12 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->delete();
 
-            if (! $deleted) {
+            if (!$deleted) {
                 throw new Exception('Unauthorized or row not found for deletion');
             }
 
             // Additional logic if the deleted row is a category
-            if ($table === 'part_categories' && ! empty($partsToUpdate)) {
+            if ($table === 'part_categories' && !empty($partsToUpdate)) {
                 // Get the root category for the user
                 $root_category = app()->make('App\Services\CategoryService')->findRootCategory($user_id)->category_id ?? null;
 
@@ -84,44 +98,57 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
+        if (!isset(self::$modelMap[$table_name])) {
+            throw new Exception("No Eloquent model found for table {$table_name}");
+        }
+
+        $modelClass = self::$modelMap[$table_name];
         $owner_column = self::$owner_columns[$table_name] ?? null;
-        if (! $owner_column) {
+
+        if (!$owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
         $user_id = Auth::id();
 
-        // Check if the new value is different from the current one
-        $currentValue = DB::table($table_name)
-            ->where($id_field, $id)
-            ->where($owner_column, $user_id)
-            ->value($column);
+        try {
+            // Find the record
+            $record = $modelClass::where($id_field, $id)
+                ->where($owner_column, $user_id)
+                ->first();
 
-        if ($currentValue === $new_value) {
-            return ['message' => 'No changes were made.'];
-        }
+            if (!$record) {
+                throw new Exception("Unauthorized or row not found for updating");
+            }
 
-        // Proceed with the update only if the value is different
-        $updated = DB::table($table_name)
-            ->where($id_field, $id)
-            ->where($owner_column, $user_id)
-            ->update([$column => $new_value]);
+            // Check if the new value is different
+            if ($record->$column === $new_value) {
+                return ['message' => 'No changes were made.'];
+            }
 
-        if (! $updated) {
-            // Detailled logging for the curious mind
+            // Store old value for logging
+            $old_value = $record->$column;
+
+            // Update the column (Eloquent automatically updates updated_at)
+            $record->$column = $new_value;
+            $record->save();
+
+            return ['message' => 'Cell updated successfully.'];
+        } catch (Exception $e) {
             \Log::warning('Update failed', [
                 'table_name' => $table_name,
                 'id_field' => $id_field,
                 'id' => $id,
                 'column' => $column,
                 'new_value' => $new_value,
+                'old_value' => $old_value ?? 'N/A',
                 'user_id' => $user_id,
-                'current_value' => $currentValue,
                 'owner_column' => $owner_column,
+                'error_message' => $e->getMessage(),
             ]);
-            throw new Exception('Unauthorized or row not found for updating');
-        }
 
-        return ['message' => 'Cell updated successfully.'];
+            throw $e;
+        }
     }
+
 }
