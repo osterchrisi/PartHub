@@ -20,20 +20,20 @@ class DatabaseService
         'stock_level_change_history' => 'stock_lvl_chng_user_fk',
         'suppliers' => 'supplier_owner_u_fk',
         'supplier_data' => 'supplier_data_owner_u_fk',
-        'alternative_parts' => 'alternative_parts_owner_u_fk',
+        'alternative_group_elements' => 'owner_u_fk',
     ];
 
     private static $modelMap = [
         'boms' => \App\Models\Bom::class,
-        'bom_elements' => \App\Models\BomElement::class,
+        'bom_elements' => \App\Models\BomElements::class,
         'footprints' => \App\Models\Footprint::class,
         'locations' => \App\Models\Location::class,
         'parts' => \App\Models\Part::class,
-        'part_categories' => \App\Models\PartCategory::class,
-        'stock_level_change_history' => \App\Models\StockLevelChange::class,
+        'part_categories' => \App\Models\Category::class,
+        'stock_level_change_history' => \App\Models\StockLevelHistory::class,
         'suppliers' => \App\Models\Supplier::class,
         'supplier_data' => \App\Models\SupplierData::class,
-        'alternative_parts' => \App\Models\AlternativePart::class,
+        'alternative_group_elements' => \App\Models\AlternativeGroupElement::class,
     ];
 
 
@@ -98,6 +98,13 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
+        \Log::info('Updating cell', [
+            'table_name' => $table_name,
+            'id_field' => $id_field,
+            'id' => $id,
+            'column' => $column,
+            'new_value' => $new_value,
+        ]);
         if (!isset(self::$modelMap[$table_name])) {
             throw new Exception("No Eloquent model found for table {$table_name}");
         }

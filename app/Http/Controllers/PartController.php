@@ -201,10 +201,12 @@ class PartController extends Controller
         $part = Part::with('stockLevels.location')->find($part_id)->toArray();
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
         $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
-        // $apart = Part::with('alternatives')->findOrFail($part_id);
-        // $alternativeData = $apart->alternatives;
 
-        $apart = Part::with('alternativeGroups.alternativeParts')->findOrFail($part_id);
+        $apart = Part::with([
+            'alternativeGroups.alternativeParts' => function ($query) {
+                $query->withPivot('id'); // Ensure pivot id is included
+            }
+        ])->findOrFail($part_id);
 
         // Collect all unique alternative parts excluding the original part itself
         $alternativeData = $apart->alternativeGroups->flatMap->alternativeParts
@@ -253,7 +255,7 @@ class PartController extends Controller
                     'nice_supplierDataTableHeaders' => ['Supplier', 'URL', 'SPN', 'Price'],
                     'supplierData' => $supplierData,
                     // Alternatives
-                    'alternativeDataTableName' => 'alternative_parts',
+                    'alternativeDataTableName' => 'alternative_group_elements',
                     'alternativeDataTableIdField' => 'id',
                     'alternativeDataTableHeaders' => ['state', 'alternative_part_id'],
                     'nice_alternativeDataTableHeaders' => ['Alternative'],
@@ -353,11 +355,13 @@ class PartController extends Controller
         if (!$group) {
             // Create new alternative group if none exists
             $group = AlternativeGroup::create(['owner_u_fk' => $userId]);
-            $group->parts()->attach($part->part_id);
+            $group->parts()->attach($part->part_id, ['owner_u_fk' => $userId]);
         }
 
-        // Add new alternatives to the group
-        $group->parts()->syncWithoutDetaching($alternativeIds);
+        // Add new alternatives to the group while setting 'owner_u_fk'
+        foreach ($alternativeIds as $altId) {
+            $group->parts()->attach($altId, ['owner_u_fk' => $userId]);
+        }
 
         return response()->json([
             'message' => 'Alternatives added successfully',

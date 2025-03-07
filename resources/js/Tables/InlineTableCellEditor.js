@@ -280,6 +280,7 @@ class InlineTableCellEditor {
             column = 'alternative_part_id';
         }
 
+        console.log((`Updating ${this.type} with ID: ${id} and column: ${column} in table: ${table_name} with value: ${selectedValue}`));
         // Call the database table updating function
         $.when(this.updateCell(id, column, table_name, selectedValue, id_field)).done(() => {
             // Find the name for a given ID

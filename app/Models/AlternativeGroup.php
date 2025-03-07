@@ -15,11 +15,11 @@ class AlternativeGroup extends Model
 
     public function parts()
     {
-        return $this->belongsToMany(Part::class, 'alternative_group_elements', 'alternative_group_id', 'part_id');
+        return $this->belongsToMany(Part::class, 'alternative_group_elements', 'alternative_group_id', 'alternative_part_id')->withPivot('id');;
     }
 
     public function alternativeParts()
     {
-        return $this->belongsToMany(Part::class, 'alternative_group_elements', 'alternative_group_id', 'part_id');
+        return $this->belongsToMany(Part::class, 'alternative_group_elements', 'alternative_group_id', 'alternative_part_id');
     }
 }

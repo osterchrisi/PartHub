@@ -43,7 +43,7 @@ class Part extends Model
 
     public function alternativeGroups()
     {
-        return $this->belongsToMany(AlternativeGroup::class, 'alternative_group_elements', 'part_id', 'alternative_group_id');
+        return $this->belongsToMany(AlternativeGroup::class, 'alternative_group_elements', 'alternative_part_id', 'alternative_group_id');
     }
 
     public function alternativeDetails()
