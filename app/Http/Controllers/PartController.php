@@ -30,10 +30,10 @@ class PartController extends Controller
 
     private static $id_field = 'part_id';
 
-    private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id'];
+    private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id', 'created_at', 'updated_at'];
 
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
-    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', 'ID'];
+    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', 'ID', 'Created', 'Updated'];
 
     protected $databaseService;
 
@@ -88,6 +88,10 @@ class PartController extends Controller
         foreach ($parts as &$part) {
             $totalStock = $this->stockService->calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
+
+            // Convert timestamps to user timezone
+            $part['created_at'] = convertToUserTimezone($part['created_at']);
+            $part['updated_at'] = convertToUserTimezone($part['updated_at']);
         }
 
         // Return full parts view or only parts table depending on route
@@ -111,7 +115,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -150,7 +155,7 @@ class PartController extends Controller
             );
 
             // Handle stock level if quantity and location are provided
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
                     $new_part_id,
@@ -164,14 +169,14 @@ class PartController extends Controller
             }
 
             // Handle supplier data through SupplierService
-            if (! empty($validated['suppliers'])) {
+            if (!empty($validated['suppliers'])) {
                 $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
             // Trigger stock movement event
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
                 event(new StockMovementOccured($stock_level, Auth::user()));
             }
@@ -184,7 +189,7 @@ class PartController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
 
@@ -268,7 +273,8 @@ class PartController extends Controller
                     'tabToggleId4' => 'partAlternatives',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -331,7 +337,7 @@ class PartController extends Controller
         $part = Part::findOrFail($id);
         $userId = Auth::id();
 
-        if (! $request->has('alternatives') || ! is_array($request->alternatives)) {
+        if (!$request->has('alternatives') || !is_array($request->alternatives)) {
             return response()->json(['error' => 'Invalid alternatives format'], 400);
         }
 
@@ -344,7 +350,7 @@ class PartController extends Controller
         // Find an existing alternative group
         $group = $part->alternativeGroups()->first();
 
-        if (! $group) {
+        if (!$group) {
             // Create new alternative group if none exists
             $group = AlternativeGroup::create(['owner_u_fk' => $userId]);
             $group->parts()->attach($part->part_id);

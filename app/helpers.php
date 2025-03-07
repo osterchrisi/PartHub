@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 function buildHTMLTable($column_names, $nice_columns, $table_data, $width = '100%')
 {
     $html = "<div style='overflow-x:auto;'>";
@@ -37,4 +39,17 @@ function calculateTotalStock($stockLevels)
     }
 
     return $total_stock;
+}
+
+if (!function_exists('convertToUserTimezone')) {
+    function convertToUserTimezone($timestamp, $timezone = null)
+    {
+        if (!$timestamp) {
+            return null;
+        }
+
+        $timezone = $timezone ?? config('app.timezone');
+
+        return Carbon::parse($timestamp)->setTimezone($timezone);
+    }
 }
