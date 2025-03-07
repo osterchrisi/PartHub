@@ -107,7 +107,7 @@ class InfoWindow {
                         deleteRowId.push(row._data['alternative-data-id']);
                     });
                     console.log("delete id = ", deleteRowId);
-                    deleteSelectedRows(deleteRowId, 'alternative_parts', 'id', () => updateInfoWindow('part', this.id));
+                    deleteSelectedRows(deleteRowId, 'alternative_group_elements', 'id', () => updateInfoWindow('part', this.id));
                 });
                 break;
             case 'bom':

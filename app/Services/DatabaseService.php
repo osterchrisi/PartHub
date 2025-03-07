@@ -98,13 +98,6 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
-        \Log::info('Updating cell', [
-            'table_name' => $table_name,
-            'id_field' => $id_field,
-            'id' => $id,
-            'column' => $column,
-            'new_value' => $new_value,
-        ]);
         if (!isset(self::$modelMap[$table_name])) {
             throw new Exception("No Eloquent model found for table {$table_name}");
         }
