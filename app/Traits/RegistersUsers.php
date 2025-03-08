@@ -42,7 +42,9 @@ trait RegistersUsers
      */
     protected function registerUser(string $name, string $email, ?string $password = null, string $selectedPlan = 'free', $priceId = ''): User
     {
-        $this->validateEmail($email);
+        if ($this->isEmailValid($email)) {
+            $this->sendWelcomeEmail($email, $selectedPlan);
+        }
 
         DB::beginTransaction();
         // If email validation succeeds, create the user, create password if Google Oauth
@@ -77,7 +79,7 @@ trait RegistersUsers
     /**
      * Validate email by attempting to send the welcome email.
      */
-    protected function validateEmail(string $email): void
+    protected function validateEmail(string $email): bool
     {
         try {
             // First, validate the email with the DNS rule
@@ -87,11 +89,28 @@ trait RegistersUsers
                 'email' => 'required|email',
             ])->validate();  // Throws ValidationException if it fails
 
-            // Then, attempt to send the welcome email
-            Mail::to($email)->send(new WelcomeEmail(new User(['email' => $email])));
+            return true;
 
-        } catch (ValidationException|TransportExceptionInterface $e) {
+        } catch (ValidationException | TransportExceptionInterface $e) {
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
+        }
+    }
+
+    /**
+     * Send the appropriate welcome email based on the user's selected plan.
+     *
+     * @param string $email
+     * @param string $selectedPlan
+     * @return void
+     */
+    protected function sendWelcomeEmail(string $email, string $selectedPlan): void
+    {
+        try {
+            $user = new User(['email' => $email]); // Temporary user object for email rendering
+            Mail::to($email)->send(new WelcomeEmail(new User(['email' => $email]), $selectedPlan));
+
+        } catch (TransportExceptionInterface $e) {
+            // Handle mail transport failure, optionally log the error
         }
     }
 }

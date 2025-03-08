@@ -6,15 +6,22 @@
     <h4>We're excited to have you onboard! 🚀</h4>
     <p class="lead">Your account is ready, and you can start organizing your parts right away.</p>
 
-    <p class="lead">To get the most out of PartHub, we highly recommend checking out our <strong>Maker plan</strong>.
-        It offers advanced features to streamline your inventory management — currently at a crazy discount for <strong>only €2,99/month!</strong> 🤯</p>
-
-    <p class="lead" style="text-align: center;">
-        <a href="{{ route('signup') }}#register-pricing"
-            style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">
-            Explore the Maker Plan
-        </a>
-    </p>
+    @if ($planType === 'maker')
+        <p class="lead">To get started, simply <a href="{{ route('login') }}">log in</a> and start adding your parts.
+        </p>
+    @else
+        <p class="lead">To get the most out of PartHub, we highly recommend checking out our <strong>Maker
+                plan</strong>.
+            It offers advanced features to streamline your inventory management — currently at a crazy discount for
+            <strong>only €2,99/month!</strong> 🤯
+        </p>
+        <p class="lead" style="text-align: center;">
+            <a href="{{ route('signup') }}#register-pricing"
+                style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                Explore the Maker Plan
+            </a>
+        </p>
+    @endif
 
     <hr>
 

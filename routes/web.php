@@ -231,6 +231,7 @@ Route::get('/test-flash', function () {
 // E-Mail Preview
 Route::get('/preview-email', function () {
     $user = User::first();
+    $planType = request('plan', 'free'); // Defaults to 'free' if not specified
 
-    return new App\Mail\WelcomeEmail($user);
+    return new App\Mail\WelcomeEmail($user, $planType);
 });

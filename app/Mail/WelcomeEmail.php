@@ -16,10 +16,9 @@ class WelcomeEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(
-        protected User $user,
-    ) {
-
+    public function __construct(protected User $user, string $planType = 'free')
+    {
+        $this->planType = $planType;
     }
 
     /**
@@ -41,9 +40,11 @@ class WelcomeEmail extends Mailable
             view: 'mail.WelcomeEmail',
             with: [
                 'name' => $this->user->name,
+                'planType' => $this->planType,
             ]
         );
     }
+
 
     /**
      * Get the attachments for the message.
