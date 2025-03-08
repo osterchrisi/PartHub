@@ -98,7 +98,7 @@
                             <h3 class="card-title">Maker 🚀</h3>
                             <p class="lead text-muted fs-6">Best for small-scale businesses</p>
                             <h4 class><del>€9,99/month</del></h4>
-                            <h4 class="text-danger">€1,99/month</h4>
+                            <h4 class="text-danger">€2,99/month</h4>
                             <x-maker-features-list />
                             <div>
                                 <a
