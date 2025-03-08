@@ -58,7 +58,8 @@ class BomController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        } elseif ($route == 'boms.bomsTable') {
+        }
+        elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
@@ -72,44 +73,49 @@ class BomController extends Controller
     public static function show($bom_id)
     {
         $bom = Bom::find($bom_id);
+
+        if (!$bom) {
+            abort(404, 'BOM not found.'); // Likely a deleted BOM. Could be handled in frontend: Just select next-best BOM after deletion.
+        }
+
         $bom_name = $bom->bom_name;
         $bom_description = $bom->bom_description;
         $bom_owner = $bom->bom_owner_u_fk;
 
-        if (Auth::user()->id === $bom_owner) {
-
-            $bom_elements = BomElements::getBomElements($bom_id);
-            $bom_runs = BomRun::getBomRunsByBomId($bom_id);
-
-            return view(
-                'boms.showBom',
-                [
-                    'bom_name' => $bom_name,
-                    'bom_description' => $bom_description,
-                    'bom_elements' => $bom_elements,
-
-                    // Bom Details Table
-                    'db_columns' => self::$bom_detail_table_headers,
-                    'nice_columns' => self::$nice_bom_detail_table_headers,
-
-                    // Bom Runs Table
-                    'nice_bomRunsTableHeaders' => self::$nice_bomRunsTableHeaders,
-                    'bomRunsTableHeaders' => self::$bomRunsTableHeaders,
-                    'bom_runs' => $bom_runs,
-
-                    // Tabs Settings
-                    'tabId1' => 'info',
-                    'tabText1' => 'Info',
-                    'tabToggleId1' => 'bomInfo',
-                    'tabId2' => 'history',
-                    'tabText2' => 'Build History',
-                    'tabToggleId2' => 'bomHistory',
-                ]
-            );
-        } else {
-            abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
+        if (Auth::user()->id !== $bom_owner) {
+            abort(403, 'Unauthorized access.');
         }
+
+        $bom_elements = BomElements::getBomElements($bom_id);
+        $bom_runs = BomRun::getBomRunsByBomId($bom_id);
+
+        return view(
+            'boms.showBom',
+            [
+                'bom_name' => $bom_name,
+                'bom_description' => $bom_description,
+                'bom_elements' => $bom_elements,
+
+                // Bom Details Table
+                'db_columns' => self::$bom_detail_table_headers,
+                'nice_columns' => self::$nice_bom_detail_table_headers,
+
+                // Bom Runs Table
+                'nice_bomRunsTableHeaders' => self::$nice_bomRunsTableHeaders,
+                'bomRunsTableHeaders' => self::$bomRunsTableHeaders,
+                'bom_runs' => $bom_runs,
+
+                // Tabs Settings
+                'tabId1' => 'info',
+                'tabText1' => 'Info',
+                'tabToggleId1' => 'bomInfo',
+                'tabId2' => 'history',
+                'tabText2' => 'Build History',
+                'tabToggleId2' => 'bomHistory',
+            ]
+        );
     }
+
 
     /**
      * Takes BOM(s), retrieves the BOM Elements (parts) and creates an array of changes to be requested
@@ -147,7 +153,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID '.$bom_id,
+                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
@@ -166,7 +172,7 @@ class BomController extends Controller
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
 
-        if (! $file) {
+        if (!$file) {
             return response()->json(['error' => 'No file uploaded'], 400);
         }
 
@@ -186,7 +192,7 @@ class BomController extends Controller
             // Persist database changes and set success flash message
             DB::commit();
 
-            return response()->json(['success' => 'BOM "'.$bom_name.'" imported successfully.', 'new_bom_id' => $bom_id]);
+            return response()->json(['success' => 'BOM "' . $bom_name . '" imported successfully.', 'new_bom_id' => $bom_id]);
 
         } catch (\Exception $e) {
             // Roll back database changes made so far
