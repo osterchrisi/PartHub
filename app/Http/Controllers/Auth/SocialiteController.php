@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -20,8 +21,14 @@ class SocialiteController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function redirectToGoogle()
+    public function redirectToGoogle(Request $request)
     {
+
+        // Store selected plan and price in session before redirecting
+        session([
+            'selected_plan' => $request->input('plan', 'free'), // Default to 'free'
+            'price_id' => $request->input('priceId', ''), // Default to empty string
+        ]);
         return Socialite::driver('google')->redirect();
     }
 
@@ -41,9 +48,13 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            } else {
+            }
+            else {
+                // Retrieve plan & price from session (fallback to defaults)
+                $selectedPlan = session('selected_plan', 'free');
+                $priceId = session('price_id', '');
                 // Register the user
-                $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null, 'testo', 'tiesto');
+                $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null, $selectedPlan, $priceId);
 
                 return redirect(RouteServiceProvider::HOME)->with('firstLogin', true);
             }
