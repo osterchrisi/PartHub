@@ -91,17 +91,13 @@ trait RegistersUsers
 
             return true;
 
-        } catch (ValidationException | TransportExceptionInterface $e) {
+        } catch (ValidationException|TransportExceptionInterface $e) {
             throw ValidationException::withMessages(['email' => 'Invalid e-mail']);
         }
     }
 
     /**
      * Send the appropriate welcome email based on the user's selected plan.
-     *
-     * @param string $email
-     * @param string $selectedPlan
-     * @return void
      */
     protected function sendWelcomeEmail(string $email, string $selectedPlan): void
     {
