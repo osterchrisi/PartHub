@@ -79,7 +79,7 @@ trait RegistersUsers
     /**
      * Validate email by attempting to send the welcome email.
      */
-    protected function validateEmail(string $email): bool
+    protected function isEmailValid(string $email): bool
     {
         try {
             // First, validate the email with the DNS rule
