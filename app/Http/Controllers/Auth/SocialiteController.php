@@ -43,7 +43,7 @@ class SocialiteController extends Controller
                 Auth::login($user);
             } else {
                 // Register the user
-                $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null);
+                $this->registerUser($googleUser->getName(), $googleUser->getEmail(), null, 'testo', 'tiesto');
 
                 return redirect(RouteServiceProvider::HOME)->with('firstLogin', true);
             }
