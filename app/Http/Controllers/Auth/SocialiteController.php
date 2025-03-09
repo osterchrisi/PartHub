@@ -23,12 +23,13 @@ class SocialiteController extends Controller
      */
     public function redirectToGoogle(Request $request)
     {
-
+        \Log::info('Request data', $request->all());
         // Store selected plan and price in session before redirecting
         session([
             'selected_plan' => $request->input('plan', 'free'), // Default to 'free'
             'price_id' => $request->input('priceId', ''), // Default to empty string
         ]);
+        \Log::info('Session data', session()->all());
         return Socialite::driver('google')->redirect();
     }
 

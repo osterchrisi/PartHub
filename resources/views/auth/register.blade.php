@@ -15,7 +15,7 @@
             </div>
             <!-- Social Sign Up -->
             <div class="text-center mb-3">
-                <a href="{{ route('google.login') }}" class="btn btn-lg btn-outline-light" id="googleSignupBtn">
+                <a href="{{ route('google.login', request()->query()) }}" class="btn btn-lg btn-outline-light" id="googleSignupBtn">
                     <i class="fab fa-google me-2"></i>Sign up with Google
                 </a>
             </div>
