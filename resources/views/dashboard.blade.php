@@ -166,10 +166,6 @@ $user = Auth::user();
                 </div>
             </div>
 
-
-
-
-
             {{-- Update Password --}}
             <div class="card shadow-sm mt-4 mb-4">
                 <div class="card-body">
