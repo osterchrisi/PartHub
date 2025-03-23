@@ -134,35 +134,35 @@ class PartCreator extends ResourceCreator {
         const $toggleButton = $('#toggle-uppercase-button');
         const $addPartName = $('#addPartName');
         let isUppercase = false;
-        let originalValue = '';
-
+        let rawInput = '';
+    
         const toggleUppercase = () => {
             isUppercase = !isUppercase;
             if (isUppercase) {
-                originalValue = $addPartName.val(); // Store original value before converting to uppercase
+                // Store current value as lowercase
+                rawInput = $addPartName.val().toLowerCase();
                 $addPartName.on('input.uppercase', function () {
-                    const uppercased = $(this).val().toUpperCase();
-                    $(this).val(uppercased);
+                    // Always update rawInput in lowercase regardless of displayed case
+                    rawInput = $(this).val().toLowerCase();
+                    // Display in uppercase
+                    $(this).val(rawInput.toUpperCase());
                 });
-                $addPartName.val($addPartName.val().toUpperCase());
-                $toggleButton.addClass('active'); // Indicate active state
+                $addPartName.val(rawInput.toUpperCase());
+                $toggleButton.addClass('active');
                 $toggleButton.text('AA');
             } else {
-                $addPartName.off('input.uppercase'); // Remove event listener for uppercase
-                $addPartName.val(originalValue); // Restore original value
-                $toggleButton.removeClass('active'); // Remove active state indication
+                $addPartName.off('input.uppercase');
+                // Restore raw value as lowercase
+                $addPartName.val(rawInput);
+                $toggleButton.removeClass('active');
                 $toggleButton.text('Aa');
             }
         };
-
-        // Ensure no duplicate event listeners are attached
-        $toggleButton.off('click');
-        $toggleButton.click(() => {
-            toggleUppercase();
-        });
-
-        $toggleButton.text('Aa'); // Initialize button text
+    
+        $toggleButton.off('click').click(() => toggleUppercase());
+        $toggleButton.text('Aa');
     }
+    
 
     // Initialize the "Add Stock" toggler functionality for a new part
     initializeAddStockToggler() {
