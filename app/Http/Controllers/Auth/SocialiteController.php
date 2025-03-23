@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Traits\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -30,6 +30,7 @@ class SocialiteController extends Controller
             'price_id' => $request->input('priceId', ''),       // Default to empty string
         ]);
         \Log::info('Session data', session()->all());
+
         return Socialite::driver('google')->redirect();
     }
 
@@ -49,8 +50,7 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            }
-            else {
+            } else {
                 // Retrieve plan & price from session (fallback to defaults)
                 $selectedPlan = session('selected_plan', 'free');
                 $priceId = session('price_id', '');
