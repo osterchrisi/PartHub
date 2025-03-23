@@ -52,7 +52,7 @@ class SupplierController extends Controller
     public function show($supplier_id)
     {
         // Fetch supplier information
-        $supplier = Supplier::find($supplier_id);
+        $supplier = Supplier::findOrFail($supplier_id);
 
         // Fetch parts related to this supplier via the supplier_data table
         $suppliedParts = SupplierData::with('part')

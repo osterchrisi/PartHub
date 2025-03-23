@@ -197,7 +197,7 @@ class PartController extends Controller
      */
     public function show(string $part_id)
     {
-        $part = Part::with('stockLevels.location')->find($part_id)->toArray();
+        $part = Part::with('stockLevels.location')->findOrFail($part_id)->toArray();
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
         $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
 

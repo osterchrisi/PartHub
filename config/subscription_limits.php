@@ -1,5 +1,7 @@
 <?php
 
+// Null means unlimited
+
 return [
     'free' => [
         'part_limit' => 100,
