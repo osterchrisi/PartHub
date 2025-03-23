@@ -46,7 +46,7 @@ class Location extends Model
 
     public static function getLocationById($location_id)
     {
-        return self::find($location_id);
+        return self::findOrFail($location_id);
     }
 
     public function getStockLevelEntries()
