@@ -1,14 +1,12 @@
-@php
-    $version = file_get_contents('../VERSION');
-@endphp
-
 <div class="container-fluid bg-light bg-gradient bg-opacity-10 text-dark pb-1" id="footer">
     <table class="table table-borderless text-center mx-auto w-auto footer-table">
         <tr>
             <td>
                 <div>
                     <span class="fs-6 lead">&copy; 2025 </span><span class="fs-6 lead" data-bs-toggle="tooltip"
-                        data-bs-title="{{ $version }}">PartHub</span><span class="fs-6 lead">. All rights reserved.
+                        data-bs-title="{{ file_exists(base_path('VERSION')) ? file_get_contents(base_path('VERSION')) : '' }}
+                    ">PartHub</span><span
+                        class="fs-6 lead">. All rights reserved.
                         </p>
                 </div>
             </td>
