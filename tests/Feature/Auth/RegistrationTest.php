@@ -24,6 +24,8 @@ class RegistrationTest extends TestCase
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'plan' => 'free', // or whatever your default is
+            'recaptcha_response' => 'test-token', // No reCaptcha in tests
         ]);
 
         $this->assertAuthenticated();

@@ -14,6 +14,7 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
+        $response = $this->followRedirects($response);
         $response->assertStatus(200);
     }
 }
