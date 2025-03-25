@@ -63,7 +63,7 @@ class DatabaseServiceController extends Controller
         $validated = $this->partValidator->validate($data, $request->method());
 
         //TODO: This line just makes sure that everything that does not yet have a validator also works.
-        //TODO:  Failed validation throws an exception so I guess it's 'safe' for now. All remaining data is strings anyway...
+        //TODO: Failed validation throws an exception so I guess it's 'safe' for now. All remaining data is strings anyway...
         $new_value = $validated[$column] ?? $new_value;
 
         try {
