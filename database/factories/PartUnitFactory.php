@@ -22,7 +22,7 @@ class PartUnitFactory extends Factory
     public function definition(): array
     {
         return [
-            'unit_name' => $this->faker->word(),
+            'unit_name' => $this->faker->randomElement(['pcs', 'cm', 'kg', 'ml', 'oz']),
         ];
     }
 }
