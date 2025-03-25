@@ -11,6 +11,7 @@ use App\Models\Location;
 use App\Models\StockLevel;
 use App\Models\SupplierData;
 use App\Models\AlternativeGroup;
+use App\Models\PartUnit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -63,12 +64,15 @@ class PartControllerTest extends TestCase
         $category = Category::factory()->create(['part_category_owner_u_fk' => $user->id]);
         $footprint = Footprint::factory()->create(['footprint_owner_u_fk' => $user->id]);
         $supplier = Supplier::factory()->create(['supplier_owner_u_fk' => $user->id]);
+        $unit = PartUnit::factory()->create();
+
 
         // Create part
         $part = Part::factory()->create([
             'part_owner_u_fk' => $user->id,
             'part_category_fk' => $category->category_id,
             'part_footprint_fk' => $footprint->footprint_id,
+            'part_unit_fk' => $unit->unit_id,
         ]);
 
         // Create related stock level

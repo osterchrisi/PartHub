@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Part extends Model
 {
+    use HasFactory;
+    
     protected $table = 'parts';
 
     protected $primaryKey = 'part_id';
