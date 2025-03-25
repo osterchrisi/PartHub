@@ -15,7 +15,7 @@ class PartControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_parts_page_can_be_rendered()
+    public function test_parts_view_can_be_rendered()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
