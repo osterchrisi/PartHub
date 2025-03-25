@@ -100,4 +100,55 @@ class PartControllerTest extends TestCase
         $response->assertViewIs('parts.showPart');
         $response->assertViewHas(['part', 'stock_levels', 'supplierData', 'alternativeData']);
     }
+
+    public function test_part_can_be_created_with_stock_and_supplier_data()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $category = Category::factory()->create(['part_category_owner_u_fk' => $user->id]);
+        $footprint = Footprint::factory()->create(['footprint_owner_u_fk' => $user->id]);
+        $supplier = Supplier::factory()->create(['supplier_owner_u_fk' => $user->id]);
+        $location = Location::factory()->create(['location_owner_u_fk' => $user->id]);
+
+        $data = [
+            'part_name' => 'SuperCapacitor',
+            'description' => 'Stores energy like a beast',
+            'comment' => 'Test comment',
+            'footprint' => $footprint->footprint_id,
+            'category' => $category->category_id,
+            'quantity' => 50,
+            'to_location' => $location->location_id,
+            'min_quantity' => 10,
+            'suppliers' => [
+                [
+                    'supplier_id' => $supplier->supplier_id,
+                    'URL' => 'https://supplier.com/supercap',
+                    'SPN' => 'CAP-9000',
+                    'price' => 0.99,
+                ],
+            ],
+        ];
+
+        $response = $this->postJson('/part.create', $data);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['Part ID', 'Stock Entry ID']);
+
+        $this->assertDatabaseHas('parts', [
+            'part_name' => 'SuperCapacitor',
+            'part_owner_u_fk' => $user->id,
+        ]);
+
+        $this->assertDatabaseHas('stock_levels', [
+            'stock_level_quantity' => 50,
+            'location_id_fk' => $location->location_id,
+        ]);
+
+        $this->assertDatabaseHas('supplier_data', [
+            'part_id_fk' => $response['Part ID'],
+            'supplier_id_fk' => $supplier->supplier_id,
+        ]);
+    }
+
 }
