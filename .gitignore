@@ -6,6 +6,7 @@
 /public/images
 /storage/*.key
 /vendor
+/coverage-report
 .env
 .env.backup
 .env.production
