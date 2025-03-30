@@ -23,16 +23,27 @@ class SocialiteController extends Controller
      */
     public function redirectToGoogle(Request $request)
     {
-        \Log::info('Request data', $request->all());
+        \Log::info('Request data', [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'data' => $request->all(),
+        ]);
+
         // Store selected plan and price in session before redirecting
         session([
             'selected_plan' => $request->input('plan', 'free'), // Default to 'free'
             'price_id' => $request->input('priceId', ''),       // Default to empty string
         ]);
-        \Log::info('Session data', session()->all());
+
+        \Log::info('Session data', [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'session' => session()->all(),
+        ]);
 
         return Socialite::driver('google')->redirect();
     }
+
 
     /**
      * Handle the callback from Google after authentication.
@@ -50,7 +61,8 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            } else {
+            }
+            else {
                 // Retrieve plan & price from session (fallback to defaults)
                 $selectedPlan = session('selected_plan', 'free');
                 $priceId = session('price_id', '');
