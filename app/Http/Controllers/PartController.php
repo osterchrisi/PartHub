@@ -288,7 +288,7 @@ class PartController extends Controller
     public function getName(Request $request)
     {
         $part_id = request()->input('part_id');
-        $part = Part::find($part_id)->toArray();
+        $part = Part::findOrFail($part_id)->toArray();
 
         return $part['part_name'];
     }
