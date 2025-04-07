@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Disallow: /login
+Disallow: /register
+Disallow: /password
+Disallow: /parts
+Disallow: /boms
+Disallow: /locations
+Disallow: /categories
+Disallow: /footprints
+Disallow: /suppliers
