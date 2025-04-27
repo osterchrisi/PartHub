@@ -1,5 +1,6 @@
-<div @class(['row hero-section rounded-3 mb-5', $divExtraClass ?? ''])
-    style="background-image: url('{{ $backgroundImage }}');">
+<div @class(['row hero-section rounded-2 mb-5', $divExtraClass ?? ''])
+    style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ $backgroundImage }}'); background-size: cover; background-blend-mode: darken; background-position: center center;
+">
     <div class="col-md-8">
         @isset($slot)
             <div class="mb-4">

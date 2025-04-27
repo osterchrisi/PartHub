@@ -44,7 +44,7 @@
     background-position: center -1px;
     color: white;
     padding: 3rem 0;
-    box-shadow: inset 0 0 2rem rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 0 2rem rgba(255, 255, 255, 0.3);
 }
 
 /* .hero-section h1 {
