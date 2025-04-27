@@ -26,6 +26,19 @@
     </script>
     <script type="text/javascript"
         src="https://app.termly.io/resource-blocker/4134b801-03f7-4cab-85ea-c4ab4e329670?autoBlock=on"></script>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <!-- Android Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- JQuery UI -->
@@ -114,19 +127,19 @@
     <!-- End Google Tag Manager -->
 
     <script>
-        (function (s, e, n, d, er) {
-          s['Sender'] = er;
-          s[er] = s[er] || function () {
-            (s[er].q = s[er].q || []).push(arguments)
-          }, s[er].l = 1 * new Date();
-          var a = e.createElement(n),
-              m = e.getElementsByTagName(n)[0];
-          a.async = 1;
-          a.src = d;
-          m.parentNode.insertBefore(a, m)
+        (function(s, e, n, d, er) {
+            s['Sender'] = er;
+            s[er] = s[er] || function() {
+                (s[er].q = s[er].q || []).push(arguments)
+            }, s[er].l = 1 * new Date();
+            var a = e.createElement(n),
+                m = e.getElementsByTagName(n)[0];
+            a.async = 1;
+            a.src = d;
+            m.parentNode.insertBefore(a, m)
         })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
         sender('1e2359a5802796')
-      </script>
+    </script>
 </head>
 
 <body data-view="{{ $view }}">
