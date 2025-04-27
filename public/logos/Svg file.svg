@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   version="1.1"
+   viewBox="0 0 486.06 486.06"
+   sodipodi:docname="Svg file.svg"
+   width="486.06"
+   height="486.06"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview172"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     showgrid="false"
+     inkscape:zoom="1.1253333"
+     inkscape:cx="48.874408"
+     inkscape:cy="242.59479"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="3840"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     width="486.06px" />
+  <!-- Generator: Adobe Illustrator 29.4.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 152)  -->
+  <defs
+     id="defs81">
+    <style
+       id="style2">
+      .st0 {
+        fill: url(#linear-gradient2);
+      }
+
+      .st1 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st2 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st3 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st4 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st5 {
+        fill: url(#linear-gradient10);
+      }
+
+      .st6 {
+        fill: url(#linear-gradient21);
+      }
+
+      .st7 {
+        clip-path: url(#clippath-9);
+      }
+
+      .st8 {
+        clip-path: url(#clippath-10);
+      }
+
+      .st9 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st10 {
+        fill: url(#linear-gradient9);
+      }
+
+      .st11 {
+        fill: url(#linear-gradient18);
+      }
+
+      .st12 {
+        clip-path: url(#clippath-11);
+      }
+
+      .st13 {
+        fill: url(#linear-gradient8);
+      }
+
+      .st14 {
+        fill: url(#linear-gradient11);
+      }
+
+      .st15, .st16 {
+        fill: none;
+      }
+
+      .st17 {
+        fill: url(#linear-gradient16);
+      }
+
+      .st18 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st19 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st20 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st21 {
+        fill: url(#linear-gradient19);
+      }
+
+      .st22 {
+        fill: url(#linear-gradient12);
+      }
+
+      .st23 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st24 {
+        fill: url(#linear-gradient7);
+      }
+
+      .st25 {
+        clip-path: url(#clippath-12);
+      }
+
+      .st26 {
+        fill: url(#linear-gradient20);
+      }
+
+      .st27 {
+        fill: url(#linear-gradient4);
+      }
+
+      .st28 {
+        clip-path: url(#clippath-14);
+      }
+
+      .st29 {
+        fill: url(#linear-gradient14);
+      }
+
+      .st30 {
+        fill: url(#linear-gradient5);
+      }
+
+      .st31 {
+        fill: url(#linear-gradient3);
+      }
+
+      .st32 {
+        fill: url(#linear-gradient15);
+      }
+
+      .st33 {
+        fill: url(#linear-gradient17);
+      }
+
+      .st34 {
+        fill: url(#linear-gradient6);
+      }
+
+      .st35 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st36 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st37 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st38 {
+        fill: url(#linear-gradient13);
+      }
+
+      .st39 {
+        fill: url(#linear-gradient);
+      }
+
+      .st40 {
+        clip-path: url(#clippath);
+      }
+
+      .st16 {
+        display: none;
+        stroke: #f30;
+        stroke-miterlimit: 10;
+      }
+    </style>
+    <linearGradient
+       id="linear-gradient"
+       x1="91.550003"
+       y1="256.44"
+       x2="468.01999"
+       y2="632.90997"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#d500ff"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#00daff"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linear-gradient1"
+       x1="278.70001"
+       y1="69.279999"
+       x2="655.16998"
+       y2="445.75"
+       xlink:href="#linear-gradient" />
+    <linearGradient
+       id="linear-gradient2"
+       x1="279.95999"
+       y1="68.019997"
+       x2="656.42999"
+       y2="444.5"
+       xlink:href="#linear-gradient" />
+    <linearGradient
+       id="linear-gradient3"
+       x1="107.14"
+       y1="240.85001"
+       x2="483.60999"
+       y2="617.32001"
+       xlink:href="#linear-gradient" />
+    <linearGradient
+       id="linear-gradient4"
+       x1="516.66998"
+       y1="474.64001"
+       x2="516.69"
+       y2="474.64001"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath">
+      <path
+         class="st15"
+         d="m 323.31,279.59 h 103.48 c 2.24,0 4.05,1.82 4.05,4.05 v 103.47 c 0,2.24 -1.82,4.06 -4.06,4.06 H 323.31 c -2.24,0 -4.05,-1.82 -4.05,-4.05 V 283.64 c 0,-2.24 1.82,-4.05 4.05,-4.05 z"
+         id="path13" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient5"
+       x1="-618.08002"
+       y1="2033.89"
+       x2="-616.23999"
+       y2="2033.89"
+       gradientTransform="matrix(0,117.89,117.89,0,-239396.19,73090.48)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-1">
+      <rect
+         class="st15"
+         x="290.76001"
+         y="297.94"
+         width="22.049999"
+         height="11.6"
+         id="rect17" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient6"
+       x1="-618.08002"
+       y1="2033.78"
+       x2="-616.23999"
+       y2="2033.78"
+       gradientTransform="matrix(0,117.89,117.89,0,-239456.18,73132.21)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-2">
+      <rect
+         class="st15"
+         x="437.28"
+         y="297.94"
+         width="22.049999"
+         height="11.6"
+         id="rect21" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient7"
+       x1="-618.08002"
+       y1="2034.1801"
+       x2="-616.23999"
+       y2="2034.1801"
+       gradientTransform="matrix(0,117.89,117.89,0,-239357.49,73027.8)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-3">
+      <rect
+         class="st15"
+         x="290.76001"
+         y="319.19"
+         width="22.049999"
+         height="11.6"
+         id="rect25" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient8"
+       x1="-618.08002"
+       y1="2033.72"
+       x2="-616.23999"
+       y2="2033.72"
+       gradientTransform="matrix(0,117.89,117.89,0,-239449.28,73138.43)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-4">
+      <rect
+         class="st15"
+         x="437.28"
+         y="319.19"
+         width="22.049999"
+         height="11.6"
+         id="rect29" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient9"
+       x1="-618.08002"
+       y1="2034.12"
+       x2="-616.23999"
+       y2="2034.12"
+       gradientTransform="matrix(0,117.89,117.89,0,-239350.1,73035.63)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-5">
+      <rect
+         class="st15"
+         x="290.76001"
+         y="340.45999"
+         width="22.049999"
+         height="11.58"
+         id="rect33" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient10"
+       x1="-618.08002"
+       y1="2033.66"
+       x2="-616.23999"
+       y2="2033.66"
+       gradientTransform="matrix(0,117.89,117.89,0,-239441.88,73146.27)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-6">
+      <rect
+         class="st15"
+         x="437.28"
+         y="340.45999"
+         width="22.049999"
+         height="11.58"
+         id="rect37" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient11"
+       x1="-618.08002"
+       y1="2034.0699"
+       x2="-616.23999"
+       y2="2034.0699"
+       gradientTransform="matrix(0,117.89,117.89,0,-239342.46,73044.27)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-7">
+      <rect
+         class="st15"
+         x="290.76001"
+         y="361.70999"
+         width="22.049999"
+         height="11.58"
+         id="rect41" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient12"
+       x1="-618.08002"
+       y1="2033.6"
+       x2="-616.23999"
+       y2="2033.6"
+       gradientTransform="matrix(0,117.89,117.89,0,-239435.71,73150.08)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-8">
+      <rect
+         class="st15"
+         x="437.28"
+         y="361.70999"
+         width="22.049999"
+         height="11.58"
+         id="rect45" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient13"
+       x1="-618.08002"
+       y1="2034.01"
+       x2="-616.23999"
+       y2="2034.01"
+       gradientTransform="matrix(0,117.89,117.89,0,-239336.29,73048.08)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-9">
+      <rect
+         class="st15"
+         x="401.13"
+         y="251.33"
+         width="11.6"
+         height="21.809999"
+         id="rect49" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient14"
+       x1="-618.08002"
+       y1="2034.1801"
+       x2="-616.23999"
+       y2="2034.1801"
+       gradientTransform="matrix(0,117.89,117.89,0,-239399.17,73044.08)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-10">
+      <rect
+         class="st15"
+         x="401.13"
+         y="397.63"
+         width="11.6"
+         height="22.290001"
+         id="rect53" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient15"
+       x1="-618.08002"
+       y1="2033.78"
+       x2="-616.23999"
+       y2="2033.78"
+       gradientTransform="matrix(0,117.89,117.89,0,-239350.59,73090.23)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-11">
+      <rect
+         class="st15"
+         x="379.87"
+         y="251.33"
+         width="11.59"
+         height="21.809999"
+         id="rect57" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient16"
+       x1="-618.08002"
+       y1="2034.13"
+       x2="-616.23999"
+       y2="2034.13"
+       gradientTransform="matrix(0,117.89,117.89,0,-239412.29,73063.16)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-12">
+      <rect
+         class="st15"
+         x="379.87"
+         y="397.63"
+         width="11.59"
+         height="22.290001"
+         id="rect61" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient17"
+       x1="-618.08002"
+       y1="2033.72"
+       x2="-616.23999"
+       y2="2033.72"
+       gradientTransform="matrix(0,117.89,117.89,0,-239364.7,73106.06)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-13">
+      <rect
+         class="st15"
+         x="358.62"
+         y="251.33"
+         width="11.6"
+         height="21.809999"
+         id="rect65" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient18"
+       x1="-618.08002"
+       y1="2034.0699"
+       x2="-616.23999"
+       y2="2034.0699"
+       gradientTransform="matrix(0,117.89,117.89,0,-239426.63,73078.19)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-14">
+      <rect
+         class="st15"
+         x="358.62"
+         y="397.63"
+         width="11.6"
+         height="22.290001"
+         id="rect69" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient19"
+       x1="-618.08002"
+       y1="2033.66"
+       x2="-616.23999"
+       y2="2033.66"
+       gradientTransform="matrix(0,117.89,117.89,0,-239379.29,73120.29)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-15">
+      <rect
+         class="st15"
+         x="337.37"
+         y="251.33"
+         width="11.6"
+         height="21.809999"
+         id="rect73" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient20"
+       x1="-618.08002"
+       y1="2034.01"
+       x2="-616.23999"
+       y2="2034.01"
+       gradientTransform="matrix(0,117.89,117.89,0,-239441.47,73091.59)"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clippath-16">
+      <rect
+         class="st15"
+         x="337.37"
+         y="397.63"
+         width="11.6"
+         height="22.290001"
+         id="rect77" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient21"
+       x1="-618.08002"
+       y1="2033.6"
+       x2="-616.23999"
+       y2="2033.6"
+       gradientTransform="matrix(0,117.89,117.89,0,-239393.39,73136.11)"
+       xlink:href="#linear-gradient" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linear-gradient"
+       id="linearGradient190"
+       gradientUnits="userSpaceOnUse"
+       x1="91.550003"
+       y1="256.44"
+       x2="468.01999"
+       y2="632.90997" />
+  </defs>
+  <circle
+     class="st16"
+     cx="205.74001"
+     cy="243.03"
+     r="375"
+     id="circle83" />
+  <g
+     id="g167"
+     transform="translate(-131.97,-131.97)">
+    <path
+       class="st39"
+       d="M 233.31,196.03 V 534.8 c 0,2.03 -1.66,3.7 -3.7,3.7 h -56.65 c -2.05,0 -3.7,-1.66 -3.7,-3.7 V 201.57 c 0,-3.07 2.48,-5.55 5.55,-5.55 h 58.5 z"
+       id="path85"
+       style="fill:url(#linearGradient190)" />
+    <path
+       class="st15"
+       d="M 233.31,196.03 V 534.8 c 0,2.03 -1.66,3.7 -3.7,3.7 h -56.65 c -2.05,0 -3.7,-1.66 -3.7,-3.7 V 201.57 c 0,-3.07 2.48,-5.55 5.55,-5.55 h 58.5 z"
+       id="path87" />
+    <path
+       class="st9"
+       d="m 516.91,137.52 v 58.5 H 233.18 v -58.5 c 0,-3.05 2.48,-5.55 5.55,-5.55 h 272.63 c 3.07,0 5.55,2.5 5.55,5.55 z"
+       id="path89"
+       style="fill:url(#linear-gradient1)" />
+    <path
+       class="st0"
+       d="m 580.74,201.22 v 267.86 c 0,3.07 -2.48,5.55 -5.55,5.55 h -58.5 V 195.67 h 58.5 c 3.07,0 5.55,2.48 5.55,5.55 z"
+       id="path91"
+       style="fill:url(#linear-gradient2)" />
+    <path
+       class="st15"
+       d="m 580.74,201.22 v 267.86 c 0,3.07 -2.48,5.55 -5.55,5.55 h -58.5 V 195.67 h 58.5 c 3.07,0 5.55,2.48 5.55,5.55 z"
+       id="path93" />
+    <path
+       class="st31"
+       d="m 516.69,474.65 v 58.48 c 0,3.07 -2.48,5.55 -5.55,5.55 H 370.46 v 75.65 c 0,2.05 -1.66,3.7 -3.7,3.7 h -56.65 c -2.03,0 -3.7,-1.65 -3.7,-3.7 v -139.7 h 210.26 z"
+       id="path95"
+       style="fill:url(#linear-gradient3)" />
+    <polygon
+       class="st27"
+       points="516.69,474.63 516.69,474.65 516.67,474.63 "
+       id="polygon97"
+       style="fill:url(#linear-gradient4)" />
+    <g
+       class="st40"
+       clip-path="url(#clippath)"
+       id="g101">
+      <rect
+         class="st30"
+         x="296.14001"
+         y="256.48001"
+         width="157.81"
+         height="157.81"
+         transform="rotate(-45,375.04882,335.37969)"
+         id="rect99"
+         style="fill:url(#linear-gradient5)" />
+    </g>
+    <g
+       class="st18"
+       clip-path="url(#clippath-1)"
+       id="g105">
+      <rect
+         class="st34"
+         x="289.89001"
+         y="291.84"
+         width="23.790001"
+         height="23.790001"
+         transform="rotate(-45,301.78581,303.74623)"
+         id="rect103"
+         style="fill:url(#linear-gradient6)" />
+    </g>
+    <g
+       class="st36"
+       clip-path="url(#clippath-2)"
+       id="g109">
+      <rect
+         class="st24"
+         x="436.41"
+         y="291.84"
+         width="23.790001"
+         height="23.790001"
+         transform="rotate(-45,448.31414,303.7422)"
+         id="rect107"
+         style="fill:url(#linear-gradient7)" />
+    </g>
+    <g
+       class="st23"
+       clip-path="url(#clippath-3)"
+       id="g113">
+      <rect
+         class="st13"
+         x="289.89001"
+         y="313.10001"
+         width="23.790001"
+         height="23.790001"
+         transform="rotate(-45,301.78401,324.98697)"
+         id="rect111"
+         style="fill:url(#linear-gradient8)" />
+    </g>
+    <g
+       class="st4"
+       clip-path="url(#clippath-4)"
+       id="g117">
+      <rect
+         class="st10"
+         x="436.41"
+         y="313.10001"
+         width="23.790001"
+         height="23.790001"
+         transform="rotate(-45,448.30734,324.99502)"
+         id="rect115"
+         style="fill:url(#linear-gradient9)" />
+    </g>
+    <g
+       class="st19"
+       clip-path="url(#clippath-5)"
+       id="g121">
+      <rect
+         class="st5"
+         x="289.89999"
+         y="334.35999"
+         width="23.780001"
+         height="23.780001"
+         transform="rotate(-45,301.78429,346.25686)"
+         id="rect119"
+         style="fill:url(#linear-gradient10)" />
+    </g>
+    <g
+       class="st1"
+       clip-path="url(#clippath-6)"
+       id="g125">
+      <rect
+         class="st14"
+         x="436.42001"
+         y="334.35999"
+         width="23.780001"
+         height="23.780001"
+         transform="rotate(-45,448.30055,346.24783)"
+         id="rect123"
+         style="fill:url(#linear-gradient11)" />
+    </g>
+    <g
+       class="st2"
+       clip-path="url(#clippath-7)"
+       id="g129">
+      <rect
+         class="st22"
+         x="289.89999"
+         y="355.60999"
+         width="23.780001"
+         height="23.780001"
+         transform="rotate(-45,301.79456,367.5026)"
+         id="rect127"
+         style="fill:url(#linear-gradient12)" />
+    </g>
+    <g
+       class="st20"
+       clip-path="url(#clippath-8)"
+       id="g133">
+      <rect
+         class="st38"
+         x="436.42001"
+         y="355.60999"
+         width="23.780001"
+         height="23.780001"
+         transform="rotate(-45,448.30582,367.50565)"
+         id="rect131"
+         style="fill:url(#linear-gradient13)" />
+    </g>
+    <g
+       class="st7"
+       clip-path="url(#clippath-9)"
+       id="g137">
+      <rect
+         class="st29"
+         x="395.10999"
+         y="250.42"
+         width="23.620001"
+         height="23.620001"
+         transform="rotate(-45,406.93078,262.23375)"
+         id="rect135"
+         style="fill:url(#linear-gradient14)" />
+    </g>
+    <g
+       class="st8"
+       clip-path="url(#clippath-10)"
+       id="g141">
+      <rect
+         class="st32"
+         x="394.94"
+         y="396.79999"
+         width="23.959999"
+         height="23.959999"
+         transform="rotate(-45,406.91773,408.76916)"
+         id="rect139"
+         style="fill:url(#linear-gradient15)" />
+    </g>
+    <g
+       class="st12"
+       clip-path="url(#clippath-11)"
+       id="g145">
+      <rect
+         class="st17"
+         x="373.85999"
+         y="250.42"
+         width="23.620001"
+         height="23.620001"
+         transform="rotate(-45,385.66089,262.23403)"
+         id="rect143"
+         style="fill:url(#linear-gradient16)" />
+    </g>
+    <g
+       class="st25"
+       clip-path="url(#clippath-12)"
+       id="g149">
+      <rect
+         class="st33"
+         x="373.69"
+         y="396.79999"
+         width="23.959999"
+         height="23.959999"
+         transform="rotate(-45,385.65991,408.77443)"
+         id="rect147"
+         style="fill:url(#linear-gradient17)" />
+    </g>
+    <g
+       class="st37"
+       clip-path="url(#clippath-13)"
+       id="g153">
+      <rect
+         class="st11"
+         x="352.60999"
+         y="250.42"
+         width="23.620001"
+         height="23.620001"
+         transform="rotate(-45,364.42015,262.23223)"
+         id="rect151"
+         style="fill:url(#linear-gradient18)" />
+    </g>
+    <g
+       class="st28"
+       clip-path="url(#clippath-14)"
+       id="g157">
+      <rect
+         class="st21"
+         x="352.44"
+         y="396.79999"
+         width="23.959999"
+         height="23.959999"
+         transform="rotate(-45,364.41917,408.77264)"
+         id="rect155"
+         style="fill:url(#linear-gradient19)" />
+    </g>
+    <g
+       class="st3"
+       clip-path="url(#clippath-15)"
+       id="g161">
+      <rect
+         class="st26"
+         x="331.35999"
+         y="250.42"
+         width="23.620001"
+         height="23.620001"
+         transform="rotate(-45,343.16233,262.23751)"
+         id="rect159"
+         style="fill:url(#linear-gradient20)" />
+    </g>
+    <g
+       class="st35"
+       clip-path="url(#clippath-16)"
+       id="g165">
+      <rect
+         class="st6"
+         x="331.19"
+         y="396.79999"
+         width="23.959999"
+         height="23.959999"
+         transform="rotate(-45,343.16136,408.77791)"
+         id="rect163"
+         style="fill:url(#linear-gradient21)" />
+    </g>
+  </g>
+  <rect
+     class="st15"
+     x="-169.25999"
+     y="-131.97"
+     width="750"
+     height="750"
+     rx="375"
+     ry="375"
+     id="rect169" />
+</svg>

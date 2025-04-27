@@ -7,7 +7,13 @@
             backgroundImage="app-related/adobe_stock_background2.jpeg" title="Save Time and Stay Organized with PartHub"
             subtitle="Eliminate constant part counts, prevent over-ordering, and ensure accurate stock levels effortlessly"
             firstButtonRoute="{{ route('demo.login') }}" secondButtonRoute="{{ route('signup') }}"
-            firstButtonText="Explore Demo" secondButtonText="Sign Up Now" />
+            firstButtonText="Explore Demo" secondButtonText="Sign Up Now">
+
+            <img src="logos/Svg file - white text.svg" alt="PartHub" class="img-fluid mb-5" width="500rem"/>
+
+        </x-hero-card>
+
+
 
         <!-- Left-div -->
         <x-left-div title="Clean desk, clear mind" imageSrc="app-related/image1.webp"

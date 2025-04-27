@@ -7,7 +7,7 @@ $user_name = $user ? $user->name : '';
 <div class="container-fluid px-0">
     <nav class="navbar navbar-expand-lg bg-gradient">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">PartHub</a>
+            <a class="navbar-brand" href="/"><img src="logos/Svg file.svg" alt="PartHub" width="30"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>

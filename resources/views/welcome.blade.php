@@ -5,7 +5,9 @@
     <table class="table table-borderless text-center mx-auto w-auto" style="borders: false">
         <tr>
             <td colspan="3">
-                <h1 class="display-1 text-white">PartHub</h1><br>
+                {{-- <h1 class="display-1 text-white">PartHub</h1><br> --}}
+                <img src="logos/Svg file - white text.svg" alt="PartHub" width="300">
+                <br><br>
                 <h1 class="text-white">Inventory and BOM management</h1><br>
                 @if (session('loggedIn'))
                     <div class="alert alert-info" role="alert">Nice to have you back, {{ optional(Auth::user())->name }}! 🚀
