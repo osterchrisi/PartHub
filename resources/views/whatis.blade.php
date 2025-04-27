@@ -9,7 +9,7 @@
             firstButtonRoute="{{ route('demo.login') }}" secondButtonRoute="{{ route('signup') }}"
             firstButtonText="Explore Demo" secondButtonText="Sign Up Now">
 
-            <img src="logos/Svg file - white text.svg" alt="PartHub" class="img-fluid mb-5" width="500rem"/>
+            <img src="logos/Svg file - white text.svg" alt="PartHub" class="img-fluid mb-5" width="500rem" />
 
         </x-hero-card>
 
@@ -86,10 +86,23 @@
             </div>
         </div>
 
-        <div class="row mb-5" id="newsletter-signup-div">
-            <div class="col-12 bg-gradient text-white text-center p-5 rounded sender-form-field text-center"
-                data-sender-form-id="m8w368z3bo2ak373yp7"></div>
+        <div class="row mb-5">
+            <div class="col-12 bg-gradient text-white rounded">
+                <div class="row py-5 align-items-center">
+                    <div class="col-lg-6 text-center">
+                        <div class="sender-form-field" data-sender-form-id="m8w368z3bo2ak373yp7"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h2 class="display-3 my-4 mx-5">Stay in the Loop</h2>
+                        <p class="lead fs-2 mx-5">
+                            Not ready to sign up yet? No problem!<br>
+                            Join our newsletter and stay updated about new features, improvements, and special offers.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 @endsection
 

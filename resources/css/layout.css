@@ -63,7 +63,7 @@
 
 /* Landing Page */
 .landing-page {
-    background-image: url('/public/app-related/adobe_stock_background1.jpeg');
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/public/app-related/adobe_stock_background1.jpeg');
     background-size: cover;
     background-repeat: repeat-y;
     background-position: center;
