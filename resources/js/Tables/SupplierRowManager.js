@@ -254,4 +254,13 @@ class SupplierRowManager {
             $('#mPartEntry').removeClass('modal-xl').addClass('modal-lg');
         });
     }
+
+    // Helper method to find supplier ID by name from the suppliers list for Mouser Part Search
+    _findSupplierIdByName(suppliers, wantedName) {
+    const wanted = String(wantedName || '').trim().toLowerCase();
+    const hit = (suppliers || []).find(s => String(s.supplier_name || '').trim().toLowerCase() === wanted);
+
+    return hit ? hit.supplier_id : null;
+}
+
 }

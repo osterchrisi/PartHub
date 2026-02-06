@@ -111,7 +111,7 @@ class PartCreator extends ResourceCreator {
         this.dropdownManager.categoryCreated = false;
     }
 
-    // Collect data from supplier rows in the part form
+    // Collect data from supplier rows in the part entry form
     collectSupplierData() {
         let suppliers = [];
         $('#supplierDataTable tbody tr').each(function () {
@@ -253,6 +253,7 @@ class PartCreator extends ResourceCreator {
         // 3) Supplier row: create one row and fill it
         $('#addSuppliers').collapse('show');  // This triggers to show the Suppliers tab, which in turn triggers the dropdown
 
+        //Suppliers need to be AJAX called, then rest of the fields are filled
         this._waitForSupplierSelectize()
             .then(({ idx, selectize }) => {
                 // find Mouser option dynamically by label
@@ -286,26 +287,6 @@ class PartCreator extends ResourceCreator {
                 console.error(err);
                 alert(err.message); // temporary UX
             });
-
-
-        // ensure there is at least one row
-        // this.supplierRowManager.addSupplierDataRowButtonClickListener('addSupplierRowBtn-partEntry');
-        // $('#addSupplierRowBtn-partEntry').trigger('click');
-
-        // Fill last row (based on your data-supplier-index scheme)
-        // const $lastRow = $('#supplierDataTable tbody tr').last();
-        // const idx = $lastRow.data('supplier-index');
-
-        // if (typeof idx !== 'undefined') {
-        //     // Supplier selectize/ID: phase 1 put "Mouser" into a text field OR set supplier_id if you have it
-        //     // If supplier is a dropdown by ID, we need the Mouser supplier_id. For now: try to set a plain value if the field supports it.
-        //     $(`[data-url-id="${idx}"]`).val(part.ProductDetailUrl || '');
-        //     $(`[data-spn-id="${idx}"]`).val(part.MouserPartNumber || '');
-
-        //     const price = this._pickWorstTierPrice(part.PriceBreaks);
-        //     console.log(price);
-        //     if (price) $(`[data-price-id="${idx}"]`).val(price);
-        // }
 
         // 4) Footprint guess (phase 1 only)
         const fpGuess = this._guessFootprint(part);
