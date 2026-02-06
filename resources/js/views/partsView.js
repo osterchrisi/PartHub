@@ -45,7 +45,7 @@ export function initializePartsView() {
 
     //* Mouser API Search
     // Mouser API Search in part entry modal
-    // const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
+    const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
 
     //* Resource Creator for Parts
     const partCreator = new PartCreator({
