@@ -7,7 +7,7 @@
     <?php echo $part_name; ?><br><br>
     <form id="partEntryForm">
         @csrf
-        <!-- Toggle Buttons --> 
+        <!-- Toggle Buttons -->
         <button class="btn btn-sm btn-light mb-1" id="manualEntryButton" type="button">Manual Entry</button>
         <button class="btn btn-sm btn-light mb-1" id="mouserSearchButton" type="button">Mouser Search</button>
 
@@ -20,7 +20,7 @@
             <x-input-error :messages="[]" />
         </div>
 
-        <!-- Mouser Search Section (Initially Hidden) --> 
+        <!-- Mouser Search Section (Initially Hidden) -->
         <div id="mouserSearchSection">
             <input type="text" class="form-control" id="mouserPartName" placeholder="Search Part on Mouser">
             <!-- Spinner container -->
@@ -30,6 +30,10 @@
                 </div>
             </div>
             <div id="mouserSearchResults" class="mt-4"></div>
+            <!-- Mouser Search hidden data fields -->
+            <input type="hidden" name="image_url" id="addPartImageUrl">
+            <input type="hidden" name="datasheet_url" id="addPartDatasheetUrl">
+            <input type="hidden" name="footprint_guess" id="addPartFootprintGuess">
         </div>
 
         <div class="row">
@@ -43,8 +47,8 @@
         <div class="row mb-3">
             {{-- Quantity --}}
             <div class="col-3">
-                <input class="form-control form-control-md" name="quantity" placeholder="Quantity" id="addPartQuantity" autocomplete="off"
-                    disabled>
+                <input class="form-control form-control-md" name="quantity" placeholder="Quantity" id="addPartQuantity"
+                    autocomplete="off" disabled>
                 <div id="error-quantity" class="d-none text-danger">
                     <x-input-error :messages="[]" />
                 </div>
@@ -92,8 +96,8 @@
                 {{-- Description --}}
                 <div class="col">
                     <br>
-                    <input class="form-control form-control-sm not-required" name="description" id="addPartDescription"
-                        placeholder="Description" autocomplete="off">
+                    <input class="form-control form-control-sm not-required" name="description"
+                        id="addPartDescription" placeholder="Description" autocomplete="off">
                     <div id="error-description" class="d-none text-danger">
                         <x-input-error :messages="[]" />
                     </div>
@@ -102,9 +106,10 @@
             <div class="row">
                 {{-- Minimum Quantity --}}
                 <div class="mt-3">
-                    <input class="form-control form-control-sm not-required" name="min_quantity" id="addPartMinQuantity"
-                        placeholder="Minimum Quantity" data-bs-toggle="tooltip"
-                        data-bs-title="Notification threshold for all locations combined" data-bs-placement="right" autocomplete="off">
+                    <input class="form-control form-control-sm not-required" name="min_quantity"
+                        id="addPartMinQuantity" placeholder="Minimum Quantity" data-bs-toggle="tooltip"
+                        data-bs-title="Notification threshold for all locations combined" data-bs-placement="right"
+                        autocomplete="off">
                     <div id="error-min_quantity" class="d-none text-danger">
                         <x-input-error :messages="[]" />
                     </div>

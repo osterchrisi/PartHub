@@ -57,7 +57,7 @@
                                 <div><span class="card-text text-muted">Mfg P/N: </span><h5 class="d-inline card-title">${part.ManufacturerPartNumber}</h5></div>
                                 <div><span class="card-text text-muted">Mouser P/N: </span><h5 class="d-inline card-title">${part.MouserPartNumber}</h5></div>
                                 <div><span class="card-text text-muted">Desc: </span><span class="d-inline card-text">${part.Description}</span></div>
-                                <div><button class="btn btn-primary select-part-btn" data-part='${JSON.stringify(part)}'>Select Part</button></div>
+                                <div><button type="button" class="btn btn-primary select-part-btn" data-part='${JSON.stringify(part)}'>Select Part</button></div>
                             </div>
                         </div>
                         </div>

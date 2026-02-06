@@ -43,10 +43,6 @@ export function initializePartsView() {
     const tableRowManager = new TableRowManager('#parts_table', 'part');
     tableRowManager.loadSelectedRow();
 
-    //* Mouser API Search
-    // Mouser API Search in part entry modal
-    const partSearch = new MouserPartSearch('mouserPartName', 'mouserSearchResults', 'mouserLoadingSpinner');
-
     //* Resource Creator for Parts
     const partCreator = new PartCreator({
         type: 'part',
@@ -68,6 +64,14 @@ export function initializePartsView() {
         inputModal: '#mPartEntry',
         addButton: '#addPart',
     });
+
+    //* Mouser API Search
+    const partSearch = new MouserPartSearch(
+        'mouserPartName',
+        'mouserSearchResults',
+        'mouserLoadingSpinner',
+        (part) => partCreator.applyMouserPart(part) // Callback to populate form fields in the modal when a Mouser part is selected
+    );
 
 
     $('#toolbarAddButton').click(function () {

@@ -135,7 +135,7 @@ class PartCreator extends ResourceCreator {
         const $addPartName = $('#addPartName');
         let isUppercase = false;
         let rawInput = '';
-    
+
         const toggleUppercase = () => {
             isUppercase = !isUppercase;
             if (isUppercase) {
@@ -158,11 +158,11 @@ class PartCreator extends ResourceCreator {
                 $toggleButton.text('Aa');
             }
         };
-    
+
         $toggleButton.off('click').click(() => toggleUppercase());
         $toggleButton.text('Aa');
     }
-    
+
 
     // Initialize the "Add Stock" toggler functionality for a new part
     initializeAddStockToggler() {
@@ -230,4 +230,160 @@ class PartCreator extends ResourceCreator {
             $('#mouserPartName').focus();
         });
     }
+
+    // Method to apply selected Mouser part data to the form fields in the modal
+    applyMouserPart(part) {
+        // 1) Basic fields
+        const name = this._buildPartName(part);
+        $('#addPartName').val(name);
+
+        // Ensure advanced options are visible so description/comment aren't "hidden success"
+        $('#advancedOptions').collapse('show');
+
+        const desc = this._buildShortDescription(part);
+        $('#addPartDescription').val(desc);
+
+        const comment = this._buildComment(part);
+        $('#addPartComment').val(comment);
+
+        // 2) Hidden fields for later image/datasheet handling
+        $('#addPartImageUrl').val(part.ImagePath || '');
+        $('#addPartDatasheetUrl').val(part.DataSheetUrl || '');
+
+        // 3) Supplier row: create one row and fill it
+        $('#addSuppliers').collapse('show');  // This triggers to show the Suppliers tab, which in turn triggers the dropdown
+
+        this._waitForSupplierSelectize()
+            .then(({ idx, selectize }) => {
+                // find Mouser option dynamically by label
+                const mouserOption = Object.entries(selectize.options)
+                    .find(([value, opt]) => String(opt.text || opt.label || '').trim().toLowerCase() === 'mouser');
+
+                if (!mouserOption) {
+                    throw new Error('Supplier "Mouser" not found in dropdown options');
+                }
+
+                const mouserId = mouserOption[0];
+                selectize.setValue(mouserId, true);
+
+                // now fill the rest of the row inputs
+                $(`[data-url-id="${idx}"]`).val(part.ProductDetailUrl || '');
+                $(`[data-spn-id="${idx}"]`).val(part.MouserPartNumber || '');
+
+                const price = this._pickBestPrice(part.PriceBreaks);
+                if (price) $(`[data-price-id="${idx}"]`).val(price);
+            })
+            .catch(err => {
+                console.error(err);
+                alert(err.message); // temporary UX
+            });
+
+
+        // ensure there is at least one row
+        // this.supplierRowManager.addSupplierDataRowButtonClickListener('addSupplierRowBtn-partEntry');
+        // $('#addSupplierRowBtn-partEntry').trigger('click');
+
+        // Fill last row (based on your data-supplier-index scheme)
+        const $lastRow = $('#supplierDataTable tbody tr').last();
+        const idx = $lastRow.data('supplier-index');
+
+        if (typeof idx !== 'undefined') {
+            // Supplier selectize/ID: phase 1 put "Mouser" into a text field OR set supplier_id if you have it
+            // If supplier is a dropdown by ID, we need the Mouser supplier_id. For now: try to set a plain value if the field supports it.
+            $(`[data-url-id="${idx}"]`).val(part.ProductDetailUrl || '');
+            $(`[data-spn-id="${idx}"]`).val(part.MouserPartNumber || '');
+
+            const price = this._pickBestPrice(part.PriceBreaks);
+            if (price) $(`[data-price-id="${idx}"]`).val(price);
+        }
+
+        // 4) Footprint guess (phase 1 only)
+        const fpGuess = this._guessFootprint(part);
+        $('#addPartFootprintGuess').val(fpGuess || '');
+
+        // Optional UX: switch back to manual entry mode so they see the populated name field
+        $('#manualEntryButton').trigger('click');
+    }
+
+    // Helper methods to extract and format Mouser part data for our form fields
+    _buildPartName(part) {
+        const m = (part.Manufacturer || '').trim();
+        const pn = (part.ManufacturerPartNumber || '').trim();
+        if (m && pn) return `${m} ${pn}`;
+        return pn || m || '';
+    }
+
+    _buildShortDescription(part) {
+        // Your field is "brief description"
+        // Mouser Description is usually usable but sometimes contains junk like "A 595-..."
+        const raw = (part.Description || '').trim();
+        if (!raw) return '';
+
+        // Remove trailing Mouser PN patterns like "A 595-XXXX" if present
+        const cleaned = raw.replace(/\s+A\s+\d{2,4}-[A-Z0-9\-]+$/i, '').trim();
+
+        return cleaned.length > 160 ? cleaned.slice(0, 157) + '…' : cleaned;
+    }
+
+    _buildComment(part) {
+        // Comment ideas: sourcing & logistics hints, not “description 2.0”
+        const rohs = part.ROHSStatus ? `RoHS: ${part.ROHSStatus}` : null;
+        const lead = part.LeadTime ? `Lead: ${part.LeadTime}` : null;
+        const pack = this._getAttr(part, ['Verpackung', 'Packaging']);
+        const bits = [rohs, lead, pack ? `Pack: ${pack}` : null].filter(Boolean);
+        return bits.join(' | ');
+    }
+
+    _getAttr(part, names) {
+        const attrs = part.ProductAttributes || [];
+        const wanted = names.map(n => n.toLowerCase());
+        const hit = attrs.find(a => wanted.includes(String(a.AttributeName || '').toLowerCase().trim()));
+        return hit ? String(hit.AttributeValue || '').trim() : null;
+    }
+
+    _pickBestPrice(priceBreaks) {
+        if (!Array.isArray(priceBreaks) || !priceBreaks.length) return null;
+        const one = priceBreaks.find(p => Number(p.Quantity) === 1);
+        return (one || priceBreaks[0]).Price || null; // keep "0,344 €" for now
+    }
+
+    _guessFootprint(part) {
+        // Very heuristic. We'll improve once we know how you name footprints.
+        const guess = this._getAttr(part, ['Package / Case', 'Gehäuse', 'Bauform', 'Gehäuse / Package']);
+        if (guess) return guess;
+
+        const img = String(part.ImagePath || '');
+        const m = img.match(/(SOT-\d+|SOIC-\d+|TSSOP-\d+|QFN-\d+|QFP-\d+|DFN-\d+|DIP-\d+)/i);
+        return m ? m[0].toUpperCase() : null;
+    }
+
+    _waitForSupplierSelectize(timeoutMs = 2000) {
+        const started = Date.now();
+
+        return new Promise((resolve, reject) => {
+            const tick = () => {
+                const $row = $('#supplierDataTable tbody tr').last();
+                const idx = $row.data('supplier-index');
+
+                if (typeof idx !== 'undefined') {
+                    const el = $(`#addPartSupplier-${idx}`).find('select, input').first()[0];
+                    const selectize = el?.selectize;
+
+                    if (selectize) {
+                        return resolve({ idx, selectize });
+                    }
+                }
+
+                if (Date.now() - started > timeoutMs) {
+                    return reject(new Error('Supplier dropdown not ready (timeout)'));
+                }
+
+                setTimeout(tick, 50);
+            };
+
+            tick();
+        });
+    }
+
+
 }

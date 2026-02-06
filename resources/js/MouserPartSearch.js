@@ -1,8 +1,9 @@
 export class MouserPartSearch {
-    constructor(inputId, resultsContainerId, spinnerId) {
+    constructor(inputId, resultsContainerId, spinnerId, onSelectPart) {
         this.inputElement = document.getElementById(inputId);
         this.resultsContainer = document.getElementById(resultsContainerId);
         this.spinnerElement = document.getElementById(spinnerId); // Spinner element
+        this.onSelectPart = onSelectPart; // Callback function to handle part selection
         this.searchCache = {};
         this.timeout = null;
 
@@ -88,7 +89,19 @@ export class MouserPartSearch {
     }
 
     selectPart(event) {
+
+        // Prevent the click event from propagating to parent elements
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
         const selectedPart = JSON.parse(event.target.getAttribute('data-part'));
-        alert('Part Selected: ' + selectedPart.ManufacturerPartNumber);
+
+        // Callbackfunction to handle the selected part, populate form fields in the modal
+        if (typeof this.onSelectPart === 'function') {
+            this.onSelectPart(selectedPart);
+            return;
+        }
+        alert('Mouser Part Selected: ' + selectedPart.ManufacturerPartNumber);
     }
 }
