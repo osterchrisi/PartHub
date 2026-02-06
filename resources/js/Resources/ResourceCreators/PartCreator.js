@@ -270,8 +270,17 @@ class PartCreator extends ResourceCreator {
                 $(`[data-url-id="${idx}"]`).val(part.ProductDetailUrl || '');
                 $(`[data-spn-id="${idx}"]`).val(part.MouserPartNumber || '');
 
-                const price = this._pickBestPrice(part.PriceBreaks);
-                if (price) $(`[data-price-id="${idx}"]`).val(price);
+                const priceRaw = this._pickWorstTierPrice(part.PriceBreaks);
+                const price = this._normalizePriceToDot(priceRaw);
+
+                if (price) {
+                    $(`[data-price-id="${idx}"]`).val(price);
+                } else {
+                    console.warn('No PriceBreaks for part:', part.MouserPartNumber);
+                    $(`[data-price-id="${idx}"]`).val(''); // keep empty
+                    // Quick UX for now:
+                    alert('No price returned by Mouser for this part (maybe obsolete).');
+                }
             })
             .catch(err => {
                 console.error(err);
@@ -284,18 +293,19 @@ class PartCreator extends ResourceCreator {
         // $('#addSupplierRowBtn-partEntry').trigger('click');
 
         // Fill last row (based on your data-supplier-index scheme)
-        const $lastRow = $('#supplierDataTable tbody tr').last();
-        const idx = $lastRow.data('supplier-index');
+        // const $lastRow = $('#supplierDataTable tbody tr').last();
+        // const idx = $lastRow.data('supplier-index');
 
-        if (typeof idx !== 'undefined') {
-            // Supplier selectize/ID: phase 1 put "Mouser" into a text field OR set supplier_id if you have it
-            // If supplier is a dropdown by ID, we need the Mouser supplier_id. For now: try to set a plain value if the field supports it.
-            $(`[data-url-id="${idx}"]`).val(part.ProductDetailUrl || '');
-            $(`[data-spn-id="${idx}"]`).val(part.MouserPartNumber || '');
+        // if (typeof idx !== 'undefined') {
+        //     // Supplier selectize/ID: phase 1 put "Mouser" into a text field OR set supplier_id if you have it
+        //     // If supplier is a dropdown by ID, we need the Mouser supplier_id. For now: try to set a plain value if the field supports it.
+        //     $(`[data-url-id="${idx}"]`).val(part.ProductDetailUrl || '');
+        //     $(`[data-spn-id="${idx}"]`).val(part.MouserPartNumber || '');
 
-            const price = this._pickBestPrice(part.PriceBreaks);
-            if (price) $(`[data-price-id="${idx}"]`).val(price);
-        }
+        //     const price = this._pickWorstTierPrice(part.PriceBreaks);
+        //     console.log(price);
+        //     if (price) $(`[data-price-id="${idx}"]`).val(price);
+        // }
 
         // 4) Footprint guess (phase 1 only)
         const fpGuess = this._guessFootprint(part);
@@ -341,11 +351,23 @@ class PartCreator extends ResourceCreator {
         return hit ? String(hit.AttributeValue || '').trim() : null;
     }
 
-    _pickBestPrice(priceBreaks) {
+    _pickWorstTierPrice(priceBreaks) {
+        const $lastRow = $('#supplierDataTable tbody tr').last();
+        const idx = $lastRow.data('supplier-index');
+        console.log('idx', idx, 'price input count', $(`[data-price-id="${idx}"]`).length);
+
         if (!Array.isArray(priceBreaks) || !priceBreaks.length) return null;
-        const one = priceBreaks.find(p => Number(p.Quantity) === 1);
-        return (one || priceBreaks[0]).Price || null; // keep "0,344 €" for now
+
+        // pick smallest quantity (usually 1)
+        const sorted = [...priceBreaks].sort((a, b) => Number(a.Quantity) - Number(b.Quantity));
+        const p = sorted[0]?.Price;
+        if (!p) return null;
+
+        // extract just the number, keep comma if you like
+        const m = String(p).match(/[\d.,]+/);
+        return m ? m[0] : null;  // "0,344"
     }
+
 
     _guessFootprint(part) {
         // Very heuristic. We'll improve once we know how you name footprints.
@@ -383,6 +405,28 @@ class PartCreator extends ResourceCreator {
 
             tick();
         });
+    }
+
+    _normalizePriceToDot(raw) {
+        if (raw == null) return null;
+
+        // keep only digits, comma, dot
+        let s = String(raw).trim().replace(/[^\d.,]/g, '');
+        if (!s) return null;
+
+        // Mouser DE: "0,344"  -> "0.344"
+        // If you ever get "1.234,56" -> "1234.56"
+        const hasComma = s.includes(',');
+        const hasDot = s.includes('.');
+
+        if (hasComma && hasDot) {
+            // assume dot = thousands, comma = decimal
+            s = s.replace(/\./g, '').replace(',', '.');
+        } else if (hasComma) {
+            s = s.replace(',', '.');
+        }
+
+        return s;
     }
 
 
