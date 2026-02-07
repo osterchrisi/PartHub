@@ -9,6 +9,7 @@ class UserSettings {
     init() {
         this.fetchAllSettings();
         this.setupEventListeners();
+        this.setupMouserUx();
     }
 
     fetchAllSettings() {
@@ -41,7 +42,7 @@ class UserSettings {
     }
 
     // Update a setting on the server
-    updateBooleanSetting(settingName, isEnabled) {
+    updateBooleanSetting(settingName, isEnabled, element) {
         const token = $('input[name="_token"]').attr('value');
         $.ajax({
             url: `settings/${settingName}`,
@@ -73,7 +74,24 @@ class UserSettings {
             const element = event.target;
             const settingName = $(element).data('setting-name');
             const isEnabled = $(element).is(':checked');
-            this.updateBooleanSetting(settingName, isEnabled);
+            this.updateBooleanSetting(settingName, isEnabled, element);
         });
     }
+
+    setupMouserUx() {
+        const $toggle = $('#mouser_enabled');
+        const $key = $('#mouser_api_key');
+
+        if (!$toggle.length || !$key.length) return;
+
+        const sync = () => {
+            $key.prop('disabled', !$toggle.is(':checked'));
+        };
+
+        $toggle.off('change.mouser').on('change.mouser', sync);
+
+        // initial state on page load
+        sync();
+    }
+
 }

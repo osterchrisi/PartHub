@@ -18,12 +18,18 @@ class UserSettingController extends Controller
     public function index(Request $request)
     {
         $userId = Auth::id();
+
+        // Available User Settings
         $userTimezone = $this->userSettingService->getUserTimezone($userId);
+        $mouserEnabled = $this->userSettingService->isMouserEnabled($userId);
+        $hasMouserKey = !empty($this->userSettingService->getMouserApiKeyDecrypted($userId));
 
         return view('profile.user-settings', [
             'title' => 'User Settings',
             'view' => 'user-settings',
             'userTimezone' => $userTimezone,
+            'mouserEnabled' => $mouserEnabled,
+            'hasMouserKey' => $hasMouserKey,
         ]);
     }
 
@@ -31,18 +37,52 @@ class UserSettingController extends Controller
     {
         $userId = Auth::id();
 
-        // Validate the timezone input
-        $validated = $request->validate([
-            'timezone' => 'required|timezone', // Ensure the submitted timezone is valid
+        \Log::info('UserSettingController@update HIT', [
+            'userId' => $userId,
+            'all' => $request->all(),
         ]);
 
-        // Update or create the user's timezone setting
-        $this->userSettingService->updateOrCreateSetting($userId, 'timezone', $validated['timezone']);
 
-        // Redirect back with a success message
-        //TODO: Not shown yet
+        // Allow partial updates + mouser fields
+        $validated = $request->validate([
+            'timezone' => 'sometimes|timezone',
+            'mouser_enabled' => 'sometimes|boolean',
+            'mouser_api_key' => 'nullable|string',
+        ]);
+
+        \Log::info('Updating user settings for user ID: ' . $userId, ['validated' => $validated]);
+
+        // UPDATE timezone only if it was submitted
+        if (array_key_exists('timezone', $validated)) {
+            $this->userSettingService->updateOrCreateSetting($userId, 'timezone', $validated['timezone']);
+        }
+
+        // UPDATE mouser toggle only if submitted
+        if (array_key_exists('mouser_enabled', $validated)) {
+            $enabled = (bool) $validated['mouser_enabled'];
+            $this->userSettingService->setMouserEnabled($userId, $enabled);
+
+            // If enabling: require a key if none exists yet AND none submitted now
+            if ($enabled) {
+                $hasKeyAlready = !empty($this->userSettingService->getMouserApiKeyDecrypted($userId));
+                $submittedKey = trim((string) ($validated['mouser_api_key'] ?? ''));
+
+                if (!$hasKeyAlready && $submittedKey === '') {
+                    return redirect()->back()
+                        ->withErrors(['mouser_api_key' => 'Please enter your Mouser API key to enable Mouser Search.'])
+                        ->withInput();
+                }
+            }
+        }
+
+        // STORE key only if user entered one (do not overwrite with empty)
+        if (!empty($validated['mouser_api_key'] ?? null)) {
+            $this->userSettingService->setMouserApiKey($userId, $validated['mouser_api_key']);
+        }
+
         return redirect()->back()->with('success', 'Settings updated successfully!');
     }
+
 
     // Get a user setting dynamically by setting name
     public function getUserSetting(Request $request, $setting_name)

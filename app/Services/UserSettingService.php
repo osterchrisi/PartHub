@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\UserSetting;
+use Illuminate\Support\Facades\Crypt;
+
 
 class UserSettingService
 {
@@ -10,6 +12,7 @@ class UserSettingService
     protected $defaultSettings = [
         'stocklevel_notification' => 'true',
         'timezone' => 'UTC',
+        'mouser_enabled' => 'false',
     ];
 
     // Retrieve a specific setting for a user with a fallback default value
@@ -46,5 +49,40 @@ class UserSettingService
     public function shouldNotify($userId)
     {
         return $this->getSetting($userId, 'stocklevel_notification', 'true') === 'true';
+    }
+
+    public function isMouserEnabled(int $userId): bool
+    {
+        return $this->getSetting($userId, 'mouser_enabled', 'false') === 'true';
+    }
+
+    public function setMouserEnabled(int $userId, bool $enabled): void
+    {
+        $this->updateOrCreateSetting($userId, 'mouser_enabled', $enabled ? 'true' : 'false');
+    }
+
+    public function setMouserApiKey(int $userId, ?string $plainKey): void
+    {
+        // allow clearing
+        if (!$plainKey) {
+            $this->updateOrCreateSetting($userId, 'mouser_api_key', '');
+            return;
+        }
+
+        $this->updateOrCreateSetting($userId, 'mouser_api_key', Crypt::encryptString($plainKey));
+    }
+
+    public function getMouserApiKeyDecrypted(int $userId): ?string
+    {
+        $enc = $this->getSetting($userId, 'mouser_api_key', null);
+        if (!$enc)
+            return null;
+
+        try {
+            return Crypt::decryptString($enc);
+        } catch (\Throwable $e) {
+            // corrupted/legacy values
+            return null;
+        }
     }
 }
