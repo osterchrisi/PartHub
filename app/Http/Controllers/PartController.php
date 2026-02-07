@@ -341,7 +341,34 @@ class PartController extends Controller
         }
 
         // Call the Mouser API service to get part number details
-        return response()->json($mouser->searchPartNumber($searchTerm, $apiKey));
+        try {
+            $data = $mouser->searchPartNumber($searchTerm, $apiKey);
+
+            // Mouser often returns an "Errors" array
+            if (!empty($data['Errors'])) {
+                $msg = $data['Errors'][0]['Message'] ?? 'Mouser API returned an error.';
+                $property = $data['Errors'][0]['PropertyName'] ?? null;
+                $key = $data['Errors'][0]['ResourceKey'] ?? null;
+
+                // Explicitly re-rendering this, so the user sees a meaningful message instead of "Invalid unique identifier"
+                if ($property === 'API Key' || $key === 'InvalidIdentifier') {
+                    $msg = 'Your Mouser API key is invalid. Please check it in User Settings.';
+                }
+
+                return response()->json(['message' => $msg], 422);
+            }
+
+            return response()->json($data);
+
+        } catch (\Throwable $e) {
+            \Log::warning('Mouser lookup failed', [
+                'user_id' => $userId,
+                'term' => $searchTerm,
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json(['message' => 'Mouser request failed. Check your API key and try again.'], 502);
+        }
     }
 
     public function getAlternatives($id)

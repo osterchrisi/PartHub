@@ -23,6 +23,7 @@ class MouserApiService
                 'partSearchOptions' => null, //The following values are valid: None | Exact - can use string representations or integer IDs: 1[None] | 2[Exact]
             ],
         ]);
+        $response->throw(); // Throw an exception if the response status code is not 2xx
         return $response->json();  // Return the response as a JSON array
     }
 }

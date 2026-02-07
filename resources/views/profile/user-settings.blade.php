@@ -49,7 +49,7 @@
                     <div class="form-group mb-4">
                         <label class="form-label">
                             <strong>Mouser Part Search</strong>
-                            <small class="d-block text-muted">Enter your Mouser API key to enable part lookup.</small>
+                            <small class="d-block text-muted">Enter your Mouser <strong>Search API key</strong> to enable part lookup.</small>
                         </label>
 
                         <div class="form-check form-switch mb-2">

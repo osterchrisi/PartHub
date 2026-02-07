@@ -24,18 +24,34 @@ export class MouserPartSearch {
                     this.displayResults(this.searchCache[searchTerm]);
                     this.hideSpinner();  // Hide the spinner after cache is used
                 } else {
-                    fetch(`/search-mouser-part/${searchTerm}`)
-                        .then(response => response.json())
+                    fetch(`/search-mouser-part/${encodeURIComponent(searchTerm)}`)
+                        .then(async (response) => {
+                            const payload = await response.json().catch(() => ({}));
+
+                            if (!response.ok) {
+                                const msg = payload.message || `Mouser search failed (${response.status}).`;
+                                throw new Error(msg);
+                            }
+
+                            // Also handle “Errors” even if backend didn’t convert them (belt + suspenders)
+                            if (payload?.Errors?.length) {
+                                const msg = payload.Errors[0]?.Message || 'Mouser API returned an error.';
+                                throw new Error(msg);
+                            }
+
+                            return payload;
+                        })
                         .then(data => {
-                            this.searchCache[searchTerm] = data; // Cache the result
+                            this.searchCache[searchTerm] = data;
                             this.displayResults(data);
                         })
-                        .catch(error => {
-                            console.error("API call failed:", error);
+                        .catch(err => {
+                            this.showError(err.message);
                         })
                         .finally(() => {
-                            this.hideSpinner();  // Hide the spinner after API call completes
+                            this.hideSpinner();
                         });
+
                 }
             }, 500);  // Delay of 500ms to debounce
         } else {
@@ -53,7 +69,7 @@ export class MouserPartSearch {
 
     displayResults(data) {
         this.resultsContainer.innerHTML = '';  // Clear previous results
-        const parts = data.SearchResults.Parts.slice(0, 10);  // Limit to 10 results
+        const parts = data?.SearchResults?.Parts?.slice(0, 10) || [];  // Limit to 10 results
 
         if (parts.length > 0) {
             parts.forEach(part => {
@@ -104,4 +120,13 @@ export class MouserPartSearch {
         }
         alert('Mouser Part Selected: ' + selectedPart.ManufacturerPartNumber);
     }
+
+    showError(message) {
+        this.resultsContainer.innerHTML = `
+      <div class="alert alert-warning mb-3">
+        ${message}
+      </div>
+    `;
+    }
+
 }

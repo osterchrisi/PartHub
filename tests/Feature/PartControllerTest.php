@@ -12,6 +12,9 @@ use App\Models\StockLevel;
 use App\Models\SupplierData;
 use App\Models\AlternativeGroup;
 use App\Models\PartUnit;
+use App\Models\UserSetting;
+use App\Services\MouserApiService;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -150,5 +153,123 @@ class PartControllerTest extends TestCase
             'supplier_id_fk' => $supplier->supplier_id,
         ]);
     }
+
+    public function test_mouser_search_returns_403_if_disabled(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // default is false, but make it explicit
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
+            ['setting_value' => 'false']
+        );
+
+        $this->get('/search-mouser-part/asdf')
+            ->assertStatus(403);
+    }
+
+    public function test_mouser_search_returns_403_if_no_api_key_set(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
+            ['setting_value' => 'true']
+        );
+
+        // ensure empty / missing key
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_api_key'],
+            ['setting_value' => '']
+        );
+
+        $this->get('/search-mouser-part/asdf')
+            ->assertStatus(403);
+    }
+
+    public function test_mouser_search_returns_422_if_mouser_returns_errors(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
+            ['setting_value' => 'true']
+        );
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_api_key'],
+            ['setting_value' => Crypt::encryptString('invalid')]
+        );
+
+        $this->mock(MouserApiService::class, function ($mock) {
+            $mock->shouldReceive('searchPartNumber')
+                ->once()
+                ->andReturn([
+                    'Errors' => [
+                        [
+                            'Code' => 'Invalid',
+                            'Message' => 'Invalid unique identifier.',
+                            'PropertyName' => 'API Key',
+                            'ResourceKey' => 'InvalidIdentifier',
+                        ]
+                    ],
+                ]);
+        });
+
+        $this->get('/search-mouser-part/asdf')
+            ->assertStatus(422)
+            ->assertJsonStructure(['message']);
+    }
+
+    public function test_mouser_search_returns_results_on_success(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
+            ['setting_value' => 'true']
+        );
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_api_key'],
+            ['setting_value' => Crypt::encryptString('validkey')]
+        );
+
+        $this->mock(MouserApiService::class, function ($mock) {
+            $mock->shouldReceive('searchPartNumber')
+                ->once()
+                ->andReturn([
+                    'Errors' => [],
+                    'SearchResults' => [
+                        'NumberOfResult' => 1,
+                        'Parts' => [
+                            ['ManufacturerPartNumber' => 'LM324KAPWR']
+                        ]
+                    ]
+                ]);
+        });
+
+        $this->get('/search-mouser-part/lm324')
+            ->assertOk()
+            ->assertJsonPath('SearchResults.NumberOfResult', 1);
+    }
+
+    public function test_mouser_api_key_cannot_be_empty(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post('/settings/mouser_api_key', [
+            'value' => '',
+        ])->assertStatus(422);
+    }
+
+
+
+
+
 
 }
