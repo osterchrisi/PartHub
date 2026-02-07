@@ -49,28 +49,23 @@
                     <div class="form-group mb-4">
                         <label class="form-label">
                             <strong>Mouser Part Search</strong>
-                            <small class="d-block text-muted">Use your own Mouser API key to enable part lookup.</small>
+                            <small class="d-block text-muted">Enter your Mouser API key to enable part lookup.</small>
                         </label>
 
-                        <form method="POST" action="{{ route('user.settings.update') }}">
-                            @csrf
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input user-setting-switch" type="checkbox" id="mouser_enabled"
+                                data-setting-name="mouser_enabled">
+                            <label class="form-check-label" for="mouser_enabled">Enable Mouser Search</label>
+                        </div>
 
-                            <div class="form-check form-switch mb-2">
-                                {{-- HTML checkboxes only submit a value when checked. To make “off” submit cleanly --}}
-                                {{-- TODO: Verify and remove is not applicable --}}
-                                <input type="hidden" name="mouser_enabled" value="0">
+                        <input type="text" class="form-control" id="mouser_api_key"
+                            placeholder="{{ $hasMouserKey ? '***** (Key stored, enter to replace)' : 'Enter Mouser API key' }}"
+                            disabled>
 
-                                <input class="form-check-input" type="checkbox" id="mouser_enabled" name="mouser_enabled"
-                                    value="1" {{ $mouserEnabled ? 'checked' : '' }}>
-                                <label class="form-check-label" for="mouser_enabled">Enable Mouser Search</label>
-                            </div>
+                        <button type="button" class="btn btn-primary mt-3 w-100" id="save_mouser_key" disabled>
+                            Save Mouser API Key
+                        </button>
 
-                            <input type="text" class="form-control" name="mouser_api_key" id="mouser_api_key"
-                                placeholder="{{ $hasMouserKey ? 'Key stored (enter to replace)' : 'Enter your Mouser API key' }}"
-                                {{ $mouserEnabled ? '' : 'disabled' }}>
-
-                            <button type="submit" class="btn btn-primary mt-3 w-100">Save Settings</button>
-                        </form>
                     </div>
 
                 </div>

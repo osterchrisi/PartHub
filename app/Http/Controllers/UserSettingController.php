@@ -21,14 +21,12 @@ class UserSettingController extends Controller
 
         // Available User Settings
         $userTimezone = $this->userSettingService->getUserTimezone($userId);
-        $mouserEnabled = $this->userSettingService->isMouserEnabled($userId);
         $hasMouserKey = !empty($this->userSettingService->getMouserApiKeyDecrypted($userId));
 
         return view('profile.user-settings', [
             'title' => 'User Settings',
             'view' => 'user-settings',
             'userTimezone' => $userTimezone,
-            'mouserEnabled' => $mouserEnabled,
             'hasMouserKey' => $hasMouserKey,
         ]);
     }
@@ -37,12 +35,6 @@ class UserSettingController extends Controller
     {
         $userId = Auth::id();
 
-        \Log::info('UserSettingController@update HIT', [
-            'userId' => $userId,
-            'all' => $request->all(),
-        ]);
-
-
         // Allow partial updates + mouser fields
         $validated = $request->validate([
             'timezone' => 'sometimes|timezone',
@@ -50,16 +42,14 @@ class UserSettingController extends Controller
             'mouser_api_key' => 'nullable|string',
         ]);
 
-        \Log::info('Updating user settings for user ID: ' . $userId, ['validated' => $validated]);
-
-        // UPDATE timezone only if it was submitted
+        // Update timezone only if it was submitted
         if (array_key_exists('timezone', $validated)) {
             $this->userSettingService->updateOrCreateSetting($userId, 'timezone', $validated['timezone']);
         }
 
-        // UPDATE mouser toggle only if submitted
+        // Update mouser toggle only if submitted
         if (array_key_exists('mouser_enabled', $validated)) {
-            $enabled = (bool) $validated['mouser_enabled'];
+            $enabled = (int) $validated['mouser_enabled'] === 1;
             $this->userSettingService->setMouserEnabled($userId, $enabled);
 
             // If enabling: require a key if none exists yet AND none submitted now
@@ -75,7 +65,7 @@ class UserSettingController extends Controller
             }
         }
 
-        // STORE key only if user entered one (do not overwrite with empty)
+        // Store Mouser API key only if user entered one (do not overwrite with empty)
         if (!empty($validated['mouser_api_key'] ?? null)) {
             $this->userSettingService->setMouserApiKey($userId, $validated['mouser_api_key']);
         }
@@ -89,8 +79,13 @@ class UserSettingController extends Controller
     {
         $userId = auth()->id();
 
+        //Protect Mouser API key
+        if ($setting_name === 'mouser_api_key') {
+            return response()->json(['message' => 'Not allowed'], 403);
+        }
+
         // Retrieve setting
-        $settingValue = $this->userSettingService->getSetting($userId, $setting_name, 'true'); // Default is 'true'
+        $settingValue = $this->userSettingService->getSetting($userId, $setting_name);
 
         return response()->json([$setting_name => $settingValue]);
     }
@@ -100,12 +95,44 @@ class UserSettingController extends Controller
     {
         $userId = auth()->id();
 
-        // Get the value from the request body, with an optional default fallback
-        $value = $request->input('value', 'true'); // Default is 'true'
+        
+        $allowed = [
+            'stocklevel_notification',
+            'mouser_enabled',
+            'mouser_api_key',
+            // later: 'timezone' if ever migrated to this endpoint
+        ];
 
-        // Update or create the setting
+        if (!in_array($setting_name, $allowed, true)) {
+            return response()->json(['message' => 'Unknown setting'], 404);
+        }
+
+        // Special case: write-only Mouser API Key
+        if ($setting_name === 'mouser_api_key') {
+            $value = trim((string) $request->input('value', ''));
+
+            // validate: non-empty, reasonable length
+            if ($value === '') {
+                return response()->json(['message' => 'API key cannot be empty'], 422);
+            }
+            if (mb_strlen($value) > 255) {
+                return response()->json(['message' => 'API key is too long'], 422);
+            }
+
+            $this->userSettingService->setMouserApiKey($userId, $value);
+            return response()->json(['message' => 'Mouser API key saved']);
+        }
+
+        // Boolean settings validation
+        $value = (string) $request->input('value', '');
+
+        if (!in_array($value, ['true', 'false'], true)) {
+            return response()->json(['message' => 'Invalid value, expected true/false'], 422);
+        }
+
         $this->userSettingService->updateOrCreateSetting($userId, $setting_name, $value);
 
         return response()->json(['message' => 'Setting updated successfully']);
     }
+
 }

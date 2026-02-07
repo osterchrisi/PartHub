@@ -9,7 +9,6 @@ class UserSettings {
     init() {
         this.fetchAllSettings();
         this.setupEventListeners();
-        this.setupMouserUx();
     }
 
     fetchAllSettings() {
@@ -33,6 +32,10 @@ class UserSettings {
                 // Set the switch state based on the fetched setting
                 const isEnabled = response[settingName] === 'true';
                 $(element).prop('checked', isEnabled);
+                // Mouser API Key
+                if (settingName === 'mouser_enabled') {
+                    this.syncMouserKeyUi(isEnabled);
+                }
             },
             error: (xhr, status, error) => {
                 // console.error(`Failed to fetch the ${settingName} setting:`, error);
@@ -66,6 +69,7 @@ class UserSettings {
     // Set up event listeners for toggling user setting switch elements
     setupEventListeners() {
         this.setupSwitchEventListeners();
+        this.setupMouserAPIKeyListeners();
     }
 
     setupSwitchEventListeners() {
@@ -74,24 +78,51 @@ class UserSettings {
             const element = event.target;
             const settingName = $(element).data('setting-name');
             const isEnabled = $(element).is(':checked');
+
+            // Mousser API Key
+            if (settingName === 'mouser_enabled') {
+                this.syncMouserKeyUi(isEnabled);
+            }
+
             this.updateBooleanSetting(settingName, isEnabled, element);
         });
     }
 
-    setupMouserUx() {
-        const $toggle = $('#mouser_enabled');
+    setupMouserAPIKeyListeners() {
+        const $btn = $('#save_mouser_key');
         const $key = $('#mouser_api_key');
 
-        if (!$toggle.length || !$key.length) return;
+        if (!$btn.length || !$key.length) return;
 
-        const sync = () => {
-            $key.prop('disabled', !$toggle.is(':checked'));
-        };
+        $btn.off('click.mouser').on('click.mouser', () => {
+            const token = $('input[name="_token"]').attr('value');
+            const apiKey = ($key.val() || '').trim();
 
-        $toggle.off('change.mouser').on('change.mouser', sync);
+            if (!apiKey) {
+                alert('Please enter your Mouser API key.');
+                return;
+            }
 
-        // initial state on page load
-        sync();
+            $.ajax({
+                url: `settings/mouser_api_key`,
+                method: 'POST',
+                data: { value: apiKey, _token: token },
+                success: () => {
+                    $key.val('');
+                    // optional minimal feedback
+                    $key.attr('placeholder', '***** (Key stored, enter to replace)');
+                },
+                error: (xhr) => {
+                    alert(xhr?.responseJSON?.message || 'Failed to save Mouser API key.');
+                }
+            });
+        });
     }
+
+    syncMouserKeyUi(isEnabled) {
+        $('#mouser_api_key').prop('disabled', !isEnabled);
+        $('#save_mouser_key').prop('disabled', !isEnabled);
+    }
+
 
 }
