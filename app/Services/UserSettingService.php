@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\UserSetting;
 use Illuminate\Support\Facades\Crypt;
 
-
 class UserSettingService
 {
     // Class property holding default values for settings
@@ -16,7 +15,7 @@ class UserSettingService
     ];
 
     // Retrieve a specific setting for a user with a fallback default value
-    //! Makes sense to return a default setting...?
+    // ! Makes sense to return a default setting...?
     public function getSetting($userId, $settingName, $default = null)
     {
 
@@ -64,8 +63,9 @@ class UserSettingService
     public function setMouserApiKey(int $userId, ?string $plainKey): void
     {
         // allow clearing
-        if (!$plainKey) {
+        if (! $plainKey) {
             $this->updateOrCreateSetting($userId, 'mouser_api_key', '');
+
             return;
         }
 
@@ -75,8 +75,9 @@ class UserSettingService
     public function getMouserApiKeyDecrypted(int $userId): ?string
     {
         $enc = $this->getSetting($userId, 'mouser_api_key', null);
-        if (!$enc)
+        if (! $enc) {
             return null;
+        }
 
         try {
             return Crypt::decryptString($enc);

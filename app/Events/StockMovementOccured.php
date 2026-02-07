@@ -25,7 +25,7 @@ class StockMovementOccured
         $this->stock_levels = $stock_level;
         // Get human-readable part name
         $this->stock_levels[3] = Part::find($stock_level[0])->part_name;
-        //Replace location ID with corresponding name
+        // Replace location ID with corresponding name
         $this->stock_levels[2] = Location::find($stock_level[2])->location_name;
         $this->user = $user;
     }

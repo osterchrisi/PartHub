@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
     // public function create(): View
     public function create()
     {
-        //TODO: Das geht wahrscheinlich sauberer...
+        // TODO: Das geht wahrscheinlich sauberer...
         if (config('app.env') == 'demo') {
             return redirect('https://parthub.online/login');
         } else {

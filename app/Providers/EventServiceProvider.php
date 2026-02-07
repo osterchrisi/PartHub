@@ -44,7 +44,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //Quick solution to send an e-mail upon new user registrations
+        // Quick solution to send an e-mail upon new user registrations
         parent::boot();
 
         // Register the listener directly as a closure

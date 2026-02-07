@@ -11,7 +11,7 @@ class CheckSubscription
     {
         $user = $request->user();
 
-        //! Disabled, doesn't actually do anything because still under development
+        // ! Disabled, doesn't actually do anything because still under development
         if ($user->hasNoSubscription()) {
             return $next($request);
             // return redirect()->route('subscription.index')->with('error', 'You need a subscription to access this feature.');

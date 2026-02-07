@@ -84,7 +84,7 @@ trait RegistersUsers
         try {
             // First, validate the email with the DNS rule
             Validator::make(['email' => $email], [
-                //TODO: DNS validation fails but would be cool and _should_ work
+                // TODO: DNS validation fails but would be cool and _should_ work
                 // 'email' => 'required|email|dns',
                 'email' => 'required|email',
             ])->validate();  // Throws ValidationException if it fails

@@ -50,10 +50,10 @@ class PartMeta extends Model
         return self::find($meta_id);
     }
 
-    //TODO Code function to return array / json with key, value pairs for a given meta
+    // TODO Code function to return array / json with key, value pairs for a given meta
 
     public static function createPartMeta($footprint_name, $footprint_alias)
-    //TODO: Code this
+    // TODO: Code this
     {
         // $user_id = Auth::user()->id;
 

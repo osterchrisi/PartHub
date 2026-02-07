@@ -53,7 +53,7 @@ class StockService
         $changes = [];
         $negative_stock = [];
 
-        //* Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
+        // * Fill above empty arrays with all requested changes, each $requested_change entry holds one part and its changes
         foreach ($requested_changes as $requested_change) {
 
             // Extract change details from request
@@ -72,14 +72,14 @@ class StockService
             }
         }
 
-        //* Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
+        // * Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
         if (! empty($negative_stock)) {
             $response = $this->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);
         }
 
-        //* No user permission necessary
+        // * No user permission necessary
         else {
             $result = $this->processStockChanges($changes);
 
@@ -133,7 +133,7 @@ class StockService
             $result[] = ['hist_id' => $hist_id, 'stock_level_id' => $stock_level_id, 'new_total_stock' => $total_stock];
 
             // If stock changes came from BOM changes, prepare array of BOM ID and assemble quantity
-            //! Bit of a hick-hack right now - could be written better?
+            // ! Bit of a hick-hack right now - could be written better?
             if ($bom_id != null) {
                 $processed_boms[] = [
                     'bom_id' => $bom_id,
@@ -173,7 +173,7 @@ class StockService
             }
         }
 
-        //* Create BOM Run entries
+        // * Create BOM Run entries
         foreach ($unique_processed_boms as $unique_processed_bom) {
             $processed_bom = $unique_processed_bom['bom_id'];
             $quantity = $unique_processed_bom['assemble_quantity'];

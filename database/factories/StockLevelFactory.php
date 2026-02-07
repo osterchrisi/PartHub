@@ -6,12 +6,12 @@ use App\Models\Location;
 use App\Models\Part;
 use App\Models\StockLevel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\StockLevel>
  */
 class StockLevelFactory extends Factory
 {
-
     protected $model = StockLevel::class;
 
     /**

@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SupplierDataFactory extends Factory
 {
-
     protected $model = SupplierData::class;
 
     /**

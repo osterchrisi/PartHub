@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Part extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'parts';
 
     protected $primaryKey = 'part_id';
@@ -123,7 +123,7 @@ class Part extends Model
     {
         $user_id = Auth::user()->id;
 
-        $part = new Part();
+        $part = new Part;
         $part->part_name = $part_name;
         $part->part_description = $description;
         $part->part_comment = $comment;

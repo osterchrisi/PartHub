@@ -10,7 +10,7 @@ class ProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    //* OG Profile Test of Laravel, not using it
+    // * OG Profile Test of Laravel, not using it
 
     // public function test_profile_page_is_displayed(): void
     // {

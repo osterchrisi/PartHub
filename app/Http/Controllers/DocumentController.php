@@ -29,7 +29,7 @@ class DocumentController extends Controller
         $originalFilename = $uploadResult['originalFilename'];
 
         // Save document details to database
-        $documentModel = new Document();
+        $documentModel = new Document;
         $documentModel->filename = $filePath;
         $documentModel->display_name = $originalFilename;
         $documentModel->document_owner_u_id = auth()->id(); // User that owns this document / uploaded it

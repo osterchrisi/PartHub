@@ -48,7 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    //* Relationships
+    // * Relationships
 
     public function parts()
     {
@@ -112,7 +112,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new CustomResetPasswordNotification($token));
     }
 
-    //* Limit Counters
+    // * Limit Counters
     public function getPartCount()
     {
         return $this->parts()->count();

@@ -34,12 +34,12 @@ require __DIR__.'/auth.php';
 |
 */
 
-//* Landing Page
+// * Landing Page
 Route::get('/', function () {
     return view('welcome', ['title' => 'Open Source Inventory and BOM Management', 'view' => 'welcome']);
 })->name('welcome')->middleware('redirect.if.not.authenticated');
 
-//* User Stuff
+// * User Stuff
 Route::get('/dashboard', function () {
     return view('dashboard', ['title' => 'Settings', 'view' => 'dashboard']);
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -50,11 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//* Database Service Routes
+// * Database Service Routes
 Route::patch('/updateCell', [DatabaseServiceController::class, 'updateCell'])->middleware(['auth', 'verified']);
 Route::post('/deleteRow', [DatabaseServiceController::class, 'deleteRow'])->middleware(['auth', 'verified']);
 
-//* Part Routes
+// * Part Routes
 Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(function () {
     Route::controller(PartController::class)->group(function () {
         Route::get('/parts', 'index')->name('parts');
@@ -71,7 +71,7 @@ Route::middleware(['redirect.if.not.authenticated', 'auth', 'verified'])->group(
     });
 });
 
-//* BOM Routes
+// * BOM Routes
 Route::controller(BomController::class)->group(function () {
     Route::get('/boms', 'index')->middleware(['auth', 'verified'])->name('boms');
     Route::get('/boms.bomsTable', 'index')->middleware(['auth', 'verified'])->name('boms.bomsTable');
@@ -84,7 +84,7 @@ Route::controller(BomController::class)->group(function () {
 
 });
 
-//* Location Routes
+// * Location Routes
 Route::controller(LocationController::class)->group(function () {
     Route::get('/locations', 'index')->middleware(['auth', 'verified'])->name('locations');
     Route::get('/locations.locationsTable', 'index')->middleware(['auth', 'verified'])->name('locations.locationsTable');
@@ -93,7 +93,7 @@ Route::controller(LocationController::class)->group(function () {
     Route::get('/location/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
-//* Category Routes
+// * Category Routes
 Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->middleware(['auth', 'verified'])->name('categories');
     Route::get('/categories.categoriesTable', 'index')->middleware(['auth', 'verified'])->name('categories.categoriesTable');
@@ -102,7 +102,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::post('/category.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
 });
 
-//* Supplier Routes
+// * Supplier Routes
 Route::controller(SupplierController::class)->group(function () {
     Route::get('/suppliers', 'index')->middleware(['auth', 'verified'])->name('suppliers');
     Route::get('/suppliers.suppliersTable', 'index')->middleware(['auth', 'verified'])->name('suppliers.suppliersTable');
@@ -112,7 +112,7 @@ Route::controller(SupplierController::class)->group(function () {
 });
 Route::post('supplierData.create', [SupplierDataController::class, 'create'])->middleware(['auth', 'verified', 'resource.limits']);
 
-//* Footprint Routes
+// * Footprint Routes
 Route::middleware(['auth', 'verified', 'subscription'])->group(function () {
     Route::controller(FootprintController::class)->group(function () {
         Route::get('/footprints', 'index')->middleware(['auth', 'verified'])->name('footprints');
@@ -123,13 +123,13 @@ Route::middleware(['auth', 'verified', 'subscription'])->group(function () {
     });
 });
 
-//* StockLevel Routes
+// * StockLevel Routes
 Route::get('/stocklevels', function () {
     return StockLevelController::index(335);
 })
     ->middleware(['auth', 'verified']);
 
-//* Image Controller
+// * Image Controller
 Route::controller(ImageController::class)->group(function () {
     Route::post('/upload-image/{type}/{id}', 'upload')->middleware(['auth', 'verified'])->name('upload-image');
     Route::get('/images/{type}/{id}', 'getImagesByTypeAndId')->middleware(['auth', 'verified'])->name('part.images');
@@ -137,24 +137,24 @@ Route::controller(ImageController::class)->group(function () {
     Route::post('/reorder-images/{type}/{id}', [ImageController::class, 'reorderImages']);
 });
 
-//* File Controller
+// * File Controller
 Route::get('/files/{fileType}/{type}/{userId}/{id}/{filename}', [FileController::class, 'serveFile'])->middleware(['auth', 'verified']);
 Route::get('/files/images/{type}/{userId}/{id}/thumbnails/{filename}', [FileController::class, 'serveThumbnail'])->middleware(['auth', 'verified']);
 
-//* Document Controller
+// * Document Controller
 Route::get('/documents/{type}/{id}', [DocumentController::class, 'getDocumentsByTypeAndId']);
 Route::post('/upload-document/{type}/{id}', [DocumentController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload-document');
 Route::delete('/delete-document/{type}/{id}', [DocumentController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete-document');
 
-//* Cashier / Subscriptions
+// * Cashier / Subscriptions
 Route::get('/subscription-checkout/{plan}/{priceId}', [SubscriptionController::class, 'checkout'])->middleware(['auth', 'verified'])->name('subscription.checkout');
 Route::get('/subscription-manage', [SubscriptionController::class, 'manage'])->middleware(['auth', 'verified'])->name('subscription.manage');
 
-//* Socialite / Google OAuth login
+// * Socialite / Google OAuth login
 Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
-//* User Settings
+// * User Settings
 Route::middleware('auth')->group(function () {
     Route::get('/settings/{setting_name}', [UserSettingController::class, 'getUserSetting'])->middleware(['auth', 'verified']);
     Route::post('/settings/{setting_name}', [UserSettingController::class, 'updateUserSetting'])->middleware(['auth', 'verified']);
@@ -162,13 +162,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/user-settings', [UserSettingController::class, 'index'])->middleware(['auth', 'verified'])->name('user-settings');
 Route::post('/user/settings', [UserSettingController::class, 'update'])->name('user.settings.update')->middleware('auth');
 
-//* Standalone Pages Routes
+// * Standalone Pages Routes
 
 // Sign Up for new users
 Route::get('/signup', function () {
-    //! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
-    //! Passwort darf keine Leerzeichen enthalten
-    //TODO: Das geht wahrscheinlich sauberer...
+    // ! Passwort darf nicht länger als 72 Zeichen sein! (wegen bcrypt -> jetzt argon2)
+    // ! Passwort darf keine Leerzeichen enthalten
+    // TODO: Das geht wahrscheinlich sauberer...
     if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
     } else {
@@ -215,7 +215,7 @@ Route::get('/multi', function () {
 // Demo User Login
 Route::get('/demo-login', [DemoLoginController::class, 'login'])->name('demo.login');
 
-//* For testing
+// * For testing
 Route::get('/image-testing', function () {
     return view('cz-image-test', ['title' => 'Image Upload Test', 'view' => 'cz-image-test']);
 });

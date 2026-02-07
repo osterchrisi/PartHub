@@ -2,8 +2,8 @@
 
 use App\Models\User;
 use App\Models\UserSetting;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Crypt;
 use Tests\TestCase;
 
 class UserSettingsTest extends TestCase
@@ -77,7 +77,4 @@ class UserSettingsTest extends TestCase
         $this->actingAs($user)->get('/settings/mouser_api_key')
             ->assertStatus(403);
     }
-
-
-
 }

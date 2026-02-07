@@ -11,7 +11,7 @@ class ImageService
     {
         // Open and scale image
         $filepath = storage_path('app/'.$directory.'/'.$imageName);
-        $manager = new ImageManager(new Driver());
+        $manager = new ImageManager(new Driver);
         $image = $manager->read($filepath)->coverDown(100, 100);
 
         // Saving location

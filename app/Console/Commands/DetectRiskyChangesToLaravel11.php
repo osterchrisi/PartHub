@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-
 class DetectRiskyChangesToLaravel11 extends Command
 {
     /**
@@ -36,7 +35,7 @@ class DetectRiskyChangesToLaravel11 extends Command
             preg_match_all('/\$table->.*?->change\(\);/s', $contents, $matches);
 
             foreach ($matches[0] as $match) {
-                if (!preg_match('/->(default|nullable|comment|unsigned|charset|collation)/', $match)) {
+                if (! preg_match('/->(default|nullable|comment|unsigned|charset|collation)/', $match)) {
                     $risky[] = [
                         'file' => $file->getRelativePathname(),
                         'line' => trim($match),
@@ -53,8 +52,7 @@ class DetectRiskyChangesToLaravel11 extends Command
             }
 
             $this->line("\n💡 Add missing modifiers like `->default()`, `->unsigned()` etc. to be safe.");
-        }
-        else {
+        } else {
             $this->info('✅ No risky change() calls found. You’re all good!');
         }
     }

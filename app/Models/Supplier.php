@@ -53,7 +53,7 @@ class Supplier extends Model
     {
         $user_id = Auth::user()->id;
 
-        $supplier = new Supplier();
+        $supplier = new Supplier;
         $supplier->supplier_name = $supplier_name;
         $supplier->supplier_owner_u_fk = $user_id;
         // $supplier->supplier_owner_g_fk = null;

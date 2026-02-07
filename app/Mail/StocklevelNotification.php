@@ -19,9 +19,7 @@ class StocklevelNotification extends Mailable
     public function __construct(
         protected User $user,
         protected $stock_level,
-    ) {
-
-    }
+    ) {}
 
     /**
      * Get the message envelope.

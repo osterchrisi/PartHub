@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AlternativeGroupFactory extends Factory
 {
-
     protected $model = AlternativeGroup::class;
 
     /**

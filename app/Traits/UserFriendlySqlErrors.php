@@ -12,7 +12,7 @@ trait UserFriendlySqlErrors
 
     public function __construct()
     {
-        $this->errors = new MessageBag();
+        $this->errors = new MessageBag;
     }
 
     public function hasErrors(): bool

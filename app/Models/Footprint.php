@@ -53,7 +53,7 @@ class Footprint extends Model
     {
         $user_id = Auth::user()->id;
 
-        $footprint = new Footprint();
+        $footprint = new Footprint;
         $footprint->footprint_name = $footprint_name;
         $footprint->footprint_alias = $footprint_alias;
         $footprint->footprint_owner_u_fk = $user_id;

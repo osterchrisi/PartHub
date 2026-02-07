@@ -92,7 +92,7 @@ class PartController extends Controller
 
         // Mouser Search settings
         $mouserEnabled = $this->userSettings->isMouserEnabled($user_id);
-        $hasMouserKey = !empty($this->userSettings->getMouserApiKeyDecrypted($user_id));
+        $hasMouserKey = ! empty($this->userSettings->getMouserApiKeyDecrypted($user_id));
 
         /* Calculate and append each part's total stock
         / Passing a reference, so modifications made to $part directly affect
@@ -125,13 +125,12 @@ class PartController extends Controller
                 'mouserEnabled' => $mouserEnabled,
                 'hasMouserKey' => $hasMouserKey,
                 // These are sent to extract clear names from foreign keys for the dropdown menus in the table
-                //TODO Seems redundant, check this out
+                // TODO Seems redundant, check this out
                 'categories' => $categories,
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        }
-        elseif ($route == 'parts.partsTable') {
+        } elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -170,7 +169,7 @@ class PartController extends Controller
             );
 
             // Handle stock level if quantity and location are provided
-            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
+            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
                     $new_part_id,
@@ -184,14 +183,14 @@ class PartController extends Controller
             }
 
             // Handle supplier data through SupplierService
-            if (!empty($validated['suppliers'])) {
+            if (! empty($validated['suppliers'])) {
                 $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
             // Trigger stock movement event
-            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
+            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
                 $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
                 event(new StockMovementOccured($stock_level, Auth::user()));
             }
@@ -204,7 +203,7 @@ class PartController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
         }
     }
 
@@ -255,7 +254,7 @@ class PartController extends Controller
                     'column_names' => ['location_name', 'stock_level_quantity'],
                     'nice_columns' => ['Location', 'Quantity'],
                     'stock_levels' => $part['stock_levels'],
-                    //Bom Table
+                    // Bom Table
                     'bomTableHeaders' => ['bom_name', 'element_quantity', 'bom_description'],
                     'nice_bomTableHeaders' => ['BOM', 'Quantity', 'BOM Description'],
                     'bom_list' => Part::getBomsContainingPart($part_id),
@@ -290,8 +289,7 @@ class PartController extends Controller
                     'tabToggleId4' => 'partAlternatives',
                 ]
             );
-        }
-        else {
+        } else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -331,12 +329,12 @@ class PartController extends Controller
     {
         $userId = auth()->id();
 
-        if (!$settings->isMouserEnabled($userId)) {
+        if (! $settings->isMouserEnabled($userId)) {
             return response()->json(['message' => 'Mouser search is disabled in your settings.'], 403);
         }
 
         $apiKey = $settings->getMouserApiKeyDecrypted($userId);
-        if (!$apiKey) {
+        if (! $apiKey) {
             return response()->json(['message' => 'No Mouser API key set.'], 403);
         }
 
@@ -345,7 +343,7 @@ class PartController extends Controller
             $data = $mouser->searchPartNumber($searchTerm, $apiKey);
 
             // Mouser often returns an "Errors" array
-            if (!empty($data['Errors'])) {
+            if (! empty($data['Errors'])) {
                 $msg = $data['Errors'][0]['Message'] ?? 'Mouser API returned an error.';
                 $property = $data['Errors'][0]['PropertyName'] ?? null;
                 $key = $data['Errors'][0]['ResourceKey'] ?? null;
@@ -386,7 +384,7 @@ class PartController extends Controller
         $part = Part::findOrFail($id);
         $userId = Auth::id();
 
-        if (!$request->has('alternatives') || !is_array($request->alternatives)) {
+        if (! $request->has('alternatives') || ! is_array($request->alternatives)) {
             return response()->json(['error' => 'Invalid alternatives format'], 400);
         }
 
@@ -399,7 +397,7 @@ class PartController extends Controller
         // Find an existing alternative group
         $group = $part->alternativeGroups()->first();
 
-        if (!$group) {
+        if (! $group) {
             // Create new alternative group if none exists
             $group = AlternativeGroup::create(['owner_u_fk' => $userId]);
             $group->parts()->attach($part->part_id, ['owner_u_fk' => $userId]);

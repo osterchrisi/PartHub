@@ -182,7 +182,7 @@ class BomController extends Controller
             $bom_id = Bom::createBom($bom_name, $bom_description);
 
             // Instantiate the CsvImportService
-            $csvImportService = new CsvImportService();
+            $csvImportService = new CsvImportService;
 
             // Process the uploaded file using BomImport
             Excel::import(new BomImport($bom_id, $csvImportService), $file);

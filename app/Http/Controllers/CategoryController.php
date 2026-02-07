@@ -88,7 +88,7 @@ class CategoryController extends Controller
         $user = Auth::user();
 
         // Create a new category instance
-        $category = new Category();
+        $category = new Category;
 
         // Assign values to the category attributes
         $category->category_name = request()->input('category_name');

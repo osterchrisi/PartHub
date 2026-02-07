@@ -10,6 +10,7 @@ class PartUnit extends Model
     use HasFactory;
 
     protected $table = 'part_units';
+
     protected $primaryKey = 'unit_id';
 
     protected $fillable = [

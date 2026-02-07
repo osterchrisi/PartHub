@@ -72,7 +72,7 @@ class RegisteredUserController extends Controller
             ]);
         $recaptcha = $siteVerify->json();
 
-        if (!$recaptcha['success']) {
+        if (! $recaptcha['success']) {
             throw ValidationException::withMessages(['recaptcha' => 'reCAPTCHA validation failed.']);
         }
     }

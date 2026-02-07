@@ -30,7 +30,7 @@ class ImageController extends Controller
         $originalFilename = $uploadResult['originalFilename'];
 
         // Save image details to database
-        $imageModel = new Image();
+        $imageModel = new Image;
         $imageModel->filename = $filePath;
         $imageModel->display_name = $originalFilename;
         $imageModel->image_owner_u_id = auth()->id();   // User that owns this image / uploaded it
@@ -47,7 +47,7 @@ class ImageController extends Controller
     {
         // Retrieve images associated with the part ID
         $images = Image::where('associated_id', $id)
-            ->where('type', $type)                      //type = part, location, supplier, ...
+            ->where('type', $type)                      // type = part, location, supplier, ...
             ->where('image_owner_u_id', auth()->id())
             ->orderBy('order', 'asc')
             ->get();

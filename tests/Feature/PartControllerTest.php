@@ -2,21 +2,20 @@
 
 namespace Tests\Feature;
 
+use App\Models\AlternativeGroup;
 use App\Models\Category;
 use App\Models\Footprint;
-use App\Models\Part;
-use App\Models\Supplier;
-use App\Models\User;
 use App\Models\Location;
-use App\Models\StockLevel;
-use App\Models\SupplierData;
-use App\Models\AlternativeGroup;
+use App\Models\Part;
 use App\Models\PartUnit;
+use App\Models\StockLevel;
+use App\Models\Supplier;
+use App\Models\SupplierData;
+use App\Models\User;
 use App\Models\UserSetting;
 use App\Services\MouserApiService;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Tests\TestCase;
 
 class PartControllerTest extends TestCase
@@ -69,7 +68,6 @@ class PartControllerTest extends TestCase
         $supplier = Supplier::factory()->create(['supplier_owner_u_fk' => $user->id]);
         $unit = PartUnit::factory()->create();
 
-
         // Create part
         $part = Part::factory()->create([
             'part_owner_u_fk' => $user->id,
@@ -96,7 +94,7 @@ class PartControllerTest extends TestCase
         $altGroup->alternativeParts()->attach($part->part_id);
 
         // Call the show route
-        $response = $this->get('/part/' . $part->part_id);
+        $response = $this->get('/part/'.$part->part_id);
 
         // Assertions
         $response->assertOk();
@@ -215,7 +213,7 @@ class PartControllerTest extends TestCase
                             'Message' => 'Invalid unique identifier.',
                             'PropertyName' => 'API Key',
                             'ResourceKey' => 'InvalidIdentifier',
-                        ]
+                        ],
                     ],
                 ]);
         });
@@ -248,7 +246,7 @@ class PartControllerTest extends TestCase
                         [
                             'Message' => 'Some other Mouser error.',
                             'PropertyName' => 'mouserPartNumber',
-                        ]
+                        ],
                     ],
                 ]);
         });
@@ -307,9 +305,9 @@ class PartControllerTest extends TestCase
                     'SearchResults' => [
                         'NumberOfResult' => 1,
                         'Parts' => [
-                            ['ManufacturerPartNumber' => 'LM324KAPWR']
-                        ]
-                    ]
+                            ['ManufacturerPartNumber' => 'LM324KAPWR'],
+                        ],
+                    ],
                 ]);
         });
 

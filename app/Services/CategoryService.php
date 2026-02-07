@@ -50,7 +50,7 @@ class CategoryService
     {
         $user = Auth::user();
 
-        $category = new Category();
+        $category = new Category;
 
         // Assign values to the category attributes
         $category->category_name = 'All Parts';

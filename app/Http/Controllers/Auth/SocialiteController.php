@@ -44,7 +44,6 @@ class SocialiteController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-
     /**
      * Handle the callback from Google after authentication.
      *
@@ -61,8 +60,7 @@ class SocialiteController extends Controller
             if ($user) {
                 // Log the user in if they already exist
                 Auth::login($user);
-            }
-            else {
+            } else {
                 // Retrieve plan & price from session (fallback to defaults)
                 $selectedPlan = session('selected_plan', 'free');
                 $priceId = session('price_id', '');

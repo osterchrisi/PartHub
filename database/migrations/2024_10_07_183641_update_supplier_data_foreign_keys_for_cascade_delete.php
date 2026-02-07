@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //* Part ID forgeign key
+        // * Part ID forgeign key
         Schema::table('supplier_data', function (Blueprint $table) {
             // Drop the foreign key by its name to ensure accuracy
             $table->dropForeign('supplier_data_part_id_fk_foreign');
@@ -22,7 +22,7 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
 
-        //* Supplier ID foreign key
+        // * Supplier ID foreign key
         Schema::table('supplier_data', function (Blueprint $table) {
             // Drop the foreign key by its name to ensure accuracy
             $table->dropForeign('supplier_data_supplier_id_fk_foreign');
@@ -39,7 +39,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //* Part ID forgeign key
+        // * Part ID forgeign key
         Schema::table('supplier_data', function (Blueprint $table) {
             // Drop the foreign key by its name
             $table->dropForeign('supplier_data_part_id_fk_foreign');
@@ -50,7 +50,7 @@ return new class extends Migration
                 ->onDelete('restrict');
         });
 
-        //* Supplier ID foreign key
+        // * Supplier ID foreign key
         Schema::table('supplier_data', function (Blueprint $table) {
             // Drop the foreign key by its name
             $table->dropForeign('supplier_data_supplier_id_fk_foreign');

@@ -58,7 +58,7 @@ class Location extends Model
     {
         $user_id = Auth::user()->id;
 
-        $location = new Location();
+        $location = new Location;
         $location->location_name = $location_name;
         $location->location_description = $location_description;
         $location->location_owner_u_fk = $user_id;

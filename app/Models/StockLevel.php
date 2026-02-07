@@ -30,7 +30,7 @@ class StockLevel extends Model
         return self::join('locations', 'stock_levels.location_id_fk', '=', 'locations.location_id')
             ->select('location_id', 'location_name', 'stock_level_quantity')
             ->where('part_id_fk', $part_id)
-            //->where('stock_level_quantity', '>', 0) // Only for locations with stock
+            // ->where('stock_level_quantity', '>', 0) // Only for locations with stock
             ->get();
     }
 
@@ -73,7 +73,7 @@ class StockLevel extends Model
 
     public static function createStockLevelRecord($part_id, $to_location, $quantity)
     {
-        $stockLevel = new StockLevel();
+        $stockLevel = new StockLevel;
         $stockLevel->part_id_fk = $part_id;
         $stockLevel->location_id_fk = $to_location;
         $stockLevel->stock_level_quantity = $quantity;

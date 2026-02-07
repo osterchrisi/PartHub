@@ -2,16 +2,14 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\PartUnit;
-
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PartUnit>
  */
 class PartUnitFactory extends Factory
 {
-
     protected $model = PartUnit::class;
 
     /**
