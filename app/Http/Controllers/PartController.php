@@ -50,8 +50,16 @@ class PartController extends Controller
 
     protected $stockValidator;
 
-    public function __construct(StockValidatorService $stockValidatorService, PartValidatorService $partValidatorService, CategoryService $categoryService, DatabaseService $databaseService, StockService $stockService, SupplierService $supplierService, MouserApiService $mouserApi)
-    {
+    public function __construct(
+        StockValidatorService $stockValidatorService,
+        PartValidatorService $partValidatorService,
+        CategoryService $categoryService,
+        DatabaseService $databaseService,
+        StockService $stockService,
+        SupplierService $supplierService,
+        MouserApiService $mouserApi,
+        UserSettingService $userSettings
+    ) {
         $this->categoryService = $categoryService;
         $this->databaseService = $databaseService;
         $this->stockService = $stockService;
@@ -59,7 +67,7 @@ class PartController extends Controller
         $this->mouserApi = $mouserApi;
         $this->partValidator = $partValidatorService;
         $this->stockValidator = $stockValidatorService;
-
+        $this->userSettings = $userSettings;
     }
 
     /**
@@ -81,6 +89,10 @@ class PartController extends Controller
         $categoriesForCategoriesTable = $this->categoryService->categoriesForCategoryTable($user_id); // These are used for the categories tree table in the left side of parts view
         $footprints = Footprint::availableFootprints();
         $suppliers = Supplier::availableSuppliers();
+
+        // Mouser Search settings
+        $mouserEnabled = $this->userSettings->isMouserEnabled($user_id);
+        $hasMouserKey = !empty($this->userSettings->getMouserApiKeyDecrypted($user_id));
 
         /* Calculate and append each part's total stock
         / Passing a reference, so modifications made to $part directly affect
@@ -110,6 +122,8 @@ class PartController extends Controller
                 'search_column' => $search_column,
                 'search_category' => $search_category,
                 'categoriesForCategoriesTable' => $categoriesForCategoriesTable,
+                'mouserEnabled' => $mouserEnabled,
+                'hasMouserKey' => $hasMouserKey,
                 // These are sent to extract clear names from foreign keys for the dropdown menus in the table
                 //TODO Seems redundant, check this out
                 'categories' => $categories,

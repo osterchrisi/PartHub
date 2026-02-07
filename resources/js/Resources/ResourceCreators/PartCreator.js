@@ -106,6 +106,10 @@ class PartCreator extends ResourceCreator {
                 .catch(error => console.error('Error fetching categories:', error));
         }
 
+        // Mouser tab access control based on user settings
+        this.syncMouserTabAccess();
+
+
         // Reset flags
         this.skipDropdownPopulation = false;
         this.dropdownManager.categoryCreated = false;
@@ -409,6 +413,51 @@ class PartCreator extends ResourceCreator {
 
         return s;
     }
+
+    syncMouserTabAccess() {
+        const $section = $('#mouserSearchSection');
+        const enabled = $section.data('mouser-enabled') === 1 || $section.data('mouser-enabled') === '1';
+        const hasKey = $section.data('mouser-has-key') === 1 || $section.data('mouser-has-key') === '1';
+
+        const $btn = $('#mouserSearchButton');
+        const $input = $('#mouserPartName');
+        const $spinner = $('#mouserLoadingSpinner');
+        const $results = $('#mouserSearchResults');
+
+        // reset
+        $spinner.addClass('d-none');
+        $results.empty();
+
+        if (enabled && hasKey) {
+            $btn.prop('disabled', false).removeClass('disabled');
+            $input.prop('disabled', false).attr('placeholder', 'Search Part on Mouser');
+            return;
+        }
+
+        // Mouser not usable: allow clicking the tab, but show CTA panel instead of input usage
+        $btn.prop('disabled', false).removeClass('disabled');
+        $input.prop('disabled', true);
+
+        const cta = !enabled
+            ? { text: 'Enable Mouser Search', href: '/user-settings' }
+            : { text: 'Add Mouser API key', href: '/user-settings' };
+
+        const msg = !enabled
+            ? 'Mouser Search is disabled in your settings.'
+            : 'Mouser Search is enabled, but no API key is stored.';
+
+        $input.attr('placeholder', msg);
+
+        $results.html(`
+        <div class="alert alert-secondary d-flex justify-content-between align-items-center mt-3">
+            <div>${msg}</div>
+            <a class="btn btn-sm btn-primary" href="${cta.href}" target="_blank" rel="noopener">
+                ${cta.text}
+            </a>
+        </div>
+    `);
+    }
+
 
 
 }

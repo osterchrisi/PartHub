@@ -21,7 +21,8 @@
         </div>
 
         <!-- Mouser Search Section (Initially Hidden) -->
-        <div id="mouserSearchSection">
+        <div id="mouserSearchSection" data-mouser-enabled="{{ $mouserEnabled ? '1' : '0' }}"
+            data-mouser-has-key="{{ $hasMouserKey ? '1' : '0' }}">
             <input type="text" class="form-control" id="mouserPartName" placeholder="Search Part on Mouser">
             <!-- Spinner container -->
             <div id="mouserLoadingSpinner" class="d-none text-center">
