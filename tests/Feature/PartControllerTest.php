@@ -159,14 +159,14 @@ class PartControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // default is false, but make it explicit
         UserSetting::updateOrCreate(
             ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
             ['setting_value' => 'false']
         );
 
         $this->get('/search-mouser-part/asdf')
-            ->assertStatus(403);
+            ->assertStatus(403)
+            ->assertJson(['message' => 'Mouser search is disabled in your settings.']);
     }
 
     public function test_mouser_search_returns_403_if_no_api_key_set(): void
@@ -186,10 +186,11 @@ class PartControllerTest extends TestCase
         );
 
         $this->get('/search-mouser-part/asdf')
-            ->assertStatus(403);
+            ->assertStatus(403)
+            ->assertJson(['message' => 'No Mouser API key set.']);
     }
 
-    public function test_mouser_search_returns_422_if_mouser_returns_errors(): void
+    public function test_mouser_search_returns_422_with_rewritten_message_if_api_key_invalid(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -221,7 +222,66 @@ class PartControllerTest extends TestCase
 
         $this->get('/search-mouser-part/asdf')
             ->assertStatus(422)
-            ->assertJsonStructure(['message']);
+            ->assertJson(['message' => 'Your Mouser API key is invalid. Please check it in User Settings.']);
+    }
+
+    public function test_mouser_search_returns_422_with_original_message_for_other_mouser_errors(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
+            ['setting_value' => 'true']
+        );
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_api_key'],
+            ['setting_value' => Crypt::encryptString('validkey')]
+        );
+
+        $this->mock(MouserApiService::class, function ($mock) {
+            $mock->shouldReceive('searchPartNumber')
+                ->once()
+                ->andReturn([
+                    'Errors' => [
+                        [
+                            'Message' => 'Some other Mouser error.',
+                            'PropertyName' => 'mouserPartNumber',
+                        ]
+                    ],
+                ]);
+        });
+
+        $this->get('/search-mouser-part/asdf')
+            ->assertStatus(422)
+            ->assertJson(['message' => 'Some other Mouser error.']);
+    }
+
+    public function test_mouser_search_returns_502_if_service_throws(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_enabled'],
+            ['setting_value' => 'true']
+        );
+
+        UserSetting::updateOrCreate(
+            ['user_id_fk' => $user->id, 'setting_name' => 'mouser_api_key'],
+            ['setting_value' => Crypt::encryptString('validkey')]
+        );
+
+        $this->mock(MouserApiService::class, function ($mock) {
+            $mock->shouldReceive('searchPartNumber')
+                ->once()
+                ->andThrow(new \Exception('boom'));
+        });
+
+        $this->get('/search-mouser-part/asdf')
+            ->assertStatus(502)
+            ->assertJson(['message' => 'Mouser request failed. Check your API key and try again.']);
     }
 
     public function test_mouser_search_returns_results_on_success(): void
@@ -261,15 +321,11 @@ class PartControllerTest extends TestCase
     public function test_mouser_api_key_cannot_be_empty(): void
     {
         $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $this->actingAs($user)->post('/settings/mouser_api_key', [
+        $this->post('/settings/mouser_api_key', [
             'value' => '',
-        ])->assertStatus(422);
+        ])->assertStatus(422)
+            ->assertJson(['message' => 'API key cannot be empty']);
     }
-
-
-
-
-
-
 }
