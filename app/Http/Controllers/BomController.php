@@ -25,7 +25,7 @@ class BomController extends Controller
 
     private static $nice_bom_list_table_headers = ['BOM Name', 'Description', 'ID'];
 
-    private static $bom_detail_table_headers = ['part_name', 'element_quantity', 'stock_available', 'can_build'];
+    private static $bom_detail_table_headers = ['part_name', 'quantity', 'stock_available', 'can_build'];
 
     private static $nice_bom_detail_table_headers = ['Part Name', 'Quantity needed', 'Total stock available', 'Can build'];
 

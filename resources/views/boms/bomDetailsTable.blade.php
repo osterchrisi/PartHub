@@ -27,11 +27,11 @@
                 @php
                     $part_id = $row->part->part_id;
                     $part_name = $row->part->part_name;
-                    $bom_elements_id = $row->bom_elements_id;
+                    $bom_element_id = $row->bom_revision_element_id;
                     $stock_levels = StockLevel::getStockLevelsByPartID($part_id);
                     $total_stock = \calculateTotalStock($stock_levels);
                 @endphp
-                <tr data-part-id="{{ $row->part->part_id }}" data-bom-element-id="{{ $bom_elements_id }}">
+                <tr data-part-id="{{ $row->part->part_id }}" data-bom-element-id="{{ $bom_element_id }}">
                     @foreach ($db_columns as $column_data)
                         @if ($column_data == 'stock_available')
                             <td style="text-align:right">
@@ -41,11 +41,11 @@
                                     data-bs-content="{{ \buildHTMLTable(['location_name', 'stock_level_quantity'], ['Location', 'Quantity'], $stock_levels) }}"
                                     data-bs-sanitize="false" href="#">{{ $total_stock }}</a>
                             </td>
-                        @elseif ($column_data == 'element_quantity')
+                        @elseif ($column_data == 'quantity')
                             {{-- Quantity Needed --}}
-                            <td style="text-align:right" class="editable editable-text" data-id="{{ $bom_elements_id }}"
-                                data-column="{{ $column_data }}" data-table_name="bom_elements"
-                                data-id_field="bom_elements_id">
+                            <td style="text-align:right" class="editable editable-text" data-id="{{ $bom_element_id }}"
+                                data-column="{{ $column_data }}" data-table_name="bom_revision_elements"
+                                data-id_field="bom_revision_elements_id">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''" alignment="right">
                                     <x-tables.edit-pen />
                                 </x-tables.td-editable-flexbox>
@@ -53,8 +53,8 @@
                         @elseif ($column_data == 'can_build')
                             @php                          
                             // This if statement is here in case someone changes the Quantity Needed to 0...
-                            if ($row->element_quantity != 0) {
-                                $can_build = floor($total_stock / $row->element_quantity);
+                            if ($row->quantity != 0) {
+                                $can_build = floor($total_stock / $row->quantity);
                             }
                             else {
                                 $can_build = 0;
