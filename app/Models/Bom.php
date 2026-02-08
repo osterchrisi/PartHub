@@ -24,6 +24,12 @@ class Bom extends Model
         return $this->belongsTo(User::class, 'bom_owner_u_fk');
     }
 
+    public function currentRevision()
+    {
+        return $this->belongsTo(BomRevision::class, 'current_revision_id', 'bom_revision_id');
+    }
+
+
     /**
      * Search for BOMs based on a search term, limited to the BOMs owned by the authenticated user.
      *
@@ -35,7 +41,7 @@ class Bom extends Model
         $user_id = Auth::user()->id;
 
         $results = Bom::select('bom_id', 'bom_name', 'bom_description')
-            ->where('bom_name', 'LIKE', '%'.$search_term.'%')
+            ->where('bom_name', 'LIKE', '%' . $search_term . '%')
             ->where('bom_owner_u_fk', $user_id)
             ->get();
 

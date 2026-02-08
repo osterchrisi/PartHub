@@ -93,7 +93,21 @@ class BomController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
-        $bom_elements = BomElements::getBomElements($bom_id);
+        // $bom_elements = BomElements::getBomElements($bom_id);
+        // Prefer revisions
+        $bom->load('currentRevision');
+
+        if (!$bom->currentRevision) {
+            // Safety fallback (in case some BOMs didn't backfill correctly)
+            $bom_elements = BomElements::getBomElements($bom_id);
+        }
+        else {
+            $bom_elements = $bom->currentRevision
+                ->elements()
+                ->with('part')
+                ->get();
+        }
+
         $bom_runs = BomRun::getBomRunsByBomId($bom_id);
 
         return view(
