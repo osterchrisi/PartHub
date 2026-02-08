@@ -18,8 +18,7 @@
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
             {{-- BOM Edit Toolbar --}}
-            <div class="d-flex align-items-center gap-2 mb-2" id="bomEditorToolbar"
-                data-bom-id="{{ request()->route('id') ?? '' }}">
+            <div class="d-flex align-items-center gap-2 mb-2" id="bomEditorToolbar" data-bom-id="{{ $bom_id }}">
                 <button class="btn btn-sm btn-outline-primary" id="bomEditBtn" type="button">
                     Edit BOM
                 </button>

@@ -1,3 +1,5 @@
+import { updateInfoWindow } from "./custom";
+
 export class BomEditor {
     constructor() {
         this.draft = null;
@@ -211,10 +213,37 @@ export class BomEditor {
     }
 
     saveDraft() {
-        // Phase A: no backend yet
-        console.log('BOM editor draft payload:', this.draft);
-        alert('Save not wired yet. Draft payload logged to console.');
+        const bomId = this.draft?.bom_id;
+        if (!bomId) {
+            alert('Missing bom_id. Cannot save.');
+            return;
+        }
+
+        const token = $('input[name="_token"]').attr('value');
+
+        $.ajax({
+            url: `/bom/${bomId}/commit`,
+            type: 'POST',
+            headers: { 'X-CSRF-TOKEN': token },
+            data: {
+                lines: this.draft.lines.map(l => ({
+                    part_id: l.part_id,
+                    quantity: l.quantity,
+                    refdes: l.refdes || null
+                }))
+            },
+            success: () => {
+                this.exitEditMode();
+                // Refresh right panel HTML
+                updateInfoWindow('bom', bomId);
+            },
+            error: (xhr) => {
+                console.error(xhr);
+                alert(xhr.responseJSON?.error || xhr.responseJSON?.message || 'Save failed.');
+            }
+        });
     }
+
 
     escapeHtml(str) {
         return String(str)

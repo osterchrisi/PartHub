@@ -1,9 +1,7 @@
 export { InlineTableCellEditor };
-import { updateInfoWindow } from "../custom";
 import { CategoryTableManager } from "./CategoriesTableManager";
 import { TableManager } from "./TableManager";
 import { TableRowManager } from "./TableRowManager";
-import { FormValidator } from "../FormValidator";
 
 class InlineTableCellEditor {
     constructor() {

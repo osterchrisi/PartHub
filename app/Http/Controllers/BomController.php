@@ -11,6 +11,7 @@ use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BomController extends Controller
@@ -39,7 +40,7 @@ class BomController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * The big table containing all BOMs
      */
     public static function index(Request $request)
     {
@@ -70,6 +71,11 @@ class BomController extends Controller
         }
     }
 
+    /**
+     * Detail view of a single BOM in the info window
+     * @param mixed $bom_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public static function show($bom_id)
     {
         $bom = Bom::find($bom_id);
@@ -92,6 +98,7 @@ class BomController extends Controller
         return view(
             'boms.showBom',
             [
+                'bom_id' => $bom_id,
                 'bom_name' => $bom_name,
                 'bom_description' => $bom_description,
                 'bom_elements' => $bom_elements,
@@ -211,5 +218,61 @@ class BomController extends Controller
             // Set error flash message
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function commit(Request $request, $id)
+    {
+        $bom = Bom::find($id);
+        if (!$bom)
+            abort(404, 'BOM not found.');
+        if (Auth::id() !== $bom->bom_owner_u_fk)
+            abort(403, 'Unauthorized access.');
+
+        $data = $request->validate([
+            'lines' => ['required', 'array'],
+            'lines.*.part_id' => ['required', 'integer'],
+            'lines.*.quantity' => ['required', 'integer', 'min:1'],
+            'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        // Merge duplicates server-side (by part_id)
+        $merged = [];
+        foreach ($data['lines'] as $line) {
+            $pid = (int) $line['part_id'];
+            $qty = (int) $line['quantity'];
+            if (!isset($merged[$pid])) {
+                $merged[$pid] = ['part_id_fk' => $pid, 'element_quantity' => 0];
+            }
+            $merged[$pid]['element_quantity'] += $qty;
+        }
+
+        // Ownership check for parts
+        $partIds = array_keys($merged);
+        $ownedCount = \App\Models\Part::whereIn('part_id', $partIds)
+            ->where('part_owner_u_fk', Auth::id())
+            ->count();
+
+        if ($ownedCount !== count($partIds)) {
+            return response()->json(['error' => 'One or more parts are not owned by the current user.'], 422);
+        }
+
+        DB::transaction(function () use ($id, $merged) {
+            DB::table('bom_elements')->where('bom_id_fk', $id)->delete();
+
+            $rows = [];
+            foreach ($merged as $row) {
+                $rows[] = [
+                    'bom_id_fk' => $id,
+                    'part_id_fk' => $row['part_id_fk'],
+                    'element_quantity' => $row['element_quantity'],
+                ];
+            }
+
+            if (!empty($rows)) {
+                DB::table('bom_elements')->insert($rows);
+            }
+        });
+
+        return response()->json(['status' => 'success']);
     }
 }

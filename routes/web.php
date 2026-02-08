@@ -81,7 +81,7 @@ Route::controller(BomController::class)->group(function () {
     Route::get('/bom.import-form', function () {
         return view('boms.import-form', ['title' => 'Import BOM']);
     })->middleware(['auth', 'verified'])->name('bom import');
-
+    Route::post('/bom/{id}/commit', [BomController::class, 'commit'])->middleware(['auth','verified']);
 });
 
 // * Location Routes
