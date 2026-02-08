@@ -7,6 +7,7 @@ import { SupplierRowManager } from "./Tables/SupplierRowManager";
 import { AlternativesRowManager } from "./Tables/AlternativesRowManager";
 import { TableManager } from "./Tables/TableManager";
 import { DataFetchService } from "./Services/DataFetchService";
+import { BomEditor } from "./BomEditor";
 
 import {
     bootstrapBomDetailsTable,
@@ -114,6 +115,9 @@ class InfoWindow {
                 bootstrapBomDetailsTable();
                 this.allowHtmlTableElementsInPopover();
                 this.initializeBomDetailPopover();
+
+                // Mount BOM editor
+                new BomEditor().mount();
                 break;
             case 'supplier':
                 $('#supplierDetailsTable').bootstrapTable({});

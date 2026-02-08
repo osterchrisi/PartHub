@@ -20,6 +20,11 @@ class InlineTableCellEditor {
         $(document).off('click', '.edit-pen');
         $(document).on('click', '.edit-pen', (event) => {
             event.preventDefault();
+            // Disable Inline Editing during BOM editing
+            if ($('#info-window').hasClass('bom-editing')) {
+                return;
+            }
+
             const cell = $(event.currentTarget).closest('.editable');
             if (cell.hasClass('editing')) {
                 return;
