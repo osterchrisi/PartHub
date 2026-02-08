@@ -45,7 +45,7 @@
                             {{-- Quantity Needed --}}
                             <td style="text-align:right" class="editable editable-text" data-id="{{ $bom_element_id }}"
                                 data-column="{{ $column_data }}" data-table_name="bom_revision_elements"
-                                data-id_field="bom_revision_elements_id">
+                                data-id_field="bom_revision_element_id">
                                 <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''" alignment="right">
                                     <x-tables.edit-pen />
                                 </x-tables.td-editable-flexbox>
