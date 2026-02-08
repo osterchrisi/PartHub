@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Bom
+ *
+ * Represents a logical Bill of Materials owned by a user.
+ * Acts as a stable container that points to the currently active BOM revision
+ * via `current_revision_id`.
+ *
+ * A BOM itself does not contain line items directly.
+ */
 class Bom extends Model
 {
     use HasFactory;

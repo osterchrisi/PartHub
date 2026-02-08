@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * BomRun
+ *
+ * Records a build/assembly event of a BOM.
+ * References the exact BOM revision that was used for the build.
+ *
+ * This is an append-only log.
+ */
 class BomRun extends Model
 {
     use HasFactory;

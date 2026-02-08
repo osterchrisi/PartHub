@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * BomElements (LEGACY)
+ *
+ * Legacy mutable BOM line table used before revisioned BOMs existed.
+ * Still written to by the editor during transition, but no longer read.
+ *
+ * Scheduled for removal at some point in the future.
+ */
 class BomElements extends Model
 {
     use HasFactory;
