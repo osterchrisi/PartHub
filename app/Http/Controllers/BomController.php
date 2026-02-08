@@ -257,19 +257,15 @@ class BomController extends Controller
         }
 
         DB::transaction(function () use ($id, $merged) {
-            DB::table('bom_elements')->where('bom_id_fk', $id)->delete();
+            BomElements::where('bom_id_fk', $id)->delete();
 
-            $rows = [];
             foreach ($merged as $row) {
-                $rows[] = [
+                BomElements::create([
                     'bom_id_fk' => $id,
                     'part_id_fk' => $row['part_id_fk'],
                     'element_quantity' => $row['element_quantity'],
-                ];
-            }
-
-            if (!empty($rows)) {
-                DB::table('bom_elements')->insert($rows);
+                    'bom_element_owner_u_fk' => Auth::id(),
+                ]);
             }
         });
 

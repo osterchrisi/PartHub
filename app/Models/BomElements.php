@@ -17,6 +17,7 @@ class BomElements extends Model
         'bom_id_fk',
         'part_id_fk',
         'element_quantity',
+        'bom_element_owner_u_fk',
     ];
 
     public function part()
