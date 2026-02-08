@@ -1,8 +1,10 @@
 import { updateInfoWindow } from "./custom";
+import { DataFetchService } from "./Services/DataFetchService";
 
 export class BomEditor {
     constructor() {
         this.draft = null;
+        this.partsIndex = null; // part_id -> part_name
     }
 
     mount() {
@@ -31,7 +33,6 @@ export class BomEditor {
     }
 
     enterEditMode() {
-        // Build draft from DOM
         this.draft = this.buildDraftFromDom();
 
         // Toggle UI
@@ -42,12 +43,40 @@ export class BomEditor {
         $('#bomEditBtn').addClass('d-none');
         $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
 
-        // Render editor
-        this.renderEditor();
+        // Show a tiny loading placeholder so UI doesn't feel dead
+        $('#bomEditorContainer').html(`
+            <div class="p-2 text-muted">
+                <small>Loading parts…</small>
+            </div>
+        `);
+
+        // Load parts index once per edit session
+        this.partsIndex = null;
+
+        DataFetchService.getParts().done(parts => {
+            this.partsIndex = {};
+            parts.forEach(p => {
+                this.partsIndex[p.part_id] = p.part_name;
+            });
+
+            // Fill missing names in draft (important if DOM part_name cell isn't present)
+            this.draft.lines.forEach(l => {
+                if (!l.part_name) l.part_name = this.partsIndex[l.part_id] || '';
+            });
+
+            this.renderEditor();
+        }).fail(() => {
+            $('#bomEditorContainer').html(`
+                <div class="alert alert-danger m-2">
+                    Failed to load parts. Cannot edit BOM.
+                </div>
+            `);
+        });
     }
 
     exitEditMode() {
         this.draft = null;
+        this.partsIndex = null;
 
         $('#info-window').removeClass('bom-editing');
         $('#bomEditorContainer').addClass('d-none').empty();
@@ -58,20 +87,26 @@ export class BomEditor {
     }
 
     buildDraftFromDom() {
-        // Try to get bom_id from toolbar dataset (prefer passing from controller later)
         const bomId = $('#bomEditorToolbar').data('bom-id') || null;
 
         const lines = [];
         $('#BomDetailsTable tbody tr').each((_, tr) => {
             const $tr = $(tr);
 
-            // Your row has data-id = part_id
-            const partId = parseInt($tr.data('id'), 10);
-            if (!partId) return;
+            // Robust extraction:
+            // - row's data-id is part_id in your HTML
+            // - qty cell's data-id is bom_elements_id in your HTML
+            const partId = parseInt(($tr.data('part-id') ?? $tr.data('id')), 10);
+            if (!Number.isInteger(partId) || partId <= 0) return;
 
-            // Qty cell has data-column="element_quantity"
-            const qtyCell = $tr.find('td[data-column="element_quantity"] #contentSpan').first();
-            const qty = qtyCell.length ? parseInt(qtyCell.text().trim(), 10) : NaN;
+            const $qtyTd = $tr.find('td[data-column="element_quantity"]').first();
+            const bomElementId = parseInt(($tr.data('bom-element-id') ?? $qtyTd.data('id')), 10) || null;
+
+            const partName = ($tr.find('td[data-column="part_name"]').text() || '').trim();
+
+            // qty is displayed in #contentSpan (editable cell component)
+            const qtySpan = $qtyTd.find('#contentSpan').first();
+            const qty = qtySpan.length ? parseInt(qtySpan.text().trim(), 10) : NaN;
             if (!Number.isInteger(qty) || qty <= 0) return;
 
             // Merge by part_id (current policy)
@@ -82,8 +117,10 @@ export class BomEditor {
                 lines.push({
                     line_uuid: crypto.randomUUID ? crypto.randomUUID() : `line_${Date.now()}_${Math.random()}`,
                     part_id: partId,
+                    part_name: partName,
                     quantity: qty,
-                    refdes: '' // v1 empty, later editable
+                    refdes: '',
+                    bom_element_id: bomElementId,
                 });
             }
         });
@@ -91,28 +128,37 @@ export class BomEditor {
         return {
             bom_id: bomId,
             base_revision_id: null,
-            lines
+            lines,
         };
     }
 
     renderEditor() {
         const rowsHtml = this.draft.lines.map(line => `
             <tr>
-                <td style="width: 90px;">${line.part_id}</td>
-                <td style="width: 140px;">
+                <td class="text-truncate" style="max-width: 1px;">
+                    ${this.escapeHtml(line.part_name || '')}
+                </td>
+
+                <td style="width: 110px;">
                     <input type="number" min="1" step="1"
-                        class="form-control form-control-sm bom-editor-qty"
+                        class="form-control form-control-sm bom-editor-qty text-end"
                         data-line-uuid="${line.line_uuid}"
                         value="${line.quantity}">
                 </td>
-                <td>
+
+                <td style="min-width: 180px;">
                     <input type="text"
                         class="form-control form-control-sm bom-editor-refdes"
                         data-line-uuid="${line.line_uuid}"
                         value="${this.escapeHtml(line.refdes || '')}"
-                        placeholder="R1,R2,... (optional)">
+                        placeholder="R1,R2,...">
                 </td>
-                <td style="width: 60px;" class="text-end">
+
+                <td style="width: 90px;" class="text-end text-muted">
+                    <small>${line.part_id}</small>
+                </td>
+
+                <td style="width: 54px;" class="text-end">
                     <button type="button" class="btn btn-sm btn-outline-danger bom-editor-remove-line"
                         data-line-uuid="${line.line_uuid}">
                         <i class="bi bi-trash"></i>
@@ -121,38 +167,48 @@ export class BomEditor {
             </tr>
         `).join('');
 
+        const addDisabled = this.partsIndex ? '' : 'disabled';
+
         const html = `
-            <div class="mb-2 d-flex gap-2 align-items-end">
-                <div style="width: 120px;">
+            <div class="row g-2 align-items-end mb-2">
+                <div class="col-12 col-md-3">
                     <label class="form-label mb-1"><small>Part ID</small></label>
                     <input type="number" min="1" step="1" class="form-control form-control-sm" id="bomEditorAddPartId">
                 </div>
-                <div style="width: 120px;">
+
+                <div class="col-6 col-md-2">
                     <label class="form-label mb-1"><small>Qty</small></label>
-                    <input type="number" min="1" step="1" class="form-control form-control-sm" id="bomEditorAddQty" value="1">
+                    <input type="number" min="1" step="1" class="form-control form-control-sm text-end" id="bomEditorAddQty" value="1">
                 </div>
-                <div class="flex-grow-1">
+
+                <div class="col-12 col-md">
                     <label class="form-label mb-1"><small>Refdes (optional)</small></label>
                     <input type="text" class="form-control form-control-sm" id="bomEditorAddRefdes" placeholder="R1,R2,...">
                 </div>
-                <button type="button" class="btn btn-sm btn-outline-primary" id="bomEditorAddLineBtn">
-                    Add line
-                </button>
+
+                <div class="col-12 col-md-auto">
+                    <button type="button" class="btn btn-sm btn-outline-primary w-100" id="bomEditorAddLineBtn" ${addDisabled}>
+                        Add line
+                    </button>
+                </div>
             </div>
 
-            <table class="table table-sm table-hover table-striped" style="font-size:12px">
-                <thead>
-                    <tr>
-                        <th style="width: 90px;">Part ID</th>
-                        <th style="width: 140px;">Qty</th>
-                        <th>Refdes</th>
-                        <th style="width: 60px;"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rowsHtml || `<tr><td colspan="4" class="text-muted">No lines</td></tr>`}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover table-striped align-middle" style="font-size:12px">
+                    <thead>
+                        <tr>
+                            <th>Part Name</th>
+                            <th style="width: 110px;" class="text-end">Qty</th>
+                            <th>Refdes</th>
+                            <th style="width: 90px;" class="text-end">Part ID</th>
+                            <th style="width: 54px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml || `<tr><td colspan="5" class="text-muted">No lines</td></tr>`}
+                    </tbody>
+                </table>
+            </div>
         `;
 
         $('#bomEditorContainer').html(html);
@@ -166,23 +222,25 @@ export class BomEditor {
         if (!Number.isInteger(partId) || partId <= 0) return;
         if (!Number.isInteger(qty) || qty <= 0) return;
 
-        // Merge by part_id
+        if (!this.partsIndex) return; // still loading
+
+        const partName = this.partsIndex[partId] || '';
+
         const existing = this.draft.lines.find(l => l.part_id === partId);
         if (existing) {
             existing.quantity += qty;
-            if (refdes) {
-                existing.refdes = existing.refdes ? `${existing.refdes},${refdes}` : refdes;
-            }
+            if (refdes) existing.refdes = existing.refdes ? `${existing.refdes},${refdes}` : refdes;
+            if (!existing.part_name) existing.part_name = partName;
         } else {
             this.draft.lines.push({
                 line_uuid: crypto.randomUUID ? crypto.randomUUID() : `line_${Date.now()}_${Math.random()}`,
                 part_id: partId,
+                part_name: partName,
                 quantity: qty,
-                refdes
+                refdes,
             });
         }
 
-        // Reset quick-add inputs
         $('#bomEditorAddPartId').val('');
         $('#bomEditorAddQty').val('1');
         $('#bomEditorAddRefdes').val('');
@@ -200,7 +258,6 @@ export class BomEditor {
         const line = this.draft.lines.find(l => l.line_uuid === lineUuid);
         if (!line) return;
 
-        // keep it strict: qty >= 1
         if (Number.isInteger(qty) && qty >= 1) {
             line.quantity = qty;
         }
@@ -234,7 +291,6 @@ export class BomEditor {
             },
             success: () => {
                 this.exitEditMode();
-                // Refresh right panel HTML
                 updateInfoWindow('bom', bomId);
             },
             error: (xhr) => {
@@ -244,9 +300,8 @@ export class BomEditor {
         });
     }
 
-
     escapeHtml(str) {
-        return String(str)
+        return String(str ?? '')
             .replaceAll('&', '&amp;')
             .replaceAll('<', '&lt;')
             .replaceAll('>', '&gt;')

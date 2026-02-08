@@ -31,7 +31,7 @@
                     $stock_levels = StockLevel::getStockLevelsByPartID($part_id);
                     $total_stock = \calculateTotalStock($stock_levels);
                 @endphp
-                <tr data-id="{{ $row->part->part_id }}">
+                <tr data-part-id="{{ $row->part->part_id }}" data-bom-element-id="{{ $bom_elements_id }}">
                     @foreach ($db_columns as $column_data)
                         @if ($column_data == 'stock_available')
                             <td style="text-align:right">

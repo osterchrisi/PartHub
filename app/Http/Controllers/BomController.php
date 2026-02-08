@@ -6,6 +6,7 @@ use App\Imports\BomImport;
 use App\Models\Bom;
 use App\Models\BomElements;
 use App\Models\BomRun;
+use App\Models\Part;
 use App\Services\CsvImportService;
 use App\Services\StockService;
 use Illuminate\Http\Request;
@@ -228,6 +229,7 @@ class BomController extends Controller
         if (Auth::id() !== $bom->bom_owner_u_fk)
             abort(403, 'Unauthorized access.');
 
+        //TODO: Check if 1000 characters is enough
         $data = $request->validate([
             'lines' => ['required', 'array'],
             'lines.*.part_id' => ['required', 'integer'],
@@ -248,7 +250,7 @@ class BomController extends Controller
 
         // Ownership check for parts
         $partIds = array_keys($merged);
-        $ownedCount = \App\Models\Part::whereIn('part_id', $partIds)
+        $ownedCount = Part::whereIn('part_id', $partIds)
             ->where('part_owner_u_fk', Auth::id())
             ->count();
 
