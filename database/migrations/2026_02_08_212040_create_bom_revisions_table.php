@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('bom_revisions', function (Blueprint $table) {
             $table->id('bom_revision_id');
-            $table->unsignedBigInteger('bom_id_fk');
+            $table->integer('bom_id_fk');
             $table->string('label')->nullable();
             $table->text('note')->nullable();
             $table->unsignedBigInteger('created_by_u_fk')->nullable();

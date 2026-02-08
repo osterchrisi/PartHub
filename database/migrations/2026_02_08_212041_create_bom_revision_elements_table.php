@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('bom_revision_elements', function (Blueprint $table) {
             $table->id('bom_revision_element_id');
             $table->unsignedBigInteger('bom_revision_id_fk');
-            $table->unsignedBigInteger('part_id_fk');
+            $table->integer('part_id_fk');
             $table->unsignedInteger('quantity');
             $table->text('refdes')->nullable();
             $table->uuid('line_uuid')->nullable();
