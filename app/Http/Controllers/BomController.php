@@ -58,7 +58,8 @@ class BomController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        } elseif ($route == 'boms.bomsTable') {
+        }
+        elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
@@ -73,7 +74,7 @@ class BomController extends Controller
     {
         $bom = Bom::find($bom_id);
 
-        if (! $bom) {
+        if (!$bom) {
             abort(404, 'BOM not found.'); // Likely a deleted BOM. Could be handled in frontend: Just select next-best BOM after deletion.
         }
 
@@ -133,6 +134,17 @@ class BomController extends Controller
         // Iterate over each individual BOM
         foreach ($ids as $bom_id) {
 
+            // Check if the user is authorized to access this BOM
+            $bom = Bom::find($bom_id);
+
+            if (!$bom) {
+                abort(404, 'BOM not found.');
+            }
+
+            if (Auth::id() !== $bom->bom_owner_u_fk) {
+                abort(403, 'Unauthorized access.');
+            }
+
             // Retrieve BOM elements (parts)
             $bom_elements = BomElements::getBomElements($bom_id);
 
@@ -151,7 +163,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID '.$bom_id,
+                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
@@ -170,7 +182,7 @@ class BomController extends Controller
         $bom_name = $request->input('bom_name');
         $bom_description = $request->input('bom_description');
 
-        if (! $file) {
+        if (!$file) {
             return response()->json(['error' => 'No file uploaded'], 400);
         }
 
@@ -190,7 +202,7 @@ class BomController extends Controller
             // Persist database changes and set success flash message
             DB::commit();
 
-            return response()->json(['success' => 'BOM "'.$bom_name.'" imported successfully.', 'new_bom_id' => $bom_id]);
+            return response()->json(['success' => 'BOM "' . $bom_name . '" imported successfully.', 'new_bom_id' => $bom_id]);
 
         } catch (\Exception $e) {
             // Roll back database changes made so far

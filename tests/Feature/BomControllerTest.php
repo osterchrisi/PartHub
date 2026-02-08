@@ -156,4 +156,80 @@ class BomControllerTest extends TestCase
         ]);
 
     }
+
+    public function test_assembling_bom_with_insufficient_stock_requests_permission_and_does_not_write(): void
+    {
+        $user = $this->verifiedUser();
+        $this->actingAs($user);
+
+        $location = Location::factory()->create([
+            'location_owner_u_fk' => $user->id,
+        ]);
+
+        $bom = $this->createBomFor($user);
+
+        $part = Part::factory()->create(['part_owner_u_fk' => $user->id]);
+
+        // Needs 10 per build
+        $this->attachBomElement($bom, $part, 10);
+
+        // Only 5 in stock -> assembling 1 will go negative
+        StockLevel::createStockLevelRecord($part->part_id, $location->location_id, 5);
+
+        $resp = $this->postJson('/bom.assemble', [
+            'ids' => [$bom->bom_id],
+            'assemble_quantity' => 1,
+            'from_location' => $location->location_id,
+        ]);
+
+        $resp->assertStatus(200)
+            ->assertJson([
+                'status' => 'permission_requested',
+            ])
+            ->assertJsonStructure([
+                'changes',
+                'negative_stock',
+                'negative_stock_table',
+            ]);
+
+        // Stock must remain unchanged (no writes yet)
+        $this->assertDatabaseHas('stock_levels', [
+            'part_id_fk' => $part->part_id,
+            'location_id_fk' => $location->location_id,
+            'stock_level_quantity' => 5,
+        ]);
+
+        // No bom_run should be created when permission is requested
+        $this->assertDatabaseMissing('bom_runs', [
+            'bom_id_fk' => $bom->bom_id,
+            'bom_run_user_fk' => $user->id,
+        ]);
+    }
+
+    public function test_user_cannot_assemble_someone_elses_bom(): void
+    {
+        $owner = $this->verifiedUser();
+        $intruder = $this->verifiedUser();
+
+        $location = Location::factory()->create([
+            'location_owner_u_fk' => $owner->id,
+        ]);
+
+        $bom = $this->createBomFor($owner);
+
+        $part = Part::factory()->create(['part_owner_u_fk' => $owner->id]);
+        $this->attachBomElement($bom, $part, 1);
+
+        StockLevel::createStockLevelRecord($part->part_id, $location->location_id, 10);
+
+        $resp = $this->actingAs($intruder)->postJson('/bom.assemble', [
+            'ids' => [$bom->bom_id],
+            'assemble_quantity' => 1,
+            'from_location' => $location->location_id,
+        ]);
+
+        $resp->assertStatus(403);
+    }
+
+
 }
