@@ -17,7 +17,36 @@
     <div class="tab-content" id="bomTabsContent">
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
-            @include('boms.bomDetailsTable')
+            {{-- BOM Edit Toolbar --}}
+            <div class="d-flex align-items-center gap-2 mb-2" id="bomEditorToolbar"
+                data-bom-id="{{ request()->route('id') ?? '' }}">
+                <button class="btn btn-sm btn-outline-primary" id="bomEditBtn" type="button">
+                    Edit BOM
+                </button>
+
+                <button class="btn btn-sm btn-secondary d-none" id="bomEditCancelBtn" type="button">
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary d-none" id="bomEditSaveBtn" type="button">
+                    Save
+                </button>
+
+                <small class="text-muted ms-auto d-none" id="bomEditHint">
+                    Editing is local until you hit Save.
+                </small>
+            </div>
+
+            {{-- BOM Editor Container (hidden by default, shown when editing) --}}
+            <div id="bomEditorContainer" class="d-none">
+                {{-- Editor UI will be rendered here by JS --}}
+            </div>
+
+            {{-- Non-editable BOM table --}}
+            <div id="bomDetailsViewContainer">
+                @include('boms.bomDetailsTable')
+            </div>
+
         </div>
 
         <div class="tab-pane fade" id="{{ $tabToggleId2 }}" role="tabpanel" tabindex="0">
