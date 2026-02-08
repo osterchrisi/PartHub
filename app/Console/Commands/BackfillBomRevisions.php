@@ -11,7 +11,7 @@ class BackfillBomRevisions extends Command
      *
      * @var string
      */
-    protected $signature = 'app:backfill-bom-revisions';
+    protected $signature = 'bom:backfill-bom-revisions';
 
     /**
      * The console command description.
@@ -24,45 +24,44 @@ class BackfillBomRevisions extends Command
      * Execute the console command.
      */
     public function handle()
-    public function handle()
-{
-    $boms = \App\Models\Bom::all();
+    {
+        $boms = \App\Models\Bom::all();
 
-    foreach ($boms as $bom) {
-        if ($bom->current_revision_id) {
-            continue; // already backfilled
-        }
-
-        \DB::transaction(function () use ($bom) {
-            $rev = \DB::table('bom_revisions')->insertGetId([
-                'bom_id_fk' => $bom->bom_id,
-                'label' => null,
-                'note' => null,
-                'created_by_u_fk' => $bom->bom_owner_u_fk ?? null,
-                'created_at' => $bom->created_at,   // key requirement
-                'updated_at' => $bom->created_at,
-            ], 'bom_revision_id');
-
-            $elements = \App\Models\BomElements::where('bom_id_fk', $bom->bom_id)->get();
-
-            foreach ($elements as $el) {
-                \DB::table('bom_revision_elements')->insert([
-                    'bom_revision_id_fk' => $rev,
-                    'part_id_fk' => $el->part_id_fk,
-                    'quantity' => (int) $el->element_quantity,
-                    'refdes' => null,
-                    'line_uuid' => null,
-                    'created_at' => $bom->created_at,
-                    'updated_at' => $bom->created_at,
-                ]);
+        foreach ($boms as $bom) {
+            if ($bom->current_revision_id) {
+                continue; // already backfilled
             }
 
-            $bom->current_revision_id = $rev;
-            $bom->save();
-        });
-    }
+            \DB::transaction(function () use ($bom) {
+                $rev = \DB::table('bom_revisions')->insertGetId([
+                    'bom_id_fk' => $bom->bom_id,
+                    'label' => null,
+                    'note' => null,
+                    'created_by_u_fk' => $bom->bom_owner_u_fk ?? null,
+                    'created_at' => $bom->created_at,   // key requirement
+                    'updated_at' => $bom->created_at,
+                ], 'bom_revision_id');
 
-    $this->info('Backfill complete.');
-}
+                $elements = \App\Models\BomElements::where('bom_id_fk', $bom->bom_id)->get();
+
+                foreach ($elements as $el) {
+                    \DB::table('bom_revision_elements')->insert([
+                        'bom_revision_id_fk' => $rev,
+                        'part_id_fk' => $el->part_id_fk,
+                        'quantity' => (int) $el->element_quantity,
+                        'refdes' => null,
+                        'line_uuid' => null,
+                        'created_at' => $bom->created_at,
+                        'updated_at' => $bom->created_at,
+                    ]);
+                }
+
+                $bom->current_revision_id = $rev;
+                $bom->save();
+            });
+        }
+
+        $this->info('Backfill complete.');
+    }
 
 }
