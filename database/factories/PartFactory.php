@@ -7,6 +7,7 @@ use App\Models\Footprint;
 use App\Models\Part;
 use App\Models\Supplier;
 use App\Models\User;
+use App\Models\PartUnit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,7 +30,7 @@ class PartFactory extends Factory
             'part_comment' => $this->faker->sentence,
             'part_category_fk' => Category::factory(),
             'part_footprint_fk' => Footprint::factory(),
-            'part_unit_fk' => 1, // assuming unit 1 exists or change accordingly
+            'part_unit_fk' => PartUnit::factory(),
             'part_owner_u_fk' => User::factory(),
             'part_supplier_fk' => Supplier::factory(),
             'stocklevel_notification_threshold' => 0,
