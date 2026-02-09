@@ -21,7 +21,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +81,9 @@ Route::controller(BomController::class)->group(function () {
     Route::get('/bom.import-form', function () {
         return view('boms.import-form', ['title' => 'Import BOM']);
     })->middleware(['auth', 'verified'])->name('bom import');
-    Route::post('/bom/{id}/commit', [BomController::class, 'commit'])->middleware(['auth','verified']);
+    Route::get('/bom/{id}/editor', [BomController::class, 'editor'])->middleware(['auth', 'verified']);
+    Route::post('/bom/{id}/commit', [BomController::class, 'commit'])->middleware(['auth', 'verified']);
+
 });
 
 // * Location Routes
@@ -171,7 +173,8 @@ Route::get('/signup', function () {
     // TODO: Das geht wahrscheinlich sauberer...
     if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
-    } else {
+    }
+    else {
         return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 })

@@ -15,6 +15,15 @@ use Illuminate\Database\Eloquent\Model;
 class BomRevision extends Model
 {
     use HasFactory;
+    protected $table = 'bom_revisions';
+    protected $primaryKey = 'bom_revision_id';
+
+    protected $fillable = [
+        'bom_id_fk',
+        'label',
+        'note',
+        'created_by_u_fk',
+    ];
 
     public function elements()
     {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Imports\BomImport;
 use App\Models\Bom;
 use App\Models\BomElements;
+use App\Models\BomRevision;
+use App\Models\BomRevisionElement;
 use App\Models\BomRun;
 use App\Models\Part;
 use App\Services\CsvImportService;
@@ -237,29 +239,60 @@ class BomController extends Controller
 
     public function commit(Request $request, $id)
     {
-        $bom = Bom::find($id);
+        $bom = Bom::with('currentRevision')->find($id);
         if (!$bom)
             abort(404, 'BOM not found.');
         if (Auth::id() !== $bom->bom_owner_u_fk)
             abort(403, 'Unauthorized access.');
 
-        //TODO: Check if 1000 characters is enough
         $data = $request->validate([
+            'base_revision_id' => ['required', 'integer'],
             'lines' => ['required', 'array'],
             'lines.*.part_id' => ['required', 'integer'],
             'lines.*.quantity' => ['required', 'integer', 'min:1'],
             'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
+            'lines.*.line_uuid' => ['nullable', 'string', 'max:64'],
         ]);
+
+        $currentRevisionId = (int) ($bom->current_revision_id ?? 0);
+        $baseRevisionId = (int) $data['base_revision_id'];
+
+        // Strict mode: editor must be based on current revision
+        if ($currentRevisionId !== $baseRevisionId) {
+            return response()->json([
+                'error' => 'BOM changed since you opened the editor. Reload and try again.'
+            ], 409);
+        }
 
         // Merge duplicates server-side (by part_id)
         $merged = [];
         foreach ($data['lines'] as $line) {
             $pid = (int) $line['part_id'];
             $qty = (int) $line['quantity'];
+            $ref = trim((string) ($line['refdes'] ?? ''));
+            $uuid = $line['line_uuid'] ?? null;
+
             if (!isset($merged[$pid])) {
-                $merged[$pid] = ['part_id_fk' => $pid, 'element_quantity' => 0];
+                $merged[$pid] = [
+                    'part_id_fk' => $pid,
+                    'quantity' => 0,
+                    'refdes' => '',
+                    'line_uuid' => $uuid,
+                ];
             }
-            $merged[$pid]['element_quantity'] += $qty;
+
+            $merged[$pid]['quantity'] += $qty;
+
+            if ($ref !== '') {
+                $merged[$pid]['refdes'] = $merged[$pid]['refdes'] !== ''
+                    ? ($merged[$pid]['refdes'] . ',' . $ref)
+                    : $ref;
+            }
+
+            // keep first non-null uuid if any
+            if (!$merged[$pid]['line_uuid'] && $uuid) {
+                $merged[$pid]['line_uuid'] = $uuid;
+            }
         }
 
         // Ownership check for parts
@@ -272,19 +305,100 @@ class BomController extends Controller
             return response()->json(['error' => 'One or more parts are not owned by the current user.'], 422);
         }
 
-        DB::transaction(function () use ($id, $merged) {
-            BomElements::where('bom_id_fk', $id)->delete();
+        $newRevisionId = null;
+
+        DB::transaction(function () use ($bom, $merged, &$newRevisionId) {
+            $rev = BomRevision::create([
+                'bom_id_fk' => $bom->bom_id,
+                'label' => null,
+                'note' => null,
+                'created_by_u_fk' => Auth::id(),
+            ]);
+
+            $newRevisionId = $rev->bom_revision_id;
 
             foreach ($merged as $row) {
-                BomElements::create([
-                    'bom_id_fk' => $id,
+                BomRevisionElement::create([
+                    'bom_revision_id_fk' => $newRevisionId,
                     'part_id_fk' => $row['part_id_fk'],
-                    'element_quantity' => $row['element_quantity'],
-                    'bom_element_owner_u_fk' => Auth::id(),
+                    'quantity' => $row['quantity'],
+                    'refdes' => $row['refdes'] !== '' ? $row['refdes'] : null,
+                    'line_uuid' => $row['line_uuid'],
                 ]);
             }
+
+            $bom->current_revision_id = $newRevisionId;
+            $bom->save();
         });
 
-        return response()->json(['status' => 'success']);
+        return response()->json([
+            'status' => 'success',
+            'current_revision_id' => $newRevisionId,
+        ]);
     }
+
+
+    public function editor($id)
+    {
+        $bom = Bom::with(['currentRevision'])->find($id);
+        if (!$bom)
+            abort(404, 'BOM not found.');
+        if (Auth::id() !== $bom->bom_owner_u_fk)
+            abort(403, 'Unauthorized access.');
+
+        $rev = $bom->currentRevision;
+
+        if (!$rev) {
+            // fallback (should be rare after backfill)
+            // TODO: remove after bom_elements deprecation
+            $elements = BomElements::with('part')->where('bom_id_fk', $id)->get();
+
+            $lines = $elements->map(fn($e) => [
+                'part_id' => (int) $e->part_id_fk,
+                'part_name' => $e->part?->part_name ?? '',
+                'quantity' => (int) $e->element_quantity,
+                'refdes' => null,
+                'line_uuid' => null,
+            ])->values();
+
+            return response()->json([
+                'bom' => [
+                    'bom_id' => (int) $bom->bom_id,
+                    'bom_name' => $bom->bom_name,
+                    'bom_description' => $bom->bom_description,
+                ],
+                'revision' => [
+                    'bom_revision_id' => null,
+                    'label' => null,
+                    'created_at' => null,
+                ],
+                'lines' => $lines,
+            ]);
+        }
+
+        $rev->load(['elements.part']);
+
+        $lines = $rev->elements->map(fn($e) => [
+            'part_id' => (int) $e->part_id_fk,
+            'part_name' => $e->part?->part_name ?? '',
+            'quantity' => (int) $e->quantity,
+            'refdes' => $e->refdes,
+            'line_uuid' => $e->line_uuid,
+        ])->values();
+
+        return response()->json([
+            'bom' => [
+                'bom_id' => (int) $bom->bom_id,
+                'bom_name' => $bom->bom_name,
+                'bom_description' => $bom->bom_description,
+            ],
+            'revision' => [
+                'bom_revision_id' => (int) $rev->bom_revision_id,
+                'label' => $rev->label,
+                'created_at' => optional($rev->created_at)->toIso8601String(),
+            ],
+            'lines' => $lines,
+        ]);
+    }
+
 }

@@ -33,46 +33,45 @@ export class BomEditor {
     }
 
     enterEditMode() {
-        this.draft = this.buildDraftFromDom();
+        const bomId = $('#bomEditorToolbar').data('bom-id') || null;
+        if (!bomId) { alert('Missing bom_id'); return; }
 
-        // Toggle UI
+        // Toggle UI early
         $('#info-window').addClass('bom-editing');
         $('#bomDetailsViewContainer').addClass('d-none');
         $('#bomEditorContainer').removeClass('d-none');
-
         $('#bomEditBtn').addClass('d-none');
         $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
 
-        // Show a tiny loading placeholder so UI doesn't feel dead
-        $('#bomEditorContainer').html(`
-            <div class="p-2 text-muted">
-                <small>Loading parts…</small>
-            </div>
-        `);
+        // Load both: editor payload + parts index
+        const payloadReq = $.getJSON(`/bom/${bomId}/editor`);
+        const partsReq = this.loadPartsIndex(); // fires /parts.get
 
-        // Load parts index once per edit session
-        this.partsIndex = null;
+        $.when(payloadReq, partsReq).done((payloadRes) => {
+            // jQuery returns [data, status, xhr] for getJSON in $.when
+            const payload = payloadRes[0];
 
-        DataFetchService.getParts().done(parts => {
-            this.partsIndex = {};
-            parts.forEach(p => {
-                this.partsIndex[p.part_id] = p.part_name;
-            });
+            this.draft = {
+                bom_id: payload.bom.bom_id,
+                base_revision_id: payload.revision.bom_revision_id,
+                lines: payload.lines.map(l => ({
+                    line_uuid: l.line_uuid || (crypto.randomUUID ? crypto.randomUUID() : `line_${Date.now()}_${Math.random()}`),
+                    part_id: l.part_id,
+                    part_name: l.part_name || (this.partsIndex?.[l.part_id] || ''),
+                    quantity: l.quantity,
+                    refdes: l.refdes || '',
+                }))
+            };
 
-            // Fill missing names in draft (important if DOM part_name cell isn't present)
-            this.draft.lines.forEach(l => {
-                if (!l.part_name) l.part_name = this.partsIndex[l.part_id] || '';
-            });
-
-            this.renderEditor();
-        }).fail(() => {
-            $('#bomEditorContainer').html(`
-                <div class="alert alert-danger m-2">
-                    Failed to load parts. Cannot edit BOM.
-                </div>
-            `);
+            this.renderEditor(); // now button can be enabled
+        }).fail((xhr) => {
+            console.error(xhr);
+            alert(xhr?.responseJSON?.error || xhr?.responseJSON?.message || 'Failed to load editor data.');
+            this.exitEditMode();
         });
     }
+
+
 
     exitEditMode() {
         this.draft = null;
@@ -222,6 +221,7 @@ export class BomEditor {
     }
 
     addLineFromInputs() {
+
         const partId = parseInt($('#bomEditorAddPartId').val(), 10);
         const qty = parseInt($('#bomEditorAddQty').val(), 10);
         const refdes = ($('#bomEditorAddRefdes').val() || '').trim();
@@ -229,7 +229,7 @@ export class BomEditor {
         if (!Number.isInteger(partId) || partId <= 0) return;
         if (!Number.isInteger(qty) || qty <= 0) return;
 
-        if (!this.partsIndex) return; // still loading
+        if (!this.partsIndex) { alert('Parts list not loaded yet. Try again.'); return; }
 
         const partName = this.partsIndex[partId] || '';
 
@@ -290,10 +290,12 @@ export class BomEditor {
             type: 'POST',
             headers: { 'X-CSRF-TOKEN': token },
             data: {
+                base_revision_id: this.draft.base_revision_id,
                 lines: this.draft.lines.map(l => ({
                     part_id: l.part_id,
                     quantity: l.quantity,
-                    refdes: l.refdes || null
+                    refdes: l.refdes || null,
+                    line_uuid: l.line_uuid
                 }))
             },
             success: () => {
@@ -315,4 +317,24 @@ export class BomEditor {
             .replaceAll('"', '&quot;')
             .replaceAll("'", '&#039;');
     }
+
+    loadPartsIndex() {
+        // already loading/loaded
+        if (this.partsIndex) return $.Deferred().resolve(this.partsIndex);
+
+        return DataFetchService.getParts().done(parts => {
+            this.partsIndex = {};
+            parts.forEach(p => {
+                this.partsIndex[p.part_id] = p.part_name;
+            });
+
+            // backfill missing names in already loaded draft
+            if (this.draft?.lines?.length) {
+                this.draft.lines.forEach(l => {
+                    if (!l.part_name) l.part_name = this.partsIndex[l.part_id] || '';
+                });
+            }
+        });
+    }
+
 }
