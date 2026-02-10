@@ -149,7 +149,11 @@ class BomController extends Controller
     {
         // Get the input values from the request
         $ids = $request->input('ids');
-        $assemble_quantity = $request->input('assemble_quantity');
+
+        $assemble_quantity = (int) $request->input('assemble_quantity');
+        if ($assemble_quantity < 1)
+            abort(422, 'Invalid assemble quantity.');
+
         $from_location = $request->input('from_location');
 
         // The array for all acquired stock changes to go in
@@ -159,7 +163,7 @@ class BomController extends Controller
         foreach ($ids as $bom_id) {
 
             // Check if the user is authorized to access this BOM
-            $bom = Bom::find($bom_id);
+            $bom = Bom::with(['currentRevision.elements'])->find($bom_id);
 
             if (!$bom) {
                 abort(404, 'BOM not found.');
@@ -170,20 +174,23 @@ class BomController extends Controller
             }
 
             // Retrieve BOM elements (parts)
-            $bom_elements = BomElements::getBomElements($bom_id);
+            // $bom_elements = BomElements::getBomElements($bom_id);
+            $revision = $bom->currentRevision;
+            if (!$revision)
+                abort(500, 'BOM has no current revision.');
+            $revisionId = $revision->bom_revision_id;
 
             // Iterating over BOM elements (parts)
-            foreach ($bom_elements as $element) {
-                $element_quantity = $element->element_quantity;
-                $part_id = $element->part->part_id;
+            foreach ($revision->elements as $element) {
+                $element_quantity = (int) $element->quantity;
+                $part_id = (int) $element->part_id_fk;
                 $reducing_quantity = $assemble_quantity * $element_quantity;
 
-                // Prepare stock change array, one array for each part in the BOM
-                // Stored in an array of arrays
-                $stock_change = [
+                $all_stock_changes[] = [
                     'bom_id' => $bom_id,
+                    'bom_revision_id' => $revisionId,
                     'part_id' => $part_id,
-                    'change' => '-1',
+                    'change' => -1,
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
@@ -191,8 +198,6 @@ class BomController extends Controller
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
-
-                $all_stock_changes[] = $stock_change;
             }
         }
 

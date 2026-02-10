@@ -22,6 +22,7 @@ class StockValidatorService
             'stock_changes.*.status' => 'nullable|string|in:gtg,ntg,stg',       // Optional status with specific values
             'stock_changes.*.to_quantity' => 'nullable|integer',                // Optional integer, can be empty
             'stock_changes.*.from_quantity' => 'nullable|integer',              // Optional integer, can be empty
+            'stock_changes.*.bom_revision_id' => 'nullable|integer',            // Optional integer, can be empty
         ];
 
         $validator = Validator::make($data, $rules);

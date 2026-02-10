@@ -24,7 +24,10 @@ class BomRun extends Model
     protected $fillable = [
         'bom_id_fk',
         'bom_run_quantity',
+        'bom_run_user_fk',
+        'bom_revision_id_fk',
     ];
+
 
     public function bom()
     {
@@ -36,19 +39,22 @@ class BomRun extends Model
         return $this->belongsTo(User::class, 'bom_run_user_fk');
     }
 
-    public static function createBomRun($bom_id, $quantity, $user_id)
+    public static function createBomRun($bom_id, $quantity, $user_id, $bomRevisionId = null)
     {
         $bom_run = new BomRun([
             'bom_id_fk' => $bom_id,
+            'bom_revision_id_fk' => $bomRevisionId,
             'bom_run_quantity' => $quantity,
         ]);
-        $bom_run->bom_run_user_fk = auth()->user()->id;
+
+        // who built it
+        $bom_run->bom_run_user_fk = $user_id;
+        
         $bom_run->save();
 
-        $bom_run_id = $bom_run->bom_run_id;
-
-        return $bom_run_id;
+        return $bom_run->bom_run_id;
     }
+
 
     public static function getBomRunsByBomId($bom_id)
     {

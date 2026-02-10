@@ -73,7 +73,7 @@ class StockService
         }
 
         // * Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (! empty($negative_stock)) {
+        if (!empty($negative_stock)) {
             $response = $this->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);
@@ -92,6 +92,7 @@ class StockService
      */
     public function processStockChanges($changes)
     {
+
         $user = Auth::user();
         $user_id = $user->id;
         $result = [];
@@ -137,14 +138,16 @@ class StockService
             if ($bom_id != null) {
                 $processed_boms[] = [
                     'bom_id' => $bom_id,
+                    'bom_revision_id' => $approved_change['bom_revision_id'] ?? null,
                     'assemble_quantity' => $approved_change['assemble_quantity'],
                 ];
-            } else {
+            }
+            else {
                 $processed_boms = [];
             }
         }
 
-        if (! empty($processed_boms)) {
+        if (!empty($processed_boms)) {
             $this->processBomRuns($processed_boms, $user_id);
         }
 
@@ -167,7 +170,7 @@ class StockService
         // Extract processed BOM ID(s)
         foreach ($processed_boms as $processed_bom) {
             $bomId = $processed_bom['bom_id'];
-            if (! in_array($bomId, $unique_bom_ids)) {
+            if (!in_array($bomId, $unique_bom_ids)) {
                 $unique_processed_boms[] = $processed_bom;
                 $unique_bom_ids[] = $bomId;
             }
@@ -176,8 +179,9 @@ class StockService
         // * Create BOM Run entries
         foreach ($unique_processed_boms as $unique_processed_bom) {
             $processed_bom = $unique_processed_bom['bom_id'];
+            $revId = $unique_processed_bom['bom_revision_id'] ?? null;
             $quantity = $unique_processed_bom['assemble_quantity'];
-            BomRun::createBomRun($processed_bom, $quantity, $user_id);
+            BomRun::createBomRun($processed_bom, $quantity, $user_id, $revId);
         }
     }
 
@@ -197,11 +201,13 @@ class StockService
         $from_location = $requested_change['from_location'];
         $status = $requested_change['status'] ?? null;
         $bom_id = $requested_change['bom_id'] ?? null;
+        $bom_revision_id = $requested_change['bom_revision_id'] ?? null;
         $assemble_quantity = $requested_change['assemble_quantity'] ?? null;
 
         return [
             'change' => $change,
             'bom_id' => $bom_id,
+            'bom_revision_id' => $bom_revision_id,
             'assemble_quantity' => $assemble_quantity,
             'part_id' => $part_id,
             'quantity' => $quantity,
@@ -247,22 +253,26 @@ class StockService
             $new_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
             $status = 'gtg';
-        } elseif ($change == -1) {
+        }
+        elseif ($change == -1) {
             $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
 
             if ($new_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-            } else {
+            }
+            else {
                 $status = 'gtg';
             }
-        } elseif ($change == 0) {
+        }
+        elseif ($change == 0) {
             $to_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $from_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
 
             if ($from_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-            } else {
+            }
+            else {
                 $status = 'gtg';
             }
 
@@ -294,13 +304,15 @@ class StockService
      */
     public function generateStockShortageResponse($negative_stock, $changes, $change)
     {
-        if (! is_null($changes[0]['bom_id'])) {
+        if (!is_null($changes[0]['bom_id'])) {
             $column_names = ['bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity'];
             $nice_columns = ['BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity'];
-        } else {
+        }
+        else {
             if ($change == 0) {
                 $column_names = ['part_id', 'quantity', 'from_location', 'from_quantity'];
-            } else {
+            }
+            else {
                 $column_names = ['part_id', 'quantity', 'from_location', 'new_quantity'];
             }
 
