@@ -49,7 +49,7 @@ class BomRun extends Model
 
         // who built it
         $bom_run->bom_run_user_fk = $user_id;
-        
+
         $bom_run->save();
 
         return $bom_run->bom_run_id;
@@ -60,6 +60,7 @@ class BomRun extends Model
     {
         return self::with('user') // Eager load the user relationship
             ->where('bom_id_fk', $bom_id)
+            ->orderByDesc('bom_run_datetime')
             ->get();
     }
 }
