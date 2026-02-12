@@ -55,7 +55,7 @@ export class BomEditor {
                 bom_id: payload.bom.bom_id,
                 base_revision_id: payload.revision.bom_revision_id,
                 lines: payload.lines.map(l => ({
-                    line_uuid: l.line_uuid || (crypto.randomUUID ? crypto.randomUUID() : `line_${Date.now()}_${Math.random()}`),
+                    line_uuid: this.makeUuid(),
                     part_id: l.part_id,
                     part_name: l.part_name || (this.partsIndex?.[l.part_id] || ''),
                     quantity: l.quantity,
@@ -121,7 +121,7 @@ export class BomEditor {
                 existing.quantity += qty;
             } else {
                 lines.push({
-                    line_uuid: crypto.randomUUID ? crypto.randomUUID() : `line_${Date.now()}_${Math.random()}`,
+                    line_uuid: this.makeUuid(),
                     part_id: partId,
                     part_name: partName,
                     quantity: qty,
@@ -240,7 +240,7 @@ export class BomEditor {
             if (!existing.part_name) existing.part_name = partName;
         } else {
             this.draft.lines.push({
-                line_uuid: crypto.randomUUID ? crypto.randomUUID() : `line_${Date.now()}_${Math.random()}`,
+                line_uuid: this.makeUuid(),
                 part_id: partId,
                 part_name: partName,
                 quantity: qty,
@@ -336,5 +336,20 @@ export class BomEditor {
             }
         });
     }
+
+    makekUuid() {
+        // Secure contexts
+        if (window.crypto?.randomUUID) {
+            return window.crypto.randomUUID();
+        }
+
+        // RFC4122 v4 polyfill (36 chars) - essentially for local testing
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
 
 }
