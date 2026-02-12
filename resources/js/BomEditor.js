@@ -337,7 +337,7 @@ export class BomEditor {
         });
     }
 
-    makekUuid() {
+    makeUuid() {
         // Secure contexts
         if (window.crypto?.randomUUID) {
             return window.crypto.randomUUID();
