@@ -62,32 +62,34 @@ class BackfillBomRevisions extends Command
             });
         }
 
-        // This is for already existing BOM revisions that didn't get a revision number assigned
-        // if the migration was run after some revisions were created)
+        // Optional repair: only if some revisions still have NULL revision_number
+        $needsRepair = \DB::table('bom_revisions')->whereNull('revision_number')->exists();
 
-        $bomIds = \DB::table('bom_revisions')
-            ->select('bom_id_fk')
-            ->distinct()
-            ->pluck('bom_id_fk');
+        if ($needsRepair) {
+            $bomIds = \DB::table('bom_revisions')
+                ->select('bom_id_fk')
+                ->distinct()
+                ->pluck('bom_id_fk');
 
-        foreach ($bomIds as $bomId) {
-            \DB::transaction(function () use ($bomId) {
-                $revs = \DB::table('bom_revisions')
-                    ->where('bom_id_fk', $bomId)
-                    ->orderBy('created_at')
-                    ->orderBy('bom_revision_id')
-                    ->lockForUpdate()
-                    ->get(['bom_revision_id']);
+            foreach ($bomIds as $bomId) {
+                \DB::transaction(function () use ($bomId) {
+                    $revIds = \DB::table('bom_revisions')
+                        ->where('bom_id_fk', $bomId)
+                        ->orderBy('created_at')
+                        ->orderBy('bom_revision_id')
+                        ->lockForUpdate()
+                        ->pluck('bom_revision_id');
 
-                $i = 1;
-                foreach ($revs as $rev) {
-                    \DB::table('bom_revisions')
-                        ->where('bom_revision_id', $rev->bom_revision_id)
-                        ->update(['revision_number' => $i]);
-                    $i++;
-                }
-            });
+                    $i = 1;
+                    foreach ($revIds as $revId) {
+                        \DB::table('bom_revisions')
+                            ->where('bom_revision_id', $revId)
+                            ->update(['revision_number' => $i++]);
+                    }
+                });
+            }
         }
+
 
         $this->info('Backfill complete.');
     }

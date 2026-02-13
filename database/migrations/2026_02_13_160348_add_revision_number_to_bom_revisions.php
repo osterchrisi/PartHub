@@ -15,19 +15,24 @@ return new class extends Migration {
         $bomIds = DB::table('bom_revisions')->select('bom_id_fk')->distinct()->pluck('bom_id_fk');
 
         foreach ($bomIds as $bomId) {
-            $revs = DB::table('bom_revisions')
+            $revIds = \DB::table('bom_revisions')
                 ->where('bom_id_fk', $bomId)
                 ->orderBy('created_at')
                 ->orderBy('bom_revision_id')
                 ->pluck('bom_revision_id');
 
             $n = 1;
-            foreach ($revs as $revId) {
+            foreach ($revIds as $revId) {
                 DB::table('bom_revisions')
                     ->where('bom_revision_id', $revId)
                     ->update(['revision_number' => $n++]);
             }
         }
+
+        // Safety: ensure nothing is left NULL (shouldn't happen, but avoids weird states)
+        DB::table('bom_revisions')
+            ->whereNull('revision_number')
+            ->update(['revision_number' => 1]);
 
         Schema::table('bom_revisions', function (Blueprint $table) {
             $table->unsignedInteger('revision_number')->nullable(false)->change();
@@ -42,5 +47,4 @@ return new class extends Migration {
             $table->dropColumn('revision_number');
         });
     }
-
 };

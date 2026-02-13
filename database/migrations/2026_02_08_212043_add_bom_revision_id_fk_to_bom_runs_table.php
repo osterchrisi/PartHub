@@ -30,6 +30,7 @@ return new class extends Migration {
     {
         Schema::table('bom_runs', function (Blueprint $table) {
             $table->dropForeign(['bom_revision_id_fk']);
+            $table->dropIndex(['bom_id_fk', 'bom_revision_id_fk']);
             $table->dropColumn('bom_revision_id_fk');
         });
     }
