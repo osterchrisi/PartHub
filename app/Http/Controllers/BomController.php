@@ -313,8 +313,15 @@ class BomController extends Controller
         $newRevisionId = null;
 
         DB::transaction(function () use ($bom, $merged, &$newRevisionId) {
+
+            $nextNum = (int) BomRevision::where('bom_id_fk', $bom->bom_id)
+                ->lockForUpdate()
+                ->max('revision_number');
+            $nextNum++;
+
             $rev = BomRevision::create([
                 'bom_id_fk' => $bom->bom_id,
+                'revision_number' => $nextNum,
                 'label' => null,
                 'note' => null,
                 'created_by_u_fk' => Auth::id(),
