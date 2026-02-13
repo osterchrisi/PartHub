@@ -20,6 +20,7 @@ class BomRevision extends Model
 
     protected $fillable = [
         'bom_id_fk',
+        'revision_number',
         'label',
         'note',
         'created_by_u_fk',

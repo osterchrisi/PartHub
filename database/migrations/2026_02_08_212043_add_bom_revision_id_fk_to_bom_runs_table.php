@@ -18,7 +18,7 @@ return new class extends Migration {
                 ->on('bom_revisions')
                 ->nullOnDelete();
 
-            $table->index(['bom_id_fk', 'bom_revision_id_fk']);
+            $table->index(['bom_id_fk', 'bom_revision_id_fk'], 'idx_bom_runs_bom_and_rev');
         });
 
     }
