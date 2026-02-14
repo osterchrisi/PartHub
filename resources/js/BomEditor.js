@@ -30,6 +30,16 @@ export class BomEditor {
         });
 
         $(document).off('click', '#bomEditorAddLineBtn').on('click', '#bomEditorAddLineBtn', () => this.addLineFromInputs());
+
+
+        // Quick and dirty to view BOM revisions
+        //TODO: Refactor and put into right place
+        $(document).off('change', '#bomRevisionPicker').on('change', '#bomRevisionPicker', function () {
+            const bomId = $(this).data('bom-id');
+            const revId = $(this).val();
+            updateInfoWindow('bom', `${bomId}?rev=${revId}`);
+        });
+
     }
 
     enterEditMode() {
@@ -350,6 +360,4 @@ export class BomEditor {
             return v.toString(16);
         });
     }
-
-
 }

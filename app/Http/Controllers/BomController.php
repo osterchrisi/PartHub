@@ -79,35 +79,40 @@ class BomController extends Controller
      * @param mixed $bom_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public static function show($bom_id)
+    public static function show(Request $request, $bom_id)
     {
-        $bom = Bom::find($bom_id);
-
-        if (!$bom) {
-            abort(404, 'BOM not found.'); // Likely a deleted BOM. Could be handled in frontend: Just select next-best BOM after deletion.
-        }
-
-        $bom_name = $bom->bom_name;
-        $bom_description = $bom->bom_description;
-        $bom_owner = $bom->bom_owner_u_fk;
-
-        if (Auth::user()->id !== $bom_owner) {
+        $bom = Bom::with('currentRevision')->find($bom_id);
+        if (!$bom)
+            abort(404, 'BOM not found.');
+        if (Auth::id() !== $bom->bom_owner_u_fk)
             abort(403, 'Unauthorized access.');
+
+        // For dropdown
+        $revisions = BomRevision::query()
+            ->where('bom_id_fk', $bom->bom_id)
+            ->orderBy('revision_number') // now that you have it
+            ->get(['bom_revision_id', 'revision_number', 'label', 'created_at']);
+
+        $requestedRevId = (int) $request->query('rev', 0);
+
+        $selectedRevision = null;
+        if ($requestedRevId > 0) {
+            $selectedRevision = BomRevision::where('bom_id_fk', $bom->bom_id)
+                ->where('bom_revision_id', $requestedRevId)
+                ->first();
         }
 
-        // $bom_elements = BomElements::getBomElements($bom_id);
-        // Prefer revisions
-        $bom->load('currentRevision');
+        // Fallback to current revision
+        if (!$selectedRevision) {
+            $selectedRevision = $bom->currentRevision;
+        }
 
-        if (!$bom->currentRevision) {
-            // Safety fallback (in case some BOMs didn't backfill correctly)
+        if (!$selectedRevision) {
+            // Safety fallback (should be rare after backfill)
             $bom_elements = BomElements::getBomElements($bom_id);
         }
         else {
-            $bom_elements = $bom->currentRevision
-                ->elements()
-                ->with('part')
-                ->get();
+            $bom_elements = $selectedRevision->elements()->with('part')->get();
         }
 
         $bom_runs = BomRun::getBomRunsByBomId($bom_id);
@@ -116,11 +121,15 @@ class BomController extends Controller
             'boms.showBom',
             [
                 'bom_id' => $bom_id,
-                'bom_name' => $bom_name,
-                'bom_description' => $bom_description,
+                'bom_name' => $bom->bom_name,
+                'bom_description' => $bom->bom_description,
                 'bom_elements' => $bom_elements,
 
                 // Bom Details Table
+                'revisions' => $revisions,
+                'selected_revision_id' => $selectedRevision?->bom_revision_id,
+                'selected_revision_number' => $selectedRevision?->revision_number,
+
                 'db_columns' => self::$bom_detail_table_headers,
                 'nice_columns' => self::$nice_bom_detail_table_headers,
 

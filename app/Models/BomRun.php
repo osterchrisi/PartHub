@@ -33,6 +33,11 @@ class BomRun extends Model
     {
         return $this->belongsTo(BOM::class, 'bom_id_fk');
     }
+    public function revision()
+    {
+        return $this->belongsTo(BomRevision::class, 'bom_revision_id_fk', 'bom_revision_id');
+    }
+
 
     public function user()
     {
@@ -58,7 +63,7 @@ class BomRun extends Model
 
     public static function getBomRunsByBomId($bom_id)
     {
-        return self::with('user') // Eager load the user relationship
+        return self::with('user', 'revision') // Eager load the user and revision relationship
             ->where('bom_id_fk', $bom_id)
             ->orderByDesc('bom_run_datetime')
             ->get();
