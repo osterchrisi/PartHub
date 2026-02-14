@@ -31,4 +31,16 @@ class BomRevision extends Model
         return $this->hasMany(BomRevisionElement::class, 'bom_revision_id_fk', 'bom_revision_id');
     }
 
+    public function bom()
+    {
+        return $this->belongsTo(Bom::class, 'bom_id_fk', 'bom_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_u_fk', 'id');
+    }
+
+
+
 }

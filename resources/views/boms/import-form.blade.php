@@ -19,6 +19,17 @@
                                     <x-input-error :messages="$errors->get('bom_description')" />
                                 </div>
                         </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <input class="form-control form-control-sm" id="revision_label" name="revision_label"
+                                    placeholder="Initial revision label (optional)">
+                            </div>
+                            <div class="col">
+                                <input class="form-control form-control-sm" id="revision_note" name="revision_note"
+                                    placeholder="Initial revision note (optional)">
+                            </div>
+                        </div>
+
                         <div class="row mt-3">
                             <div class="col">
                                 <input class="form-control form-control-sm" type="file" id="formFile"

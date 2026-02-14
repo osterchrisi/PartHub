@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\BomElements;
+use App\Models\BomRevisionElement;
 use App\Services\CsvImportService;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -10,13 +10,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class BomImport implements ToCollection, WithHeadingRow
 {
-    protected $bom_id;
+    protected int $bomRevisionId;
+    protected CsvImportService $csvImportService;
 
-    protected $csvImportService;
-
-    public function __construct($bom_id, CsvImportService $csvImportService)
+    public function __construct(int $bomRevisionId, CsvImportService $csvImportService)
     {
-        $this->bom_id = $bom_id;
+        $this->bomRevisionId = $bomRevisionId;
         $this->csvImportService = $csvImportService;
     }
 
@@ -41,15 +40,18 @@ class BomImport implements ToCollection, WithHeadingRow
      */
     public function importBom(Collection $collection)
     {
-        // Collect headers
+        // Map headers using fuzzy matching so "Part ID" vs "part_id" still works.
         $headers = $collection->first()->keys()->toArray();
 
-        // Map CSV headers to expected headers using Levenshtein distance
-        $mappingResult = $this->csvImportService->mapHeaders($headers, $this->csvImportService->getExpectedHeaders('bom'), 3);
+        $mappingResult = $this->csvImportService->mapHeaders(
+            $headers,
+            $this->csvImportService->getExpectedHeaders('bom'),
+            3
+        );
 
         // Validate if all expected headers have been successfully mapped
-        if (! empty($mappingResult['unmatched'])) {
-            throw new \Exception('Invalid headers: '.implode(', ', $mappingResult['unmatched']).' not found.');
+        if (!empty($mappingResult['unmatched'])) {
+            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found.');
         }
 
         // Process BOM row by row
@@ -58,11 +60,11 @@ class BomImport implements ToCollection, WithHeadingRow
             $this->processBomRow($rowData->toArray());
         }
 
-        // After processing all rows, check for errors
+        // If the service collected row-level errors, abort the import after parsing everything.
         if ($this->csvImportService->hasErrors()) {
             // Throw an exception with the accumulated errors
             $formattedErrors = $this->csvImportService->formatErrors()->withoutKey();
-            throw new \Exception('BOM import failed with the following errors:<br>'.$formattedErrors);
+            throw new \Exception('BOM import failed with the following errors:<br>' . $formattedErrors);
         }
     }
 
@@ -74,25 +76,43 @@ class BomImport implements ToCollection, WithHeadingRow
      */
     protected function processBomRow(array $row): void
     {
-        // Process the row and create BOM elements
+        // Identify the part either by part_id or part_name (owned by the user).
         $conditions = [
             'part_id' => $row['part_id'] ?? null,
             'part_name' => $row['part_name'] ?? null,
         ];
 
-        $part_id = $this->csvImportService->resolveForeignKey('parts', $conditions, 'part_owner_u_fk', 'part_id');
+        $partId = $this->csvImportService->resolveForeignKey(
+            'parts',
+            $conditions,
+            'part_owner_u_fk',
+            'part_id'
+        );
 
-        if (! $part_id) {
-            // Add the error to the service (but don't throw an exception yet)
-            $this->csvImportService->addCustomError('foreign_key', 'No matching record found for part with '.$this->csvImportService->formatConditionsForError($conditions));
-
+        if (!$partId) {
+            $this->csvImportService->addCustomError(
+                'foreign_key',
+                'No matching record found for part with ' . $this->csvImportService->formatConditionsForError($conditions)
+            );
             return;
         }
 
-        BomElements::create([
-            'bom_id_fk' => $this->bom_id,
-            'part_id_fk' => $part_id,
-            'element_quantity' => $row['quantity'],
+        $qty = (int) ($row['quantity'] ?? 0);
+        if ($qty < 1) {
+            $this->csvImportService->addCustomError(
+                'quantity',
+                'Invalid quantity for part ' . $partId . ' (must be >= 1)'
+            );
+            return;
+        }
+
+        // Store the imported line in the revision snapshot, not in bom_elements.
+        BomRevisionElement::create([
+            'bom_revision_id_fk' => $this->bomRevisionId,
+            'part_id_fk' => (int) $partId,
+            'quantity' => $qty,
+            'refdes' => null,
+            'line_uuid' => null,
         ]);
     }
 }

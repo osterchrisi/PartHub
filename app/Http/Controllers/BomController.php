@@ -215,41 +215,59 @@ class BomController extends Controller
 
     public function importBom(Request $request)
     {
-        // Form data
-        $file = $request->file('bom_file');
-        $bom_name = $request->input('bom_name');
-        $bom_description = $request->input('bom_description');
+        $data = $request->validate([
+            'bom_name' => ['required', 'string', 'max:255'],
+            'bom_description' => ['nullable', 'string', 'max:1000'],
 
-        if (!$file) {
-            return response()->json(['error' => 'No file uploaded'], 400);
-        }
+            // optional initial revision metadata
+            'revision_label' => ['nullable', 'string', 'max:255'],
+            'revision_note' => ['nullable', 'string', 'max:5000'],
+
+            'bom_file' => ['required', 'file'],
+        ]);
 
         try {
-            // Begin SQL transaction
-            DB::beginTransaction();
+            return DB::transaction(function () use ($request, $data) {
 
-            // Create new BOM
-            $bom_id = Bom::createBom($bom_name, $bom_description);
+                // Create the BOM container
+                $bom = Bom::create([
+                    'bom_name' => $data['bom_name'],
+                    'bom_description' => $data['bom_description'] ?? null,
+                ]);
+                $bom->bom_owner_u_fk = auth()->id();
+                $bom->save();
 
-            // Instantiate the CsvImportService
-            $csvImportService = new CsvImportService;
+                // Create Rev 1 for this BOM (user may label it)
+                $rev = BomRevision::create([
+                    'bom_id_fk' => $bom->bom_id,
+                    'revision_number' => 1,
+                    'label' => $data['revision_label'] ?? null,
+                    'note' => $data['revision_note'] ?? null,
+                    'created_by_u_fk' => auth()->id(),
+                ]);
 
-            // Process the uploaded file using BomImport
-            Excel::import(new BomImport($bom_id, $csvImportService), $file);
+                // Point BOM to its active revision
+                $bom->current_revision_id = $rev->bom_revision_id;
+                $bom->save();
 
-            // Persist database changes and set success flash message
-            DB::commit();
+                // Import lines into bom_revision_elements for this revision
+                $csvImportService = new CsvImportService();
+                Excel::import(
+                    new BomImport((int) $rev->bom_revision_id, $csvImportService),
+                    $request->file('bom_file')
+                );
 
-            return response()->json(['success' => 'BOM "' . $bom_name . '" imported successfully.', 'new_bom_id' => $bom_id]);
+                return response()->json([
+                    'success' => 'BOM "' . $bom->bom_name . '" imported successfully.',
+                    'new_bom_id' => (int) $bom->bom_id,
+                ]);
+            });
 
         } catch (\Exception $e) {
-            // Roll back database changes made so far
-            DB::rollback();
-
-            // Set error flash message
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function commit(Request $request, $id)
     {
