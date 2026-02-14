@@ -31,9 +31,9 @@ class BomController extends Controller
 
     private static $nice_bom_detail_table_headers = ['Part Name', 'Quantity needed', 'Total stock available', 'Can build'];
 
-    private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'revision_number', 'name'];
+    private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'revision_number', 'label', 'name'];
 
-    private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'Revision', 'User'];
+    private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'Revision', 'Label', 'User'];
 
     protected $stockService;
 

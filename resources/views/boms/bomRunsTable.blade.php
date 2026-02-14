@@ -27,6 +27,12 @@
                             @continue
                         @endif
 
+                        @if ($column_data === 'label')
+                            <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">
+                                {{ $run->revision?->label ?? '—' }}</td>
+                            @continue
+                        @endif
+
                         <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->$column_data }}
                         </td>
                     @endforeach
