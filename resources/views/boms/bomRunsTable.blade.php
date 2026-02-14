@@ -19,10 +19,16 @@
                         @if ($column_data == 'name')
                             <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">
                                 {{ $run->user?->name ?? '' }}</td>
-                        @else
-                            <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->$column_data }}
-                            </td>
                         @endif
+
+                        @if ($column_data === 'revision_number')
+                            <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">
+                                {{ $run->revision?->revision_number ?? '—' }}</td>
+                            @continue
+                        @endif
+
+                        <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->$column_data }}
+                        </td>
                     @endforeach
                 </tr>
             @endforeach
