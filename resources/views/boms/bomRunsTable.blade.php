@@ -12,8 +12,6 @@
         <tbody>
             @foreach ($bom_runs as $run)
                 @php
-                    // Log the current BOM run being processed for debugging
-                    // \Log::info('Processing BOM run for table display', [$run]);
                     $bom_run_id = $run->bom_run_id;
                 @endphp
                 <tr data-id="{{ $run->bom_run_id }}">

@@ -18,13 +18,16 @@
         <div class="tab-pane fade" id="{{ $tabToggleId1 }}" role="tabpanel" tabindex="0">
             <br>
             {{-- BOM Edit Toolbar --}}
-            <div class="d-flex align-items-center gap-2 mb-2" id="bomEditorToolbar" data-bom-id="{{ $bom_id }}">
-                <button class="btn btn-sm btn-outline-primary" id="bomEditBtn" type="button">
+            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap" id="bomEditorToolbar"
+                data-bom-id="{{ $bom_id }}">
+                <button class="btn btn-sm btn-outline-primary flex-shrink-0" id="bomEditBtn" type="button">
                     Edit BOM
                 </button>
 
                 {{-- BOM Revisions Dropdown --}}
-                <select class="form-select form-select-sm" id="bomRevisionPicker" data-bom-id="{{ $bom_id }}">
+                <select class="form-select form-select-sm w-auto" id="bomRevisionPicker"
+                    data-bom-id="{{ $bom_id }}" style="max-width: 360px;">
+
                     @foreach ($revisions as $rev)
                         @php
                             $label = $rev->label ? " ({$rev->label})" : '';
