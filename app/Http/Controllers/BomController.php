@@ -233,8 +233,8 @@ class BomController extends Controller
                 $bom = Bom::create([
                     'bom_name' => $data['bom_name'],
                     'bom_description' => $data['bom_description'] ?? null,
+                    'bom_owner_u_fk' => auth()->id(),
                 ]);
-                $bom->bom_owner_u_fk = auth()->id();
                 $bom->save();
 
                 // Create Rev 1 for this BOM (user may label it)

@@ -26,6 +26,8 @@ class Bom extends Model
     protected $fillable = [
         'bom_name',
         'bom_description',
+        'bom_owner_u_fk',
+        'current_revision_id',
     ];
 
     public function users()
