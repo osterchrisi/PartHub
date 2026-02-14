@@ -90,7 +90,7 @@ class BomController extends Controller
         // For dropdown
         $revisions = BomRevision::query()
             ->where('bom_id_fk', $bom->bom_id)
-            ->orderBy('revision_number') // now that you have it
+            ->orderByDesc('revision_number')
             ->get(['bom_revision_id', 'revision_number', 'label', 'created_at']);
 
         $requestedRevId = (int) $request->query('rev', 0);
