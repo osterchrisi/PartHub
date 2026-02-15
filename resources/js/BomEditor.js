@@ -133,9 +133,6 @@ export class BomEditor {
         });
     }
 
-
-
-
     exitEditMode() {
         this.draft = null;
         this.partsIndex = null;
