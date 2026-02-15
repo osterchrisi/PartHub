@@ -43,7 +43,7 @@
             </div>
 
             {{-- Non-editable BOM table --}}
-            <div id="bomDetailsViewContainer">
+            <div id="bomDetailsViewContainer" class="{{ ($is_viewing_old_revision ?? false) ? 'bom-old-revision' : '' }}">
                 @include('boms.bomDetailsTable')
             </div>
 
