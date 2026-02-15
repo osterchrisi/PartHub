@@ -149,105 +149,47 @@ export class BomEditor {
     }
 
     renderEditor() {
-        const rowsHtml = this.draft.lines.map(line => `
-            <tr>
-                <td class="text-truncate" style="max-width: 1px;">
-                    ${this.escapeHtml(line.part_name || '')}
-                </td>
+        const $ui = $('#bomEditorUi');
+        $ui.removeClass('d-none');
 
-                <td style="width: 110px;">
-                    <input type="number" min="1" step="1"
-                        class="form-control form-control-sm bom-editor-qty text-end"
-                        data-line-uuid="${line.line_uuid}"
-                        value="${line.quantity}">
-                </td>
+        // revision meta
+        $('#bomEditorRevLabel').val(this.draft.revision_label || '');
+        $('#bomEditorRevNote').val(this.draft.revision_note || '');
 
-                <td style="min-width: 180px;">
-                    <input type="text"
-                        class="form-control form-control-sm bom-editor-refdes"
-                        data-line-uuid="${line.line_uuid}"
-                        value="${this.escapeHtml(line.refdes || '')}"
-                        placeholder="R1,R2,...">
-                </td>
+        // enable add button once parts are loaded
+        $('#bomEditorAddLineBtn').prop('disabled', !this.partsIndex);
 
-                <td style="width: 90px;" class="text-end text-muted">
-                    <small>${line.part_id}</small>
-                </td>
+        // rows
+        const $tbody = $('#bomEditorTbody');
+        const tpl = document.getElementById('bomEditorRowTpl');
+        $tbody.empty();
 
-                <td style="width: 54px;" class="text-end">
-                    <button type="button" class="btn btn-sm btn-outline-danger bom-editor-remove-line"
-                        data-line-uuid="${line.line_uuid}">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        if (!this.draft.lines.length) {
+            $tbody.append($('#bomEditorEmptyRow').clone().removeAttr('id'));
+            return;
+        }
 
-        const addDisabled = this.partsIndex ? '' : 'disabled';
+        this.draft.lines.forEach(line => {
+            const node = tpl.content.firstElementChild.cloneNode(true);
 
-        // ONE-TIME revision meta block (must NOT be inside rowsHtml)
-        const revMetaHtml = `
-            <div class="row g-2 align-items-end mb-3">
-            <div class="col-12 col-md-4">
-                <label class="form-label mb-1"><small>Revision label (optional)</small></label>
-                <input type="text" class="form-control form-control-sm" id="bomEditorRevLabel"
-                value="${this.escapeHtml(this.draft.revision_label || '')}">
-            </div>
+            node.querySelector('[data-slot="part_name"]').textContent = line.part_name || '';
+            node.querySelector('[data-slot="part_id"]').textContent = String(line.part_id);
 
-            <div class="col-12 col-md-8">
-                <label class="form-label mb-1"><small>Revision note (optional)</small></label>
-                <input type="text" class="form-control form-control-sm" id="bomEditorRevNote"
-                value="${this.escapeHtml(this.draft.revision_note || '')}">
-            </div>
-            </div>
-        `;
+            const qty = node.querySelector('[data-slot="qty"]');
+            qty.value = String(line.quantity);
+            qty.dataset.lineUuid = line.line_uuid;
 
-        const html = `
-            ${revMetaHtml}
+            const ref = node.querySelector('[data-slot="refdes"]');
+            ref.value = line.refdes || '';
+            ref.dataset.lineUuid = line.line_uuid;
 
-            <div class="row g-2 align-items-end mb-2">
-                <div class="col-12 col-md-3">
-                    <label class="form-label mb-1"><small>Part ID</small></label>
-                    <input type="number" min="1" step="1" class="form-control form-control-sm" id="bomEditorAddPartId">
-                </div>
+            const rm = node.querySelector('[data-slot="remove"]');
+            rm.dataset.lineUuid = line.line_uuid;
 
-                <div class="col-6 col-md-2">
-                    <label class="form-label mb-1"><small>Qty</small></label>
-                    <input type="number" min="1" step="1" class="form-control form-control-sm text-end" id="bomEditorAddQty" value="1">
-                </div>
-
-                <div class="col-12 col-md">
-                    <label class="form-label mb-1"><small>Refdes (optional)</small></label>
-                    <input type="text" class="form-control form-control-sm" id="bomEditorAddRefdes" placeholder="R1,R2,...">
-                </div>
-
-                <div class="col-12 col-md-auto">
-                    <button type="button" class="btn btn-sm btn-outline-primary w-100" id="bomEditorAddLineBtn" ${addDisabled}>
-                        Add line
-                    </button>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-sm table-hover table-striped align-middle" style="font-size:12px">
-                    <thead>
-                        <tr>
-                            <th>Part Name</th>
-                            <th style="width: 110px;" class="text-end">Qty</th>
-                            <th>Refdes</th>
-                            <th style="width: 90px;" class="text-end">Part ID</th>
-                            <th style="width: 54px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rowsHtml || `<tr><td colspan="5" class="text-muted">No lines</td></tr>`}
-                    </tbody>
-                </table>
-            </div>
-        `;
-
-        $('#bomEditorContainer').html(html);
+            $tbody.append(node);
+        });
     }
+
 
     addLineFromInputs() {
         const partId = parseInt($('#bomEditorAddPartId').val(), 10);

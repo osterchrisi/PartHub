@@ -55,7 +55,7 @@
 
             {{-- BOM Editor Container (hidden by default, shown when editing) --}}
             <div id="bomEditorContainer" class="d-none">
-                {{-- Editor UI will be rendered here by JS --}}
+                @include('boms.editor')
             </div>
 
             {{-- Non-editable BOM table --}}
