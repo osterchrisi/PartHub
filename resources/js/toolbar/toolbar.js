@@ -61,6 +61,7 @@ export function assembleBomsFromToolbar(table_id) {
     assembleBoms(selectedRows, ids);
 }
 
+//TODO: The majority of this function should go somewhere else
 export function attachImportBomHandler() {
     // Click handler for "Add BOM" button in toolbar
     $(document).off('click', '#toolbarImportButton').on('click', '#toolbarImportButton', function () {

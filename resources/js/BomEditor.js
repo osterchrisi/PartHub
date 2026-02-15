@@ -47,10 +47,12 @@ export class BomEditor {
         });
 
         $(document).off('input', '#bomEditorRevLabel').on('input', '#bomEditorRevLabel', (e) => {
+            if (!this.draft) return;
             this.draft.revision_label = $(e.currentTarget).val();
         });
 
         $(document).off('input', '#bomEditorRevNote').on('input', '#bomEditorRevNote', (e) => {
+            if (!this.draft) return;
             this.draft.revision_note = $(e.currentTarget).val();
         });
 
@@ -144,59 +146,6 @@ export class BomEditor {
 
         $('#bomEditBtn').removeClass('d-none');
         $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').addClass('d-none');
-    }
-
-    buildDraftFromDom() {
-        const bomId = $('#bomEditorToolbar').data('bom-id') || null;
-
-        const lines = [];
-        $('#BomDetailsTable tbody tr').each((_, tr) => {
-            const $tr = $(tr);
-
-            //Debug
-            console.log('row', {
-                partId: $tr.data('part-id'),
-                qtyText: $tr.find('td[data-column="quantity"]').text(),
-            });
-
-
-            // Robust extraction:
-            // - row's data-id is part_id in your HTML
-            // - qty cell's data-id is bom_elements_id in your HTML
-            const partId = parseInt(($tr.data('part-id') ?? $tr.data('id')), 10);
-            if (!Number.isInteger(partId) || partId <= 0) return;
-
-            const $qtyTd = $tr.find('td[data-column="quantity"]').first();
-            const bomElementId = parseInt(($tr.data('bom-element-id') ?? $qtyTd.data('id')), 10) || null;
-
-            const partName = ($tr.find('td[data-column="part_name"]').text() || '').trim();
-
-            // qty is displayed in #contentSpan (editable cell component)
-            const qtySpan = $qtyTd.find('#contentSpan').first();
-            const qty = qtySpan.length ? parseInt(qtySpan.text().trim(), 10) : NaN;
-            if (!Number.isInteger(qty) || qty <= 0) return;
-
-            // Merge by part_id (current policy)
-            const existing = lines.find(l => l.part_id === partId);
-            if (existing) {
-                existing.quantity += qty;
-            } else {
-                lines.push({
-                    line_uuid: this.makeUuid(),
-                    part_id: partId,
-                    part_name: partName,
-                    quantity: qty,
-                    refdes: '',
-                    bom_element_id: bomElementId,
-                });
-            }
-        });
-
-        return {
-            bom_id: bomId,
-            base_revision_id: null,
-            lines,
-        };
     }
 
     renderEditor() {
