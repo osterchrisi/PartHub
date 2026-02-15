@@ -24,22 +24,6 @@
                     Edit BOM
                 </button>
 
-                {{-- BOM Revisions Dropdown --}}
-                <select class="form-select form-select-sm w-auto" id="bomRevisionPicker"
-                    data-bom-id="{{ $bom_id }}" style="max-width: 360px;">
-
-                    @foreach ($revisions as $rev)
-                        @php
-                            $label = $rev->label ? " ({$rev->label})" : '';
-                            $date = $rev->created_at ? $rev->created_at->format('Y-m-d H:i') : '';
-                        @endphp
-                        <option value="{{ $rev->bom_revision_id }}" @selected($rev->bom_revision_id == $selected_revision_id)>
-                            Rev {{ $rev->revision_number }}{!! $label !!} ({{ $date }})
-                        </option>
-                    @endforeach
-                </select>
-
-
                 <button class="btn btn-sm btn-secondary d-none" id="bomEditCancelBtn" type="button">
                     Cancel
                 </button>

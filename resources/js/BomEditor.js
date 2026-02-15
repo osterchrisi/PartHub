@@ -39,8 +39,7 @@ export class BomEditor {
 
         $(document).off('click', '#bomEditorAddLineBtn').on('click', '#bomEditorAddLineBtn', () => this.addLineFromInputs());
 
-
-        // Quick and dirty to view BOM revisions
+        // I feeel like this could live somewhere else
         $(document).off('change', '#bomRevisionPicker').on('change', '#bomRevisionPicker', function () {
             const bomId = $(this).data('bom-id');
             const revId = $(this).val();

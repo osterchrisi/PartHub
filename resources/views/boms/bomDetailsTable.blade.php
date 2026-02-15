@@ -2,12 +2,29 @@
     use App\Models\StockLevel;
 @endphp
 
+<div id="bomDetailsToolbar" class="d-flex align-items-center me-2">
+    {{-- BOM Revision Picker --}}
+    <select class="form-select form-select-sm w-auto" id="bomRevisionPicker" data-bom-id="{{ $bom_id }}"
+        style="max-width: 360px;">
+
+        @foreach ($revisions as $rev)
+            @php
+                $label = $rev->label ? " ({$rev->label})" : '';
+                $date = $rev->created_at ? $rev->created_at->format('Y-m-d H:i') : '';
+            @endphp
+            <option value="{{ $rev->bom_revision_id }}" @selected($rev->bom_revision_id == $selected_revision_id)>
+                Rev {{ $rev->revision_number }}{!! $label !!} ({{ $date }})
+            </option>
+        @endforeach
+    </select>
+</div>
+
+
 <div>
     <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="BomDetailsTable"
-        data-resizable="true" data-search="true" data-search-align="left" data-show-columns="true"
-        {{-- data-reorderable-columns="true" --}}
-        data-cookie="true" data-cookie-id-table="BomDetailsTableState"
-        data-max-moving-rows="100">
+        data-resizable="true" data-search="true" data-search-align="left" data-show-columns="true" {{-- data-reorderable-columns="true" --}}
+        data-cookie="true" data-cookie-id-table="BomDetailsTableState" data-max-moving-rows="100"
+        data-toolbar="#bomDetailsToolbar">
         <thead>
             <tr>
                 @foreach ($nice_columns as $column_header)
@@ -51,14 +68,13 @@
                                 </x-tables.td-editable-flexbox>
                             </td>
                         @elseif ($column_data == 'can_build')
-                            @php                          
-                            // This if statement is here in case someone changes the Quantity Needed to 0...
-                            if ($row->quantity != 0) {
-                                $can_build = floor($total_stock / $row->quantity);
-                            }
-                            else {
-                                $can_build = 0;
-                            }
+                            @php
+                                // This if statement is here in case someone changes the Quantity Needed to 0...
+                                if ($row->quantity != 0) {
+                                    $can_build = floor($total_stock / $row->quantity);
+                                } else {
+                                    $can_build = 0;
+                                }
                             @endphp
                             <td style="text-align:right" data-id="{{ $part_id }}"
                                 data-column="{{ $column_data }}">{{ $can_build }}</td>

@@ -22,8 +22,6 @@ export function bootstrapBomDetailsTable() {
   }
 };
 
-
-
 /**
 * Displays a modal for assembling one or more BOMs and sends an AJAX request to the server to assemble the BOMs.
 * If there are stock shortages the user is notified after the AJAX request is complete and can chose to continue.
