@@ -83,6 +83,10 @@ Route::controller(BomController::class)->group(function () {
     })->middleware(['auth', 'verified'])->name('bom import');
     Route::get('/bom/{id}/editor', 'editor')->middleware(['auth', 'verified']);
     Route::post('/bom/{id}/commit', 'commit')->middleware(['auth', 'verified']);
+    Route::post('/bom.create', 'create')->middleware(['auth', 'verified'])->name('bom.create');
+    Route::get('/bom.new-form', function () {
+        return view('boms.new-form', ['title' => 'New BOM']);
+    })->middleware(['auth', 'verified']);
 
 });
 

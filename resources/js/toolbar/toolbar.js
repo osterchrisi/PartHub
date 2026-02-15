@@ -61,11 +61,12 @@ export function assembleBomsFromToolbar(table_id) {
     assembleBoms(selectedRows, ids);
 }
 
-export function attachAddBomHandler() {
-    $('#toolbarAddButton').click(function () {
+export function attachImportBomHandler() {
+    // Click handler for "Add BOM" button in toolbar
+    $(document).off('click', '#toolbarImportButton').on('click', '#toolbarImportButton', function () {
         // Load the form into the #info-window element
         $('#info-window').load('/bom.import-form', function () {
-            $('#bomImportForm').on('submit', function (event) {
+            $(document).off('submit', '#bomImportForm').on('submit', '#bomImportForm', function (event) {
                 event.preventDefault();
 
                 var formData = new FormData(this); // Get the form data
@@ -120,3 +121,17 @@ export function attachAddBomHandler() {
         });
     });
 }
+
+export function attachAddBomHandler(bomEditorInstance) {
+    $(document).off('click', '#toolbarAddButton').on('click', '#toolbarAddButton', function () {
+        $('#info-window').load('/bom.new-form', function () {
+            if (!bomEditorInstance?.enterCreateMode) {
+                console.warn('BomEditor instance missing. Did you pass it into attachAddBomHandler?');
+                return;
+            }
+            console.log('Entering create mode in BOM editor, log from attachAddBomHandler');
+            bomEditorInstance.enterCreateMode();
+        });
+    });
+}
+

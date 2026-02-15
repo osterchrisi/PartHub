@@ -12,6 +12,11 @@ export class BomEditor {
         $(document).off('click', '#bomEditBtn').on('click', '#bomEditBtn', () => this.enterEditMode());
         $(document).off('click', '#bomEditCancelBtn').on('click', '#bomEditCancelBtn', () => this.exitEditMode());
         $(document).off('click', '#bomEditSaveBtn').on('click', '#bomEditSaveBtn', () => this.saveDraft());
+        $(document).off('click', '#bomCreateBtn').on('click', '#bomCreateBtn', (e) => {
+            e.preventDefault();
+            this.saveDraft();
+        });
+
 
         // Editor row events
         $(document).off('click', '.bom-editor-remove-line').on('click', '.bom-editor-remove-line', (e) => {
@@ -33,12 +38,20 @@ export class BomEditor {
 
 
         // Quick and dirty to view BOM revisions
-        //TODO: Refactor and put into right place
         $(document).off('change', '#bomRevisionPicker').on('change', '#bomRevisionPicker', function () {
             const bomId = $(this).data('bom-id');
             const revId = $(this).val();
             updateInfoWindow('bom', `${bomId}?rev=${revId}`);
         });
+
+        $(document).off('input', '#bomEditorRevLabel').on('input', '#bomEditorRevLabel', (e) => {
+            this.draft.revision_label = $(e.currentTarget).val();
+        });
+
+        $(document).off('input', '#bomEditorRevNote').on('input', '#bomEditorRevNote', (e) => {
+            this.draft.revision_note = $(e.currentTarget).val();
+        });
+
 
     }
 
@@ -64,6 +77,11 @@ export class BomEditor {
             this.draft = {
                 bom_id: payload.bom.bom_id,
                 base_revision_id: payload.revision.bom_revision_id,
+
+                // revision metadata for next save
+                revision_label: payload.revision.label || '',
+                revision_note: payload.revision.note || '',
+
                 lines: payload.lines.map(l => ({
                     line_uuid: this.makeUuid(),
                     part_id: l.part_id,
@@ -73,6 +91,7 @@ export class BomEditor {
                 }))
             };
 
+
             this.renderEditor(); // now button can be enabled
         }).fail((xhr) => {
             console.error(xhr);
@@ -80,6 +99,39 @@ export class BomEditor {
             this.exitEditMode();
         });
     }
+
+    enterCreateMode() {
+        console.log('enterCreateMode instance', this);
+
+        // Toggle UI to editor view
+        $('#info-window').addClass('bom-editing');
+        $('#bomDetailsViewContainer').addClass('d-none');
+        $('#bomEditorContainer').removeClass('d-none');
+
+        // In create-mode you probably don’t want the normal toolbar buttons
+        $('#bomEditBtn').addClass('d-none');
+        $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
+
+        // Load parts index for name lookup and to enable "Add line"
+        const partsReq = this.loadPartsIndex();
+
+        $.when(partsReq).done(() => {
+            console.log('parts index loaded, entering create mode');
+            this.draft = {
+                bom_id: null,
+                base_revision_id: null,
+                revision_label: null,
+                revision_note: null,
+                lines: []
+            };
+            this.renderEditor();
+        }).fail((xhr) => {
+            console.error(xhr);
+            alert(xhr?.responseJSON?.error || xhr?.responseJSON?.message || 'Failed to load parts index.');
+            this.exitEditMode();
+        });
+    }
+
 
 
 
@@ -185,7 +237,26 @@ export class BomEditor {
 
         const addDisabled = this.partsIndex ? '' : 'disabled';
 
+        // ONE-TIME revision meta block (must NOT be inside rowsHtml)
+        const revMetaHtml = `
+            <div class="row g-2 align-items-end mb-3">
+            <div class="col-12 col-md-4">
+                <label class="form-label mb-1"><small>Revision label (optional)</small></label>
+                <input type="text" class="form-control form-control-sm" id="bomEditorRevLabel"
+                value="${this.escapeHtml(this.draft.revision_label || '')}">
+            </div>
+
+            <div class="col-12 col-md-8">
+                <label class="form-label mb-1"><small>Revision note (optional)</small></label>
+                <input type="text" class="form-control form-control-sm" id="bomEditorRevNote"
+                value="${this.escapeHtml(this.draft.revision_note || '')}">
+            </div>
+            </div>
+        `;
+
         const html = `
+            ${revMetaHtml}
+
             <div class="row g-2 align-items-end mb-2">
                 <div class="col-12 col-md-3">
                     <label class="form-label mb-1"><small>Part ID</small></label>
@@ -231,6 +302,8 @@ export class BomEditor {
     }
 
     addLineFromInputs() {
+        console.log('addLineFromInputs instance', this, 'partsIndex?', !!this.partsIndex);
+
 
         const partId = parseInt($('#bomEditorAddPartId').val(), 10);
         const qty = parseInt($('#bomEditorAddQty').val(), 10);
@@ -287,13 +360,66 @@ export class BomEditor {
     }
 
     saveDraft() {
-        const bomId = this.draft?.bom_id;
-        if (!bomId) {
-            alert('Missing bom_id. Cannot save.');
+        const token = $('input[name="_token"]').val();
+
+        // CREATE MODE: draft has no bom_id yet
+        if (!this.draft?.bom_id) {
+            const $form = $('#bomCreateForm');
+            if (!$form.length) {
+                alert('Missing create form.');
+                return;
+            }
+
+            const bom_name = ($form.find('[name="bom_name"]').val() || '').trim();
+            if (!bom_name) {
+                alert('BOM name is required.');
+                return;
+            }
+
+            const payload = {
+                bom_name,
+                bom_description: ($form.find('[name="bom_description"]').val() || '').trim() || null,
+                revision_label: ($form.find('[name="revision_label"]').val() || '').trim() || null,
+                revision_note: ($form.find('[name="revision_note"]').val() || '').trim() || null,
+                lines: this.draft.lines.map(l => ({
+                    part_id: l.part_id,
+                    quantity: l.quantity,
+                    refdes: l.refdes || null,
+                    line_uuid: l.line_uuid
+                }))
+            };
+
+            $.ajax({
+                url: '/bom.create',
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': token },
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: (response) => {
+                    const id = response.new_bom_id;
+
+                    const bomTable = new TableManager({ type: 'bom' });
+                    bomTable.rebuildTable().done(function () {
+                        const bomListTable = new TableRowManager('#bom_list_table', 'bom');
+                        bomListTable.selectNewRow(id);
+                    });
+
+                    // After create, show normal BOM view (Rev1 exists, no Rev2)
+                    this.exitEditMode();
+                    updateInfoWindow('bom', id);
+                },
+                error: (xhr) => {
+                    console.error(xhr);
+                    const msg = xhr.responseJSON?.error || xhr.responseJSON?.message || 'Creation failed.';
+                    $('#create-response-message').html(`<div class="alert alert-danger">${msg}</div>`);
+                }
+            });
+
             return;
         }
 
-        const token = $('input[name="_token"]').attr('value');
+        // EDIT MODE: normal commit against existing BOM
+        const bomId = this.draft.bom_id;
 
         $.ajax({
             url: `/bom/${bomId}/commit`,
@@ -301,6 +427,8 @@ export class BomEditor {
             headers: { 'X-CSRF-TOKEN': token },
             data: {
                 base_revision_id: this.draft.base_revision_id,
+                revision_label: this.draft.revision_label || null,
+                revision_note: this.draft.revision_note || null,
                 lines: this.draft.lines.map(l => ({
                     part_id: l.part_id,
                     quantity: l.quantity,
@@ -318,6 +446,7 @@ export class BomEditor {
             }
         });
     }
+
 
     escapeHtml(str) {
         return String(str ?? '')

@@ -1,12 +1,14 @@
 import {
     attachDeleteRowsHandler,
     attachAssembleBomHandler,
-    attachAddBomHandler
+    attachAddBomHandler,
+    attachImportBomHandler
 } from '../toolbar/toolbar';
 
 import { StockManager } from '../Resources/StockManager';
 import { TableRowManager } from '../Tables/TableRowManager';
 import { TableManager } from '../Tables/TableManager';
+import { BomEditor } from '../BomEditor';
 
 export function initializeBomsView() {
     //* Table Manager
@@ -14,9 +16,13 @@ export function initializeBomsView() {
     bomsTableManager.bootstrapTable();
     bomsTableManager.defineActions();
 
+    const bomEditor = new BomEditor();
+    bomEditor.mount();
+
     attachDeleteRowsHandler('bom_list_table', 'boms', 'bom_id', () => bomsTableManager.rebuildTable());
     attachAssembleBomHandler('bom_list_table');
-    attachAddBomHandler();
+    attachImportBomHandler();
+    attachAddBomHandler(bomEditor);
 
     //* Table Row Manager
     const tableRowManager = new TableRowManager('#bom_list_table', 'bom');

@@ -279,6 +279,11 @@ class BomController extends Controller
 
         $data = $request->validate([
             'base_revision_id' => ['required', 'integer'],
+
+            // Revision metadata for the NEW revision
+            'revision_label' => ['nullable', 'string', 'max:255'],
+            'revision_note' => ['nullable', 'string', 'max:5000'],
+
             'lines' => ['required', 'array'],
             'lines.*.part_id' => ['required', 'integer'],
             'lines.*.quantity' => ['required', 'integer', 'min:1'],
@@ -289,7 +294,7 @@ class BomController extends Controller
         $currentRevisionId = (int) ($bom->current_revision_id ?? 0);
         $baseRevisionId = (int) $data['base_revision_id'];
 
-        // Strict mode: editor must be based on current revision
+        // Editor must be based on current revision
         if ($currentRevisionId !== $baseRevisionId) {
             return response()->json([
                 'error' => 'BOM changed since you opened the editor. Reload and try again.'
@@ -339,18 +344,20 @@ class BomController extends Controller
 
         $newRevisionId = null;
 
-        DB::transaction(function () use ($bom, $merged, &$newRevisionId) {
+        DB::transaction(function () use ($bom, $merged, $data, &$newRevisionId) {
 
+            // Compute next revision number per BOM (locked)
             $nextNum = (int) BomRevision::where('bom_id_fk', $bom->bom_id)
                 ->lockForUpdate()
                 ->max('revision_number');
             $nextNum++;
 
+            // Create immutable revision snapshot + metadata
             $rev = BomRevision::create([
                 'bom_id_fk' => $bom->bom_id,
                 'revision_number' => $nextNum,
-                'label' => null,
-                'note' => null,
+                'label' => $data['revision_label'] ?? null,
+                'note' => $data['revision_note'] ?? null,
                 'created_by_u_fk' => Auth::id(),
             ]);
 
@@ -366,6 +373,7 @@ class BomController extends Controller
                 ]);
             }
 
+            // Point BOM to active revision
             $bom->current_revision_id = $newRevisionId;
             $bom->save();
         });
@@ -375,6 +383,7 @@ class BomController extends Controller
             'current_revision_id' => $newRevisionId,
         ]);
     }
+
 
 
     public function editor($id)
@@ -388,8 +397,6 @@ class BomController extends Controller
         $rev = $bom->currentRevision;
 
         if (!$rev) {
-            // fallback (should be rare after backfill)
-            // TODO: remove after bom_elements deprecation
             $elements = BomElements::with('part')->where('bom_id_fk', $id)->get();
 
             $lines = $elements->map(fn($e) => [
@@ -408,7 +415,9 @@ class BomController extends Controller
                 ],
                 'revision' => [
                     'bom_revision_id' => null,
+                    'revision_number' => null,
                     'label' => null,
+                    'note' => null,
                     'created_at' => null,
                 ],
                 'lines' => $lines,
@@ -433,11 +442,111 @@ class BomController extends Controller
             ],
             'revision' => [
                 'bom_revision_id' => (int) $rev->bom_revision_id,
+                'revision_number' => (int) $rev->revision_number,
                 'label' => $rev->label,
+                'note' => $rev->note,
                 'created_at' => optional($rev->created_at)->toIso8601String(),
             ],
             'lines' => $lines,
         ]);
     }
+
+    public function create(Request $request)
+    {
+        $data = $request->validate([
+            'bom_name' => ['required', 'string', 'max:255'],
+            'bom_description' => ['nullable', 'string', 'max:1000'],
+
+            'revision_label' => ['nullable', 'string', 'max:255'],
+            'revision_note' => ['nullable', 'string', 'max:5000'],
+
+            'lines' => ['required', 'array'],
+            'lines.*.part_id' => ['required', 'integer'],
+            'lines.*.quantity' => ['required', 'integer', 'min:1'],
+            'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
+            'lines.*.line_uuid' => ['nullable', 'string', 'max:64'],
+        ]);
+
+        // Merge duplicates by part_id (same as commit)
+        $merged = [];
+        foreach ($data['lines'] as $line) {
+            $pid = (int) $line['part_id'];
+            $qty = (int) $line['quantity'];
+            $ref = trim((string) ($line['refdes'] ?? ''));
+            $uuid = $line['line_uuid'] ?? null;
+
+            if (!isset($merged[$pid])) {
+                $merged[$pid] = [
+                    'part_id_fk' => $pid,
+                    'quantity' => 0,
+                    'refdes' => '',
+                    'line_uuid' => $uuid,
+                ];
+            }
+
+            $merged[$pid]['quantity'] += $qty;
+
+            if ($ref !== '') {
+                $merged[$pid]['refdes'] = $merged[$pid]['refdes'] !== ''
+                    ? ($merged[$pid]['refdes'] . ',' . $ref)
+                    : $ref;
+            }
+
+            if (!$merged[$pid]['line_uuid'] && $uuid) {
+                $merged[$pid]['line_uuid'] = $uuid;
+            }
+        }
+
+        // Ownership check
+        $partIds = array_keys($merged);
+        $ownedCount = Part::whereIn('part_id', $partIds)
+            ->where('part_owner_u_fk', Auth::id())
+            ->count();
+
+        if ($ownedCount !== count($partIds)) {
+            return response()->json(['error' => 'One or more parts are not owned by the current user.'], 422);
+        }
+
+        $newBomId = null;
+
+        \DB::transaction(function () use ($data, $merged, &$newBomId) {
+
+            $bom = Bom::create([
+                'bom_name' => $data['bom_name'],
+                'bom_description' => $data['bom_description'] ?? null,
+                'bom_owner_u_fk' => Auth::id(),
+            ]);
+
+            $rev = BomRevision::create([
+                'bom_id_fk' => $bom->bom_id,
+                'revision_number' => 1,
+                'label' => $data['revision_label'] ?? null,
+                'note' => $data['revision_note'] ?? null,
+                'created_by_u_fk' => Auth::id(),
+            ]);
+
+            foreach ($merged as $row) {
+                BomRevisionElement::create([
+                    'bom_revision_id_fk' => $rev->bom_revision_id,
+                    'part_id_fk' => $row['part_id_fk'],
+                    'quantity' => $row['quantity'],
+                    'refdes' => $row['refdes'] !== '' ? $row['refdes'] : null,
+                    'line_uuid' => $row['line_uuid'],
+                ]);
+            }
+
+            $bom->current_revision_id = $rev->bom_revision_id;
+            $bom->save();
+
+            $newBomId = (int) $bom->bom_id;
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'new_bom_id' => $newBomId,
+        ]);
+    }
+
+
 
 }

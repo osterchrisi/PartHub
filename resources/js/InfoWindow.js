@@ -116,8 +116,8 @@ class InfoWindow {
                 this.allowHtmlTableElementsInPopover();
                 this.initializeBomDetailPopover();
 
-                // Mount BOM editor
-                new BomEditor().mount();
+                // Mount BOM editor - not neeed anymore, is now handled in the loaded view itself
+                // new BomEditor().mount();
                 break;
             case 'supplier':
                 $('#supplierDetailsTable').bootstrapTable({});
