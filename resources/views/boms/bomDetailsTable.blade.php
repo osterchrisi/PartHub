@@ -17,6 +17,13 @@
             </option>
         @endforeach
     </select>
+    {{-- Revision Notice --}}
+    @if ($is_viewing_old_revision ?? false)
+        <div class="alert alert-warning small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
+            You are viewing an older revision.
+        </div>
+    @endif
+
 </div>
 
 

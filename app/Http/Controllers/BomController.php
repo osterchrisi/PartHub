@@ -115,6 +115,13 @@ class BomController extends Controller
             $bom_elements = $selectedRevision->elements()->with('part')->get();
         }
 
+        // For showing the "Viewing old revision" warning if applicable
+        $latestRevisionId = optional($revisions->first())->bom_revision_id;
+
+        $isViewingOldRevision = $selectedRevision
+            && $latestRevisionId
+            && ((int) $selectedRevision->bom_revision_id !== (int) $latestRevisionId);
+
         $bom_runs = BomRun::getBomRunsByBomId($bom_id);
 
         return view(
@@ -129,6 +136,8 @@ class BomController extends Controller
                 'revisions' => $revisions,
                 'selected_revision_id' => $selectedRevision?->bom_revision_id,
                 'selected_revision_number' => $selectedRevision?->revision_number,
+                'latest_revision_id' => $latestRevisionId,
+                'is_viewing_old_revision' => $isViewingOldRevision,
 
                 'db_columns' => self::$bom_detail_table_headers,
                 'nice_columns' => self::$nice_bom_detail_table_headers,
