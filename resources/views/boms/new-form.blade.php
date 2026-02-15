@@ -21,6 +21,7 @@
 
         <div class="mt-2">
             <button type="button" class="btn btn-sm btn-primary" id="bomCreateBtn">Create BOM</button>
+            <button type="button" class="btn btn-sm btn-secondary" id="bomCreateCancelBtn">Cancel BOM</button>
             <div class="mt-3"></div>
             <span id="create-response-message"></span>
             </div>

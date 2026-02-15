@@ -10,9 +10,10 @@ export class BomEditor {
     }
 
     mount() {
-        // Use event delegation because info-window HTML is replaced
+        // Use event delegation because info-window is replaced regularly
         $(document).off('click', '#bomEditBtn').on('click', '#bomEditBtn', () => this.enterEditMode());
         $(document).off('click', '#bomEditCancelBtn').on('click', '#bomEditCancelBtn', () => this.exitEditMode());
+        $(document).off('click', '#bomCreateCancelBtn').on('click', '#bomCreateCancelBtn', () => this.exitCreateMode());
         $(document).off('click', '#bomEditSaveBtn').on('click', '#bomEditSaveBtn', () => this.saveDraft());
         $(document).off('click', '#bomCreateBtn').on('click', '#bomCreateBtn', (e) => {
             e.preventDefault();
@@ -46,6 +47,7 @@ export class BomEditor {
             updateInfoWindow('bom', `${bomId}?rev=${revId}`);
         });
 
+        // Revision metadata inputs across both create and edit forms
         $(document).off('input', '#bomEditorRevLabel').on('input', '#bomEditorRevLabel', (e) => {
             if (!this.draft) return;
             this.draft.revision_label = $(e.currentTarget).val();
@@ -63,19 +65,13 @@ export class BomEditor {
         const bomId = $('#bomEditorToolbar').data('bom-id') || null;
         if (!bomId) { alert('Missing bom_id'); return; }
 
-        // Toggle UI early
-        $('#info-window').addClass('bom-editing');
-        $('#bomDetailsViewContainer').addClass('d-none');
-        $('#bomEditorContainer').removeClass('d-none');
-        $('#bomEditBtn').addClass('d-none');
-        $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
+        this.toggleUI();
 
-        // Load both: editor payload + parts index
+        // Load editor payload + parts index
         const payloadReq = $.getJSON(`/bom/${bomId}/editor`);
-        const partsReq = this.loadPartsIndex(); // fires /parts.get
+        const partsReq = this.loadPartsIndex();
 
         $.when(payloadReq, partsReq).done((payloadRes) => {
-            // jQuery returns [data, status, xhr] for getJSON in $.when
             const payload = payloadRes[0];
 
             this.draft = {
@@ -95,8 +91,7 @@ export class BomEditor {
                 }))
             };
 
-
-            this.renderEditor(); // now button can be enabled
+            this.renderEditor();
         }).fail((xhr) => {
             console.error(xhr);
             alert(xhr?.responseJSON?.error || xhr?.responseJSON?.message || 'Failed to load editor data.');
@@ -105,14 +100,7 @@ export class BomEditor {
     }
 
     enterCreateMode() {
-        // Toggle UI to editor view
-        $('#info-window').addClass('bom-editing');
-        $('#bomDetailsViewContainer').addClass('d-none');
-        $('#bomEditorContainer').removeClass('d-none');
-
-        // In create-mode we don’t want the 'editing' toolbar buttons
-        $('#bomEditBtn').addClass('d-none');
-        $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
+        this.toggleUI();
 
         // Load parts index for name lookup and to enable "Add line"
         const partsReq = this.loadPartsIndex();
@@ -133,6 +121,15 @@ export class BomEditor {
         });
     }
 
+    // Toggle UI between details view and editor view, used for both create and edit mode
+    toggleUI() {
+        $('#info-window').addClass('bom-editing');
+        $('#bomDetailsViewContainer').addClass('d-none');
+        $('#bomEditorContainer').removeClass('d-none');
+        $('#bomEditBtn').addClass('d-none');
+        $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
+    }
+
     exitEditMode() {
         this.draft = null;
         this.partsIndex = null;
@@ -143,6 +140,25 @@ export class BomEditor {
 
         $('#bomEditBtn').removeClass('d-none');
         $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').addClass('d-none');
+    }
+
+    exitCreateMode() {
+        // reset editor state
+        this.draft = null;
+        this.partsIndex = null;
+
+        // remove any editor-mode CSS you might have applied
+        $('#info-window').removeClass('bom-editing');
+
+        // show the last BOM again (whatever was selected before "New BOM")
+        const lastBomId = localStorage.getItem('lastSelectedRow_bom_list_table'); // adjust key if yours differs
+        if (lastBomId) {
+            updateInfoWindow('bom', lastBomId);
+            return;
+        }
+
+        // fallback: no previous selection -> empty info-window
+        $('#info-window').empty();
     }
 
     renderEditor() {
@@ -288,7 +304,7 @@ export class BomEditor {
                         bomListTable.selectNewRow(id);
                     });
 
-                    // After create, show normal BOM view (Rev1 exists, no Rev2)
+                    // After create, show normal BOM view
                     this.exitEditMode();
                     updateInfoWindow('bom', id);
                 },
