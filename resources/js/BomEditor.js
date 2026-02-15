@@ -110,7 +110,7 @@ export class BomEditor {
         $('#bomDetailsViewContainer').addClass('d-none');
         $('#bomEditorContainer').removeClass('d-none');
 
-        // In create-mode you probably don’t want the normal toolbar buttons
+        // In create-mode we don’t want the 'editing' toolbar buttons
         $('#bomEditBtn').addClass('d-none');
         $('#bomEditCancelBtn, #bomEditSaveBtn, #bomEditHint').removeClass('d-none');
 

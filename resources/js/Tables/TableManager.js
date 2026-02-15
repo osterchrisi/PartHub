@@ -136,14 +136,14 @@ class TableManager {
                     // Custom filter by categoreis for parts table 
                     // Filtering by the data-category attribute (ends up in the table / row object)
                     $('#parts_table').bootstrapTable('filterBy', {}, {
-                    filterAlgorithm: function(row) {
-                        // Access the category string from the row object
-                        const category = row._Category_data.category;
+                        filterAlgorithm: function (row) {
+                            // Access the category string from the row object
+                            const category = row._Category_data.category;
 
-                        const match = cats.includes(category);
-                        return match;
-                    }
-                });
+                            const match = cats.includes(category);
+                            return match;
+                        }
+                    });
                 }
             default:
                 return (id) => {
@@ -260,11 +260,21 @@ class TableManager {
     }
 
     hideMenuOnClickOutside() {
-        $(document).off('click').on('click', (event) => {
-            if (!this.$menu.is(event.target) && this.$menu.has(event.target).length === 0) {
-                this.hideContextMenu();
-            }
-        });
+        // Unique namespace per TableManager instance/type so multiple tables don't fight
+        const ns = `.ctxmenu.${this.type}`;
+
+        $(document)
+            .off(`click${ns}`)
+            .on(`click${ns}`, (event) => {
+                if (!this.$menu?.length) return;
+
+                const $t = $(event.target);
+
+                // If click is NOT the menu or inside it, hide
+                if (!$t.closest(this.$menu).length) {
+                    this.hideContextMenu();
+                }
+            });
     }
 
     /**
