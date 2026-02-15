@@ -17,7 +17,7 @@
         @csrf
         <div class="row">
             <div class="col-3">
-                <input class="form-control" placeholder="Quantity" id="bomAssembleQuantity" autocomplete="off" required>
+                <input class="form-control" type="number" value="1" placeholder="Quantity" id="bomAssembleQuantity" autocomplete="off" required>
                 <br>
             </div>
         </div>
