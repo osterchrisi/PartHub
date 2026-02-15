@@ -1,5 +1,7 @@
 import { updateInfoWindow } from "./custom";
 import { DataFetchService } from "./Services/DataFetchService";
+import { TableManager } from "./Tables/TableManager";
+import { TableRowManager } from "./Tables/TableRowManager";
 
 export class BomEditor {
     constructor() {
@@ -101,8 +103,6 @@ export class BomEditor {
     }
 
     enterCreateMode() {
-        console.log('enterCreateMode instance', this);
-
         // Toggle UI to editor view
         $('#info-window').addClass('bom-editing');
         $('#bomDetailsViewContainer').addClass('d-none');
@@ -116,7 +116,6 @@ export class BomEditor {
         const partsReq = this.loadPartsIndex();
 
         $.when(partsReq).done(() => {
-            console.log('parts index loaded, entering create mode');
             this.draft = {
                 bom_id: null,
                 base_revision_id: null,
@@ -302,9 +301,6 @@ export class BomEditor {
     }
 
     addLineFromInputs() {
-        console.log('addLineFromInputs instance', this, 'partsIndex?', !!this.partsIndex);
-
-
         const partId = parseInt($('#bomEditorAddPartId').val(), 10);
         const qty = parseInt($('#bomEditorAddQty').val(), 10);
         const refdes = ($('#bomEditorAddRefdes').val() || '').trim();

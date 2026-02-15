@@ -129,7 +129,6 @@ export function attachAddBomHandler(bomEditorInstance) {
                 console.warn('BomEditor instance missing. Did you pass it into attachAddBomHandler?');
                 return;
             }
-            console.log('Entering create mode in BOM editor, log from attachAddBomHandler');
             bomEditorInstance.enterCreateMode();
         });
     });
