@@ -263,8 +263,8 @@ export class BomEditor {
             const payload = {
                 bom_name,
                 bom_description: ($form.find('[name="bom_description"]').val() || '').trim() || null,
-                revision_label: ($form.find('[name="revision_label"]').val() || '').trim() || null,
-                revision_note: ($form.find('[name="revision_note"]').val() || '').trim() || null,
+                revision_label: this.draft.revision_label || null,
+                revision_note: this.draft.revision_note || null,
                 lines: this.draft.lines.map(l => ({
                     part_id: l.part_id,
                     quantity: l.quantity,
