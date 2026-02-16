@@ -118,5 +118,17 @@
 }
 
 .bom-old-revision {
-    background-color: rgba(255, 191, 0, 0.05); /* bootstrap warning with 8% opacity */
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+.bom-old-revision::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;        /* ← creates the “cut off” gap at the top */
+    bottom: 0;       /* stretch to bottom */
+    width: 4px;
+    background: rgba(255, 193, 7, 0.25);
+    border-radius: 2px;
 }

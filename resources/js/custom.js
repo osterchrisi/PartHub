@@ -149,6 +149,8 @@ export function clearModalOnHiding() {
             // Check if part entry modal is being hidden due to showing category modal
             const isPartEntryHiddenDueToCategory = targetModalId === 'mPartEntry' && $('#categoryCreationModal').hasClass('show');
 
+            console.log('Modal hidden:', targetModalId, 'Is part entry hidden due to category modal?', isPartEntryHiddenDueToCategory);
+            // TODO: mBomAssembly wird nicht gecleared!
             // If not, clear inputs
             if (!isPartEntryHiddenDueToCategory) {
                 // Clear input values
