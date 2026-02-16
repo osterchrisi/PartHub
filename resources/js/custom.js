@@ -150,7 +150,8 @@ export function clearModalOnHiding() {
             const isPartEntryHiddenDueToCategory = targetModalId === 'mPartEntry' && $('#categoryCreationModal').hasClass('show');
 
             console.log('Modal hidden:', targetModalId, 'Is part entry hidden due to category modal?', isPartEntryHiddenDueToCategory);
-            // TODO: mBomAssembly wird nicht gecleared!
+            // TODO: mBomAssembly wird über id="btnCancelAnywayAssembly" und hideBOMAssemblyModalAndCleanup() gecleared
+            // TODO: über den "normale" Cancel Button am Modal aber hier
             // If not, clear inputs
             if (!isPartEntryHiddenDueToCategory) {
                 // Clear input values
@@ -162,6 +163,19 @@ export function clearModalOnHiding() {
                 $('.selectize-control').removeClass('is-invalid');
 
                 sr.resetSupplierDataTable({});
+
+                // BOM Assembly Modal
+                if (targetModalId === 'mBomAssembly') {
+                    $('#bomAssemblyForm')[0]?.reset();          // setzt quantity wieder auf default=1
+                    $('#mBomAssemblyInfo').empty();             // entfernt warning + table
+                    $('#btnAssembleBOMs').prop('disabled', false);
+
+                    removeClickListeners('#btnAssembleBOMs');
+                    removeClickListeners('#btnAssembleBOMsAnyway');
+                    removeClickListeners('#btnCancelAnywayAssembly');
+                    removeClickListeners('#btnCancelAssembly');
+                    return;
+                }
             }
             else {
                 // Leave the values, the user came back from the category modal

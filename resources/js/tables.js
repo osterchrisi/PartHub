@@ -42,69 +42,71 @@ export function assembleBoms(selectedRows, ids) {
     hideBOMAssemblyModalAndCleanup();
   });
 
-  $('#btnAssembleBOMs').click(function () { // Attach clicklistener
+  $('#btnAssembleBOMs')
+    .off('click.bomAssembly')
+    .on('click.bomAssembly', function () { // Attach clicklistener
 
-    var q = $("#bomAssembleQuantity").val();                // Quantity
-    var fl = $("#fromStockLocation").val();                 // From Location
-    var token = $('input[name="_token"]').attr('value');    // X-CSRF token
+      var q = $("#bomAssembleQuantity").val();                // Quantity
+      var fl = $("#fromStockLocation").val();                 // From Location
+      var token = $('input[name="_token"]').attr('value');    // X-CSRF token
 
-    $.ajax({
-      url: '/bom.assemble',
-      type: 'POST',
-      data: {
-        ids: ids,
-        assemble_quantity: q,
-        from_location: fl
-      },
-      headers: {
-        'X-CSRF-TOKEN': token
-      },
-      success: function (response) {
+      $.ajax({
+        url: '/bom.assemble',
+        type: 'POST',
+        data: {
+          ids: ids,
+          assemble_quantity: q,
+          from_location: fl
+        },
+        headers: {
+          'X-CSRF-TOKEN': token
+        },
+        success: function (response) {
 
-        var r = response;
-        if (r.status === 'success') {
-          //* Do the normal thing here, all requested stock available
+          var r = response;
+          if (r.status === 'success') {
+            //* Do the normal thing here, all requested stock available
 
-          $('#mBomAssembly').modal('hide');     // Hide Modal
-          updateInfoWindow('bom', ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
-          //TODO: Also select in table
+            $('#mBomAssembly').modal('hide');     // Hide Modal
+            updateInfoWindow('bom', ids[ids.length - 1]); // Update BOM info window with last BOM ID in array
+            //TODO: Also select in table
+          }
+          else if (r.status === 'permission_requested') {
+            //* User permission required
+
+            // Display warning and missing stock table
+            $('#btnAssembleBOMs').attr('disabled', true);  // Disable main "Assemble" button of modal
+            var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
+            message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal' id='btnCancelAnywayAssembly'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
+            message += r.negative_stock_table;
+            $('#mBomAssemblyInfo').html(message);
+
+            // Attach click listener to "Do It Anyway" button
+            $('#btnAssembleBOMsAnyway').off('click').on('click', function () {
+              //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
+              continueAnyway(r, ids, token);
+            });
+
+            // Attach click listener to "Cancel" button next to the "Do It Anyway" button
+            $('#btnCancelAnywayAssembly').off('click').on('click', function () {
+              // Hide modal and perform cleanup operations
+              hideBOMAssemblyModalAndCleanup();
+            });
+          }
+          removeClickListeners('#btnAssembleBOMs'); // Remove click listener assembly
+        },
+        error: function (xhr) {
+          // Handle the error
+          if (xhr.status === 419) {
+            // Token mismatch error
+            alert('CSRF token mismatch. Please refresh the page and try again.');
+          } else {
+            // Other errors
+            alert('Error assembling BOM');
+          }
         }
-        else if (r.status === 'permission_requested') {
-          //* User permission required
-
-          // Display warning and missing stock table
-          $('#btnAssembleBOMs').attr('disabled', true);  // Disable main "Assemble" button of modal
-          var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
-          message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal' id='btnCancelAnywayAssembly'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
-          message += r.negative_stock_table;
-          $('#mBomAssemblyInfo').html(message);
-
-          // Attach click listener to "Do It Anyway" button
-          $('#btnAssembleBOMsAnyway').off('click').on('click', function () {
-            //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
-            continueAnyway(r, ids, token);
-          });
-
-          // Attach click listener to "Cancel" button next to the "Do It Anyway" button
-          $('#btnCancelAnywayAssembly').off('click').on('click', function () {
-            // Hide modal and perform cleanup operations
-            hideBOMAssemblyModalAndCleanup();
-          });
-        }
-        removeClickListeners('#btnAssembleBOMs'); // Remove click listener assembly
-      },
-      error: function (xhr) {
-        // Handle the error
-        if (xhr.status === 419) {
-          // Token mismatch error
-          alert('CSRF token mismatch. Please refresh the page and try again.');
-        } else {
-          // Other errors
-          alert('Error assembling BOM');
-        }
-      }
-    });
-  })
+      });
+    })
 }
 
 
