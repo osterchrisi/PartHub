@@ -2,11 +2,14 @@ import { updateInfoWindow } from "./custom";
 import { DataFetchService } from "./Services/DataFetchService";
 import { TableManager } from "./Tables/TableManager";
 import { TableRowManager } from "./Tables/TableRowManager";
+import { DropdownManager } from "./DropdownManager";
 
 export class BomEditor {
     constructor() {
         this.draft = null;
-        this.partsIndex = null; // part_id -> part_name
+        this.partsList = null;
+        this.partsReqPromise = null;
+        this.dropdownManager = new DropdownManager();
     }
 
     mount() {
@@ -66,11 +69,12 @@ export class BomEditor {
 
         this.toggleUI();
 
-        // Load editor payload + parts index
+        // Load editor payload + parts list (array)
         const payloadReq = $.getJSON(`/bom/${bomId}/editor`);
-        const partsReq = this.loadPartsIndex();
+        const partsReq = this.loadPartsIndex(); // resolves to: [{part_id, part_name}, ...]
 
-        $.when(payloadReq, partsReq).done((payloadRes) => {
+        $.when(payloadReq, partsReq).done((payloadRes, parts) => {
+            // jqXHR-style: [data, statusText, jqXHR]
             const payload = payloadRes[0];
 
             this.draft = {
@@ -91,6 +95,9 @@ export class BomEditor {
             };
 
             this.renderEditor();
+
+            // Build selectized "add part" dropdown from parts array
+            this.dropdownManager.addBomPartSelect(parts, 'bomEditorAddPartDropdown', 'bomEditorAddPartSelect');
         }).fail((xhr) => {
             console.error(xhr);
             alert(xhr?.responseJSON?.error || xhr?.responseJSON?.message || 'Failed to load editor data.');
@@ -101,23 +108,126 @@ export class BomEditor {
     enterCreateMode() {
         this.toggleUI();
 
-        // Load parts index for name lookup and to enable "Add line"
-        const partsReq = this.loadPartsIndex();
+        this.loadPartsIndex()
+            .done((parts) => {
+                this.draft = {
+                    bom_id: null,
+                    base_revision_id: null,
+                    revision_label: null,
+                    revision_note: null,
+                    lines: []
+                };
 
-        $.when(partsReq).done(() => {
-            this.draft = {
-                bom_id: null,
-                base_revision_id: null,
-                revision_label: null,
-                revision_note: null,
-                lines: []
-            };
-            this.renderEditor();
-        }).fail((xhr) => {
-            console.error(xhr);
-            alert(xhr?.responseJSON?.error || xhr?.responseJSON?.message || 'Failed to load parts index.');
-            this.exitEditMode();
-        });
+                this.renderEditor();
+
+                this.dropdownManager.addBomPartSelect(
+                    parts,
+                    'bomEditorAddPartDropdown',
+                    'bomEditorAddPartSelect'
+                );
+            })
+            .fail((err) => {
+                console.error(err);
+                alert('Failed to load parts index.');
+                this.exitEditMode();
+            });
+    }
+
+
+    /**
+     * Loads parts once and caches:
+     * - this.partsIndex: { [part_id]: part_name }
+     * - this.partsList:  [{part_id, part_name}, ...]
+     *
+     * Always returns a *jQuery promise* that resolves with the parts array.
+     */
+    loadPartsIndex() {
+        // Already loaded
+        if (this.partsList?.length) {
+            return $.Deferred().resolve(this.partsList).promise();
+        }
+
+        // Already in-flight (jQuery promise)
+        if (this.partsReqPromise) {
+            return this.partsReqPromise;
+        }
+
+        const dfd = $.Deferred();
+        this.partsReqPromise = dfd.promise();
+
+        // Normalize to a native Promise, regardless of jqXHR or native promise
+        Promise.resolve(DataFetchService.getParts())
+            .then((parts) => {
+                this.partsList = parts || [];
+
+                this.partsIndex = {};
+                this.partsList.forEach(p => {
+                    this.partsIndex[p.part_id] = p.part_name;
+                });
+
+                // backfill missing names in already loaded draft
+                if (this.draft?.lines?.length) {
+                    this.draft.lines.forEach(l => {
+                        if (!l.part_name) l.part_name = this.partsIndex[l.part_id] || '';
+                    });
+                }
+
+                dfd.resolve(this.partsList);
+            })
+            .catch((err) => {
+                dfd.reject(err);
+            })
+            .finally(() => {
+                this.partsReqPromise = null; // allow retry later if needed
+            });
+
+        return this.partsReqPromise;
+    }
+
+
+
+    /**
+     * Loads parts once and caches:
+     * - this.partsIndex: { [part_id]: part_name }
+     * - this.partsList:  [{part_id, part_name}, ...]
+     *
+     * Always resolves to the parts array (not the index map).
+     */
+    loadPartsIndex() {
+        // Already loaded
+        if (this.partsList?.length) {
+            return $.Deferred().resolve(this.partsList).promise();
+        }
+
+        // Already in-flight: reuse the same request
+        if (this.partsReqPromise) {
+            return this.partsReqPromise;
+        }
+
+        this.partsReqPromise = DataFetchService.getParts()
+            .then((parts) => {
+                this.partsList = parts || [];
+
+                this.partsIndex = {};
+                this.partsList.forEach(p => {
+                    this.partsIndex[p.part_id] = p.part_name;
+                });
+
+                // backfill missing names in already loaded draft
+                if (this.draft?.lines?.length) {
+                    this.draft.lines.forEach(l => {
+                        if (!l.part_name) l.part_name = this.partsIndex[l.part_id] || '';
+                    });
+                }
+
+                return this.partsList;
+            })
+            .always(() => {
+                // allow future reloads if you ever want them
+                this.partsReqPromise = null;
+            });
+
+        return this.partsReqPromise;
     }
 
     // Toggle UI between details view and editor view, used for both create and edit mode
@@ -204,7 +314,9 @@ export class BomEditor {
 
 
     addLineFromInputs() {
-        const partId = parseInt($('#bomEditorAddPartId').val(), 10);
+        // const partId = parseInt($('#bomEditorAddPartId').val(), 10);
+        const sel = $('#bomEditorAddPartSelect')[0]?.selectize;
+        const partId = parseInt(sel?.getValue(), 10);
         const qty = parseInt($('#bomEditorAddQty').val(), 10);
         const refdes = ($('#bomEditorAddRefdes').val() || '').trim();
 
@@ -230,7 +342,8 @@ export class BomEditor {
             });
         }
 
-        $('#bomEditorAddPartId').val('');
+        // $('#bomEditorAddPartId').val('');
+        sel?.clear(true);
         $('#bomEditorAddQty').val('1');
         $('#bomEditorAddRefdes').val('');
 
@@ -354,25 +467,6 @@ export class BomEditor {
             .replaceAll('>', '&gt;')
             .replaceAll('"', '&quot;')
             .replaceAll("'", '&#039;');
-    }
-
-    loadPartsIndex() {
-        // already loading/loaded
-        if (this.partsIndex) return $.Deferred().resolve(this.partsIndex);
-
-        return DataFetchService.getParts().done(parts => {
-            this.partsIndex = {};
-            parts.forEach(p => {
-                this.partsIndex[p.part_id] = p.part_name;
-            });
-
-            // backfill missing names in already loaded draft
-            if (this.draft?.lines?.length) {
-                this.draft.lines.forEach(l => {
-                    if (!l.part_name) l.part_name = this.partsIndex[l.part_id] || '';
-                });
-            }
-        });
     }
 
     makeUuid() {

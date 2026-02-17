@@ -14,13 +14,14 @@
 
     <div class="row g-2 align-items-end mb-2">
         <div class="col-12 col-md-3">
-            <label class="form-label mb-1"><small>Part ID</small></label>
-            <input type="number" min="1" step="1" class="form-control form-control-sm" id="bomEditorAddPartId">
+            <label class="form-label mb-1"><small>Part</small></label>
+            <div id="bomEditorAddPartDropdown"></div>
         </div>
 
         <div class="col-6 col-md-2">
             <label class="form-label mb-1"><small>Qty</small></label>
-            <input type="number" min="1" step="1" class="form-control form-control-sm text-end" id="bomEditorAddQty" value="1">
+            <input type="number" min="1" step="1" class="form-control form-control-sm text-end"
+                id="bomEditorAddQty" value="1">
         </div>
 
         <div class="col-12 col-md">
@@ -61,14 +62,11 @@
 
             <td style="width: 110px;">
                 <input type="number" min="1" step="1"
-                    class="form-control form-control-sm bom-editor-qty text-end"
-                    data-slot="qty">
+                    class="form-control form-control-sm bom-editor-qty text-end" data-slot="qty">
             </td>
 
             <td style="min-width: 180px;">
-                <input type="text"
-                    class="form-control form-control-sm bom-editor-refdes"
-                    data-slot="refdes"
+                <input type="text" class="form-control form-control-sm bom-editor-refdes" data-slot="refdes"
                     placeholder="R1,R2,...">
             </td>
 
@@ -77,8 +75,7 @@
             </td>
 
             <td style="width: 54px;" class="text-end">
-                <button type="button" class="btn btn-sm btn-outline-danger bom-editor-remove-line"
-                    data-slot="remove">
+                <button type="button" class="btn btn-sm btn-outline-danger bom-editor-remove-line" data-slot="remove">
                     <i class="bi bi-trash"></i>
                 </button>
             </td>

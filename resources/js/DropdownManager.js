@@ -400,4 +400,57 @@ class DropdownManager {
         });
     }
 
+ /**
+ * Creates a selectized dropdown for selecting a Part by ID.
+ * Intended for BOM editor "add line" UX.
+ *
+ * @param {Array} parts - [{part_id, part_name}, ...]
+ * @param {string} containerId - ID of the div where the select should be injected
+ * @param {string} selectId - ID for the select element itself
+ */
+    addBomPartSelect(parts, containerId = 'bomEditorAddPartDropdown', selectId = 'bomEditorAddPartSelect') {
+        const div = document.getElementById(containerId);
+        console.log('Adding BOM part select with parts:', parts);
+        if (!div) {
+            console.warn(`Part dropdown container #${containerId} not found.`);
+            return;
+        }
+
+        let selectHTML = `<select class="form-select form-select-sm" id="${selectId}" placeholder="Select part">`;
+        selectHTML += `<option value="">Select part...</option>`;
+
+        for (let i = 0; i < parts.length; i++) {
+            const p = parts[i];
+            selectHTML += `<option value="${p.part_id}">${p.part_name}</option>`;
+        }
+
+        selectHTML += `</select>`;
+        div.innerHTML = selectHTML;
+
+        // Prevent double init if DOM gets re-rendered
+        const $el = $(`#${selectId}`);
+        if ($el[0]?.selectize) {
+            $el[0].selectize.destroy();
+        }
+
+        $el.selectize({
+            create: false,
+            allowEmptyOption: true,
+            placeholder: 'Select part…',
+            onDropdownOpen: function () {
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
+                    'overflow-x': 'visible',
+                    'overflow-y': 'visible'
+                });
+            },
+            onDropdownClose: function () {
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
+                    'overflow-x': 'auto',
+                    'overflow-y': 'auto'
+                });
+            }
+        });
+    }
+
+
 }
