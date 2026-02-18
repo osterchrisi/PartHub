@@ -336,8 +336,18 @@ class BomController extends Controller
         foreach ($data['lines'] as $line) {
             $pid = (int) $line['part_id'];
             $qty = (int) $line['quantity'];
-            $ref = trim((string) ($line['refdes'] ?? ''));
             $uuid = $line['line_uuid'] ?? null;
+
+            // Normalize refdes
+            $refRaw = (string) ($line['refdes'] ?? '');
+            $tokens = array_filter(
+                array_map(
+                    fn($t) => trim($t),
+                    explode(',', $refRaw)
+                ),
+                fn($t) => $t !== ''
+            );
+            $ref = implode(',', $tokens);
 
             if (!isset($merged[$pid])) {
                 $merged[$pid] = [
@@ -502,8 +512,18 @@ class BomController extends Controller
         foreach ($data['lines'] as $line) {
             $pid = (int) $line['part_id'];
             $qty = (int) $line['quantity'];
-            $ref = trim((string) ($line['refdes'] ?? ''));
             $uuid = $line['line_uuid'] ?? null;
+
+            // Normalize refdes
+            $refRaw = (string) ($line['refdes'] ?? '');
+            $tokens = array_filter(
+                array_map(
+                    fn($t) => trim($t),
+                    explode(',', $refRaw)
+                ),
+                fn($t) => $t !== ''
+            );
+            $ref = implode(',', $tokens);
 
             if (!isset($merged[$pid])) {
                 $merged[$pid] = [
