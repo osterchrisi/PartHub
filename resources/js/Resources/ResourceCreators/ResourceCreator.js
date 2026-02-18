@@ -38,14 +38,16 @@ class ResourceCreator {
 
   // Request creation of a new resource via AJAX
   requestCreation() {
-    this.collectFormData();
+    const ok = this.collectFormData();
+    if (ok === false) return;
+
     this.data['type'] = this.type;
 
-    // Send AJAX request to create the resource
     this.sendAjaxRequest(this.data)
       .then((response) => this.handleSuccess(response))
       .catch((error) => this.handleError(error));
   }
+
 
   // Collect data from input fields to prepare for submission
   collectFormData() {
@@ -104,11 +106,6 @@ class ResourceCreator {
   removeAddButtonClickListener() {
     this.addButton.off('click');
   }
-
-  // Set up form validation for input fields
-  // setupFormValidation() {
-  //   this.formValidator.attachValidation(this.requestCreation.bind(this));
-  // }
 
   // Initialize modal show and hide behaviors
   // There is also the global clearModalOnHiding function but it is aware of the category modal shenanigans

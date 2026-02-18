@@ -202,7 +202,7 @@ class SupplierRowManager {
                         resizable: true,
                     });
 
-                    this.addSupplierRow('#supplierDataTable');
+                    this.addSupplierRow(null); //No partId yet
                 }, 300);
             }
         })

@@ -29,8 +29,14 @@ class PartCreator extends ResourceCreator {
     // Collect form data and add supplier info
     collectFormData() {
         super.collectFormData();
-        this.data['suppliers'] = this.collectSupplierData();
+
+        const suppliers = this.collectSupplierData();
+        if (suppliers === null) return false; // invalid
+
+        this.data['suppliers'] = suppliers;
+        return true;
     }
+
 
     handleSuccess(response) {
         super.handleSuccess(response);
@@ -117,21 +123,44 @@ class PartCreator extends ResourceCreator {
 
     // Collect data from supplier rows in the part entry form
     collectSupplierData() {
-        let suppliers = [];
-        $('#supplierDataTable tbody tr').each(function () {
-            let rowIndex = $(this).data('supplier-index');
-            if (typeof rowIndex !== 'undefined') {
-                let supplierRow = {
-                    supplier_id: $(`[data-supplier-id="${rowIndex}"]`).val(),
-                    URL: $(`[data-url-id="${rowIndex}"]`).val(),
-                    SPN: $(`[data-spn-id="${rowIndex}"]`).val(),
-                    price: $(`[data-price-id="${rowIndex}"]`).val()
-                };
-                suppliers.push(supplierRow);
+        const suppliers = [];
+        const errors = {};
+
+        // row order matters because FormValidator maps suppliers.<index>.field by visible row order
+        $('#supplierDataTable tbody tr').each(function (i) {
+            const rowIndex = $(this).data('supplier-index');
+            if (typeof rowIndex === 'undefined') return;
+
+            const supplier_id = $(`[data-supplier-id="${rowIndex}"]`).val();
+            const URL = $(`[data-url-id="${rowIndex}"]`).val();
+            const SPN = $(`[data-spn-id="${rowIndex}"]`).val();
+            const price = $(`[data-price-id="${rowIndex}"]`).val();
+
+            const anyMeta = [URL, SPN, price].some(v => String(v || '').trim() !== '');
+            const hasSupplier = String(supplier_id || '').trim() !== '';
+
+            // fully empty -> ignore
+            if (!hasSupplier && !anyMeta) return;
+
+            // meta but no supplier -> client-side validation error
+            if (!hasSupplier && anyMeta) {
+                errors[`suppliers.${suppliers.length}.supplier_id`] = ['Please select a supplier or remove the row.'];
+                return;
             }
+
+            suppliers.push({ supplier_id, URL, SPN, price });
         });
+
+        if (Object.keys(errors).length) {
+            const fakeXhr = { responseJSON: { errors } };
+            this.formValidator.handleError(fakeXhr);
+            return null; // signal invalid
+        }
+
         return suppliers;
     }
+
+
 
     // Initialize uppercase toggler for part name input field
     initializeUppercaseToggle() {
