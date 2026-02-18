@@ -389,6 +389,7 @@ export class BomEditor {
             }
 
             const payload = {
+                type: 'bom', // for resource limits middleware
                 bom_name,
                 bom_description: ($form.find('[name="bom_description"]').val() || '').trim() || null,
                 revision_label: this.draft.revision_label || null,
@@ -457,16 +458,6 @@ export class BomEditor {
                 alert(xhr.responseJSON?.error || xhr.responseJSON?.message || 'Save failed.');
             }
         });
-    }
-
-
-    escapeHtml(str) {
-        return String(str ?? '')
-            .replaceAll('&', '&amp;')
-            .replaceAll('<', '&lt;')
-            .replaceAll('>', '&gt;')
-            .replaceAll('"', '&quot;')
-            .replaceAll("'", '&#039;');
     }
 
     makeUuid() {

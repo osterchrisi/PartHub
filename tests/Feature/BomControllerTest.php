@@ -483,6 +483,32 @@ class BomControllerTest extends TestCase
         $resp->assertViewHas('revision_history_locked', true);
     }
 
+    public function test_commit_requires_at_least_one_line(): void
+    {
+        $user = $this->verifiedUser();
+        $this->actingAs($user);
+
+        $p1 = Part::factory()->create(['part_owner_u_fk' => $user->id]);
+
+        $create = $this->postJson('/bom.create', [
+            'bom_name' => 'Empty Commit Test',
+            'lines' => [
+                ['part_id' => $p1->part_id, 'quantity' => 1],
+            ],
+            'type' => 'bom',
+        ])->assertStatus(200);
+
+        $bomId = $create->json('new_bom_id');
+        $bom = Bom::findOrFail($bomId);
+
+        $resp = $this->postJson("/bom/{$bomId}/commit", [
+            'base_revision_id' => $bom->current_revision_id,
+            'lines' => [],   // ← this should fail
+            'type' => 'bom',
+        ]);
+
+        $resp->assertStatus(422);
+    }
 
 
 }
