@@ -6,6 +6,9 @@ use App\Events\StockMovementOccured;
 use App\Models\BomRun;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
+use App\Models\Part;
+use App\Models\Bom;
+use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
 
 class StockService
@@ -304,21 +307,60 @@ class StockService
      */
     public function generateStockShortageResponse($negative_stock, $changes, $change)
     {
-        if (!is_null($changes[0]['bom_id'])) {
-            $column_names = ['bom_id', 'part_id', 'quantity', 'from_location', 'new_quantity'];
-            $nice_columns = ['BOM ID', 'Part ID', 'Quantity needed', 'Location', 'Resulting Quantity'];
+        // Decide which table layout we need (BOM-assembly vs "normal" stock change)
+        $isBomChange = !empty($changes) && !is_null($changes[0]['bom_id']);
+
+        if ($isBomChange) {
+            $column_names = ['bom_id', 'bom_name', 'part_id', 'part_name', 'quantity', 'location_name', 'new_quantity'];
+            $nice_columns = ['BOM ID', 'BOM Name', 'Part ID', 'Part Name', 'Quantity needed', 'Location', 'Resulting Quantity'];
         }
         else {
             if ($change == 0) {
-                $column_names = ['part_id', 'quantity', 'from_location', 'from_quantity'];
+                $column_names = ['part_id', 'part_name', 'quantity', 'location_name', 'from_quantity'];
+                $nice_columns = ['Part ID', 'Part Name', 'Quantity needed', 'Location', 'Resulting Quantity'];
             }
             else {
-                $column_names = ['part_id', 'quantity', 'from_location', 'new_quantity'];
+                $column_names = ['part_id', 'part_name', 'quantity', 'location_name', 'new_quantity'];
+                $nice_columns = ['Part ID', 'Part Name', 'Quantity needed', 'Location', 'Resulting Quantity'];
             }
-
-            $nice_columns = ['Part ID', 'Quantity needed', 'Location', 'Resulting Quantity'];
         }
 
+        // ---- Enrichment lookups (single query per entity type, no N+1) ----
+
+        // Part names
+        $partIds = collect($negative_stock)->pluck('part_id')->filter()->unique()->values();
+        $partNames = $partIds->isNotEmpty()
+            ? Part::whereIn('part_id', $partIds)->pluck('part_name', 'part_id')
+            : collect();
+
+        // Location names (from_location is your location_id)
+        $locationIds = collect($negative_stock)->pluck('from_location')->filter()->unique()->values();
+        $locationNames = $locationIds->isNotEmpty()
+            ? Location::whereIn('location_id', $locationIds)->pluck('location_name', 'location_id')
+            : collect();
+
+        // BOM names (only relevant in BOM-change case)
+        $bomNames = collect();
+        if ($isBomChange) {
+            $bomIds = collect($negative_stock)->pluck('bom_id')->filter()->unique()->values();
+            $bomNames = $bomIds->isNotEmpty()
+                ? Bom::whereIn('bom_id', $bomIds)->pluck('bom_name', 'bom_id')
+                : collect();
+        }
+
+        // Attach computed display fields to each shortage row
+        $negative_stock = array_map(function ($row) use ($partNames, $locationNames, $bomNames, $isBomChange) {
+            $row['part_name'] = $partNames[$row['part_id']] ?? '';
+            $row['location_name'] = $locationNames[$row['from_location']] ?? '';
+
+            if ($isBomChange) {
+                $row['bom_name'] = $bomNames[$row['bom_id']] ?? '';
+            }
+
+            return $row;
+        }, $negative_stock);
+
+        // Build HTML table for the modal
         $negative_stock_table = \buildHTMLTable($column_names, $nice_columns, $negative_stock);
 
         return [
@@ -328,4 +370,5 @@ class StockService
             'status' => 'permission_requested',
         ];
     }
+
 }
