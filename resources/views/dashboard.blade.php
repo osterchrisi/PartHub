@@ -97,7 +97,7 @@ $user = Auth::user();
             </div>
 
             {{-- Subscription --}}
-            <div class="card shadow-sm mt-4 mb-4">
+            <div class="card shadow-sm mt-4 mb-4" id="Subscription">
                 <div class="card-body">
                     <h2 class="card-title text-center">
                         {{ __('Subscription') }}
@@ -128,6 +128,11 @@ $user = Auth::user();
                             </div>
                             <ul class="list-group my-4 list-group-item-action text-start">
                                 @foreach ($limits as $key => $limit)
+                                    {{-- Filter BOM Revision History, it looks awkward --}}
+                                    @if ($key === 'bom_revision_history')
+                                        @continue
+                                    @endif
+
                                     <li class="list-group-item list-group-item-action">
                                         {{ __(ucwords(str_replace('_', ' ', $key))) }}:
                                         <strong>{{ is_null($limit) ? __('Unlimited') : $limit }}</strong>
@@ -228,41 +233,41 @@ $user = Auth::user();
                     <button type="button" id="open-delete-modal" class="btn btn-danger">
                         {{ __('Delete Account') }}
                     </button>
-                    
+
                     <div id="confirm-user-deletion" style="display: none;">
                         <form method="POST" action="{{ route('profile.destroy') }}">
                             @csrf
                             @method('DELETE')
-                    
+
                             <p>{{ __('Are you sure?') }}</p>
-                    
+
                             <input type="password" name="password" placeholder="Password" required>
-                    
+
                             <button type="submit" class="btn btn-danger">
                                 {{ __('Delete Account') }}
                             </button>
-                    
+
                             <button type="button" id="cancel-delete" class="btn btn-secondary">
                                 {{ __('Cancel') }}
                             </button>
                         </form>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('open-delete-modal').addEventListener('click', function () {
+        document.getElementById('open-delete-modal').addEventListener('click', function() {
             document.getElementById('confirm-user-deletion').style.display = 'block';
         });
-    
-        document.getElementById('cancel-delete').addEventListener('click', function () {
+
+        document.getElementById('cancel-delete').addEventListener('click', function() {
             document.getElementById('confirm-user-deletion').style.display = 'none';
         });
     </script>
-    
+
 
 
 

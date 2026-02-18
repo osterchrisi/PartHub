@@ -18,32 +18,35 @@
             @endforeach
         </select>
 
-        {{-- Only show warning if actually viewing an old revision --}}
+        {{-- Show pill ALWAYS for paying users (matches old UX) --}}
         @if ($is_viewing_old_revision ?? false)
             <div class="badge rounded-pill alert alert-warning small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
                 Old revision
             </div>
+        @else
+            <div class="badge rounded-pill alert alert-primary small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
+                Latest revision
+            </div>
         @endif
     @else
         {{-- No history access: show current revision as plain text --}}
-        <div class="pt-1">
-            <span class="small text-muted">
-                Revision {{ $selected_revision_number ?? '—' }}
-            </span>
-            <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
-                Upgrade to view history
-            </div>
+        <span class="small text-muted pt-1">
+            Revision {{ $selected_revision_number ?? '—' }}
+        </span>
+        <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2 mt-1">
+            <a href="/dashboard#Subscription" class="text-decoration-none text-dark">
+                See Revisions
+            </a>
         </div>
-        {{-- Optional: user tried to access history but was gated --}} @if ($revision_history_locked ?? false)
+
+        {{-- Only show upgrade hint if they actually tried to access an old revision --}}
+        @if ($revision_history_locked ?? false)
             <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
                 Upgrade to view history
             </div>
         @endif
     @endif
 </div>
-
-
-
 
 <div>
     <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px" id="BomDetailsTable"

@@ -16,6 +16,8 @@
             class="fas fa-check pricing-tier-check"></i> Documents for Resources</li>
     <li class="list-group-item list-group-item-action"><i
             class="fas fa-check pricing-tier-check"></i> Parts Alternatives</li>
+<li class="list-group-item list-group-item-action"><i
+            class="fas fa-check pricing-tier-check"></i> BOM Revisions</li>
     <li class="list-group-item list-group-item-action"><i
             class="fas fa-check pricing-tier-check"></i> Premium support</li>
     <li class="list-group-item list-group-item-action"><i
