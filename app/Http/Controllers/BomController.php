@@ -87,13 +87,31 @@ class BomController extends Controller
         if (Auth::id() !== $bom->bom_owner_u_fk)
             abort(403, 'Unauthorized access.');
 
-        // For dropdown
-        $revisions = BomRevision::query()
-            ->where('bom_id_fk', $bom->bom_id)
-            ->orderByDesc('revision_number')
-            ->get(['bom_revision_id', 'revision_number', 'label', 'created_at']);
+        // --- Subscription gating: free users can only view current revision ---
+        // Uses your SubscriptionLimitService "feature" helper you mentioned you added.
+        $limitService = app(\App\Services\SubscriptionLimitService::class);
+        $canHistory = $limitService->canUseFeature(auth()->user(), 'bom_revision_history');
+        $historyLocked = false;
+
+        // For dropdown (only if allowed)
+        $revisions = collect();
+        if ($canHistory) {
+            $revisions = BomRevision::query()
+                ->where('bom_id_fk', $bom->bom_id)
+                ->orderByDesc('revision_number')
+                ->get(['bom_revision_id', 'revision_number', 'label', 'created_at']);
+        }
+
+        // Source of truth for "latest/current"
+        $latestRevisionId = (int) ($bom->current_revision_id ?? 0);
 
         $requestedRevId = (int) $request->query('rev', 0);
+
+        // If free user requests a specific old revision, silently force current revision
+        if ($requestedRevId > 0 && !$canHistory) {
+            $requestedRevId = 0;
+            $historyLocked = true; // For showing a "locked" pill/message in UI
+        }
 
         $selectedRevision = null;
         if ($requestedRevId > 0) {
@@ -116,8 +134,6 @@ class BomController extends Controller
         }
 
         // For showing the "Viewing old revision" warning if applicable
-        $latestRevisionId = optional($revisions->first())->bom_revision_id;
-
         $isViewingOldRevision = $selectedRevision
             && $latestRevisionId
             && ((int) $selectedRevision->bom_revision_id !== (int) $latestRevisionId);
@@ -139,6 +155,10 @@ class BomController extends Controller
                 'latest_revision_id' => $latestRevisionId,
                 'is_viewing_old_revision' => $isViewingOldRevision,
 
+                // Subscription gating flags (free users: only current rev; no dropdown selection)
+                'can_revision_history' => $canHistory,
+                'revision_history_locked' => $historyLocked,
+
                 'db_columns' => self::$bom_detail_table_headers,
                 'nice_columns' => self::$nice_bom_detail_table_headers,
 
@@ -157,6 +177,7 @@ class BomController extends Controller
             ]
         );
     }
+
 
     /**
      * Takes BOM(s), retrieves the BOM Elements (parts) and creates an array of changes to be requested
@@ -296,7 +317,7 @@ class BomController extends Controller
             'lines' => ['required', 'array', 'min:1'],
             'lines.*.part_id' => ['required', 'integer'],
             'lines.*.quantity' => ['required', 'integer', 'min:1'],
-            'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
+            'lines.*.refdes' => ['nullable', 'string', 'max:3000'],
             'lines.*.line_uuid' => ['nullable', 'string', 'max:64'],
         ]);
 
@@ -472,7 +493,7 @@ class BomController extends Controller
             'lines' => ['required', 'array', 'min:1'],
             'lines.*.part_id' => ['required', 'integer'],
             'lines.*.quantity' => ['required', 'integer', 'min:1'],
-            'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
+            'lines.*.refdes' => ['nullable', 'string', 'max:3000'],
             'lines.*.line_uuid' => ['nullable', 'string', 'max:64'],
         ]);
 

@@ -40,6 +40,15 @@ class BomImport implements ToCollection, WithHeadingRow
      */
     public function importBom(Collection $collection)
     {
+        // Drop empty/blank rows first (covers "header only", blank lines, etc.)
+        $collection = $collection
+            ->filter(fn($row) => $row && $row->filter()->isNotEmpty())
+            ->values();
+
+        if ($collection->isEmpty()) {
+            throw new \Exception('BOM import failed: the file contains no data rows.');
+        }
+
         // Map headers using fuzzy matching so "Part ID" vs "part_id" still works.
         $headers = $collection->first()->keys()->toArray();
 
@@ -67,6 +76,7 @@ class BomImport implements ToCollection, WithHeadingRow
             throw new \Exception('BOM import failed with the following errors:<br>' . $formattedErrors);
         }
     }
+
 
     /**
      * Processes a row specific to a BOM import.

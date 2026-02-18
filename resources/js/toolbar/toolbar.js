@@ -101,6 +101,8 @@ export function attachImportBomHandler() {
                             const bomListTable = new TableRowManager('#bom_list_table', 'bom');
                             bomListTable.selectNewRow(id);
                         });
+
+                        console.log("Selected new bom with id: ", id);
                         updateInfoWindow('bom', id);
 
                     },

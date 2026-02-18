@@ -11,6 +11,7 @@ return [
         'supplier_data_limit' => 1,
         'footprint_limit' => 10,
         'category_limit' => 10,
+        'bom_revision_history' => false,
     ],
     'maker' => [
         'part_limit' => null,
@@ -20,5 +21,6 @@ return [
         'supplier_data_limit' => null,
         'footprint_limit' => null,
         'category_limit' => null,
+        'bom_revision_history' => true,
     ],
 ];

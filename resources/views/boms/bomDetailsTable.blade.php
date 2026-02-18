@@ -4,30 +4,45 @@
 
 <div id="bomDetailsToolbar" class="d-flex align-items-center me-2">
     {{-- BOM Revision Picker --}}
-    <select class="form-select form-select-sm w-auto" id="bomRevisionPicker" data-bom-id="{{ $bom_id }}"
-        style="max-width: 360px;">
+    @if (($can_revision_history ?? false) && ($revisions?->count() ?? 0) > 0)
+        <select class="form-select form-select-sm w-auto" id="bomRevisionPicker" data-bom-id="{{ $bom_id }}"
+            style="max-width: 360px;">
+            @foreach ($revisions as $rev)
+                @php
+                    $label = $rev->label ? " ({$rev->label})" : '';
+                    $date = $rev->created_at ? $rev->created_at->format('Y-m-d H:i') : '';
+                @endphp
+                <option value="{{ $rev->bom_revision_id }}" @selected($rev->bom_revision_id == $selected_revision_id)>
+                    Rev {{ $rev->revision_number }}{!! $label !!} ({{ $date }})
+                </option>
+            @endforeach
+        </select>
 
-        @foreach ($revisions as $rev)
-            @php
-                $label = $rev->label ? " ({$rev->label})" : '';
-                $date = $rev->created_at ? $rev->created_at->format('Y-m-d H:i') : '';
-            @endphp
-            <option value="{{ $rev->bom_revision_id }}" @selected($rev->bom_revision_id == $selected_revision_id)>
-                Rev {{ $rev->revision_number }}{!! $label !!} ({{ $date }})
-            </option>
-        @endforeach
-    </select>
-    {{-- Revision Notice --}}
-    @if ($is_viewing_old_revision ?? false)
-        <div class="badge rounded-pill alert alert-warning small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
-           Old revision
-        </div>
+        {{-- Only show warning if actually viewing an old revision --}}
+        @if ($is_viewing_old_revision ?? false)
+            <div class="badge rounded-pill alert alert-warning small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
+                Old revision
+            </div>
+        @endif
     @else
-        <div class="badge rounded-pill alert alert-primary small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
-            Latest revision
+        {{-- No history access: show current revision as plain text --}}
+        <div class="pt-1">
+            <span class="small text-muted">
+                Revision {{ $selected_revision_number ?? '—' }}
+            </span>
+            <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
+                Upgrade to view history
+            </div>
         </div>
+        {{-- Optional: user tried to access history but was gated --}} @if ($revision_history_locked ?? false)
+            <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
+                Upgrade to view history
+            </div>
+        @endif
     @endif
 </div>
+
+
 
 
 <div>
