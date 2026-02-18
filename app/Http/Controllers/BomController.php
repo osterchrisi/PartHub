@@ -293,7 +293,7 @@ class BomController extends Controller
             'revision_label' => ['nullable', 'string', 'max:255'],
             'revision_note' => ['nullable', 'string', 'max:5000'],
 
-            'lines' => ['required', 'array'],
+            'lines' => ['required', 'array', 'min:1'],
             'lines.*.part_id' => ['required', 'integer'],
             'lines.*.quantity' => ['required', 'integer', 'min:1'],
             'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
@@ -469,7 +469,7 @@ class BomController extends Controller
             'revision_label' => ['nullable', 'string', 'max:255'],
             'revision_note' => ['nullable', 'string', 'max:5000'],
 
-            'lines' => ['required', 'array'],
+            'lines' => ['required', 'array', 'min:1'],
             'lines.*.part_id' => ['required', 'integer'],
             'lines.*.quantity' => ['required', 'integer', 'min:1'],
             'lines.*.refdes' => ['nullable', 'string', 'max:1000'],
