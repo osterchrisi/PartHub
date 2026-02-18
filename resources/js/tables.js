@@ -79,6 +79,9 @@ export function assembleBoms(selectedRows, ids) {
             var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
             message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal' id='btnCancelAnywayAssembly'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
             message += r.negative_stock_table;
+            // Make the modal wider for the shortage table
+            $('#mBomAssembly').addClass('modal-lg');
+
             $('#mBomAssemblyInfo').html(message);
 
             // Attach click listener to "Do It Anyway" button
@@ -123,6 +126,9 @@ function hideBOMAssemblyModalAndCleanup() {
   // Remove click listeners
   removeClickListeners('#btnAssembleBOMs'); // Remove click listener assembly
   removeClickListeners('#btnAssembleBOMsAnyway'); // Remove click listener assembly
+  // Restore default size
+  $('#mBomAssembly').removeClass('modal-xl'); // or no size class
+
   // Dispose modal after it's hidden
   $('#mBomAssembly').on('hidden.bs.modal', function (e) {
     $(this).modal('dispose');
@@ -158,6 +164,9 @@ function continueAnyway(r, ids, token) {
         $('#bomAssemblyForm')[0].reset();
         $('#mBomAssemblyInfo').empty();
         $('#btnAssembleBOMs').attr('disabled', false);
+        // Restore default size
+        $('#mBomAssembly').removeClass('modal-lg');
+
         $(this).modal('dispose');
       }).modal('hide');
       updateInfoWindow('bom', ids[ids.length - 1]) // Update BOM info with last BOM ID in array

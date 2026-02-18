@@ -170,6 +170,9 @@ export function clearModalOnHiding() {
                     $('#mBomAssemblyInfo').empty();             // entfernt warning + table
                     $('#btnAssembleBOMs').prop('disabled', false);
 
+                    // Restore default size
+                    $('#mBomAssembly').removeClass('modal-lg');
+
                     removeClickListeners('#btnAssembleBOMs');
                     removeClickListeners('#btnAssembleBOMsAnyway');
                     removeClickListeners('#btnCancelAnywayAssembly');
