@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\BomRun;
 use App\Models\BomRevision;
+use App\Models\BomRun;
+use Illuminate\Console\Command;
 
 class BackfillBomRunRevisionIds extends Command
 {
     protected $signature = 'bom:backfill-bom-run-revision-ids {--dry-run}';
+
     protected $description = 'Backfill bom_runs.bom_revision_id_fk (NULL) to revision_number=1 per BOM';
 
     public function handle(): int
@@ -23,10 +24,11 @@ class BackfillBomRunRevisionIds extends Command
 
         if ($total === 0) {
             $this->info('Nothing to backfill.');
+
             return self::SUCCESS;
         }
 
-        $this->info(($this->option('dry-run') ? 'Dry run: ' : '') . "Found {$total} legacy bom_runs rows.");
+        $this->info(($this->option('dry-run') ? 'Dry run: ' : '')."Found {$total} legacy bom_runs rows.");
 
         // Preload rev1 ids for all involved BOMs
         $bomIds = $runs->keys()->all();
@@ -43,13 +45,15 @@ class BackfillBomRunRevisionIds extends Command
         foreach ($runs as $bomId => $bomRuns) {
             $rev1 = $rev1ByBom->get($bomId);
 
-            if (!$rev1) {
+            if (! $rev1) {
                 $missing += $bomRuns->count();
+
                 continue;
             }
 
             if ($this->option('dry-run')) {
                 $updated += $bomRuns->count();
+
                 continue;
             }
 
@@ -67,10 +71,12 @@ class BackfillBomRunRevisionIds extends Command
 
         if ($this->option('dry-run')) {
             $this->info("Would update {$updated} rows. Missing Rev 1 for {$missing} rows.");
+
             return self::SUCCESS;
         }
 
         $this->info("Backfill complete: updated {$updated} rows. Missing Rev 1 for {$missing} rows.");
+
         return self::SUCCESS;
     }
 }

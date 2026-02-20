@@ -14,7 +14,6 @@ use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BomController extends Controller
@@ -62,8 +61,7 @@ class BomController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'boms.bomsTable') {
+        } elseif ($route == 'boms.bomsTable') {
             return view('boms.bomsTable', [
                 'bom_list' => $bom_list,
                 'db_columns' => self::$bom_list_table_headers,
@@ -76,16 +74,19 @@ class BomController extends Controller
 
     /**
      * Detail view of a single BOM in the info window
-     * @param mixed $bom_id
+     *
+     * @param  mixed  $bom_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public static function show(Request $request, $bom_id)
     {
         $bom = Bom::with('currentRevision')->find($bom_id);
-        if (!$bom)
+        if (! $bom) {
             abort(404, 'BOM not found.');
-        if (Auth::id() !== $bom->bom_owner_u_fk)
+        }
+        if (Auth::id() !== $bom->bom_owner_u_fk) {
             abort(403, 'Unauthorized access.');
+        }
 
         // --- Subscription gating: free users can only view current revision ---
         // Uses your SubscriptionLimitService "feature" helper you mentioned you added.
@@ -108,7 +109,7 @@ class BomController extends Controller
         $requestedRevId = (int) $request->query('rev', 0);
 
         // If free user requests a specific old revision, silently force current revision
-        if ($requestedRevId > 0 && !$canHistory) {
+        if ($requestedRevId > 0 && ! $canHistory) {
             $requestedRevId = 0;
             $historyLocked = true; // For showing a "locked" pill/message in UI
         }
@@ -121,15 +122,14 @@ class BomController extends Controller
         }
 
         // Fallback to current revision
-        if (!$selectedRevision) {
+        if (! $selectedRevision) {
             $selectedRevision = $bom->currentRevision;
         }
 
-        if (!$selectedRevision) {
+        if (! $selectedRevision) {
             // Safety fallback (should be rare after backfill)
             $bom_elements = BomElements::getBomElements($bom_id);
-        }
-        else {
+        } else {
             $bom_elements = $selectedRevision->elements()->with('part')->get();
         }
 
@@ -178,7 +178,6 @@ class BomController extends Controller
         );
     }
 
-
     /**
      * Takes BOM(s), retrieves the BOM Elements (parts) and creates an array of changes to be requested
      *
@@ -190,8 +189,9 @@ class BomController extends Controller
         $ids = $request->input('ids');
 
         $assemble_quantity = (int) $request->input('assemble_quantity');
-        if ($assemble_quantity < 1)
+        if ($assemble_quantity < 1) {
             abort(422, 'Invalid assemble quantity.');
+        }
 
         $from_location = $request->input('from_location');
 
@@ -204,7 +204,7 @@ class BomController extends Controller
             // Check if the user is authorized to access this BOM
             $bom = Bom::with(['currentRevision.elements'])->find($bom_id);
 
-            if (!$bom) {
+            if (! $bom) {
                 abort(404, 'BOM not found.');
             }
 
@@ -215,8 +215,9 @@ class BomController extends Controller
             // Retrieve BOM elements (parts)
             // $bom_elements = BomElements::getBomElements($bom_id);
             $revision = $bom->currentRevision;
-            if (!$revision)
+            if (! $revision) {
                 abort(500, 'BOM has no current revision.');
+            }
             $revisionId = $revision->bom_revision_id;
 
             // Iterating over BOM elements (parts)
@@ -233,7 +234,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID ' . $bom_id,
+                    'comment' => 'BOM build of BOM with ID '.$bom_id,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
@@ -281,14 +282,14 @@ class BomController extends Controller
                 $bom->save();
 
                 // Import lines into bom_revision_elements for this revision
-                $csvImportService = new CsvImportService();
+                $csvImportService = new CsvImportService;
                 Excel::import(
                     new BomImport((int) $rev->bom_revision_id, $csvImportService),
                     $request->file('bom_file')
                 );
 
                 return response()->json([
-                    'success' => 'BOM "' . $bom->bom_name . '" imported successfully.',
+                    'success' => 'BOM "'.$bom->bom_name.'" imported successfully.',
                     'new_bom_id' => (int) $bom->bom_id,
                 ]);
             });
@@ -298,14 +299,15 @@ class BomController extends Controller
         }
     }
 
-
     public function commit(Request $request, $id)
     {
         $bom = Bom::with('currentRevision')->find($id);
-        if (!$bom)
+        if (! $bom) {
             abort(404, 'BOM not found.');
-        if (Auth::id() !== $bom->bom_owner_u_fk)
+        }
+        if (Auth::id() !== $bom->bom_owner_u_fk) {
             abort(403, 'Unauthorized access.');
+        }
 
         $data = $request->validate([
             'base_revision_id' => ['required', 'integer'],
@@ -327,7 +329,7 @@ class BomController extends Controller
         // Editor must be based on current revision
         if ($currentRevisionId !== $baseRevisionId) {
             return response()->json([
-                'error' => 'BOM changed since you opened the editor. Reload and try again.'
+                'error' => 'BOM changed since you opened the editor. Reload and try again.',
             ], 409);
         }
 
@@ -342,14 +344,14 @@ class BomController extends Controller
             $refRaw = (string) ($line['refdes'] ?? '');
             $tokens = array_filter(
                 array_map(
-                    fn($t) => trim($t),
+                    fn ($t) => trim($t),
                     explode(',', $refRaw)
                 ),
-                fn($t) => $t !== ''
+                fn ($t) => $t !== ''
             );
             $ref = implode(',', $tokens);
 
-            if (!isset($merged[$pid])) {
+            if (! isset($merged[$pid])) {
                 $merged[$pid] = [
                     'part_id_fk' => $pid,
                     'quantity' => 0,
@@ -362,12 +364,12 @@ class BomController extends Controller
 
             if ($ref !== '') {
                 $merged[$pid]['refdes'] = $merged[$pid]['refdes'] !== ''
-                    ? ($merged[$pid]['refdes'] . ',' . $ref)
+                    ? ($merged[$pid]['refdes'].','.$ref)
                     : $ref;
             }
 
             // keep first non-null uuid if any
-            if (!$merged[$pid]['line_uuid'] && $uuid) {
+            if (! $merged[$pid]['line_uuid'] && $uuid) {
                 $merged[$pid]['line_uuid'] = $uuid;
             }
         }
@@ -424,22 +426,22 @@ class BomController extends Controller
         ]);
     }
 
-
-
     public function editor($id)
     {
         $bom = Bom::with(['currentRevision'])->find($id);
-        if (!$bom)
+        if (! $bom) {
             abort(404, 'BOM not found.');
-        if (Auth::id() !== $bom->bom_owner_u_fk)
+        }
+        if (Auth::id() !== $bom->bom_owner_u_fk) {
             abort(403, 'Unauthorized access.');
+        }
 
         $rev = $bom->currentRevision;
 
-        if (!$rev) {
+        if (! $rev) {
             $elements = BomElements::with('part')->where('bom_id_fk', $id)->get();
 
-            $lines = $elements->map(fn($e) => [
+            $lines = $elements->map(fn ($e) => [
                 'part_id' => (int) $e->part_id_fk,
                 'part_name' => $e->part?->part_name ?? '',
                 'quantity' => (int) $e->element_quantity,
@@ -466,7 +468,7 @@ class BomController extends Controller
 
         $rev->load(['elements.part']);
 
-        $lines = $rev->elements->map(fn($e) => [
+        $lines = $rev->elements->map(fn ($e) => [
             'part_id' => (int) $e->part_id_fk,
             'part_name' => $e->part?->part_name ?? '',
             'quantity' => (int) $e->quantity,
@@ -518,14 +520,14 @@ class BomController extends Controller
             $refRaw = (string) ($line['refdes'] ?? '');
             $tokens = array_filter(
                 array_map(
-                    fn($t) => trim($t),
+                    fn ($t) => trim($t),
                     explode(',', $refRaw)
                 ),
-                fn($t) => $t !== ''
+                fn ($t) => $t !== ''
             );
             $ref = implode(',', $tokens);
 
-            if (!isset($merged[$pid])) {
+            if (! isset($merged[$pid])) {
                 $merged[$pid] = [
                     'part_id_fk' => $pid,
                     'quantity' => 0,
@@ -538,11 +540,11 @@ class BomController extends Controller
 
             if ($ref !== '') {
                 $merged[$pid]['refdes'] = $merged[$pid]['refdes'] !== ''
-                    ? ($merged[$pid]['refdes'] . ',' . $ref)
+                    ? ($merged[$pid]['refdes'].','.$ref)
                     : $ref;
             }
 
-            if (!$merged[$pid]['line_uuid'] && $uuid) {
+            if (! $merged[$pid]['line_uuid'] && $uuid) {
                 $merged[$pid]['line_uuid'] = $uuid;
             }
         }
@@ -596,7 +598,4 @@ class BomController extends Controller
             'new_bom_id' => $newBomId,
         ]);
     }
-
-
-
 }

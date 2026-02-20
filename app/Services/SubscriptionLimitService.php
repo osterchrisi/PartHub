@@ -9,10 +9,9 @@ class SubscriptionLimitService
         \Log::info('Checking subscription limits for user', ['user_id' => $user->id, 'resource_type' => $resourceType, 'part_id' => $part_id]);
         // Get the user's current subscription plan
         $subscription = $user->subscription('maker');
-        if (!$subscription) {
+        if (! $subscription) {
             $subscriptionType = 'free';
-        }
-        else {
+        } else {
             $subscriptionType = $subscription->name;
         }
 
@@ -22,9 +21,9 @@ class SubscriptionLimitService
         // Build dynamic method names based on the resource type
         $resourceCountMethod = ($resourceType === 'supplier_data')
             ? 'getSupplierDataCount'
-            : 'get' . ucfirst($resourceType) . 'Count';
+            : 'get'.ucfirst($resourceType).'Count';
 
-        if (!array_key_exists("{$resourceType}_limit", $limits)) {
+        if (! array_key_exists("{$resourceType}_limit", $limits)) {
             logger()->warning("No limit config found for resource type '{$resourceType}' in plan '{$subscriptionType}' (user ID: {$user->id})");
 
             return false;
@@ -41,8 +40,7 @@ class SubscriptionLimitService
         // Call the appropriate method, passing $part_id for supplier_data or no argument for others
         if ($resourceType === 'supplier_data') {
             return $user->$resourceCountMethod($part_id) >= $limit;
-        }
-        else {
+        } else {
             return $user->$resourceCountMethod() >= $limit;
         }
     }
@@ -53,7 +51,7 @@ class SubscriptionLimitService
         $subscriptionType = $subscription ? $subscription->name : 'free';
 
         $cfg = config("subscription_limits.{$subscriptionType}");
+
         return (bool) ($cfg[$feature] ?? false);
     }
-
 }

@@ -90,8 +90,6 @@ class BackfillBomRevisions extends Command
             }
         }
 
-
         $this->info('Backfill complete.');
     }
-
 }

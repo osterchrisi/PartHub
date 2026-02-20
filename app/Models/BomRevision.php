@@ -15,7 +15,9 @@ use Illuminate\Database\Eloquent\Model;
 class BomRevision extends Model
 {
     use HasFactory;
+
     protected $table = 'bom_revisions';
+
     protected $primaryKey = 'bom_revision_id';
 
     protected $fillable = [
@@ -40,7 +42,4 @@ class BomRevision extends Model
     {
         return $this->belongsTo(User::class, 'created_by_u_fk', 'id');
     }
-
-
-
 }

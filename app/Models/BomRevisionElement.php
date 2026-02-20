@@ -16,7 +16,9 @@ use Illuminate\Database\Eloquent\Model;
 class BomRevisionElement extends Model
 {
     use HasFactory;
+
     protected $table = 'bom_revision_elements';
+
     protected $primaryKey = 'bom_revision_element_id';
 
     protected $fillable = [
@@ -27,9 +29,8 @@ class BomRevisionElement extends Model
         'line_uuid',
     ];
 
-        public function part()
+    public function part()
     {
         return $this->belongsTo(Part::class, 'part_id_fk', 'part_id');
     }
-
 }

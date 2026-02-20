@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Bom;
 use App\Models\BomRevision;
 use App\Models\BomRevisionElement;
-use App\Models\BomRun;
 use App\Models\Location;
 use App\Models\Part;
 use App\Models\StockLevel;
@@ -23,6 +22,7 @@ class BomControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $user->forceFill(['email_verified_at' => now()])->save();
+
         return $user;
     }
 
@@ -98,7 +98,7 @@ class BomControllerTest extends TestCase
         $p2 = Part::factory()->create(['part_owner_u_fk' => $user->id]);
 
         $csv = implode("\n", [
-            "part_id,part_name,quantity",
+            'part_id,part_name,quantity',
             "{$p1->part_id},,7",
             ",{$p2->part_name},3",
         ]);
@@ -509,6 +509,4 @@ class BomControllerTest extends TestCase
 
         $resp->assertStatus(422);
     }
-
-
 }

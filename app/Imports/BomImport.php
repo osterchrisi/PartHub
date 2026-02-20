@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class BomImport implements ToCollection, WithHeadingRow
 {
     protected int $bomRevisionId;
+
     protected CsvImportService $csvImportService;
 
     public function __construct(int $bomRevisionId, CsvImportService $csvImportService)
@@ -42,7 +43,7 @@ class BomImport implements ToCollection, WithHeadingRow
     {
         // Drop empty/blank rows first (covers "header only", blank lines, etc.)
         $collection = $collection
-            ->filter(fn($row) => $row && $row->filter()->isNotEmpty())
+            ->filter(fn ($row) => $row && $row->filter()->isNotEmpty())
             ->values();
 
         if ($collection->isEmpty()) {
@@ -59,8 +60,8 @@ class BomImport implements ToCollection, WithHeadingRow
         );
 
         // Validate if all expected headers have been successfully mapped
-        if (!empty($mappingResult['unmatched'])) {
-            throw new \Exception('Invalid headers: ' . implode(', ', $mappingResult['unmatched']) . ' not found.');
+        if (! empty($mappingResult['unmatched'])) {
+            throw new \Exception('Invalid headers: '.implode(', ', $mappingResult['unmatched']).' not found.');
         }
 
         // Process BOM row by row
@@ -73,10 +74,9 @@ class BomImport implements ToCollection, WithHeadingRow
         if ($this->csvImportService->hasErrors()) {
             // Throw an exception with the accumulated errors
             $formattedErrors = $this->csvImportService->formatErrors()->withoutKey();
-            throw new \Exception('BOM import failed with the following errors:<br>' . $formattedErrors);
+            throw new \Exception('BOM import failed with the following errors:<br>'.$formattedErrors);
         }
     }
-
 
     /**
      * Processes a row specific to a BOM import.
@@ -99,11 +99,12 @@ class BomImport implements ToCollection, WithHeadingRow
             'part_id'
         );
 
-        if (!$partId) {
+        if (! $partId) {
             $this->csvImportService->addCustomError(
                 'foreign_key',
-                'No matching record found for part with ' . $this->csvImportService->formatConditionsForError($conditions)
+                'No matching record found for part with '.$this->csvImportService->formatConditionsForError($conditions)
             );
+
             return;
         }
 
@@ -111,8 +112,9 @@ class BomImport implements ToCollection, WithHeadingRow
         if ($qty < 1) {
             $this->csvImportService->addCustomError(
                 'quantity',
-                'Invalid quantity for part ' . $partId . ' (must be >= 1)'
+                'Invalid quantity for part '.$partId.' (must be >= 1)'
             );
+
             return;
         }
 

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use App\Models\Category;
 use App\Models\Footprint;
 use App\Models\Part;
+use App\Models\PartUnit;
 use App\Models\Supplier;
 use App\Models\User;
-use App\Models\PartUnit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

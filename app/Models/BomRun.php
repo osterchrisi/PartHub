@@ -28,16 +28,15 @@ class BomRun extends Model
         'bom_revision_id_fk',
     ];
 
-
     public function bom()
     {
         return $this->belongsTo(BOM::class, 'bom_id_fk');
     }
+
     public function revision()
     {
         return $this->belongsTo(BomRevision::class, 'bom_revision_id_fk', 'bom_revision_id');
     }
-
 
     public function user()
     {
@@ -59,7 +58,6 @@ class BomRun extends Model
 
         return $bom_run->bom_run_id;
     }
-
 
     public static function getBomRunsByBomId($bom_id)
     {
