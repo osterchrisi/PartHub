@@ -55,6 +55,16 @@ class DatabaseService
                 throw new Exception("No owner column found for table {$table}");
             }
 
+            // Prevent arbitrary bulk deletes by forcing deletion strictly by the model's primary key.
+            // The client is not allowed to choose an arbitrary column for deletion.    
+            $modelClass = self::$modelMap[$table] ?? null;
+            if (!$modelClass)
+                throw new Exception("No Eloquent model found for table {$table}");
+            $pk = (new $modelClass)->getKeyName();
+            if ($column !== $pk) {
+                throw new Exception("Invalid delete column {$column} for table {$table}");
+            }
+
             // Get the currently authenticated user's ID
             $user_id = Auth::id();
 

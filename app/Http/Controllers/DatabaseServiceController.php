@@ -30,6 +30,8 @@ class DatabaseServiceController extends Controller
         $column = $request->input('column');
         $ids = $request->input('ids');
 
+        \Log::info("Request to delete from table {$table}, column {$column}, ids: " . implode(', ', $ids));
+
         try {
             foreach ($ids as $id) {
                 DatabaseService::deleteRow($table, $column, $id);
