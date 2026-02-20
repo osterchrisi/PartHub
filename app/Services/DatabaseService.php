@@ -6,6 +6,7 @@ use App\Models\Part;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseService
 {
@@ -125,6 +126,10 @@ class DatabaseService
 
             if (!$record) {
                 throw new Exception('Unauthorized or row not found for updating');
+            }
+
+            if (!Schema::hasColumn($record->getTable(), $column)) {
+                throw new Exception("Invalid column {$column}");
             }
 
             // Check if the new value is different

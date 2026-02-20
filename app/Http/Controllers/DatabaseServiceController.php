@@ -60,10 +60,7 @@ class DatabaseServiceController extends Controller
 
         $data = [$column => $new_value, 'part_id' => $id];
 
-        \Log::info('Received updateCell request', ['data' => $data, 'table_name' => $table_name, 'id_field' => $id_field, 'id' => $id, 'column' => $column, 'new_value' => $new_value]);
-
         $validated = $this->partValidator->validate($data, $request->method());
-        \Log::info('Validation successful', ['validated' => $validated]);
 
         // TODO: This line just makes sure that everything that does not yet have a validator also works.
         // TODO: Failed validation throws an exception so I guess it's 'safe' for now. All remaining data is strings anyway...
