@@ -91,7 +91,7 @@ class PartControllerTest extends TestCase
 
         // Create alternative group and attach part
         $altGroup = AlternativeGroup::factory()->create(['owner_u_fk' => $user->id]);
-        $altGroup->alternativeParts()->attach($part->part_id);
+        $altGroup->parts()->attach($part->part_id);
 
         // Call the show route
         $response = $this->get('/part/'.$part->part_id);

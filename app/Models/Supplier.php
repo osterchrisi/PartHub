@@ -14,11 +14,6 @@ class Supplier extends Model
 
     protected $primaryKey = 'supplier_id';
 
-    public function part()
-    {
-        return $this->belongsTo(Part::class, 'part_supplier_fk', 'part_id');
-    }
-
     public static function availableSuppliers($format = 'json')
     {
 

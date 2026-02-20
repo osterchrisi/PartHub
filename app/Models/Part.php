@@ -24,9 +24,14 @@ class Part extends Model
         return $this->belongsTo(Footprint::class, 'part_footprint_fk');
     }
 
-    public function supplier()
+    public function supplierData()
     {
-        return $this->belongsTo(Supplier::class, 'part_supplier_fk');
+        return $this->hasMany(SupplierData::class, 'part_id_fk', 'part_id');
+    }
+
+    public function part_DEPRECATED()
+    {
+        throw new \LogicException('Supplier::part() is deprecated. Use Supplier::parts()');
     }
 
     public function unit()
@@ -47,11 +52,6 @@ class Part extends Model
     public function alternativeGroups()
     {
         return $this->belongsToMany(AlternativeGroup::class, 'alternative_group_elements', 'alternative_part_id', 'alternative_group_id');
-    }
-
-    public function alternativeDetails()
-    {
-        return $this->belongsTo(Part::class, 'alternative_part_id', 'part_id');
     }
 
     private static $column_names = [
@@ -85,20 +85,21 @@ class Part extends Model
                     $query->orWhere($column, 'like', "%$search_term%");
                 }
             });
-        } else {
+        }
+        else {
             // Only in specified colum (single)
             $query->where($search_column, 'like', "%$search_term%");
         }
 
         // Filter for categories
-        if (! in_array('all', $search_category)) {
+        if (!in_array('all', $search_category)) {
             $query->whereHas('category', function ($query) use ($search_category) {
                 $query->whereIn('category_id', $search_category)
                     ->orWhereIn('parent_category', $search_category);
             });
         }
 
-        $parts = $query->with('category', 'unit', 'stockLevels', 'footprint', 'supplier')->get()->toArray();
+        $parts = $query->with('category', 'unit', 'stockLevels', 'footprint')->get()->toArray();
 
         // dd($parts);
         return $parts;
@@ -107,7 +108,7 @@ class Part extends Model
     public static function getBomsContainingPart($part_id)
     {
         $part = Part::find($part_id);
-        if (! $part) {
+        if (!$part) {
             return [];
         }
 

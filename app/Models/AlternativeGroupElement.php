@@ -11,5 +11,5 @@ class AlternativeGroupElement extends Model
 
     protected $table = 'alternative_group_elements';
 
-    protected $fillable = ['alternative_part_id'];
+    protected $fillable = ['alternative_group_id', 'alternative_part_id'];
 }
