@@ -352,6 +352,9 @@ class DropdownManager {
                     this.categoryCreated = true;
                     $('#categoryCreationModal').modal('toggle');
                     this.inputModal.modal('toggle');
+
+                    // Trigger category list table rebuild
+                    $(document).trigger('category:created', [newEntry]);
                 });
             },
             error: function () {
@@ -400,14 +403,14 @@ class DropdownManager {
         });
     }
 
- /**
- * Creates a selectized dropdown for selecting a Part by ID.
- * Intended for BOM editor "add line" UX.
- *
- * @param {Array} parts - [{part_id, part_name}, ...]
- * @param {string} containerId - ID of the div where the select should be injected
- * @param {string} selectId - ID for the select element itself
- */
+    /**
+    * Creates a selectized dropdown for selecting a Part by ID.
+    * Intended for BOM editor "add line" UX.
+    *
+    * @param {Array} parts - [{part_id, part_name}, ...]
+    * @param {string} containerId - ID of the div where the select should be injected
+    * @param {string} selectId - ID for the select element itself
+    */
     addBomPartSelect(parts, containerId = 'bomEditorAddPartDropdown', selectId = 'bomEditorAddPartSelect') {
         const div = document.getElementById(containerId);
         console.log('Adding BOM part select with parts:', parts);

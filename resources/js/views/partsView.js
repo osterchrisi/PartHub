@@ -39,6 +39,11 @@ export function initializePartsView() {
     const categoriesTableManager = new CategoryTableManager({ type: 'category', resourceCreator: categoryCreator })
     categoriesTableManager.bootstrapTable();
 
+    // Event listener for having created a new category via the part entry modal
+    $(document).off('category:created.partsview').on('category:created.partsview', () => {
+        categoriesTableManager.rebuildTable();
+    });
+
     //* Table Row Manager for Parts Table
     const tableRowManager = new TableRowManager('#parts_table', 'part');
     tableRowManager.loadSelectedRow();
