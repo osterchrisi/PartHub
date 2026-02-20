@@ -54,6 +54,11 @@ class Part extends Model
         return $this->belongsToMany(AlternativeGroup::class, 'alternative_group_elements', 'alternative_part_id', 'alternative_group_id');
     }
 
+    public function manufacturer()
+    {
+        return $this->belongsTo(Manufacturer::class, 'part_manufacturer_fk', 'manufacturer_id');
+    }
+
     private static $column_names = [
         'part_id',
         'part_name',
