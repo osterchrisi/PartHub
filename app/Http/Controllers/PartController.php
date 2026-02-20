@@ -92,7 +92,7 @@ class PartController extends Controller
 
         // Mouser Search settings
         $mouserEnabled = $this->userSettings->isMouserEnabled($user_id);
-        $hasMouserKey = ! empty($this->userSettings->getMouserApiKeyDecrypted($user_id));
+        $hasMouserKey = !empty($this->userSettings->getMouserApiKeyDecrypted($user_id));
 
         /* Calculate and append each part's total stock
         / Passing a reference, so modifications made to $part directly affect
@@ -130,7 +130,8 @@ class PartController extends Controller
                 'footprints' => $footprints,
                 'suppliers' => $suppliers,
             ]);
-        } elseif ($route == 'parts.partsTable') {
+        }
+        elseif ($route == 'parts.partsTable') {
             return view('parts.partsTable', [
                 'parts' => $parts,
                 'db_columns' => self::$db_columns,
@@ -169,7 +170,7 @@ class PartController extends Controller
             );
 
             // Handle stock level if quantity and location are provided
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $new_stock_entry_id = StockLevel::createStockLevelRecord($new_part_id, $validated['to_location'], $validated['quantity']);
                 StockLevelHistory::createStockLevelHistoryRecord(
                     $new_part_id,
@@ -183,14 +184,14 @@ class PartController extends Controller
             }
 
             // Handle supplier data through SupplierService
-            if (! empty($validated['suppliers'])) {
+            if (!empty($validated['suppliers'])) {
                 $this->supplierService->createSuppliers($new_part_id, $validated['suppliers']);
             }
 
             DB::commit();
 
             // Trigger stock movement event
-            if (! empty($validated['quantity']) && ! empty($validated['to_location'])) {
+            if (!empty($validated['quantity']) && !empty($validated['to_location'])) {
                 $stock_level = [$new_part_id, $validated['quantity'], $validated['to_location']];
                 event(new StockMovementOccured($stock_level, Auth::user()));
             }
@@ -203,7 +204,7 @@ class PartController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(['error' => 'An error occurred: '.$e->getMessage()], 500);
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
 
@@ -216,15 +217,11 @@ class PartController extends Controller
         $stockHistory = StockLevelHistory::getPartStockHistory($part_id);
         $supplierData = $this->supplierService->getSupplierDataForPart($part_id);
 
-        $apart = Part::with([
-            'alternativeGroups.alternativeParts' => function ($query) {
-                $query->withPivot('id'); // Ensure pivot id is included
-            },
-        ])->findOrFail($part_id);
+        $apart = Part::with('alternativeGroups.parts')->findOrFail($part_id);
 
         // Collect all unique alternative parts excluding the original part itself
-        $alternativeData = $apart->alternativeGroups->flatMap->alternativeParts
-            ->where('part_id', '!=', $part_id)
+        $alternativeData = $apart->alternativeGroups->flatMap->parts
+            ->where('part_id', '!=', (int) $part_id)
             ->unique('part_id'); // Ensure no duplicates
 
         // Need to jump through a few hoops for proper time-zoning
@@ -289,7 +286,8 @@ class PartController extends Controller
                     'tabToggleId4' => 'partAlternatives',
                 ]
             );
-        } else {
+        }
+        else {
             abort(403, 'Unauthorized access.'); // Return a 403 Forbidden status with an error message
         }
     }
@@ -329,12 +327,12 @@ class PartController extends Controller
     {
         $userId = auth()->id();
 
-        if (! $settings->isMouserEnabled($userId)) {
+        if (!$settings->isMouserEnabled($userId)) {
             return response()->json(['message' => 'Mouser search is disabled in your settings.'], 403);
         }
 
         $apiKey = $settings->getMouserApiKeyDecrypted($userId);
-        if (! $apiKey) {
+        if (!$apiKey) {
             return response()->json(['message' => 'No Mouser API key set.'], 403);
         }
 
@@ -343,7 +341,7 @@ class PartController extends Controller
             $data = $mouser->searchPartNumber($searchTerm, $apiKey);
 
             // Mouser often returns an "Errors" array
-            if (! empty($data['Errors'])) {
+            if (!empty($data['Errors'])) {
                 $msg = $data['Errors'][0]['Message'] ?? 'Mouser API returned an error.';
                 $property = $data['Errors'][0]['PropertyName'] ?? null;
                 $key = $data['Errors'][0]['ResourceKey'] ?? null;
@@ -369,22 +367,12 @@ class PartController extends Controller
         }
     }
 
-    public function getAlternatives($id)
-    {
-        $part = Part::with('alternativeGroups.parts')->findOrFail($id);
-
-        // Extract all unique parts in the same groups
-        $alternatives = $part->alternativeGroups->flatMap->parts->unique('part_id');
-
-        return response()->json($alternatives);
-    }
-
     public function addAlternative(Request $request, $id)
     {
         $part = Part::findOrFail($id);
         $userId = Auth::id();
 
-        if (! $request->has('alternatives') || ! is_array($request->alternatives)) {
+        if (!$request->has('alternatives') || !is_array($request->alternatives)) {
             return response()->json(['error' => 'Invalid alternatives format'], 400);
         }
 
@@ -397,33 +385,23 @@ class PartController extends Controller
         // Find an existing alternative group
         $group = $part->alternativeGroups()->first();
 
-        if (! $group) {
+        if (!$group) {
             // Create new alternative group if none exists
             $group = AlternativeGroup::create(['owner_u_fk' => $userId]);
             $group->parts()->attach($part->part_id, ['owner_u_fk' => $userId]);
         }
 
         // Add new alternatives to the group while setting 'owner_u_fk'
-        foreach ($alternativeIds as $altId) {
-            $group->parts()->attach($altId, ['owner_u_fk' => $userId]);
-        }
+        $attachData = collect($alternativeIds)->mapWithKeys(fn($altId) => [
+            $altId => ['owner_u_fk' => $userId],
+        ])->toArray();
+
+        $group->parts()->syncWithoutDetaching($attachData);
 
         return response()->json([
             'message' => 'Alternatives added successfully',
             'group_id' => $group->id,
             'alternatives' => $group->parts()->get(),
-        ]);
-    }
-
-    public function removeAlternative($id, $alt_id)
-    {
-        $part = Part::findOrFail($id);
-        $part->alternatives()->detach($alt_id);
-
-        // Return updated alternative list
-        return response()->json([
-            'message' => 'Alternative removed',
-            'alternatives' => $part->alternatives, // Send updated alternatives
         ]);
     }
 
