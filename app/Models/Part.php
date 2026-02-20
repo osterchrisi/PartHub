@@ -103,8 +103,8 @@ class Part extends Model
                     ->orWhereIn('parent_category', $search_category);
             });
         }
-
-        $parts = $query->with('category', 'unit', 'stockLevels', 'footprint')->get()->toArray();
+        
+        $parts = $query->with('category', 'unit', 'stockLevels', 'footprint', 'manufacturer')->get()->toArray();
 
         // dd($parts);
         return $parts;
