@@ -59,6 +59,12 @@ class TableManager {
                 this.rebuildUrl = '/locations.locationsTable';
                 this.container = 'table-window';
                 break;
+            case 'manufacturer':
+                this.id_name = 'manufacturer_id';
+                this.tableId = 'manufacturers_list_table';
+                this.rebuildUrl = '/manufacturers.manufacturersTable';
+                this.container = 'table-window';
+                break;
             case 'supplier':
                 this.id_name = 'supplier_id';
                 this.tableId = 'suppliers_list_table';
@@ -91,8 +97,6 @@ class TableManager {
         this.rowClickCallback = this.instantiateRowClickCallback(this.type);
         this.contextActions = contextActions || this.defaultContextActions();
         this.tableRowManager = this.instantiateTableRowManager(this.type);
-
-        this.instantiateRowClickCallback();
     }
 
     /**
@@ -110,6 +114,8 @@ class TableManager {
                 return new TableRowManager('#locations_list_table', 'location');
             case 'supplier':
                 return new TableRowManager('#suppliers_list_table', 'supplier');
+            case 'manufacturer':
+                return new TableRowManager('#manufacturers_list_table', 'manufacturer');
             default:
                 return;
         }

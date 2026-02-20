@@ -395,7 +395,12 @@ class InlineTableCellEditor {
                     tableRowManager.loadSelectedRow();
                 });
             },
-
+            'manufacturers': () => {
+                new TableManager({ type: 'manufacturer' }).rebuildTable().done(() => {
+                    const tableRowManager = new TableRowManager('#manufacturers_list_table', 'manufacturer');
+                    tableRowManager.loadSelectedRow();
+                });
+            },
             'suppliers': () => {
                 new TableManager({ type: 'supplier' }).rebuildTable().done(() => {
                     const tableRowManager = new TableRowManager('#suppliers_list_table', 'supplier');

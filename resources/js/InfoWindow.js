@@ -44,6 +44,9 @@ class InfoWindow {
             case 'category':
                 this.defaultTab = 'categoryTabs'
                 break;
+            case 'manufacturer':
+                this.defaultTab = 'manufacturerTabs'
+                break;
             default:
                 break;
         }

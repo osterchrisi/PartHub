@@ -52,7 +52,8 @@ class ManufacturerController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        } elseif ($route == 'manufacturers.manufacturersTable') {
+        }
+        elseif ($route == 'manufacturers.manufacturersTable') {
             return view('manufacturers.manufacturersTable', [
                 'manufacturers_list' => $manufacturers_list,
                 'db_columns' => self::$manufacturer_list_table_headers,
@@ -74,6 +75,10 @@ class ManufacturerController extends Controller
             'manufacturer_phone' => $m->manufacturer_phone,
             'manufacturer_website' => $m->manufacturer_website,
             'manufacturer_comment' => $m->manufacturer_comment,
+            // Tabs Settings
+            'tabId1' => 'info',
+            'tabText1' => 'Info',
+            'tabToggleId1' => 'manufacturerInfo',
         ]);
     }
 

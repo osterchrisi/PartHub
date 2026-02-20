@@ -21,6 +21,7 @@ class DatabaseService
         'suppliers' => 'supplier_owner_u_fk',
         'supplier_data' => 'supplier_data_owner_u_fk',
         'alternative_group_elements' => 'owner_u_fk',
+        'manufacturers' => 'manufacturer_owner_u_fk',
     ];
 
     // Map of table names to Eloquent models
@@ -35,6 +36,7 @@ class DatabaseService
         'suppliers' => \App\Models\Supplier::class,
         'supplier_data' => \App\Models\SupplierData::class,
         'alternative_group_elements' => \App\Models\AlternativeGroupElement::class,
+        'manufacturers' => \App\Models\Manufacturer::class,
     ];
 
     /**

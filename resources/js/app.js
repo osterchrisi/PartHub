@@ -6,6 +6,7 @@ import { initializeFootprintsView } from './views/footprintsView';
 import { initializeSuppliersView } from './views/suppliersView';
 import { initializeUserSettingsView } from './views/userSettingsView';
 import { initializeSupportView } from './views/supportView';
+import { initializeManufacturersView } from './views/manufacturersView';
 import {
     clearModalOnHiding,
     focusFirstInputInModals,
@@ -38,6 +39,9 @@ $(document).ready(function () {
     }
     else if (currentView === 'support') {
         initializeSupportView();
+    }
+        else if (currentView === 'manufacturers') {
+        initializeManufacturersView();
     }
 
     // Common to all views

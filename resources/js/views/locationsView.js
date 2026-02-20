@@ -3,8 +3,6 @@ import { attachDeleteRowsHandler } from "../toolbar/toolbar";
 import { SimpleResourceCreator } from "../Resources/ResourceCreators/SimpleResourceCreator";
 import { TableManager } from "../Tables/TableManager";
 
-
-
 export function initializeLocationsView() {
     const locationsTableManager = new TableManager({
         type: 'location'
