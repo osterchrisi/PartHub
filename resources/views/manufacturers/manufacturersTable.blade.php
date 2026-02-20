@@ -1,0 +1,70 @@
+<div>
+    <table class="table table-sm table-responsive table-hover table-striped" style="font-size:12px"
+        id="manufacturers_list_table"
+        data-resizable="true"
+        data-pagination="true"
+        data-show-columns="true"
+        data-cookie="true"
+        data-cookie-id-table="ManufacturersListTableState"
+        data-cookie-storage="localStorage"
+        data-max-moving-rows="100"
+        data-multiple-select-row="true"
+        data-click-to-select="true"
+    >
+        <thead>
+            <tr>
+                <th data-field="state" data-checkbox="true"></th>
+                @foreach ($nice_columns as $column_header)
+                    <th data-field="{{ $column_header }}">{{ $column_header }}</th>
+                @endforeach
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach ($manufacturers_list as $row)
+                @php
+                    $manufacturer_id = $row['manufacturer_id'];
+                @endphp
+
+                <tr data-id="{{ $manufacturer_id }}">
+                    @foreach ($db_columns as $column_data)
+
+                        @if ($column_data === 'manufacturer_name'
+                            || $column_data === 'manufacturer_contact_name'
+                            || $column_data === 'manufacturer_email'
+                            || $column_data === 'manufacturer_phone'
+                            || $column_data === 'manufacturer_website'
+                            || $column_data === 'manufacturer_comment'
+                        )
+                            <td data-editable="true"
+                                class="editable editable-text"
+                                data-id="{{ $manufacturer_id }}"
+                                data-column="{{ $column_data }}"
+                                data-table_name="{{ $table_name }}"
+                                data-id_field="{{ $id_field }}"
+                            >
+                                <x-tables.td-editable-flexbox :content="$row[$column_data] ?? ''">
+                                    <x-tables.edit-pen />
+                                </x-tables.td-editable-flexbox>
+                            </td>
+
+                        @elseif ($column_data === 'manufacturer_id')
+                            <td data-id="{{ $manufacturer_id }}"
+                                data-column="{{ $column_data }}"
+                                data-table_name="{{ $table_name }}"
+                                data-id_field="{{ $id_field }}"
+                            >
+                                {{ $row[$column_data] }}
+                            </td>
+
+                        @else
+                            {{-- 'state' is empty, Bootstrap Tables will place a checkbox here --}}
+                            <td></td>
+                        @endif
+
+                    @endforeach
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>

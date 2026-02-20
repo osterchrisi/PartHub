@@ -10,6 +10,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FootprintController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StockLevelController;
@@ -97,6 +98,15 @@ Route::controller(LocationController::class)->group(function () {
     Route::post('/location.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
     Route::get('/locations.get', 'getLocations')->middleware(['auth', 'verified']);
     Route::get('/location/{id}', 'show')->middleware(['auth', 'verified']);
+});
+
+// * Manufacturer Routes
+Route::controller(ManufacturerController::class)->group(function () {
+    Route::get('/manufacturers', 'index')->middleware(['auth', 'verified'])->name('manufacturers');
+    Route::get('/manufacturers.manufacturersTable', 'index')->middleware(['auth', 'verified'])->name('manufacturers.manufacturersTable');
+    Route::post('/manufacturer.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
+    Route::get('/manufacturers.get', 'getManufacturers')->middleware(['auth', 'verified']);
+    Route::get('/manufacturer/{id}', 'show')->middleware(['auth', 'verified']);
 });
 
 // * Category Routes

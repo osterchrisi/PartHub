@@ -34,6 +34,10 @@ $user_name = $user ? $user->name : '';
                         <a class="nav-link {{ request()->routeIs('footprints') ? 'active' : '' }}"
                             href="{{ route('footprints') }}">Footprints</a>
                     </li>
+                    <li class="nav-item rounded">
+                        <a class="nav-link {{ request()->routeIs('manufacturers') ? 'active' : '' }}"
+                            href="{{ route('manufacturers') }}">Manufacturers</a>
+                    </li>
                     @subscribed('nonsense')
                     Maker
                     @endsubscribed
