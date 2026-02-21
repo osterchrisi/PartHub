@@ -51,7 +51,7 @@ class DocumentController extends Controller
         return response()->json($documents);
     }
 
-    public function deleteDocument($type, $id)
+    public function delete($type, $id)
     {
         try {
             // Find the document by ID, type, and owner
