@@ -31,10 +31,10 @@ class PartController extends Controller
 
     private static $id_field = 'part_id';
 
-    private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'part_id', 'created_at', 'updated_at'];
+    private static $db_columns = ['state', 'part_name', 'part_description', 'part_comment', 'category_name', 'total_stock', 'footprint_name', 'unit_name', 'manufacturer_name', 'part_id', 'created_at', 'updated_at'];
 
     // 'state' doesn't contain data but is necessary for boostrapTable's selected row to work
-    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', 'ID', 'Created', 'Updated'];
+    private static $nice_columns = ['Name', 'Description', 'Comment', 'Category', 'Total Stock', 'Footprint', 'Unit', 'Manufacturer', 'ID', 'Created', 'Updated'];
 
     protected $databaseService;
 
@@ -101,6 +101,8 @@ class PartController extends Controller
         foreach ($parts as &$part) {
             $totalStock = $this->stockService->calculateTotalStock($part['stock_levels']);
             $part['total_stock'] = $totalStock;
+
+            $part['manufacturer_name'] = $part['manufacturer']['manufacturer_name'] ?? null;
 
             // Convert timestamps to user timezone
             $part['created_at'] = convertToUserTimezone($part['created_at']);

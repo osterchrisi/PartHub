@@ -69,6 +69,9 @@ class InlineTableCellEditor {
             case 'supplier':
                 this.endpoint = 'suppliers';
                 break;
+            case 'manufacturer':
+                this.endpoint = 'manufacturers';
+                break;
             case 'supplierData':
                 this.type = 'supplier';         // Need this change, otherwise the way that editDropdownCell calls createSelectElement doesn't work properly
                 this.endpoint = 'suppliers';

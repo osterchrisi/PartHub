@@ -89,6 +89,15 @@
                                 <x-tables.edit-pen />
                             </x-tables.td-editable-flexbox>
                         </td>
+                        {{-- Manufacturer --}}
+                    @elseif ($column_data == 'manufacturer_name')
+                        <td data-editable="true" class="editable editable-manufacturer" data-id="{{ $part_id }}"
+                            data-column="{{ $column_data }}" data-table_name="{{ $table_name }}"
+                            data-id_field="{{ $id_field }}">
+                            <x-tables.td-editable-flexbox :content="$part['manufacturer'][$column_data] ?? ''">
+                                <x-tables.edit-pen />
+                            </x-tables.td-editable-flexbox>
+                        </td>
                         {{-- Selected / State  --}}
                     @elseif ($column_data == 'state')
                         <td></td>
