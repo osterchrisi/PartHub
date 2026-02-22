@@ -131,7 +131,7 @@
 
             </div>
             <div class="text-center mb-4">
-                <p class="lead">Resources are: Parts, BOMs, Locations, Categories, Suppliers</p>
+                <p class="lead">Resources are: Parts, BOMs, Locations, Categories, Footprints, Suppliers, Manufacturers</p>
             </div>
         </x-register-card>
     </div>
