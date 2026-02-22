@@ -13,6 +13,7 @@ use App\Models\Supplier;
 use App\Models\SupplierData;
 use App\Models\User;
 use App\Models\UserSetting;
+use App\Models\Manufacturer;
 use App\Services\MouserApiService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Crypt;
@@ -94,7 +95,7 @@ class PartControllerTest extends TestCase
         $altGroup->parts()->attach($part->part_id);
 
         // Call the show route
-        $response = $this->get('/part/'.$part->part_id);
+        $response = $this->get('/part/' . $part->part_id);
 
         // Assertions
         $response->assertOk();
@@ -326,4 +327,53 @@ class PartControllerTest extends TestCase
         ])->assertStatus(422)
             ->assertJson(['message' => 'API key cannot be empty']);
     }
+
+    public function test_part_can_be_created_with_manufacturer(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $category = Category::factory()->create(['part_category_owner_u_fk' => $user->id]);
+        $footprint = Footprint::factory()->create(['footprint_owner_u_fk' => $user->id]);
+        $manufacturer = Manufacturer::factory()->create(['manufacturer_owner_u_fk' => $user->id]);
+
+        $data = [
+            'part_name' => 'LM358',
+            'footprint' => $footprint->footprint_id,
+            'category' => $category->category_id,
+            'manufacturer' => $manufacturer->manufacturer_id,
+        ];
+
+        $response = $this->postJson('/part.create', $data)->assertOk();
+
+        $this->assertDatabaseHas('parts', [
+            'part_name' => 'LM358',
+            'part_owner_u_fk' => $user->id,
+            'part_manufacturer_fk' => $manufacturer->manufacturer_id,
+        ]);
+    }
+
+    public function test_part_cannot_use_foreign_users_manufacturer(): void
+    {
+        $user = User::factory()->create();
+        $other = User::factory()->create();
+        $this->actingAs($user);
+
+        $category = Category::factory()->create(['part_category_owner_u_fk' => $user->id]);
+        $footprint = Footprint::factory()->create(['footprint_owner_u_fk' => $user->id]);
+        $manufacturer = Manufacturer::factory()->create(['manufacturer_owner_u_fk' => $other->id]);
+
+        $data = [
+            'part_name' => 'LM358',
+            'footprint' => $footprint->footprint_id,
+            'category' => $category->category_id,
+            'manufacturer' => $manufacturer->manufacturer_id,
+        ];
+
+        $this->postJson('/part.create', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['manufacturer']);
+    }
+
+
 }

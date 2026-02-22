@@ -30,6 +30,7 @@ class PartValidatorService
         }
 
         // TODO: After updating DBSController remove the column names-y things here
+        // TODO: Why are there two category checks and also URL and Price (top level) are maybe irrelevant?
         $rules = [
             'part_name' => $isUpdating ? 'nullable|string|max:255' : 'required|string|max:255',
             'part_id' => $isUpdating ? 'required|integer' : 'sometimes|integer',
