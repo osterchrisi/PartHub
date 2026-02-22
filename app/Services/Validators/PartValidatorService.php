@@ -12,6 +12,8 @@ class PartValidatorService
         // Check if creating completely new or updating
         $isUpdating = in_array($httpMethod, ['PUT', 'PATCH']);
 
+        \Log::info('Validating part data', ['data' => $data, 'http_method' => $httpMethod]);
+
         // TODO: After updating DBSController remove the column names-y things here
         $rules = [
             'part_name' => $isUpdating ? 'nullable|string|max:255' : 'required|string|max:255',
@@ -22,6 +24,7 @@ class PartValidatorService
             'description' => 'nullable|string',
             'footprint' => 'nullable|integer|exists:footprints,footprint_id',
             'category' => 'nullable|integer|exists:part_categories,category_id',
+            'manufacturer' => 'nullable|integer|exists:manufacturers,manufacturer_id',
             'part_category_fk' => 'nullable|integer',
             'min_quantity' => 'nullable|integer',
             'suppliers' => 'nullable|array',

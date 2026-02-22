@@ -153,6 +153,8 @@ class PartController extends Controller
         // Validate the part data
         $validated = $this->partValidator->validate($request->all(), $request->method());
 
+        \Log::info(json_encode($validated));
+
         $user_id = Auth::user()->id;
         $root_category = $this->categoryService->findRootCategory($user_id)->category_id ?? null;
         $response = [];
@@ -167,7 +169,7 @@ class PartController extends Controller
                 $validated['description'] ?? null,
                 $validated['footprint'] ?? null,
                 $validated['category'] ?? $root_category,
-                null,  // Suppliers will be handled separately
+                $validated['manufacturer'] ?? null,
                 $validated['min_quantity'] ?? 0
             );
 

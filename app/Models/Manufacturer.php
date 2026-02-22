@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ManufacturerAlias;
 
 class Manufacturer extends Model
 {
@@ -24,14 +25,22 @@ class Manufacturer extends Model
         'manufacturer_owner_g_fk',
     ];
 
+    public function aliases()
+    {
+        return $this->hasMany(ManufacturerAlias::class, 'manufacturer_id_fk', 'manufacturer_id');
+    }
+
+
     public static function availableManufacturers($format = 'json')
     {
         $user = Auth::user();
 
         $manufacturers = self::where('manufacturer_owner_u_fk', $user->id)->get();
 
-        if ($format === 'json') return $manufacturers->toJson();
-        if ($format === 'array') return $manufacturers->toArray();
+        if ($format === 'json')
+            return $manufacturers->toJson();
+        if ($format === 'array')
+            return $manufacturers->toArray();
 
         return $manufacturers;
     }

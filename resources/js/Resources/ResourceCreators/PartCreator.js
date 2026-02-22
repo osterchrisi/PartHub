@@ -52,10 +52,11 @@ class PartCreator extends ResourceCreator {
 
     // Populate all dropdowns
     populateAllDropdowns(data) {
-        const { locations, footprints, categories } = data; // Object destructuring
+        const { locations, footprints, categories, manufacturers } = data; // Object destructuring
         this.dropdownManager.addPartLocationDropdown(locations);
         this.dropdownManager.addPartFootprintDropdown(footprints);
         this.dropdownManager.addPartCategoryDropdown(categories);
+        this.dropdownManager.addPartManufacturerDropdown(manufacturers);
     }
 
     // Fetch data required for dropdowns (locations, footprints, categories)
@@ -63,9 +64,10 @@ class PartCreator extends ResourceCreator {
         return Promise.all([
             DataFetchService.getLocations(),
             DataFetchService.getFootprints(),
-            DataFetchService.getCategories()
-        ]).then(([locations, footprints, categories]) => {
-            return { locations, footprints, categories }; // Return object
+            DataFetchService.getCategories(),
+            DataFetchService.getManufacturers(),
+        ]).then(([locations, footprints, categories, manufacturers]) => {
+            return { locations, footprints, categories, manufacturers }; // Return object
         });
     }
 

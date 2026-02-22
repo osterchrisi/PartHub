@@ -64,6 +64,36 @@ class DropdownManager {
     }
 
     /**
+    * Creates and adds a dropdown list of manufacturers to the part entry modal and 'selectizes' it.
+    * @param {Array} manufacturers - An array of objects representing manufacturers to be displayed in the dropdown list.
+    * Each manufacturer object must have a "manufacturer_id" and a "manufacturer_name" property.
+    * @return {void}
+    */
+    addPartManufacturerDropdown(manufacturers) {
+
+        var div = document.getElementById("addPartManufacturerDropdown");
+        var selectHTML = "<select class='form-select form-select-sm not-required' id='addPartManufacturerSelect'>";
+        selectHTML += "<option value=''>No Manufacturer</option>";
+
+        for (var i = 0; i < manufacturers.length; i++) {
+            selectHTML += "<option value='" + manufacturers[i]['manufacturer_id'] + "'>" + manufacturers[i]['manufacturer_name'] + "</option>";
+        }
+        selectHTML += "</select>";
+        selectHTML += "<label for='addPartManufacturerSelect'>Manufacturer</label>";
+        div.innerHTML = selectHTML;
+
+        $("#addPartManufacturerSelect").selectize({
+            create: (input) => {
+                this.createNewSelectizeDropdownEntry(input, 'manufacturer');
+            },
+            placeholder: 'Select Manufacturer',
+            onInitialize: function () {
+                this.setValue(''); // "No Manufacturer" is selected by default
+            }
+        });
+    }
+
+    /**
     * Creates and adds a dropdown list of suppliers to the part entry modal and 'selectizes' it.
     * @param {Array} suppliers - An array of objects representing suppliers to be displayed in the dropdown list.
     * Each supplier object must have a "supplier_id" and a "supplier_name" property.

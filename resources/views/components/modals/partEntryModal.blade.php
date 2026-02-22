@@ -118,6 +118,12 @@
                 <div class="col">
                     {{-- Category --}}
                     <div class="form-floating" id="addPartCategoryDropdown"></div>
+
+                    {{-- Manufacturer --}}
+                    <div class="col">
+                        <div class="form-floating" id="addPartManufacturerDropdown"></div>
+                    </div>
+
                     {{-- Footprint --}}
                     <div class="col">
                         <div class="form-floating" id="addPartFootprintDropdown"></div>

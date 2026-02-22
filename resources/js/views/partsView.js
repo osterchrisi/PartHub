@@ -62,7 +62,7 @@ export function initializePartsView() {
             { name: 'comment', selector: '#addPartComment' },
             { name: 'description', selector: '#addPartDescription' },
             { name: 'footprint', selector: '#addPartFootprintSelect' },
-            // { name: 'supplier', selector: '#addPartSupplierSelect' },
+            { name: 'manufacturer', selector: '#addPartManufacturerSelect' },
             { name: 'category', selector: '#addPartCategorySelect' },
             { name: 'min_quantity', selector: '#addPartMinQuantity' },
         ],
