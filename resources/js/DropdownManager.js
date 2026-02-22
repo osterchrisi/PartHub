@@ -258,6 +258,14 @@ class DropdownManager {
                 dropdownFunction = this.addPartFootprintDropdown.bind(this);
                 dropdownId = 'addPartFootprintSelect';
                 break;
+            case 'manufacturer':
+                endpoint = '/manufacturer.create';
+                newIdName = 'Manufacturer ID';
+                nameField = 'manufacturer_name';
+                getFunction = DataFetchService.getManufacturers;
+                dropdownFunction = this.addPartManufacturerDropdown.bind(this);
+                dropdownId = 'addPartManufacturerSelect';
+                break;
             case 'supplier':
                 endpoint = '/supplier.create';
                 newIdName = 'Supplier ID';
