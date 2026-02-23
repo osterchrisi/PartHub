@@ -35,7 +35,8 @@ class CategoryController extends Controller
                     'view' => 'categories',
                 ]
             );
-        } elseif ($route == 'categories.categoriesTable') {
+        }
+        elseif ($route == 'categories.categoriesTable') {
             return view(
                 'categories.categoriesTable',
                 [
@@ -105,12 +106,44 @@ class CategoryController extends Controller
 
             return response()->json($response);
 
-        } else {
+        }
+        else {
             $errorResponse = [
                 'status' => 'error',
             ];
 
             return response()->json($errorResponse, 500);
         }
+    }
+
+    public function resolveFromMouser(Request $request)
+    {
+        $request->validate([
+            'category_name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $userId = auth()->id();
+
+        // Parent = "Mouser Imports" (create it if needed)
+        $parent = Category::firstOrCreate(
+            [
+                'part_category_owner_u_fk' => $userId,
+                'category_name' => 'Mouser Imports',
+            ],
+            [
+                'parent_category' => 0,
+            ]
+        );
+
+        // Create/find the actual category under that parent (case-insensitive collation may already handle duplicates)
+        $cat = Category::firstOrCreate(
+            [
+                'part_category_owner_u_fk' => $userId,
+                'category_name' => $request->input('category_name'),
+                'parent_category' => $parent->category_id,
+            ]
+        );
+
+        return response()->json(['Category ID' => $cat->category_id]);
     }
 }

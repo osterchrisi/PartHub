@@ -275,8 +275,11 @@ class PartCreator extends ResourceCreator {
         // Ensure advanced options are visible so description/comment aren't "hidden success"
         $('#advancedOptions').collapse('show');
 
-        // manufacturer auto-select (create if missing)
-        this._selectOrCreateManufacturerFromMouser(part.Manufacturer);
+        // manufacturer and category auto-select (create if missing)
+        this._selectOrCreateManufacturerFromMouser(part.Manufacturer)
+            .catch(err => console.warn('Manufacturer autofill skipped:', err.message));
+        this._selectOrCreateCategoryFromMouser(part.Category)
+            .catch(err => console.warn('Category autofill skipped:', err.message));
 
         const desc = this._buildShortDescription(part);
         $('#addPartDescription').val(desc);
@@ -336,7 +339,7 @@ class PartCreator extends ResourceCreator {
 
     // Helper methods to extract and format Mouser part data for our form fields
     _buildPartName(part) {
-    return (part.ManufacturerPartNumber || '').trim();
+        return (part.ManufacturerPartNumber || '').trim();
     }
 
     _buildShortDescription(part) {
@@ -525,6 +528,53 @@ class PartCreator extends ResourceCreator {
                 sel.addOption({ value: id, text: label });
             }
             sel.setValue(id, true);
+        });
+    }
+
+    _selectOrCreateCategoryFromMouser(name) {
+        name = String(name || '').trim();
+        if (!name) return Promise.resolve();
+
+        const selectize = $('#addPartCategorySelect')[0]?.selectize;
+        if (!selectize) return Promise.resolve();
+
+        // 1) Try existing option (case-insensitive)
+        const existing = Object.entries(selectize.options).find(([value, opt]) =>
+            String(opt.text || '').trim().toLowerCase() === name.toLowerCase()
+        );
+
+        if (existing) {
+            selectize.setValue(existing[0], true);
+            return Promise.resolve(existing[0]);
+        }
+
+        // 2) Create in backend
+        return $.ajax({
+            url: '/category.resolveFromMouser',
+            type: 'POST',
+            headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
+            data: { from_mouser: 1, category_name: name }
+        }).then((r) => {
+            const newId = String(r['Category ID']);
+            const label = r['category_name'] || name;
+
+            const newEntry = {
+                category_id: newId,
+                category_name: label
+            };
+
+            // IMPORTANT: rebuild dropdown from canonical list (like saveNewCategory does)
+            return DataFetchService.getCategories().then((newList) => {
+                this.dropdownManager.addPartCategoryDropdown(newList);
+
+                const sel = $('#addPartCategorySelect')[0]?.selectize;
+                if (sel) sel.setValue(newId, true);
+
+                // mirror saveNewCategory trigger
+                $(document).trigger('category:created', [newEntry]);
+
+                return newId;
+            });
         });
     }
 }

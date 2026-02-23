@@ -22,7 +22,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +117,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('/category/{id}', 'show')->middleware(['auth', 'verified']);
     Route::get('/categories.get', 'list')->middleware(['auth', 'verified']);
     Route::post('/category.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
+    Route::post('/category.resolveFromMouser', 'resolveFromMouser')->middleware(['auth']);
 });
 
 // * Supplier Routes
@@ -188,7 +189,8 @@ Route::get('/signup', function () {
     // TODO: Das geht wahrscheinlich sauberer...
     if (config('app.env') == 'demo') {
         return redirect('https://parthub.online/signup');
-    } else {
+    }
+    else {
         return view('auth.register', ['title' => 'Signup', 'view' => 'signup']);
     }
 })

@@ -14,7 +14,7 @@ class Category extends Model
 
     protected $primaryKey = 'category_id';
 
-    protected $fillable = ['category_name', 'parent_category'];
+    protected $fillable = ['category_name', 'parent_category', 'part_category_owner_u_fk'];
 
     public function part()
     {
