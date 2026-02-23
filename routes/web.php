@@ -107,6 +107,7 @@ Route::controller(ManufacturerController::class)->group(function () {
     Route::post('/manufacturer.create', 'create')->middleware(['auth', 'verified', 'resource.limits']);
     Route::get('/manufacturers.get', 'getManufacturers')->middleware(['auth', 'verified']);
     Route::get('/manufacturer/{id}', 'show')->middleware(['auth', 'verified']);
+    Route::post('/manufacturer.resolveFromMouser', 'resolveFromMouser')->middleware(['auth', 'verified']);
 });
 
 // * Category Routes

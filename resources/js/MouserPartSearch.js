@@ -79,12 +79,13 @@ export class MouserPartSearch {
                     <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                <img src="${part.ImagePath}" class="img-fluid w-100 rounded-start" alt="Part Image">
+                                <img src="${part.ImagePath}" class="img-fluid w-50 rounded-start" alt="Part Image">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <div><span class="card-text text-muted">Mfg P/N: </span><h5 class="d-inline card-title">${part.ManufacturerPartNumber}</h5></div>
-                                    <div><span class="card-text text-muted">Mouser P/N: </span><h5 class="d-inline card-title">${part.MouserPartNumber}</h5></div>
+                                    <div><span class="card-text text-muted">Manufacturer: </span><h6 class="d-inline card-title">${part.Manufacturer}</h6></div>
+                                    <div><span class="card-text text-muted">Mouser P/N: </span class="d-inline card-title">${part.MouserPartNumber}</span></div>
                                     <div><span class="card-text text-muted">Desc: </span><span class="d-inline card-text">${part.Description}</span></div>
                                     <div><button class="btn btn-primary select-part-btn" data-part='${JSON.stringify(part)}'>Select Part</button></div>
                                 </div>

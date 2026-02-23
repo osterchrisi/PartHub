@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ManufacturerController extends Controller
 {
@@ -94,5 +95,31 @@ class ManufacturerController extends Controller
         ]);
 
         return response()->json(['Manufacturer ID' => $new_id]);
+    }
+
+    public function resolveFromMouser(Request $request)
+    {
+        abort_unless($request->boolean('from_mouser'), 403);
+
+        $name = trim((string) $request->input('manufacturer_name'));
+        if ($name === '') {
+            return response()->json(['message' => 'manufacturer_name required'], 422);
+        }
+
+        $userId = Auth::id();
+
+        // case-insensitive collation will already treat TI != Texas Instruments, but "mouser" == "Mouser"
+        $m = Manufacturer::firstOrCreate(
+            [
+                'manufacturer_owner_u_fk' => $userId,
+                'manufacturer_name' => $name,
+            ],
+            []
+        );
+
+        return response()->json([
+            'Manufacturer ID' => $m->manufacturer_id,
+            'manufacturer_name' => $m->manufacturer_name,
+        ]);
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Part;
 use App\Models\StockLevel;
 use App\Models\StockLevelHistory;
 use App\Models\Supplier;
+use App\Models\Manufacturer;
 use App\Services\CategoryService;
 use App\Services\DatabaseService;
 use App\Services\MouserApiService;
@@ -150,6 +151,34 @@ class PartController extends Controller
      */
     public function create(Request $request)
     {
+
+        // Mouser-only manufacturer autocreate
+        if (
+            !$request->filled('manufacturer') &&
+            $request->boolean('from_mouser') &&
+            $request->filled('manufacturer_name')
+        ) {
+            // If someone tries to send manufacturer_name without from_mouser, reject
+            if ($request->filled('manufacturer_name') && !$request->boolean('from_mouser')) {
+                return response()->json([
+                    'message' => 'manufacturer_name is only allowed for Mouser imports.'
+                ], 422);
+            }
+
+            $name = trim($request->input('manufacturer_name'));
+
+            // exact name, per user
+            $m = Manufacturer::firstOrCreate(
+                [
+                    'manufacturer_owner_u_fk' => Auth::id(),
+                    'manufacturer_name' => $name,
+                ],
+                [] // no extra fields yet
+            );
+
+            // convert string -> FK for the rest of your flow
+            $request->merge(['manufacturer' => $m->manufacturer_id]);
+        }
         // Validate the part data
         $validated = $this->partValidator->validate($request->all(), $request->method());
 

@@ -35,6 +35,9 @@
             <input type="hidden" name="image_url" id="addPartImageUrl">
             <input type="hidden" name="datasheet_url" id="addPartDatasheetUrl">
             <input type="hidden" name="footprint_guess" id="addPartFootprintGuess">
+            <input type="hidden" name="manufacturer_name" id="addPartManufacturerName">
+            <input type="hidden" name="from_mouser" id="addPartFromMouser" value="0">
+
         </div>
 
         <div class="row">

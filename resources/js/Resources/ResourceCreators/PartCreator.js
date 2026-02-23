@@ -275,6 +275,9 @@ class PartCreator extends ResourceCreator {
         // Ensure advanced options are visible so description/comment aren't "hidden success"
         $('#advancedOptions').collapse('show');
 
+        // manufacturer auto-select (create if missing)
+        this._selectOrCreateManufacturerFromMouser(part.Manufacturer);
+
         const desc = this._buildShortDescription(part);
         $('#addPartDescription').val(desc);
 
@@ -333,10 +336,7 @@ class PartCreator extends ResourceCreator {
 
     // Helper methods to extract and format Mouser part data for our form fields
     _buildPartName(part) {
-        const m = (part.Manufacturer || '').trim();
-        const pn = (part.ManufacturerPartNumber || '').trim();
-        if (m && pn) return `${m} ${pn}`;
-        return pn || m || '';
+    return (part.ManufacturerPartNumber || '').trim();
     }
 
     _buildShortDescription(part) {
@@ -489,6 +489,42 @@ class PartCreator extends ResourceCreator {
     `);
     }
 
+    _selectOrCreateManufacturerFromMouser(name) {
+        name = String(name || '').trim();
+        if (!name) return $.Deferred().resolve().promise();
 
+        const token = $('input[name="_token"]').val();
+        const sel = $('#addPartManufacturerSelect')[0]?.selectize;
+        if (!sel) return $.Deferred().resolve().promise();
 
+        // 1) try to find existing option by label (case-insensitive)
+        const hit = Object.entries(sel.options).find(([value, opt]) => {
+            const label = String(opt.text || opt.label || '').trim().toLowerCase();
+            return label === name.toLowerCase();
+        });
+
+        if (hit) {
+            sel.setValue(hit[0], true);
+            return $.Deferred().resolve(hit[0]).promise();
+        }
+
+        // 2) resolve/create in backend, then add option + select
+        return $.ajax({
+            url: '/manufacturer.resolveFromMouser',
+            type: 'POST',
+            data: {
+                _token: token,
+                from_mouser: 1,
+                manufacturer_name: name,
+            }
+        }).done((r) => {
+            const id = r['Manufacturer ID'];
+            const label = r['manufacturer_name'] || name;
+
+            if (!sel.options[id]) {
+                sel.addOption({ value: id, text: label });
+            }
+            sel.setValue(id, true);
+        });
+    }
 }
