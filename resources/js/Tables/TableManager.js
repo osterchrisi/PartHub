@@ -300,7 +300,7 @@ class TableManager {
             },
             error: function () {
                 // Display an error message if the PHP page failed to load
-                $('#mAddStock').html('Failed to load modal.');
+                $('#mAddStock').text('Failed to load modal.');
             }
         });
     }
