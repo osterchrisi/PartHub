@@ -88,10 +88,9 @@ export function attachImportBomHandler() {
                     processData: false,
                     success: function (response) {
                         if (response.success) {
-                            $('#response-message').html('<div class="alert alert-success">' + response.success + '</div>');
-                        }
-                        else if (response.error) {
-                            $('#response-message').html('<div class="alert alert-danger">' + response.error + '</div>');
+                            setResponseMessage('success', response.success);
+                        } else if (response.error) {
+                            setResponseMessage('danger', response.error);
                         }
 
                         //TODO: Not super nice but works quite alright
@@ -115,14 +114,26 @@ export function attachImportBomHandler() {
                         else {
                             // Handle error response
                             console.log(xhr.responseJSON);
-                            var errorMessage = xhr.responseJSON?.error || 'An error occurred during the import.';
-                            $('#response-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                            const errorMessage = xhr.responseJSON?.error || 'An error occurred during the import.';
+                            setResponseMessage('danger', errorMessage);
                         }
                     }
                 });
             });
         });
     });
+}
+
+function setResponseMessage(kind, text) {
+    const host = document.getElementById('response-message');
+    if (!host) return;
+
+    host.replaceChildren();
+
+    const div = document.createElement('div');
+    div.className = `alert alert-${kind}`;
+    div.textContent = String(text ?? '');
+    host.appendChild(div);
 }
 
 export function attachAddBomHandler(bomEditorInstance) {
