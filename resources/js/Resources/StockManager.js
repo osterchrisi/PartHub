@@ -56,8 +56,14 @@ class StockManager {
 
         // To and From location are identical - inform user
         if (this.change == '0' && tl == fl) {
-            const message = '<div class="alert alert-warning text-center">To and From location are identical</div>';
-            $('#mStockModalInfo').html(message);
+            const info = document.getElementById('mStockModalInfo');
+            if (info) {
+                info.replaceChildren();
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-warning text-center';
+                alertDiv.textContent = 'To and From location are identical';
+                info.appendChild(alertDiv);
+            }
             return;
         }
 
@@ -100,10 +106,46 @@ class StockManager {
                     //* User permission required
                     // Display warning and missing stock table
                     $('#AddStock').attr('disabled', true);
-                    let message = `<div class='alert alert-warning'>There is not enough stock available for ${r.negative_stock.length} part(s). Do you want to continue anyway?<br>`;
-                    message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnChangeStockAnyway'>Do It Anyway</button></div></div>";
-                    message += r.negative_stock_table;
-                    $('#mStockModalInfo').html(message);
+
+                    const info = document.getElementById('mStockModalInfo');
+                    if (info) {
+                        info.replaceChildren();
+
+                        // Alert container
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'alert alert-warning';
+
+                        const msgDiv = document.createElement('div');
+                        msgDiv.textContent =
+                            `There is not enough stock available for ${Number(r.negative_stock?.length || 0)} part(s). Do you want to continue anyway?`;
+
+                        const br = document.createElement('br');
+
+                        const actions = document.createElement('div');
+                        actions.style.textAlign = 'right';
+
+                        const cancelBtn = document.createElement('button');
+                        cancelBtn.type = 'button';
+                        cancelBtn.className = 'btn btn-secondary btn-sm';
+                        cancelBtn.setAttribute('data-bs-dismiss', 'modal');
+                        cancelBtn.textContent = 'Cancel';
+
+                        const doBtn = document.createElement('button');
+                        doBtn.type = 'submit';
+                        doBtn.className = 'btn btn-primary btn-sm';
+                        doBtn.id = 'btnChangeStockAnyway';
+                        doBtn.textContent = 'Do It Anyway';
+
+                        actions.append(cancelBtn, document.createTextNode(' '), doBtn);
+                        alertDiv.append(msgDiv, br, actions);
+
+                        info.appendChild(alertDiv);
+
+                        // Keep the table (server-rendered) — safe now because buildHTMLTable() escapes all cells.
+                        if (typeof r.negative_stock_table === 'string' && r.negative_stock_table) {
+                            info.insertAdjacentHTML('beforeend', r.negative_stock_table);
+                        }
+                    }
 
                     // Attach click listener to "Do It Anyway" button
                     this.changeStockAnywayClickListener(r);
@@ -225,12 +267,30 @@ class StockManager {
      */
     createDropdown(divId, locations, label, selectId) {
         const div = document.getElementById(divId);
-        let selectHTML = `<label class='input-group-text' for='${selectId}'>${label}</label><select class='form-select' id='${selectId}'>`;
-        locations.forEach(location => {
-            selectHTML += `<option value='${location.location_id}'>${location.location_name}</option>`;
+        if (!div) return;
+
+        // Clear existing content safely
+        div.replaceChildren();
+
+        const labelEl = document.createElement('label');
+        labelEl.className = 'input-group-text';
+        labelEl.htmlFor = selectId;
+        labelEl.textContent = label;
+
+        const select = document.createElement('select');
+        select.className = 'form-select';
+        select.id = selectId;
+
+        (locations || []).forEach((location) => {
+            const opt = document.createElement('option');
+            opt.value = String(location.location_id ?? '');
+            opt.textContent = String(location.location_name ?? ''); // prevent no HTML interpretation
+            select.appendChild(opt);
         });
-        selectHTML += '</select>';
-        div.innerHTML = selectHTML;
+
+        div.append(labelEl, select);
+
+        // Selectize lifecycle: this <select> is newly created each time, so just init.
         $(`#${selectId}`).selectize();
     }
 
@@ -276,6 +336,6 @@ class StockManager {
      */
     emptyDivFromHTML(id) {
         const div = document.getElementById(id);
-        div.innerHTML = '';
+        if (div) div.replaceChildren();
     }
 }

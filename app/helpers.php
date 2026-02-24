@@ -5,27 +5,27 @@ use Carbon\Carbon;
 function buildHTMLTable($column_names, $nice_columns, $table_data, $width = '100%')
 {
     $html = "<div style='overflow-x:auto;'>";
-    $html .= "<table class='table table-striped table-hover table-sm' style='width: ".$width."; font-size:12px'>";
+    $html .= "<table class='table table-striped table-hover table-sm' style='width: " . e($width) . "; font-size:12px'>";
 
     // Table headers
-    $html .= '<thead>';
-    $html .= '<tr>';
+    $html .= '<thead><tr>';
     foreach ($nice_columns as $column_header) {
-        $html .= "<th>$column_header</th>";
+        $html .= '<th>' . e($column_header) . '</th>';
     }
-    $html .= '</tr>';
-    $html .= '</thead>';
+    $html .= '</tr></thead>';
 
     // Table rows
+    $html .= '<tbody>';
     foreach ($table_data as $row) {
         $html .= '<tr>';
         foreach ($column_names as $column_data) {
-            $html .= '<td>'.$row[$column_data].'</td>';
+            $val = $row[$column_data] ?? '';
+            // Cast to string so numbers/nulls behave consistently
+            $html .= '<td>' . e((string) $val) . '</td>';
         }
         $html .= '</tr>';
     }
-    $html .= '</table>';
-    $html .= '</div>';
+    $html .= '</tbody></table></div>';
 
     return $html;
 }
@@ -41,10 +41,10 @@ function calculateTotalStock($stockLevels)
     return $total_stock;
 }
 
-if (! function_exists('convertToUserTimezone')) {
+if (!function_exists('convertToUserTimezone')) {
     function convertToUserTimezone($timestamp, $timezone = null)
     {
-        if (! $timestamp) {
+        if (!$timestamp) {
             return null;
         }
 
