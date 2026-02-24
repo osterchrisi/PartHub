@@ -9,6 +9,7 @@ class DropdownManager {
         this.categoryCreated = false;
     }
 
+    // XSS-safe select builder with support for attributes and options
     _buildSelect({ selectId = null, selectClass = '', attrs = {}, options = [] }) {
         const select = document.createElement('select');
         if (selectId) select.id = selectId;
@@ -541,44 +542,36 @@ class DropdownManager {
     */
     addBomPartSelect(parts, containerId = 'bomEditorAddPartDropdown', selectId = 'bomEditorAddPartSelect') {
         const div = document.getElementById(containerId);
-        console.log('Adding BOM part select with parts:', parts);
         if (!div) {
             console.warn(`Part dropdown container #${containerId} not found.`);
             return;
         }
 
-        let selectHTML = `<select class="form-select form-select-sm" id="${selectId}" placeholder="Select part">`;
-        selectHTML += `<option value="">Select part...</option>`;
+        div.replaceChildren();
 
-        for (let i = 0; i < parts.length; i++) {
-            const p = parts[i];
-            selectHTML += `<option value="${p.part_id}">${p.part_name}</option>`;
-        }
+        const select = this._buildSelect({
+            selectId,
+            selectClass: 'form-select form-select-sm',
+            attrs: { placeholder: 'Select part' },
+            options: [
+                { value: '', label: 'Select part...', selected: true },
+                ...(parts || []).map(p => ({ value: p.part_id, label: p.part_name }))
+            ]
+        });
 
-        selectHTML += `</select>`;
-        div.innerHTML = selectHTML;
+        div.appendChild(select);
 
-        // Prevent double init if DOM gets re-rendered
-        const $el = $(`#${selectId}`);
-        if ($el[0]?.selectize) {
-            $el[0].selectize.destroy();
-        }
+        this._destroySelectizeIfAny(select);
 
-        $el.selectize({
+        $(select).selectize({
             create: false,
             allowEmptyOption: true,
             placeholder: 'Select part…',
             onDropdownOpen: function () {
-                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
-                    'overflow-x': 'visible',
-                    'overflow-y': 'visible'
-                });
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({ 'overflow-x': 'visible', 'overflow-y': 'visible' });
             },
             onDropdownClose: function () {
-                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
-                    'overflow-x': 'auto',
-                    'overflow-y': 'auto'
-                });
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({ 'overflow-x': 'auto', 'overflow-y': 'auto' });
             }
         });
     }
