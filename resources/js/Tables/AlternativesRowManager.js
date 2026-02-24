@@ -27,7 +27,7 @@ class AlternativesRowManager {
 
         $('#addAlternativeRowBtn-info').prop('disabled', true);
 
-
+        //* HTML safe structure for the new row
         let newRowIndex = this.newRowIndex;
         let newDropdownDiv = `addPartAlternative-${newRowIndex}`;
         this.newRowIndex++;
