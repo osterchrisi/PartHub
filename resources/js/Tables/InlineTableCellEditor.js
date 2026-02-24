@@ -123,10 +123,19 @@ class InlineTableCellEditor {
 
             // Update cell with new value
             // Validate the updated value and update the cell
+            this.$cellContent.empty();
+
             if (this.isValidURL(new_value)) {
-                this.$cellContent.html(`<a href="${new_value}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">${new_value}</a>`);
+                const a = document.createElement('a');
+                a.href = new_value;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.className = 'text-decoration-none';
+                a.textContent = new_value;
+
+                this.$cellContent[0].appendChild(a);
             } else {
-                this.$cellContent.text(new_value); // Set as plain text if not a valid URL
+                this.$cellContent.text(new_value);
             }
 
             // Update data-content attribute for the copy-clipboard anchor

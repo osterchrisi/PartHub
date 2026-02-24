@@ -40,18 +40,70 @@ class SupplierRowManager {
         let selectBox = tableId === '#partSupplierDataTable' ? '<td></td>' : '';
         let createBox = tableId === '#partSupplierDataTable' ? `<button type="button" class="btn btn-sm btn-success ms-1" id="create-${newRowIndex}"><i class="fas fa-check"></i></button>` : '';
 
-        // Create the new row with a unique dropdown ID for each row
-        let newRow = `<tr data-supplier-index="${newRowIndex}" data-part-id="${partId}">
-                    ${selectBox}
-                    <td><div id='${newDropdownDiv}'></div></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='URL' data-url-id="${newRowIndex}"></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='SPN' data-spn-id="${newRowIndex}"></td>
-                    <td><input type='text' class='form-control form-control-sm' placeholder='Price' data-price-id="${newRowIndex}"></td>
-                    <td><div class='d-flex'><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-trash"></i></button>${createBox}</div></td>
-                  </tr>`;
+        //* Create the new row with a unique dropdown ID for each row XSS safe mega blob
+        const tbody = document.querySelector(`${tableId} tbody`);
+        if (!tbody) return;
 
-        // Append the new row to the specified table body
-        $(`${tableId} tbody`).append(newRow);
+        const row = document.createElement('tr');
+        row.dataset.supplierIndex = String(newRowIndex);
+        row.dataset.partId = String(partId ?? '');
+
+        // Optional leading empty td for info-window table
+        if (tableId === '#partSupplierDataTable') {
+            row.appendChild(document.createElement('td'));
+        }
+
+        // Dropdown cell
+        const tdDropdown = document.createElement('td');
+        const dropdownDiv = document.createElement('div');
+        dropdownDiv.id = newDropdownDiv;
+        tdDropdown.appendChild(dropdownDiv);
+        row.appendChild(tdDropdown);
+
+        // Helper to create small text input
+        const makeInputTd = (placeholder, dataAttr, idx) => {
+            const td = document.createElement('td');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control form-control-sm';
+            input.placeholder = placeholder;
+            input.dataset[dataAttr] = String(idx);
+            td.appendChild(input);
+            return td;
+        };
+
+        row.appendChild(makeInputTd('URL', 'urlId', newRowIndex));
+        row.appendChild(makeInputTd('SPN', 'spnId', newRowIndex));
+        row.appendChild(makeInputTd('Price', 'priceId', newRowIndex));
+
+        // Actions cell
+        const tdActions = document.createElement('td');
+        const actionsWrap = document.createElement('div');
+        actionsWrap.className = 'd-flex';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-sm btn-danger remove-row-btn';
+        const trashIcon = document.createElement('i');
+        trashIcon.className = 'fas fa-trash';
+        removeBtn.appendChild(trashIcon);
+        actionsWrap.appendChild(removeBtn);
+
+        // Optional create button for info-window table
+        if (tableId === '#partSupplierDataTable') {
+            const createBtn = document.createElement('button');
+            createBtn.type = 'button';
+            createBtn.className = 'btn btn-sm btn-success ms-1';
+            createBtn.id = `create-${newRowIndex}`;
+            const checkIcon = document.createElement('i');
+            checkIcon.className = 'fas fa-check';
+            createBtn.appendChild(checkIcon);
+            actionsWrap.appendChild(createBtn);
+        }
+
+        tdActions.appendChild(actionsWrap);
+        row.appendChild(tdActions);
+        tbody.appendChild(row);
 
         // Fetch suppliers and populate the dropdown
         DataFetchService.getSuppliers().done((suppliers) => {
@@ -257,10 +309,10 @@ class SupplierRowManager {
 
     // Helper method to find supplier ID by name from the suppliers list for Mouser Part Search
     _findSupplierIdByName(suppliers, wantedName) {
-    const wanted = String(wantedName || '').trim().toLowerCase();
-    const hit = (suppliers || []).find(s => String(s.supplier_name || '').trim().toLowerCase() === wanted);
+        const wanted = String(wantedName || '').trim().toLowerCase();
+        const hit = (suppliers || []).find(s => String(s.supplier_name || '').trim().toLowerCase() === wanted);
 
-    return hit ? hit.supplier_id : null;
-}
+        return hit ? hit.supplier_id : null;
+    }
 
 }
