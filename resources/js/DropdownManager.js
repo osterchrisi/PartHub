@@ -9,6 +9,40 @@ class DropdownManager {
         this.categoryCreated = false;
     }
 
+    _buildSelect({ selectId = null, selectClass = '', attrs = {}, options = [] }) {
+        const select = document.createElement('select');
+        if (selectId) select.id = selectId;
+        if (selectClass) select.className = selectClass;
+
+        // set attributes (data-*, required, etc.)
+        Object.entries(attrs || {}).forEach(([k, v]) => {
+            if (k === 'required') {
+                if (v) select.required = true;
+                return;
+            }
+            if (k.startsWith('data-')) {
+                select.setAttribute(k, String(v));
+                return;
+            }
+            select.setAttribute(k, String(v));
+        });
+
+        (options || []).forEach(o => {
+            const opt = document.createElement('option');
+            opt.value = String(o.value ?? '');
+            opt.textContent = String(o.label ?? '');
+            if (o.selected) opt.selected = true;
+            select.appendChild(opt);
+        });
+
+        return select;
+    }
+
+    _destroySelectizeIfAny(el) {
+        const s = el?.selectize;
+        if (s && typeof s.destroy === 'function') s.destroy();
+    }
+
     /**
       * Creates and adds a dropdown list of locations to the part entry modal and 'selectizes' it.
       * @param {Array} locations - An array of objects representing locations to be displayed in the dropdown list.
@@ -16,21 +50,36 @@ class DropdownManager {
       * @return {void}
       */
     addPartLocationDropdown(locations) {
-        var div = document.getElementById("addPartLocDropdown");
-        var selectHTML = "<label class='input-group-text' for='fromStockLocation'>To</label><select class='form-select' id='addPartLocSelect' required>";
-        for (var i = 0; i < locations.length; i++) {
-            selectHTML += "<option value='" + locations[i]['location_id'] + "'>" + locations[i]['location_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
+        const div = document.getElementById("addPartLocDropdown");
+        if (!div) return;
 
-        var $select = $("#addPartLocSelect").selectize({
-            create: (input) => {
-                this.createNewSelectizeDropdownEntry(input, 'location');
-            }
+        div.replaceChildren();
+
+        const label = document.createElement('label');
+        label.className = 'input-group-text';
+        label.htmlFor = 'addPartLocSelect';
+        label.textContent = 'To';
+
+        const select = this._buildSelect({
+            selectId: 'addPartLocSelect',
+            selectClass: 'form-select',
+            attrs: { required: true },
+            options: (locations || []).map(l => ({
+                value: l.location_id,
+                label: l.location_name
+            }))
         });
 
-        // Disable dropdown (it's optional to add stock)
+        div.append(label, select);
+
+        // ensure no double init
+        this._destroySelectizeIfAny(select);
+
+        const $select = $(select).selectize({
+            create: (input) => this.createNewSelectizeDropdownEntry(input, 'location')
+        });
+
+        // Disable dropdown (optional add stock)
         $select[0].selectize.disable();
     }
 
@@ -41,25 +90,35 @@ class DropdownManager {
     * @return {void}
     */
     addPartFootprintDropdown(footprints) {
-        var div = document.getElementById("addPartFootprintDropdown");
-        var selectHTML = "<select class='form-select form-select-sm not-required' id='addPartFootprintSelect'>";
-        selectHTML += "<option value=''>No Footprint</option>";
+        const div = document.getElementById("addPartFootprintDropdown");
+        if (!div) return;
 
-        for (var i = 0; i < footprints.length; i++) {
-            selectHTML += "<option value='" + footprints[i]['footprint_id'] + "'>" + footprints[i]['footprint_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        selectHTML += "<label for='addPartFootprintSelect'>Footprint</label>";
-        div.innerHTML = selectHTML;
+        div.replaceChildren();
 
-        $("#addPartFootprintSelect").selectize({
-            create: (input) => {
-                this.createNewSelectizeDropdownEntry(input, 'footprint');
-            },
+        const select = this._buildSelect({
+            selectId: 'addPartFootprintSelect',
+            selectClass: 'form-select form-select-sm not-required',
+            options: [
+                { value: '', label: 'No Footprint', selected: true },
+                ...(footprints || []).map(fp => ({
+                    value: fp.footprint_id,
+                    label: fp.footprint_name
+                }))
+            ]
+        });
+
+        const label = document.createElement('label');
+        label.htmlFor = 'addPartFootprintSelect';
+        label.textContent = 'Footprint';
+
+        div.append(select, label);
+
+        this._destroySelectizeIfAny(select);
+
+        $(select).selectize({
+            create: (input) => this.createNewSelectizeDropdownEntry(input, 'footprint'),
             placeholder: 'Select Footprint',
-            onInitialize: function () {
-                this.setValue(''); // "No Footprint" is selected by default
-            }
+            onInitialize: function () { this.setValue(''); }
         });
     }
 
@@ -70,26 +129,35 @@ class DropdownManager {
     * @return {void}
     */
     addPartManufacturerDropdown(manufacturers) {
+        const div = document.getElementById("addPartManufacturerDropdown");
+        if (!div) return;
 
-        var div = document.getElementById("addPartManufacturerDropdown");
-        var selectHTML = "<select class='form-select form-select-sm not-required' id='addPartManufacturerSelect'>";
-        selectHTML += "<option value=''>No Manufacturer</option>";
+        div.replaceChildren();
 
-        for (var i = 0; i < manufacturers.length; i++) {
-            selectHTML += "<option value='" + manufacturers[i]['manufacturer_id'] + "'>" + manufacturers[i]['manufacturer_name'] + "</option>";
-        }
-        selectHTML += "</select>";
-        selectHTML += "<label for='addPartManufacturerSelect'>Manufacturer</label>";
-        div.innerHTML = selectHTML;
+        const select = this._buildSelect({
+            selectId: 'addPartManufacturerSelect',
+            selectClass: 'form-select form-select-sm not-required',
+            options: [
+                { value: '', label: 'No Manufacturer', selected: true },
+                ...(manufacturers || []).map(m => ({
+                    value: m.manufacturer_id,
+                    label: m.manufacturer_name
+                }))
+            ]
+        });
 
-        $("#addPartManufacturerSelect").selectize({
-            create: (input) => {
-                this.createNewSelectizeDropdownEntry(input, 'manufacturer');
-            },
+        const label = document.createElement('label');
+        label.htmlFor = 'addPartManufacturerSelect';
+        label.textContent = 'Manufacturer';
+
+        div.append(select, label);
+
+        this._destroySelectizeIfAny(select);
+
+        $(select).selectize({
+            create: (input) => this.createNewSelectizeDropdownEntry(input, 'manufacturer'),
             placeholder: 'Select Manufacturer',
-            onInitialize: function () {
-                this.setValue(''); // "No Manufacturer" is selected by default
-            }
+            onInitialize: function () { this.setValue(''); }
         });
     }
 
@@ -100,45 +168,39 @@ class DropdownManager {
     * @return {void}
     */
     addPartSupplierDropdown(suppliers, dropdownId, newRowIndex) {
-        const div = document.getElementById(dropdownId); // Use the passed ID to target the correct dropdown div
-
+        const div = document.getElementById(dropdownId);
         if (!div) {
             console.warn(`Dropdown container with ID ${dropdownId} not found.`);
-            return; // Exit the function if the target div is missing
+            return;
         }
 
+        div.replaceChildren();
 
-        let selectHTML = `<select class='form-select form-select-sm not-required' data-supplier-id='${newRowIndex}'>`;
-        selectHTML += "<option value=''>No Supplier</option>";
+        const select = this._buildSelect({
+            selectClass: 'form-select form-select-sm not-required',
+            attrs: { 'data-supplier-id': newRowIndex },
+            options: [
+                { value: '', label: 'No Supplier', selected: true },
+                ...(suppliers || []).map(s => ({
+                    value: s.supplier_id,
+                    label: s.supplier_name
+                }))
+            ]
+        });
 
-        for (let i = 0; i < suppliers.length; i++) {
-            selectHTML += `<option value='${suppliers[i]['supplier_id']}'>${suppliers[i]['supplier_name']}</option>`;
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
+        div.appendChild(select);
 
-        // Initialize Selectize on the new dropdown
-        $(`[data-supplier-id="${newRowIndex}"]`).selectize({
-            create: (input) => {
-                this.createNewSelectizeDropdownEntry(input, 'supplier', dropdownId, newRowIndex);
-            },
+        this._destroySelectizeIfAny(select);
+
+        $(select).selectize({
+            create: (input) => this.createNewSelectizeDropdownEntry(input, 'supplier', dropdownId, newRowIndex),
             placeholder: 'Select Supplier',
-            onInitialize: function () {
-                this.setValue(''); // "No Supplier" is selected by default
-            },
+            onInitialize: function () { this.setValue(''); },
             onDropdownOpen: function () {
-                // Adjust the overflow of the table when the dropdown opens
-                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
-                    'overflow-x': 'visible',
-                    'overflow-y': 'visible'
-                });
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({ 'overflow-x': 'visible', 'overflow-y': 'visible' });
             },
             onDropdownClose: function () {
-                // Reset the table overflow once the dropdown closes
-                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
-                    'overflow-x': 'auto',
-                    'overflow-y': 'auto'
-                });
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({ 'overflow-x': 'auto', 'overflow-y': 'auto' });
             }
         });
     }
@@ -152,26 +214,49 @@ class DropdownManager {
      * @return {void}
      */
     addPartCategoryDropdown(categories) {
-        var div = document.getElementById("addPartCategoryDropdown");
-        var nestedCategories = this.organizeCategories(categories);
+        const div = document.getElementById("addPartCategoryDropdown");
+        if (!div) return;
 
-        var selectHTML = "<select class='form-select form-select-sm not-required' placeholder='Select Category' id='addPartCategorySelect'>";
-        selectHTML += "<option value=''>No Category</option>";
-        selectHTML += this.addCategoryOptions(nestedCategories);
-        selectHTML += "</select>";
-        selectHTML += "<label for='addPartCategorySelect'>Category</label>";
-        div.innerHTML = selectHTML;
+        div.replaceChildren();
 
-        var $select = $("#addPartCategorySelect").selectize({
-            create: (input) => {
-                this.createNewSelectizeDropdownEntry(input, 'category');
-            },
-            onInitialize: function () {
-                this.setValue(''); // "No Category" is selected by default
-            }
+        const select = this._buildSelect({
+            selectId: 'addPartCategorySelect',
+            selectClass: 'form-select form-select-sm not-required',
+            attrs: { placeholder: 'Select Category' },
+            options: [{ value: '', label: 'No Category', selected: true }]
+        });
+
+        // add nested options safely
+        const nested = this.organizeCategories(categories || []);
+        this._appendCategoryOptionNodes(select, nested, 0);
+
+        const label = document.createElement('label');
+        label.htmlFor = 'addPartCategorySelect';
+        label.textContent = 'Category';
+
+        div.append(select, label);
+
+        this._destroySelectizeIfAny(select);
+
+        $(select).selectize({
+            create: (input) => this.createNewSelectizeDropdownEntry(input, 'category'),
+            onInitialize: function () { this.setValue(''); }
         });
     }
 
+    _appendCategoryOptionNodes(selectEl, categories, level) {
+        const indent = '\u00A0'.repeat(level * 4); // matches old &nbsp;*4
+        (categories || []).forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = String(cat.category_id ?? '');
+            opt.textContent = `${indent}${String(cat.category_name ?? '')}`;
+            selectEl.appendChild(opt);
+
+            if (cat.children?.length) {
+                this._appendCategoryOptionNodes(selectEl, cat.children, level + 1);
+            }
+        });
+    }
 
     /**
     * Organizes categories into a nested structure.
@@ -208,6 +293,7 @@ class DropdownManager {
      * @param {number} level - Current nesting level.
      * @return {string} - HTML string of options.
      */
+    //TODO: Obsolete with new safe DOM approach, consider removing
     addCategoryOptions(categories, level = 0) {
         let optionsHTML = '';
         categories.forEach(category => {
@@ -343,9 +429,15 @@ class DropdownManager {
     showCategoryCreationModal(input) {
         // Populate parent category dropdown
         DataFetchService.getCategories().done((categories) => {
-            const nestedCategories = this.organizeCategories(categories);
-            const optionsHTML = this.addCategoryOptions(nestedCategories);
-            $('#parentCategory').html(optionsHTML);
+            const parentSel = document.getElementById('parentCategory');
+            if (!parentSel) return;
+
+            // Clear + rebuild options safely
+            parentSel.replaceChildren();
+
+            const nested = this.organizeCategories(categories || []);
+            this._appendCategoryOptionNodes(parentSel, nested, 0);
+
             $('#categoryName').val(input);
             $('#categoryCreationModal').modal('toggle');
             this.inputModal.modal('toggle');
@@ -408,35 +500,33 @@ class DropdownManager {
             return;
         }
 
-        let selectHTML = `<select class='form-select form-select-sm' data-alternative-id='${newRowIndex}'>`;
-        selectHTML += "<option value=''>Select Alternative</option>";
+        div.replaceChildren();
 
-        for (let i = 0; i < alternatives.length; i++) {
-            selectHTML += `<option value='${alternatives[i]['part_id']}'>${alternatives[i]['part_name']}</option>`;
-        }
-        selectHTML += "</select>";
-        div.innerHTML = selectHTML;
+        const select = this._buildSelect({
+            selectClass: 'form-select form-select-sm',
+            attrs: { 'data-alternative-id': newRowIndex },
+            options: [
+                { value: '', label: 'Select Alternative', selected: true },
+                ...(alternatives || []).map(p => ({
+                    value: p.part_id,
+                    label: p.part_name
+                }))
+            ]
+        });
 
-        // Initialize Selectize on the dropdown
-        $(`[data-alternative-id="${newRowIndex}"]`).selectize({
+        div.appendChild(select);
+
+        this._destroySelectizeIfAny(select);
+
+        $(select).selectize({
             create: false,
             placeholder: 'Select Alternative',
-            onInitialize: function () {
-                this.setValue('');
-            },
+            onInitialize: function () { this.setValue(''); },
             onDropdownOpen: function () {
-                // Adjust the overflow of the table when the dropdown opens
-                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
-                    'overflow-x': 'visible',
-                    'overflow-y': 'visible'
-                });
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({ 'overflow-x': 'visible', 'overflow-y': 'visible' });
             },
             onDropdownClose: function () {
-                // Reset the table overflow once the dropdown closes
-                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({
-                    'overflow-x': 'auto',
-                    'overflow-y': 'auto'
-                });
+                $('.bootstrap-table .fixed-table-container .fixed-table-body').css({ 'overflow-x': 'auto', 'overflow-y': 'auto' });
             }
         });
     }
