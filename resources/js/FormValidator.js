@@ -123,7 +123,12 @@ class FormValidator {
 
         const generalErrorDiv = this.$form.find('#error-supplier');
         if (generalErrorDiv.length) {
-            generalErrorDiv.removeClass('d-none').append(`<p>${message}</p>`);
+            generalErrorDiv.removeClass('d-none');
+
+            const p = document.createElement('p');
+            p.textContent = String(message ?? '');
+
+            generalErrorDiv[0].appendChild(p);
         }
         else {
             console.log(generalErrorDiv, " not found in ", this.$form);

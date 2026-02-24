@@ -55,7 +55,7 @@ export class MouserPartSearch {
                 }
             }, 500);  // Delay of 500ms to debounce
         } else {
-            this.resultsContainer.innerHTML = '';  // Clear results if the search term is too short
+            this.resultsContainer.replaceChildren();  // Clear results if the search term is too short
         }
     }
 
@@ -68,66 +68,127 @@ export class MouserPartSearch {
     }
 
     displayResults(data) {
-        this.resultsContainer.innerHTML = '';  // Clear previous results
-        const parts = data?.SearchResults?.Parts?.slice(0, 10) || [];  // Limit to 10 results
+        this.resultsContainer.replaceChildren(); // Clear previous results safely
 
-        if (parts.length > 0) {
-            parts.forEach(part => {
-                const partDiv = document.createElement('div');
-                partDiv.classList.add('part-result');
-                partDiv.innerHTML = `
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                <img src="${part.ImagePath}" class="img-fluid w-50 rounded-start" alt="Part Image">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <div><span class="card-text text-muted">Mfg P/N: </span><h5 class="d-inline card-title">${part.ManufacturerPartNumber}</h5></div>
-                                    <div><span class="card-text text-muted">Manufacturer: </span><h6 class="d-inline card-title">${part.Manufacturer}</h6></div>
-                                    <div><span class="card-text text-muted">Mouser P/N: </span class="d-inline card-title">${part.MouserPartNumber}</span></div>
-                                    <div><span class="card-text text-muted">Desc: </span><span class="d-inline card-text">${part.Description}</span></div>
-                                    <div><button class="btn btn-primary select-part-btn" data-part='${JSON.stringify(part)}'>Select Part</button></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                this.resultsContainer.appendChild(partDiv);
-            });
+        const parts = data?.SearchResults?.Parts?.slice(0, 10) || [];
 
-            // Add event listeners for the select buttons
-            document.querySelectorAll('.select-part-btn').forEach(button => {
-                button.addEventListener('click', (event) => this.selectPart(event));
-            });
-        } else {
-            this.resultsContainer.innerHTML = '<p>No results found from Mouser.</p>';
+        if (!parts.length) {
+            const p = document.createElement('p');
+            p.textContent = 'No results found from Mouser.';
+            this.resultsContainer.appendChild(p);
+            return;
         }
+
+        parts.forEach(part => {
+            const partDiv = document.createElement('div');
+            partDiv.classList.add('part-result');
+
+            const card = document.createElement('div');
+            card.className = 'card mb-3';
+
+            const row = document.createElement('div');
+            row.className = 'row g-0';
+
+            // Left image column
+            const colImg = document.createElement('div');
+            colImg.className = 'col-md-4 d-flex justify-content-center align-items-center';
+
+            const img = document.createElement('img');
+            img.className = 'img-fluid w-50 rounded-start';
+            img.alt = 'Part Image';
+            img.src = String(part?.ImagePath || ''); // safe assignment (no HTML parsing)
+
+            colImg.appendChild(img);
+
+            // Right content column
+            const colBody = document.createElement('div');
+            colBody.className = 'col-md-8';
+
+            const body = document.createElement('div');
+            body.className = 'card-body';
+
+            // Helper to build label + value line
+            const makeLine = (labelText, valueText, valueTag = 'span', valueClass = 'd-inline card-text') => {
+                const line = document.createElement('div');
+
+                const label = document.createElement('span');
+                label.className = 'card-text text-muted';
+                label.textContent = labelText;
+
+                const value = document.createElement(valueTag);
+                value.className = valueClass;
+                value.textContent = String(valueText || '');
+
+                line.append(label, value);
+                return line;
+            };
+
+            body.appendChild(
+                makeLine('Mfg P/N: ', part?.ManufacturerPartNumber, 'h5', 'd-inline card-title'),
+            );
+            body.appendChild(
+                makeLine('Manufacturer: ', part?.Manufacturer, 'h6', 'd-inline card-title'),
+            );
+            body.appendChild(
+                makeLine('Mouser P/N: ', part?.MouserPartNumber, 'span', 'd-inline card-text'),
+            );
+            body.appendChild(
+                makeLine('Desc: ', part?.Description, 'span', 'd-inline card-text'),
+            );
+
+            const btnWrap = document.createElement('div');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-primary select-part-btn';
+            btn.textContent = 'Select Part';
+
+            // Store object safely without HTML/attribute injection
+            btn._mouserPart = part;
+
+            btn.addEventListener('click', (event) => this.selectPart(event));
+
+            btnWrap.appendChild(btn);
+            body.appendChild(btnWrap);
+
+            colBody.appendChild(body);
+
+            row.append(colImg, colBody);
+            card.appendChild(row);
+            partDiv.appendChild(card);
+
+            this.resultsContainer.appendChild(partDiv);
+        });
     }
 
     selectPart(event) {
-
-        // Prevent the click event from propagating to parent elements
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
 
-        const selectedPart = JSON.parse(event.target.getAttribute('data-part'));
+        const btn = event.currentTarget;
+        const selectedPart = btn?._mouserPart;
 
-        // Callbackfunction to handle the selected part, populate form fields in the modal
+        if (!selectedPart) {
+            alert('Could not read selected part.');
+            return;
+        }
+
         if (typeof this.onSelectPart === 'function') {
             this.onSelectPart(selectedPart);
             return;
         }
-        alert('Mouser Part Selected: ' + selectedPart.ManufacturerPartNumber);
+
+        alert('Mouser Part Selected: ' + String(selectedPart.ManufacturerPartNumber || ''));
     }
 
     showError(message) {
-        this.resultsContainer.innerHTML = `
-      <div class="alert alert-warning mb-3">
-        ${message}
-      </div>
-    `;
+        this.resultsContainer.replaceChildren();
+
+        const div = document.createElement('div');
+        div.className = 'alert alert-warning mb-3';
+        div.textContent = String(message ?? '');
+
+        this.resultsContainer.appendChild(div);
     }
 
 }
