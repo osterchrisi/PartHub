@@ -75,24 +75,60 @@ export function assembleBoms(selectedRows, ids) {
             //* User permission required
 
             // Display warning and missing stock table
-            $('#btnAssembleBOMs').attr('disabled', true);  // Disable main "Assemble" button of modal
-            var message = "<div class='alert alert-warning'>There is not enough stock available for " + r.negative_stock.length + " parts. Do you want to continue anyway?<br>";
-            message += "<div style='text-align:right;'><button type='button' class='btn btn-secondary btn-sm' data-bs-dismiss='modal' id='btnCancelAnywayAssembly'>Cancel</button> <button type='submit' class='btn btn-primary btn-sm' id='btnAssembleBOMsAnyway'>Do It Anyway</button></div></div>"
-            message += r.negative_stock_table;
+            $('#btnAssembleBOMs').attr('disabled', true);
+
+            // 1) Build the warning UI (no untrusted data in HTML context)
+            const infoEl = document.getElementById('mBomAssemblyInfo');
+            if (infoEl) {
+              infoEl.replaceChildren();
+
+              const alertDiv = document.createElement('div');
+              alertDiv.className = 'alert alert-warning';
+
+              // Text line
+              const count = Number(r.negative_stock?.length || 0);
+              alertDiv.appendChild(document.createTextNode(
+                `There is not enough stock available for ${count} parts. Do you want to continue anyway?`
+              ));
+              alertDiv.appendChild(document.createElement('br'));
+
+              // Buttons row
+              const btnRow = document.createElement('div');
+              btnRow.style.textAlign = 'right';
+
+              const cancelBtn = document.createElement('button');
+              cancelBtn.type = 'button';
+              cancelBtn.className = 'btn btn-secondary btn-sm';
+              cancelBtn.id = 'btnCancelAnywayAssembly';
+              cancelBtn.textContent = 'Cancel';
+
+              const doBtn = document.createElement('button');
+              doBtn.type = 'submit';
+              doBtn.className = 'btn btn-primary btn-sm';
+              doBtn.id = 'btnAssembleBOMsAnyway';
+              doBtn.textContent = 'Do It Anyway';
+
+              btnRow.append(cancelBtn, document.createTextNode(' '), doBtn);
+              alertDiv.appendChild(btnRow);
+
+              infoEl.appendChild(alertDiv);
+
+              // 2) Append the server-rendered table HTML (safe because buildHTMLTable() uses e() for all values)
+              const tableWrap = document.createElement('div');
+              tableWrap.innerHTML = String(r.negative_stock_table || '');
+              infoEl.appendChild(tableWrap);
+            }
+
             // Make the modal wider for the shortage table
             $('#mBomAssembly').addClass('modal-lg');
 
-            $('#mBomAssemblyInfo').html(message);
-
             // Attach click listener to "Do It Anyway" button
             $('#btnAssembleBOMsAnyway').off('click').on('click', function () {
-              //TODO: Passing ids for updating table after success but this won't work in the future for selectively updating
               continueAnyway(r, ids, token);
             });
 
             // Attach click listener to "Cancel" button next to the "Do It Anyway" button
             $('#btnCancelAnywayAssembly').off('click').on('click', function () {
-              // Hide modal and perform cleanup operations
               hideBOMAssemblyModalAndCleanup();
             });
           }
