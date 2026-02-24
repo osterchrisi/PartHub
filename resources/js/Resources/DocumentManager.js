@@ -117,7 +117,7 @@ class DocumentManager {
             const a = document.createElement('a');
             a.href = documentPath;
             a.target = '_blank';
-            a.rel = 'noopener'; // good practice since you're using target=_blank
+            a.rel = 'noopener'; // good practice since we're using target=_blank
 
             const icon = document.createElement('i');
             icon.className = 'bi bi-file-earmark-text';
@@ -138,7 +138,7 @@ class DocumentManager {
             container.appendChild(wrapper);
         });
 
-        // Keep your existing handler approach (but bind once per refresh)
+        // Bind handler once per refresh
         $('.delete-document').off('click').on('click', (event) => {
             const documentId = $(event.target).data('id');
             const documentType = $(event.target).data('type');

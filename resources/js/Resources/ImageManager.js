@@ -105,38 +105,78 @@ class ImageManager {
     * @returns {void}
     */
     updateImages(response) {
-        $('#imageContainer').empty();
+        const container = document.getElementById('imageContainer');
+        if (!container) return;
+
+        container.replaceChildren();
+
         response.forEach((image) => {
-            // Extract the file name from the full path
-            var fileName = image.filename.substring(image.filename.lastIndexOf('/') + 1);
+            const filename = String(image.filename || '');
+            const fileName = filename.substring(filename.lastIndexOf('/') + 1);
 
-            // Construct image and thumbnail path, file gets served by FileController via associated route
-            var thumbnailPath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/thumbnails/` + fileName.replace(/\.[^.]+$/, '') + '.webp';
-            var imagePath = `/files/images/${this.type}/${image.image_owner_u_id}/${image.associated_id}/` + fileName;
+            const type = String(this.type ?? '');
+            const owner = String(image.image_owner_u_id ?? '');
+            const assoc = String(image.associated_id ?? '');
 
-            // Create the image container
-            // Here the image.id is the ID of the image in the DB, not the resource ID (Part, BOM, ...)
-            var imageElement = $(`
-            <div class="image-wrapper me-3 mb-3" style="position: relative; display: inline-block;" data-id="${image.id} data-order="${image.order}">
-                <a href="${imagePath}" data-toggle="lightbox" data-gallery="1">
-                    <img src="${thumbnailPath}" alt="Thumbnail">
-                </a>
-                <i class="bi bi-x-circle delete-image" data-type="${this.type}" data-id="${image.id}"></i>
-            </div>
-            `);
+            const thumbnailPath =
+                `/files/images/${type}/${owner}/${assoc}/thumbnails/` +
+                fileName.replace(/\.[^.]+$/, '') +
+                '.webp';
 
-            $('#imageContainer').append(imageElement);
+            const imagePath =
+                `/files/images/${type}/${owner}/${assoc}/` + fileName;
 
-            // Initialize Bootstrap 5 Lightbox on all thumbnails
-            document.querySelectorAll('[data-toggle="lightbox"]').forEach(el => el.addEventListener('click', Lightbox.initialize));
+            // wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'image-wrapper me-3 mb-3';
+            wrapper.style.position = 'relative';
+            wrapper.style.display = 'inline-block';
+            wrapper.dataset.id = String(image.id ?? '');
+            wrapper.dataset.order = String(image.order ?? '');
+
+            // link
+            const a = document.createElement('a');
+            a.href = imagePath;
+            a.setAttribute('data-toggle', 'lightbox');
+            a.setAttribute('data-gallery', '1');
+
+            // img
+            const img = document.createElement('img');
+            img.src = thumbnailPath;
+            img.alt = 'Thumbnail';
+
+            a.appendChild(img);
+
+            // delete icon
+            const del = document.createElement('i');
+            del.className = 'bi bi-x-circle delete-image';
+            del.dataset.type = type;
+            del.dataset.id = String(image.id ?? '');
+
+            wrapper.appendChild(a);
+            wrapper.appendChild(del);
+
+            container.appendChild(wrapper);
         });
 
-        // Attach event listener for delete buttons
-        $('.delete-image').click((event) => {
-            const imageId = $(event.target).data('id'); // Image ID
-            const imageType = $(event.target).data('type');
-            this.deleteImage(imageType, imageId);
-        });
+        // Bind once per refresh, and avoid rebinding lightbox handlers N times in a loop
+        // Lightbox: delegate clicks for any future thumbnails too
+        $(container)
+            .off('click.lightbox')
+            .on('click.lightbox', '[data-toggle="lightbox"]', (e) => {
+                // If your Lightbox.initialize expects direct click event, keep consistent:
+                e.preventDefault();
+                Lightbox.initialize.call(e.currentTarget, e);
+            });
+
+        // Delete: delegate (so you don't rebind per element)
+        $(container)
+            .off('click.deleteImage')
+            .on('click.deleteImage', '.delete-image', (event) => {
+                const imageId = $(event.currentTarget).data('id');
+                const imageType = $(event.currentTarget).data('type');
+                this.deleteImage(imageType, imageId);
+            });
     }
 
 
