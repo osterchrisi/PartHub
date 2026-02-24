@@ -1,8 +1,15 @@
 export function initializeSupportView() {
-    console.log("tis support");
     const user = "hello"; // Replace with your email's user part
-            const domain = "parthub.online"; // Replace with your domain
-            const email = `${user}@${domain}`;
-            const emailLink = `<a href="mailto:${email}">${email}</a>`;
-            document.getElementById("email").innerHTML = emailLink;
+    const domain = "parthub.online"; // Replace with your domain
+    const email = `${user}@${domain}`;
+    const container = document.getElementById("email");
+    if (!container) return;
+
+    container.replaceChildren();
+
+    const a = document.createElement("a");
+    a.href = `mailto:${email}`;
+    a.textContent = email;
+
+    container.appendChild(a);
 };
