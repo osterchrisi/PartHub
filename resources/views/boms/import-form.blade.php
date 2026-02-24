@@ -108,8 +108,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="alert alert-info"> Currently no possibility to correct uploads. CSV file must contain valid
-                data.</div>
+            <div class="alert alert-info py-2">Duplicate rows get merged.</div>
         </div>
     </div>
 </div>
