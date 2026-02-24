@@ -90,30 +90,57 @@ class DocumentManager {
   * @returns {void}
   */
     updateDocuments(response) {
-        $('#documentContainer').empty();
-        response.forEach((document) => {
-            // Use the display_name if available; otherwise, fall back to the filename
-            var displayName = document.display_name ? document.display_name : document.filename.substring(document.filename.lastIndexOf('/') + 1);
+        const container = document.getElementById('documentContainer');
+        if (!container) return;
 
-            // Construct document path
-            var documentPath = `/files/documents/${this.type}/${document.document_owner_u_id}/${document.associated_id}/` + document.filename.substring(document.filename.lastIndexOf('/') + 1);
+        container.replaceChildren();
 
-            // Create the document container
-            var documentElement = $(`
-        <div class="document-wrapper" style="position: relative; display: inline-block;">
-            <a href="${documentPath}" target="_blank">
-                <i class="bi bi-file-earmark-text"></i> ${displayName}
-            </a>
-            <i class="bi bi-x-circle delete-document" data-type="${this.type}" data-id="${document.id}"></i>
-        </div>
-        `);
+        response.forEach((doc) => {
+            // displayName (untrusted) -> textContent
+            const filename = String(doc.filename || '');
+            const basename = filename.substring(filename.lastIndexOf('/') + 1);
+            const displayName = doc.display_name ? String(doc.display_name) : basename;
 
-            $('#documentContainer').append(documentElement);
+            // Build documentPath safely as a string (still untrusted parts, but NOT HTML-parsed)
+            const owner = String(doc.document_owner_u_id ?? '');
+            const assoc = String(doc.associated_id ?? '');
+            const type = String(this.type ?? '');
+            const documentPath = `/files/documents/${type}/${owner}/${assoc}/${basename}`;
+
+            // wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'document-wrapper';
+            wrapper.style.position = 'relative';
+            wrapper.style.display = 'inline-block';
+
+            // link
+            const a = document.createElement('a');
+            a.href = documentPath;
+            a.target = '_blank';
+            a.rel = 'noopener'; // good practice since you're using target=_blank
+
+            const icon = document.createElement('i');
+            icon.className = 'bi bi-file-earmark-text';
+
+            a.appendChild(icon);
+            a.appendChild(document.createTextNode(' ')); // spacing
+            a.appendChild(document.createTextNode(displayName));
+
+            // delete icon
+            const del = document.createElement('i');
+            del.className = 'bi bi-x-circle delete-document';
+            del.dataset.type = type;
+            del.dataset.id = String(doc.id ?? '');
+
+            wrapper.appendChild(a);
+            wrapper.appendChild(del);
+
+            container.appendChild(wrapper);
         });
 
-        // Attach event listener for delete buttons
-        $('.delete-document').click((event) => {
-            const documentId = $(event.target).data('id'); // Document ID
+        // Keep your existing handler approach (but bind once per refresh)
+        $('.delete-document').off('click').on('click', (event) => {
+            const documentId = $(event.target).data('id');
             const documentType = $(event.target).data('type');
             this.deleteDocument(documentType, documentId);
         });
