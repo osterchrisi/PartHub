@@ -482,14 +482,23 @@ class PartCreator extends ResourceCreator {
 
         $input.attr('placeholder', msg);
 
-        $results.html(`
-        <div class="alert alert-secondary d-flex justify-content-between align-items-center mt-3">
-            <div>${msg}</div>
-            <a class="btn btn-sm btn-primary" href="${cta.href}" target="_blank" rel="noopener">
-                ${cta.text}
-            </a>
-        </div>
-    `);
+        // SAFE: build DOM nodes instead of HTML string
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-secondary d-flex justify-content-between align-items-center mt-3';
+
+        const left = document.createElement('div');
+        left.textContent = msg;
+
+        const link = document.createElement('a');
+        link.className = 'btn btn-sm btn-primary';
+        link.href = cta.href;                 // fixed internal path
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = cta.text;
+
+        alertDiv.append(left, link);
+
+        $results[0].replaceChildren(alertDiv);
     }
 
     _selectOrCreateManufacturerFromMouser(name) {
