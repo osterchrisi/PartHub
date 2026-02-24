@@ -126,12 +126,21 @@ export function updateInfoWindow(type, id) {
                 errorMessage = `Failed to load additional ${type} data.`;
             }
 
-            const errorHTML = `
-            <div class="alert alert-dark align-self-start mt-3 mx-3" role="alert">
-            <h6 class="text-center">${errorMessage}</h6>
-                </div>`;
+            const host = document.getElementById('info-window');
+            if (!host) return;
 
-            $('#info-window').html(errorHTML);
+            host.replaceChildren();
+
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-dark align-self-start mt-3 mx-3';
+            alertDiv.setAttribute('role', 'alert');
+
+            const h6 = document.createElement('h6');
+            h6.className = 'text-center';
+            h6.textContent = errorMessage;
+
+            alertDiv.appendChild(h6);
+            host.appendChild(alertDiv);
         }
     });
 }

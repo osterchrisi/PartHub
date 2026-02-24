@@ -424,7 +424,15 @@ export class BomEditor {
                 error: (xhr) => {
                     console.error(xhr);
                     const msg = xhr.responseJSON?.error || xhr.responseJSON?.message || 'Creation failed.';
-                    $('#create-response-message').html(`<div class="alert alert-danger">${msg}</div>`);
+
+                    const host = document.getElementById('create-response-message');
+                    if (host) {
+                        host.replaceChildren();
+                        const div = document.createElement('div');
+                        div.className = 'alert alert-danger';
+                        div.textContent = String(msg ?? '');
+                        host.appendChild(div);
+                    }
                 }
             });
 
