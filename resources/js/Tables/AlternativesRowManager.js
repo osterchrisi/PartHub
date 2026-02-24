@@ -32,17 +32,50 @@ class AlternativesRowManager {
         let newDropdownDiv = `addPartAlternative-${newRowIndex}`;
         this.newRowIndex++;
 
-        let selectBox = '<td></td>';
-        let createBox = `<button type="button" class="btn btn-sm btn-success ms-1" id="create-${newRowIndex}"><i class="fas fa-check"></i></button>`;
+        const tbody = document.querySelector(`${tableId} tbody`);
+        if (!tbody) return;
 
-        let newRow = `
-            <tr data-alternative-index="${newRowIndex}" data-part-id="${partId}">
-            ${selectBox}
-                <td><div id='${newDropdownDiv}'></div></td>
-                <td><div class='d-flex'><button type="button" class="btn btn-sm btn-danger remove-row-btn"><i class="fas fa-trash"></i></button>${createBox}</div></td>
-            </tr>`;
+        const row = document.createElement('tr');
+        row.dataset.alternativeIndex = String(newRowIndex);
+        row.dataset.partId = String(partId ?? '');
 
-        $(`${tableId} tbody`).append(newRow);
+        // first empty td (matches your old selectBox)
+        row.appendChild(document.createElement('td'));
+
+        // dropdown cell
+        const tdDropdown = document.createElement('td');
+        const dropdownDiv = document.createElement('div');
+        dropdownDiv.id = newDropdownDiv;
+        tdDropdown.appendChild(dropdownDiv);
+        row.appendChild(tdDropdown);
+
+        // actions cell
+        const tdActions = document.createElement('td');
+        const actionsWrap = document.createElement('div');
+        actionsWrap.className = 'd-flex';
+
+        // remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-sm btn-danger remove-row-btn';
+        const trashIcon = document.createElement('i');
+        trashIcon.className = 'fas fa-trash';
+        removeBtn.appendChild(trashIcon);
+
+        // create/save button
+        const createBtn = document.createElement('button');
+        createBtn.type = 'button';
+        createBtn.className = 'btn btn-sm btn-success ms-1';
+        createBtn.id = `create-${newRowIndex}`;
+        const checkIcon = document.createElement('i');
+        checkIcon.className = 'fas fa-check';
+        createBtn.appendChild(checkIcon);
+
+        actionsWrap.append(removeBtn, createBtn);
+        tdActions.appendChild(actionsWrap);
+        row.appendChild(tdActions);
+
+        tbody.appendChild(row);
 
         // Fetch available alternative parts and populate the dropdown
         //TODO: Currently fetching full eloquent model, should only fetch necessary data
