@@ -289,6 +289,7 @@ class InlineTableCellEditor {
         const table_name = cell.closest('td').data('table_name');
         const id_field = cell.closest('td').data('id_field');
 
+        // TODO:
         // This feels silly and should be refactored. It's a special case for the alternative parts
         // this.type for alternativePart is already cahnged to 'part' in the setEndpoint method
         if (this.endpoint === 'parts') {

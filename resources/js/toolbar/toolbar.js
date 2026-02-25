@@ -88,7 +88,7 @@ export function attachImportBomHandler() {
                     processData: false,
                     success: function (response) {
                         if (response.success) {
-                            setResponseMessage('success', response.success);
+                            setResponseMessage('primary', response.success);
                         } else if (response.error) {
                             setResponseMessage('danger', response.error);
                         }

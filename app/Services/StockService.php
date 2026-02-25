@@ -327,7 +327,7 @@ class StockService
             }
         }
 
-        // ---- Enrichment lookups (single query per entity type, no N+1) ----
+        //* Enrichment lookups
 
         // Part names
         $partIds = collect($negative_stock)->pluck('part_id')->filter()->unique()->values();

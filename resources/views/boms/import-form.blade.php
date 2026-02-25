@@ -108,7 +108,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="alert alert-info py-2">Duplicate rows get merged.</div>
+            <div class="alert alert-primary py-2">Duplicate rows get merged.</div>
         </div>
     </div>
 </div>
