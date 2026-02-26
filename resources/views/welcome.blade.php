@@ -23,53 +23,58 @@
         <tr>
             <td width="33.3%">
                 <div class="list-group">
-                    <a href="{{ route('parts') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
+                    <a href="{{ route('parts') }}"
+                        class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
                         <h1><i class="bi bi-cpu"></i></h1>Parts
                     </a>
                 </div>
             </td>
             <td width="33.3%">
                 <div class="list-group">
-                    <a href="{{ route('boms') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
-                        <h1><i class="bi bi-clipboard-check"></i></h1>BOMs
+                    <a href="{{ route('boms') }}"
+                        class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
+                        <h1><i class="bi bi-clipboard2-check"></i></h1>BOMs
                     </a>
                 </div>
             </td>
             <td width="33.3%">
                 <div class="list-group">
-                    <a href="{{ route('locations') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
-                        <h1><i class="bi bi-buildings"></i></h1>Storage
+                    <a href="{{ route('locations') }}"
+                        class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
+                        <h1><i class="bi bi-box-seam"></i></h1>Storage
                     </a>
                 </div>
             </td>
         </tr>
+
         <tr>
-            <td colspan="3">
-                <table class="table table-borderless">
-                    <tr>
-                        <td width="11.33%"></td>
-                        <td width="33%">
-                            <div class="list-group">
-                                <a href="{{ route('suppliers') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
-                                    <h1><i class="bi bi-cart2"></i></h1>Suppliers
-                                </a>
-                            </div>
-                        </td>
-                        <td width="11.33%"></td>
-                        <td width="33%">
-                            <div class="list-group">
-                                <a href="{{ route('footprints') }}" class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
-                                    <h1><i class="bi bi-outlet"></i></h1>Footprints
-                                </a>
-                            </div>
-                        </td>
-                        <td width="11.33%"></td>
-                    </tr>
-                </table>
+            <td width="33.3%">
+                <div class="list-group">
+                    <a href="{{ route('suppliers') }}"
+                        class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
+                        <h1><i class="bi bi-truck"></i></h1>Suppliers
+                    </a>
+                </div>
+            </td>
+            <td width="33.3%">
+                <div class="list-group">
+                    <a href="{{ route('footprints') }}"
+                        class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
+                        <h1><i class="bi bi-bug"></i></h1>Footprints
+                    </a>
+                </div>
+            </td>
+            <td width="33.3%">
+                <div class="list-group">
+                    <a href="{{ route('manufacturers') }}"
+                        class="list-group-item list-group-item-action text-center bg-transparent welcome-items text-white">
+                        <h1><i class="bi bi-gear-wide-connected"></i></h1>Manufacturers
+                    </a>
+                </div>
             </td>
         </tr>
-        
-        
+
+
     </table>
 @endsection
 
