@@ -32,7 +32,7 @@
                 </div>
             @endif
         @else
-        {{-- No history access: show current revision as plain text --}}
+            {{-- No history access: show current revision as plain text --}}
             <span class="small text-muted pt-1">
                 Revision {{ $selected_revision_number ?? '—' }}
             </span>
@@ -43,7 +43,7 @@
                 </a>
             </div>
 
-        {{-- Only show upgrade hint if they actually tried to access an old revision --}}
+            {{-- Only show upgrade hint if they actually tried to access an old revision --}}
             @if ($revision_history_locked ?? false)
                 <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
                     Upgrade to view history
@@ -54,29 +54,24 @@
 
     {{-- Row 2: revision note (below picker), only when it exists and user can see it --}}
     @php
-    $revLabel = trim((string) ($selected_revision_label ?? ''));
-    $revNote  = trim((string) ($selected_revision_note ?? ''));
+        $revLabel = trim((string) ($selected_revision_label ?? ''));
+        $revNote = trim((string) ($selected_revision_note ?? ''));
 
-    // Tooltip text (full)
-    $tooltipText = trim($revLabel . ($revLabel && $revNote ? " — " : "") . $revNote);
+        // Tooltip text (full)
+        $tooltipText = trim($revLabel . ($revLabel && $revNote ? ' — ' : '') . $revNote);
 
-    // Display text (same content, but visually truncated)
-    $displayText = $tooltipText;
-@endphp
+        // Display text (same content, but visually truncated)
+        $displayText = $tooltipText;
+    @endphp
 
-@if (($can_revision_history ?? false) && $tooltipText !== '')
-    <div class="small text-muted mt-1">
-        <span
-            class="d-inline-block text-truncate"
-            style="max-width: 360px;"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="{{ $tooltipText }}"
-        >
-            {{ $displayText }}
-        </span>
-    </div>
-@endif
+    @if (($can_revision_history ?? false) && $tooltipText !== '')
+        <div class="small text-muted mt-1">
+            <span class="d-inline-block text-truncate" style="max-width: 360px;" data-bs-toggle="tooltip"
+                data-bs-placement="top" title="{{ $tooltipText }}">
+                {{ $displayText }}
+            </span>
+        </div>
+    @endif
 
 </div>
 
