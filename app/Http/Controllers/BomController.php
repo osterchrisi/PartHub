@@ -152,6 +152,7 @@ class BomController extends Controller
                 'revisions' => $revisions,
                 'selected_revision_id' => $selectedRevision?->bom_revision_id,
                 'selected_revision_number' => $selectedRevision?->revision_number,
+                'selected_revision_note'  => $selectedRevision?->note,
                 'latest_revision_id' => $latestRevisionId,
                 'is_viewing_old_revision' => $isViewingOldRevision,
 

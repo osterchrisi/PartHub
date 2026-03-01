@@ -2,50 +2,82 @@
     use App\Models\StockLevel;
 @endphp
 
-<div id="bomDetailsToolbar" class="d-flex align-items-center me-2">
-    {{-- BOM Revision Picker --}}
-    @if (($can_revision_history ?? false) && ($revisions?->count() ?? 0) > 0)
-        <select class="form-select form-select-sm w-auto" id="bomRevisionPicker" data-bom-id="{{ $bom_id }}"
-            style="max-width: 360px;">
-            @foreach ($revisions as $rev)
-                @php
-                    $label = $rev->label ? " ({$rev->label})" : '';
-                    $date = $rev->created_at ? $rev->created_at->format('Y-m-d H:i') : '';
-                @endphp
-                <option value="{{ $rev->bom_revision_id }}" @selected($rev->bom_revision_id == $selected_revision_id)>
-                    Rev {{ $rev->revision_number }}{!! $label !!} ({{ $date }})
-                </option>
-            @endforeach
-        </select>
+<div id="bomDetailsToolbar" class="d-flex flex-column me-2">
 
-        {{-- Show pill ALWAYS for paying users (matches old UX) --}}
-        @if ($is_viewing_old_revision ?? false)
-            <div class="badge rounded-pill alert alert-warning small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
-                Old revision
-            </div>
+    {{-- Row 1: picker + pills/upgrade --}}
+    <div class="d-flex align-items-center">
+        {{-- BOM Revision Picker --}}
+        @if (($can_revision_history ?? false) && ($revisions?->count() ?? 0) > 0)
+            <select class="form-select form-select-sm w-auto" id="bomRevisionPicker" data-bom-id="{{ $bom_id }}"
+                style="max-width: 360px;">
+                @foreach ($revisions as $rev)
+                    @php
+                        $label = $rev->label ? " ({$rev->label})" : '';
+                        $date = $rev->created_at ? $rev->created_at->format('Y-m-d H:i') : '';
+                    @endphp
+                    <option value="{{ $rev->bom_revision_id }}" @selected($rev->bom_revision_id == $selected_revision_id)>
+                        Rev {{ $rev->revision_number }}{!! $label !!} ({{ $date }})
+                    </option>
+                @endforeach
+            </select>
+
+            {{-- Pill ALWAYS for paying users --}}
+            @if ($is_viewing_old_revision ?? false)
+                <div class="badge rounded-pill alert alert-warning small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
+                    Old revision
+                </div>
+            @else
+                <div class="badge rounded-pill alert alert-primary small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
+                    Latest revision
+                </div>
+            @endif
         @else
-            <div class="badge rounded-pill alert alert-primary small py-1 px-2 mb-0 ms-2" id="bomRevisionNotice">
-                Latest revision
-            </div>
-        @endif
-    @else
         {{-- No history access: show current revision as plain text --}}
-        <span class="small text-muted pt-1">
-            Revision {{ $selected_revision_number ?? '—' }}
-        </span>
-        <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2 mt-1">
-            <a href="/dashboard#Subscription" class="text-decoration-none text-dark">
-                See Revisions
-            </a>
-        </div>
+            <span class="small text-muted pt-1">
+                Revision {{ $selected_revision_number ?? '—' }}
+            </span>
+
+            <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
+                <a href="/dashboard#Subscription" class="text-decoration-none text-dark">
+                    See Revisions
+                </a>
+            </div>
 
         {{-- Only show upgrade hint if they actually tried to access an old revision --}}
-        @if ($revision_history_locked ?? false)
-            <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
-                Upgrade to view history
-            </div>
+            @if ($revision_history_locked ?? false)
+                <div class="badge rounded-pill alert alert-secondary small py-1 px-2 mb-0 ms-2">
+                    Upgrade to view history
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
+
+    {{-- Row 2: revision note (below picker), only when it exists and user can see it --}}
+    @php
+    $revLabel = trim((string) ($selected_revision_label ?? ''));
+    $revNote  = trim((string) ($selected_revision_note ?? ''));
+
+    // Tooltip text (full)
+    $tooltipText = trim($revLabel . ($revLabel && $revNote ? " — " : "") . $revNote);
+
+    // Display text (same content, but visually truncated)
+    $displayText = $tooltipText;
+@endphp
+
+@if (($can_revision_history ?? false) && $tooltipText !== '')
+    <div class="small text-muted mt-1">
+        <span
+            class="d-inline-block text-truncate"
+            style="max-width: 360px;"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="{{ $tooltipText }}"
+        >
+            {{ $displayText }}
+        </span>
+    </div>
+@endif
+
 </div>
 
 <div>
