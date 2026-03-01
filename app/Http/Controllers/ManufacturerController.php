@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ManufacturerController extends Controller
 {
     private static $table_name = 'manufacturers';
+
     private static $id_field = 'manufacturer_id';
 
     private static $manufacturer_list_table_headers = [
@@ -53,8 +54,7 @@ class ManufacturerController extends Controller
                 'table_name' => self::$table_name,
                 'id_field' => self::$id_field,
             ]);
-        }
-        elseif ($route == 'manufacturers.manufacturersTable') {
+        } elseif ($route == 'manufacturers.manufacturersTable') {
             return view('manufacturers.manufacturersTable', [
                 'manufacturers_list' => $manufacturers_list,
                 'db_columns' => self::$manufacturer_list_table_headers,

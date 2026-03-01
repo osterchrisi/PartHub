@@ -6,6 +6,7 @@ use App\Models\AlternativeGroup;
 use App\Models\Category;
 use App\Models\Footprint;
 use App\Models\Location;
+use App\Models\Manufacturer;
 use App\Models\Part;
 use App\Models\PartUnit;
 use App\Models\StockLevel;
@@ -13,7 +14,6 @@ use App\Models\Supplier;
 use App\Models\SupplierData;
 use App\Models\User;
 use App\Models\UserSetting;
-use App\Models\Manufacturer;
 use App\Services\MouserApiService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Crypt;
@@ -95,7 +95,7 @@ class PartControllerTest extends TestCase
         $altGroup->parts()->attach($part->part_id);
 
         // Call the show route
-        $response = $this->get('/part/' . $part->part_id);
+        $response = $this->get('/part/'.$part->part_id);
 
         // Assertions
         $response->assertOk();
@@ -374,6 +374,4 @@ class PartControllerTest extends TestCase
             ->assertStatus(422)
             ->assertJsonValidationErrors(['manufacturer']);
     }
-
-
 }

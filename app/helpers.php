@@ -5,12 +5,12 @@ use Carbon\Carbon;
 function buildHTMLTable($column_names, $nice_columns, $table_data, $width = '100%')
 {
     $html = "<div style='overflow-x:auto;'>";
-    $html .= "<table class='table table-striped table-hover table-sm' style='width: " . e($width) . "; font-size:12px'>";
+    $html .= "<table class='table table-striped table-hover table-sm' style='width: ".e($width)."; font-size:12px'>";
 
     // Table headers
     $html .= '<thead><tr>';
     foreach ($nice_columns as $column_header) {
-        $html .= '<th>' . e($column_header) . '</th>';
+        $html .= '<th>'.e($column_header).'</th>';
     }
     $html .= '</tr></thead>';
 
@@ -21,7 +21,7 @@ function buildHTMLTable($column_names, $nice_columns, $table_data, $width = '100
         foreach ($column_names as $column_data) {
             $val = $row[$column_data] ?? '';
             // Cast to string so numbers/nulls behave consistently
-            $html .= '<td>' . e((string) $val) . '</td>';
+            $html .= '<td>'.e((string) $val).'</td>';
         }
         $html .= '</tr>';
     }
@@ -41,10 +41,10 @@ function calculateTotalStock($stockLevels)
     return $total_stock;
 }
 
-if (!function_exists('convertToUserTimezone')) {
+if (! function_exists('convertToUserTimezone')) {
     function convertToUserTimezone($timestamp, $timezone = null)
     {
-        if (!$timestamp) {
+        if (! $timestamp) {
             return null;
         }
 

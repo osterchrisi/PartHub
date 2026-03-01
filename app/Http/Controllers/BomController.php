@@ -152,7 +152,7 @@ class BomController extends Controller
                 'revisions' => $revisions,
                 'selected_revision_id' => $selectedRevision?->bom_revision_id,
                 'selected_revision_number' => $selectedRevision?->revision_number,
-                'selected_revision_note'  => $selectedRevision?->note,
+                'selected_revision_note' => $selectedRevision?->note,
                 'latest_revision_id' => $latestRevisionId,
                 'is_viewing_old_revision' => $isViewingOldRevision,
 
@@ -236,7 +236,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID ' . $bom_id . ', Rev. ' . $revisionNumberForBomRunComment,
+                    'comment' => 'BOM build of BOM with ID '.$bom_id.', Rev. '.$revisionNumberForBomRunComment,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];

@@ -4,8 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('manufacturers', function (Blueprint $table) {
@@ -27,7 +27,6 @@ return new class extends Migration {
             $table->unique(['manufacturer_owner_u_fk', 'manufacturer_name']); // basic dedupe per user
         });
     }
-
 
     /**
      * Reverse the migrations.

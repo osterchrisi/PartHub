@@ -90,20 +90,19 @@ class Part extends Model
                     $query->orWhere($column, 'like', "%$search_term%");
                 }
             });
-        }
-        else {
+        } else {
             // Only in specified colum (single)
             $query->where($search_column, 'like', "%$search_term%");
         }
 
         // Filter for categories
-        if (!in_array('all', $search_category)) {
+        if (! in_array('all', $search_category)) {
             $query->whereHas('category', function ($query) use ($search_category) {
                 $query->whereIn('category_id', $search_category)
                     ->orWhereIn('parent_category', $search_category);
             });
         }
-        
+
         $parts = $query->with('category', 'unit', 'stockLevels', 'footprint', 'manufacturer')->get()->toArray();
 
         // dd($parts);
@@ -113,7 +112,7 @@ class Part extends Model
     public static function getBomsContainingPart($part_id)
     {
         $part = Part::find($part_id);
-        if (!$part) {
+        if (! $part) {
             return [];
         }
 

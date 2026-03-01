@@ -2,11 +2,10 @@
 
 namespace App\Services\Validators;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class PartValidatorService
 {
@@ -25,7 +24,7 @@ class PartValidatorService
                 ->where('supplier_owner_u_fk', Auth::id()),
         ];
 
-        if (!$isUpdating) {
+        if (! $isUpdating) {
             $supplierIdRules[] = 'required_with:suppliers.*.URL,suppliers.*.SPN,suppliers.*.price';
         }
 

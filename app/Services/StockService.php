@@ -79,7 +79,7 @@ class StockService
         }
 
         // * Stock shortage (i.e. entries in the negative_stock array), inform user and ask permission
-        if (!empty($negative_stock)) {
+        if (! empty($negative_stock)) {
             $response = $this->generateStockShortageResponse($negative_stock, $changes, $change);
 
             return response()->json($response);
@@ -146,13 +146,12 @@ class StockService
                     'bom_revision_id' => $approved_change['bom_revision_id'] ?? null,
                     'assemble_quantity' => $approved_change['assemble_quantity'],
                 ];
-            }
-            else {
+            } else {
                 $processed_boms = [];
             }
         }
 
-        if (!empty($processed_boms)) {
+        if (! empty($processed_boms)) {
             $this->processBomRuns($processed_boms, $user_id);
         }
 
@@ -175,7 +174,7 @@ class StockService
         // Extract processed BOM ID(s)
         foreach ($processed_boms as $processed_bom) {
             $bomId = $processed_bom['bom_id'];
-            if (!in_array($bomId, $unique_bom_ids)) {
+            if (! in_array($bomId, $unique_bom_ids)) {
                 $unique_processed_boms[] = $processed_bom;
                 $unique_bom_ids[] = $bomId;
             }
@@ -258,26 +257,22 @@ class StockService
             $new_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
             $status = 'gtg';
-        }
-        elseif ($change == -1) {
+        } elseif ($change == -1) {
             $new_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
             $changes['new_quantity'] = $new_quantity;
 
             if ($new_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-            }
-            else {
+            } else {
                 $status = 'gtg';
             }
-        }
-        elseif ($change == 0) {
+        } elseif ($change == 0) {
             $to_quantity = $requested_change_stock_levels['current_stock_level_to'] + $requested_change_details['quantity'];
             $from_quantity = $requested_change_stock_levels['current_stock_level_from'] - $requested_change_details['quantity'];
 
             if ($from_quantity < 0 && $requested_change_details['status'] != 'gtg') {
                 $status = 'permission_required';
-            }
-            else {
+            } else {
                 $status = 'gtg';
             }
 
@@ -310,24 +305,22 @@ class StockService
     public function generateStockShortageResponse($negative_stock, $changes, $change)
     {
         // Decide which table layout we need (BOM-assembly vs "normal" stock change)
-        $isBomChange = !empty($changes) && !is_null($changes[0]['bom_id']);
+        $isBomChange = ! empty($changes) && ! is_null($changes[0]['bom_id']);
 
         if ($isBomChange) {
             $column_names = ['bom_id', 'bom_name', 'part_id', 'part_name', 'quantity', 'location_name', 'new_quantity'];
             $nice_columns = ['BOM ID', 'BOM Name', 'Part ID', 'Part Name', 'Quantity needed', 'Location', 'Resulting Quantity'];
-        }
-        else {
+        } else {
             if ($change == 0) {
                 $column_names = ['part_id', 'part_name', 'quantity', 'location_name', 'from_quantity'];
                 $nice_columns = ['Part ID', 'Part Name', 'Quantity needed', 'Location', 'Resulting Quantity'];
-            }
-            else {
+            } else {
                 $column_names = ['part_id', 'part_name', 'quantity', 'location_name', 'new_quantity'];
                 $nice_columns = ['Part ID', 'Part Name', 'Quantity needed', 'Location', 'Resulting Quantity'];
             }
         }
 
-        //* Enrichment lookups
+        // * Enrichment lookups
 
         // Part names
         $partIds = collect($negative_stock)->pluck('part_id')->filter()->unique()->values();
@@ -389,9 +382,10 @@ class StockService
             // key by what actually makes a change unique
             $key = implode('|', [$change, $partId, $from, $to]);
 
-            if (!isset($bucket[$key])) {
+            if (! isset($bucket[$key])) {
                 $bucket[$key] = $c;
                 $bucket[$key]['quantity'] = (int) ($c['quantity'] ?? 0);
+
                 continue;
             }
 

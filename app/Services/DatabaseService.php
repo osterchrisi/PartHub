@@ -51,15 +51,16 @@ class DatabaseService
         try {
             // Get the owner column for the specified table
             $owner_column = self::$owner_columns[$table] ?? null;
-            if (!$owner_column) {
+            if (! $owner_column) {
                 throw new Exception("No owner column found for table {$table}");
             }
 
             // Prevent arbitrary bulk deletes by forcing deletion strictly by the model's primary key.
-            // The client is not allowed to choose an arbitrary column for deletion.    
+            // The client is not allowed to choose an arbitrary column for deletion.
             $modelClass = self::$modelMap[$table] ?? null;
-            if (!$modelClass)
+            if (! $modelClass) {
                 throw new Exception("No Eloquent model found for table {$table}");
+            }
             $pk = (new $modelClass)->getKeyName();
             if ($column !== $pk) {
                 throw new Exception("Invalid delete column {$column} for table {$table}");
@@ -80,12 +81,12 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->delete();
 
-            if (!$deleted) {
+            if (! $deleted) {
                 throw new Exception('Unauthorized or row not found for deletion');
             }
 
             // Additional logic if the deleted row is a category
-            if ($table === 'part_categories' && !empty($partsToUpdate)) {
+            if ($table === 'part_categories' && ! empty($partsToUpdate)) {
                 // Get the root category for the user
                 $root_category = app()->make('App\Services\CategoryService')->findRootCategory($user_id)->category_id ?? null;
 
@@ -111,19 +112,19 @@ class DatabaseService
      */
     public static function updateCell($table_name, $id_field, $id, $column, $new_value)
     {
-        if (!isset(self::$modelMap[$table_name])) {
+        if (! isset(self::$modelMap[$table_name])) {
             throw new Exception("No Eloquent model found for table {$table_name}");
         }
 
         $modelClass = self::$modelMap[$table_name];
         $owner_column = self::$owner_columns[$table_name] ?? null;
 
-        if (!$owner_column) {
+        if (! $owner_column) {
             throw new Exception("No owner column found for table {$table_name}");
         }
 
         if ($column === $owner_column) {
-            throw new Exception("Owner column cannot be updated.");
+            throw new Exception('Owner column cannot be updated.');
         }
 
         $user_id = Auth::id();
@@ -134,11 +135,11 @@ class DatabaseService
                 ->where($owner_column, $user_id)
                 ->first();
 
-            if (!$record) {
+            if (! $record) {
                 throw new Exception('Unauthorized or row not found for updating');
             }
 
-            if (!Schema::hasColumn($record->getTable(), $column)) {
+            if (! Schema::hasColumn($record->getTable(), $column)) {
                 throw new Exception("Invalid column {$column}");
             }
 

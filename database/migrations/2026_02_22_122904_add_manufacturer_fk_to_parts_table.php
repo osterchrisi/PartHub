@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('parts', function (Blueprint $table) {
-            if (!Schema::hasColumn('parts', 'part_manufacturer_fk')) {
+            if (! Schema::hasColumn('parts', 'part_manufacturer_fk')) {
                 $table->unsignedBigInteger('part_manufacturer_fk')->nullable()->after('part_supplier_fk');
             }
-            
+
             $table->foreign('part_manufacturer_fk')
                 ->references('manufacturer_id')
                 ->on('manufacturers')
@@ -24,7 +24,10 @@ return new class extends Migration
     {
         Schema::table('parts', function (Blueprint $table) {
             // Drop FK first, then column
-            try { $table->dropForeign(['part_manufacturer_fk']); } catch (\Throwable $e) {}
+            try {
+                $table->dropForeign(['part_manufacturer_fk']);
+            } catch (\Throwable $e) {
+            }
             $table->dropColumn('part_manufacturer_fk');
         });
     }
