@@ -219,6 +219,7 @@ class BomController extends Controller
                 abort(500, 'BOM has no current revision.');
             }
             $revisionId = $revision->bom_revision_id;
+            $revisionNumberForBomRunComment = $revision->revision_number;
 
             // Iterating over BOM elements (parts)
             foreach ($revision->elements as $element) {
@@ -234,7 +235,7 @@ class BomController extends Controller
                     'quantity' => $reducing_quantity,
                     'to_location' => null,
                     'from_location' => $from_location,
-                    'comment' => 'BOM build of BOM with ID '.$bom_id,
+                    'comment' => 'BOM build of BOM with ID ' . $bom_id . ', Rev. ' . $revisionNumberForBomRunComment,
                     'status' => 'BOM build request',
                     'assemble_quantity' => $assemble_quantity,
                 ];
