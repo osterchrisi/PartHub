@@ -30,9 +30,9 @@ class BomController extends Controller
 
     private static $nice_bom_detail_table_headers = ['Part Name', 'Quantity needed', 'Total stock available', 'Can build'];
 
-    private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'revision_number', 'label', 'name'];
+    private static $bomRunsTableHeaders = ['bom_run_datetime', 'bom_run_quantity', 'revision_number', 'label', 'note', 'name'];
 
-    private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'Revision', 'Label', 'User'];
+    private static $nice_bomRunsTableHeaders = ['Build Time', 'Build Quantity', 'Revision', 'Label', 'Note', 'User'];
 
     protected $stockService;
 
@@ -100,7 +100,7 @@ class BomController extends Controller
             $revisions = BomRevision::query()
                 ->where('bom_id_fk', $bom->bom_id)
                 ->orderByDesc('revision_number')
-                ->get(['bom_revision_id', 'revision_number', 'label', 'created_at']);
+                ->get(['bom_revision_id', 'revision_number', 'label', 'note', 'created_at']);
         }
 
         // Source of truth for "latest/current"

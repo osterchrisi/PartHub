@@ -33,6 +33,12 @@
                             @continue
                         @endif
 
+                        @if ($column_data === 'note')
+                            <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">
+                                {{ $run->revision?->note ?? '—' }}</td>
+                            @continue
+                        @endif
+
                         <td data-id="{{ $bom_run_id }}" data-column="{{ $column_data }}">{{ $run->$column_data }}
                         </td>
                     @endforeach
