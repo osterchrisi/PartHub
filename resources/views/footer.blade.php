@@ -3,7 +3,7 @@
         <tr>
             <td>
                 <div>
-                    <span class="fs-6 lead">&copy; 2025 </span><span class="fs-6 lead" data-bs-toggle="tooltip"
+                    <span class="fs-6 lead">&copy; 2026 </span><span class="fs-6 lead" data-bs-toggle="tooltip"
                         data-bs-title="{{ file_exists(base_path('VERSION')) ? file_get_contents(base_path('VERSION')) : '' }}
                     ">PartHub</span><span
                         class="fs-6 lead">. All rights reserved.
