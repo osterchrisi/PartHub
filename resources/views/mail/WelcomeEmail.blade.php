@@ -13,7 +13,7 @@
         <p class="lead">To get the most out of PartHub, we highly recommend checking out our <strong>Maker
                 plan</strong>.
             It offers advanced features to streamline your inventory management — currently at a crazy discount for
-            <strong>only €2,99/month!</strong> 🤯
+            <strong>only €4,99/month!</strong> 🤯
         </p>
         <p class="lead" style="text-align: center;">
             <a href="{{ route('signup') }}#register-pricing"

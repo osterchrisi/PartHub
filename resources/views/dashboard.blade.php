@@ -157,7 +157,7 @@ $user = Auth::user();
                         @if ($subscriptionType === 'free')
                             <!-- Upgrade Button -->
                             {{-- Introductin Price! --}}
-                            <a href="{{ route('subscription.checkout', ['plan' => 'maker', 'priceId' => 'price_1QhcmVEb2UyIF2shObeC4qlI']) }}"
+                            <a href="{{ route('subscription.checkout', ['plan' => 'maker', 'priceId' => 'price_1T6BFVEb2UyIF2shen9tDn30']) }}"
                                 class="btn btn-success">
                                 {{ __('Upgrade to Maker Plan') }}
                             </a>
