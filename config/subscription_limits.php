@@ -8,7 +8,7 @@ return [
         'bom_limit' => 10,
         'location_limit' => 10,
         'supplier_limit' => 10,
-        'supplier_data_limit' => 1,
+        'supplier_data_limit' => 2,
         'footprint_limit' => 10,
         'category_limit' => 10,
         'bom_revision_history' => false,
